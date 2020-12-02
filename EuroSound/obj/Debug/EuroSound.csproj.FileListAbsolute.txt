@@ -1,0 +1,47 @@
+C:\Users\Jordi Martinez\source\repos\EuroSound\EuroSound\bin\Debug\EuroSound.exe.config
+C:\Users\Jordi Martinez\source\repos\EuroSound\EuroSound\bin\Debug\EuroSound.exe
+C:\Users\Jordi Martinez\source\repos\EuroSound\EuroSound\bin\Debug\EuroSound.pdb
+C:\Users\Jordi Martinez\source\repos\EuroSound\EuroSound\obj\Debug\EuroSound.csprojAssemblyReference.cache
+C:\Users\Jordi Martinez\source\repos\EuroSound\EuroSound\obj\Debug\EuroSound.Frm_Main.resources
+C:\Users\Jordi Martinez\source\repos\EuroSound\EuroSound\obj\Debug\EuroSound.Properties.Resources.resources
+C:\Users\Jordi Martinez\source\repos\EuroSound\EuroSound\obj\Debug\EuroSound.csproj.GenerateResource.cache
+C:\Users\Jordi Martinez\source\repos\EuroSound\EuroSound\obj\Debug\EuroSound.csproj.CoreCompileInputs.cache
+C:\Users\Jordi Martinez\source\repos\EuroSound\EuroSound\obj\Debug\EuroSound.exe
+C:\Users\Jordi Martinez\source\repos\EuroSound\EuroSound\obj\Debug\EuroSound.pdb
+F:\VisualStudio\Programs\EuroSound\EuroSound\bin\Debug\EuroSound.exe
+F:\VisualStudio\Programs\EuroSound\EuroSound\bin\Debug\EuroSound.pdb
+F:\VisualStudio\Programs\EuroSound\EuroSound\bin\Debug\NAudio.dll
+F:\VisualStudio\Programs\EuroSound\EuroSound\bin\Debug\NAudio.xml
+F:\VisualStudio\Programs\EuroSound\EuroSound\obj\Debug\EuroSound.EuroSound_WarningBox.resources
+F:\VisualStudio\Programs\EuroSound\EuroSound\obj\Debug\EuroSound.Frm_AboutEuroSound.resources
+F:\VisualStudio\Programs\EuroSound\EuroSound\obj\Debug\EuroSound.EuroSound_InputBox.resources
+F:\VisualStudio\Programs\EuroSound\EuroSound\obj\Debug\EuroSound.Frm_EffectProperties.resources
+F:\VisualStudio\Programs\EuroSound\EuroSound\obj\Debug\EuroSound.Frm_FileProperties.resources
+F:\VisualStudio\Programs\EuroSound\EuroSound\obj\Debug\EuroSound.Frm_SampleProperties.resources
+F:\VisualStudio\Programs\EuroSound\EuroSound\obj\Debug\EuroSound.Properties.Resources.resources
+F:\VisualStudio\Programs\EuroSound\EuroSound\obj\Debug\EuroSound.csproj.GenerateResource.cache
+F:\VisualStudio\Programs\EuroSound\EuroSound\obj\Debug\EuroSound.csproj.CoreCompileInputs.cache
+F:\VisualStudio\Programs\EuroSound\EuroSound\obj\Debug\EuroSound.csproj.CopyComplete
+F:\VisualStudio\Programs\EuroSound\EuroSound\obj\Debug\EuroSound.exe
+F:\VisualStudio\Programs\EuroSound\EuroSound\obj\Debug\EuroSound.pdb
+F:\VisualStudio\Programs\EuroSound\EuroSound\obj\Debug\EuroSound.EuroSound_FlagsForm.resources
+F:\VisualStudio\Programs\EuroSound\EuroSound\obj\Debug\EuroSound.Frm_Main.resources
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\EuroSound.exe
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\EuroSound.pdb
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\NAudio.dll
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\NAudio.xml
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.csprojAssemblyReference.cache
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.EuroSound_FlagsForm.resources
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.EuroSound_WarningBox.resources
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.Frm_AboutEuroSound.resources
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.EuroSound_InputBox.resources
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.Frm_EffectProperties.resources
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.Frm_FileProperties.resources
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.Frm_SampleProperties.resources
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.Frm_Main.resources
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.Properties.Resources.resources
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.csproj.GenerateResource.cache
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.csproj.CoreCompileInputs.cache
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.csproj.CopyComplete
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.exe
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.pdb

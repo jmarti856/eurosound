@@ -1,0 +1,302 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+
+namespace EuroSound
+{
+    public static class EXBuildSFX
+    {
+        public static void ExportContentToSFX(List<EXSound> SoundsList, string SavePath)
+        {
+            long SampleInfoStartOffset, SampleDataStartOffset;
+            long SFXlength, SampleInfoLength, SampleDataLength;
+
+            long WholeFileSize;
+
+            Dictionary<long, string> HashcodeOffsets = new Dictionary<long, string>();
+            Dictionary<long, string> SampleDataOffsets = new Dictionary<long, string>();
+            Dictionary<int, string> SampleInfoTable = new Dictionary<int, string>();
+
+            BinaryWriter BWriter = new BinaryWriter(File.Open(SavePath, FileMode.Create, FileAccess.Write), Encoding.ASCII);
+            //*===============================================================================================
+            //* HEADER
+            //*===============================================================================================
+            /*--magic[magic value]--*/
+            BWriter.Write(Encoding.ASCII.GetBytes("MUSX"));
+            /*--hashc[Hashcode for the current soundbank without the section prefix]--*/
+            BWriter.Write(Convert.ToUInt32(Convert.ToInt32(EXFile.Hashcode, 16)));
+            /*--offst[Constant offset to the next section,]--*/
+            BWriter.Write(Convert.ToInt32(0xC9));
+            /*--fulls[Size of the whole file, in bytes. Unused. ]--*/
+            BWriter.Write(Convert.ToInt32(00000000));
+
+            //*===============================================================================================
+            //* SECTIONS
+            //*===============================================================================================
+            /*--sfxstart[an offset that points to the section where soundbanks are stored, always 0x800]--*/
+            BWriter.Write(Convert.ToInt32(0x800));
+            /*--sfxlength[size of the first section, in bytes]--*/
+            BWriter.Write(Convert.ToUInt32(394));
+
+            /*--sampleinfostart[offset to the second section where the sample properties are stored]--*/
+            BWriter.Write(Convert.ToInt32(00000000));
+            /*--sampleinfolen[size of the second section, in bytes]--*/
+            BWriter.Write(Convert.ToInt32(CountNumberOfSamples(SoundsList)));
+
+            /*--specialsampleinfostart[unused and uses the same sample data offset as dummy for some reason]--*/
+            BWriter.Write(Convert.ToUInt32(00000000));
+            /*--specialsampleinfolen[unused and set to zero]--*/
+            BWriter.Write(Convert.ToUInt32(00000000));
+
+            /*--sampledatastart[Offset that points to the beginning of the PCM data, where sound is actually stored]--*/
+            BWriter.Write(Convert.ToInt32(00000000));
+            /*--sampledatalen[Size of the block, in bytes]--*/
+            BWriter.Write(Convert.ToInt32(00000000));
+
+            BWriter.Seek(0x800, SeekOrigin.Begin);
+            //*===============================================================================================
+            //* SECTION SFX elements
+            //*===============================================================================================
+            /*--SFX entry count in this soundbank--*/
+            BWriter.Write(SoundsList.Count);
+
+            /*--SFX header--*/
+            foreach (EXSound Sound in SoundsList)
+            {
+                BWriter.Write(Convert.ToUInt32(Sound.Hashcode.Substring(4), 16));
+                BWriter.Write(Convert.ToUInt32(00000000));
+            }
+
+            /*--Linear array of sorted SFX headers laid out in this format--*/
+            foreach (EXSound Sound in SoundsList)
+            {
+                /*--Add hashcode offset to the dictionary--*/
+                HashcodeOffsets.Add(BWriter.BaseStream.Position, Sound.Hashcode);
+
+                /*--Write data--*/
+                BWriter.Write(Convert.ToInt16(Sound.DuckerLenght));
+                BWriter.Write(Convert.ToInt16(Sound.MinDelay));
+                BWriter.Write(Convert.ToInt16(Sound.MaxDelay));
+                BWriter.Write(Convert.ToInt16(Sound.InnerRadiusReal));
+                BWriter.Write(Convert.ToInt16(Sound.OuterRadiusReal));
+                BWriter.Write(Convert.ToSByte(Sound.ReverbSend));
+                BWriter.Write(Convert.ToSByte(Sound.TrackingType));
+                BWriter.Write(Convert.ToSByte(Sound.MaxVoices));
+                BWriter.Write(Convert.ToSByte(Sound.Priority));
+                BWriter.Write(Convert.ToSByte(Sound.Ducker));
+                BWriter.Write(Convert.ToSByte(Sound.MasterVolume));
+                BWriter.Write(Convert.ToUInt16(Sound.Flags));
+
+                BWriter.Write(Convert.ToInt16(Sound.Samples.Count));
+
+                foreach (EXSample Sample in Sound.Samples)
+                {
+                    /*--[FILE REFERENCE]--*/
+                    BWriter.Write(Convert.ToInt16(00000000));
+
+                    /*Sample Data*/
+                    BWriter.Write(Convert.ToInt16(Sample.PitchOffset));
+                    BWriter.Write(Convert.ToInt16(Sample.RandomPitchOffset));
+                    BWriter.Write(Convert.ToInt16(Sample.BaseVolume));
+                    BWriter.Write(Convert.ToSByte(Sample.RandomVolumeOffset));
+                    BWriter.Write(Convert.ToSByte(Sample.Pan));
+                    BWriter.Write(Convert.ToSByte(Sample.RandomPan));
+
+                    /*Aligment Padding*/
+                    BWriter.Write(Convert.ToSByte(0));
+                    BWriter.Write(Convert.ToSByte(0));
+                }
+            }
+            /*--Section length, current position - start position--*/
+            SFXlength = BWriter.BaseStream.Position - 0x800;
+
+            //*===============================================================================================
+            //* SECTION Sample info elements
+            //*===============================================================================================
+            /*--Hashcode+SampleIndex, PositionOffset--*/
+            int index = 0;
+
+            /*Start section offset*/
+            SampleInfoStartOffset = (BWriter.BaseStream.Position);
+
+            /*Write total number of samples*/
+            BWriter.Write(Convert.ToInt16(CountNumberOfSamples(SoundsList)));
+
+            foreach (EXSound Sound in SoundsList)
+            {
+                for (int i = 0; i < Sound.Samples.Count; i++)
+                {
+                    /*Write data*/
+                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Flags));
+                    BWriter.Write(Convert.ToUInt32(00000000));
+                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.DataSize));
+                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Frequency));
+                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.RealSize));
+                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Channels));
+                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Bits));
+                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.PSIsample));
+                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.LoopOffset));
+                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Duration));
+
+                    /*Add index + hashcode*/
+                    SampleInfoTable.Add(index, Sound.Hashcode);
+                    index++;
+                }
+            }
+
+            /*--Section length, current position - start position--*/
+            SampleInfoLength = BWriter.BaseStream.Position - SampleInfoStartOffset;
+
+            //*===============================================================================================
+            //* SECTION Sample data
+            //*===============================================================================================
+            /*Start section offset*/
+            SampleDataStartOffset = (BWriter.BaseStream.Position);
+            foreach (EXSound Sound in SoundsList)
+            {
+                foreach (EXSample Sample in Sound.Samples)
+                {
+                    /*--Add Sample data offset to the list--*/
+                    SampleDataOffsets.Add(BWriter.BaseStream.Position, Sound.Hashcode);
+
+                    /*--Write PCM Data--*/
+                    BWriter.Write(Sample.Audio.PCMdata);
+
+                    /*--Aligment Padding--*/
+                    BWriter.Write(Convert.ToSByte(0));
+                    BWriter.Write(Convert.ToSByte(0));
+                }
+            }
+            /*--Section length, current position - start position--*/
+            SampleDataLength = BWriter.BaseStream.Position - SampleDataStartOffset;
+
+            /*Get total file size*/
+            WholeFileSize = BWriter.BaseStream.Position;
+
+            //*===============================================================================================
+            //* WRITE FINAL HEADER INFO
+            //*===============================================================================================
+            /*--Size of the whole file--*/
+            BWriter.BaseStream.Seek(0xC, SeekOrigin.Begin);
+            BWriter.Write(Convert.ToUInt32(WholeFileSize));
+
+            /*--SFX Length--*/
+            BWriter.BaseStream.Seek(0x14, SeekOrigin.Begin);
+            BWriter.Write(Convert.ToUInt32(SFXlength));
+
+            /*--Sample info start--*/
+            BWriter.BaseStream.Seek(0x18, SeekOrigin.Begin);
+            BWriter.Write(Convert.ToUInt32(SampleInfoStartOffset));
+            BWriter.Write(Convert.ToUInt32(SampleInfoLength));
+
+            /*--Special sample info start--*/
+            BWriter.BaseStream.Seek(0x20, SeekOrigin.Begin);
+            BWriter.Write(Convert.ToUInt32(SampleDataStartOffset));
+            BWriter.Write(Convert.ToUInt32(00000000));
+
+            /*--Sample Data Start--*/
+            BWriter.BaseStream.Seek(0x28, SeekOrigin.Begin);
+            BWriter.Write(Convert.ToUInt32(SampleDataStartOffset));
+            BWriter.Write(Convert.ToUInt32(SampleDataLength));
+
+            //*===============================================================================================
+            //* WRITE HASHCODE REAL OFFSETS
+            //*===============================================================================================
+            BWriter.Seek(0x804, SeekOrigin.Begin);
+            foreach (long offset in HashcodeOffsets.Keys)
+            {
+                BWriter.Seek(4, SeekOrigin.Current);
+                BWriter.Write(Convert.ToUInt32(offset));
+            }
+
+            //*===============================================================================================
+            //* WRITE FINAL FILE REFS INDEX
+            //*===============================================================================================
+            BWriter.BaseStream.Seek(0x800, SeekOrigin.Begin);
+            string OldHashcode = "";
+            long Offset = 0;
+
+            foreach (KeyValuePair<int, string> item in SampleInfoTable)
+            {
+                /*Get Hashcode*/
+                string Hashc = item.Value;
+
+                /*Check the Hashcode is in the offsets list*/
+                if (DictionaryContainsValue(Hashc, HashcodeOffsets))
+                {
+                    /*Get offset*/
+                    foreach (KeyValuePair<long, string> entry in HashcodeOffsets)
+                    {
+                        if (entry.Value.Equals(Hashc))
+                        {
+                            if (Hashc.Equals(OldHashcode))
+                            {
+                                Offset += 15; /*Skip sound props*/
+                            }
+                            else
+                            {
+                                Offset = entry.Key + 20; /*Skip sample props*/
+                            }
+                            BWriter.BaseStream.Seek(Offset, SeekOrigin.Begin);
+                            BWriter.Write(Convert.ToUInt32(item.Key)); /*The indexes starts at 0 or 1 (in this list the first is zero)?????*/
+                            OldHashcode = Hashc;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            //*===============================================================================================
+            //* WRITE FINAL OFFSETS TO SAMPLE DATA
+            //*===============================================================================================
+            BWriter.BaseStream.Seek(SampleInfoStartOffset, SeekOrigin.Begin);
+            long RelativeOffset;
+
+            foreach (KeyValuePair<long, string> item in SampleDataOffsets)
+            {
+                /*skip numsamples and flags*/
+                Offset = BWriter.BaseStream.Position + 6;
+                BWriter.BaseStream.Seek(Offset, SeekOrigin.Begin);
+
+                /*--Calculate Relative Offset--*/
+                RelativeOffset = item.Key - BWriter.BaseStream.Position;
+                BWriter.Write(Convert.ToUInt32(RelativeOffset));
+
+                /*Skip other properties*/
+                Offset = BWriter.BaseStream.Position + 34;
+                BWriter.BaseStream.Seek(Offset, SeekOrigin.Begin);
+            }
+
+            BWriter.Close();
+        }
+
+        private static bool DictionaryContainsValue(string StringToCheck, Dictionary<long, string> HashcodeOffsets)
+        {
+            foreach (KeyValuePair<long, string> entry in HashcodeOffsets)
+            {
+                if (entry.Value.Equals(StringToCheck, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private static int CountNumberOfSamples(List<EXSound> SoundsList)
+        {
+            int Counter = 0;
+            foreach (EXSound Sound in SoundsList)
+            {
+                foreach (EXSample Sample in Sound.Samples)
+                {
+                    if (!Sample.Audio.IsEmpty())
+                    {
+                        Counter++;
+                    }
+                }
+            }
+            return Counter;
+        }
+    }
+}
