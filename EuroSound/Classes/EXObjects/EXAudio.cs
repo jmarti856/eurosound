@@ -4,7 +4,7 @@
     {
         public string Name { get; set; }
         public byte[] AllData { get; set; } = new byte[] { 0, 0, 0 };
-        public string Encoding { get; set; }
+        public string Encoding { get; set; } = "<Null>";
 
         /*---ENGINE X Required---*/
         public int Flags { get; set; } = 0;

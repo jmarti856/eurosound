@@ -54,5 +54,19 @@ namespace EuroSound
                 Debug.WriteLine(string.Format("INFO -- {0} {1} added to the SFX_Defines dictionary.", Key, Value));
             }
         }
+
+        internal static string GetHashcodeByLabel(Dictionary<string, string> DataDict, string Hashcode)
+        {
+            string HashcodeHex = string.Empty;
+            foreach (KeyValuePair<string, string> Entry in DataDict)
+            {
+                if (Entry.Value.ToUpper().Equals(Hashcode.ToUpper()))
+                {
+                    HashcodeHex = Entry.Key;
+                }
+            }
+
+            return HashcodeHex;
+        }
     }
 }

@@ -30,3 +30,5 @@ F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Release\EuroSound.cspro
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Release\EuroSound.csproj.CoreCompileInputs.cache
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Release\EuroSound.csproj.CopyComplete
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Release\EuroSound.exe
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Release\EuroSound.exe.config
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Release\EuroSound.csprojAssemblyReference.cache

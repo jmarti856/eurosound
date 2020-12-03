@@ -30,7 +30,6 @@ F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\EuroSound.exe
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\EuroSound.pdb
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\NAudio.dll
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\NAudio.xml
-F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.csprojAssemblyReference.cache
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.EuroSound_FlagsForm.resources
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.EuroSound_WarningBox.resources
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.Frm_AboutEuroSound.resources
@@ -45,3 +44,5 @@ F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.csproj.
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.csproj.CopyComplete
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.exe
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.pdb
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\YamlDotNet.dll
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\YamlDotNet.xml

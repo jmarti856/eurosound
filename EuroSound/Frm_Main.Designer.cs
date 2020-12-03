@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Sounds", 0, 0);
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Streamed Sounds");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Main));
             this.TreeView_File = new System.Windows.Forms.TreeView();
             this.ImageList_TreeNode = new System.Windows.Forms.ImageList(this.components);
@@ -71,15 +72,16 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuSample_TextColor = new System.Windows.Forms.ToolStripMenuItem();
             this.ColorDialog_TextColor = new System.Windows.Forms.ColorDialog();
-            this.Groupbox_WAV = new System.Windows.Forms.GroupBox();
             this.Button_UpdateList_WavData = new System.Windows.Forms.Button();
             this.ListView_WavHeaderData = new System.Windows.Forms.ListView();
             this.Col_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_ParentSound = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Frequency = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Channels = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Bits = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Data = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Encoding = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_Duration = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.GroupBox_Hashcodes = new System.Windows.Forms.GroupBox();
             this.Button_UpdateList_Hashcodes = new System.Windows.Forms.Button();
             this.ListView_Hashcodes = new System.Windows.Forms.ListView();
@@ -87,14 +89,24 @@
             this.Col_Hashcode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Hashcode_Label = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_UsedIn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_Duration = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.TabControlDataViewer = new System.Windows.Forms.TabControl();
+            this.TabPage_StreamData = new System.Windows.Forms.TabPage();
+            this.ListView_StreamData = new System.Windows.Forms.ListView();
+            this.Col_StreamName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_AsociatedTo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_FileRef = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_LocatedIn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.TabPage_WavHeaderData = new System.Windows.Forms.TabPage();
+            this.MenuItemFile_ReadYml = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenu_Folders.SuspendLayout();
             this.ContextMenu_Sound.SuspendLayout();
             this.MainMenu.SuspendLayout();
             this.Statusbar.SuspendLayout();
             this.ContextMenu_Sample.SuspendLayout();
-            this.Groupbox_WAV.SuspendLayout();
             this.GroupBox_Hashcodes.SuspendLayout();
+            this.TabControlDataViewer.SuspendLayout();
+            this.TabPage_StreamData.SuspendLayout();
+            this.TabPage_WavHeaderData.SuspendLayout();
             this.SuspendLayout();
             // 
             // TreeView_File
@@ -112,10 +124,15 @@
             treeNode1.SelectedImageIndex = 0;
             treeNode1.Tag = "Root";
             treeNode1.Text = "Sounds";
+            treeNode2.ImageIndex = 0;
+            treeNode2.Name = "StreamedSounds";
+            treeNode2.Tag = "Root";
+            treeNode2.Text = "Streamed Sounds";
             this.TreeView_File.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            treeNode1,
+            treeNode2});
             this.TreeView_File.SelectedImageIndex = 0;
-            this.TreeView_File.Size = new System.Drawing.Size(711, 748);
+            this.TreeView_File.Size = new System.Drawing.Size(666, 849);
             this.TreeView_File.TabIndex = 1;
             this.TreeView_File.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.TreeView_File_AfterLabelEdit);
             this.TreeView_File.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.TreeView_File_BeforeCollapse);
@@ -239,7 +256,7 @@
             this.MainMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(1130, 24);
+            this.MainMenu.Size = new System.Drawing.Size(1191, 24);
             this.MainMenu.TabIndex = 0;
             this.MainMenu.Text = "MainMenu";
             // 
@@ -252,6 +269,7 @@
             this.MenuItem_File_SaveAs,
             this.toolStripSeparator2,
             this.MenuItemFile_Export,
+            this.MenuItemFile_ReadYml,
             this.toolStripSeparator1,
             this.MenuItem_File_Exit});
             this.MenuItem_File.MergeIndex = 0;
@@ -262,50 +280,50 @@
             // MenuItem_File_Open
             // 
             this.MenuItem_File_Open.Name = "MenuItem_File_Open";
-            this.MenuItem_File_Open.Size = new System.Drawing.Size(123, 22);
+            this.MenuItem_File_Open.Size = new System.Drawing.Size(180, 22);
             this.MenuItem_File_Open.Text = "Open";
             this.MenuItem_File_Open.Click += new System.EventHandler(this.MenuItem_File_Open_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(120, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
             // 
             // MenuItem_File_Save
             // 
             this.MenuItem_File_Save.Name = "MenuItem_File_Save";
-            this.MenuItem_File_Save.Size = new System.Drawing.Size(123, 22);
+            this.MenuItem_File_Save.Size = new System.Drawing.Size(180, 22);
             this.MenuItem_File_Save.Text = "Save";
             this.MenuItem_File_Save.Click += new System.EventHandler(this.MenuItem_File_Save_Click);
             // 
             // MenuItem_File_SaveAs
             // 
             this.MenuItem_File_SaveAs.Name = "MenuItem_File_SaveAs";
-            this.MenuItem_File_SaveAs.Size = new System.Drawing.Size(123, 22);
+            this.MenuItem_File_SaveAs.Size = new System.Drawing.Size(180, 22);
             this.MenuItem_File_SaveAs.Text = "Save As...";
             this.MenuItem_File_SaveAs.Click += new System.EventHandler(this.MenuItem_File_SaveAs_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(120, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // MenuItemFile_Export
             // 
             this.MenuItemFile_Export.Name = "MenuItemFile_Export";
-            this.MenuItemFile_Export.Size = new System.Drawing.Size(123, 22);
+            this.MenuItemFile_Export.Size = new System.Drawing.Size(180, 22);
             this.MenuItemFile_Export.Text = "Export";
             this.MenuItemFile_Export.Click += new System.EventHandler(this.MenuItemFile_Export_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(120, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // MenuItem_File_Exit
             // 
             this.MenuItem_File_Exit.Name = "MenuItem_File_Exit";
-            this.MenuItem_File_Exit.Size = new System.Drawing.Size(123, 22);
+            this.MenuItem_File_Exit.Size = new System.Drawing.Size(180, 22);
             this.MenuItem_File_Exit.Text = "Exit";
             this.MenuItem_File_Exit.Click += new System.EventHandler(this.MenuItem_File_Exit_Click);
             // 
@@ -321,7 +339,7 @@
             // MenuItem_Edit_FileProps
             // 
             this.MenuItem_Edit_FileProps.Name = "MenuItem_Edit_FileProps";
-            this.MenuItem_Edit_FileProps.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_Edit_FileProps.Size = new System.Drawing.Size(148, 22);
             this.MenuItem_Edit_FileProps.Text = "File Properties";
             this.MenuItem_Edit_FileProps.Click += new System.EventHandler(this.MenuItem_Edit_FileProps_Click);
             // 
@@ -352,9 +370,9 @@
             this.Statusbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusLabel,
             this.CurrentFileLabel});
-            this.Statusbar.Location = new System.Drawing.Point(0, 772);
+            this.Statusbar.Location = new System.Drawing.Point(0, 873);
             this.Statusbar.Name = "Statusbar";
-            this.Statusbar.Size = new System.Drawing.Size(1130, 22);
+            this.Statusbar.Size = new System.Drawing.Size(1191, 22);
             this.Statusbar.TabIndex = 4;
             this.Statusbar.Text = "statusStrip1";
             // 
@@ -367,7 +385,7 @@
             // CurrentFileLabel
             // 
             this.CurrentFileLabel.Name = "CurrentFileLabel";
-            this.CurrentFileLabel.Size = new System.Drawing.Size(1076, 17);
+            this.CurrentFileLabel.Size = new System.Drawing.Size(1137, 17);
             this.CurrentFileLabel.Spring = true;
             this.CurrentFileLabel.Text = "Current file";
             this.CurrentFileLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -420,22 +438,10 @@
             // 
             this.ColorDialog_TextColor.FullOpen = true;
             // 
-            // Groupbox_WAV
-            // 
-            this.Groupbox_WAV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Groupbox_WAV.Controls.Add(this.Button_UpdateList_WavData);
-            this.Groupbox_WAV.Controls.Add(this.ListView_WavHeaderData);
-            this.Groupbox_WAV.Location = new System.Drawing.Point(717, 27);
-            this.Groupbox_WAV.Name = "Groupbox_WAV";
-            this.Groupbox_WAV.Size = new System.Drawing.Size(401, 265);
-            this.Groupbox_WAV.TabIndex = 2;
-            this.Groupbox_WAV.TabStop = false;
-            this.Groupbox_WAV.Text = "Wav Header Data";
-            // 
             // Button_UpdateList_WavData
             // 
             this.Button_UpdateList_WavData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateList_WavData.Location = new System.Drawing.Point(320, 236);
+            this.Button_UpdateList_WavData.Location = new System.Drawing.Point(424, 290);
             this.Button_UpdateList_WavData.Name = "Button_UpdateList_WavData";
             this.Button_UpdateList_WavData.Size = new System.Drawing.Size(75, 23);
             this.Button_UpdateList_WavData.TabIndex = 1;
@@ -450,6 +456,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ListView_WavHeaderData.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Col_Name,
+            this.Col_ParentSound,
             this.Col_Frequency,
             this.Col_Channels,
             this.Col_Bits,
@@ -459,9 +466,9 @@
             this.ListView_WavHeaderData.FullRowSelect = true;
             this.ListView_WavHeaderData.GridLines = true;
             this.ListView_WavHeaderData.HideSelection = false;
-            this.ListView_WavHeaderData.Location = new System.Drawing.Point(6, 19);
+            this.ListView_WavHeaderData.Location = new System.Drawing.Point(2, 6);
             this.ListView_WavHeaderData.Name = "ListView_WavHeaderData";
-            this.ListView_WavHeaderData.Size = new System.Drawing.Size(389, 211);
+            this.ListView_WavHeaderData.Size = new System.Drawing.Size(501, 278);
             this.ListView_WavHeaderData.TabIndex = 0;
             this.ListView_WavHeaderData.UseCompatibleStateImageBehavior = false;
             this.ListView_WavHeaderData.View = System.Windows.Forms.View.Details;
@@ -469,6 +476,11 @@
             // Col_Name
             // 
             this.Col_Name.Text = "Name";
+            // 
+            // Col_ParentSound
+            // 
+            this.Col_ParentSound.Text = "Asociated To";
+            this.Col_ParentSound.Width = 91;
             // 
             // Col_Frequency
             // 
@@ -494,14 +506,20 @@
             // 
             this.Col_Encoding.Text = "Encoding";
             // 
+            // Col_Duration
+            // 
+            this.Col_Duration.Text = "Duration";
+            this.Col_Duration.Width = 70;
+            // 
             // GroupBox_Hashcodes
             // 
-            this.GroupBox_Hashcodes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox_Hashcodes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.GroupBox_Hashcodes.Controls.Add(this.Button_UpdateList_Hashcodes);
             this.GroupBox_Hashcodes.Controls.Add(this.ListView_Hashcodes);
-            this.GroupBox_Hashcodes.Location = new System.Drawing.Point(717, 298);
+            this.GroupBox_Hashcodes.Location = new System.Drawing.Point(672, 376);
             this.GroupBox_Hashcodes.Name = "GroupBox_Hashcodes";
-            this.GroupBox_Hashcodes.Size = new System.Drawing.Size(401, 471);
+            this.GroupBox_Hashcodes.Size = new System.Drawing.Size(513, 375);
             this.GroupBox_Hashcodes.TabIndex = 3;
             this.GroupBox_Hashcodes.TabStop = false;
             this.GroupBox_Hashcodes.Text = "Hashcodes";
@@ -509,7 +527,7 @@
             // Button_UpdateList_Hashcodes
             // 
             this.Button_UpdateList_Hashcodes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateList_Hashcodes.Location = new System.Drawing.Point(320, 442);
+            this.Button_UpdateList_Hashcodes.Location = new System.Drawing.Point(432, 346);
             this.Button_UpdateList_Hashcodes.Name = "Button_UpdateList_Hashcodes";
             this.Button_UpdateList_Hashcodes.Size = new System.Drawing.Size(75, 23);
             this.Button_UpdateList_Hashcodes.TabIndex = 1;
@@ -532,7 +550,7 @@
             this.ListView_Hashcodes.HideSelection = false;
             this.ListView_Hashcodes.Location = new System.Drawing.Point(6, 19);
             this.ListView_Hashcodes.Name = "ListView_Hashcodes";
-            this.ListView_Hashcodes.Size = new System.Drawing.Size(389, 417);
+            this.ListView_Hashcodes.Size = new System.Drawing.Size(501, 321);
             this.ListView_Hashcodes.TabIndex = 0;
             this.ListView_Hashcodes.UseCompatibleStateImageBehavior = false;
             this.ListView_Hashcodes.View = System.Windows.Forms.View.Details;
@@ -557,18 +575,92 @@
             this.Col_UsedIn.Text = "Used By";
             this.Col_UsedIn.Width = 160;
             // 
-            // Col_Duration
+            // TabControlDataViewer
             // 
-            this.Col_Duration.Text = "Duration";
-            this.Col_Duration.Width = 70;
+            this.TabControlDataViewer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.TabControlDataViewer.Controls.Add(this.TabPage_StreamData);
+            this.TabControlDataViewer.Controls.Add(this.TabPage_WavHeaderData);
+            this.TabControlDataViewer.Location = new System.Drawing.Point(672, 25);
+            this.TabControlDataViewer.Name = "TabControlDataViewer";
+            this.TabControlDataViewer.SelectedIndex = 0;
+            this.TabControlDataViewer.Size = new System.Drawing.Size(513, 345);
+            this.TabControlDataViewer.TabIndex = 2;
+            // 
+            // TabPage_StreamData
+            // 
+            this.TabPage_StreamData.BackColor = System.Drawing.SystemColors.Control;
+            this.TabPage_StreamData.Controls.Add(this.ListView_StreamData);
+            this.TabPage_StreamData.Location = new System.Drawing.Point(4, 22);
+            this.TabPage_StreamData.Name = "TabPage_StreamData";
+            this.TabPage_StreamData.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPage_StreamData.Size = new System.Drawing.Size(505, 319);
+            this.TabPage_StreamData.TabIndex = 0;
+            this.TabPage_StreamData.Text = "Stream Data";
+            // 
+            // ListView_StreamData
+            // 
+            this.ListView_StreamData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ListView_StreamData.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Col_StreamName,
+            this.Col_AsociatedTo,
+            this.Col_FileRef,
+            this.Col_LocatedIn});
+            this.ListView_StreamData.FullRowSelect = true;
+            this.ListView_StreamData.GridLines = true;
+            this.ListView_StreamData.HideSelection = false;
+            this.ListView_StreamData.Location = new System.Drawing.Point(2, 6);
+            this.ListView_StreamData.Name = "ListView_StreamData";
+            this.ListView_StreamData.Size = new System.Drawing.Size(503, 278);
+            this.ListView_StreamData.TabIndex = 1;
+            this.ListView_StreamData.UseCompatibleStateImageBehavior = false;
+            this.ListView_StreamData.View = System.Windows.Forms.View.Details;
+            // 
+            // Col_StreamName
+            // 
+            this.Col_StreamName.Text = "Name";
+            // 
+            // Col_AsociatedTo
+            // 
+            this.Col_AsociatedTo.Text = "Asociated To";
+            this.Col_AsociatedTo.Width = 91;
+            // 
+            // Col_FileRef
+            // 
+            this.Col_FileRef.Text = "File Ref";
+            // 
+            // Col_LocatedIn
+            // 
+            this.Col_LocatedIn.Text = "Located In";
+            this.Col_LocatedIn.Width = 84;
+            // 
+            // TabPage_WavHeaderData
+            // 
+            this.TabPage_WavHeaderData.BackColor = System.Drawing.SystemColors.Control;
+            this.TabPage_WavHeaderData.Controls.Add(this.Button_UpdateList_WavData);
+            this.TabPage_WavHeaderData.Controls.Add(this.ListView_WavHeaderData);
+            this.TabPage_WavHeaderData.Location = new System.Drawing.Point(4, 22);
+            this.TabPage_WavHeaderData.Name = "TabPage_WavHeaderData";
+            this.TabPage_WavHeaderData.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPage_WavHeaderData.Size = new System.Drawing.Size(505, 319);
+            this.TabPage_WavHeaderData.TabIndex = 1;
+            this.TabPage_WavHeaderData.Text = "Wav Header Data";
+            // 
+            // MenuItemFile_ReadYml
+            // 
+            this.MenuItemFile_ReadYml.Name = "MenuItemFile_ReadYml";
+            this.MenuItemFile_ReadYml.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemFile_ReadYml.Text = "Read From .yml";
+            this.MenuItemFile_ReadYml.Click += new System.EventHandler(this.MenuItemFile_ReadYml_Click);
             // 
             // Frm_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1130, 794);
+            this.ClientSize = new System.Drawing.Size(1191, 895);
+            this.Controls.Add(this.TabControlDataViewer);
             this.Controls.Add(this.GroupBox_Hashcodes);
-            this.Controls.Add(this.Groupbox_WAV);
             this.Controls.Add(this.Statusbar);
             this.Controls.Add(this.MainMenu);
             this.Controls.Add(this.TreeView_File);
@@ -584,15 +676,16 @@
             this.Statusbar.ResumeLayout(false);
             this.Statusbar.PerformLayout();
             this.ContextMenu_Sample.ResumeLayout(false);
-            this.Groupbox_WAV.ResumeLayout(false);
             this.GroupBox_Hashcodes.ResumeLayout(false);
+            this.TabControlDataViewer.ResumeLayout(false);
+            this.TabPage_StreamData.ResumeLayout(false);
+            this.TabPage_WavHeaderData.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
         private System.Windows.Forms.TreeView TreeView_File;
         private System.Windows.Forms.ImageList ImageList_TreeNode;
         private System.Windows.Forms.ContextMenuStrip ContextMenu_Folders;
@@ -631,7 +724,6 @@
         private System.Windows.Forms.ColorDialog ColorDialog_TextColor;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Help_Online;
         public System.Windows.Forms.ToolStripStatusLabel CurrentFileLabel;
-        private System.Windows.Forms.GroupBox Groupbox_WAV;
         private System.Windows.Forms.ListView ListView_WavHeaderData;
         private System.Windows.Forms.ColumnHeader Col_Name;
         private System.Windows.Forms.ColumnHeader Col_Frequency;
@@ -650,5 +742,15 @@
         private System.Windows.Forms.ToolStripMenuItem MenuItemFile_Export;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ColumnHeader Col_Duration;
+        private System.Windows.Forms.TabControl TabControlDataViewer;
+        private System.Windows.Forms.TabPage TabPage_StreamData;
+        private System.Windows.Forms.TabPage TabPage_WavHeaderData;
+        private System.Windows.Forms.ColumnHeader Col_ParentSound;
+        private System.Windows.Forms.ListView ListView_StreamData;
+        private System.Windows.Forms.ColumnHeader Col_StreamName;
+        private System.Windows.Forms.ColumnHeader Col_AsociatedTo;
+        private System.Windows.Forms.ColumnHeader Col_FileRef;
+        private System.Windows.Forms.ColumnHeader Col_LocatedIn;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemFile_ReadYml;
     }
 }

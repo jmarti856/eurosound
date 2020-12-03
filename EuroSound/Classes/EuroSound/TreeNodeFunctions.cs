@@ -50,10 +50,10 @@ namespace EuroSound
             }
         }
 
-        internal static void TreeNodeDeleteNode(TreeView TreeViewFile, TreeNode Name)
+        internal static void TreeNodeDeleteNode(TreeView TreeViewFile, TreeNode Name, string NodeTag)
         {
             /*--Root node can't be deleted--*/
-            if (!Name.Equals("Sounds"))
+            if (!NodeTag.Equals("Root"))
             {
                 if (Name != null)
                 {
@@ -67,80 +67,6 @@ namespace EuroSound
             }
         }
 
-        internal static void AddNewSound(string Name, TreeView TreeViewToEdit, List<EXSound> SoundsList)
-        {
-            /*Check user input*/
-            if (Name.Length > 0)
-            {
-                /*Add new object*/
-                if (EXFunctions.NewSound(Name, Name, SoundsList))
-                {
-                    TreeNodeAddNewNode(TreeViewToEdit.SelectedNode.Name, Name, 2, 2, "Sound", Color.Black, TreeViewToEdit);
-                }
-                else
-                {
-                    MessageBox.Show("An item with that name already exists.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show("The name can't be empty", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                Debug.WriteLine("WARNING -- Trying to add a sound withouth name.");
-            }
-        }
-
-        internal static void AddNewSample(string Name, TreeView TreeViewToEdit, List<EXSound> SoundsList)
-        {
-            /*Check user input*/
-            if (Name.Length > 0)
-            {
-                /*Add new object*/
-                if (TreeViewToEdit.SelectedNode.Name != null && !TreeViewToEdit.SelectedNode.Tag.Equals("Root"))
-                {
-                    EXSound SampleParent = TreeNodeFunctions.GetSelectedSound(TreeViewToEdit.SelectedNode.Name, SoundsList);
-                    if (EXFunctions.AddSampleToSound(SampleParent, Name))
-                    {
-                        TreeNodeAddNewNode(TreeViewToEdit.SelectedNode.Name, Name, 4, 4, "Sample", Color.Black, TreeViewToEdit);
-                    }
-                    else
-                    {
-                        MessageBox.Show("An item with that name already exists.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("No sound has been selected", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show("The name can't be empty", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                Debug.WriteLine("WARNING -- Trying to add a sample withouth name.");
-            }
-        }
-
-        internal static void AddNewFolder(string Name, TreeView TreeViewToEdit)
-        {
-            /*Check user input*/
-            if (Name.Length > 0)
-            {
-                /*Add new object*/
-                if (TreeViewToEdit.SelectedNode.Name != null)
-                {
-                    TreeNodeAddNewNode(TreeViewToEdit.SelectedNode.Name, Name, 1, 1, "Folder", Color.Black, TreeViewToEdit);
-                }
-                else
-                {
-                    MessageBox.Show("No parent node has been selected", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show("The name can't be empty", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                Debug.WriteLine("WARNING -- Trying to add a sample withouth name.");
-            }
-        }
-
         internal static void TreeNodeAddNewNode(string Parent, string DisplayName, int SelectedImageIndex, int ImageIndex, string Tag, Color TextColor, TreeView TreeViewToEdit)
         {
             TreeNode[] ParentNode = TreeViewToEdit.Nodes.Find(Parent, true);
@@ -150,7 +76,7 @@ namespace EuroSound
                 /*--Add new properties--*/
                 TreeNode NewNode = new TreeNode
                 {
-                    Name = EXFunctions.RemoveWhiteSpaces(DisplayName),
+                    Name = EXObjectsFunctions.RemoveWhiteSpaces(DisplayName),
                     Text = DisplayName,
                     ForeColor = TextColor,
                     Tag = Tag
@@ -196,6 +122,28 @@ namespace EuroSound
             }
 
             return Childs;
+        }
+
+        internal static TreeNode FindRootNode(TreeNode treeNode)
+        {
+            while (treeNode.Parent != null)
+            {
+                treeNode = treeNode.Parent;
+            }
+            return treeNode;
+        }
+
+        internal static bool CheckIfNodeExists(TreeView SearchControl, string Name)
+        {
+            bool Exists = false;
+
+            TreeNode[] nod = SearchControl.Nodes.Find(Name, true);
+            if (nod.Length > 0)
+            {
+                Exists = true;
+            }
+
+            return Exists;
         }
     }
 }

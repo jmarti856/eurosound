@@ -45,6 +45,7 @@
             this.button_ok = new System.Windows.Forms.Button();
             this.button_cancel = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.Checkbox_IsStreamedSound = new System.Windows.Forms.CheckBox();
             this.Button_StopAudio = new System.Windows.Forms.Button();
             this.Button_PlayAudio = new System.Windows.Forms.Button();
             this.button_RemoveAudio = new System.Windows.Forms.Button();
@@ -79,7 +80,7 @@
             this.groupbox_properties.Controls.Add(this.label_pitchoffset);
             this.groupbox_properties.Location = new System.Drawing.Point(12, 12);
             this.groupbox_properties.Name = "groupbox_properties";
-            this.groupbox_properties.Size = new System.Drawing.Size(399, 182);
+            this.groupbox_properties.Size = new System.Drawing.Size(409, 182);
             this.groupbox_properties.TabIndex = 0;
             this.groupbox_properties.TabStop = false;
             this.groupbox_properties.Text = "Properties";
@@ -87,6 +88,16 @@
             // Numeric_BaseVolume
             // 
             this.Numeric_BaseVolume.Location = new System.Drawing.Point(126, 71);
+            this.Numeric_BaseVolume.Maximum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            0});
+            this.Numeric_BaseVolume.Minimum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            -2147483648});
             this.Numeric_BaseVolume.Name = "Numeric_BaseVolume";
             this.Numeric_BaseVolume.Size = new System.Drawing.Size(120, 20);
             this.Numeric_BaseVolume.TabIndex = 8;
@@ -108,6 +119,11 @@
             0,
             0,
             0});
+            this.numeric_randomPitchOffset.Minimum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            -2147483648});
             this.numeric_randomPitchOffset.Name = "numeric_randomPitchOffset";
             this.numeric_randomPitchOffset.Size = new System.Drawing.Size(120, 20);
             this.numeric_randomPitchOffset.TabIndex = 6;
@@ -129,6 +145,11 @@
             0,
             0,
             0});
+            this.numeric_randompan.Minimum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            -2147483648});
             this.numeric_randompan.Name = "numeric_randompan";
             this.numeric_randompan.Size = new System.Drawing.Size(120, 20);
             this.numeric_randompan.TabIndex = 14;
@@ -150,6 +171,11 @@
             0,
             0,
             0});
+            this.numeric_pan.Minimum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            -2147483648});
             this.numeric_pan.Name = "numeric_pan";
             this.numeric_pan.Size = new System.Drawing.Size(120, 20);
             this.numeric_pan.TabIndex = 12;
@@ -171,6 +197,11 @@
             0,
             0,
             0});
+            this.numeric_randomvolumeoffset.Minimum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            -2147483648});
             this.numeric_randomvolumeoffset.Name = "numeric_randomvolumeoffset";
             this.numeric_randomvolumeoffset.Size = new System.Drawing.Size(120, 20);
             this.numeric_randomvolumeoffset.TabIndex = 10;
@@ -192,6 +223,11 @@
             0,
             0,
             0});
+            this.numeric_pitchoffset.Minimum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            -2147483648});
             this.numeric_pitchoffset.Name = "numeric_pitchoffset";
             this.numeric_pitchoffset.Size = new System.Drawing.Size(120, 20);
             this.numeric_pitchoffset.TabIndex = 4;
@@ -208,7 +244,7 @@
             // button_ok
             // 
             this.button_ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_ok.Location = new System.Drawing.Point(258, 292);
+            this.button_ok.Location = new System.Drawing.Point(268, 306);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(75, 23);
             this.button_ok.TabIndex = 1;
@@ -219,7 +255,7 @@
             // button_cancel
             // 
             this.button_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_cancel.Location = new System.Drawing.Point(339, 292);
+            this.button_cancel.Location = new System.Drawing.Point(349, 306);
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(75, 23);
             this.button_cancel.TabIndex = 2;
@@ -231,6 +267,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.Checkbox_IsStreamedSound);
             this.groupBox1.Controls.Add(this.Button_StopAudio);
             this.groupBox1.Controls.Add(this.Button_PlayAudio);
             this.groupBox1.Controls.Add(this.button_RemoveAudio);
@@ -239,14 +276,26 @@
             this.groupBox1.Controls.Add(this.Label_MediaAudio);
             this.groupBox1.Location = new System.Drawing.Point(12, 200);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(399, 86);
+            this.groupBox1.Size = new System.Drawing.Size(409, 100);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Media";
             // 
+            // Checkbox_IsStreamedSound
+            // 
+            this.Checkbox_IsStreamedSound.AutoSize = true;
+            this.Checkbox_IsStreamedSound.Enabled = false;
+            this.Checkbox_IsStreamedSound.Location = new System.Drawing.Point(6, 19);
+            this.Checkbox_IsStreamedSound.Name = "Checkbox_IsStreamedSound";
+            this.Checkbox_IsStreamedSound.Size = new System.Drawing.Size(279, 17);
+            this.Checkbox_IsStreamedSound.TabIndex = 6;
+            this.Checkbox_IsStreamedSound.Text = "This sound is streamed and is stored in an external file";
+            this.Checkbox_IsStreamedSound.UseVisualStyleBackColor = true;
+            this.Checkbox_IsStreamedSound.CheckedChanged += new System.EventHandler(this.Checkbox_IsStreamedSound_CheckedChanged);
+            // 
             // Button_StopAudio
             // 
-            this.Button_StopAudio.Location = new System.Drawing.Point(207, 48);
+            this.Button_StopAudio.Location = new System.Drawing.Point(210, 68);
             this.Button_StopAudio.Name = "Button_StopAudio";
             this.Button_StopAudio.Size = new System.Drawing.Size(75, 23);
             this.Button_StopAudio.TabIndex = 4;
@@ -256,7 +305,7 @@
             // 
             // Button_PlayAudio
             // 
-            this.Button_PlayAudio.Location = new System.Drawing.Point(126, 48);
+            this.Button_PlayAudio.Location = new System.Drawing.Point(128, 68);
             this.Button_PlayAudio.Name = "Button_PlayAudio";
             this.Button_PlayAudio.Size = new System.Drawing.Size(75, 23);
             this.Button_PlayAudio.TabIndex = 3;
@@ -266,7 +315,7 @@
             // 
             // button_RemoveAudio
             // 
-            this.button_RemoveAudio.Location = new System.Drawing.Point(288, 48);
+            this.button_RemoveAudio.Location = new System.Drawing.Point(290, 68);
             this.button_RemoveAudio.Name = "button_RemoveAudio";
             this.button_RemoveAudio.Size = new System.Drawing.Size(105, 23);
             this.button_RemoveAudio.TabIndex = 5;
@@ -276,7 +325,7 @@
             // 
             // Button_LoadAudio
             // 
-            this.Button_LoadAudio.Location = new System.Drawing.Point(369, 22);
+            this.Button_LoadAudio.Location = new System.Drawing.Point(371, 42);
             this.Button_LoadAudio.Name = "Button_LoadAudio";
             this.Button_LoadAudio.Size = new System.Drawing.Size(24, 20);
             this.Button_LoadAudio.TabIndex = 2;
@@ -287,17 +336,17 @@
             // Textbox_MediaName
             // 
             this.Textbox_MediaName.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Textbox_MediaName.Location = new System.Drawing.Point(49, 22);
+            this.Textbox_MediaName.Location = new System.Drawing.Point(49, 42);
             this.Textbox_MediaName.Name = "Textbox_MediaName";
             this.Textbox_MediaName.ReadOnly = true;
-            this.Textbox_MediaName.Size = new System.Drawing.Size(314, 20);
+            this.Textbox_MediaName.Size = new System.Drawing.Size(316, 20);
             this.Textbox_MediaName.TabIndex = 1;
             this.Textbox_MediaName.Text = "<NO AUDIO>";
             // 
             // Label_MediaAudio
             // 
             this.Label_MediaAudio.AutoSize = true;
-            this.Label_MediaAudio.Location = new System.Drawing.Point(6, 25);
+            this.Label_MediaAudio.Location = new System.Drawing.Point(6, 45);
             this.Label_MediaAudio.Name = "Label_MediaAudio";
             this.Label_MediaAudio.Size = new System.Drawing.Size(37, 13);
             this.Label_MediaAudio.TabIndex = 0;
@@ -307,7 +356,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(423, 327);
+            this.ClientSize = new System.Drawing.Size(433, 341);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button_cancel);
             this.Controls.Add(this.button_ok);
@@ -360,5 +409,6 @@
         private System.Windows.Forms.Label Label_BaseVolume;
         private System.Windows.Forms.NumericUpDown numeric_randomPitchOffset;
         private System.Windows.Forms.Label Label_RandomPitchOffset;
+        private System.Windows.Forms.CheckBox Checkbox_IsStreamedSound;
     }
 }

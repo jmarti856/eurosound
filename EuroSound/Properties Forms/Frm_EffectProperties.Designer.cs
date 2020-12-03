@@ -119,6 +119,11 @@
             0,
             0,
             0});
+            this.numeric_mastervolume.Minimum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            -2147483648});
             this.numeric_mastervolume.Name = "numeric_mastervolume";
             this.numeric_mastervolume.Size = new System.Drawing.Size(152, 20);
             this.numeric_mastervolume.TabIndex = 21;
@@ -159,6 +164,11 @@
             0,
             0,
             0});
+            this.numeric_ducker.Minimum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            -2147483648});
             this.numeric_ducker.Name = "numeric_ducker";
             this.numeric_ducker.Size = new System.Drawing.Size(152, 20);
             this.numeric_ducker.TabIndex = 19;
@@ -180,6 +190,11 @@
             0,
             0,
             0});
+            this.numeric_priority.Minimum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            -2147483648});
             this.numeric_priority.Name = "numeric_priority";
             this.numeric_priority.Size = new System.Drawing.Size(152, 20);
             this.numeric_priority.TabIndex = 17;
@@ -216,6 +231,11 @@
             0,
             0,
             0});
+            this.numeric_maxvoices.Minimum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            -2147483648});
             this.numeric_maxvoices.Name = "numeric_maxvoices";
             this.numeric_maxvoices.Size = new System.Drawing.Size(152, 20);
             this.numeric_maxvoices.TabIndex = 15;
@@ -246,6 +266,11 @@
             0,
             0,
             0});
+            this.numeric_reverbsend.Minimum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            -2147483648});
             this.numeric_reverbsend.Name = "numeric_reverbsend";
             this.numeric_reverbsend.Size = new System.Drawing.Size(134, 20);
             this.numeric_reverbsend.TabIndex = 11;
@@ -267,6 +292,11 @@
             0,
             0,
             0});
+            this.numeric_outerradiusreal.Minimum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            -2147483648});
             this.numeric_outerradiusreal.Name = "numeric_outerradiusreal";
             this.numeric_outerradiusreal.Size = new System.Drawing.Size(134, 20);
             this.numeric_outerradiusreal.TabIndex = 9;
@@ -288,6 +318,11 @@
             0,
             0,
             0});
+            this.numeric_innerradiusreal.Minimum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            -2147483648});
             this.numeric_innerradiusreal.Name = "numeric_innerradiusreal";
             this.numeric_innerradiusreal.Size = new System.Drawing.Size(134, 20);
             this.numeric_innerradiusreal.TabIndex = 7;
@@ -309,6 +344,11 @@
             0,
             0,
             0});
+            this.numeric_maxdelay.Minimum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            -2147483648});
             this.numeric_maxdelay.Name = "numeric_maxdelay";
             this.numeric_maxdelay.Size = new System.Drawing.Size(134, 20);
             this.numeric_maxdelay.TabIndex = 5;
@@ -330,6 +370,11 @@
             0,
             0,
             0});
+            this.numeric_mindelay.Minimum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            -2147483648});
             this.numeric_mindelay.Name = "numeric_mindelay";
             this.numeric_mindelay.Size = new System.Drawing.Size(134, 20);
             this.numeric_mindelay.TabIndex = 3;
@@ -351,6 +396,11 @@
             0,
             0,
             0});
+            this.numeric_duckerlength.Minimum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            -2147483648});
             this.numeric_duckerlength.Name = "numeric_duckerlength";
             this.numeric_duckerlength.Size = new System.Drawing.Size(134, 20);
             this.numeric_duckerlength.TabIndex = 1;

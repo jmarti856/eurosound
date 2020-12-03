@@ -32,6 +32,7 @@ namespace EuroSound
             numeric_randomvolumeoffset.Value = SelectedSample.RandomVolumeOffset;
             numeric_pan.Value = SelectedSample.Pan;
             numeric_randompan.Value = SelectedSample.RandomPan;
+            Checkbox_IsStreamedSound.Checked = SelectedSample.IsStreamed;
 
             if (SelectedSample.Audio.IsEmpty() == false)
             {
@@ -103,7 +104,7 @@ namespace EuroSound
                     AudioReader.Flush();
 
                     /*Get PCM data*/
-                    TemporalAudio.PCMdata = GetRawPCMData(AudioFilePath);
+                    TemporalAudio.PCMdata = EXObjectsFunctions.GetRawPCMData(AudioFilePath);
 
                     Textbox_MediaName.Text = TemporalAudio.Name;
                 }
@@ -150,6 +151,7 @@ namespace EuroSound
             SelectedSample.RandomVolumeOffset = Convert.ToInt32(numeric_randomvolumeoffset.Value);
             SelectedSample.Pan = Convert.ToInt32(numeric_pan.Value);
             SelectedSample.RandomPan = Convert.ToInt32(numeric_randompan.Value);
+            SelectedSample.IsStreamed = Checkbox_IsStreamedSound.Checked;
 
             if (!TemporalAudio.IsEmpty())
             {
@@ -189,23 +191,25 @@ namespace EuroSound
             }
         }
 
-        private byte[] GetRawPCMData(string AudioFilePath)
+        private void Checkbox_IsStreamedSound_CheckedChanged(object sender, EventArgs e)
         {
-            int dataSize;
+            if (Checkbox_IsStreamedSound.Checked)
+            {
+                EnableOrDisableMediaSection(false);
+            }
+            else
+            {
+                EnableOrDisableMediaSection(true);
+            }
+        }
 
-            BinaryReader Reader = new BinaryReader(File.Open(AudioFilePath, FileMode.Open, FileAccess.Read));
-
-            /*Go to RAW PCM data*/
-            Reader.BaseStream.Seek(0x28, SeekOrigin.Begin);
-
-            /*Read size*/
-            dataSize = Reader.ReadInt32();
-
-            /*Get data*/
-            _ = new byte[dataSize];
-            byte[] byteArray = Reader.ReadBytes(dataSize);
-
-            return byteArray;
+        private void EnableOrDisableMediaSection(bool Action)
+        {
+            Textbox_MediaName.Enabled = Action;
+            Button_LoadAudio.Enabled = Action;
+            Button_PlayAudio.Enabled = Action;
+            Button_StopAudio.Enabled = Action;
+            button_RemoveAudio.Enabled = Action;
         }
     }
 }

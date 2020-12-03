@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace EuroSound
 {
-    public static class EXFunctions
+    public static class EXObjectsFunctions
     {
         internal static bool SoundExistsInList(string ItemToSearch, List<EXSound> SoundsList)
         {
@@ -64,61 +65,58 @@ namespace EuroSound
             }
         }
 
-        internal static bool NewSound(string v_Name, string v_DisplayName, List<EXSound> SoundsList)
+        internal static void AddNewSound(string v_Name, string v_DisplayName, string v_Hashcode, int[] properties, List<EXSound> SoundsList)
         {
-            bool AddedCorrectly = false;
-
+            /*string[] properties
+            properties[0] = duckerLength || properties[1] = minDelay || properties[2] = maxDelay || properties[3] = innerRadiusReal
+            properties[4] = outerRadiusReal || properties[5] = reverbSend || properties[6] = trackingType || properties[7] = maxVoices 
+            properties[8] = priority || properties[9] = ducker || properties[10] = masterVolume || properties[11] = flags*/
             EXSound Sound = new EXSound
             {
                 Name = RemoveWhiteSpaces(v_Name),
-                DisplayName = v_DisplayName
+                DisplayName = v_DisplayName,
+                Hashcode = v_Hashcode,
+
+                /*EngineX required*/
+                DuckerLenght = properties[0],
+                MinDelay = properties[1],
+                MaxDelay = properties[2],
+                InnerRadiusReal = properties[3],
+                OuterRadiusReal = properties[4],
+                ReverbSend = properties[5],
+                TrackingType = properties[6],
+                MaxVoices = properties[7],
+                Priority = properties[8],
+                Ducker = properties[9],
+                MasterVolume = properties[10],
+                Flags = properties[11]
             };
 
-            /*Check if already exists*/
-            if (SoundExistsInList(Sound.Name, SoundsList))
-            {
-                Debug.WriteLine(string.Format("ERROR -- Sound {0} already exists.", Sound.Name));
-            }
-            else
-            {
-                SoundsList.Add(Sound);
-                AddedCorrectly = true;
-
-                Debug.WriteLine(string.Format("INFO -- Sound {0} added to the list.", Sound.Name));
-            }
-
-            return AddedCorrectly;
+            SoundsList.Add(Sound);
         }
 
-        internal static bool AddSampleToSound(EXSound Sound, string SampleName)
+        internal static bool AddSampleToSound(EXSound Sound, string SampleName, int[] SampleParams, bool StreamedSample)
         {
             bool AddedCorrectly = false;
 
             EXSample Sample = new EXSample
             {
                 Name = RemoveWhiteSpaces(SampleName),
-                DisplayName = SampleName
+                DisplayName = SampleName,
+                IsStreamed = StreamedSample,
+
+                /*--Required for EngineX*/
+                FileRef = SampleParams[0],
+                PitchOffset = SampleParams[1],
+                RandomPitchOffset = SampleParams[2],
+                BaseVolume = SampleParams[3],
+                RandomVolumeOffset = SampleParams[4],
+                Pan = SampleParams[5],
+                RandomPan = SampleParams[6]
             };
 
-            /*--Check that Sound is not null*/
-            if (Sound != null)
-            {
-                /*Check if already exists*/
-                if (SoundContainsSample(Sound, Sample.Name))
-                {
-                    Debug.WriteLine(string.Format("ERROR -- Sample {0} already exists.", SampleName));
-                }
-                else
-                {
-                    Sound.Samples.Add(Sample);
-                    AddedCorrectly = true;
-                    Debug.WriteLine(string.Format("INFO -- Sample {0} added to the sound {1}.", SampleName, Sound.DisplayName));
-                }
-            }
-            else
-            {
-                Debug.WriteLine(string.Format("ERROR -- Seems that there's no sound selected."));
-            }
+
+            Sound.Samples.Add(Sample);
 
             return AddedCorrectly;
         }
@@ -134,6 +132,34 @@ namespace EuroSound
             }
 
             return NewString;
+        }
+
+        internal static EXSound GetSoundByName(string NameToSearch, List<EXSound> SoundsList)
+        {
+            EXSound config = SoundsList.Find(item => item.Name == NameToSearch);
+            return config;
+        }
+
+        internal static byte[] GetRawPCMData(string AudioFilePath)
+        {
+            int dataSize;
+
+            BinaryReader Reader = new BinaryReader(File.Open(AudioFilePath, FileMode.Open, FileAccess.Read));
+
+            /*Go to RAW PCM data*/
+            Reader.BaseStream.Seek(0x28, SeekOrigin.Begin);
+
+            /*Read size*/
+            dataSize = Reader.ReadInt32();
+
+            /*Get data*/
+            _ = new byte[dataSize];
+            byte[] byteArray = Reader.ReadBytes(dataSize);
+
+            Reader.Close();
+            Reader.Dispose();
+
+            return byteArray;
         }
     }
 }

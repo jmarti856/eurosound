@@ -17,6 +17,10 @@ namespace EuroSound
         string LoadedFile = string.Empty;
         string FileToLoadArg;
 
+        /*Initialize sound params array to zeros*/
+        int[] SndParams = new int[12];
+        int[] SampleParams = new int[7];
+
         public Frm_Main(string FilePath)
         {
             InitializeComponent();
@@ -177,48 +181,46 @@ namespace EuroSound
                 else
                 {
                     /*Check that not exists an item with the same name*/
-                    foreach (TreeNode tn in e.Node.Parent.Nodes)
+                    if (TreeNodeFunctions.CheckIfNodeExists(TreeView_File, e.Label))
                     {
-                        if (tn.Text == e.Label)
-                        {
-                            MessageBox.Show("Sorry, cannot rename this item, an item with this name already exists", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            Debug.WriteLine("ERROR -- Trying to rename an object with a name that already exists.");
-                            e.CancelEdit = true;
-                            return;
-                        }
+                        MessageBox.Show("Sorry, cannot rename this item, an item with this name already exists", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Debug.WriteLine("ERROR -- Trying to rename an object with a name that already exists.");
+                        e.CancelEdit = true;
                     }
-
-                    /*Rename Sound item*/
-                    if (e.Node.Tag.Equals("Sound"))
+                    else
                     {
-                        for (int i = 0; i < SoundsList.Count; i++)
+                        /*Rename Sound item*/
+                        if (e.Node.Tag.Equals("Sound"))
                         {
-                            if (SoundsList[i].Name.Equals(e.Node.Name))
+                            for (int i = 0; i < SoundsList.Count; i++)
                             {
-                                SoundsList[i].Name = EXFunctions.RemoveWhiteSpaces(e.Label);
-                                SoundsList[i].DisplayName = e.Label;
-                                break;
+                                if (SoundsList[i].Name.Equals(e.Node.Name))
+                                {
+                                    SoundsList[i].Name = EXObjectsFunctions.RemoveWhiteSpaces(e.Label);
+                                    SoundsList[i].DisplayName = e.Label;
+                                    break;
+                                }
                             }
                         }
-                    }
-                    /*Rename sound sample*/
-                    else if (e.Node.Tag.Equals("Sample"))
-                    {
-                        EXSound ParentSound = TreeNodeFunctions.GetSelectedSound(e.Node.Parent.Name, SoundsList);
-                        for (int i = 0; i < ParentSound.Samples.Count; i++)
+                        /*Rename sound sample*/
+                        else if (e.Node.Tag.Equals("Sample"))
                         {
-                            if (ParentSound.Samples[i].Name.Equals(e.Node.Name))
+                            EXSound ParentSound = TreeNodeFunctions.GetSelectedSound(e.Node.Parent.Name, SoundsList);
+                            for (int i = 0; i < ParentSound.Samples.Count; i++)
                             {
-                                ParentSound.Samples[i].Name = EXFunctions.RemoveWhiteSpaces(e.Label);
-                                ParentSound.Samples[i].DisplayName = e.Label;
-                                break;
+                                if (ParentSound.Samples[i].Name.Equals(e.Node.Name))
+                                {
+                                    ParentSound.Samples[i].Name = EXObjectsFunctions.RemoveWhiteSpaces(e.Label);
+                                    ParentSound.Samples[i].DisplayName = e.Label;
+                                    break;
+                                }
                             }
                         }
-                    }
 
-                    /*Update tree node props*/
-                    e.Node.Name = EXFunctions.RemoveWhiteSpaces(e.Label);
-                    e.Node.Text = e.Label;
+                        /*Update tree node props*/
+                        e.Node.Name = EXObjectsFunctions.RemoveWhiteSpaces(e.Label);
+                        e.Node.Text = e.Label;
+                    }
                 }
             }
             else
@@ -235,19 +237,68 @@ namespace EuroSound
         private void NewFolderToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
             string Name = OpenInputBox("Enter a name for new folder.", "New Folder");
-            TreeNodeFunctions.AddNewFolder(Name, TreeView_File);
+            if (TreeNodeFunctions.CheckIfNodeExists(TreeView_File, Name))
+            {
+                MessageBox.Show("Exists");
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(Name))
+                {
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, Name, 1, 1, "Folder", Color.Black, TreeView_File);
+                }
+                else
+                {
+                    MessageBox.Show("The name can't be empty", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Debug.WriteLine("WARNING -- Trying to add a folder withouth name.");
+                }
+            }
+
         }
 
         private void MenuItem_AddSound_Click(object sender, System.EventArgs e)
         {
             string Name = OpenInputBox("Enter a name for new sound.", "New Sound");
-            TreeNodeFunctions.AddNewSound(Name, TreeView_File, SoundsList);
+            if (TreeNodeFunctions.CheckIfNodeExists(TreeView_File, Name))
+            {
+                MessageBox.Show("Exists");
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(Name))
+                {
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, Name, 2, 2, "Sound", Color.Black, TreeView_File);
+                    EXObjectsFunctions.AddNewSound(Name, Name, "0x1A000001", SndParams, SoundsList);
+                }
+                else
+                {
+                    MessageBox.Show("The name can't be empty", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Debug.WriteLine("WARNING -- Trying to add a sound withouth name.");
+                }
+            }
         }
 
         private void MenuItem_AddSample_Click(object sender, System.EventArgs e)
         {
-            string Name = OpenInputBox("Enter a new for new sample.", "New Sample");
-            TreeNodeFunctions.AddNewSample(Name, TreeView_File, SoundsList);
+            string Name = OpenInputBox("Enter a name for new a new sample.", "New Sample");
+            if (!string.IsNullOrEmpty(Name))
+            {
+                if (TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name.Equals("StreamedSounds"))
+                {
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, Name, 4, 4, "Sample", Color.Black, TreeView_File);
+                    EXObjectsFunctions.AddSampleToSound(TreeNodeFunctions.GetSelectedSound(TreeView_File.SelectedNode.Name, SoundsList), Name, SampleParams, true);
+                }
+                else
+                {
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, Name, 4, 4, "Sample", Color.Black, TreeView_File);
+                    EXObjectsFunctions.AddSampleToSound(TreeNodeFunctions.GetSelectedSound(TreeView_File.SelectedNode.Name, SoundsList), Name, SampleParams, false);
+                }
+            }
+            else
+            {
+                MessageBox.Show("The name can't be empty", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Debug.WriteLine("WARNING -- Trying to add a sample withouth name.");
+            }
         }
 
         private void MenuItem_RemoveSound_Click(object sender, System.EventArgs e)
@@ -256,8 +307,8 @@ namespace EuroSound
             EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox("Delete Sound: " + TreeView_File.SelectedNode.Text, "Warning", false);
             if (WarningDialog.ShowDialog() == DialogResult.OK)
             {
-                EXFunctions.RemoveSound(TreeView_File.SelectedNode.Name, SoundsList);
-                TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, TreeView_File.SelectedNode);
+                EXObjectsFunctions.RemoveSound(TreeView_File.SelectedNode.Name, SoundsList);
+                TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, TreeView_File.SelectedNode, TreeView_File.SelectedNode.Tag.ToString());
             }
         }
 
@@ -268,15 +319,15 @@ namespace EuroSound
             if (WarningDialog.ShowDialog() == DialogResult.OK)
             {
                 EXSound ParentSound = TreeNodeFunctions.GetSelectedSound(TreeView_File.SelectedNode.Parent.Name, SoundsList);
-                EXFunctions.RemoveSampleFromSound(ParentSound, TreeView_File.SelectedNode.Name);
+                EXObjectsFunctions.RemoveSampleFromSound(ParentSound, TreeView_File.SelectedNode.Name);
                 TreeView_File.SelectedNode.Remove();
             }
         }
 
         private void MenuItem_RemoveFolder_Click(object sender, System.EventArgs e)
         {
-            /*Check we are not trying to delete the root folder*/
-            if (!(TreeView_File.SelectedNode == null || TreeView_File.SelectedNode.Name.Equals("Sounds")))
+            /*Check we are not trying to delete a root folder*/
+            if (!(TreeView_File.SelectedNode == null || TreeView_File.SelectedNode.Tag.Equals("Root")))
             {
                 /*Show warning*/
                 EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox("Delete Folder: " + TreeView_File.SelectedNode.Text, "Warning", false);
@@ -286,9 +337,9 @@ namespace EuroSound
                     IList<TreeNode> ChildNodesCollection = new List<TreeNode>();
                     foreach (TreeNode ChildNode in TreeNodeFunctions.GetNodesInsideFolder(TreeView_File, TreeView_File.SelectedNode, ChildNodesCollection))
                     {
-                        EXFunctions.RemoveSound(ChildNode.Name, SoundsList);
+                        EXObjectsFunctions.RemoveSound(ChildNode.Name, SoundsList);
                     }
-                    TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, TreeView_File.SelectedNode);
+                    TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, TreeView_File.SelectedNode, TreeView_File.SelectedNode.Tag.ToString());
                 }
             }
         }
@@ -348,14 +399,15 @@ namespace EuroSound
             if (e.Modifiers == Keys.Shift && e.KeyCode == Keys.F1)
             {
                 Name = OpenInputBox("Enter a name for new sound.", "New Sound");
-                TreeNodeFunctions.AddNewSound(Name, TreeView_File, SoundsList);
+                TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, Name, 2, 2, "Sound", Color.Black, TreeView_File);
+                EXObjectsFunctions.AddNewSound(Name, Name, "0x1A000001", SndParams, SoundsList);
             }
 
             /*Createa a new Sample*/
             if (e.Modifiers == Keys.Shift && e.KeyCode == Keys.F2)
             {
                 Name = OpenInputBox("Enter a new for new sample.", "New Sample");
-                TreeNodeFunctions.AddNewSample(Name, TreeView_File, SoundsList);
+                //TreeNodeFunctions.AddNewSample(Name, TreeView_File, SoundsList);
             }
         }
 
@@ -387,6 +439,28 @@ namespace EuroSound
         private void MenuItem_File_SaveAs_Click(object sender, System.EventArgs e)
         {
             OpenSaveAsDialog();
+        }
+
+        private void MenuItemFile_Export_Click(object sender, System.EventArgs e)
+        {
+            string SavePath = Browsers.SaveFileBrowser("SFX Files (*.SFX)|*.SFX", 1, true);
+            if (!string.IsNullOrEmpty(SavePath))
+            {
+                if (Directory.Exists(Path.GetDirectoryName(SavePath)))
+                {
+                    EXBuildSFX.ExportContentToSFX(SoundsList, SavePath);
+                }
+            }
+        }
+
+        private void MenuItemFile_ReadYml_Click(object sender, System.EventArgs e)
+        {
+            string SoundName, SoundHashcode;
+            string FilePath = Browsers.OpenFileBrowser("YML Files|*.yml", 0);
+            if (!string.IsNullOrEmpty(FilePath))
+            {
+                YamlReader.LoadDataFromSwyterUnpacker(SoundsList, TreeView_File, FilePath);
+            }
         }
 
         private void MenuItem_File_Exit_Click(object sender, System.EventArgs e)
@@ -476,18 +550,6 @@ namespace EuroSound
                 }
                 Hashcode.UseItemStyleForSubItems = false;
                 ListView_Hashcodes.Items.Add(Hashcode);
-            }
-        }
-
-        private void MenuItemFile_Export_Click(object sender, System.EventArgs e)
-        {
-            string SavePath = Browsers.SaveFileBrowser("SFX Files (*.SFX)|*.SFX", 1, true);
-            if (!string.IsNullOrEmpty(SavePath))
-            {
-                if (Directory.Exists(Path.GetDirectoryName(SavePath)))
-                {
-                    EXBuildSFX.ExportContentToSFX(SoundsList, SavePath);
-                }
             }
         }
     }

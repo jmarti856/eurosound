@@ -5,6 +5,8 @@
         public EXAudio Audio { get; set; } = new EXAudio();
         public string Name { get; set; }
         public string DisplayName { get; set; }
+        public bool IsStreamed { get; set; } = false;
+        public int FileRef { get; set; } = 0;
 
         /*---ENGINE X Required---*/
         public int PitchOffset { get; set; } = 0;
