@@ -74,7 +74,7 @@ namespace EuroSound
         //*===============================================================================================
         private void Button_LoadAudio_Click(object sender, EventArgs e)
         {
-            string AudioFilePath = Browsers.OpenFileBrowser("Wav Files (*.wav)|*.wav", 0);
+            string AudioFilePath = Generic.OpenFileBrowser("Wav Files (*.wav)|*.wav", 0);
 
             if (File.Exists(AudioFilePath))
             {

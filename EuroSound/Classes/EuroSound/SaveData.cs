@@ -18,7 +18,9 @@ namespace EuroSound
             BWriter.Write(EXFile.FileName);
             BWriter.Write(EXFile.Hashcode);
             BWriter.Write(EXFile.HT_SoundsDataPath);
+            BWriter.Write(EXFile.HT_SoundsDataMD5);
             BWriter.Write(EXFile.HT_SoundsPath);
+            BWriter.Write(EXFile.HT_SoundsMD5);
 
             /*Tree view Data*/
             BWriter.Write((Convert.ToInt32(BWriter.BaseStream.Position) + 200));
@@ -138,7 +140,7 @@ namespace EuroSound
             }
         }
 
-        internal static void LoadDataFromEuroSoundFile(TreeView TreeViewControl, List<EXSound> SoundsList, ListView WavData, ToolStripLabel ProjectName, string FilePath)
+        internal static void LoadDataFromEuroSoundFile(TreeView TreeViewControl, List<EXSound> SoundsList, ToolStripLabel ProjectName, string FilePath)
         {
             //Init reader
             BinaryReader BReader = new BinaryReader(File.Open(FilePath, FileMode.Open, FileAccess.Read), Encoding.ASCII);
@@ -148,7 +150,9 @@ namespace EuroSound
                 EXFile.FileName = BReader.ReadString();
                 EXFile.Hashcode = BReader.ReadString();
                 EXFile.HT_SoundsDataPath = BReader.ReadString();
+                EXFile.HT_SoundsDataMD5 = BReader.ReadString();
                 EXFile.HT_SoundsPath = BReader.ReadString();
+                EXFile.HT_SoundsMD5 = BReader.ReadString();
 
                 /*Tree view Data*/
                 BReader.BaseStream.Position = (BReader.ReadInt32() + 4);

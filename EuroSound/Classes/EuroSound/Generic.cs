@@ -1,8 +1,11 @@
-﻿using System.Windows.Forms;
+﻿using System.IO;
+using System.Security.Cryptography;
+using System.Text;
+using System.Windows.Forms;
 
 namespace EuroSound
 {
-    public static class Browsers
+    public static class Generic
     {
         internal static string OpenFileBrowser(string BrowserFilter, int SelectedIndexFilter)
         {
@@ -41,6 +44,35 @@ namespace EuroSound
             }
 
             return SelectedPath;
+        }
+
+        internal static string CalculateMD5(string filename)
+        {
+            using (var md5 = new MD5CryptoServiceProvider())
+            {
+                byte[] buffer = md5.ComputeHash(File.ReadAllBytes(filename));
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    sb.Append(buffer[i].ToString("x2"));
+                }
+                return sb.ToString();
+            }
+        }
+
+        internal static bool FileIsModified(string StoredMD5Hash, string FileToCheck)
+        {
+            string hash;
+            bool Modified = true;
+
+            hash = CalculateMD5(FileToCheck);
+
+            if (hash.Equals(StoredMD5Hash))
+            {
+                Modified = false;
+            }
+
+            return Modified;
         }
     }
 }

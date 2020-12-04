@@ -91,6 +91,7 @@
             this.Combobox_FileHashcode.Name = "Combobox_FileHashcode";
             this.Combobox_FileHashcode.Size = new System.Drawing.Size(309, 21);
             this.Combobox_FileHashcode.TabIndex = 1;
+            this.Combobox_FileHashcode.Click += new System.EventHandler(this.Combobox_FileHashcode_Click);
             // 
             // Label_HashTableEntry
             // 

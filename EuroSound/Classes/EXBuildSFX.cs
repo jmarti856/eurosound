@@ -67,7 +67,7 @@ namespace EuroSound
             /*--SFX header--*/
             foreach (EXSound Sound in SoundsList)
             {
-                BWriter.Write(Convert.ToUInt32("0x00"+Sound.Hashcode.Substring(4), 16));
+                BWriter.Write(Convert.ToUInt32("0x00" + Sound.Hashcode.Substring(4), 16));
                 BWriter.Write(Convert.ToUInt32(BWriter.BaseStream.Position));
             }
             /*--Linear array of sorted SFX headers laid out in this format--*/

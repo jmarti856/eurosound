@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace EuroSound
@@ -21,18 +20,26 @@ namespace EuroSound
         //*===============================================================================================
         private void Frm_EffectProperties_Load(object sender, EventArgs e)
         {
-            /*Datasource Combobox*/
-            cbx_hashcode.DataSource = Hashcodes.SFX_Defines.ToList();
-            cbx_hashcode.ValueMember = "Key";
-            cbx_hashcode.DisplayMember = "Value";
+            //Sound Data defines
+            if (Generic.FileIsModified(EXFile.HT_SoundsDataMD5, EXFile.HT_SoundsDataPath))
+            {
+                Hashcodes.LoadSoundDataFile();
+            }
 
-            /*Put the selected hashcode in case is not null*/
+            //Sound defines
+            if (Generic.FileIsModified(EXFile.HT_SoundsMD5, EXFile.HT_SoundsPath))
+            {
+                Hashcodes.LoadSoundHashcodes();
+            }
+            Hashcodes.AddHashcodesToCombobox(cbx_hashcode, Hashcodes.SFX_Defines);
+
+            /*---Put the selected hashcode in case is not null---*/
             if (SelectedSound.Hashcode != null)
             {
                 cbx_hashcode.SelectedValue = SelectedSound.Hashcode;
             }
 
-            /*---Required for Engine X--*/
+            /*---Required for Engine X---*/
             numeric_duckerlength.Value = SelectedSound.DuckerLenght;
             numeric_mindelay.Value = SelectedSound.MinDelay;
             numeric_maxdelay.Value = SelectedSound.MaxDelay;
@@ -92,6 +99,48 @@ namespace EuroSound
             if (FormFlags.ShowDialog() == DialogResult.OK)
             {
                 textbox_flags.Text = FormFlags.CheckedFlags.ToString();
+            }
+        }
+
+        private void Cbx_hashcode_Click(object sender, EventArgs e)
+        {
+            //Sound defines
+            if (Generic.FileIsModified(EXFile.HT_SoundsMD5, EXFile.HT_SoundsPath))
+            {
+                Hashcodes.LoadSoundHashcodes();
+                Hashcodes.AddHashcodesToCombobox(cbx_hashcode, Hashcodes.SFX_Defines);
+            }
+
+            //Sound Data defines
+            if (Generic.FileIsModified(EXFile.HT_SoundsDataMD5, EXFile.HT_SoundsDataPath))
+            {
+                Hashcodes.LoadSoundDataFile();
+            }
+        }
+
+        private void Cbx_hashcode_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            double[] items = Hashcodes.SFX_Data[cbx_hashcode.SelectedValue.ToString()];
+            /*
+            [0] HashCode;
+            [1] InnerRadius; --USED--
+            [2] OuterRadius; --USED--
+            [3] Altertness;
+            [4] Duration;
+            [5] Looping;
+            [6] Tracking3d; --USED--
+            [7] SampleStreamed; --ONLY Informs user if there're no samples added to the sound.
+            */
+            numeric_innerradiusreal.Value = int.Parse(items[1].ToString());
+            numeric_outerradiusreal.Value = int.Parse(items[2].ToString());
+            cbx_trackingtype.SelectedIndex = int.Parse(items[6].ToString());
+
+            if (int.Parse(items[6].ToString()) > 0)
+            {
+                if (SelectedSound.Samples.Count < 1)
+                {
+                    MessageBox.Show("This sound should not be added here, is checked as a \"Sample Streamed Sound\" in the \"SFX_Data.h\" file. You should add it as a reference in \"Streamed Sounds\" section and add it to the common file.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
     }

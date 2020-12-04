@@ -68,7 +68,7 @@ namespace EuroSound
 
         internal string OpenSaveAsDialog()
         {
-            string SavePath = Browsers.SaveFileBrowser("EuroSound Files (*.ESF)|*.ESF|All files (*.*)|*.*", 1, true, EXFile.Hashcode);
+            string SavePath = Generic.SaveFileBrowser("EuroSound Files (*.ESF)|*.ESF|All files (*.*)|*.*", 1, true, Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, EXFile.Hashcode));
             if (!string.IsNullOrEmpty(SavePath))
             {
                 if (Directory.Exists(Path.GetDirectoryName(SavePath)))

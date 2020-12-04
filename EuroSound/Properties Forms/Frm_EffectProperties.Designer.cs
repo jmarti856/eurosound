@@ -446,6 +446,8 @@
             this.cbx_hashcode.Name = "cbx_hashcode";
             this.cbx_hashcode.Size = new System.Drawing.Size(447, 21);
             this.cbx_hashcode.TabIndex = 1;
+            this.cbx_hashcode.SelectionChangeCommitted += new System.EventHandler(this.Cbx_hashcode_SelectionChangeCommitted);
+            this.cbx_hashcode.Click += new System.EventHandler(this.Cbx_hashcode_Click);
             // 
             // label_hashcode
             // 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace EuroSound
@@ -20,9 +19,7 @@ namespace EuroSound
         private void Frm_FileProperties_Load(object sender, EventArgs e)
         {
             /*Datasource Combobox*/
-            Combobox_FileHashcode.DataSource = Hashcodes.SB_Defines.ToList();
-            Combobox_FileHashcode.ValueMember = "Key";
-            Combobox_FileHashcode.DisplayMember = "Value";
+            Hashcodes.AddHashcodesToCombobox(Combobox_FileHashcode, Hashcodes.SB_Defines);
 
             Textbox_FileName.Text = EXFile.FileName;
             Combobox_TypeOfData.SelectedIndex = EXFile.TypeOfData;
@@ -37,12 +34,12 @@ namespace EuroSound
 
         private void Button_Browse_SFX_Click(object sender, EventArgs e)
         {
-            Textbox_Sounds_Path.Text = Browsers.OpenFileBrowser("HasTableFiles|*.h", 0);
+            Textbox_Sounds_Path.Text = Generic.OpenFileBrowser("HasTableFiles|*.h", 0);
         }
 
         private void Button_Browse_MusicsPath_Click(object sender, EventArgs e)
         {
-            Textbox_Musics_Path.Text = Browsers.OpenFileBrowser("HasTableFiles|*.h", 0);
+            Textbox_Musics_Path.Text = Generic.OpenFileBrowser("HasTableFiles|*.h", 0);
         }
 
         private void Button_OK_Click(object sender, EventArgs e)
@@ -65,6 +62,15 @@ namespace EuroSound
         {
             /*Close current form*/
             this.Close();
+        }
+
+        private void Combobox_FileHashcode_Click(object sender, EventArgs e)
+        {
+            if (Generic.FileIsModified(EXFile.HT_SoundsMD5, EXFile.HT_SoundsPath))
+            {
+                Hashcodes.LoadSoundHashcodes();
+                Hashcodes.AddHashcodesToCombobox(Combobox_FileHashcode, Hashcodes.SB_Defines);
+            }
         }
     }
 }

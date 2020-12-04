@@ -106,7 +106,8 @@ namespace EuroSound
         private void Frm_Main_Load(object sender, System.EventArgs e)
         {
             /*Load Hashcodes*/
-            Hashcodes.ReadHashcodes(EXFile.HT_SoundsPath);
+            Hashcodes.LoadSoundHashcodes();
+            Hashcodes.LoadSoundDataFile();
 
             /*Initialize sounds list*/
             SoundsList = new List<EXSound>();
@@ -122,7 +123,7 @@ namespace EuroSound
             /*Load file in argument 0*/
             if (!string.IsNullOrEmpty(FileToLoadArg))
             {
-                SaveData.LoadDataFromEuroSoundFile(TreeView_File, SoundsList, ListView_WavHeaderData, CurrentFileLabel, FileToLoadArg);
+                SaveData.LoadDataFromEuroSoundFile(TreeView_File, SoundsList, CurrentFileLabel, FileToLoadArg);
             }
         }
 
@@ -412,7 +413,7 @@ namespace EuroSound
         //*===============================================================================================
         private void MenuItem_File_Open_Click(object sender, System.EventArgs e)
         {
-            string FilePath = Browsers.OpenFileBrowser("EuroSoundFile|*.ESF", 0);
+            string FilePath = Generic.OpenFileBrowser("EuroSoundFile|*.ESF", 0);
             if (!string.IsNullOrEmpty(FilePath))
             {
                 //Clear Data
@@ -423,7 +424,7 @@ namespace EuroSound
 
                 /*Load New File*/
                 LoadedFile = FilePath;
-                SaveData.LoadDataFromEuroSoundFile(TreeView_File, SoundsList, ListView_WavHeaderData, CurrentFileLabel, FilePath);
+                SaveData.LoadDataFromEuroSoundFile(TreeView_File, SoundsList, CurrentFileLabel, FilePath);
             }
         }
 
@@ -446,8 +447,8 @@ namespace EuroSound
 
         private void MenuItemFile_Export_Click(object sender, System.EventArgs e)
         {
-            string FileName = "HC"+ EXFile.Hashcode.Substring(4);
-            string SavePath = Browsers.SaveFileBrowser("SFX Files (*.SFX)|*.SFX", 1, true, FileName);
+            string FileName = "HC" + EXFile.Hashcode.Substring(4);
+            string SavePath = Generic.SaveFileBrowser("SFX Files (*.SFX)|*.SFX", 1, true, FileName);
             if (!string.IsNullOrEmpty(SavePath))
             {
                 if (Directory.Exists(Path.GetDirectoryName(SavePath)))
@@ -459,7 +460,7 @@ namespace EuroSound
 
         private void MenuItemFile_ReadYml_Click(object sender, System.EventArgs e)
         {
-            string FilePath = Browsers.OpenFileBrowser("YML Files|*.yml", 0);
+            string FilePath = Generic.OpenFileBrowser("YML Files|*.yml", 0);
             if (!string.IsNullOrEmpty(FilePath))
             {
                 //Clear Data
