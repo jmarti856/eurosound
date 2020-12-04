@@ -17,7 +17,7 @@ namespace EuroSound
             BWriter.Write(EXFile.TypeOfData);
             BWriter.Write(EXFile.FileName);
             BWriter.Write(EXFile.Hashcode);
-            BWriter.Write(EXFile.HT_MusicsPath);
+            BWriter.Write(EXFile.HT_SoundsDataPath);
             BWriter.Write(EXFile.HT_SoundsPath);
 
             /*Tree view Data*/
@@ -147,7 +147,7 @@ namespace EuroSound
                 EXFile.TypeOfData = BReader.ReadInt32();
                 EXFile.FileName = BReader.ReadString();
                 EXFile.Hashcode = BReader.ReadString();
-                EXFile.HT_MusicsPath = BReader.ReadString();
+                EXFile.HT_SoundsDataPath = BReader.ReadString();
                 EXFile.HT_SoundsPath = BReader.ReadString();
 
                 /*Tree view Data*/

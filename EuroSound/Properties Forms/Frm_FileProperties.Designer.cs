@@ -156,9 +156,9 @@
             this.Label_MusicDefines.AutoSize = true;
             this.Label_MusicDefines.Location = new System.Drawing.Point(6, 80);
             this.Label_MusicDefines.Name = "Label_MusicDefines";
-            this.Label_MusicDefines.Size = new System.Drawing.Size(131, 13);
+            this.Label_MusicDefines.Size = new System.Drawing.Size(119, 13);
             this.Label_MusicDefines.TabIndex = 4;
-            this.Label_MusicDefines.Text = "Section: HT_MusicEvents";
+            this.Label_MusicDefines.Text = "Section: HT_SFX_Data";
             // 
             // Button_Browse_SFX
             // 
@@ -235,6 +235,7 @@
             // Combobox_TypeOfData
             // 
             this.Combobox_TypeOfData.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Combobox_TypeOfData.Enabled = false;
             this.Combobox_TypeOfData.FormattingEnabled = true;
             this.Combobox_TypeOfData.Items.AddRange(new object[] {
             "Soundbanks",

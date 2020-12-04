@@ -8,10 +8,8 @@
 
         public static string HT_SoundsPath { get; set; } = @"X:\Sphinx\Sonix\SFX_Defines.h";
 
-        public static string HT_MusicsPath { get; set; } = @"‪X:\Sphinx\Sonix\MFX_Defines.h";
+        public static string HT_SoundsDataPath { get; set; } = @"‪X:\Sphinx\Sonix\SFX_Data.h";
 
         public static string Hashcode { get; set; } = "0x00000000";
-
-        public static int FileRefID { get; set; } = 0;
     }
 }

@@ -29,17 +29,22 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Sounds", 0, 0);
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Streamed Sounds");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Sounds", 0, 0);
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Streamed Sounds");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Soundbanks_Main));
             this.TreeView_File = new System.Windows.Forms.TreeView();
             this.ImageList_TreeNode = new System.Windows.Forms.ImageList(this.components);
             this.ContextMenu_Folders = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.MenuItem_Folder_Options = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_Folder_Expand = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_Folder_Collapse = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuItem_Folder_Delete = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItem_AddSound = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_NewFolder = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItem_RemoveFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.ContextMenuFolders_TextColor = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_TextColor = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenu_Sound = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.MenuItem_AddSample = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_RemoveSound = new System.Windows.Forms.ToolStripMenuItem();
@@ -119,18 +124,18 @@
             this.TreeView_File.LabelEdit = true;
             this.TreeView_File.Location = new System.Drawing.Point(0, 25);
             this.TreeView_File.Name = "TreeView_File";
-            treeNode3.ImageIndex = 0;
-            treeNode3.Name = "Sounds";
-            treeNode3.SelectedImageIndex = 0;
-            treeNode3.Tag = "Root";
-            treeNode3.Text = "Sounds";
-            treeNode4.ImageIndex = 0;
-            treeNode4.Name = "StreamedSounds";
-            treeNode4.Tag = "Root";
-            treeNode4.Text = "Streamed Sounds";
+            treeNode1.ImageIndex = 0;
+            treeNode1.Name = "Sounds";
+            treeNode1.SelectedImageIndex = 0;
+            treeNode1.Tag = "Root";
+            treeNode1.Text = "Sounds";
+            treeNode2.ImageIndex = 0;
+            treeNode2.Name = "StreamedSounds";
+            treeNode2.Tag = "Root";
+            treeNode2.Text = "Streamed Sounds";
             this.TreeView_File.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
+            treeNode1,
+            treeNode2});
             this.TreeView_File.SelectedImageIndex = 0;
             this.TreeView_File.Size = new System.Drawing.Size(666, 849);
             this.TreeView_File.TabIndex = 1;
@@ -154,46 +159,82 @@
             // ContextMenu_Folders
             // 
             this.ContextMenu_Folders.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItem_Folder_Options,
+            this.toolStripSeparator7,
             this.MenuItem_AddSound,
             this.MenuItem_NewFolder,
-            this.MenuItem_RemoveFolder,
             this.toolStripSeparator5,
-            this.ContextMenuFolders_TextColor});
+            this.MenuItem_TextColor});
             this.ContextMenu_Folders.Name = "contextMenuStrip1";
-            this.ContextMenu_Folders.Size = new System.Drawing.Size(154, 98);
+            this.ContextMenu_Folders.Size = new System.Drawing.Size(144, 104);
+            // 
+            // MenuItem_Folder_Options
+            // 
+            this.MenuItem_Folder_Options.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItem_Folder_Expand,
+            this.MenuItem_Folder_Collapse,
+            this.toolStripSeparator8,
+            this.MenuItem_Folder_Delete});
+            this.MenuItem_Folder_Options.Name = "MenuItem_Folder_Options";
+            this.MenuItem_Folder_Options.Size = new System.Drawing.Size(143, 22);
+            this.MenuItem_Folder_Options.Text = "Folder";
+            // 
+            // MenuItem_Folder_Expand
+            // 
+            this.MenuItem_Folder_Expand.Name = "MenuItem_Folder_Expand";
+            this.MenuItem_Folder_Expand.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_Folder_Expand.Text = "Expand All";
+            this.MenuItem_Folder_Expand.Click += new System.EventHandler(this.MenuItem_Folder_Expand_Click);
+            // 
+            // MenuItem_Folder_Collapse
+            // 
+            this.MenuItem_Folder_Collapse.Name = "MenuItem_Folder_Collapse";
+            this.MenuItem_Folder_Collapse.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_Folder_Collapse.Text = "Collapse All";
+            this.MenuItem_Folder_Collapse.Click += new System.EventHandler(this.MenuItem_Folder_Collapse_Click);
+            // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(177, 6);
+            // 
+            // MenuItem_Folder_Delete
+            // 
+            this.MenuItem_Folder_Delete.Name = "MenuItem_Folder_Delete";
+            this.MenuItem_Folder_Delete.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_Folder_Delete.Text = "Delete";
+            this.MenuItem_Folder_Delete.Click += new System.EventHandler(this.MenuItem_Folder_Delete_Click);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(140, 6);
             // 
             // MenuItem_AddSound
             // 
             this.MenuItem_AddSound.Name = "MenuItem_AddSound";
-            this.MenuItem_AddSound.Size = new System.Drawing.Size(153, 22);
+            this.MenuItem_AddSound.Size = new System.Drawing.Size(143, 22);
             this.MenuItem_AddSound.Text = "Add Sound";
             this.MenuItem_AddSound.Click += new System.EventHandler(this.MenuItem_AddSound_Click);
             // 
             // MenuItem_NewFolder
             // 
             this.MenuItem_NewFolder.Name = "MenuItem_NewFolder";
-            this.MenuItem_NewFolder.Size = new System.Drawing.Size(153, 22);
+            this.MenuItem_NewFolder.Size = new System.Drawing.Size(143, 22);
             this.MenuItem_NewFolder.Text = "New Folder";
             this.MenuItem_NewFolder.Click += new System.EventHandler(this.NewFolderToolStripMenuItem_Click);
-            // 
-            // MenuItem_RemoveFolder
-            // 
-            this.MenuItem_RemoveFolder.Name = "MenuItem_RemoveFolder";
-            this.MenuItem_RemoveFolder.Size = new System.Drawing.Size(153, 22);
-            this.MenuItem_RemoveFolder.Text = "Remove Folder";
-            this.MenuItem_RemoveFolder.Click += new System.EventHandler(this.MenuItem_RemoveFolder_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(150, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(140, 6);
             // 
-            // ContextMenuFolders_TextColor
+            // MenuItem_TextColor
             // 
-            this.ContextMenuFolders_TextColor.Name = "ContextMenuFolders_TextColor";
-            this.ContextMenuFolders_TextColor.Size = new System.Drawing.Size(153, 22);
-            this.ContextMenuFolders_TextColor.Text = "Text Colour...";
-            this.ContextMenuFolders_TextColor.Click += new System.EventHandler(this.ContextMenuFolders_TextColor_Click);
+            this.MenuItem_TextColor.Name = "MenuItem_TextColor";
+            this.MenuItem_TextColor.Size = new System.Drawing.Size(143, 22);
+            this.MenuItem_TextColor.Text = "Text Colour...";
+            this.MenuItem_TextColor.Click += new System.EventHandler(this.ContextMenuFolders_TextColor_Click);
             // 
             // ContextMenu_Sound
             // 
@@ -667,7 +708,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.MainMenu;
             this.Name = "Frm_Soundbanks_Main";
-            this.Text = "EuroSound";
+            this.Text = "EuroSound Soundbank Edior";
             this.Load += new System.EventHandler(this.Frm_Main_Load);
             this.ContextMenu_Folders.ResumeLayout(false);
             this.ContextMenu_Sound.ResumeLayout(false);
@@ -716,8 +757,7 @@
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Help_About;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_NewFolder;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-        private System.Windows.Forms.ToolStripMenuItem MenuItem_RemoveFolder;
-        private System.Windows.Forms.ToolStripMenuItem ContextMenuFolders_TextColor;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_TextColor;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuSound_TextColor;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuSample_TextColor;
@@ -752,5 +792,11 @@
         private System.Windows.Forms.ColumnHeader Col_FileRef;
         private System.Windows.Forms.ColumnHeader Col_LocatedIn;
         private System.Windows.Forms.ToolStripMenuItem MenuItemFile_ReadYml;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_Folder_Options;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_Folder_Expand;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_Folder_Collapse;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_Folder_Delete;
     }
 }

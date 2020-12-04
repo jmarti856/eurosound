@@ -66,9 +66,9 @@ namespace EuroSound
             FormSampleProps.Dispose();
         }
 
-        internal void OpenSaveAsDialog()
+        internal string OpenSaveAsDialog()
         {
-            string SavePath = Browsers.SaveFileBrowser("EuroSound Files (*.ESF)|*.ESF|All files (*.*)|*.*", 1, true);
+            string SavePath = Browsers.SaveFileBrowser("EuroSound Files (*.ESF)|*.ESF|All files (*.*)|*.*", 1, true, EXFile.Hashcode);
             if (!string.IsNullOrEmpty(SavePath))
             {
                 if (Directory.Exists(Path.GetDirectoryName(SavePath)))
@@ -76,6 +76,7 @@ namespace EuroSound
                     SaveData.SaveDataToEuroSoundFile(TreeView_File, SoundsList, SavePath);
                 }
             }
+            return SavePath;
         }
 
         internal void SetProgramStateShowToStatusBar(string NewStatus)

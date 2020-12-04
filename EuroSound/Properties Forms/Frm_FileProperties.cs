@@ -26,7 +26,7 @@ namespace EuroSound
 
             Textbox_FileName.Text = EXFile.FileName;
             Combobox_TypeOfData.SelectedIndex = EXFile.TypeOfData;
-            Textbox_Musics_Path.Text = EXFile.HT_MusicsPath;
+            Textbox_Musics_Path.Text = EXFile.HT_SoundsDataPath;
             Textbox_Sounds_Path.Text = EXFile.HT_SoundsPath;
             /*Put the selected hashcode in case is not null*/
             if (EXFile.Hashcode != null)
@@ -50,7 +50,7 @@ namespace EuroSound
             /*Update properties*/
             EXFile.FileName = Textbox_FileName.Text;
             EXFile.TypeOfData = Combobox_TypeOfData.SelectedIndex;
-            EXFile.HT_MusicsPath = Textbox_Musics_Path.Text;
+            EXFile.HT_SoundsDataPath = Textbox_Musics_Path.Text;
             EXFile.HT_SoundsPath = Textbox_Sounds_Path.Text;
             EXFile.Hashcode = Combobox_FileHashcode.SelectedValue.ToString();
 

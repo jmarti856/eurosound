@@ -321,7 +321,17 @@ namespace EuroSound
             }
         }
 
-        private void MenuItem_RemoveFolder_Click(object sender, System.EventArgs e)
+        private void MenuItem_Folder_Expand_Click(object sender, System.EventArgs e)
+        {
+            TreeView_File.SelectedNode.Expand();
+        }
+
+        private void MenuItem_Folder_Collapse_Click(object sender, System.EventArgs e)
+        {
+            TreeView_File.SelectedNode.Collapse();
+        }
+
+        private void MenuItem_Folder_Delete_Click(object sender, System.EventArgs e)
         {
             /*Check we are not trying to delete a root folder*/
             if (!(TreeView_File.SelectedNode == null || TreeView_File.SelectedNode.Tag.Equals("Root")))
@@ -431,12 +441,13 @@ namespace EuroSound
 
         private void MenuItem_File_SaveAs_Click(object sender, System.EventArgs e)
         {
-            OpenSaveAsDialog();
+            LoadedFile = OpenSaveAsDialog();
         }
 
         private void MenuItemFile_Export_Click(object sender, System.EventArgs e)
         {
-            string SavePath = Browsers.SaveFileBrowser("SFX Files (*.SFX)|*.SFX", 1, true);
+            string FileName = "HC"+ EXFile.Hashcode.Substring(4);
+            string SavePath = Browsers.SaveFileBrowser("SFX Files (*.SFX)|*.SFX", 1, true, FileName);
             if (!string.IsNullOrEmpty(SavePath))
             {
                 if (Directory.Exists(Path.GetDirectoryName(SavePath)))

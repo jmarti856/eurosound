@@ -14,8 +14,8 @@ namespace EuroSound
 
             long WholeFileSize;
 
-            Dictionary<long, string> HashcodeOffsets = new Dictionary<long, string>();
-            Dictionary<long, string> SampleDataOffsets = new Dictionary<long, string>();
+            List<long> HashcodeOffsets = new List<long>();
+            List<long> SampleDataOffsets = new List<long>();
             List<string> SampleInfoTable = GetSampleInfoTable(SoundsList);
 
             BinaryWriter BWriter = new BinaryWriter(File.Open(SavePath, FileMode.Create, FileAccess.Write), Encoding.ASCII);
@@ -24,10 +24,13 @@ namespace EuroSound
             //*===============================================================================================
             /*--magic[magic value]--*/
             BWriter.Write(Encoding.ASCII.GetBytes("MUSX"));
+
             /*--hashc[Hashcode for the current soundbank without the section prefix]--*/
             BWriter.Write(Convert.ToUInt32(Convert.ToInt32(EXFile.Hashcode, 16)));
+
             /*--offst[Constant offset to the next section,]--*/
             BWriter.Write(Convert.ToInt32(0xC9));
+
             /*--fulls[Size of the whole file, in bytes. Unused. ]--*/
             BWriter.Write(Convert.ToInt32(00000000));
 
@@ -37,7 +40,7 @@ namespace EuroSound
             /*--sfxstart[an offset that points to the section where soundbanks are stored, always 0x800]--*/
             BWriter.Write(Convert.ToInt32(0x800));
             /*--sfxlength[size of the first section, in bytes]--*/
-            BWriter.Write(Convert.ToUInt32(394));
+            BWriter.Write(Convert.ToUInt32(00000000));
 
             /*--sampleinfostart[offset to the second section where the sample properties are stored]--*/
             BWriter.Write(Convert.ToInt32(00000000));
@@ -64,15 +67,14 @@ namespace EuroSound
             /*--SFX header--*/
             foreach (EXSound Sound in SoundsList)
             {
-                BWriter.Write(Convert.ToUInt32(Sound.Hashcode.Substring(4), 16));
-                BWriter.Write(Convert.ToUInt32(00000000));
+                BWriter.Write(Convert.ToUInt32("0x00"+Sound.Hashcode.Substring(4), 16));
+                BWriter.Write(Convert.ToUInt32(BWriter.BaseStream.Position));
             }
-
             /*--Linear array of sorted SFX headers laid out in this format--*/
             foreach (EXSound Sound in SoundsList)
             {
                 /*--Add hashcode offset to the dictionary--*/
-                HashcodeOffsets.Add(BWriter.BaseStream.Position, Sound.Hashcode);
+                HashcodeOffsets.Add(BWriter.BaseStream.Position);
 
                 /*--Write data--*/
                 BWriter.Write(Convert.ToInt16(Sound.DuckerLenght));
@@ -109,12 +111,11 @@ namespace EuroSound
                 }
             }
             /*--Section length, current position - start position--*/
-            SFXlength = BWriter.BaseStream.Position - 0x800;
+            SFXlength = BWriter.BaseStream.Position - 2048;
 
             //*===============================================================================================
             //* SECTION Sample info elements
             //*===============================================================================================
-
             /*Start section offset*/
             SampleInfoStartOffset = (BWriter.BaseStream.Position);
 
@@ -127,7 +128,7 @@ namespace EuroSound
                 {
                     /*Write data*/
                     BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Flags));
-                    BWriter.Write(Convert.ToUInt32(00000000));
+                    BWriter.Write(Convert.ToUInt32(BWriter.BaseStream.Position));
                     BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.DataSize));
                     BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Frequency));
                     BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.RealSize));
@@ -152,7 +153,7 @@ namespace EuroSound
                 foreach (EXSample Sample in Sound.Samples)
                 {
                     /*--Add Sample data offset to the list--*/
-                    SampleDataOffsets.Add(BWriter.BaseStream.Position, Sound.Hashcode);
+                    SampleDataOffsets.Add(BWriter.BaseStream.Position);
 
                     /*--Write PCM Data--*/
                     BWriter.Write(Sample.Audio.PCMdata);
@@ -198,7 +199,7 @@ namespace EuroSound
             //* WRITE HASHCODE REAL OFFSETS
             //*===============================================================================================
             BWriter.Seek(0x804, SeekOrigin.Begin);
-            foreach (long offset in HashcodeOffsets.Keys)
+            foreach (long offset in HashcodeOffsets)
             {
                 BWriter.Seek(4, SeekOrigin.Current);
                 BWriter.Write(Convert.ToUInt32(offset));
@@ -208,23 +209,20 @@ namespace EuroSound
             //* WRITE FINAL OFFSETS TO SAMPLE DATA
             //*===============================================================================================
             BWriter.BaseStream.Seek(SampleInfoStartOffset, SeekOrigin.Begin);
-            long RelativeOffset;
             long Offset;
-            foreach (KeyValuePair<long, string> item in SampleDataOffsets)
+            foreach (long item in SampleDataOffsets)
             {
-                /*skip numsamples and flags*/
+                /*--Skip numsamples and flags--*/
                 Offset = BWriter.BaseStream.Position + 6;
                 BWriter.BaseStream.Seek(Offset, SeekOrigin.Begin);
 
                 /*--Calculate Relative Offset--*/
-                RelativeOffset = item.Key - BWriter.BaseStream.Position;
-                BWriter.Write(Convert.ToUInt32(RelativeOffset));
+                BWriter.Write(Convert.ToUInt32(item - Offset));
 
-                /*Skip other properties*/
+                /*--Skip other properties--*/
                 Offset = BWriter.BaseStream.Position + 34;
                 BWriter.BaseStream.Seek(Offset, SeekOrigin.Begin);
             }
-
             BWriter.Close();
         }
 

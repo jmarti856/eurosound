@@ -47,3 +47,4 @@ F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\YamlDotNet.dll
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\YamlDotNet.xml
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.Frm_Soundbanks_Main.resources
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.EuroSound_ImportResultsList.resources
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.csprojAssemblyReference.cache

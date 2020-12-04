@@ -23,7 +23,7 @@ namespace EuroSound
             return FilePath;
         }
 
-        internal static string SaveFileBrowser(string Filter, int SelectedIndexFilter, bool RestoreDirectory)
+        internal static string SaveFileBrowser(string Filter, int SelectedIndexFilter, bool RestoreDirectory, string Name)
         {
             string SelectedPath = string.Empty;
 
@@ -31,7 +31,8 @@ namespace EuroSound
             {
                 Filter = Filter,
                 FilterIndex = SelectedIndexFilter,
-                RestoreDirectory = RestoreDirectory
+                RestoreDirectory = RestoreDirectory,
+                FileName = Name
             };
 
             if (SaveFile.ShowDialog() == DialogResult.OK)
