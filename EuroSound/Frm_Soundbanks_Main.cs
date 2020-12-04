@@ -4,7 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace EuroSound
+namespace EuroSound_SB_Editor
 {
     public partial class Frm_Soundbanks_Main : Form
     {

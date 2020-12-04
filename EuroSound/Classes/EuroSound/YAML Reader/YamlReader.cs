@@ -6,7 +6,7 @@ using System.IO;
 using System.Windows.Forms;
 using YamlDotNet.RepresentationModel;
 
-namespace EuroSound
+namespace EuroSound_SB_Editor
 {
     public static class YamlReader
     {

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace EuroSound
+namespace EuroSound_SB_Editor
 {
     public static class EXObjectsFunctions
     {

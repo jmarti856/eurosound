@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace EuroSound
+namespace EuroSound_SB_Editor
 {
     public partial class EuroSound_WarningBox : Form
     {

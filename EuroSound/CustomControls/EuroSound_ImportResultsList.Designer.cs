@@ -1,5 +1,5 @@
 ﻿
-namespace EuroSound
+namespace EuroSound_SB_Editor
 {
     partial class EuroSound_ImportResultsList
     {

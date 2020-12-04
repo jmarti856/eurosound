@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace EuroSound
+namespace EuroSound_SB_Editor
 {
     public static class TreeNodeFunctions
     {

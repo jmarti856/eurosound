@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace EuroSound
+namespace EuroSound_SB_Editor
 {
     public static class EXBuildSFX
     {

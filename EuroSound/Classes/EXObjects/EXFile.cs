@@ -1,4 +1,4 @@
-﻿namespace EuroSound
+﻿namespace EuroSound_SB_Editor
 {
     public static class EXFile
     {

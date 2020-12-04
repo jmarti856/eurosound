@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace EuroSound
+namespace EuroSound_SB_Editor
 {
     static class SaveData
     {
