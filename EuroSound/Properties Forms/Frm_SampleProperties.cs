@@ -152,7 +152,6 @@ namespace EuroSound_SB_Editor
             SelectedSample.Pan = Convert.ToInt32(numeric_pan.Value);
             SelectedSample.RandomPan = Convert.ToInt32(numeric_randompan.Value);
             SelectedSample.IsStreamed = Checkbox_IsStreamedSound.Checked;
-
             if (!TemporalAudio.IsEmpty())
             {
                 /*Temporal to "final" audio*/

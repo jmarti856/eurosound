@@ -83,13 +83,16 @@ namespace EuroSound_SB_Editor
                 };
 
                 /*--Add element to the tree node--*/
-                ParentNode[0].Nodes.Add(NewNode);
-                ParentNode[0].Expand();
-                Debug.WriteLine(string.Format("INFO -- Element {0} added to the tree node.", NewNode.Name));
+                TreeViewToEdit.Invoke((MethodInvoker)delegate
+                {
+                    ParentNode[0].Nodes.Add(NewNode);
+                    ParentNode[0].Expand();
+                    Debug.WriteLine(string.Format("INFO -- Element {0} added to the tree node.", NewNode.Name));
 
-                /*--Set image--*/
-                TreeNodeSetNodeImage(NewNode, SelectedImageIndex, ImageIndex);
-                Debug.WriteLine(string.Format("INFO -- Element {0} has the image index {1}.", NewNode.Name, ImageIndex));
+                    /*--Set image--*/
+                    TreeNodeSetNodeImage(NewNode, SelectedImageIndex, ImageIndex);
+                    Debug.WriteLine(string.Format("INFO -- Element {0} has the image index {1}.", NewNode.Name, ImageIndex));
+                });
             }
             else
             {

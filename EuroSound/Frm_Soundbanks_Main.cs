@@ -2,20 +2,21 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace EuroSound_SB_Editor
 {
     public partial class Frm_Soundbanks_Main : Form
     {
-        bool MenuStripOpened;
-
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
         List<EXSound> SoundsList;
+        bool MenuStripOpened;
         string LoadedFile = string.Empty;
         string FileToLoadArg;
+        Thread LoadYamlFile;
 
         /*Initialize sound params array to zeros*/
         int[] SndParams = new int[12];
@@ -301,25 +302,17 @@ namespace EuroSound_SB_Editor
 
         private void MenuItem_RemoveSound_Click(object sender, System.EventArgs e)
         {
-            /*Show warning*/
-            EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox("Delete Sound: " + TreeView_File.SelectedNode.Text, "Warning", false);
-            if (WarningDialog.ShowDialog() == DialogResult.OK)
-            {
-                EXObjectsFunctions.RemoveSound(TreeView_File.SelectedNode.Name, SoundsList);
-                TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, TreeView_File.SelectedNode, TreeView_File.SelectedNode.Tag.ToString());
-            }
+            RemoveSoundSelectedNode();
         }
 
         private void MenuItem_RemoveSample_Click(object sender, System.EventArgs e)
         {
-            /*Show warning*/
-            EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox("Delete Sample: " + TreeView_File.SelectedNode.Text, "Warning", false);
-            if (WarningDialog.ShowDialog() == DialogResult.OK)
-            {
-                EXSound ParentSound = TreeNodeFunctions.GetSelectedSound(TreeView_File.SelectedNode.Parent.Name, SoundsList);
-                EXObjectsFunctions.RemoveSampleFromSound(ParentSound, TreeView_File.SelectedNode.Name);
-                TreeView_File.SelectedNode.Remove();
-            }
+            RemoveSampleSelectedNode();
+        }
+
+        private void MenuItem_Folder_Delete_Click(object sender, System.EventArgs e)
+        {
+            RemoveFolderSelectedNode();
         }
 
         private void MenuItem_Folder_Expand_Click(object sender, System.EventArgs e)
@@ -330,26 +323,6 @@ namespace EuroSound_SB_Editor
         private void MenuItem_Folder_Collapse_Click(object sender, System.EventArgs e)
         {
             TreeView_File.SelectedNode.Collapse();
-        }
-
-        private void MenuItem_Folder_Delete_Click(object sender, System.EventArgs e)
-        {
-            /*Check we are not trying to delete a root folder*/
-            if (!(TreeView_File.SelectedNode == null || TreeView_File.SelectedNode.Tag.Equals("Root")))
-            {
-                /*Show warning*/
-                EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox("Delete Folder: " + TreeView_File.SelectedNode.Text, "Warning", false);
-                if (WarningDialog.ShowDialog() == DialogResult.OK)
-                {
-                    /*Remove child nodes sounds and samples*/
-                    IList<TreeNode> ChildNodesCollection = new List<TreeNode>();
-                    foreach (TreeNode ChildNode in TreeNodeFunctions.GetNodesInsideFolder(TreeView_File, TreeView_File.SelectedNode, ChildNodesCollection))
-                    {
-                        EXObjectsFunctions.RemoveSound(ChildNode.Name, SoundsList);
-                    }
-                    TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, TreeView_File.SelectedNode, TreeView_File.SelectedNode.Tag.ToString());
-                }
-            }
         }
 
         private void ContextMenu_SoundProperties_Click(object sender, System.EventArgs e)
@@ -401,10 +374,26 @@ namespace EuroSound_SB_Editor
         //*===============================================================================================
         private void TreeView_File_KeyDown(object sender, KeyEventArgs e)
         {
-            /*Rename selected node*/
+            /*Rename selected Node*/
             if (e.KeyCode == Keys.F2)
             {
                 TreeNodeFunctions.EditNodeLabel(TreeView_File, TreeView_File.SelectedNode);
+            }
+            /*Delete selected Node*/
+            if (e.KeyCode == Keys.Delete)
+            {
+                if (TreeView_File.SelectedNode.Tag.Equals("Sound"))
+                {
+                    RemoveSoundSelectedNode();
+                }
+                else if(TreeView_File.SelectedNode.Equals("Sample"))
+                {
+                    RemoveSampleSelectedNode();
+                }
+                else
+                {
+                    RemoveFolderSelectedNode();
+                }
             }
         }
 
@@ -447,14 +436,21 @@ namespace EuroSound_SB_Editor
 
         private void MenuItemFile_Export_Click(object sender, System.EventArgs e)
         {
-            string FileName = "HC" + EXFile.Hashcode.Substring(4);
-            string SavePath = Generic.SaveFileBrowser("SFX Files (*.SFX)|*.SFX", 1, true, FileName);
-            if (!string.IsNullOrEmpty(SavePath))
+            if (!string.IsNullOrEmpty(EXFile.Hashcode))
             {
-                if (Directory.Exists(Path.GetDirectoryName(SavePath)))
+                string FileName = "HC" + EXFile.Hashcode.Substring(4);
+                string SavePath = Generic.SaveFileBrowser("SFX Files (*.SFX)|*.SFX", 1, true, FileName);
+                if (!string.IsNullOrEmpty(SavePath))
                 {
-                    EXBuildSFX.ExportContentToSFX(SoundsList, SavePath);
+                    if (Directory.Exists(Path.GetDirectoryName(SavePath)))
+                    {
+                        EXBuildSFX.ExportContentToSFX(SoundsList, SavePath);
+                    }
                 }
+            }
+            else
+            {
+                MessageBox.Show("Can't build the soundbank file without a hashcode. Please set the hashcode for this file in the file preferences.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -470,7 +466,11 @@ namespace EuroSound_SB_Editor
                 ListView_WavHeaderData.Items.Clear();
 
                 /*Load New data*/
-                YamlReader.LoadDataFromSwyterUnpacker(SoundsList, TreeView_File, FilePath);
+                LoadYamlFile = new Thread(() => YamlReader.LoadDataFromSwyterUnpacker(SoundsList, TreeView_File, FilePath))
+                {
+                    IsBackground = true
+                };
+                LoadYamlFile.Start();
             }
         }
 

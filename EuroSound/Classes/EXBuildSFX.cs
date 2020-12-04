@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Windows.Forms;
 
 namespace EuroSound_SB_Editor
 {
@@ -29,23 +30,23 @@ namespace EuroSound_SB_Editor
             BWriter.Write(Convert.ToUInt32(Convert.ToInt32(EXFile.Hashcode, 16)));
 
             /*--offst[Constant offset to the next section,]--*/
-            BWriter.Write(Convert.ToInt32(0xC9));
+            BWriter.Write(Convert.ToUInt32(0xC9));
 
             /*--fulls[Size of the whole file, in bytes. Unused. ]--*/
-            BWriter.Write(Convert.ToInt32(00000000));
+            BWriter.Write(Convert.ToUInt32(00000000));
 
             //*===============================================================================================
             //* SECTIONS
             //*===============================================================================================
             /*--sfxstart[an offset that points to the section where soundbanks are stored, always 0x800]--*/
-            BWriter.Write(Convert.ToInt32(0x800));
+            BWriter.Write(Convert.ToUInt32(0x800));
             /*--sfxlength[size of the first section, in bytes]--*/
             BWriter.Write(Convert.ToUInt32(00000000));
 
             /*--sampleinfostart[offset to the second section where the sample properties are stored]--*/
-            BWriter.Write(Convert.ToInt32(00000000));
+            BWriter.Write(Convert.ToUInt32(00000000));
             /*--sampleinfolen[size of the second section, in bytes]--*/
-            BWriter.Write(Convert.ToInt32(CountNumberOfSamples(SoundsList)));
+            BWriter.Write(Convert.ToUInt32(CountNumberOfSamples(SoundsList)));
 
             /*--specialsampleinfostart[unused and uses the same sample data offset as dummy for some reason]--*/
             BWriter.Write(Convert.ToUInt32(00000000));
@@ -53,16 +54,16 @@ namespace EuroSound_SB_Editor
             BWriter.Write(Convert.ToUInt32(00000000));
 
             /*--sampledatastart[Offset that points to the beginning of the PCM data, where sound is actually stored]--*/
-            BWriter.Write(Convert.ToInt32(00000000));
+            BWriter.Write(Convert.ToUInt32(00000000));
             /*--sampledatalen[Size of the block, in bytes]--*/
-            BWriter.Write(Convert.ToInt32(00000000));
+            BWriter.Write(Convert.ToUInt32(00000000));
 
             BWriter.Seek(0x800, SeekOrigin.Begin);
             //*===============================================================================================
             //* SECTION SFX elements
             //*===============================================================================================
             /*--SFX entry count in this soundbank--*/
-            BWriter.Write(SoundsList.Count);
+            BWriter.Write(Convert.ToUInt32(SoundsList.Count));
 
             /*--SFX header--*/
             foreach (EXSound Sound in SoundsList)
@@ -70,13 +71,13 @@ namespace EuroSound_SB_Editor
                 BWriter.Write(Convert.ToUInt32("0x00" + Sound.Hashcode.Substring(4), 16));
                 BWriter.Write(Convert.ToUInt32(BWriter.BaseStream.Position));
             }
-            /*--Linear array of sorted SFX headers laid out in this format--*/
+            /*--[Linear array of sorted SFX headers laid out in this format]--*/
             foreach (EXSound Sound in SoundsList)
             {
-                /*--Add hashcode offset to the dictionary--*/
-                HashcodeOffsets.Add(BWriter.BaseStream.Position);
+                /*--[Add hashcode offset to the dictionary]--*/
+                HashcodeOffsets.Add(BWriter.BaseStream.Position - 2048);
 
-                /*--Write data--*/
+                /*--[Write data]--*/
                 BWriter.Write(Convert.ToInt16(Sound.DuckerLenght));
                 BWriter.Write(Convert.ToInt16(Sound.MinDelay));
                 BWriter.Write(Convert.ToInt16(Sound.MaxDelay));
@@ -95,38 +96,45 @@ namespace EuroSound_SB_Editor
                 foreach (EXSample Sample in Sound.Samples)
                 {
                     /*--[FILE REFERENCE]--*/
-                    BWriter.Write(Convert.ToInt16(GetSteamIndexInSoundbank(Sample.Name, SampleInfoTable)));
+                    if (Sample.FileRef < 0)
+                    {
+                        BWriter.Write(Convert.ToInt16(Sample.FileRef));
+                    }
+                    else
+                    {
+                        BWriter.Write(Convert.ToInt16(GetSteamIndexInSoundbank(Sample.Name, SampleInfoTable)));
+                    }
 
-                    /*Sample Data*/
+                    /*--[Sample Data]--*/
                     BWriter.Write(Convert.ToInt16(Sample.PitchOffset));
                     BWriter.Write(Convert.ToInt16(Sample.RandomPitchOffset));
-                    BWriter.Write(Convert.ToInt16(Sample.BaseVolume));
+                    BWriter.Write(Convert.ToSByte(Sample.BaseVolume));
                     BWriter.Write(Convert.ToSByte(Sample.RandomVolumeOffset));
                     BWriter.Write(Convert.ToSByte(Sample.Pan));
                     BWriter.Write(Convert.ToSByte(Sample.RandomPan));
 
-                    /*Aligment Padding*/
+                    /*--[Aligment Padding]--*/
                     BWriter.Write(Convert.ToSByte(0));
                     BWriter.Write(Convert.ToSByte(0));
                 }
             }
-            /*--Section length, current position - start position--*/
+            /*--[Section length, current position - start position]--*/
             SFXlength = BWriter.BaseStream.Position - 2048;
 
             //*===============================================================================================
             //* SECTION Sample info elements
             //*===============================================================================================
-            /*Start section offset*/
+            /*--[Start section offset]--*/
             SampleInfoStartOffset = (BWriter.BaseStream.Position);
 
-            /*Write total number of samples*/
-            BWriter.Write(Convert.ToInt16(CountNumberOfSamples(SoundsList)));
+            /*--[Write total number of samples]--*/
+            BWriter.Write(Convert.ToUInt32(CountNumberOfSamples(SoundsList)));
 
             foreach (EXSound Sound in SoundsList)
             {
                 for (int i = 0; i < Sound.Samples.Count; i++)
                 {
-                    /*Write data*/
+                    /*--[Write data]--*/
                     BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Flags));
                     BWriter.Write(Convert.ToUInt32(BWriter.BaseStream.Position));
                     BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.DataSize));
@@ -140,7 +148,7 @@ namespace EuroSound_SB_Editor
                 }
             }
 
-            /*--Section length, current position - start position--*/
+            /*--[Section length, current position - start position]--*/
             SampleInfoLength = BWriter.BaseStream.Position - SampleInfoStartOffset;
 
             //*===============================================================================================
@@ -153,14 +161,10 @@ namespace EuroSound_SB_Editor
                 foreach (EXSample Sample in Sound.Samples)
                 {
                     /*--Add Sample data offset to the list--*/
-                    SampleDataOffsets.Add(BWriter.BaseStream.Position);
+                    SampleDataOffsets.Add(BWriter.BaseStream.Position - SampleDataStartOffset);
 
                     /*--Write PCM Data--*/
                     BWriter.Write(Sample.Audio.PCMdata);
-
-                    /*--Aligment Padding--*/
-                    BWriter.Write(Convert.ToSByte(0));
-                    BWriter.Write(Convert.ToSByte(0));
                 }
             }
             /*--Section length, current position - start position--*/
@@ -217,13 +221,14 @@ namespace EuroSound_SB_Editor
                 BWriter.BaseStream.Seek(Offset, SeekOrigin.Begin);
 
                 /*--Calculate Relative Offset--*/
-                BWriter.Write(Convert.ToUInt32(item - Offset));
+                BWriter.Write(Convert.ToUInt32(item));
 
                 /*--Skip other properties--*/
                 Offset = BWriter.BaseStream.Position + 34;
                 BWriter.BaseStream.Seek(Offset, SeekOrigin.Begin);
             }
             BWriter.Close();
+            MessageBox.Show("Finished");
         }
 
         private static int CountNumberOfSamples(List<EXSound> SoundsList)
@@ -262,7 +267,11 @@ namespace EuroSound_SB_Editor
 
         private static int GetSteamIndexInSoundbank(string SampleName, List<string> SampleInfoTable)
         {
-            return SampleInfoTable.IndexOf(SampleName);
+            int index;
+
+            index = SampleInfoTable.IndexOf(SampleName);
+
+            return index;
         }
     }
 }

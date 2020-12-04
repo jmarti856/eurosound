@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using YamlDotNet.RepresentationModel;
 
@@ -36,11 +37,14 @@ namespace EuroSound_SB_Editor
             }
 
             //Expand only root nodes
-            TreeViewControl.Nodes[0].Collapse();
-            TreeViewControl.Nodes[0].Expand();
+            TreeViewControl.Invoke((MethodInvoker)delegate
+            {
+                TreeViewControl.Nodes[0].Collapse();
+                TreeViewControl.Nodes[0].Expand();
 
-            TreeViewControl.Nodes[1].Collapse();
-            TreeViewControl.Nodes[1].Expand();
+                TreeViewControl.Nodes[1].Collapse();
+                TreeViewControl.Nodes[1].Expand();
+            });
 
             //Show Import results
             if (Reports.Items.Count > 0)
@@ -182,7 +186,6 @@ namespace EuroSound_SB_Editor
             //Add Sound
             if (IsStreamed)
             {
-
                 TreeNodeFunctions.TreeNodeAddNewNode("StreamedSounds", SoundName, 2, 2, "Sound", Color.Black, TreeViewControl);
             }
             else

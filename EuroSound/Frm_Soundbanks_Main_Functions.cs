@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 
 namespace EuroSound_SB_Editor
@@ -111,6 +112,48 @@ namespace EuroSound_SB_Editor
                 {
                     StatusLabel.Text = ProgramStatus;
                 }
+            }
+        }
+
+        internal void RemoveFolderSelectedNode()
+        {
+            /*Check we are not trying to delete a root folder*/
+            if (!(TreeView_File.SelectedNode == null || TreeView_File.SelectedNode.Tag.Equals("Root")))
+            {
+                /*Show warning*/
+                EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox("Delete Folder: " + TreeView_File.SelectedNode.Text, "Warning", false);
+                if (WarningDialog.ShowDialog() == DialogResult.OK)
+                {
+                    /*Remove child nodes sounds and samples*/
+                    IList<TreeNode> ChildNodesCollection = new List<TreeNode>();
+                    foreach (TreeNode ChildNode in TreeNodeFunctions.GetNodesInsideFolder(TreeView_File, TreeView_File.SelectedNode, ChildNodesCollection))
+                    {
+                        EXObjectsFunctions.RemoveSound(ChildNode.Name, SoundsList);
+                    }
+                    TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, TreeView_File.SelectedNode, TreeView_File.SelectedNode.Tag.ToString());
+                }
+            }
+        }
+        internal void RemoveSampleSelectedNode()
+        {             
+            /*Show warning*/
+            EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox("Delete Sample: " + TreeView_File.SelectedNode.Text, "Warning", false);
+            if (WarningDialog.ShowDialog() == DialogResult.OK)
+            {
+                EXSound ParentSound = TreeNodeFunctions.GetSelectedSound(TreeView_File.SelectedNode.Parent.Name, SoundsList);
+                EXObjectsFunctions.RemoveSampleFromSound(ParentSound, TreeView_File.SelectedNode.Name);
+                TreeView_File.SelectedNode.Remove();
+            }
+        }
+
+        internal void RemoveSoundSelectedNode()
+        {
+            /*Show warning*/
+            EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox("Delete Sound: " + TreeView_File.SelectedNode.Text, "Warning", false);
+            if (WarningDialog.ShowDialog() == DialogResult.OK)
+            {
+                EXObjectsFunctions.RemoveSound(TreeView_File.SelectedNode.Name, SoundsList);
+                TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, TreeView_File.SelectedNode, TreeView_File.SelectedNode.Tag.ToString());
             }
         }
     }
