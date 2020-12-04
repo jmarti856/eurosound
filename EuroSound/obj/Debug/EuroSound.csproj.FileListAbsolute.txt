@@ -37,7 +37,6 @@ F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.EuroSou
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.Frm_EffectProperties.resources
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.Frm_FileProperties.resources
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.Frm_SampleProperties.resources
-F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.Frm_Main.resources
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.Properties.Resources.resources
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.csproj.GenerateResource.cache
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.csproj.CoreCompileInputs.cache
@@ -46,3 +45,5 @@ F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.exe
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.pdb
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\YamlDotNet.dll
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\YamlDotNet.xml
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.Frm_Soundbanks_Main.resources
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound.EuroSound_ImportResultsList.resources

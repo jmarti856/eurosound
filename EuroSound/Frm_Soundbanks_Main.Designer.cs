@@ -1,6 +1,6 @@
 ﻿namespace EuroSound
 {
-    partial class Frm_Main
+    partial class Frm_Soundbanks_Main
     {
         /// <summary>
         /// Required designer variable.
@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Sounds", 0, 0);
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Streamed Sounds");
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Main));
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Sounds", 0, 0);
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Streamed Sounds");
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Soundbanks_Main));
             this.TreeView_File = new System.Windows.Forms.TreeView();
             this.ImageList_TreeNode = new System.Windows.Forms.ImageList(this.components);
             this.ContextMenu_Folders = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -55,6 +55,7 @@
             this.MenuItem_File_SaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItemFile_Export = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemFile_ReadYml = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItem_File_Exit = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_Edit = new System.Windows.Forms.ToolStripMenuItem();
@@ -97,7 +98,6 @@
             this.Col_FileRef = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_LocatedIn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TabPage_WavHeaderData = new System.Windows.Forms.TabPage();
-            this.MenuItemFile_ReadYml = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenu_Folders.SuspendLayout();
             this.ContextMenu_Sound.SuspendLayout();
             this.MainMenu.SuspendLayout();
@@ -119,18 +119,18 @@
             this.TreeView_File.LabelEdit = true;
             this.TreeView_File.Location = new System.Drawing.Point(0, 25);
             this.TreeView_File.Name = "TreeView_File";
-            treeNode1.ImageIndex = 0;
-            treeNode1.Name = "Sounds";
-            treeNode1.SelectedImageIndex = 0;
-            treeNode1.Tag = "Root";
-            treeNode1.Text = "Sounds";
-            treeNode2.ImageIndex = 0;
-            treeNode2.Name = "StreamedSounds";
-            treeNode2.Tag = "Root";
-            treeNode2.Text = "Streamed Sounds";
+            treeNode3.ImageIndex = 0;
+            treeNode3.Name = "Sounds";
+            treeNode3.SelectedImageIndex = 0;
+            treeNode3.Tag = "Root";
+            treeNode3.Text = "Sounds";
+            treeNode4.ImageIndex = 0;
+            treeNode4.Name = "StreamedSounds";
+            treeNode4.Tag = "Root";
+            treeNode4.Text = "Streamed Sounds";
             this.TreeView_File.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode3,
+            treeNode4});
             this.TreeView_File.SelectedImageIndex = 0;
             this.TreeView_File.Size = new System.Drawing.Size(666, 849);
             this.TreeView_File.TabIndex = 1;
@@ -280,50 +280,57 @@
             // MenuItem_File_Open
             // 
             this.MenuItem_File_Open.Name = "MenuItem_File_Open";
-            this.MenuItem_File_Open.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_File_Open.Size = new System.Drawing.Size(157, 22);
             this.MenuItem_File_Open.Text = "Open";
             this.MenuItem_File_Open.Click += new System.EventHandler(this.MenuItem_File_Open_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(154, 6);
             // 
             // MenuItem_File_Save
             // 
             this.MenuItem_File_Save.Name = "MenuItem_File_Save";
-            this.MenuItem_File_Save.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_File_Save.Size = new System.Drawing.Size(157, 22);
             this.MenuItem_File_Save.Text = "Save";
             this.MenuItem_File_Save.Click += new System.EventHandler(this.MenuItem_File_Save_Click);
             // 
             // MenuItem_File_SaveAs
             // 
             this.MenuItem_File_SaveAs.Name = "MenuItem_File_SaveAs";
-            this.MenuItem_File_SaveAs.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_File_SaveAs.Size = new System.Drawing.Size(157, 22);
             this.MenuItem_File_SaveAs.Text = "Save As...";
             this.MenuItem_File_SaveAs.Click += new System.EventHandler(this.MenuItem_File_SaveAs_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(154, 6);
             // 
             // MenuItemFile_Export
             // 
             this.MenuItemFile_Export.Name = "MenuItemFile_Export";
-            this.MenuItemFile_Export.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemFile_Export.Size = new System.Drawing.Size(157, 22);
             this.MenuItemFile_Export.Text = "Export";
             this.MenuItemFile_Export.Click += new System.EventHandler(this.MenuItemFile_Export_Click);
+            // 
+            // MenuItemFile_ReadYml
+            // 
+            this.MenuItemFile_ReadYml.Name = "MenuItemFile_ReadYml";
+            this.MenuItemFile_ReadYml.Size = new System.Drawing.Size(157, 22);
+            this.MenuItemFile_ReadYml.Text = "Read From .yml";
+            this.MenuItemFile_ReadYml.Click += new System.EventHandler(this.MenuItemFile_ReadYml_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(154, 6);
             // 
             // MenuItem_File_Exit
             // 
             this.MenuItem_File_Exit.Name = "MenuItem_File_Exit";
-            this.MenuItem_File_Exit.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_File_Exit.Size = new System.Drawing.Size(157, 22);
             this.MenuItem_File_Exit.Text = "Exit";
             this.MenuItem_File_Exit.Click += new System.EventHandler(this.MenuItem_File_Exit_Click);
             // 
@@ -480,7 +487,7 @@
             // Col_ParentSound
             // 
             this.Col_ParentSound.Text = "Asociated To";
-            this.Col_ParentSound.Width = 91;
+            this.Col_ParentSound.Width = 120;
             // 
             // Col_Frequency
             // 
@@ -647,14 +654,7 @@
             this.TabPage_WavHeaderData.TabIndex = 1;
             this.TabPage_WavHeaderData.Text = "Wav Header Data";
             // 
-            // MenuItemFile_ReadYml
-            // 
-            this.MenuItemFile_ReadYml.Name = "MenuItemFile_ReadYml";
-            this.MenuItemFile_ReadYml.Size = new System.Drawing.Size(180, 22);
-            this.MenuItemFile_ReadYml.Text = "Read From .yml";
-            this.MenuItemFile_ReadYml.Click += new System.EventHandler(this.MenuItemFile_ReadYml_Click);
-            // 
-            // Frm_Main
+            // Frm_Soundbanks_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -666,7 +666,7 @@
             this.Controls.Add(this.TreeView_File);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.MainMenu;
-            this.Name = "Frm_Main";
+            this.Name = "Frm_Soundbanks_Main";
             this.Text = "EuroSound";
             this.Load += new System.EventHandler(this.Frm_Main_Load);
             this.ContextMenu_Folders.ResumeLayout(false);

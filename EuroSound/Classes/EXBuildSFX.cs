@@ -16,7 +16,7 @@ namespace EuroSound
 
             Dictionary<long, string> HashcodeOffsets = new Dictionary<long, string>();
             Dictionary<long, string> SampleDataOffsets = new Dictionary<long, string>();
-            Dictionary<int, string> SampleInfoTable = new Dictionary<int, string>();
+            List<string> SampleInfoTable = GetSampleInfoTable(SoundsList);
 
             BinaryWriter BWriter = new BinaryWriter(File.Open(SavePath, FileMode.Create, FileAccess.Write), Encoding.ASCII);
             //*===============================================================================================
@@ -93,7 +93,7 @@ namespace EuroSound
                 foreach (EXSample Sample in Sound.Samples)
                 {
                     /*--[FILE REFERENCE]--*/
-                    BWriter.Write(Convert.ToInt16(00000000));
+                    BWriter.Write(Convert.ToInt16(GetSteamIndexInSoundbank(Sample.Name, SampleInfoTable)));
 
                     /*Sample Data*/
                     BWriter.Write(Convert.ToInt16(Sample.PitchOffset));
@@ -114,8 +114,6 @@ namespace EuroSound
             //*===============================================================================================
             //* SECTION Sample info elements
             //*===============================================================================================
-            /*--Hashcode+SampleIndex, PositionOffset--*/
-            int index = 0;
 
             /*Start section offset*/
             SampleInfoStartOffset = (BWriter.BaseStream.Position);
@@ -138,10 +136,6 @@ namespace EuroSound
                     BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.PSIsample));
                     BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.LoopOffset));
                     BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Duration));
-
-                    /*Add index + hashcode*/
-                    SampleInfoTable.Add(index, Sound.Hashcode);
-                    index++;
                 }
             }
 
@@ -211,48 +205,11 @@ namespace EuroSound
             }
 
             //*===============================================================================================
-            //* WRITE FINAL FILE REFS INDEX
-            //*===============================================================================================
-            BWriter.BaseStream.Seek(0x800, SeekOrigin.Begin);
-            string OldHashcode = "";
-            long Offset = 0;
-
-            foreach (KeyValuePair<int, string> item in SampleInfoTable)
-            {
-                /*Get Hashcode*/
-                string Hashc = item.Value;
-
-                /*Check the Hashcode is in the offsets list*/
-                if (DictionaryContainsValue(Hashc, HashcodeOffsets))
-                {
-                    /*Get offset*/
-                    foreach (KeyValuePair<long, string> entry in HashcodeOffsets)
-                    {
-                        if (entry.Value.Equals(Hashc))
-                        {
-                            if (Hashc.Equals(OldHashcode))
-                            {
-                                Offset += 15; /*Skip sound props*/
-                            }
-                            else
-                            {
-                                Offset = entry.Key + 20; /*Skip sample props*/
-                            }
-                            BWriter.BaseStream.Seek(Offset, SeekOrigin.Begin);
-                            BWriter.Write(Convert.ToUInt32(item.Key)); /*The indexes starts at 0 or 1 (in this list the first is zero)?????*/
-                            OldHashcode = Hashc;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            //*===============================================================================================
             //* WRITE FINAL OFFSETS TO SAMPLE DATA
             //*===============================================================================================
             BWriter.BaseStream.Seek(SampleInfoStartOffset, SeekOrigin.Begin);
             long RelativeOffset;
-
+            long Offset;
             foreach (KeyValuePair<long, string> item in SampleDataOffsets)
             {
                 /*skip numsamples and flags*/
@@ -271,18 +228,6 @@ namespace EuroSound
             BWriter.Close();
         }
 
-        private static bool DictionaryContainsValue(string StringToCheck, Dictionary<long, string> HashcodeOffsets)
-        {
-            foreach (KeyValuePair<long, string> entry in HashcodeOffsets)
-            {
-                if (entry.Value.Equals(StringToCheck, StringComparison.CurrentCultureIgnoreCase))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
         private static int CountNumberOfSamples(List<EXSound> SoundsList)
         {
             int Counter = 0;
@@ -297,6 +242,29 @@ namespace EuroSound
                 }
             }
             return Counter;
+        }
+
+        private static List<string> GetSampleInfoTable(List<EXSound> SoundsList)
+        {
+            List<string> SampleInfoTable = new List<string>();
+            
+            foreach (EXSound Sound in SoundsList)
+            {
+                foreach (EXSample Sample in Sound.Samples)
+                {
+                    if (Sample.IsStreamed == false)
+                    {
+                        SampleInfoTable.Add(Sample.Name);
+                    }
+                }
+            }
+
+            return SampleInfoTable;
+        }
+
+        private static int GetSteamIndexInSoundbank(string SampleName, List<string>SampleInfoTable)
+        {
+            return SampleInfoTable.IndexOf(SampleName);
         }
     }
 }

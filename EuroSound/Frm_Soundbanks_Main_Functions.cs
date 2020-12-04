@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace EuroSound
 {
-    public partial class Frm_Main
+    public partial class Frm_Soundbanks_Main
     {
         string ProgramStatus;
 

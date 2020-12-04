@@ -11,6 +11,7 @@ namespace EuroSound
     public static class YamlReader
     {
 
+        internal static ListView Reports = new ListView();
         internal static void LoadDataFromSwyterUnpacker(List<EXSound> SoundsList, TreeView TreeViewControl, string FilePath)
         {
             List<string> SoundsPaths;
@@ -18,18 +19,39 @@ namespace EuroSound
 
             SoundsPaths = GetFilePaths(FilePath, FilePath);
 
+            //Read sounds from the unpacker folder
             foreach (string path in SoundsPaths)
             {
                 SoundName = new DirectoryInfo(Path.GetDirectoryName(path)).Name;
                 SoundHashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SFX_Defines, SoundName);
+                if (string.IsNullOrEmpty(SoundHashcode))
+                {
+                    ListViewItem Message = new ListViewItem(new[] { "", "Hashcode not found for the sound " + SoundName });
+                    Message.SubItems[0].BackColor = Color.Yellow;
+                    Message.UseItemStyleForSubItems = false;
+                    Reports.Items.Add(Message);
+                }
                 ReadYamlFile(SoundsList, TreeViewControl, path, SoundName, SoundHashcode);
             }
 
+            //Expand only root nodes
             TreeViewControl.Nodes[0].Collapse();
             TreeViewControl.Nodes[0].Expand();
 
             TreeViewControl.Nodes[1].Collapse();
             TreeViewControl.Nodes[1].Expand();
+
+            //Show Import results
+            if (Reports.Items.Count > 0)
+            {
+                EuroSound_ImportResultsList ImportResults = new EuroSound_ImportResultsList(Reports)
+                {
+                    Text = Path.GetFileName(FilePath) + " Import results",
+                    ShowInTaskbar = false
+                };
+                ImportResults.ShowDialog();
+                ImportResults.Dispose();
+            }
         }
 
         internal static List<string> GetFilePaths(string LevelSoundBankPath, string FilePath)
@@ -128,7 +150,7 @@ namespace EuroSound
                 //Samples Properties
                 int SampleIndex;
                 YamlMappingNode SampleParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("samples")];
-                foreach(KeyValuePair<YamlNode, YamlNode> entry in SampleParameters.Children)
+                foreach (KeyValuePair<YamlNode, YamlNode> entry in SampleParameters.Children)
                 {
                     //Temporal array to store values
                     int[] SampleParams = new int[7];
@@ -172,22 +194,22 @@ namespace EuroSound
             //Add sample
             foreach (KeyValuePair<int, int[]> entry in Samples)
             {
-                int SampleName = entry.Key;
+                string SampleName = SoundName + entry.Key;
                 int[] SampleValues = entry.Value;
 
-                TreeNodeFunctions.TreeNodeAddNewNode(SoundName, SampleName.ToString(), 4, 4, "Sample", Color.Black, TreeViewControl);
+                TreeNodeFunctions.TreeNodeAddNewNode(SoundName, SampleName, 4, 4, "Sample", Color.Black, TreeViewControl);
                 if (IsStreamed)
                 {
-                    EXObjectsFunctions.AddSampleToSound(Sound, SampleName.ToString(), SampleValues, true);
+                    EXObjectsFunctions.AddSampleToSound(Sound, SampleName, SampleValues, true);
                 }
                 else
                 {
-                    EXObjectsFunctions.AddSampleToSound(Sound, SampleName.ToString(), SampleValues, false);
+                    EXObjectsFunctions.AddSampleToSound(Sound, SampleName, SampleValues, false);
                     foreach (EXSample Sample in Sound.Samples)
                     {
                         if (Sample.Name.Equals(SampleName.ToString()))
                         {
-                            AudioFilePath = GetAudioFilePath(FilePath, SampleName);
+                            AudioFilePath = GetAudioFilePath(FilePath, entry.Key);
                             if (File.Exists(AudioFilePath))
                             {
                                 WaveFileReader AudioReader = new WaveFileReader(AudioFilePath);
@@ -213,7 +235,11 @@ namespace EuroSound
                             }
                             else
                             {
-                               //ADD A FORM WITH THE IMPORT RESULTS.
+                                //ADD A FORM WITH THE IMPORT RESULTS.
+                                ListViewItem Message = new ListViewItem(new[] { "", "Sample (" + SampleName + ".wav" + ") not found for the sound: " + SoundName });
+                                Message.SubItems[0].BackColor = Color.Red;
+                                Message.UseItemStyleForSubItems = false;
+                                Reports.Items.Add(Message);
                             }
                         }
                     }

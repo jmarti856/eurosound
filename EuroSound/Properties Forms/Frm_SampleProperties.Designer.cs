@@ -52,6 +52,7 @@
             this.Button_LoadAudio = new System.Windows.Forms.Button();
             this.Textbox_MediaName = new System.Windows.Forms.TextBox();
             this.Label_MediaAudio = new System.Windows.Forms.Label();
+            this.FileRef = new System.Windows.Forms.TextBox();
             this.groupbox_properties.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_BaseVolume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_randomPitchOffset)).BeginInit();
@@ -66,6 +67,7 @@
             // 
             this.groupbox_properties.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupbox_properties.Controls.Add(this.FileRef);
             this.groupbox_properties.Controls.Add(this.Numeric_BaseVolume);
             this.groupbox_properties.Controls.Add(this.Label_BaseVolume);
             this.groupbox_properties.Controls.Add(this.numeric_randomPitchOffset);
@@ -88,16 +90,6 @@
             // Numeric_BaseVolume
             // 
             this.Numeric_BaseVolume.Location = new System.Drawing.Point(126, 71);
-            this.Numeric_BaseVolume.Maximum = new decimal(new int[] {
-            99999999,
-            0,
-            0,
-            0});
-            this.Numeric_BaseVolume.Minimum = new decimal(new int[] {
-            99999999,
-            0,
-            0,
-            -2147483648});
             this.Numeric_BaseVolume.Name = "Numeric_BaseVolume";
             this.Numeric_BaseVolume.Size = new System.Drawing.Size(120, 20);
             this.Numeric_BaseVolume.TabIndex = 8;
@@ -352,6 +344,13 @@
             this.Label_MediaAudio.TabIndex = 0;
             this.Label_MediaAudio.Text = "Audio:";
             // 
+            // FileRef
+            // 
+            this.FileRef.Location = new System.Drawing.Point(265, 18);
+            this.FileRef.Name = "FileRef";
+            this.FileRef.Size = new System.Drawing.Size(100, 20);
+            this.FileRef.TabIndex = 15;
+            // 
             // Frm_SampleProperties
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -410,5 +409,6 @@
         private System.Windows.Forms.NumericUpDown numeric_randomPitchOffset;
         private System.Windows.Forms.Label Label_RandomPitchOffset;
         private System.Windows.Forms.CheckBox Checkbox_IsStreamedSound;
+        private System.Windows.Forms.TextBox FileRef;
     }
 }

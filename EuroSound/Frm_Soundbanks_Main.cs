@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace EuroSound
 {
-    public partial class Frm_Main : Form
+    public partial class Frm_Soundbanks_Main : Form
     {
         bool MenuStripOpened;
 
@@ -21,7 +21,7 @@ namespace EuroSound
         int[] SndParams = new int[12];
         int[] SampleParams = new int[7];
 
-        public Frm_Main(string FilePath)
+        public Frm_Soundbanks_Main(string FilePath)
         {
             InitializeComponent();
 
@@ -173,9 +173,6 @@ namespace EuroSound
                 {
                     /*Cancel edit*/
                     e.CancelEdit = true;
-
-                    /*Show warning*/
-                    MessageBox.Show("The new name can't be empty", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     Debug.WriteLine("ERROR -- The new name can't be empty");
                 }
                 else
@@ -239,7 +236,7 @@ namespace EuroSound
             string Name = OpenInputBox("Enter a name for new folder.", "New Folder");
             if (TreeNodeFunctions.CheckIfNodeExists(TreeView_File, Name))
             {
-                MessageBox.Show("Exists");
+                MessageBox.Show("Sorry, cannot add a folder with this name, an item with this name already exists", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -261,7 +258,7 @@ namespace EuroSound
             string Name = OpenInputBox("Enter a name for new sound.", "New Sound");
             if (TreeNodeFunctions.CheckIfNodeExists(TreeView_File, Name))
             {
-                MessageBox.Show("Exists");
+                MessageBox.Show("Sorry, cannot add a sound with this name, an item with this name already exists", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -393,21 +390,10 @@ namespace EuroSound
         //*===============================================================================================
         private void TreeView_File_KeyDown(object sender, KeyEventArgs e)
         {
-            string Name;
-
-            /*Create a new sound*/
-            if (e.Modifiers == Keys.Shift && e.KeyCode == Keys.F1)
+            /*Rename selected node*/
+            if (e.KeyCode == Keys.F2)
             {
-                Name = OpenInputBox("Enter a name for new sound.", "New Sound");
-                TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, Name, 2, 2, "Sound", Color.Black, TreeView_File);
-                EXObjectsFunctions.AddNewSound(Name, Name, "0x1A000001", SndParams, SoundsList);
-            }
-
-            /*Createa a new Sample*/
-            if (e.Modifiers == Keys.Shift && e.KeyCode == Keys.F2)
-            {
-                Name = OpenInputBox("Enter a new for new sample.", "New Sample");
-                //TreeNodeFunctions.AddNewSample(Name, TreeView_File, SoundsList);
+                TreeNodeFunctions.EditNodeLabel(TreeView_File, TreeView_File.SelectedNode);
             }
         }
 
@@ -455,7 +441,6 @@ namespace EuroSound
 
         private void MenuItemFile_ReadYml_Click(object sender, System.EventArgs e)
         {
-            string SoundName, SoundHashcode;
             string FilePath = Browsers.OpenFileBrowser("YML Files|*.yml", 0);
             if (!string.IsNullOrEmpty(FilePath))
             {
@@ -504,11 +489,11 @@ namespace EuroSound
             {
                 foreach (EXSample Sample in Sound.Samples)
                 {
-                    if (Sample.Audio.IsEmpty() == false)
+                    if (Sample.IsStreamed == false)
                     {
                         if (Sample.Audio.IsEmpty() == false)
                         {
-                            ListViewItem AudioData = new ListViewItem(new[] { Sample.DisplayName, Sample.Audio.Frequency.ToString(), Sample.Audio.Channels.ToString(), Sample.Audio.Bits.ToString(), Sample.Audio.PCMdata.Length.ToString(), Sample.Audio.Encoding, Sample.Audio.Duration.ToString() });
+                            ListViewItem AudioData = new ListViewItem(new[] { Sample.DisplayName, Sound.Name, Sample.Audio.Frequency.ToString(), Sample.Audio.Channels.ToString(), Sample.Audio.Bits.ToString(), Sample.Audio.PCMdata.Length.ToString(), Sample.Audio.Encoding, Sample.Audio.Duration.ToString()});
                             ListView_WavHeaderData.Items.Add(AudioData);
                         }
                     }

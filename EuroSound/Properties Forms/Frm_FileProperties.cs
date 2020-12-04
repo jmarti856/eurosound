@@ -55,7 +55,7 @@ namespace EuroSound
             EXFile.Hashcode = Combobox_FileHashcode.SelectedValue.ToString();
 
             /*Update Current File label*/
-            ((Frm_Main)Application.OpenForms["Frm_Main"]).CurrentFileLabel.Text = EXFile.FileName;
+            ((Frm_Soundbanks_Main)Application.OpenForms["Frm_Soundbanks_Main"]).CurrentFileLabel.Text = EXFile.FileName;
 
             /*Close current form*/
             this.Close();
