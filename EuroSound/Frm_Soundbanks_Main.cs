@@ -405,6 +405,13 @@ namespace EuroSound
             string FilePath = Browsers.OpenFileBrowser("EuroSoundFile|*.ESF", 0);
             if (!string.IsNullOrEmpty(FilePath))
             {
+                //Clear Data
+                TreeView_File.Nodes[0].Nodes.Clear();
+                TreeView_File.Nodes[1].Nodes.Clear();
+                SoundsList.Clear();
+                ListView_WavHeaderData.Items.Clear();
+
+                /*Load New File*/
                 LoadedFile = FilePath;
                 SaveData.LoadDataFromEuroSoundFile(TreeView_File, SoundsList, ListView_WavHeaderData, CurrentFileLabel, FilePath);
             }
@@ -444,6 +451,13 @@ namespace EuroSound
             string FilePath = Browsers.OpenFileBrowser("YML Files|*.yml", 0);
             if (!string.IsNullOrEmpty(FilePath))
             {
+                //Clear Data
+                TreeView_File.Nodes[0].Nodes.Clear();
+                TreeView_File.Nodes[1].Nodes.Clear();
+                SoundsList.Clear();
+                ListView_WavHeaderData.Items.Clear();
+
+                /*Load New data*/
                 YamlReader.LoadDataFromSwyterUnpacker(SoundsList, TreeView_File, FilePath);
             }
         }
@@ -493,7 +507,7 @@ namespace EuroSound
                     {
                         if (Sample.Audio.IsEmpty() == false)
                         {
-                            ListViewItem AudioData = new ListViewItem(new[] { Sample.DisplayName, Sound.Name, Sample.Audio.Frequency.ToString(), Sample.Audio.Channels.ToString(), Sample.Audio.Bits.ToString(), Sample.Audio.PCMdata.Length.ToString(), Sample.Audio.Encoding, Sample.Audio.Duration.ToString()});
+                            ListViewItem AudioData = new ListViewItem(new[] { Sample.DisplayName, Sound.Name, Sample.Audio.Frequency.ToString(), Sample.Audio.Channels.ToString(), Sample.Audio.Bits.ToString(), Sample.Audio.PCMdata.Length.ToString(), Sample.Audio.Encoding, Sample.Audio.Duration.ToString() });
                             ListView_WavHeaderData.Items.Add(AudioData);
                         }
                     }

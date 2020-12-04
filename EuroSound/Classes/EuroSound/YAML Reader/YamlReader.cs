@@ -10,10 +10,10 @@ namespace EuroSound
 {
     public static class YamlReader
     {
-
-        internal static ListView Reports = new ListView();
+        internal static ListView Reports;
         internal static void LoadDataFromSwyterUnpacker(List<EXSound> SoundsList, TreeView TreeViewControl, string FilePath)
         {
+            Reports = new ListView();
             List<string> SoundsPaths;
             string SoundName, SoundHashcode;
 
@@ -24,6 +24,7 @@ namespace EuroSound
             {
                 SoundName = new DirectoryInfo(Path.GetDirectoryName(path)).Name;
                 SoundHashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SFX_Defines, SoundName);
+                EXFile.Hashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SB_Defines, Path.GetFileNameWithoutExtension(FilePath));
                 if (string.IsNullOrEmpty(SoundHashcode))
                 {
                     ListViewItem Message = new ListViewItem(new[] { "", "Hashcode not found for the sound " + SoundName });
@@ -236,7 +237,7 @@ namespace EuroSound
                             else
                             {
                                 //ADD A FORM WITH THE IMPORT RESULTS.
-                                ListViewItem Message = new ListViewItem(new[] { "", "Sample (" + SampleName + ".wav" + ") not found for the sound: " + SoundName });
+                                ListViewItem Message = new ListViewItem(new[] { "", "Sample (" + entry.Key + ".wav" + ") not found for the sound: " + SoundName });
                                 Message.SubItems[0].BackColor = Color.Red;
                                 Message.UseItemStyleForSubItems = false;
                                 Reports.Items.Add(Message);

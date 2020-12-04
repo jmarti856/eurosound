@@ -33,7 +33,6 @@ namespace EuroSound
             numeric_pan.Value = SelectedSample.Pan;
             numeric_randompan.Value = SelectedSample.RandomPan;
             Checkbox_IsStreamedSound.Checked = SelectedSample.IsStreamed;
-            FileRef.Text = SelectedSample.FileRef.ToString();
 
             if (SelectedSample.Audio.IsEmpty() == false)
             {

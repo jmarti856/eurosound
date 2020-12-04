@@ -140,11 +140,6 @@ namespace EuroSound
 
         internal static void LoadDataFromEuroSoundFile(TreeView TreeViewControl, List<EXSound> SoundsList, ListView WavData, ToolStripLabel ProjectName, string FilePath)
         {
-            //Clear Tree View
-            TreeViewControl.Nodes[0].Nodes.Clear();
-            SoundsList.Clear();
-            WavData.Items.Clear();
-
             //Init reader
             BinaryReader BReader = new BinaryReader(File.Open(FilePath, FileMode.Open, FileAccess.Read), Encoding.ASCII);
             if (FileIsCorrect(BReader))

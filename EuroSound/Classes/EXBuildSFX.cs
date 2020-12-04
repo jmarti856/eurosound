@@ -247,7 +247,7 @@ namespace EuroSound
         private static List<string> GetSampleInfoTable(List<EXSound> SoundsList)
         {
             List<string> SampleInfoTable = new List<string>();
-            
+
             foreach (EXSound Sound in SoundsList)
             {
                 foreach (EXSample Sample in Sound.Samples)
@@ -262,7 +262,7 @@ namespace EuroSound
             return SampleInfoTable;
         }
 
-        private static int GetSteamIndexInSoundbank(string SampleName, List<string>SampleInfoTable)
+        private static int GetSteamIndexInSoundbank(string SampleName, List<string> SampleInfoTable)
         {
             return SampleInfoTable.IndexOf(SampleName);
         }
