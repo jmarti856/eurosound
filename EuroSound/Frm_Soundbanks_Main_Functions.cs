@@ -40,7 +40,7 @@ namespace EuroSound_SB_Editor
         internal void OpenSoundProperties()
         {
             EXSound SelectedSound = TreeNodeFunctions.GetSelectedSound(TreeView_File.SelectedNode.Name, SoundsList);
-            Frm_EffectProperties FormSoundProps = new Frm_EffectProperties(SelectedSound)
+            Frm_EffectProperties FormSoundProps = new Frm_EffectProperties(SelectedSound, TreeView_File.SelectedNode.Name)
             {
                 Text = "Sound Properties",
                 Tag = this.Tag,
@@ -157,4 +157,5 @@ namespace EuroSound_SB_Editor
             }
         }
     }
+
 }

@@ -86,8 +86,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\EuroSound\Generic.cs" />
+    <Compile Include="Classes\EuroSound\NodeSorter.cs" />
     <Compile Include="Classes\EuroSound\YAML Reader\YamlReader.cs" />
-    <Compile Include="Classes\EXBuildSFX.cs" />
+    <Compile Include="Classes\EXObjects\EXBuildSFX.cs" />
     <Compile Include="Classes\EXObjectsFunctions.cs" />
     <Compile Include="Classes\EXObjects\EXAudio.cs" />
     <Compile Include="Classes\EXObjects\EXFile.cs" />
@@ -105,6 +106,12 @@
     </Compile>
     <Compile Include="CustomControls\EuroSound_ImportResultsList.Designer.cs">
       <DependentUpon>EuroSound_ImportResultsList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\EuroSound_NodesToFolder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomControls\EuroSound_NodesToFolder.Designer.cs">
+      <DependentUpon>EuroSound_NodesToFolder.cs</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\EuroSound_WarningBox.cs">
       <SubType>Form</SubType>
@@ -161,6 +168,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\EuroSound_ImportResultsList.resx">
       <DependentUpon>EuroSound_ImportResultsList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomControls\EuroSound_NodesToFolder.resx">
+      <DependentUpon>EuroSound_NodesToFolder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\EuroSound_WarningBox.resx">
       <DependentUpon>EuroSound_WarningBox.cs</DependentUpon>

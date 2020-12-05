@@ -46,6 +46,7 @@ namespace EuroSound_SB_Editor
                 BWriter.Write(SoundItem.Hashcode);
                 BWriter.Write(SoundItem.Name);
                 BWriter.Write(SoundItem.DisplayName);
+                BWriter.Write(SoundItem.OutputThisSound);
 
                 /*---Required for EngineX---*/
                 BWriter.Write(SoundItem.DuckerLenght);
@@ -165,11 +166,47 @@ namespace EuroSound_SB_Editor
             BReader.Close();
             BReader.Dispose();
 
+            /*Expand root nodes only*/
             TreeViewControl.Nodes[0].Collapse();
             TreeViewControl.Nodes[0].Expand();
             TreeViewControl.Nodes[1].Collapse();
             TreeViewControl.Nodes[1].Expand();
+
+            TreeViewControl.Sort();
+            TreeViewControl.TreeViewNodeSorter = new NodeSorter();
+
+            /*Update images*/
+            foreach (TreeNode Node in TreeViewControl.Nodes)
+            {
+                UpdateNodeImages(Node, SoundsList);
+            }
         }
+
+        private static void UpdateNodeImages(TreeNode Node, List<EXSound> SoundsList)
+        {
+            if (Node.Tag.Equals("Sound"))
+            {
+                EXSound sound = TreeNodeFunctions.GetSelectedSound(Node.Name, SoundsList);
+                if (sound != null)
+                {
+                    if (sound.Name.Equals(Node.Name))
+                    {
+                        if (!sound.OutputThisSound)
+                        {
+                            TreeNodeFunctions.TreeNodeSetNodeImage(Node, 5, 5);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (TreeNode tn in Node.Nodes)
+                {
+                    UpdateNodeImages(tn, SoundsList);
+                }
+            }
+        }
+
         private static void ReadSoundsListData(BinaryReader BReader, List<EXSound> SoundsList)
         {
             int NumberOfSounds, NumberOfSamples, AudioPCMdataLength;
@@ -184,6 +221,7 @@ namespace EuroSound_SB_Editor
                     Hashcode = BReader.ReadString(),
                     Name = BReader.ReadString(),
                     DisplayName = BReader.ReadString(),
+                    OutputThisSound = BReader.ReadBoolean(),
 
                     /*---Required for EngineX---*/
                     DuckerLenght = BReader.ReadInt32(),

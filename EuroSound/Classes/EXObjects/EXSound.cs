@@ -7,6 +7,7 @@ namespace EuroSound_SB_Editor
         public string Hashcode { get; set; } = "0x1A000001";
         public string Name { get; set; }
         public string DisplayName { get; set; }
+        public bool OutputThisSound { get; set; } = true;
         public List<EXSample> Samples { get; set; } = new List<EXSample>();
 
         /*---Required for Engine X--*/

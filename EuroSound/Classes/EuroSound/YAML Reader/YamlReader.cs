@@ -172,25 +172,25 @@ namespace EuroSound_SB_Editor
             }
 
             //Add Sound
-            if (IsStreamed)
+            if (!TreeNodeFunctions.CheckIfNodeExists(TreeViewControl, SoundName))
             {
-                TreeNodeFunctions.TreeNodeAddNewNode("StreamedSounds", SoundName, 2, 2, "Sound", Color.Black, TreeViewControl);
-            }
-            else
-            {
-                TreeNodeFunctions.TreeNodeAddNewNode("Sounds", SoundName, 2, 2, "Sound", Color.Black, TreeViewControl);
-            }
-            EXObjectsFunctions.AddNewSound(SoundName, SoundName, SoundHashcode, SndParams, SoundsList);
-            EXSound Sound = EXObjectsFunctions.GetSoundByName(SoundName, SoundsList);
-
-            //Add sample
-            foreach (KeyValuePair<int, int[]> entry in Samples)
-            {
-                string SampleName = SoundName + entry.Key;
-                int[] SampleValues = entry.Value;
-
-                if (!IsStreamed)
+                if (IsStreamed)
                 {
+                    TreeNodeFunctions.TreeNodeAddNewNode("StreamedSounds", SoundName, 2, 2, "Sound", Color.Black, TreeViewControl);
+                }
+                else
+                {
+                    TreeNodeFunctions.TreeNodeAddNewNode("Sounds", SoundName, 2, 2, "Sound", Color.Black, TreeViewControl);
+                }
+                EXObjectsFunctions.AddNewSound(SoundName, SoundName, SoundHashcode, SndParams, SoundsList);
+                EXSound Sound = EXObjectsFunctions.GetSoundByName(SoundName, SoundsList);
+
+                //Add sample
+                foreach (KeyValuePair<int, int[]> entry in Samples)
+                {
+                    string SampleName = SoundName + entry.Key;
+                    int[] SampleValues = entry.Value;
+
                     TreeNodeFunctions.TreeNodeAddNewNode(SoundName, SampleName, 4, 4, "Sample", Color.Black, TreeViewControl);
                     EXObjectsFunctions.AddSampleToSound(Sound, SampleName, SampleValues, false);
                     foreach (EXSample Sample in Sound.Samples)
@@ -222,15 +222,26 @@ namespace EuroSound_SB_Editor
                             }
                             else
                             {
-                                //ADD A FORM WITH THE IMPORT RESULTS.
-                                ListViewItem Message = new ListViewItem(new[] { "", "Sample (" + entry.Key + ".wav" + ") not found for the sound: " + SoundName });
-                                Message.SubItems[0].BackColor = Color.Red;
-                                Message.UseItemStyleForSubItems = false;
-                                Reports.Items.Add(Message);
+                                if (!IsStreamed)
+                                {
+                                    //ADD A FORM WITH THE IMPORT RESULTS.
+                                    ListViewItem Message = new ListViewItem(new[] { "", "Sample (" + entry.Key + ".wav" + ") not found for the sound: " + SoundName });
+                                    Message.SubItems[0].BackColor = Color.Red;
+                                    Message.UseItemStyleForSubItems = false;
+                                    Reports.Items.Add(Message);
+                                }
                             }
                         }
                     }
                 }
+            }
+            else
+            {
+                //ADD A FORM WITH THE IMPORT RESULTS.
+                ListViewItem Message = new ListViewItem(new[] { "", "Sound (" + SoundName + ") can't be added, a sound with the same name already exists" });
+                Message.SubItems[0].BackColor = Color.Yellow;
+                Message.UseItemStyleForSubItems = false;
+                Reports.Items.Add(Message);
             }
 
             if (ShowResultsAtEnd)

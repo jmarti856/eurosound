@@ -37,6 +37,28 @@ namespace EuroSound_SB_Editor
             return ItemExists;
         }
 
+        public static bool SoundWillBeOutputed(List<EXSound> SoundsList, string SoundName)
+        {
+            bool Output = true;
+
+            if (!(SoundName.Equals("Sounds") || SoundName.Equals("Streamed Sounds")))
+            {
+                foreach (EXSound Sound in SoundsList)
+                {
+                    if (Sound.Name.Equals(SoundName))
+                    {
+                        if (!Sound.OutputThisSound)
+                        {
+                            Output = false;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return Output;
+        }
+
         internal static void RemoveSampleFromSound(EXSound SoundName, string SampleName)
         {
             EXSample SampleToRemove = TreeNodeFunctions.GetSelectedSample(SoundName, SampleName);
@@ -160,6 +182,21 @@ namespace EuroSound_SB_Editor
             Reader.Dispose();
 
             return byteArray;
+        }
+
+        internal static List<EXSound> GetFinalListToExport(List<EXSound> SoundsList)
+        {
+            List<EXSound> FinalList = new List<EXSound>();
+
+            foreach (EXSound Sound in SoundsList)
+            {
+                if (Sound.OutputThisSound)
+                {
+                    FinalList.Add(Sound);
+                }
+            }
+
+            return FinalList;
         }
     }
 }

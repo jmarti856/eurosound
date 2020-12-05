@@ -1,11 +1,10 @@
-F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound Soundbank Editor.csproj.GenerateResource.cache
-F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound Soundbank Editor.csproj.CoreCompileInputs.cache
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\sb_editor.exe
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\sb_editor.pdb
-F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\sb_editor.exe
-F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\sb_editor.pdb
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\NAudio.xml
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\YamlDotNet.xml
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound_SB_Editor.EuroSound_FlagsForm.resources
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound_SB_Editor.EuroSound_ImportResultsList.resources
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound_SB_Editor.EuroSound_NodesToFolder.resources
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound_SB_Editor.EuroSound_WarningBox.resources
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound_SB_Editor.Frm_AboutEuroSound.resources
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound_SB_Editor.EuroSound_InputBox.resources
@@ -14,8 +13,10 @@ F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound_SB_Edit
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound_SB_Editor.Frm_SampleProperties.resources
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound_SB_Editor.Frm_Soundbanks_Main.resources
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound_SB_Editor.Properties.Resources.resources
-F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\NAudio.xml
-F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\YamlDotNet.xml
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound Soundbank Editor.csproj.GenerateResource.cache
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound Soundbank Editor.csproj.CoreCompileInputs.cache
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound Soundbank Editor.csproj.Fody.CopyLocal.cache
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound Soundbank Editor.csproj.CopyComplete
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\sb_editor.exe
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\sb_editor.pdb
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound Soundbank Editor.csprojAssemblyReference.cache

@@ -76,7 +76,14 @@ namespace EuroSound_SB_Editor
             }
             else if (e.Node.Tag.Equals("Sound"))
             {
-                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 3, 3);
+                if (EXObjectsFunctions.SoundWillBeOutputed(SoundsList, e.Node.Name))
+                {
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 3, 3);
+                }
+                else
+                {
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 6, 6);
+                }
             }
             else if (e.Node.Tag.Equals("Sample"))
             {
@@ -93,7 +100,14 @@ namespace EuroSound_SB_Editor
             }
             else if (e.Node.Tag.Equals("Sound"))
             {
-                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 2, 2);
+                if (EXObjectsFunctions.SoundWillBeOutputed(SoundsList, e.Node.Name))
+                {
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 2, 2);
+                }
+                else
+                {
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 5, 5);
+                }
             }
             else if (e.Node.Tag.Equals("Sample"))
             {
@@ -233,22 +247,23 @@ namespace EuroSound_SB_Editor
         //*===============================================================================================
         //* Context Menu - Items
         //*===============================================================================================
-        private void MenuItem_AddToFolder_Click(object sender, System.EventArgs e)
+        private void MenuItem_SortChilds_Click(object sender, System.EventArgs e)
         {
-
+            TreeView_File.Sort();
+            TreeView_File.TreeViewNodeSorter = new NodeSorter();
         }
 
-        private void MenuItem_MoveUp_Click(object sender, System.EventArgs e)
+        private void AddSoundsToFolderToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
-            TreeViewExtensions.MoveUp(TreeView_File.SelectedNode);
+            EuroSound_NodesToFolder SoundsToFolders = new EuroSound_NodesToFolder(TreeView_File)
+            {
+                ShowInTaskbar = false,
+                Owner = this
+            };
+            SoundsToFolders.ShowDialog();
         }
 
-        private void MenuItem_MoveDown_Click(object sender, System.EventArgs e)
-        {
-            TreeViewExtensions.MoveDown(TreeView_File.SelectedNode);
-        }
-
-        private void NewFolderToolStripMenuItem_Click(object sender, System.EventArgs e)
+        private void MenuItem_AddNewFolder_Click(object sender, System.EventArgs e)
         {
             string Name = OpenInputBox("Enter a name for new folder.", "New Folder");
             if (TreeNodeFunctions.CheckIfNodeExists(TreeView_File, Name))
@@ -267,7 +282,16 @@ namespace EuroSound_SB_Editor
                     Debug.WriteLine("WARNING -- Trying to add a folder withouth name.");
                 }
             }
+        }
 
+        private void MenuItem_MoveUp_Click(object sender, System.EventArgs e)
+        {
+            TreeViewExtensions.MoveUp(TreeView_File.SelectedNode);
+        }
+
+        private void MenuItem_MoveDown_Click(object sender, System.EventArgs e)
+        {
+            TreeViewExtensions.MoveDown(TreeView_File.SelectedNode);
         }
 
         private void MenuItem_AddSound_Click(object sender, System.EventArgs e)
@@ -459,7 +483,7 @@ namespace EuroSound_SB_Editor
                 {
                     if (Directory.Exists(Path.GetDirectoryName(SavePath)))
                     {
-                        EXBuildSFX.ExportContentToSFX(SoundsList, SavePath);
+                        EXBuildSFX.ExportContentToSFX(EXObjectsFunctions.GetFinalListToExport(SoundsList), SavePath);
                     }
                 }
             }

@@ -9,10 +9,12 @@ namespace EuroSound_SB_Editor
         //* Global Variables
         //*===============================================================================================
         EXSound SelectedSound;
-        public Frm_EffectProperties(EXSound SoundToCheck)
+        string TreeNodeSoundName;
+        public Frm_EffectProperties(EXSound SoundToCheck, string SoundName)
         {
             InitializeComponent();
             SelectedSound = SoundToCheck;
+            TreeNodeSoundName = SoundName;
         }
 
         //*===============================================================================================
@@ -52,6 +54,7 @@ namespace EuroSound_SB_Editor
             numeric_ducker.Value = SelectedSound.Ducker;
             numeric_mastervolume.Value = SelectedSound.MasterVolume;
             textbox_flags.Text = SelectedSound.Flags.ToString();
+            Checkbox_OutputThisSound.Checked = SelectedSound.OutputThisSound;
 
             /*---Print Sample--*/
             if (SelectedSound.Samples != null)
@@ -83,6 +86,18 @@ namespace EuroSound_SB_Editor
             SelectedSound.Ducker = Convert.ToInt32(numeric_ducker.Value);
             SelectedSound.MasterVolume = Convert.ToInt32(numeric_mastervolume.Value);
             SelectedSound.Flags = Convert.ToInt32(textbox_flags.Text);
+            SelectedSound.OutputThisSound = Checkbox_OutputThisSound.Checked;
+
+
+            TreeNode[] Results = ((Frm_Soundbanks_Main)Application.OpenForms["Frm_Soundbanks_Main"]).TreeView_File.Nodes.Find(TreeNodeSoundName, true);
+            if (SelectedSound.OutputThisSound)
+            {
+                TreeNodeFunctions.TreeNodeSetNodeImage(Results[0], 2, 2);
+            }
+            else
+            {
+                TreeNodeFunctions.TreeNodeSetNodeImage(Results[0], 5, 5);
+            }
 
             this.Close();
         }

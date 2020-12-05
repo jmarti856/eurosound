@@ -61,6 +61,7 @@
             this.grbx_hashcode = new System.Windows.Forms.GroupBox();
             this.cbx_hashcode = new System.Windows.Forms.ComboBox();
             this.label_hashcode = new System.Windows.Forms.Label();
+            this.Checkbox_OutputThisSound = new System.Windows.Forms.CheckBox();
             this.groupbox_params.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_mastervolume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_ducker)).BeginInit();
@@ -458,6 +459,16 @@
             this.label_hashcode.TabIndex = 0;
             this.label_hashcode.Text = "Hashcode:";
             // 
+            // Checkbox_OutputThisSound
+            // 
+            this.Checkbox_OutputThisSound.AutoSize = true;
+            this.Checkbox_OutputThisSound.Location = new System.Drawing.Point(12, 560);
+            this.Checkbox_OutputThisSound.Name = "Checkbox_OutputThisSound";
+            this.Checkbox_OutputThisSound.Size = new System.Drawing.Size(115, 17);
+            this.Checkbox_OutputThisSound.TabIndex = 5;
+            this.Checkbox_OutputThisSound.Text = "Output This Sound";
+            this.Checkbox_OutputThisSound.UseVisualStyleBackColor = true;
+            // 
             // Frm_EffectProperties
             // 
             this.AcceptButton = this.button_ok;
@@ -465,6 +476,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button_cancel;
             this.ClientSize = new System.Drawing.Size(548, 595);
+            this.Controls.Add(this.Checkbox_OutputThisSound);
             this.Controls.Add(this.grbx_hashcode);
             this.Controls.Add(this.button_cancel);
             this.Controls.Add(this.button_ok);
@@ -495,6 +507,7 @@
             this.grbx_hashcode.ResumeLayout(false);
             this.grbx_hashcode.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -532,5 +545,6 @@
         private System.Windows.Forms.ListBox List_Samples;
         private System.Windows.Forms.NumericUpDown numeric_mastervolume;
         private System.Windows.Forms.Label label_mastervolume;
+        private System.Windows.Forms.CheckBox Checkbox_OutputThisSound;
     }
 }
