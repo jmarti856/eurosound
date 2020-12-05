@@ -135,7 +135,7 @@ namespace EuroSound_SB_Editor
             }
         }
         internal void RemoveSampleSelectedNode()
-        {             
+        {
             /*Show warning*/
             EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox("Delete Sample: " + TreeView_File.SelectedNode.Text, "Warning", false);
             if (WarningDialog.ShowDialog() == DialogResult.OK)

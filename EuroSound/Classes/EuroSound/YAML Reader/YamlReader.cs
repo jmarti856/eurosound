@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using YamlDotNet.RepresentationModel;
 
@@ -11,10 +10,9 @@ namespace EuroSound_SB_Editor
 {
     public static class YamlReader
     {
-        internal static ListView Reports;
+        internal static ListView Reports = new ListView();
         internal static void LoadDataFromSwyterUnpacker(List<EXSound> SoundsList, TreeView TreeViewControl, string FilePath)
         {
-            Reports = new ListView();
             List<string> SoundsPaths;
             string SoundName, SoundHashcode;
 
@@ -33,7 +31,7 @@ namespace EuroSound_SB_Editor
                     Message.UseItemStyleForSubItems = false;
                     Reports.Items.Add(Message);
                 }
-                ReadYamlFile(SoundsList, TreeViewControl, path, SoundName, SoundHashcode);
+                ReadYamlFile(SoundsList, TreeViewControl, path, SoundName, SoundHashcode, false);
             }
 
             //Expand only root nodes
@@ -46,17 +44,7 @@ namespace EuroSound_SB_Editor
                 TreeViewControl.Nodes[1].Expand();
             });
 
-            //Show Import results
-            if (Reports.Items.Count > 0)
-            {
-                EuroSound_ImportResultsList ImportResults = new EuroSound_ImportResultsList(Reports)
-                {
-                    Text = Path.GetFileName(FilePath) + " Import results",
-                    ShowInTaskbar = false
-                };
-                ImportResults.ShowDialog();
-                ImportResults.Dispose();
-            }
+            ShowImportResults(Reports, FilePath);
         }
 
         internal static List<string> GetFilePaths(string LevelSoundBankPath, string FilePath)
@@ -76,7 +64,7 @@ namespace EuroSound_SB_Editor
             return Paths;
         }
 
-        internal static void ReadYamlFile(List<EXSound> SoundsList, TreeView TreeViewControl, string FilePath, string SoundName, string SoundHashcode)
+        internal static void ReadYamlFile(List<EXSound> SoundsList, TreeView TreeViewControl, string FilePath, string SoundName, string SoundHashcode, bool ShowResultsAtEnd)
         {
             int[] SndParams = new int[12];
             bool[] SndFlags = new bool[12];
@@ -201,13 +189,9 @@ namespace EuroSound_SB_Editor
                 string SampleName = SoundName + entry.Key;
                 int[] SampleValues = entry.Value;
 
-                TreeNodeFunctions.TreeNodeAddNewNode(SoundName, SampleName, 4, 4, "Sample", Color.Black, TreeViewControl);
-                if (IsStreamed)
+                if (!IsStreamed)
                 {
-                    EXObjectsFunctions.AddSampleToSound(Sound, SampleName, SampleValues, true);
-                }
-                else
-                {
+                    TreeNodeFunctions.TreeNodeAddNewNode(SoundName, SampleName, 4, 4, "Sample", Color.Black, TreeViewControl);
                     EXObjectsFunctions.AddSampleToSound(Sound, SampleName, SampleValues, false);
                     foreach (EXSample Sample in Sound.Samples)
                     {
@@ -226,7 +210,6 @@ namespace EuroSound_SB_Editor
                                 Sample.Audio.Channels = AudioReader.WaveFormat.Channels;
                                 Sample.Audio.Bits = AudioReader.WaveFormat.BitsPerSample;
                                 Sample.Audio.Duration = Convert.ToInt32(Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1));
-                                Sample.Audio.AllData = File.ReadAllBytes(AudioFilePath);
                                 Sample.Audio.Encoding = AudioReader.WaveFormat.Encoding.ToString();
 
                                 /*Close reader*/
@@ -248,6 +231,11 @@ namespace EuroSound_SB_Editor
                         }
                     }
                 }
+            }
+
+            if (ShowResultsAtEnd)
+            {
+                ShowImportResults(Reports, FilePath);
             }
         }
 
@@ -272,6 +260,21 @@ namespace EuroSound_SB_Editor
                 }
             }
             return bitfield;
+        }
+
+        internal static void ShowImportResults(ListView Reports, string FilePath)
+        {
+            //Show Import results
+            if (Reports.Items.Count > 0)
+            {
+                EuroSound_ImportResultsList ImportResults = new EuroSound_ImportResultsList(Reports)
+                {
+                    Text = Path.GetFileName(FilePath) + " Import results",
+                    ShowInTaskbar = false
+                };
+                ImportResults.ShowDialog();
+                ImportResults.Dispose();
+            }
         }
     }
 }

@@ -47,8 +47,8 @@
             this.Textbox_About.Size = new System.Drawing.Size(406, 247);
             this.Textbox_About.TabIndex = 0;
             this.Textbox_About.TabStop = false;
-            this.Textbox_About.Text = "\r\nEuroSound Soundbank\r\nEditor\r\n\r\n(c) 2020\r\n\r\nby Jordi Martínez and \r\nIsmael Ferre" +
-    "ras";
+            this.Textbox_About.Text = "\r\nEuroSound Soundbank\r\nEditor\r\n\r\n(c) 2020\r\n\r\nby Ismael Ferreras and\r\nJordi Martín" +
+    "ez";
             this.Textbox_About.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.Textbox_About.WordWrap = false;
             // 

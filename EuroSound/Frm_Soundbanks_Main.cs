@@ -233,6 +233,21 @@ namespace EuroSound_SB_Editor
         //*===============================================================================================
         //* Context Menu - Items
         //*===============================================================================================
+        private void MenuItem_AddToFolder_Click(object sender, System.EventArgs e)
+        {
+
+        }
+
+        private void MenuItem_MoveUp_Click(object sender, System.EventArgs e)
+        {
+            TreeViewExtensions.MoveUp(TreeView_File.SelectedNode);
+        }
+
+        private void MenuItem_MoveDown_Click(object sender, System.EventArgs e)
+        {
+            TreeViewExtensions.MoveDown(TreeView_File.SelectedNode);
+        }
+
         private void NewFolderToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
             string Name = OpenInputBox("Enter a name for new folder.", "New Folder");
@@ -386,7 +401,7 @@ namespace EuroSound_SB_Editor
                 {
                     RemoveSoundSelectedNode();
                 }
-                else if(TreeView_File.SelectedNode.Equals("Sample"))
+                else if (TreeView_File.SelectedNode.Equals("Sample"))
                 {
                     RemoveSampleSelectedNode();
                 }
@@ -471,6 +486,19 @@ namespace EuroSound_SB_Editor
                     IsBackground = true
                 };
                 LoadYamlFile.Start();
+            }
+        }
+
+        private void MenuItemFile_ReadSound_Click(object sender, System.EventArgs e)
+        {
+            string SoundName, SoundHashcode;
+
+            string FilePath = Generic.OpenFileBrowser("YML Files|*.yml", 0);
+            if (!string.IsNullOrEmpty(FilePath))
+            {
+                SoundName = new DirectoryInfo(Path.GetDirectoryName(FilePath)).Name;
+                SoundHashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SFX_Defines, SoundName);
+                YamlReader.ReadYamlFile(SoundsList, TreeView_File, FilePath, SoundName, SoundHashcode, true);
             }
         }
 
@@ -561,6 +589,18 @@ namespace EuroSound_SB_Editor
                 }
                 Hashcode.UseItemStyleForSubItems = false;
                 ListView_Hashcodes.Items.Add(Hashcode);
+            }
+        }
+
+        private void ContextMenu_Sound_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name.Equals("StreamedSounds"))
+            {
+                MenuItem_AddSample.Visible = false;
+            }
+            else
+            {
+                MenuItem_AddSample.Visible = true;
             }
         }
     }

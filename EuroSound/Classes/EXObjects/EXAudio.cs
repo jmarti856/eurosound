@@ -3,7 +3,6 @@
     public class EXAudio
     {
         public string Name { get; set; }
-        public byte[] AllData { get; set; } = new byte[] { 0, 0, 0 };
         public string Encoding { get; set; } = "<Null>";
 
         /*---ENGINE X Required---*/
@@ -16,15 +15,15 @@
         public int PSIsample { get; set; } = 0;
         public int LoopOffset { get; set; } = 0;
         public int Duration { get; set; }
-        public byte[] PCMdata { get; set; } = new byte[] { 0, 0, 0 };
+        public byte[] PCMdata { get; set; } = new byte[] { 1, 0, 8 };
 
         /*--Functions--*/
         public bool IsEmpty()
         {
             bool Empty = false;
-            if (AllData.Length == 3 || PCMdata.Length == 3)
+            if (PCMdata.Length == 3)
             {
-                if (AllData[0] == 0 && PCMdata[2] == 0)
+                if (PCMdata[0] == 1 && PCMdata[1] == 0 && PCMdata[2] == 8)
                 {
                     Empty = true;
                 }

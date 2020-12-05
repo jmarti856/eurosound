@@ -86,8 +86,6 @@ namespace EuroSound_SB_Editor
                     {
                         /*Write Audio*/
                         BWriter.Write(ItemSample.Audio.Name);
-                        BWriter.Write(ItemSample.Audio.AllData.Length);
-                        BWriter.Write(ItemSample.Audio.AllData);
                         BWriter.Write(ItemSample.Audio.Encoding);
 
                         /*---Required for EngineX---*/
@@ -174,7 +172,7 @@ namespace EuroSound_SB_Editor
         }
         private static void ReadSoundsListData(BinaryReader BReader, List<EXSound> SoundsList)
         {
-            int NumberOfSounds, NumberOfSamples, AllAuidoDataLength, AudioPCMdataLength;
+            int NumberOfSounds, NumberOfSamples, AudioPCMdataLength;
             bool SampleAudioIsEmpty;
 
             NumberOfSounds = BReader.ReadInt32();
@@ -225,8 +223,6 @@ namespace EuroSound_SB_Editor
                     if (SampleAudioIsEmpty == false)
                     {
                         NewSample.Audio.Name = BReader.ReadString();
-                        AllAuidoDataLength = BReader.ReadInt32();
-                        NewSample.Audio.AllData = BReader.ReadBytes(AllAuidoDataLength);
                         NewSample.Audio.Encoding = BReader.ReadString();
 
                         /*---Required for EngineX---*/

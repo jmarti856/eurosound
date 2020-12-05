@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace EuroSound_SB_Editor
@@ -32,22 +33,34 @@ namespace EuroSound_SB_Editor
         {
             string Text = string.Empty;
 
-            Clipboard.Clear();
-
-            foreach (ListViewItem lvItem in ListView_Reports.Items)
+            Thread CopyDataToClipboard = new Thread(delegate ()
             {
-                if (lvItem.SubItems[0].BackColor == Color.Red)
-                {
-                    Text += "Error - ";
-                }
-                else if (lvItem.SubItems[0].BackColor == Color.Yellow)
-                {
-                    Text += "Warning - ";
-                }
-                Text += lvItem.SubItems[1].Text + Environment.NewLine;
-            }
+                Clipboard.Clear();
 
-            Clipboard.SetText(Text);
+                ListView_Reports.Invoke((MethodInvoker)delegate
+                {
+                    foreach (ListViewItem lvItem in ListView_Reports.Items)
+                    {
+                        if (lvItem.SubItems[0].BackColor == Color.Red)
+                        {
+                            Text += "Error - ";
+                        }
+                        else if (lvItem.SubItems[0].BackColor == Color.Yellow)
+                        {
+                            Text += "Warning - ";
+                        }
+                        Text += lvItem.SubItems[1].Text + Environment.NewLine;
+                    }
+                });
+
+                Clipboard.SetText(Text);
+            })
+            {
+                IsBackground = true
+            };
+            CopyDataToClipboard.SetApartmentState(ApartmentState.STA);
+            CopyDataToClipboard.Start();
+
         }
     }
 }

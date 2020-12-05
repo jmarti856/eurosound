@@ -134,17 +134,20 @@ namespace EuroSound_SB_Editor
             {
                 for (int i = 0; i < Sound.Samples.Count; i++)
                 {
-                    /*--[Write data]--*/
-                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Flags));
-                    BWriter.Write(Convert.ToUInt32(BWriter.BaseStream.Position));
-                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.DataSize));
-                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Frequency));
-                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.RealSize));
-                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Channels));
-                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Bits));
-                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.PSIsample));
-                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.LoopOffset));
-                    BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Duration));
+                    if (Sound.Samples[i].IsStreamed == false)
+                    {
+                        /*--[Write data]--*/
+                        BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Flags));
+                        BWriter.Write(Convert.ToUInt32(00000000));
+                        BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.DataSize));
+                        BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Frequency));
+                        BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.RealSize));
+                        BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Channels));
+                        BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Bits));
+                        BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.PSIsample));
+                        BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.LoopOffset));
+                        BWriter.Write(Convert.ToUInt32(Sound.Samples[i].Audio.Duration));
+                    }
                 }
             }
 
@@ -160,11 +163,18 @@ namespace EuroSound_SB_Editor
             {
                 foreach (EXSample Sample in Sound.Samples)
                 {
-                    /*--Add Sample data offset to the list--*/
-                    SampleDataOffsets.Add(BWriter.BaseStream.Position - SampleDataStartOffset);
+                    if (Sample.IsStreamed == false)
+                    {
+                        /*--Add Sample data offset to the list--*/
+                        SampleDataOffsets.Add(BWriter.BaseStream.Position - SampleDataStartOffset);
 
-                    /*--Write PCM Data--*/
-                    BWriter.Write(Sample.Audio.PCMdata);
+                        /*--Write PCM Data--*/
+                        BWriter.Write(Sample.Audio.PCMdata);
+
+                        /*--Aligment Padding--*/
+                        BWriter.Write(Convert.ToSByte(0));
+                        BWriter.Write(Convert.ToSByte(0));
+                    }
                 }
             }
             /*--Section length, current position - start position--*/
@@ -212,20 +222,17 @@ namespace EuroSound_SB_Editor
             //*===============================================================================================
             //* WRITE FINAL OFFSETS TO SAMPLE DATA
             //*===============================================================================================
-            BWriter.BaseStream.Seek(SampleInfoStartOffset, SeekOrigin.Begin);
-            long Offset;
+            BWriter.BaseStream.Seek(SampleInfoStartOffset + 4, SeekOrigin.Begin);
             foreach (long item in SampleDataOffsets)
             {
                 /*--Skip numsamples and flags--*/
-                Offset = BWriter.BaseStream.Position + 6;
-                BWriter.BaseStream.Seek(Offset, SeekOrigin.Begin);
+                BWriter.BaseStream.Seek(BWriter.BaseStream.Position + 4, SeekOrigin.Begin);
 
                 /*--Calculate Relative Offset--*/
                 BWriter.Write(Convert.ToUInt32(item));
 
                 /*--Skip other properties--*/
-                Offset = BWriter.BaseStream.Position + 34;
-                BWriter.BaseStream.Seek(Offset, SeekOrigin.Begin);
+                BWriter.BaseStream.Seek(BWriter.BaseStream.Position + 32, SeekOrigin.Begin);
             }
             BWriter.Close();
             MessageBox.Show("Finished");

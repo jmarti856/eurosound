@@ -93,6 +93,7 @@
     <Compile Include="Classes\EXObjects\EXFile.cs" />
     <Compile Include="Classes\EuroSound\SaveData.cs" />
     <Compile Include="Classes\EuroSound\TreeNodeFunctions.cs" />
+    <Compile Include="Classes\TreeViewExtensions.cs" />
     <Compile Include="CustomControls\EuroSound_FlagsForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -46,7 +46,6 @@ namespace EuroSound_SB_Editor
                     Channels = SelectedSample.Audio.Channels,
                     Bits = SelectedSample.Audio.Bits,
                     Duration = SelectedSample.Audio.Duration,
-                    AllData = SelectedSample.Audio.AllData,
                     Encoding = SelectedSample.Audio.Encoding,
                     PCMdata = SelectedSample.Audio.PCMdata
                 };
@@ -95,7 +94,6 @@ namespace EuroSound_SB_Editor
                         Channels = AudioReader.WaveFormat.Channels,
                         Bits = AudioReader.WaveFormat.BitsPerSample,
                         Duration = Convert.ToInt32(Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1)),
-                        AllData = File.ReadAllBytes(AudioFilePath),
                         Encoding = AudioReader.WaveFormat.Encoding.ToString()
                     };
 
@@ -121,7 +119,7 @@ namespace EuroSound_SB_Editor
             {
                 if (_waveOut.PlaybackState == PlaybackState.Stopped)
                 {
-                    AudioSample = new MemoryStream(TemporalAudio.AllData);
+                    AudioSample = new MemoryStream(TemporalAudio.PCMdata);
                     IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(TemporalAudio.Frequency, TemporalAudio.Bits, TemporalAudio.Channels));
                     _waveOut.Init(provider);
                     _waveOut.Play();
@@ -162,7 +160,6 @@ namespace EuroSound_SB_Editor
                 SelectedSample.Audio.Channels = TemporalAudio.Channels;
                 SelectedSample.Audio.Bits = TemporalAudio.Bits;
                 SelectedSample.Audio.Duration = TemporalAudio.Duration;
-                SelectedSample.Audio.AllData = TemporalAudio.AllData;
                 SelectedSample.Audio.Encoding = TemporalAudio.Encoding;
                 SelectedSample.Audio.PCMdata = TemporalAudio.PCMdata;
             }

@@ -18,3 +18,4 @@ F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\NAudio.xml
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\bin\Debug\YamlDotNet.xml
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound Soundbank Editor.csproj.Fody.CopyLocal.cache
 F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound Soundbank Editor.csproj.CopyComplete
+F:\Repositories\EuroSound-SoundBank-Editor\EuroSound\obj\Debug\EuroSound Soundbank Editor.csprojAssemblyReference.cache
