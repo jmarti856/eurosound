@@ -86,6 +86,7 @@ namespace SoundBanks_Editor
             /*Load file in argument 0*/
             if (!string.IsNullOrEmpty(FileToLoadArg))
             {
+                LoadedFile = FileToLoadArg;
                 SaveAndLoadESF.LoadDocument(TreeView_File, SoundsList, AudioDataDict, FileToLoadArg, ProjectInfo, ResourcesManager);
                 UpdateHashcodesValidList();
             }
@@ -103,7 +104,7 @@ namespace SoundBanks_Editor
                 if (dialogResult == DialogResult.Yes)
                 {
                     e.Cancel = true;
-                    EXObjectsFunctions.SaveDocument(LoadedFile, TreeView_File, SoundsList, AudioDataDict, ProjectInfo, SB_Defines);
+                    LoadedFile = EXObjectsFunctions.SaveDocument(LoadedFile, TreeView_File, SoundsList, AudioDataDict, ProjectInfo, SB_Defines);
                     ProjectInfo.FileHasBeenModified = false;
                     e.Cancel = false;
                 }
@@ -394,7 +395,7 @@ namespace SoundBanks_Editor
         //*===============================================================================================
         private void MenuItem_File_Save_Click(object sender, System.EventArgs e)
         {
-            EXObjectsFunctions.SaveDocument(LoadedFile, TreeView_File, SoundsList, AudioDataDict, ProjectInfo, SB_Defines);
+            LoadedFile = EXObjectsFunctions.SaveDocument(LoadedFile, TreeView_File, SoundsList, AudioDataDict, ProjectInfo, SB_Defines);
         }
 
         private void MenuItem_File_SaveAs_Click(object sender, System.EventArgs e)
@@ -436,6 +437,8 @@ namespace SoundBanks_Editor
                     IsBackground = true
                 };
                 LoadYamlFile.Start();
+
+                ProjectInfo.FileHasBeenModified = true;
             }
         }
 
@@ -469,6 +472,7 @@ namespace SoundBanks_Editor
                 SoundName = new DirectoryInfo(Path.GetDirectoryName(FilePath)).Name;
                 SoundHashcode = Hashcodes.GetHashcodeByLabel(SFX_Defines, SoundName);
                 YamlReader.ReadYamlFile(SoundsList, AudioDataDict, TreeView_File, FilePath, SoundName, SoundHashcode, true, ProjectInfo, ResourcesManager);
+                ProjectInfo.FileHasBeenModified = true;
             }
         }
 

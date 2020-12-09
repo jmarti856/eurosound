@@ -11,7 +11,7 @@ namespace SoundBanks_Editor
 {
     static class SaveAndLoadESF
     {
-        internal static void SaveDocument(TreeView TreeViewControl, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
+        internal static string SaveDocument(TreeView TreeViewControl, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
         {
             BinaryWriter BWriter = new BinaryWriter(File.Open(FilePath, FileMode.Create, FileAccess.Write), Encoding.ASCII);
 
@@ -36,6 +36,8 @@ namespace SoundBanks_Editor
 
             BWriter.Close();
             BWriter.Dispose();
+
+            return FilePath;
         }
 
         private static void SaveSoundsListData(Dictionary<int, EXSound> SoundsList, BinaryWriter BWriter)

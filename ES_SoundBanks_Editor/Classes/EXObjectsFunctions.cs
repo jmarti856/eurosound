@@ -296,16 +296,20 @@ namespace SoundBanks_Editor
 
             return Key;
         }
-        public static void SaveDocument(string LoadedFile, TreeView TreeView_File, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, ProjectFile ProjectProperties, Dictionary<string, string> SB_Defines)
+        public static string SaveDocument(string LoadedFile, TreeView TreeView_File, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, ProjectFile ProjectProperties, Dictionary<string, string> SB_Defines)
         {
+            string NewFilePath;
+
             if (!string.IsNullOrEmpty(LoadedFile))
             {
-                SaveAndLoadESF.SaveDocument(TreeView_File, SoundsList, AudioDataDict, LoadedFile, ProjectProperties);
+                NewFilePath = SaveAndLoadESF.SaveDocument(TreeView_File, SoundsList, AudioDataDict, LoadedFile, ProjectProperties);
             }
             else
             {
-                OpenSaveAsDialog(TreeView_File, SoundsList, AudioDataDict, ProjectProperties, SB_Defines);
+                NewFilePath = OpenSaveAsDialog(TreeView_File, SoundsList, AudioDataDict, ProjectProperties, SB_Defines);
             }
+
+            return NewFilePath;
         }
 
         internal static string OpenSaveAsDialog(TreeView TreeView_File, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, ProjectFile FileProperties, Dictionary<string, string> SB_Defines)

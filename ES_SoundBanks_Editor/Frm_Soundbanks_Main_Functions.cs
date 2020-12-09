@@ -184,7 +184,7 @@ namespace SoundBanks_Editor
                     }
                 });
             }
-            catch (System.ObjectDisposedException)
+            catch
             {
                 // Ignore.  Control is disposed cannot update the UI.
             }
