@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Resources;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -9,6 +11,9 @@ namespace EuroSound_Application
 {
     public partial class Frm_Soundbanks_Main : Form
     {
+        [DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
+
         //*===============================================================================================
         //* Dictionaries
         //*===============================================================================================
@@ -75,7 +80,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* MAIN FORM EVENTS
         //*===============================================================================================
-        private void Frm_Soundbanks_Main_Load(object sender, System.EventArgs e)
+        private void Frm_Soundbanks_Main_Load(object sender, EventArgs e)
         {
             /*Check Hashcodes are not null*/
             /*Load Hashcodes*/
@@ -110,7 +115,7 @@ namespace EuroSound_Application
             }
         }
 
-        private void Frm_Soundbanks_Main_Shown(object sender, System.EventArgs e)
+        private void Frm_Soundbanks_Main_Shown(object sender, EventArgs e)
         {
             /*Expand Sounds node*/
             TreeView_File.Nodes["Sounds"].Expand();
@@ -123,7 +128,7 @@ namespace EuroSound_Application
         {
             if (ProjectInfo.FileHasBeenModified)
             {
-                DialogResult dialogResult = MessageBox.Show("Save changes to " + ProjectInfo.FileName + "?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                DialogResult dialogResult = MessageBox.Show("Save changes to " + ProjectInfo.FileName + "?", "EuroSound", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
                 if (dialogResult == DialogResult.Yes)
                 {
                     e.Cancel = true;
@@ -134,6 +139,10 @@ namespace EuroSound_Application
                 else if (dialogResult == DialogResult.No)
                 {
 
+                }
+                else if (dialogResult == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
                 }
             }
         }
@@ -280,7 +289,7 @@ namespace EuroSound_Application
                 if (targetNode != null)
                 {
                     //Type of nodes that are allowed to be re-ubicated
-                    if (targetNode.Tag.Equals("Folder") || targetNode.Tag.Equals("Sound") || targetNode.Tag.Equals("Audio"))
+                    if (draggedNode.Tag.Equals("Folder") || draggedNode.Tag.Equals("Sound") || draggedNode.Tag.Equals("Audio"))
                     {
                         e.Effect = DragDropEffects.Move;
                     }
@@ -322,13 +331,29 @@ namespace EuroSound_Application
                     targetNode.Nodes.Add(draggedNode);
                     targetNode.Expand();
                     TreeView_File.SelectedNode = draggedNode;
+                    ProjectInfo.FileHasBeenModified = true;
                 }
             }
         }
 
         private void TreeView_File_DragOver(object sender, DragEventArgs e)
         {
+            const Single scrollRegion = 20;
+
             Point p = TreeView_File.PointToClient(new Point(e.X, e.Y));
+
+            // See if we need to scroll up or down
+            if ((p.Y + scrollRegion) > TreeView_File.Height)
+            {
+                // Call the API to scroll down
+                SendMessage(TreeView_File.Handle, (int)277, (int)1, 0);
+            }
+            else if (p.Y < (scrollRegion))
+            {
+                // Call thje API to scroll up
+                SendMessage(TreeView_File.Handle, (int)277, (int)0, 0);
+            }
+
             TreeNode node = TreeView_File.GetNodeAt(p.X, p.Y);
             TreeView_File.SelectedNode = node;
         }
@@ -400,9 +425,14 @@ namespace EuroSound_Application
                     RemoveSoundSelectedNode();
                     ProjectInfo.FileHasBeenModified = true;
                 }
-                else if (TreeView_File.SelectedNode.Equals("Sample"))
+                else if (TreeView_File.SelectedNode.Tag.Equals("Sample"))
                 {
                     RemoveSampleSelectedNode();
+                    ProjectInfo.FileHasBeenModified = true;
+                }
+                else if (TreeView_File.SelectedNode.Tag.Equals("Audio"))
+                {
+                    RemoveAudioAndWarningDependencies();
                     ProjectInfo.FileHasBeenModified = true;
                 }
                 else
@@ -416,19 +446,19 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* MAIN MENU FILE
         //*===============================================================================================
-        private void MenuItem_File_Save_Click(object sender, System.EventArgs e)
+        private void MenuItem_File_Save_Click(object sender, EventArgs e)
         {
             LoadedFile = EXObjectsFunctions.SaveDocument(LoadedFile, TreeView_File, SoundsList, AudioDataDict, ProjectInfo, SB_Defines);
             ProjectInfo.FileHasBeenModified = false;
         }
 
-        private void MenuItem_File_SaveAs_Click(object sender, System.EventArgs e)
+        private void MenuItem_File_SaveAs_Click(object sender, EventArgs e)
         {
             LoadedFile = EXObjectsFunctions.OpenSaveAsDialog(TreeView_File, SoundsList, AudioDataDict, ProjectInfo, SB_Defines);
             ProjectInfo.FileHasBeenModified = false;
         }
 
-        private void MenuItemFile_Export_Click(object sender, System.EventArgs e)
+        private void MenuItemFile_Export_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(ProjectInfo.Hashcode))
             {
@@ -448,7 +478,7 @@ namespace EuroSound_Application
             }
         }
 
-        private void MenuItemFile_ReadYml_Click(object sender, System.EventArgs e)
+        private void MenuItemFile_ReadYml_Click(object sender, EventArgs e)
         {
             string FilePath = GenericFunctions.OpenFileBrowser("YML Files|*.yml", 0);
             if (!string.IsNullOrEmpty(FilePath))
@@ -473,7 +503,7 @@ namespace EuroSound_Application
             }
         }
 
-        private void Button_Search_Click(object sender, System.EventArgs e)
+        private void Button_Search_Click(object sender, EventArgs e)
         {
             var searchFor = Textbox_SearchHint.Text.Trim().ToUpper();
             if (searchFor != "")
@@ -493,12 +523,7 @@ namespace EuroSound_Application
             }
         }
 
-        private void Frm_Soundbanks_Main_Leave(object sender, System.EventArgs e)
-        {
-
-        }
-
-        private void MenuItemFile_ReadSound_Click(object sender, System.EventArgs e)
+        private void MenuItemFile_ReadSound_Click(object sender, EventArgs e)
         {
             string SoundName, SoundHashcode;
 
@@ -515,7 +540,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* MAIN MENU EDIT
         //*===============================================================================================
-        private void MenuItem_Edit_FileProps_Click(object sender, System.EventArgs e)
+        private void MenuItem_Edit_FileProps_Click(object sender, EventArgs e)
         {
             Frm_FileProperties Props = new Frm_FileProperties(ProjectInfo, HashcodesSFX, HashcodesSFXData, SB_Defines, SFX_Defines, ResourcesManager)
             {
@@ -529,13 +554,13 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* WAV HEADER DATA
         //*===============================================================================================
-        private void Button_UpdateList_WavData_Click(object sender, System.EventArgs e)
+        private void Button_UpdateList_WavData_Click(object sender, EventArgs e)
         {
             /*Load Audio properties*/
             UpdateWavDataList();
         }
 
-        private void Button_UpdateList_Hashcodes_Click(object sender, System.EventArgs e)
+        private void Button_UpdateList_Hashcodes_Click(object sender, EventArgs e)
         {
             /*Load New data*/
             UpdateHashcodesValidList();

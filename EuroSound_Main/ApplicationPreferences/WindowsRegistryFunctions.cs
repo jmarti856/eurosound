@@ -45,7 +45,7 @@ namespace EuroSound_Application
 
             for (int i = 0; i < CustomColors.Length; i++)
             {
-                CustomColorKey.SetValue("CustomColor" + i, CustomColors[i], RegistryValueKind.DWord);
+                CustomColorKey.SetValue("CustCol" + i, CustomColors[i], RegistryValueKind.DWord);
             }
         }
 

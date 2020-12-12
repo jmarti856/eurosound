@@ -59,7 +59,6 @@ namespace EuroSound_Application
         {
             Color PickedColor = Color.Black;
             ColorDialog ColorDiag = new ColorDialog() { AllowFullOpen = true, FullOpen = true };
-
             ColorDiag.CustomColors = WindowsRegistryFunctions.SetCustomColors();
             if (ColorDiag.ShowDialog() == DialogResult.OK)
             {

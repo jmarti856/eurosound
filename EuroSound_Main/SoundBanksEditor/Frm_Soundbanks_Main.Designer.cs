@@ -49,6 +49,7 @@
             this.ContextMenuFolder_Move = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuFolder_AddSound = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuFolder_Rename = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuFolder_AddAudio = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuFolder_TextColor = new System.Windows.Forms.ToolStripMenuItem();
@@ -191,11 +192,12 @@
             this.ContextMenuFolders_Folder,
             this.toolStripSeparator7,
             this.ContextMenuFolder_AddSound,
+            this.ContextMenuFolder_Rename,
             this.ContextMenuFolder_AddAudio,
             this.toolStripSeparator5,
             this.ContextMenuFolder_TextColor});
             this.ContextMenu_Folders.Name = "contextMenuStrip1";
-            this.ContextMenu_Folders.Size = new System.Drawing.Size(137, 104);
+            this.ContextMenu_Folders.Size = new System.Drawing.Size(181, 148);
             // 
             // ContextMenuFolders_Folder
             // 
@@ -211,99 +213,106 @@
             this.toolStripSeparator12,
             this.ContextMenuFolder_Move});
             this.ContextMenuFolders_Folder.Name = "ContextMenuFolders_Folder";
-            this.ContextMenuFolders_Folder.Size = new System.Drawing.Size(136, 22);
+            this.ContextMenuFolders_Folder.Size = new System.Drawing.Size(180, 22);
             this.ContextMenuFolders_Folder.Text = "Folder";
             // 
             // ContextMenuFolders_New
             // 
             this.ContextMenuFolders_New.Name = "ContextMenuFolders_New";
-            this.ContextMenuFolders_New.Size = new System.Drawing.Size(189, 22);
+            this.ContextMenuFolders_New.Size = new System.Drawing.Size(183, 22);
             this.ContextMenuFolders_New.Text = "New";
             this.ContextMenuFolders_New.Click += new System.EventHandler(this.ContextMenu_Folders_New_Click);
             // 
             // toolStripSeparator13
             // 
             this.toolStripSeparator13.Name = "toolStripSeparator13";
-            this.toolStripSeparator13.Size = new System.Drawing.Size(186, 6);
+            this.toolStripSeparator13.Size = new System.Drawing.Size(180, 6);
             // 
             // ContextMenuFolder_ExpandAll
             // 
             this.ContextMenuFolder_ExpandAll.Name = "ContextMenuFolder_ExpandAll";
-            this.ContextMenuFolder_ExpandAll.Size = new System.Drawing.Size(189, 22);
+            this.ContextMenuFolder_ExpandAll.Size = new System.Drawing.Size(183, 22);
             this.ContextMenuFolder_ExpandAll.Text = "Expand All";
             this.ContextMenuFolder_ExpandAll.Click += new System.EventHandler(this.ContextMenu_Folders_Expand_Click);
             // 
             // ContextMenuFolder_CollapseAll
             // 
             this.ContextMenuFolder_CollapseAll.Name = "ContextMenuFolder_CollapseAll";
-            this.ContextMenuFolder_CollapseAll.Size = new System.Drawing.Size(189, 22);
+            this.ContextMenuFolder_CollapseAll.Size = new System.Drawing.Size(183, 22);
             this.ContextMenuFolder_CollapseAll.Text = "Collapse All";
             this.ContextMenuFolder_CollapseAll.Click += new System.EventHandler(this.MenuItem_Folder_Collapse_Click);
             // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(186, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(180, 6);
             // 
             // ContextMenuFolder_Delete
             // 
             this.ContextMenuFolder_Delete.Name = "ContextMenuFolder_Delete";
-            this.ContextMenuFolder_Delete.Size = new System.Drawing.Size(189, 22);
+            this.ContextMenuFolder_Delete.Size = new System.Drawing.Size(183, 22);
             this.ContextMenuFolder_Delete.Text = "Delete";
             this.ContextMenuFolder_Delete.Click += new System.EventHandler(this.ContextMenu_Folders_Delete_Click);
             // 
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(186, 6);
+            this.toolStripSeparator11.Size = new System.Drawing.Size(180, 6);
             // 
             // ContextMenuFolder_Sort
             // 
             this.ContextMenuFolder_Sort.Name = "ContextMenuFolder_Sort";
-            this.ContextMenuFolder_Sort.Size = new System.Drawing.Size(189, 22);
+            this.ContextMenuFolder_Sort.Size = new System.Drawing.Size(183, 22);
             this.ContextMenuFolder_Sort.Text = "Sort Child Items";
             this.ContextMenuFolder_Sort.Click += new System.EventHandler(this.ContextMenu_Folders_Sort_Click);
             // 
             // toolStripSeparator12
             // 
             this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(186, 6);
+            this.toolStripSeparator12.Size = new System.Drawing.Size(180, 6);
             // 
             // ContextMenuFolder_Move
             // 
             this.ContextMenuFolder_Move.Name = "ContextMenuFolder_Move";
-            this.ContextMenuFolder_Move.Size = new System.Drawing.Size(189, 22);
-            this.ContextMenuFolder_Move.Text = "Add Sounds To Folder";
+            this.ContextMenuFolder_Move.Size = new System.Drawing.Size(183, 22);
+            this.ContextMenuFolder_Move.Text = "Move Multiple Items";
             this.ContextMenuFolder_Move.Click += new System.EventHandler(this.ContextMenu_Folders_Move_Click);
             // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(133, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(177, 6);
             // 
             // ContextMenuFolder_AddSound
             // 
             this.ContextMenuFolder_AddSound.Name = "ContextMenuFolder_AddSound";
-            this.ContextMenuFolder_AddSound.Size = new System.Drawing.Size(136, 22);
+            this.ContextMenuFolder_AddSound.Size = new System.Drawing.Size(180, 22);
             this.ContextMenuFolder_AddSound.Text = "Add Sound";
             this.ContextMenuFolder_AddSound.Click += new System.EventHandler(this.ContextMenu_Folders_AddSound_Click);
+            // 
+            // ContextMenuFolder_Rename
+            // 
+            this.ContextMenuFolder_Rename.Name = "ContextMenuFolder_Rename";
+            this.ContextMenuFolder_Rename.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuFolder_Rename.Text = "Rename";
+            this.ContextMenuFolder_Rename.Click += new System.EventHandler(this.ContextMenuFolder_Rename_Click);
             // 
             // ContextMenuFolder_AddAudio
             // 
             this.ContextMenuFolder_AddAudio.Name = "ContextMenuFolder_AddAudio";
-            this.ContextMenuFolder_AddAudio.Size = new System.Drawing.Size(136, 22);
+            this.ContextMenuFolder_AddAudio.Size = new System.Drawing.Size(180, 22);
             this.ContextMenuFolder_AddAudio.Text = "Add Audio";
             this.ContextMenuFolder_AddAudio.Click += new System.EventHandler(this.ContextMenu_Folders_AddAudio_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(133, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
             // 
             // ContextMenuFolder_TextColor
             // 
             this.ContextMenuFolder_TextColor.Name = "ContextMenuFolder_TextColor";
-            this.ContextMenuFolder_TextColor.Size = new System.Drawing.Size(136, 22);
+            this.ContextMenuFolder_TextColor.Size = new System.Drawing.Size(180, 22);
             this.ContextMenuFolder_TextColor.Text = "Text Color...";
             this.ContextMenuFolder_TextColor.Click += new System.EventHandler(this.ContextMenuFolders_TextColor_Click);
             // 
@@ -860,7 +869,6 @@
             this.Load += new System.EventHandler(this.Frm_Soundbanks_Main_Load);
             this.Shown += new System.EventHandler(this.Frm_Soundbanks_Main_Shown);
             this.Enter += new System.EventHandler(this.Frm_Soundbanks_Main_Enter);
-            this.Leave += new System.EventHandler(this.Frm_Soundbanks_Main_Leave);
             this.ContextMenu_Folders.ResumeLayout(false);
             this.ContextMenu_Sound.ResumeLayout(false);
             this.MainMenu.ResumeLayout(false);
@@ -961,5 +969,6 @@
         private System.Windows.Forms.Button Button_Search;
         private System.Windows.Forms.RadioButton RadioButton_WholeWord;
         private System.Windows.Forms.RadioButton RadioButton_MatchText;
+        private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_Rename;
     }
 }

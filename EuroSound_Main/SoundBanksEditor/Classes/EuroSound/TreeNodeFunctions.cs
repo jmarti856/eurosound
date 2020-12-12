@@ -121,9 +121,12 @@ namespace EuroSound_Application
 
         internal static TreeNode FindRootNode(TreeNode treeNode)
         {
-            while (treeNode.Parent != null)
+            if (treeNode != null)
             {
-                treeNode = treeNode.Parent;
+                while (treeNode.Parent != null)
+                {
+                    treeNode = treeNode.Parent;
+                }
             }
 
             return treeNode;

@@ -73,6 +73,12 @@ namespace EuroSound_Application
             }
         }
 
+        private void ContextMenuFolder_Rename_Click(object sender, System.EventArgs e)
+        {
+            TreeNodeFunctions.EditNodeLabel(TreeView_File, TreeView_File.SelectedNode, ResourcesManager);
+            ProjectInfo.FileHasBeenModified = true;
+        }
+
         private void ContextMenu_Folders_AddAudio_Click(object sender, System.EventArgs e)
         {
             string Name = GenericFunctions.OpenInputBox("Enter a name for new a new audio.", "New Audio");
@@ -241,23 +247,8 @@ namespace EuroSound_Application
 
         private void ContextMenuAudio_Remove_Click(object sender, System.EventArgs e)
         {
-            List<string> Dependencies = EXObjectsFunctions.GetAudioDependencies(TreeView_File.SelectedNode.Name, SoundsList);
-            if (Dependencies.Count > 0)
-            {
-                EuroSound_ErrorsAndWarningsList ShowDependencies = new EuroSound_ErrorsAndWarningsList(Dependencies)
-                {
-                    Text = "Deleting Audio",
-                    ShowInTaskbar = false,
-                    TopMost = true
-                };
-                ShowDependencies.ShowDialog();
-                ShowDependencies.Dispose();
-            }
-            else
-            {
-                RemoveAudioSelectedNode();
-                ProjectInfo.FileHasBeenModified = true;
-            }
+            RemoveAudioAndWarningDependencies();
+            ProjectInfo.FileHasBeenModified = true;
         }
         #endregion
 

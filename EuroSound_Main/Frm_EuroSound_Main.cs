@@ -129,11 +129,11 @@ namespace EuroSound_Application
         private void Frm_EuroSound_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
-            foreach (Form frm in this.MdiChildren)
+            foreach (Form FormToClose in this.MdiChildren)
             {
-                if (frm.GetType() == this.GetType() && frm != this)
+                if (FormToClose != this)
                 {
-                    frm.Close();
+                    FormToClose.Close();
                 }
             }
             e.Cancel = false;

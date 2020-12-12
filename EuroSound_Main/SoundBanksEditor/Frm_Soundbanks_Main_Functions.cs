@@ -112,6 +112,26 @@ namespace EuroSound_Application
             }
         }
 
+        internal void RemoveAudioAndWarningDependencies()
+        {
+            List<string> Dependencies = EXObjectsFunctions.GetAudioDependencies(TreeView_File.SelectedNode.Name, SoundsList);
+            if (Dependencies.Count > 0)
+            {
+                EuroSound_ErrorsAndWarningsList ShowDependencies = new EuroSound_ErrorsAndWarningsList(Dependencies)
+                {
+                    Text = "Deleting Audio",
+                    ShowInTaskbar = false,
+                    TopMost = true
+                };
+                ShowDependencies.ShowDialog();
+                ShowDependencies.Dispose();
+            }
+            else
+            {
+                RemoveAudioSelectedNode();
+            }
+        }
+
         internal void RemoveAudioSelectedNode()
         {
             /*Show warning*/
