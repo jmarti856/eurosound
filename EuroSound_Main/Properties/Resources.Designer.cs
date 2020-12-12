@@ -61,6 +61,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The audio will not be replaced, this audio is already loaded and stored in this project. The current one will remain..
+        /// </summary>
+        internal static string AudioPropertiesFormAudioExists {
+            get {
+                return ResourceManager.GetString("AudioPropertiesFormAudioExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Sorry, cannot add an item with this name, an item with this name already exists.
         /// </summary>
         internal static string Error_Adding_AlreadyExists {
@@ -169,6 +178,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Do you want to clean the stored data to make a full reimport?.
+        /// </summary>
+        internal static string MenuItem_File_LoadListCleanData {
+            get {
+                return ResourceManager.GetString("MenuItem_File_LoadListCleanData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Create a new document.
         /// </summary>
         internal static string MenuItem_File_NewProject {
@@ -192,6 +210,15 @@ namespace EuroSound_Application.Properties {
         internal static string MenuItem_File_SaveAs {
             get {
                 return ResourceManager.GetString("MenuItem_File_SaveAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Set Global Preferences.
+        /// </summary>
+        internal static string MenuItem_View_GlobalPreferences {
+            get {
+                return ResourceManager.GetString("MenuItem_View_GlobalPreferences", resourceCulture);
             }
         }
         

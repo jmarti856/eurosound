@@ -1,38 +1,36 @@
 ﻿using CustomControls;
-using FunctionsLibrary;
-using SoundBanks_Editor;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Resources;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
 {
     public partial class Frm_EuroSound_Main : Form
     {
-
         //*===============================================================================================
         //* GLOBAL VARS
         //*===============================================================================================
         string DraggedFile;
         bool MenuStripOpened;
         int FormID = 0;
+        ResourceManager ResourcesManager;
 
-        public Dictionary<string, string> SFX_Defines = new Dictionary<string, string>();
-        public Dictionary<string, string> SB_Defines = new Dictionary<string, string>();
-        public Dictionary<string, double[]> SFX_Data = new Dictionary<string, double[]>();
+        public Dictionary<string, string> SFX_Defines;
+        public Dictionary<string, string> SB_Defines;
+        public Dictionary<string, double[]> SFX_Data;
 
-        public string HT_SoundsPath { get; set; } = @"X:\Sphinx\Sonix\SFX_Defines.h";
-        public string HT_SoundsDataPath { get; set; } = @"X:\Sphinx\Sonix\SFX_Data.h";
-        ResourceManager ResourcesManager = new ResourceManager(typeof(Properties.Resources));
-
-        public Frm_EuroSound_Main(string Argument0)
+        public Frm_EuroSound_Main(string LoadedFileByArgument, ResourceManager v_ResourcesManager, Dictionary<string, string> d_SFX_Defines, Dictionary<string, string> v_SB_Defines, Dictionary<string, double[]> v_SFX_Data)
         {
             InitializeComponent();
-            DraggedFile = Argument0;
+
+            ResourcesManager = v_ResourcesManager;
+            DraggedFile = LoadedFileByArgument;
+            SFX_Defines = d_SFX_Defines;
+            SB_Defines = v_SB_Defines;
+            SFX_Data = v_SFX_Data;
 
             /*Menu Item: File*/
             MainMenu_File.DropDownOpened += (se, ev) => { GenericFunctions.StatusBarTutorialModeShowText(""); MenuStripOpened = true; };
@@ -46,15 +44,15 @@ namespace EuroSound_Application
             MenuItemFile_OpenESF.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuStripOpened);
             MenuItemFile_Exit.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuStripOpened);
 
-
-
             /*Menu Item: View*/
             MainMenu_View.DropDownOpened += (se, ev) => { GenericFunctions.StatusBarTutorialModeShowText(""); MenuStripOpened = true; };
             MainMenu_View.DropDownClosed += (se, ev) => { GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); MenuStripOpened = false; };
 
             MenuItemView_StatusBar.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(ResourcesManager.GetString("MenuItem_View_StatusBar"));
-            MenuItemView_StatusBar.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuStripOpened);
+            MenuItemView_Preferences.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(ResourcesManager.GetString("MenuItem_View_GlobalPreferences"));
 
+            MenuItemView_StatusBar.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuStripOpened);
+            MenuItemView_Preferences.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuStripOpened);
 
             /*Menu Item: Window*/
             MainMenu_Window.DropDownOpened += (se, ev) => { GenericFunctions.StatusBarTutorialModeShowText(""); MenuStripOpened = true; };
@@ -75,7 +73,6 @@ namespace EuroSound_Application
             MenuItemWindow_TileH.Click += (se, ev) => { this.LayoutMdi(MdiLayout.TileHorizontal); GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); };
             MenuItemWindow_TileV.Click += (se, ev) => { this.LayoutMdi(MdiLayout.TileVertical); GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); };
 
-
             /*Menu Item: Help*/
             MainMenu_Help.DropDownOpened += (se, ev) => { GenericFunctions.StatusBarTutorialModeShowText(""); MenuStripOpened = true; };
             MainMenu_Help.DropDownClosed += (se, ev) => { GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); MenuStripOpened = false; };
@@ -91,10 +88,10 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* FORM EVENTS
         //*===============================================================================================
-        private void Frm_EuroSound_Main_Load(object sender, System.EventArgs e)
+        private void Frm_EuroSound_Main_Load(object sender, EventArgs e)
         {
-            /*Get status label to modify it later*/
-            GenericFunctions.GetProgramStatusLabel(EuroSound_StatusBar_Status, EuroSound_StatusBar_FileName, EuroSound_Main_StatusBar);
+            /*GetControl*/
+            GenericFunctions.GetStatusBarControls(EuroSound_Main_StatusBar, EuroSound_StatusBar_Status, EuroSound_StatusBar_FileName);
 
             /*Update Status Bar*/
             GenericFunctions.SetProgramStateShowToStatusBar(ResourcesManager.GetString("StatusBar_Status_Ready"));
@@ -103,21 +100,6 @@ namespace EuroSound_Application
             {
                 LoadSoundBank(DraggedFile);
             }
-
-            /*Load Hashcodes*/
-            Thread LoadHashcodeData = new Thread(() =>Hashcodes.LoadSoundDataFile(HT_SoundsDataPath, SFX_Data, SFX_Defines, ResourcesManager))
-            {
-                IsBackground = true
-            };
-            Thread LoadHashcodes = new Thread(() =>Hashcodes.LoadSoundHashcodes(HT_SoundsPath, SFX_Defines, SB_Defines, ResourcesManager))
-            {
-                IsBackground = true
-            };
-            LoadHashcodes.Start();
-            LoadHashcodes.Join();
-            LoadHashcodeData.Start();
-
-
         }
 
         private void Frm_EuroSound_Main_DragEnter(object sender, DragEventArgs e)
@@ -144,6 +126,18 @@ namespace EuroSound_Application
             }
         }
 
+        private void Frm_EuroSound_Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            foreach (Form frm in this.MdiChildren)
+            {
+                if (frm.GetType() == this.GetType() && frm != this)
+                {
+                    frm.Close();
+                }
+            }
+            e.Cancel = false;
+        }
         //*===============================================================================================
         //* MAIN MENU -- FILE
         //*===============================================================================================
@@ -175,15 +169,7 @@ namespace EuroSound_Application
                 /*--THE NEW FILE WILL BE A SOUNDBANK--*/
                 if (NewFileProperties[1].Equals("0"))
                 {
-                    Frm_Soundbanks_Main NewSoundBankForm = new Frm_Soundbanks_Main(string.Empty, NewFileProperties[0], HT_SoundsPath, HT_SoundsDataPath, SFX_Defines, SB_Defines, SFX_Data, ResourcesManager)
-                    {
-                        Text = NewFileProperties[0],
-                        Owner = this,
-                        MdiParent = this,
-                        Tag = FormID.ToString()
-                    };
-                    NewSoundBankForm.Show();
-                    FormID++;
+                    OpenSoundBanksForm(string.Empty, NewFileProperties[0]);
                 }
             }
         }
@@ -219,15 +205,49 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void LoadSoundBank(string FilePathToLoad)
         {
-            Frm_Soundbanks_Main NewSoundBankForm = new Frm_Soundbanks_Main(FilePathToLoad, "", HT_SoundsPath, HT_SoundsDataPath, SFX_Defines, SB_Defines, SFX_Data, ResourcesManager)
+            OpenSoundBanksForm(FilePathToLoad, "");
+        }
+
+        private void MenuItemView_Preferences_Click(object sender, EventArgs e)
+        {
+            Frm_MainPreferences AppPreferences = new Frm_MainPreferences()
             {
-                Text = string.Format("{0} - {1}", Path.GetFileName(FilePathToLoad), Path.GetDirectoryName(FilePathToLoad)),
                 Owner = this,
-                MdiParent = this,
-                Tag = FormID.ToString()
+                ShowInTaskbar = false
             };
-            NewSoundBankForm.Show();
-            FormID++;
+            AppPreferences.ShowDialog();
+            AppPreferences.Dispose();
+        }
+
+        private void OpenSoundBanksForm(string FilePath, string ProjectName)
+        {
+            string FormTitle;
+            if (File.Exists(GlobalPreferences.HT_SoundsPath) && File.Exists(GlobalPreferences.HT_SoundsDataPath))
+            {
+                if (string.IsNullOrEmpty(FilePath))
+                {
+                    FormTitle = ProjectName;
+                }
+                else
+                {
+                    FormTitle = string.Format("{0} - {1}", Path.GetFileName(FilePath), Path.GetDirectoryName(FilePath));
+                }
+
+                /*Show Form*/
+                Frm_Soundbanks_Main NewSoundBankForm = new Frm_Soundbanks_Main(FilePath, ProjectName, GlobalPreferences.HT_SoundsPath, GlobalPreferences.HT_SoundsDataPath, SFX_Defines, SB_Defines, SFX_Data, ResourcesManager)
+                {
+                    Text = FormTitle,
+                    Owner = this,
+                    MdiParent = this,
+                    Tag = "frm" + FormID.ToString()
+                };
+                NewSoundBankForm.Show();
+                FormID++;
+            }
+            else
+            {
+                MessageBox.Show("The hashtable paths are not correct, please fix them first before continue.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

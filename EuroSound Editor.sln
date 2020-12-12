@@ -3,15 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundBanks_Editor", "ES_SoundBanks_Editor\SoundBanks_Editor.csproj", "{47BFECC9-678D-40F2-A62F-F1035F980311}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EuroSound Main", "EuroSound_Main\EuroSound Main.csproj", "{660E7852-3899-4910-AFC2-B9C0C280D58A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionsLibrary", "FunctionsLibrary\FunctionsLibrary.csproj", "{417D4771-931D-4C25-8027-2D2477E3763C}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Others", "Others", "{F62EDD83-983D-4C7C-8DF0-52506C183F39}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomControls", "CustomControls\CustomControls.csproj", "{66A611B2-3A36-4D75-AF43-FCEF3BCB6B80}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EuroSound_Editor", "EuroSound_Main\EuroSound_Editor.csproj", "{660E7852-3899-4910-AFC2-B9C0C280D58A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,29 +11,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{47BFECC9-678D-40F2-A62F-F1035F980311}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47BFECC9-678D-40F2-A62F-F1035F980311}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{47BFECC9-678D-40F2-A62F-F1035F980311}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{47BFECC9-678D-40F2-A62F-F1035F980311}.Release|Any CPU.Build.0 = Release|Any CPU
 		{660E7852-3899-4910-AFC2-B9C0C280D58A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{660E7852-3899-4910-AFC2-B9C0C280D58A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{660E7852-3899-4910-AFC2-B9C0C280D58A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{660E7852-3899-4910-AFC2-B9C0C280D58A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{417D4771-931D-4C25-8027-2D2477E3763C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{417D4771-931D-4C25-8027-2D2477E3763C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{417D4771-931D-4C25-8027-2D2477E3763C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{417D4771-931D-4C25-8027-2D2477E3763C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{66A611B2-3A36-4D75-AF43-FCEF3BCB6B80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{66A611B2-3A36-4D75-AF43-FCEF3BCB6B80}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{66A611B2-3A36-4D75-AF43-FCEF3BCB6B80}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{66A611B2-3A36-4D75-AF43-FCEF3BCB6B80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{417D4771-931D-4C25-8027-2D2477E3763C} = {F62EDD83-983D-4C7C-8DF0-52506C183F39}
-		{66A611B2-3A36-4D75-AF43-FCEF3BCB6B80} = {F62EDD83-983D-4C7C-8DF0-52506C183F39}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {76149B84-C672-4355-B636-E09C32F62324}
