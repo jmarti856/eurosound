@@ -1,9 +1,7 @@
 ﻿using NAudio.Wave;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Resources;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -14,44 +12,25 @@ namespace EuroSound_Application
         string SelectedAudioMD5Hash, TemporalAudioHash;
         WaveOut _waveOut = new WaveOut();
         MemoryStream AudioSample;
-        ResourceManager ResxM;
-        Dictionary<string, EXAudio> AudiosList;
 
-        public Frm_AudioProperties(EXAudio AudioToCheck, string AudioKey, Dictionary<string, EXAudio> List, ResourceManager ResourcesManager)
+        public Frm_AudioProperties(EXAudio AudioToCheck, string AudioKey)
         {
             InitializeComponent();
             SelectedAudio = AudioToCheck;
             TemporalAudioHash = AudioKey;
             SelectedAudioMD5Hash = AudioKey;
-            AudiosList = List;
-            ResxM = ResourcesManager;
         }
 
         private void Frm_AudioProperties_Load(object sender, EventArgs e)
         {
-            TemporalAudio = new EXAudio
-            {
-                Name = SelectedAudio.Name,
-                Encoding = SelectedAudio.Encoding,
-                Flags = SelectedAudio.Flags,
-                DataSize = SelectedAudio.DataSize,
-                Frequency = SelectedAudio.Frequency,
-                RealSize = SelectedAudio.RealSize,
-                Channels = SelectedAudio.Channels,
-                Bits = SelectedAudio.Bits,
-                PSIsample = SelectedAudio.PSIsample,
-                LoopOffset = SelectedAudio.LoopOffset,
-                Duration = SelectedAudio.Duration,
-                PCMdata = SelectedAudio.PCMdata
-            };
-
+            TemporalAudio = new EXAudio();
+            Reflection.CopyProperties(SelectedAudio, TemporalAudio);
             UpdateControls();
 
             /*--Editable Data--*/
             numeric_flags.Value = TemporalAudio.Flags;
             numeric_psi.Value = TemporalAudio.PSIsample;
             numeric_loopOffset.Value = TemporalAudio.LoopOffset;
-
 
             /*--Test WaveViewer--*/
             //set initial speed - it can be configured using UI slider
@@ -98,17 +77,18 @@ namespace EuroSound_Application
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
+            Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", this.Tag.ToString());
             /*--Add The Audio to the list if has been replaced--*/
             if (!SelectedAudioMD5Hash.Equals(TemporalAudioHash))
             {
-                if (!AudiosList.ContainsKey(TemporalAudioHash))
+                if (!((Frm_Soundbanks_Main)ParentForm).AudioDataDict.ContainsKey(TemporalAudioHash))
                 {
-                    AudiosList.Remove(SelectedAudioMD5Hash);
-                    EXObjectsFunctions.AddAudioToList(TemporalAudio, TemporalAudioHash, AudiosList);
+                    ((Frm_Soundbanks_Main)ParentForm).AudioDataDict.Remove(SelectedAudioMD5Hash);
+                    EXObjectsFunctions.AddAudioToList(TemporalAudio, TemporalAudioHash, ((Frm_Soundbanks_Main)ParentForm).AudioDataDict);
                 }
                 else
                 {
-                    MessageBox.Show(ResxM.GetString("AudioPropertiesFormAudioExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("AudioPropertiesFormAudioExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
             else

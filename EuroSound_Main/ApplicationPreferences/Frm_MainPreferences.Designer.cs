@@ -30,7 +30,7 @@ namespace EuroSound_Application
         private void InitializeComponent()
         {
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("ESF Tree");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("General");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Hash Tables");
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
             this.Panel_SecondaryForms = new System.Windows.Forms.TableLayoutPanel();
@@ -81,8 +81,8 @@ namespace EuroSound_Application
             this.TreeViewPreferences.Name = "TreeViewPreferences";
             treeNode1.Name = "ESFTree";
             treeNode1.Text = "ESF Tree";
-            treeNode2.Name = "General";
-            treeNode2.Text = "General";
+            treeNode2.Name = "HashTables";
+            treeNode2.Text = "Hash Tables";
             this.TreeViewPreferences.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2});

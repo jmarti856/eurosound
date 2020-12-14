@@ -75,7 +75,6 @@ namespace EuroSound_Application
                 IsStreamed = StreamedSample,
             };
 
-
             Sound.Samples.Add(Sample);
 
             return AddedCorrectly;
@@ -96,17 +95,15 @@ namespace EuroSound_Application
 
         internal static EXSound GetSoundByName(int NameToSearch, Dictionary<int, EXSound> SoundsList)
         {
-            EXSound SearchedSound;
+            EXSound SearchedSound = null;
 
             if (SoundsList.ContainsKey(NameToSearch))
             {
                 SearchedSound = SoundsList[NameToSearch];
                 return SearchedSound;
             }
-            else
-            {
-                return null;
-            }
+
+            return SearchedSound;
         }
 
         internal static byte[] GetRawPCMData(string AudioFilePath)
@@ -255,7 +252,7 @@ namespace EuroSound_Application
             return Convert.ToBoolean((Flags >> 10) & 1);
         }
 
-        internal static List<string> GetAudioDependencies(string AudioToCheck, Dictionary<int, EXSound> SoundsList)
+        internal static List<string> GetAudioDependencies(string AudioKey, string AudioName, Dictionary<int, EXSound> SoundsList, bool ItemUsage)
         {
             List<string> Dependencies = new List<string>();
 
@@ -263,74 +260,92 @@ namespace EuroSound_Application
             {
                 foreach (EXSample Sample in Sound.Value.Samples)
                 {
-                    if (Sample.ComboboxSelectedAudio.Equals(AudioToCheck))
+                    if (Sample.ComboboxSelectedAudio.Equals(AudioKey))
                     {
-                        Dependencies.Add("0" + Sound.Value.DisplayName + " uses this audio");
+                        if (ItemUsage)
+                        {
+                            Dependencies.Add(AudioName + "," + Sound.Value.DisplayName);
+                        }
+                        else
+                        {
+                            Dependencies.Add("0" + Sound.Value.DisplayName + " uses this audio");
+                        }
+                    }
+                }
+            }
+            return Dependencies;
+        }
+
+        internal static List<string> GetAudiosToPurge(Dictionary<string, EXAudio> AudioDataDict, Dictionary<int, EXSound> SoundsList)
+        {
+            List<string> AudiosToPurge = new List<string>();
+            List<string> UsedAudios = GetUsedAudios(SoundsList, false);
+
+            /*Now compare*/
+            foreach (string key in AudioDataDict.Keys)
+            {
+                if (!UsedAudios.Contains(key))
+                {
+                    AudiosToPurge.Add(key);
+                }
+            }
+
+            return AudiosToPurge;
+        }
+
+        internal static List<string> GetUsedAudios(Dictionary<int, EXSound> SoundsList, bool OnlyOutputAudios)
+        {
+            List<string> UsedAudios = new List<string>();
+
+            /*First we need to know which audios are used*/
+            foreach (KeyValuePair<int, EXSound> SoundToCheck in SoundsList)
+            {
+                if (OnlyOutputAudios)
+                {
+                    if (SoundToCheck.Value.OutputThisSound)
+                    {
+                        foreach (EXSample Sample in SoundToCheck.Value.Samples)
+                        {
+                            if (!UsedAudios.Contains(Sample.ComboboxSelectedAudio))
+                            {
+
+                                UsedAudios.Add(Sample.ComboboxSelectedAudio);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    foreach (EXSample Sample in SoundToCheck.Value.Samples)
+                    {
+                        if (!UsedAudios.Contains(Sample.ComboboxSelectedAudio))
+                        {
+
+                            UsedAudios.Add(Sample.ComboboxSelectedAudio);
+                        }
                     }
                 }
             }
 
-            return Dependencies;
+            return UsedAudios;
         }
 
-        internal static string GetSoundKeyByName(Dictionary<int, EXSound> SoundsList, string SoundName)
+
+        internal static bool DeleteAudio(Dictionary<string, EXAudio> AudiosDictionary, string AudioKeyToRemove)
         {
-            string Key = null;
+            bool DeletedSuccessfully = false;
 
-            foreach (KeyValuePair<int, EXSound> Sound in SoundsList)
+            if (AudiosDictionary.ContainsKey(AudioKeyToRemove))
             {
-                if (Sound.Value.DisplayName.Equals(SoundName))
-                {
-                    Key = Sound.Key.ToString();
-                    break;
-                }
+                DeletedSuccessfully = true;
+                AudiosDictionary.Remove(AudioKeyToRemove);
             }
 
-            return Key;
-        }
-
-        internal static string GetAudioKeyByName(Dictionary<string, EXAudio> AudioList, string AudioName)
-        {
-            string Key = null;
-
-            foreach (KeyValuePair<string, EXAudio> Audio in AudioList)
-            {
-                if (Audio.Value.DisplayName.Equals(AudioName))
-                {
-                    Key = Audio.Key.ToString();
-                    break;
-                }
-            }
-
-            return Key;
-        }
-        public static string SaveDocument(string LoadedFile, TreeView TreeView_File, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, ProjectFile ProjectProperties, Dictionary<string, string> SB_Defines)
-        {
-            string NewFilePath;
-
-            if (!string.IsNullOrEmpty(LoadedFile))
-            {
-                NewFilePath = SaveAndLoadESF.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, LoadedFile, ProjectProperties);
-            }
-            else
-            {
-                NewFilePath = OpenSaveAsDialog(TreeView_File, SoundsList, AudioDataDict, ProjectProperties, SB_Defines);
-            }
-
-            return NewFilePath;
-        }
-
-        internal static string OpenSaveAsDialog(TreeView TreeView_File, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, ProjectFile FileProperties, Dictionary<string, string> SB_Defines)
-        {
-            string SavePath = GenericFunctions.SaveFileBrowser("EuroSound Files (*.ESF)|*.ESF|All files (*.*)|*.*", 1, true, Hashcodes.GetHashcodeLabel(SB_Defines, FileProperties.Hashcode));
-            if (!string.IsNullOrEmpty(SavePath))
-            {
-                if (Directory.Exists(Path.GetDirectoryName(SavePath)))
-                {
-                    SaveAndLoadESF.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, SavePath, FileProperties);
-                }
-            }
-            return SavePath;
+            return DeletedSuccessfully;
         }
     }
 }

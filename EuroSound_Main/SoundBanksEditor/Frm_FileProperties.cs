@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Resources;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -11,22 +9,11 @@ namespace EuroSound_Application
         //* Global Variables
         //*===============================================================================================
         ProjectFile CurrentFileProperties;
-        public Dictionary<string, string> SB_Defines;
-        public Dictionary<string, string> SFX_Defines;
-        string HashcodesSFX, HashcodesData;
 
-        ResourceManager ResourcesManager;
-
-        public Frm_FileProperties(ProjectFile FileProperties, string v_HashcodesSFX, string v_HashcodesData, Dictionary<string, string> v_SB_Defines, Dictionary<string, string> v_SFX_Defines, ResourceManager v_ResourcesManager)
+        public Frm_FileProperties(ProjectFile FileProperties)
         {
             InitializeComponent();
             CurrentFileProperties = FileProperties;
-            HashcodesSFX = v_HashcodesSFX;
-            HashcodesData = v_HashcodesData;
-            SB_Defines = v_SB_Defines;
-            SFX_Defines = v_SFX_Defines;
-            ResourcesManager = v_ResourcesManager;
-
         }
 
         //*===============================================================================================
@@ -35,12 +22,12 @@ namespace EuroSound_Application
         private void Frm_FileProperties_Load(object sender, EventArgs e)
         {
             /*Datasource Combobox*/
-            Hashcodes.AddHashcodesToCombobox(Combobox_FileHashcode, SB_Defines);
+            Hashcodes.AddHashcodesToCombobox(Combobox_FileHashcode, Hashcodes.SB_Defines);
 
             Textbox_FileName.Text = CurrentFileProperties.FileName;
             Combobox_TypeOfData.SelectedIndex = CurrentFileProperties.TypeOfData;
-            Textbox_Sounds_Path.Text = HashcodesSFX;
-            Textbox_SFXData_Path.Text = HashcodesData;
+            Textbox_Sounds_Path.Text = GlobalPreferences.HT_SoundsPath;
+            Textbox_SFXData_Path.Text = GlobalPreferences.HT_SoundsDataPath;
 
 
             /*Put the selected hashcode in case is not null*/
@@ -73,10 +60,10 @@ namespace EuroSound_Application
 
         private void Combobox_FileHashcode_Click(object sender, EventArgs e)
         {
-            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsMD5, HashcodesSFX))
+            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsMD5, GlobalPreferences.HT_SoundsPath))
             {
-                Hashcodes.LoadSoundHashcodes(HashcodesSFX, SFX_Defines, SB_Defines, ResourcesManager);
-                Hashcodes.AddHashcodesToCombobox(Combobox_FileHashcode, SB_Defines);
+                Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
+                Hashcodes.AddHashcodesToCombobox(Combobox_FileHashcode, Hashcodes.SB_Defines);
             }
         }
     }

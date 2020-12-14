@@ -57,7 +57,7 @@ namespace EuroSound_Application
         {
             if (waveStream == null) return;
 
-            var samples = (int)(waveStream.Length / bytesPerSample);
+            int samples = (int)(waveStream.Length / bytesPerSample);
             startPosition = 0;
             SamplesPerPixel = samples / this.Width;
         }
@@ -153,13 +153,13 @@ namespace EuroSound_Application
                 if (waveStream != null)
                 {
                     int bytesRead;
-                    var waveData = new byte[samplesPerPixel * bytesPerSample];
+                    byte[] waveData = new byte[samplesPerPixel * bytesPerSample];
                     waveStream.Position = startPosition + (e.ClipRectangle.Left * bytesPerSample * samplesPerPixel);
                     ControlPoints.Clear();// clear points 
 
-                    using (var linePen = new Pen(PenColor, PenWidth))
+                    using (Pen linePen = new Pen(PenColor, PenWidth))
                     {
-                        for (var x = e.ClipRectangle.X; x < e.ClipRectangle.Right; x += 1)
+                        for (int x = e.ClipRectangle.X; x < e.ClipRectangle.Right; x += 1)
                         {
                             short low = 0;
                             short high = 0;
@@ -168,19 +168,19 @@ namespace EuroSound_Application
 
                             if (bytesRead == 0) { break; }
 
-                            for (var n = 0; n < bytesRead; n += 2)
+                            for (int n = 0; n < bytesRead; n += 2)
                             {
-                                var sample = BitConverter.ToInt16(waveData, n);
+                                short sample = BitConverter.ToInt16(waveData, n);
                                 if (sample < low) { low = sample; }
                                 if (sample > high) { high = sample; }
                             }
 
                             //calculate min and max values for the current line
-                            var lowPercent = ((((float)low) - short.MinValue) / ushort.MaxValue);
-                            var highPercent = ((((float)high) - short.MinValue) / ushort.MaxValue);
+                            float lowPercent = (((float)low) - short.MinValue) / ushort.MaxValue;
+                            float highPercent = (((float)high) - short.MinValue) / ushort.MaxValue;
 
-                            var point1 = new Point(x, (int)(this.Height * lowPercent));
-                            var point2 = new Point(x, (int)(this.Height * highPercent));
+                            Point point1 = new Point(x, (int)(this.Height * lowPercent));
+                            Point point2 = new Point(x, (int)(this.Height * highPercent));
 
                             //if event is not hoocked in, then render wave instantly
                             if (OnLineDrawEvent == null)
@@ -221,7 +221,7 @@ namespace EuroSound_Application
             //check if the event is attached
             if (OnLineDrawEvent != null)
             {
-                foreach (var pointSet in ControlPoints)
+                foreach (KeyValuePair<Point, Point> pointSet in ControlPoints)
                 {
                     OnLineDrawEvent(pointSet.Key, pointSet.Value);//trigger event and pass the points to the UI
                     Thread.Sleep(RenderDelay); //set custom delay

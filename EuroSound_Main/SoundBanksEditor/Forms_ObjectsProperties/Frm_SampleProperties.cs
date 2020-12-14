@@ -1,9 +1,7 @@
 ﻿using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Resources;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -14,27 +12,15 @@ namespace EuroSound_Application
         //* Global Variables
         //*===============================================================================================
         EXSample SelectedSample;
-        Dictionary<string, EXAudio> AudiosDataList;
-        Dictionary<string, string> SFX_Defines, SB_Defines;
-        TreeView ControlToSearch;
         WaveOut _waveOut = new WaveOut();
         MemoryStream AudioSample;
-        ResourceManager ResourcesManager;
-
         bool IsSubSFX;
-        string HascodesSFX;
 
-        public Frm_SampleProperties(EXSample Sample, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl, bool SubSFX, string v_HashcodesSFX, Dictionary<string, string> v_SFX_Defines, Dictionary<string, string> v_SB_Defines, ResourceManager v_ResourcesManager)
+        public Frm_SampleProperties(EXSample Sample, bool SubSFX)
         {
             InitializeComponent();
             SelectedSample = Sample;
-            AudiosDataList = AudiosList;
-            ControlToSearch = TreeViewControl;
             IsSubSFX = SubSFX;
-            HascodesSFX = v_HashcodesSFX;
-            SFX_Defines = v_SFX_Defines;
-            SB_Defines = v_SB_Defines;
-            ResourcesManager = v_ResourcesManager;
         }
 
         //*===============================================================================================
@@ -42,6 +28,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void Frm_SampleProperties_Load(object sender, EventArgs e)
         {
+            Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", this.Tag.ToString());
             numeric_pitchoffset.Value = SelectedSample.PitchOffset;
             numeric_randomPitchOffset.Value = SelectedSample.RandomPitchOffset;
             Numeric_BaseVolume.Value = SelectedSample.BaseVolume;
@@ -49,8 +36,7 @@ namespace EuroSound_Application
             numeric_pan.Value = SelectedSample.Pan;
             numeric_randompan.Value = SelectedSample.RandomPan;
             Checkbox_IsStreamedSound.Checked = SelectedSample.IsStreamed;
-            Hashcodes.AddHashcodesToCombobox(Combobox_SelectedAudio, EXObjectsFunctions.GetListAudioData(AudiosDataList, ControlToSearch));
-
+            Hashcodes.AddHashcodesToCombobox(Combobox_SelectedAudio, EXObjectsFunctions.GetListAudioData(((Frm_Soundbanks_Main)ParentForm).AudioDataDict, ((Frm_Soundbanks_Main)ParentForm).TreeView_File));
 
             /*---Put the selected audio in case is not null---*/
             if (SelectedSample.ComboboxSelectedAudio != null)
@@ -59,11 +45,11 @@ namespace EuroSound_Application
             }
 
             //Sound defines
-            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsMD5, HascodesSFX))
+            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsMD5, GlobalPreferences.HT_SoundsPath))
             {
-                Hashcodes.LoadSoundHashcodes(HascodesSFX, SFX_Defines, SB_Defines, ResourcesManager);
+                Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
             }
-            Hashcodes.AddHashcodesToCombobox(Combobox_Hashcode, SFX_Defines);
+            Hashcodes.AddHashcodesToCombobox(Combobox_Hashcode, Hashcodes.SFX_Defines);
 
             if (!string.IsNullOrEmpty(SelectedSample.HashcodeSubSFX))
             {
@@ -83,7 +69,8 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void Button_PlayAudio_Click(object sender, EventArgs e)
         {
-            EXAudio AudioSelected = TreeNodeFunctions.GetSelectedAudio(Combobox_SelectedAudio.SelectedValue.ToString(), AudiosDataList);
+            Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", this.Tag.ToString());
+            EXAudio AudioSelected = TreeNodeFunctions.GetSelectedAudio(Combobox_SelectedAudio.SelectedValue.ToString(), ((Frm_Soundbanks_Main)ParentForm).AudioDataDict);
             if (AudioSelected != null)
             {
                 if (_waveOut.PlaybackState == PlaybackState.Stopped)

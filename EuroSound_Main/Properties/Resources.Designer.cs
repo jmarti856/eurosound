@@ -160,6 +160,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a This item is not used by any other item..
+        /// </summary>
+        internal static string ItemHasNoDependencies {
+            get {
+                return ResourceManager.GetString("ItemHasNoDependencies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Set project options.
         /// </summary>
         internal static string MenuItem_Edit_FileProps {

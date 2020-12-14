@@ -1,9 +1,7 @@
 ﻿using CustomControls;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Resources;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -14,59 +12,49 @@ namespace EuroSound_Application
         //* GLOBAL VARS
         //*===============================================================================================
         string DraggedFile;
-        bool MenuStripOpened;
         int FormID = 0;
-        ResourceManager ResourcesManager;
 
-        public Dictionary<string, string> SFX_Defines;
-        public Dictionary<string, string> SB_Defines;
-        public Dictionary<string, double[]> SFX_Data;
-
-        public Frm_EuroSound_Main(string LoadedFileByArgument, ResourceManager v_ResourcesManager, Dictionary<string, string> d_SFX_Defines, Dictionary<string, string> v_SB_Defines, Dictionary<string, double[]> v_SFX_Data)
+        public Frm_EuroSound_Main(string LoadedFileByArgument)
         {
             InitializeComponent();
 
-            ResourcesManager = v_ResourcesManager;
             DraggedFile = LoadedFileByArgument;
-            SFX_Defines = d_SFX_Defines;
-            SB_Defines = v_SB_Defines;
-            SFX_Data = v_SFX_Data;
 
             /*Menu Item: File*/
-            MainMenu_File.DropDownOpened += (se, ev) => { GenericFunctions.StatusBarTutorialModeShowText(""); MenuStripOpened = true; };
-            MainMenu_File.DropDownClosed += (se, ev) => { GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); MenuStripOpened = false; };
+            MainMenu_File.DropDownOpened += (se, ev) => { GenericFunctions.StatusBarTutorialModeShowText(""); };
+            MainMenu_File.DropDownClosed += (se, ev) => { GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); };
 
-            MenuItemFile_New.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(ResourcesManager.GetString("MenuItem_File_NewProject"));
-            MenuItemFile_OpenESF.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(ResourcesManager.GetString("MenuItemFile_OpenESF"));
-            MenuItemFile_Exit.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(ResourcesManager.GetString("MenuItemFile_Exit"));
+            MenuItemFile_New.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_NewProject"));
+            MenuItemFile_OpenESF.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_OpenESF"));
+            MenuItemFile_Exit.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_Exit"));
 
-            MenuItemFile_New.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuStripOpened);
-            MenuItemFile_OpenESF.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuStripOpened);
-            MenuItemFile_Exit.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuStripOpened);
+            MenuItemFile_New.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MainMenu_File.Visible);
+            MenuItemFile_OpenESF.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MainMenu_File.Visible);
+            MenuItemFile_Exit.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MainMenu_File.Visible);
 
             /*Menu Item: View*/
-            MainMenu_View.DropDownOpened += (se, ev) => { GenericFunctions.StatusBarTutorialModeShowText(""); MenuStripOpened = true; };
-            MainMenu_View.DropDownClosed += (se, ev) => { GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); MenuStripOpened = false; };
+            MainMenu_View.DropDownOpened += (se, ev) => { GenericFunctions.StatusBarTutorialModeShowText(""); };
+            MainMenu_View.DropDownClosed += (se, ev) => { GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); };
 
-            MenuItemView_StatusBar.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(ResourcesManager.GetString("MenuItem_View_StatusBar"));
-            MenuItemView_Preferences.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(ResourcesManager.GetString("MenuItem_View_GlobalPreferences"));
+            MenuItemView_StatusBar.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItem_View_StatusBar"));
+            MenuItemView_Preferences.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItem_View_GlobalPreferences"));
 
-            MenuItemView_StatusBar.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuStripOpened);
-            MenuItemView_Preferences.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuStripOpened);
+            MenuItemView_StatusBar.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MainMenu_View.Visible);
+            MenuItemView_Preferences.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MainMenu_View.Visible);
 
             /*Menu Item: Window*/
-            MainMenu_Window.DropDownOpened += (se, ev) => { GenericFunctions.StatusBarTutorialModeShowText(""); MenuStripOpened = true; };
-            MainMenu_Window.DropDownClosed += (se, ev) => { GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); MenuStripOpened = false; };
+            MainMenu_Window.DropDownOpened += (se, ev) => { GenericFunctions.StatusBarTutorialModeShowText(""); };
+            MainMenu_Window.DropDownClosed += (se, ev) => { GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); };
 
-            MenuItemWindow_Cascade.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(ResourcesManager.GetString("MenuItemWindow_Cascade"));
-            MenuItemWindow_TileH.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(ResourcesManager.GetString("MenuItemWindow_TileHorizontal"));
-            MenuItemWindow_TileV.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(ResourcesManager.GetString("MenuItemWindow_TileVertical"));
-            MenuItemWindow_Arrange.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(ResourcesManager.GetString("MenuItemWindow_ArrangeIcons"));
+            MenuItemWindow_Cascade.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItemWindow_Cascade"));
+            MenuItemWindow_TileH.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItemWindow_TileHorizontal"));
+            MenuItemWindow_TileV.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItemWindow_TileVertical"));
+            MenuItemWindow_Arrange.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItemWindow_ArrangeIcons"));
 
-            MenuItemWindow_Cascade.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuStripOpened);
-            MenuItemWindow_TileH.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuStripOpened);
-            MenuItemWindow_TileV.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuStripOpened);
-            MenuItemWindow_Arrange.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuStripOpened);
+            MenuItemWindow_Cascade.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MainMenu_Window.Visible);
+            MenuItemWindow_TileH.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MainMenu_Window.Visible);
+            MenuItemWindow_TileV.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MainMenu_Window.Visible);
+            MenuItemWindow_Arrange.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MainMenu_Window.Visible);
 
             MenuItemWindow_Arrange.Click += (se, ev) => { this.LayoutMdi(MdiLayout.ArrangeIcons); GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); };
             MenuItemWindow_Cascade.Click += (se, ev) => { this.LayoutMdi(MdiLayout.Cascade); GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); };
@@ -74,14 +62,14 @@ namespace EuroSound_Application
             MenuItemWindow_TileV.Click += (se, ev) => { this.LayoutMdi(MdiLayout.TileVertical); GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); };
 
             /*Menu Item: Help*/
-            MainMenu_Help.DropDownOpened += (se, ev) => { GenericFunctions.StatusBarTutorialModeShowText(""); MenuStripOpened = true; };
-            MainMenu_Help.DropDownClosed += (se, ev) => { GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); MenuStripOpened = false; };
+            MainMenu_Help.DropDownOpened += (se, ev) => { GenericFunctions.StatusBarTutorialModeShowText(""); };
+            MainMenu_Help.DropDownClosed += (se, ev) => { GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); };
 
-            MenuItemHelp_About.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(ResourcesManager.GetString("MenuItemHelp_About"));
-            MenuItemHelp_OnlineHelp.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(ResourcesManager.GetString("MenuItemHelp_OnlineHelp"));
+            MenuItemHelp_About.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItemHelp_About"));
+            MenuItemHelp_OnlineHelp.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItemHelp_OnlineHelp"));
 
-            MenuItemHelp_About.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuStripOpened);
-            MenuItemHelp_OnlineHelp.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuStripOpened);
+            MenuItemHelp_About.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MainMenu_Help.Visible);
+            MenuItemHelp_OnlineHelp.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MainMenu_Help.Visible);
             MenuItemHelp_OnlineHelp.Click += (se, ev) => Process.Start("https://sphinxandthecursedmummy.fandom.com/wiki/SFX");
         }
 
@@ -94,7 +82,7 @@ namespace EuroSound_Application
             GenericFunctions.GetStatusBarControls(EuroSound_Main_StatusBar, EuroSound_StatusBar_Status, EuroSound_StatusBar_FileName);
 
             /*Update Status Bar*/
-            GenericFunctions.SetProgramStateShowToStatusBar(ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
             if (!string.IsNullOrEmpty(DraggedFile))
             {
@@ -152,12 +140,13 @@ namespace EuroSound_Application
 
         private void MenuItemFile_New_Click(object sender, EventArgs e)
         {
-            EuroSound_NewFileProject CreateNewFile = new EuroSound_NewFileProject(ResourcesManager.GetString("InputBoxNewProject"))
+            EuroSound_NewFileProject CreateNewFile = new EuroSound_NewFileProject(GenericFunctions.ResourcesManager.GetString("InputBoxNewProject"))
             {
                 Owner = this,
                 ShowInTaskbar = false
             };
             CreateNewFile.ShowDialog();
+            CreateNewFile.Dispose();
             if (CreateNewFile.DialogResult == DialogResult.OK)
             {
                 /*--[COMBOBOX SELECTED VALUES]--
@@ -234,7 +223,7 @@ namespace EuroSound_Application
                 }
 
                 /*Show Form*/
-                Frm_Soundbanks_Main NewSoundBankForm = new Frm_Soundbanks_Main(FilePath, ProjectName, GlobalPreferences.HT_SoundsPath, GlobalPreferences.HT_SoundsDataPath, SFX_Defines, SB_Defines, SFX_Data, ResourcesManager)
+                Frm_Soundbanks_Main NewSoundBankForm = new Frm_Soundbanks_Main(FilePath, ProjectName)
                 {
                     Text = FormTitle,
                     Owner = this,

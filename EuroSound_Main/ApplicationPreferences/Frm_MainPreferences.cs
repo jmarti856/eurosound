@@ -39,7 +39,7 @@ namespace EuroSound_Application
         private void TreeViewPreferences_AfterSelect(object sender, TreeViewEventArgs e)
         {
             //Open Sub-form "Frm_HashTablesConfig"
-            if (string.Equals(e.Node.Name, "General", StringComparison.InvariantCulture))
+            if (string.Equals(e.Node.Name, "HashTables"))
             {
                 if (!Panel_SecondaryForms.Controls.Contains(GeneralHashTable))
                 {

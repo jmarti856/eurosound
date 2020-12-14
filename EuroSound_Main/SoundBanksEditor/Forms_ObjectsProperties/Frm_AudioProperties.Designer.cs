@@ -240,7 +240,7 @@ namespace EuroSound_Application
             this.Groupbox_AudioProperties.Size = new System.Drawing.Size(484, 264);
             this.Groupbox_AudioProperties.TabIndex = 35;
             this.Groupbox_AudioProperties.TabStop = false;
-            this.Groupbox_AudioProperties.Text = "Audio Properties";
+            this.Groupbox_AudioProperties.Text = "Audio Properties:";
             // 
             // euroSound_WaveViewer1
             // 

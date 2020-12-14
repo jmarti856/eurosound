@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Resources;
 using System.Windows.Forms;
 using YamlDotNet.RepresentationModel;
 
@@ -11,23 +10,23 @@ namespace EuroSound_Application
     public static class YamlReader
     {
         internal static List<string> Reports = new List<string>();
-        internal static void LoadDataFromSwyterUnpacker(Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDict, TreeView TreeViewControl, string FilePath, ProjectFile FileProperties, Dictionary<string, string> SFX_Defines, Dictionary<string, string> SB_Defines, ResourceManager ResxM)
+        internal static void LoadDataFromSwyterUnpacker(Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDict, TreeView TreeViewControl, string FilePath, ProjectFile FileProperties)
         {
             List<string> SoundsPaths;
             string SoundName, SoundHashcode;
 
             //Read sounds from the unpacker folder
-            SoundsPaths = GetFilePaths(FilePath, FilePath, ResxM);
+            SoundsPaths = GetFilePaths(FilePath, FilePath);
             foreach (string path in SoundsPaths)
             {
                 SoundName = new DirectoryInfo(Path.GetDirectoryName(path)).Name;
-                SoundHashcode = Hashcodes.GetHashcodeByLabel(SFX_Defines, SoundName);
-                FileProperties.Hashcode = Hashcodes.GetHashcodeByLabel(SB_Defines, Path.GetFileNameWithoutExtension(FilePath));
+                SoundHashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SFX_Defines, SoundName);
+                FileProperties.Hashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SB_Defines, Path.GetFileNameWithoutExtension(FilePath));
                 if (string.IsNullOrEmpty(SoundHashcode))
                 {
                     Reports.Add("0Hashcode not found for the sound ");
                 }
-                ReadYamlFile(SoundsList, AudioDict, TreeViewControl, path, SoundName, SoundHashcode, false, FileProperties, ResxM);
+                ReadYamlFile(SoundsList, AudioDict, TreeViewControl, path, SoundName, SoundHashcode, false, FileProperties);
             }
 
             //Expand only root nodes
@@ -46,14 +45,14 @@ namespace EuroSound_Application
             ShowErrorsWarningsList(FilePath);
         }
 
-        internal static List<string> GetFilePaths(string LevelSoundBankPath, string FilePath, ResourceManager ResxM)
+        internal static List<string> GetFilePaths(string LevelSoundBankPath, string FilePath)
         {
             List<string> Paths = new List<string>();
 
             string[] lines = File.ReadAllLines(LevelSoundBankPath);
             if (lines[0].Equals("#ftype:1"))
             {
-                for (var i = 0; i < lines.Length; i += 1)
+                for (int i = 0; i < lines.Length; i += 1)
                 {
                     if (!lines[i].StartsWith("#"))
                     {
@@ -64,13 +63,13 @@ namespace EuroSound_Application
             }
             else
             {
-                Reports.Add("1" + ResxM.GetString("Gen_ErrorReading_FileIncorrect"));
+                Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect"));
             }
 
             return Paths;
         }
 
-        internal static void ReadYamlFile(Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDict, TreeView TreeViewControl, string FilePath, string SoundName, string SoundHashcode, bool ShowResultsAtEnd, ProjectFile FileProperties, ResourceManager ResxM)
+        internal static void ReadYamlFile(Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDict, TreeView TreeViewControl, string FilePath, string SoundName, string SoundHashcode, bool ShowResultsAtEnd, ProjectFile FileProperties)
         {
             int SoundID;
             int[] CurrentSoundParams;
@@ -78,7 +77,7 @@ namespace EuroSound_Application
             Dictionary<int, int[]> SamplesProperties;
 
             /*Update Status Bar*/
-            GenericFunctions.SetProgramStateShowToStatusBar(ResxM.GetString("StatusBar_Status_ReadingYamlFile") + ": " + SoundName);
+            GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_ReadingYamlFile") + ": " + SoundName);
 
             StreamReader reader = new StreamReader(FilePath);
             string FileCheck = reader.ReadLine();
@@ -94,7 +93,7 @@ namespace EuroSound_Application
                 CurrentSoundParams = GetSoundParams(mapping);
                 SamplesProperties = GetSamples(mapping);
 
-                if (!TreeNodeFunctions.CheckIfNodeExists(TreeViewControl, SoundName))
+                if (!TreeNodeFunctions.CheckIfNodeExistsByText(TreeViewControl, SoundName))
                 {
                     /*--Add Sound--*/
                     SoundID = EXObjectsFunctions.GetSoundID(FileProperties);
@@ -121,10 +120,10 @@ namespace EuroSound_Application
                     /*--Add Sample--*/
                     foreach (KeyValuePair<int, int[]> Entry in SamplesProperties)
                     {
-                        string SampleName = NewSound.DisplayName + Entry.Key;
+                        string SampleName = "SMP_" + NewSound.DisplayName + Entry.Key;
                         EXSample NewSample = new EXSample
                         {
-                            Name = EXObjectsFunctions.RemoveWhiteSpaces(SampleName),
+                            Name = SampleName,
                             DisplayName = SampleName,
                             FileRef = Entry.Value[0],
                             PitchOffset = Entry.Value[1],
@@ -167,7 +166,7 @@ namespace EuroSound_Application
                                     string AudioPropertiesPath = GetAudioFilePath(FilePath, Entry.Key, 1);
                                     if (File.Exists(AudioPropertiesPath))
                                     {
-                                        AudioProps = GetAudioProperties(AudioPropertiesPath, ResxM);
+                                        AudioProps = GetAudioProperties(AudioPropertiesPath);
                                     }
                                     else
                                     {
@@ -185,7 +184,7 @@ namespace EuroSound_Application
 
                         /*--Add Sample To Dictionary--*/
                         NewSound.Samples.Add(NewSample);
-                        TreeNodeFunctions.TreeNodeAddNewNode(SoundID.ToString(), EXObjectsFunctions.RemoveWhiteSpaces(SampleName), SampleName, 4, 4, "Sample", Color.Black, TreeViewControl);
+                        TreeNodeFunctions.TreeNodeAddNewNode(SoundID.ToString(), SampleName, SampleName, 4, 4, "Sample", Color.Black, TreeViewControl);
                     }
                 }
                 else
@@ -203,14 +202,14 @@ namespace EuroSound_Application
             }
             else
             {
-                Reports.Add("1" + ResxM.GetString("Gen_ErrorReading_FileIncorrect"));
+                Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect"));
             }
 
             reader.Close();
             reader.Dispose();
 
             /*Update Status Bar*/
-            GenericFunctions.SetProgramStateShowToStatusBar(ResxM.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         private static string GetSoundHashcode(uint Hashcode)
@@ -336,7 +335,7 @@ namespace EuroSound_Application
             return AudioPath;
         }
 
-        private static int[] GetAudioProperties(string PropertiesFilePath, ResourceManager ResxM)
+        private static int[] GetAudioProperties(string PropertiesFilePath)
         {
             int[] Properties = new int[3];
             string[] Lines = File.ReadAllLines(PropertiesFilePath);
@@ -367,7 +366,7 @@ namespace EuroSound_Application
             }
             else
             {
-                Reports.Add("1" + ResxM.GetString("Gen_ErrorReading_FileIncorrect"));
+                Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect"));
             }
 
             return Properties;

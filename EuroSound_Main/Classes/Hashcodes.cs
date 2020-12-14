@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Resources;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -11,36 +10,40 @@ namespace EuroSound_Application
 {
     public static class Hashcodes
     {
-        public static void LoadSoundHashcodes(string SoundHashcodesPath, Dictionary<string, string> SFX_Defines, Dictionary<string, string> SB_Defines, ResourceManager ResxM)
+        public static Dictionary<string, string> SFX_Defines = new Dictionary<string, string>();
+        public static Dictionary<string, string> SB_Defines = new Dictionary<string, string>();
+        public static Dictionary<string, double[]> SFX_Data = new Dictionary<string, double[]>();
+
+        public static void LoadSoundHashcodes(string SoundHashcodesPath)
         {
             if (File.Exists(SoundHashcodesPath))
             {
                 /*Read Data*/
-                ReadHashcodes(SoundHashcodesPath, SFX_Defines, SB_Defines);
+                ReadHashcodes(SoundHashcodesPath);
                 GlobalPreferences.HT_SoundsMD5 = GenericFunctions.CalculateMD5(SoundHashcodesPath);
             }
             else
             {
-                MessageBox.Show(ResxM.GetString("Hashcodes_SFXDefines_NotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Hashcodes_SFXDefines_NotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        public static void LoadSoundDataFile(string SoundHashcodespath, Dictionary<string, double[]> SFX_Data, Dictionary<string, string> SFX_Defines, ResourceManager ResxM)
+        public static void LoadSoundDataFile()
         {
-            if (File.Exists(SoundHashcodespath))
+            if (File.Exists(GlobalPreferences.HT_SoundsDataPath))
             {
                 /*Read Data*/
-                ReadSFXData(SoundHashcodespath, SFX_Data, SFX_Defines);
-                GlobalPreferences.HT_SoundsDataMD5 = GenericFunctions.CalculateMD5(SoundHashcodespath);
+                ReadSFXData();
+                GlobalPreferences.HT_SoundsDataMD5 = GenericFunctions.CalculateMD5(GlobalPreferences.HT_SoundsDataPath);
             }
             else
             {
-                MessageBox.Show(ResxM.GetString("Hashcodes_SFXData_NotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Hashcodes_SFXData_NotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         #region SFX Defines && SB Defines dictionary
-        public static void ReadHashcodes(string FilePath, Dictionary<string, string> SFX_Defines, Dictionary<string, string> SB_Defines)
+        public static void ReadHashcodes(string FilePath)
         {
             string line;
             string HexNum, HexLabel;
@@ -53,7 +56,8 @@ namespace EuroSound_Application
             Regex FindHashcodeLabel = new Regex(@"\s+(\w+)");
 
             FileStream fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read);
-            StreamReader reader = new StreamReader(fs);
+            BufferedStream bs = new BufferedStream(fs);
+            StreamReader reader = new StreamReader(bs);
             while ((line = reader.ReadLine()) != null)
             {
                 if (line.StartsWith("/"))
@@ -88,24 +92,32 @@ namespace EuroSound_Application
                     }
                 }
             }
+            reader.Close();
+            reader.DiscardBufferedData();
+            reader.Dispose();
+
+            bs.Close();
+            bs.Dispose();
+
+            fs.Close();
+            fs.Dispose();
         }
         #endregion
 
         #region SFX DATA DICTIONARY
-        internal static void ReadSFXData(string FilePath, Dictionary<string, double[]> SFX_Data, Dictionary<string, string> SFX_Defines)
+        internal static void ReadSFXData()
         {
             string[] SplitedLine;
-            string line;
-            double[] ArrayOfValues;
+            string line, hashcode;
+            double[] ArrayOfValues = new double[8];
 
             SFX_Data.Clear();
 
-            FileStream fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            FileStream fs = new FileStream(GlobalPreferences.HT_SoundsDataPath, FileMode.Open, FileAccess.Read);
             StreamReader reader = new StreamReader(fs);
-
             while ((line = reader.ReadLine()) != null)
             {
-                if (line.StartsWith("//", StringComparison.OrdinalIgnoreCase) || line.StartsWith("SFXOutputDetails", StringComparison.OrdinalIgnoreCase))
+                if (line.StartsWith("/", StringComparison.OrdinalIgnoreCase) || line.StartsWith("SFXO", StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
@@ -114,7 +126,6 @@ namespace EuroSound_Application
                     SplitedLine = line.Split(new char[] { '{', ',', '}' }, StringSplitOptions.RemoveEmptyEntries);
                     if (SplitedLine.Length >= 9)
                     {
-                        ArrayOfValues = new double[8];
                         ArrayOfValues[0] = StringFloatToDouble(SplitedLine[0]);
                         ArrayOfValues[1] = StringFloatToDouble(SplitedLine[1]);
                         ArrayOfValues[2] = StringFloatToDouble(SplitedLine[2]);
@@ -123,15 +134,16 @@ namespace EuroSound_Application
                         ArrayOfValues[5] = StringFloatToDouble(SplitedLine[5]);
                         ArrayOfValues[6] = StringFloatToDouble(SplitedLine[6]);
                         ArrayOfValues[7] = StringFloatToDouble(SplitedLine[7]);
-                        string Hashcode = GetHashcodeByLabel(SFX_Defines, SplitedLine[SplitedLine.Length - 1].Split(new[] { "//" }, StringSplitOptions.None)[1].Trim());
-                        if (!SFX_Data.ContainsKey(Hashcode))
+                        hashcode = GetHashcodeByLabel(SFX_Defines, SplitedLine[SplitedLine.Length - 1].Split(new[] { "//" }, StringSplitOptions.None)[1].Trim());
+                        if (!SFX_Data.ContainsKey(hashcode))
                         {
-                            SFX_Data.Add(Hashcode, ArrayOfValues);
+                            SFX_Data.Add(hashcode, ArrayOfValues);
                         }
                     }
                 }
             }
             reader.Close();
+            reader.DiscardBufferedData();
             reader.Dispose();
 
             fs.Close();
@@ -145,13 +157,8 @@ namespace EuroSound_Application
 
             try
             {
-                NumberFormatInfo provider = new NumberFormatInfo
-                {
-                    NumberDecimalSeparator = "."
-                };
-
                 num = Number.Replace("f", string.Empty).Trim();
-                FinalNumber = double.Parse(num, provider);
+                FinalNumber = double.Parse(num, CultureInfo.GetCultureInfo("en-US"));
             }
             catch
             {

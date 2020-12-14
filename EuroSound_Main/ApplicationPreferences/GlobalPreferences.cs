@@ -18,5 +18,9 @@
         public static string HT_SoundsDataMD5TEMPORAL { get; set; }
         public static string HT_MusicPathTEMPORAL { get; set; }
 
+
+        /*Volatile preferences*/
+        public static bool ShowWarningMessagesBox { get; set; } = true;
+
     }
 }

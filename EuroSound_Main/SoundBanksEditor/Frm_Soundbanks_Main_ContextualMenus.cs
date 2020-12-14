@@ -18,6 +18,7 @@ namespace EuroSound_Application
                 Owner = this
             };
             SoundsToFolders.ShowDialog();
+            SoundsToFolders.Dispose();
             ProjectInfo.FileHasBeenModified = true;
         }
 
@@ -30,9 +31,9 @@ namespace EuroSound_Application
         private void ContextMenu_Folders_AddSound_Click(object sender, System.EventArgs e)
         {
             string Name = GenericFunctions.OpenInputBox("Enter a name for new sound.", "New Sound");
-            if (TreeNodeFunctions.CheckIfNodeExists(TreeView_File, Name))
+            if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, Name))
             {
-                MessageBox.Show(ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -45,7 +46,7 @@ namespace EuroSound_Application
                 }
                 else
                 {
-                    MessageBox.Show(ResourcesManager.GetString("Gen_Error_NameIsEmpty"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_Error_NameIsEmpty"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }
@@ -69,22 +70,22 @@ namespace EuroSound_Application
             }
             else
             {
-                MessageBox.Show(ResourcesManager.GetString("Gen_Error_NameIsEmpty"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_Error_NameIsEmpty"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         private void ContextMenuFolder_Rename_Click(object sender, System.EventArgs e)
         {
-            TreeNodeFunctions.EditNodeLabel(TreeView_File, TreeView_File.SelectedNode, ResourcesManager);
+            TreeNodeFunctions.EditNodeLabel(TreeView_File, TreeView_File.SelectedNode);
             ProjectInfo.FileHasBeenModified = true;
         }
 
         private void ContextMenu_Folders_AddAudio_Click(object sender, System.EventArgs e)
         {
             string Name = GenericFunctions.OpenInputBox("Enter a name for new a new audio.", "New Audio");
-            if (TreeNodeFunctions.CheckIfNodeExists(TreeView_File, Name))
+            if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, Name))
             {
-                MessageBox.Show(ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -101,13 +102,44 @@ namespace EuroSound_Application
                         }
                         else
                         {
-                            MessageBox.Show(ResourcesManager.GetString("Error_Adding_AudioExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AudioExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
                 }
                 else
                 {
-                    MessageBox.Show(ResourcesManager.GetString("Gen_Error_NameIsEmpty"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_Error_NameIsEmpty"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+        }
+
+        private void ContextMenuFolder_Purge_Click(object sender, System.EventArgs e)
+        {
+            List<string> PurgedAudios = new List<string>();
+            List<string> GetAudiosListToRemove = EXObjectsFunctions.GetAudiosToPurge(AudioDataDict, SoundsList);
+            if (GetAudiosListToRemove.Count > 0)
+            {
+                foreach (string AudioToRemove in GetAudiosListToRemove)
+                {
+                    TreeNode NodeToRemove = TreeView_File.Nodes.Find(AudioToRemove, true)[0];
+                    if (NodeToRemove != null)
+                    {
+                        PurgedAudios.Add("2Purged Audio: " + NodeToRemove.Text);
+                        TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, NodeToRemove, "Audio");
+                        EXObjectsFunctions.DeleteAudio(AudioDataDict, NodeToRemove.Name);
+                    }
+                }
+
+                if (PurgedAudios.Count > 0)
+                {
+                    EuroSound_ErrorsAndWarningsList ShowDependencies = new EuroSound_ErrorsAndWarningsList(PurgedAudios)
+                    {
+                        Text = "Purging Audios",
+                        ShowInTaskbar = false,
+                        TopMost = true
+                    };
+                    ShowDependencies.ShowDialog();
+                    ShowDependencies.Dispose();
                 }
             }
         }
@@ -121,9 +153,9 @@ namespace EuroSound_Application
         private void ContextMenu_Folders_New_Click(object sender, System.EventArgs e)
         {
             string Name = GenericFunctions.OpenInputBox("Enter a name for new folder.", "New Folder");
-            if (TreeNodeFunctions.CheckIfNodeExists(TreeView_File, Name))
+            if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, Name))
             {
-                MessageBox.Show(ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -134,7 +166,7 @@ namespace EuroSound_Application
                 }
                 else
                 {
-                    MessageBox.Show(ResourcesManager.GetString("Gen_Error_NameIsEmpty"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_Error_NameIsEmpty"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }
@@ -174,7 +206,7 @@ namespace EuroSound_Application
 
         private void ContextMenu_Sound_Rename_Click(object sender, System.EventArgs e)
         {
-            TreeNodeFunctions.EditNodeLabel(TreeView_File, TreeView_File.SelectedNode, ResourcesManager);
+            TreeNodeFunctions.EditNodeLabel(TreeView_File, TreeView_File.SelectedNode);
             ProjectInfo.FileHasBeenModified = true;
         }
 
@@ -214,7 +246,7 @@ namespace EuroSound_Application
 
         private void ContextMenu_Sample_Rename_Click(object sender, System.EventArgs e)
         {
-            TreeNodeFunctions.EditNodeLabel(TreeView_File, TreeView_File.SelectedNode, ResourcesManager);
+            TreeNodeFunctions.EditNodeLabel(TreeView_File, TreeView_File.SelectedNode);
             ProjectInfo.FileHasBeenModified = true;
         }
 
@@ -228,6 +260,26 @@ namespace EuroSound_Application
         //* ContextMenu_Audio
         //*===============================================================================================
         #region ContextMenu_Audio_EVENTS
+        private void ContextMenuAudio_Usage_Click(object sender, System.EventArgs e)
+        {
+            List<string> Dependencies = EXObjectsFunctions.GetAudioDependencies(TreeView_File.SelectedNode.Name, TreeView_File.SelectedNode.Text, SoundsList, true);
+            if (Dependencies.Count > 0)
+            {
+                EuroSound_ItemUsage ShowDependencies = new EuroSound_ItemUsage(Dependencies)
+                {
+                    Text = "Audio Usage",
+                    Owner = this.Owner,
+                    ShowInTaskbar = false
+                };
+                ShowDependencies.ShowDialog();
+                ShowDependencies.Dispose();
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ItemHasNoDependencies"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
         private void ContextMenuAudio_TextColor_Click(object sender, System.EventArgs e)
         {
             TreeView_File.SelectedNode.ForeColor = GenericFunctions.GetColorFromColorPicker();
@@ -241,7 +293,7 @@ namespace EuroSound_Application
 
         private void ContextMenuAudio_Rename_Click(object sender, System.EventArgs e)
         {
-            TreeNodeFunctions.EditNodeLabel(TreeView_File, TreeView_File.SelectedNode, ResourcesManager);
+            TreeNodeFunctions.EditNodeLabel(TreeView_File, TreeView_File.SelectedNode);
             ProjectInfo.FileHasBeenModified = true;
         }
 

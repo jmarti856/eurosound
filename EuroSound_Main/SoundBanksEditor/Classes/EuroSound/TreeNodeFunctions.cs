@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Resources;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -33,7 +32,7 @@ namespace EuroSound_Application
             return null;
         }
 
-        internal static void EditNodeLabel(TreeView TreeViewFile, TreeNode NodeToEdit, ResourceManager ResManager)
+        internal static void EditNodeLabel(TreeView TreeViewFile, TreeNode NodeToEdit)
         {
             if (NodeToEdit != null && NodeToEdit.Parent != null)
             {
@@ -46,7 +45,7 @@ namespace EuroSound_Application
             }
             else
             {
-                MessageBox.Show(ResManager.GetString("TreeView_Error_EditingRootNode"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("TreeView_Error_EditingRootNode"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -132,16 +131,12 @@ namespace EuroSound_Application
             return treeNode;
         }
 
-        internal static bool CheckIfNodeExists(TreeView SearchControl, string Name)
+        internal static bool CheckIfNodeExistsByText(TreeView SearchControl, string Name)
         {
-            bool Exists;
-
-            Exists = SearchRecursive(SearchControl.Nodes, Name, SearchControl, false);
-
-            return Exists;
+            return (SearchNodeRecursiveByText(SearchControl.Nodes, Name, SearchControl, false) != null);
         }
 
-        internal static bool SearchRecursive(IEnumerable nodes, string searchFor, TreeView TreeViewControl, bool MatchOnly)
+        internal static TreeNode SearchNodeRecursiveByText(IEnumerable nodes, string searchFor, TreeView TreeViewControl, bool MatchOnly)
         {
             foreach (TreeNode node in nodes)
             {
@@ -149,32 +144,25 @@ namespace EuroSound_Application
                 {
                     if (node.Text.ToUpper().Contains(searchFor))
                     {
-                        TreeViewControl.Invoke((MethodInvoker)delegate
-                        {
-                            TreeViewControl.SelectedNode = node;
-                        });
-                        return true;
+                        return node;
                     }
                 }
                 else
                 {
                     if (node.Text.ToUpper().Equals(searchFor))
                     {
-                        TreeViewControl.Invoke((MethodInvoker)delegate
-                        {
-                            TreeViewControl.SelectedNode = node;
-                        });
-                        return true;
+                        return node;
                     }
                 }
 
-                if (SearchRecursive(node.Nodes, searchFor, TreeViewControl, MatchOnly))
+                TreeNode result = SearchNodeRecursiveByText(node.Nodes, searchFor, TreeViewControl, MatchOnly);
+                if (result != null)
                 {
-                    return true;
+                    return result;
                 }
             }
 
-            return false;
+            return null;
         }
     }
 }

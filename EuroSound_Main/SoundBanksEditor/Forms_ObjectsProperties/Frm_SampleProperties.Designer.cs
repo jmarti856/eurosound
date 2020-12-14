@@ -86,7 +86,7 @@
             this.groupbox_properties.Size = new System.Drawing.Size(450, 108);
             this.groupbox_properties.TabIndex = 0;
             this.groupbox_properties.TabStop = false;
-            this.groupbox_properties.Text = "Properties";
+            this.groupbox_properties.Text = "Properties:";
             // 
             // Numeric_BaseVolume
             // 

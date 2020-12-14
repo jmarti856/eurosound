@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Resources;
 using System.Threading.Tasks;
@@ -10,10 +9,6 @@ namespace EuroSound_Application
     public partial class Frm_EuroSound_Splash : Form
     {
         string ArgumentFileToLoad;
-        ResourceManager ResourcesManager = new ResourceManager(typeof(Properties.Resources));
-        public Dictionary<string, string> SFX_Defines = new Dictionary<string, string>();
-        public Dictionary<string, string> SB_Defines = new Dictionary<string, string>();
-        public Dictionary<string, double[]> SFX_Data = new Dictionary<string, double[]>();
 
         public Frm_EuroSound_Splash(string FileToLoad)
         {
@@ -23,6 +18,7 @@ namespace EuroSound_Application
 
         private async void Frm_EuroSound_Splash_Shown(object sender, EventArgs e)
         {
+            GenericFunctions.ResourcesManager = new ResourceManager(typeof(Properties.Resources));
 
             /*Declare Variables*/
             string[] HashTable_Sounds, HashTable_SoundsData, HashTable_Musics;
@@ -50,18 +46,18 @@ namespace EuroSound_Application
 
             /*--Load Sound Data Hashcodes--*/
             Label_Status.Text = "Loading Hashcodes Sounds Data, please wait...";
-            Hashcodes.LoadSoundDataFile(GlobalPreferences.HT_SoundsDataPath, SFX_Data, SFX_Defines, ResourcesManager);
+            Hashcodes.LoadSoundDataFile();
 
             await Task.Delay(340);
 
             /*--Load Sound Hashcodes--*/
             Label_Status.Text = "Loading Hashcodes Sounds, please wait...";
-            Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath, SFX_Defines, SB_Defines, ResourcesManager);
+            Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
 
             await Task.Delay(500);
 
             /*--Start Form--*/
-            Frm_EuroSound_Main EuroSoundMain = new Frm_EuroSound_Main(ArgumentFileToLoad, ResourcesManager, SFX_Defines, SB_Defines, SFX_Data)
+            Frm_EuroSound_Main EuroSoundMain = new Frm_EuroSound_Main(ArgumentFileToLoad)
             {
                 Owner = this
             };

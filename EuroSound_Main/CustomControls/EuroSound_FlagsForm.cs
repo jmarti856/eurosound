@@ -58,6 +58,7 @@ namespace EuroSound_Application
                 {
                     flags += 1 << i;
                 }
+                AllCheckboxes[i].Dispose();
             }
 
             return flags;

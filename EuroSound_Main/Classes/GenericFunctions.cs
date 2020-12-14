@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Resources;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
@@ -12,6 +13,7 @@ namespace EuroSound_Application
         private static ToolStripLabel ProgramStatusLabel;
         public static ToolStripLabel FileNameLabel;
         private static StatusStrip StatusBar;
+        public static ResourceManager ResourcesManager;
 
         public static string CurrentStatus;
 
@@ -41,7 +43,7 @@ namespace EuroSound_Application
 
             SaveFileDialog SaveFile = new SaveFileDialog
             {
-                Filter = Filter,
+                Filter = Filter + "|All files(*.*)|*.*",
                 FilterIndex = SelectedIndexFilter,
                 RestoreDirectory = RestoreDirectory,
                 FileName = Name
@@ -51,9 +53,12 @@ namespace EuroSound_Application
             {
                 SelectedPath = SaveFile.FileName;
             }
+            SaveFile.Dispose();
 
             return SelectedPath;
         }
+
+
 
         public static Color GetColorFromColorPicker()
         {
@@ -65,6 +70,7 @@ namespace EuroSound_Application
                 PickedColor = ColorDiag.Color;
                 WindowsRegistryFunctions.SaveCustomColors(ColorDiag.CustomColors);
             }
+            ColorDiag.Dispose();
 
             return PickedColor;
         }
@@ -75,16 +81,21 @@ namespace EuroSound_Application
 
             if (File.Exists(filename))
             {
-                using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider())
+                MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+                byte[] buffer = md5.ComputeHash(File.ReadAllBytes(filename));
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < buffer.Length; i++)
                 {
-                    byte[] buffer = md5.ComputeHash(File.ReadAllBytes(filename));
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < buffer.Length; i++)
-                    {
-                        sb.Append(buffer[i].ToString("x2"));
-                    }
-                    MD5hash = sb.ToString();
+                    sb.Append(buffer[i].ToString("x2"));
                 }
+                MD5hash = sb.ToString();
+
+                //Clear and dispose
+                md5.Clear();
+                md5.Dispose();
+
+                //Clear and dispose
+                sb.Clear();
             }
 
             return MD5hash;
@@ -115,10 +126,10 @@ namespace EuroSound_Application
             {
                 SampleName = dlg.Result;
             }
+            dlg.Dispose();
 
             return SampleName;
         }
-
 
         public static void GetStatusBarControls(StatusStrip v_StatusBar, ToolStripLabel v_ProgramStatusLabel, ToolStripLabel v_FileNameLabel)
         {
@@ -126,7 +137,6 @@ namespace EuroSound_Application
             FileNameLabel = v_FileNameLabel;
             StatusBar = v_StatusBar;
         }
-
 
         public static void SetCurrentFileLabel(string text)
         {
@@ -196,6 +206,27 @@ namespace EuroSound_Application
             };
             ImportResults.ShowDialog();
             ImportResults.Dispose();
+        }
+
+
+        public static Form GetFormByName(string FormName, string tag)
+        {
+            Form Results = null;
+
+            /*--Change icon in the parent form--*/
+            foreach (Form OpenForm in Application.OpenForms)
+            {
+                if (OpenForm.Name.Equals(FormName))
+                {
+                    if (OpenForm.Tag.Equals(tag))
+                    {
+                        Results = OpenForm;
+                        break;
+                    }
+                }
+            }
+
+            return Results;
         }
     }
 }

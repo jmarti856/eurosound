@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -14,5 +15,13 @@ namespace EuroSound_Application
         {
             this.Close();
         }
+
+        private void Frm_AboutEuroSound_Load(object sender, EventArgs e)
+        {
+            Label_Version.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+        }
     }
+
+
 }

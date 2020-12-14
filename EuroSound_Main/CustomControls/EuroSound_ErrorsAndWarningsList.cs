@@ -30,20 +30,22 @@ namespace EuroSound_Application
 
                 if (MessageType == '0')
                 {
-                    Item.SubItems[0].BackColor = Color.Red;
+                    Item.SubItems[0].Text = "Error";
+                    Item.ImageIndex = 0;
                 }
                 else if (MessageType == '1')
                 {
-                    Item.SubItems[0].BackColor = Color.Yellow;
+                    Item.SubItems[0].Text = "Warning";
+                    Item.ImageIndex = 1;
                 }
                 else
                 {
-                    Item.SubItems[0].BackColor = Color.Green;
+                    Item.SubItems[0].Text = "Info";
+                    Item.ImageIndex = 2;
                 }
-                Item.UseItemStyleForSubItems = false;
                 ListView_Reports.Items.Add(Item);
             }
-
+            ErrorsAndWarningsListToPrint.Clear();
         }
 
         private void Button_Copy_Click(object sender, EventArgs e)
@@ -60,11 +62,11 @@ namespace EuroSound_Application
                     {
                         if (lvItem.SubItems[0].BackColor == Color.Red)
                         {
-                            Text += "Error - ";
+                            Text += "Error:    ";
                         }
                         else if (lvItem.SubItems[0].BackColor == Color.Yellow)
                         {
-                            Text += "Warning - ";
+                            Text += "Warning:    ";
                         }
                         Text += lvItem.SubItems[1].Text + Environment.NewLine;
                     }

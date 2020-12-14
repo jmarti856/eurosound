@@ -110,7 +110,7 @@
             this.groupbox_params.Size = new System.Drawing.Size(524, 180);
             this.groupbox_params.TabIndex = 1;
             this.groupbox_params.TabStop = false;
-            this.groupbox_params.Text = "Params";
+            this.groupbox_params.Text = "Params:";
             // 
             // numeric_mastervolume
             // 
@@ -391,7 +391,7 @@
             this.groupbox_samples.Size = new System.Drawing.Size(524, 293);
             this.groupbox_samples.TabIndex = 2;
             this.groupbox_samples.TabStop = false;
-            this.groupbox_samples.Text = "Sound Samples";
+            this.groupbox_samples.Text = "Associated Samples";
             // 
             // List_Samples
             // 

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Resources;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -11,24 +9,13 @@ namespace EuroSound_Application
         //* Global Variables
         //*===============================================================================================
         EXSound SelectedSound;
-        Dictionary<string, string> SFX_Defines, SB_Defines;
-        Dictionary<string, double[]> SFX_Data;
-        ResourceManager ResourcesManager;
-        string TreeNodeSoundName, HashcodesSFX, HashcodesSFXData, ParentFormID;
+        string TreeNodeSoundName;
 
-
-        public Frm_EffectProperties(EXSound SoundToCheck, string SoundName, string v_HashcodesSFX, string v_HashcodesSFXData, Dictionary<string, string> v_SFX_Defines, Dictionary<string, string> v_SB_Defines, Dictionary<string, double[]> v_SFX_Data, string ParentID, ResourceManager v_ResourcesManager)
+        public Frm_EffectProperties(EXSound SoundToCheck, string SoundName)
         {
             InitializeComponent();
             SelectedSound = SoundToCheck;
             TreeNodeSoundName = SoundName;
-            HashcodesSFX = v_HashcodesSFX;
-            HashcodesSFXData = v_HashcodesSFXData;
-            SFX_Defines = v_SFX_Defines;
-            SB_Defines = v_SB_Defines;
-            SFX_Data = v_SFX_Data;
-            ParentFormID = ParentID;
-            ResourcesManager = v_ResourcesManager;
         }
 
         //*===============================================================================================
@@ -37,17 +24,17 @@ namespace EuroSound_Application
         private void Frm_EffectProperties_Load(object sender, EventArgs e)
         {
             //Sound Data defines
-            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsDataMD5, HashcodesSFXData))
+            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsDataMD5, GlobalPreferences.HT_SoundsDataPath))
             {
-                Hashcodes.LoadSoundDataFile(HashcodesSFXData, SFX_Data, SFX_Defines, ResourcesManager);
+                Hashcodes.LoadSoundDataFile();
             }
 
             //Sound defines
-            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsMD5, HashcodesSFX))
+            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsMD5, GlobalPreferences.HT_SoundsPath))
             {
-                Hashcodes.LoadSoundHashcodes(HashcodesSFX, SFX_Defines, SB_Defines, ResourcesManager);
+                Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
             }
-            Hashcodes.AddHashcodesToCombobox(cbx_hashcode, SFX_Defines);
+            Hashcodes.AddHashcodesToCombobox(cbx_hashcode, Hashcodes.SFX_Defines);
 
             /*---Put the selected hashcode in case is not null---*/
             if (SelectedSound.Hashcode != null)
@@ -103,28 +90,20 @@ namespace EuroSound_Application
             SelectedSound.OutputThisSound = Checkbox_OutputThisSound.Checked;
 
             /*--Change icon in the parent form--*/
-            foreach (Form OpenForm in Application.OpenForms)
+            Form OpenForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", this.Tag.ToString());
+            TreeNode[] Results = ((Frm_Soundbanks_Main)OpenForm).TreeView_File.Nodes.Find(TreeNodeSoundName, true);
+            if (Results.Length > 0)
             {
-                if (OpenForm.Name.Equals("Frm_Soundbanks_Main"))
+                if (SelectedSound.OutputThisSound)
                 {
-                    if (OpenForm.Tag.Equals(ParentFormID))
-                    {
-                        TreeNode[] Results = ((Frm_Soundbanks_Main)OpenForm).TreeView_File.Nodes.Find(TreeNodeSoundName, true);
-                        if (Results.Length > 0)
-                        {
-                            if (SelectedSound.OutputThisSound)
-                            {
-                                TreeNodeFunctions.TreeNodeSetNodeImage(Results[0], 2, 2);
-                            }
-                            else
-                            {
-                                TreeNodeFunctions.TreeNodeSetNodeImage(Results[0], 5, 5);
-                            }
-                        }
-                        break;
-                    }
+                    TreeNodeFunctions.TreeNodeSetNodeImage(Results[0], 2, 2);
+                }
+                else
+                {
+                    TreeNodeFunctions.TreeNodeSetNodeImage(Results[0], 5, 5);
                 }
             }
+
             this.Close();
         }
 
@@ -141,27 +120,28 @@ namespace EuroSound_Application
             {
                 textbox_flags.Text = FormFlags.CheckedFlags.ToString();
             }
+            FormFlags.Dispose();
         }
 
         private void Cbx_hashcode_Click(object sender, EventArgs e)
         {
             //Sound defines
-            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsMD5, HashcodesSFX))
+            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsMD5, GlobalPreferences.HT_SoundsPath))
             {
-                Hashcodes.LoadSoundHashcodes(HashcodesSFX, SFX_Defines, SB_Defines, ResourcesManager);
-                Hashcodes.AddHashcodesToCombobox(cbx_hashcode, SFX_Defines);
+                Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
+                Hashcodes.AddHashcodesToCombobox(cbx_hashcode, Hashcodes.SFX_Defines);
             }
 
             //Sound Data defines
-            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsDataMD5, HashcodesSFXData))
+            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsDataMD5, GlobalPreferences.HT_SoundsDataPath))
             {
-                Hashcodes.LoadSoundDataFile(HashcodesSFXData, SFX_Data, SFX_Defines, ResourcesManager);
+                Hashcodes.LoadSoundDataFile();
             }
         }
 
         private void Cbx_hashcode_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            double[] items = SFX_Data[cbx_hashcode.SelectedValue.ToString()];
+            double[] items = Hashcodes.SFX_Data[cbx_hashcode.SelectedValue.ToString()];
             /*
             [0] HashCode;
             [1] InnerRadius; --USED--
@@ -180,7 +160,7 @@ namespace EuroSound_Application
             {
                 if (SelectedSound.Samples.Count < 1)
                 {
-                    MessageBox.Show(ResourcesManager.GetString("Gen_Warning_StreamedSound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_Warning_StreamedSound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }
