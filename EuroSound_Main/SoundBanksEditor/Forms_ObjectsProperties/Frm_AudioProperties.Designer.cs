@@ -105,6 +105,11 @@ namespace EuroSound_Application
             // numeric_flags
             // 
             this.numeric_flags.Location = new System.Drawing.Point(68, 74);
+            this.numeric_flags.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numeric_flags.Name = "numeric_flags";
             this.numeric_flags.Size = new System.Drawing.Size(84, 20);
             this.numeric_flags.TabIndex = 28;

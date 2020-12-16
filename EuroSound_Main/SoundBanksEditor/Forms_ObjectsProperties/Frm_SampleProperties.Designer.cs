@@ -54,6 +54,7 @@
             this.Combobox_Hashcode = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.Label_SubSFX = new System.Windows.Forms.Label();
+            this.Button_Edit = new System.Windows.Forms.Button();
             this.groupbox_properties.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_BaseVolume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_randomPitchOffset)).BeginInit();
@@ -243,6 +244,7 @@
             // button_cancel
             // 
             this.button_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button_cancel.Location = new System.Drawing.Point(387, 348);
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(75, 23);
@@ -255,6 +257,7 @@
             // 
             this.GroupBoxMedia.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBoxMedia.Controls.Add(this.Button_Edit);
             this.GroupBoxMedia.Controls.Add(this.Button_Stop);
             this.GroupBoxMedia.Controls.Add(this.Button_PlayAudio);
             this.GroupBoxMedia.Controls.Add(this.Label_AudioSelected);
@@ -272,7 +275,7 @@
             this.Button_Stop.Location = new System.Drawing.Point(369, 80);
             this.Button_Stop.Name = "Button_Stop";
             this.Button_Stop.Size = new System.Drawing.Size(75, 23);
-            this.Button_Stop.TabIndex = 10;
+            this.Button_Stop.TabIndex = 5;
             this.Button_Stop.Text = "Stop";
             this.Button_Stop.UseVisualStyleBackColor = true;
             this.Button_Stop.Click += new System.EventHandler(this.Button_Stop_Click);
@@ -283,7 +286,7 @@
             this.Button_PlayAudio.Location = new System.Drawing.Point(288, 80);
             this.Button_PlayAudio.Name = "Button_PlayAudio";
             this.Button_PlayAudio.Size = new System.Drawing.Size(75, 23);
-            this.Button_PlayAudio.TabIndex = 9;
+            this.Button_PlayAudio.TabIndex = 4;
             this.Button_PlayAudio.Text = "Play";
             this.Button_PlayAudio.UseVisualStyleBackColor = true;
             this.Button_PlayAudio.Click += new System.EventHandler(this.Button_PlayAudio_Click);
@@ -294,7 +297,7 @@
             this.Label_AudioSelected.Location = new System.Drawing.Point(6, 45);
             this.Label_AudioSelected.Name = "Label_AudioSelected";
             this.Label_AudioSelected.Size = new System.Drawing.Size(37, 13);
-            this.Label_AudioSelected.TabIndex = 8;
+            this.Label_AudioSelected.TabIndex = 1;
             this.Label_AudioSelected.Text = "Audio:";
             // 
             // Combobox_SelectedAudio
@@ -304,7 +307,7 @@
             this.Combobox_SelectedAudio.Location = new System.Drawing.Point(49, 42);
             this.Combobox_SelectedAudio.Name = "Combobox_SelectedAudio";
             this.Combobox_SelectedAudio.Size = new System.Drawing.Size(395, 21);
-            this.Combobox_SelectedAudio.TabIndex = 7;
+            this.Combobox_SelectedAudio.TabIndex = 2;
             // 
             // Checkbox_IsStreamedSound
             // 
@@ -313,7 +316,7 @@
             this.Checkbox_IsStreamedSound.Location = new System.Drawing.Point(6, 19);
             this.Checkbox_IsStreamedSound.Name = "Checkbox_IsStreamedSound";
             this.Checkbox_IsStreamedSound.Size = new System.Drawing.Size(279, 17);
-            this.Checkbox_IsStreamedSound.TabIndex = 6;
+            this.Checkbox_IsStreamedSound.TabIndex = 0;
             this.Checkbox_IsStreamedSound.Text = "This sound is streamed and is stored in an external file";
             this.Checkbox_IsStreamedSound.UseVisualStyleBackColor = true;
             this.Checkbox_IsStreamedSound.CheckedChanged += new System.EventHandler(this.Checkbox_IsStreamedSound_CheckedChanged);
@@ -364,10 +367,22 @@
     "y gets interpreted as a SFX hashcode and played as a 3D sound at the current pos" +
     "ition.";
             // 
+            // Button_Edit
+            // 
+            this.Button_Edit.Location = new System.Drawing.Point(190, 80);
+            this.Button_Edit.Name = "Button_Edit";
+            this.Button_Edit.Size = new System.Drawing.Size(92, 23);
+            this.Button_Edit.TabIndex = 3;
+            this.Button_Edit.Text = "Open Properties";
+            this.Button_Edit.UseVisualStyleBackColor = true;
+            this.Button_Edit.Click += new System.EventHandler(this.Button_Edit_Click);
+            // 
             // Frm_SampleProperties
             // 
+            this.AcceptButton = this.button_ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.button_cancel;
             this.ClientSize = new System.Drawing.Size(474, 383);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.GroupBoxMedia);
@@ -427,5 +442,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button Button_PlayAudio;
         private System.Windows.Forms.Button Button_Stop;
+        private System.Windows.Forms.Button Button_Edit;
     }
 }

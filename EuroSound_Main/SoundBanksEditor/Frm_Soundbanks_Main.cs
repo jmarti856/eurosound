@@ -30,7 +30,7 @@ namespace EuroSound_Application
         Thread UpdateList, UpdateWavList, UpdateStreamDataList;
 
         /*--ProjectFile Classs where we will store all info related with the project*/
-        ProjectFile ProjectInfo = new ProjectFile();
+        public ProjectFile ProjectInfo = new ProjectFile();
 
         public Frm_Soundbanks_Main(string FilePath, string v_ProjectName)
         {

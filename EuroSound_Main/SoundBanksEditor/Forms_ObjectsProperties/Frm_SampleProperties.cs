@@ -152,6 +152,7 @@ namespace EuroSound_Application
         private void EnableOrDisableSubSFXSection(bool Action)
         {
             Combobox_Hashcode.Enabled = Action;
+            Combobox_SelectedAudio.Enabled = _ = !Action;
         }
 
         private void StopAudio()
@@ -161,6 +162,28 @@ namespace EuroSound_Application
                 _waveOut.Stop();
                 AudioSample.Close();
                 AudioSample.Dispose();
+            }
+        }
+
+        private void Button_Edit_Click(object sender, EventArgs e)
+        {
+            string AudioKey = Combobox_SelectedAudio.SelectedValue.ToString();
+            Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", this.Tag.ToString());
+            if (((Frm_Soundbanks_Main)ParentForm).AudioDataDict.ContainsKey(AudioKey))
+            {
+                EXAudio SelectedSound = ((Frm_Soundbanks_Main)ParentForm).AudioDataDict[AudioKey];
+                if (SelectedSound != null)
+                {
+                    Frm_AudioProperties FormAudioProps = new Frm_AudioProperties(SelectedSound, AudioKey)
+                    {
+                        Text = "Audio Properties",
+                        Tag = this.Tag,
+                        Owner = this,
+                        ShowInTaskbar = false
+                    };
+                    FormAudioProps.ShowDialog();
+                    FormAudioProps.Dispose();
+                }
             }
         }
     }
