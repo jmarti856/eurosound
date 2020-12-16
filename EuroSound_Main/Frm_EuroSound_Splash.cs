@@ -21,7 +21,7 @@ namespace EuroSound_Application
             GenericFunctions.ResourcesManager = new ResourceManager(typeof(Properties.Resources));
 
             /*Declare Variables*/
-            string[] HashTable_Sounds, HashTable_SoundsData, HashTable_Musics;
+            string[] HashTable_Sounds, HashTable_SoundsData, HashTable_Musics, TreeViewPreferences;
 
             Label_EuroSoundVersion.Text = AssemblyDescription + " Version " + AssemblyVersion[0];
 
@@ -43,6 +43,16 @@ namespace EuroSound_Application
             HashTable_Musics = WindowsRegistryFunctions.LoadHashTablePathAndMD5("Musics");
             GlobalPreferences.HT_MusicPath = HashTable_Musics[0];
             GlobalPreferences.HT_MusicMD5 = HashTable_Musics[1];
+
+            await Task.Delay(100);
+            TreeViewPreferences = WindowsRegistryFunctions.LoadTreeViewPreferences();
+            GlobalPreferences.SelectedFont = TreeViewPreferences[0];
+            GlobalPreferences.ShowLines = Convert.ToBoolean(TreeViewPreferences[1]);
+            GlobalPreferences.ShowRootLines = Convert.ToBoolean(TreeViewPreferences[2]);
+            GlobalPreferences.TreeViewIndent = int.Parse(TreeViewPreferences[3]);
+
+            await Task.Delay(4);
+            GlobalPreferences.SFXOutputPath = WindowsRegistryFunctions.LoadGeneralPreferences();
 
             /*--Load Sound Data Hashcodes--*/
             Label_Status.Text = "Loading Hashcodes Sounds Data, please wait...";

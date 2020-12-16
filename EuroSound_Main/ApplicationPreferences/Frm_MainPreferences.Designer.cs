@@ -29,8 +29,9 @@ namespace EuroSound_Application
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("ESF Tree");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Hash Tables");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("General");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("ESF Tree");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Hash Tables");
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
             this.Panel_SecondaryForms = new System.Windows.Forms.TableLayoutPanel();
@@ -79,13 +80,16 @@ namespace EuroSound_Application
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TreeViewPreferences.Location = new System.Drawing.Point(12, 12);
             this.TreeViewPreferences.Name = "TreeViewPreferences";
-            treeNode1.Name = "ESFTree";
-            treeNode1.Text = "ESF Tree";
-            treeNode2.Name = "HashTables";
-            treeNode2.Text = "Hash Tables";
+            treeNode1.Name = "General";
+            treeNode1.Text = "General";
+            treeNode2.Name = "ESFTree";
+            treeNode2.Text = "ESF Tree";
+            treeNode3.Name = "HashTables";
+            treeNode3.Text = "Hash Tables";
             this.TreeViewPreferences.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
-            treeNode2});
+            treeNode2,
+            treeNode3});
             this.TreeViewPreferences.Size = new System.Drawing.Size(177, 424);
             this.TreeViewPreferences.TabIndex = 0;
             this.TreeViewPreferences.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeViewPreferences_AfterSelect);

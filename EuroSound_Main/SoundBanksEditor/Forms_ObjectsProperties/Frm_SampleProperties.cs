@@ -70,21 +70,27 @@ namespace EuroSound_Application
         private void Button_PlayAudio_Click(object sender, EventArgs e)
         {
             Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", this.Tag.ToString());
-            EXAudio AudioSelected = TreeNodeFunctions.GetSelectedAudio(Combobox_SelectedAudio.SelectedValue.ToString(), ((Frm_Soundbanks_Main)ParentForm).AudioDataDict);
-            if (AudioSelected != null)
+            if (Combobox_SelectedAudio.SelectedValue != null)
             {
-                if (_waveOut.PlaybackState == PlaybackState.Stopped)
+                EXAudio AudioSelected = TreeNodeFunctions.GetSelectedAudio(Combobox_SelectedAudio.SelectedValue.ToString(), ((Frm_Soundbanks_Main)ParentForm).AudioDataDict);
+                if (AudioSelected != null)
                 {
-                    AudioSample = new MemoryStream(AudioSelected.PCMdata);
-                    IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(AudioSelected.Frequency + Convert.ToInt32(numeric_pitchoffset.Value), AudioSelected.Bits, AudioSelected.Channels));
-                    VolumeSampleProvider volumeProvider = new VolumeSampleProvider(provider.ToSampleProvider());
-                    PanningSampleProvider panProvider = new PanningSampleProvider(volumeProvider)
+                    if (_waveOut.PlaybackState == PlaybackState.Stopped)
                     {
-                        Pan = (Convert.ToInt32(numeric_pan.Value) / 100)
-                    };
-                    _waveOut.Volume = 1;
-                    _waveOut.Init(panProvider);
-                    _waveOut.Play();
+                        if (AudioSelected.PCMdata != null)
+                        {
+                            AudioSample = new MemoryStream(AudioSelected.PCMdata);
+                            IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(AudioSelected.Frequency + Convert.ToInt32(numeric_pitchoffset.Value), AudioSelected.Bits, AudioSelected.Channels));
+                            VolumeSampleProvider volumeProvider = new VolumeSampleProvider(provider.ToSampleProvider());
+                            PanningSampleProvider panProvider = new PanningSampleProvider(volumeProvider)
+                            {
+                                Pan = (Convert.ToInt32(numeric_pan.Value) / 100)
+                            };
+                            _waveOut.Volume = 1;
+                            _waveOut.Init(panProvider);
+                            _waveOut.Play();
+                        }
+                    }
                 }
             }
         }

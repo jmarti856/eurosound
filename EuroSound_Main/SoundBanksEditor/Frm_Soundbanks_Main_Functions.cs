@@ -35,6 +35,7 @@ namespace EuroSound_Application
             };
             FormSoundProps.ShowDialog();
             FormSoundProps.Dispose();
+            ProjectInfo.FileHasBeenModified = true;
         }
 
         internal void OpenAudioProperties()
@@ -51,6 +52,7 @@ namespace EuroSound_Application
                 };
                 FormAudioProps.ShowDialog();
                 FormAudioProps.Dispose();
+                ProjectInfo.FileHasBeenModified = true;
             }
         }
 
@@ -68,6 +70,7 @@ namespace EuroSound_Application
             };
             FormSampleProps.ShowDialog();
             FormSampleProps.Dispose();
+            ProjectInfo.FileHasBeenModified = true;
         }
 
         internal void RemoveFolderSelectedNode()
@@ -292,7 +295,7 @@ namespace EuroSound_Application
 
                         GenericFunctions.SetProgramStateShowToStatusBar("Checking audio: " + item.Value.Name.ToString());
 
-                        Thread.Sleep(4);
+                        Thread.Sleep(5);
                     }
                 }
                 catch
@@ -343,7 +346,7 @@ namespace EuroSound_Application
 
                                 GenericFunctions.SetProgramStateShowToStatusBar("Checking Sample: " + Sample.DisplayName);
 
-                                Thread.Sleep(4);
+                                Thread.Sleep(5);
                             }
                         }
                     }

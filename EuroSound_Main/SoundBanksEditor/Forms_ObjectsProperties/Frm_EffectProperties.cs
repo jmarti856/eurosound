@@ -141,9 +141,9 @@ namespace EuroSound_Application
 
         private void Cbx_hashcode_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            double[] items = Hashcodes.SFX_Data[cbx_hashcode.SelectedValue.ToString()];
+            float[] items = Hashcodes.SFX_Data[cbx_hashcode.SelectedValue.ToString()];
             /*
-            [0] HashCode;
+            [0] HashCode;    --USED--
             [1] InnerRadius; --USED--
             [2] OuterRadius; --USED--
             [3] Altertness;

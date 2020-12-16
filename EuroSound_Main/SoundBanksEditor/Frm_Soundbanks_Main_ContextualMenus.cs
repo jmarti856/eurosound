@@ -44,10 +44,6 @@ namespace EuroSound_Application
                     EXObjectsFunctions.AddEmptySoundWithName(SoundID, Name, "0x1A000001", SoundsList);
                     ProjectInfo.FileHasBeenModified = true;
                 }
-                else
-                {
-                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_Error_NameIsEmpty"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
             }
         }
 
@@ -67,10 +63,6 @@ namespace EuroSound_Application
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, EXObjectsFunctions.RemoveWhiteSpaces(Name), Name, 4, 4, "Sample", Color.Black, TreeView_File);
                     EXObjectsFunctions.AddSampleToSound(EXObjectsFunctions.GetSoundByName(int.Parse(TreeView_File.SelectedNode.Name), SoundsList), Name, false);
                 }
-            }
-            else
-            {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_Error_NameIsEmpty"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -106,10 +98,6 @@ namespace EuroSound_Application
                         }
                     }
                 }
-                else
-                {
-                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_Error_NameIsEmpty"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
             }
         }
 
@@ -141,6 +129,8 @@ namespace EuroSound_Application
                     ShowDependencies.ShowDialog();
                     ShowDependencies.Dispose();
                 }
+
+                ProjectInfo.FileHasBeenModified = true;
             }
         }
 
@@ -163,10 +153,6 @@ namespace EuroSound_Application
                 {
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, EXObjectsFunctions.RemoveWhiteSpaces(Name), Name, 1, 1, "Folder", Color.Black, TreeView_File);
                     ProjectInfo.FileHasBeenModified = true;
-                }
-                else
-                {
-                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_Error_NameIsEmpty"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }

@@ -12,7 +12,7 @@ namespace EuroSound_Application
     {
         public static Dictionary<string, string> SFX_Defines = new Dictionary<string, string>();
         public static Dictionary<string, string> SB_Defines = new Dictionary<string, string>();
-        public static Dictionary<string, double[]> SFX_Data = new Dictionary<string, double[]>();
+        public static Dictionary<string, float[]> SFX_Data = new Dictionary<string, float[]>();
 
         public static void LoadSoundHashcodes(string SoundHashcodesPath)
         {
@@ -93,7 +93,6 @@ namespace EuroSound_Application
                 }
             }
             reader.Close();
-            reader.DiscardBufferedData();
             reader.Dispose();
 
             bs.Close();
@@ -109,15 +108,16 @@ namespace EuroSound_Application
         {
             string[] SplitedLine;
             string line, hashcode;
-            double[] ArrayOfValues = new double[8];
+
 
             SFX_Data.Clear();
 
             FileStream fs = new FileStream(GlobalPreferences.HT_SoundsDataPath, FileMode.Open, FileAccess.Read);
-            StreamReader reader = new StreamReader(fs);
+            BufferedStream bs = new BufferedStream(fs);
+            StreamReader reader = new StreamReader(bs);
             while ((line = reader.ReadLine()) != null)
             {
-                if (line.StartsWith("/", StringComparison.OrdinalIgnoreCase) || line.StartsWith("SFXO", StringComparison.OrdinalIgnoreCase))
+                if (line.StartsWith("/", StringComparison.OrdinalIgnoreCase) || line.StartsWith("SFX", StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
@@ -126,6 +126,7 @@ namespace EuroSound_Application
                     SplitedLine = line.Split(new char[] { '{', ',', '}' }, StringSplitOptions.RemoveEmptyEntries);
                     if (SplitedLine.Length >= 9)
                     {
+                        float[] ArrayOfValues = new float[8];
                         ArrayOfValues[0] = StringFloatToDouble(SplitedLine[0]);
                         ArrayOfValues[1] = StringFloatToDouble(SplitedLine[1]);
                         ArrayOfValues[2] = StringFloatToDouble(SplitedLine[2]);
@@ -134,7 +135,7 @@ namespace EuroSound_Application
                         ArrayOfValues[5] = StringFloatToDouble(SplitedLine[5]);
                         ArrayOfValues[6] = StringFloatToDouble(SplitedLine[6]);
                         ArrayOfValues[7] = StringFloatToDouble(SplitedLine[7]);
-                        hashcode = GetHashcodeByLabel(SFX_Defines, SplitedLine[SplitedLine.Length - 1].Split(new[] { "//" }, StringSplitOptions.None)[1].Trim());
+                        hashcode = "0x1A" + (int.Parse(ArrayOfValues[0].ToString()).ToString("X8").Substring(2));
                         if (!SFX_Data.ContainsKey(hashcode))
                         {
                             SFX_Data.Add(hashcode, ArrayOfValues);
@@ -143,26 +144,28 @@ namespace EuroSound_Application
                 }
             }
             reader.Close();
-            reader.DiscardBufferedData();
             reader.Dispose();
+
+            bs.Close();
+            bs.Dispose();
 
             fs.Close();
             fs.Dispose();
         }
 
-        private static double StringFloatToDouble(string Number)
+        private static float StringFloatToDouble(string Number)
         {
-            double FinalNumber;
+            float FinalNumber;
             string num;
 
             try
             {
                 num = Number.Replace("f", string.Empty).Trim();
-                FinalNumber = double.Parse(num, CultureInfo.GetCultureInfo("en-US"));
+                FinalNumber = float.Parse(num, CultureInfo.GetCultureInfo("en-US"));
             }
             catch
             {
-                FinalNumber = 0.0;
+                FinalNumber = 0.0f;
             }
 
             return FinalNumber;

@@ -83,12 +83,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationPreferences\GlobalPreferences.cs" />
-    <Compile Include="ApplicationPreferences\WindowsRegistryFunctions.cs" />
-    <Compile Include="ApplicationPreferences\Frm_HashTablesConfig.cs">
+    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_GeneralPreferences.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ApplicationPreferences\Frm_HashTablesConfig.Designer.cs">
+    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_GeneralPreferences.Designer.cs">
+      <DependentUpon>Frm_GeneralPreferences.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_TreeViewPrefs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_TreeViewPrefs.Designer.cs">
+      <DependentUpon>Frm_TreeViewPrefs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationPreferences\GlobalPreferences.cs" />
+    <Compile Include="ApplicationPreferences\WindowsRegistryFunctions.cs" />
+    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_HashTablesConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_HashTablesConfig.Designer.cs">
       <DependentUpon>Frm_HashTablesConfig.cs</DependentUpon>
     </Compile>
     <Compile Include="ApplicationPreferences\Frm_MainPreferences.cs">
@@ -100,6 +112,7 @@
     <Compile Include="Classes\GenericFunctions.cs" />
     <Compile Include="Classes\Hashcodes.cs" />
     <Compile Include="Classes\Reflection.cs" />
+    <Compile Include="Classes\SFX_Data\GenerateSFXDataFiles.cs" />
     <Compile Include="CustomControls\EuroSound_ErrorsAndWarningsList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,6 +157,12 @@
     </Compile>
     <Compile Include="CustomControls\EuroSound_WaveViewer.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FilelistBin_Generator\Frm_SFX_DataGenerator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FilelistBin_Generator\Frm_SFX_DataGenerator.Designer.cs">
+      <DependentUpon>Frm_SFX_DataGenerator.cs</DependentUpon>
     </Compile>
     <Compile Include="Frm_AboutEuroSound.cs">
       <SubType>Form</SubType>
@@ -223,12 +242,18 @@
     <Compile Include="SoundBanksEditor\Frm_Soundbanks_Main_Functions.cs">
       <SubType>Form</SubType>
     </Compile>
-    <EmbeddedResource Include="ApplicationPreferences\Frm_HashTablesConfig.resx">
+    <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_HashTablesConfig.resx">
       <DependentUpon>Frm_HashTablesConfig.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ApplicationPreferences\Frm_MainPreferences.resx">
       <DependentUpon>Frm_MainPreferences.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_GeneralPreferences.resx">
+      <DependentUpon>Frm_GeneralPreferences.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_TreeViewPrefs.resx">
+      <DependentUpon>Frm_TreeViewPrefs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\EuroSound_ErrorsAndWarningsList.resx">
       <DependentUpon>EuroSound_ErrorsAndWarningsList.cs</DependentUpon>
@@ -250,6 +275,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\EuroSound_WarningBox.resx">
       <DependentUpon>EuroSound_WarningBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilelistBin_Generator\Frm_SFX_DataGenerator.resx">
+      <DependentUpon>Frm_SFX_DataGenerator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Frm_AboutEuroSound.resx">
       <DependentUpon>Frm_AboutEuroSound.cs</DependentUpon>

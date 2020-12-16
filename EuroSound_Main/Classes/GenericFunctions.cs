@@ -142,7 +142,10 @@ namespace EuroSound_Application
         {
             if (StatusBar.Visible && StatusBar != null)
             {
-                FileNameLabel.Text = text;
+                StatusBar.Invoke((MethodInvoker)delegate
+                {
+                    FileNameLabel.Text = text;
+                });
             }
         }
 
@@ -183,15 +186,12 @@ namespace EuroSound_Application
 
         private static void StatusBarSetText(string TextToDisplay)
         {
-            try
+            if (StatusBar.Visible && StatusBar != null)
             {
-                if (StatusBar.Visible)
+                StatusBar.Invoke((MethodInvoker)delegate
                 {
                     ProgramStatusLabel.Text = TextToDisplay;
-                }
-            }
-            catch
-            {
+                });
             }
         }
 

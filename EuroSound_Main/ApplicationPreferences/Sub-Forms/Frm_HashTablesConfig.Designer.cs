@@ -229,6 +229,7 @@ namespace EuroSound_Application
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Frm_HashTablesConfig";
             this.Text = "Frm_HashTablesConfig";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_HashTablesConfig_FormClosing);
             this.Load += new System.EventHandler(this.Frm_HashTablesConfig_Load);
             this.Panel_Title.ResumeLayout(false);
             this.Panel_Title.PerformLayout();

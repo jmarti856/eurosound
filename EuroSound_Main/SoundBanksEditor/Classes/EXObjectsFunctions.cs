@@ -129,7 +129,6 @@ namespace EuroSound_Application
             }
             catch
             {
-                MessageBox.Show("The file: " + AudioFilePath + " can't be readed, seems that is being used by another process.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 byteArray = null;
             }
 
@@ -151,7 +150,7 @@ namespace EuroSound_Application
             return FinalList;
         }
 
-        internal static string LoadAudioAddToListAndTreeNode(string AudioFilePath, string DisplayName, Dictionary<string, EXAudio> AudioDataDict, TreeView TreeViewControl, int[] Props)
+        internal static string LoadAudioAddToListAndTreeNode(string AudioFilePath, string DisplayName, Dictionary<string, EXAudio> AudioDataDict, TreeView TreeViewControl, int[] Props, List<string> Reports)
         {
             string FileMD5Hash;
 
@@ -166,6 +165,11 @@ namespace EuroSound_Application
                 NewAudio.LoopOffset = Props[2];
                 AddAudioToList(NewAudio, FileMD5Hash, AudioDataDict);
                 TreeNodeFunctions.TreeNodeAddNewNode("AudioData", FileMD5Hash, "AD_" + DisplayName, 7, 7, "Audio", Color.Black, TreeViewControl);
+
+                if (NewAudio.PCMdata == null)
+                {
+                    Reports.Add("0The file: " + AudioFilePath + " can't be readed, seems that is being used by another process.");
+                }
             }
 
             return FileMD5Hash;

@@ -13,6 +13,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         string DraggedFile;
         int FormID = 0;
+        int FormSFXDataGenerator = 0;
 
         public Frm_EuroSound_Main(string LoadedFileByArgument)
         {
@@ -61,6 +62,13 @@ namespace EuroSound_Application
             MenuItemWindow_TileH.Click += (se, ev) => { this.LayoutMdi(MdiLayout.TileHorizontal); GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); };
             MenuItemWindow_TileV.Click += (se, ev) => { this.LayoutMdi(MdiLayout.TileVertical); GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); };
 
+            /*Menu Item: Tools*/
+            MainMenu_Tools.DropDownOpened += (se, ev) => { GenericFunctions.StatusBarTutorialModeShowText(""); };
+            MainMenu_Tools.DropDownClosed += (se, ev) => { GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); };
+
+            MainMenuTools_SFXDataGen.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuTools_SFXDataGenerator"));
+            MainMenuTools_SFXDataGen.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MainMenu_Tools.Visible);
+
             /*Menu Item: Help*/
             MainMenu_Help.DropDownOpened += (se, ev) => { GenericFunctions.StatusBarTutorialModeShowText(""); };
             MainMenu_Help.DropDownClosed += (se, ev) => { GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); };
@@ -69,7 +77,7 @@ namespace EuroSound_Application
             MenuItemHelp_OnlineHelp.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItemHelp_OnlineHelp"));
 
             MenuItemHelp_About.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MainMenu_Help.Visible);
-            MenuItemHelp_OnlineHelp.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MainMenu_Help.Visible);
+            MenuItemHelp_OnlineHelp.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(false);
             MenuItemHelp_OnlineHelp.Click += (se, ev) => Process.Start("https://sphinxandthecursedmummy.fandom.com/wiki/SFX");
         }
 
@@ -206,6 +214,7 @@ namespace EuroSound_Application
             };
             AppPreferences.ShowDialog();
             AppPreferences.Dispose();
+            GenericFunctions.StatusBarTutorialMode(false);
         }
 
         private void OpenSoundBanksForm(string FilePath, string ProjectName)
@@ -237,6 +246,19 @@ namespace EuroSound_Application
             {
                 MessageBox.Show("The hashtable paths are not correct, please fix them first before continue.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void MainMenuTools_SFXDataGen_Click(object sender, EventArgs e)
+        {
+            Frm_SFX_DataGenerator BinaryFileGenerator = new Frm_SFX_DataGenerator()
+            {
+                Owner = this,
+                MdiParent = this,
+                Tag = "frm" + FormSFXDataGenerator.ToString()
+            };
+            BinaryFileGenerator.Show();
+            FormSFXDataGenerator++;
+            GenericFunctions.StatusBarTutorialMode(false);
         }
     }
 }

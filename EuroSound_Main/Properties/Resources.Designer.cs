@@ -61,6 +61,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a This audio seems to be corrupt, please load it again.
+        /// </summary>
+        internal static string AudioProperties_FileCorrupt {
+            get {
+                return ResourceManager.GetString("AudioProperties_FileCorrupt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The audio will not be replaced, this audio is already loaded and stored in this project. The current one will remain..
         /// </summary>
         internal static string AudioPropertiesFormAudioExists {
@@ -102,6 +111,24 @@ namespace EuroSound_Application.Properties {
         internal static string Error_Rename_AlreadyExists {
             get {
                 return ResourceManager.GetString("Error_Rename_AlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An error ocurred registering EuroSound File-Types with the shell.
+        /// </summary>
+        internal static string EuroSoundFile_TypesRegisterdError {
+            get {
+                return ResourceManager.GetString("EuroSoundFile-TypesRegisterdError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a EuroSound File-Types registered with the Shell.
+        /// </summary>
+        internal static string EuroSoundFile_TypesRegisterdOK {
+            get {
+                return ResourceManager.GetString("EuroSoundFile-TypesRegisterdOK", resourceCulture);
             }
         }
         
@@ -309,6 +336,15 @@ namespace EuroSound_Application.Properties {
         internal static string MenuItemWindow_TileVertical {
             get {
                 return ResourceManager.GetString("MenuItemWindow_TileVertical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Generate again SFX Data Binary file.
+        /// </summary>
+        internal static string MenuTools_SFXDataGenerator {
+            get {
+                return ResourceManager.GetString("MenuTools_SFXDataGenerator", resourceCulture);
             }
         }
         

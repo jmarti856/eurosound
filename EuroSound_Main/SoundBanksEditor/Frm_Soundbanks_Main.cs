@@ -97,6 +97,13 @@ namespace EuroSound_Application
             {
                 ProjectInfo.FileName = ProjectName;
             }
+
+            /*Apply User Preferences*/
+            FontConverter cvt = new FontConverter();
+            TreeView_File.Indent = GlobalPreferences.TreeViewIndent;
+            TreeView_File.Font = cvt.ConvertFromString(GlobalPreferences.SelectedFont) as Font;
+            TreeView_File.ShowLines = GlobalPreferences.ShowLines;
+            TreeView_File.ShowRootLines = GlobalPreferences.ShowRootLines;
         }
 
         private void Frm_Soundbanks_Main_Shown(object sender, EventArgs e)
@@ -554,7 +561,7 @@ namespace EuroSound_Application
         }
 
         //*===============================================================================================
-        //* WAV HEADER DATA
+        //* LIST VIEWS DATA
         //*===============================================================================================
         private void Button_UpdateList_WavData_Click(object sender, EventArgs e)
         {

@@ -33,14 +33,14 @@
             this.PictureBox_IconRight = new System.Windows.Forms.PictureBox();
             this.Label_Credits = new System.Windows.Forms.Label();
             this.GroupBox_InvolvedPeople = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.Label_Title = new System.Windows.Forms.Label();
             this.Groupbox_EuroSoundVersion = new System.Windows.Forms.GroupBox();
-            this.Label_Release = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.Label_Version = new System.Windows.Forms.Label();
             this.Label_EngineX = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.Label_Version = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.Label_Release = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox_IconLeft)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox_IconRight)).BeginInit();
             this.GroupBox_InvolvedPeople.SuspendLayout();
@@ -104,11 +104,33 @@
             this.GroupBox_InvolvedPeople.TabStop = false;
             this.GroupBox_InvolvedPeople.Text = "Developed by:";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(6, 52);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(230, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Splash Image designed by: SphinxLuvDuvWuv";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(6, 34);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(187, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Programmer: Jordi Martínez (jmarti856)";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // Label_Title
             // 
             this.Label_Title.AutoSize = true;
             this.Label_Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_Title.Location = new System.Drawing.Point(98, 25);
+            this.Label_Title.Location = new System.Drawing.Point(97, 24);
             this.Label_Title.Name = "Label_Title";
             this.Label_Title.Size = new System.Drawing.Size(181, 25);
             this.Label_Title.TabIndex = 6;
@@ -130,23 +152,14 @@
             this.Groupbox_EuroSoundVersion.TabStop = false;
             this.Groupbox_EuroSoundVersion.Text = "Version:";
             // 
-            // Label_Release
+            // Label_EngineX
             // 
-            this.Label_Release.AutoSize = true;
-            this.Label_Release.Location = new System.Drawing.Point(45, 16);
-            this.Label_Release.Name = "Label_Release";
-            this.Label_Release.Size = new System.Drawing.Size(49, 13);
-            this.Label_Release.TabIndex = 0;
-            this.Label_Release.Text = "Release:";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 33);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(88, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "EngineX Version:";
+            this.Label_EngineX.AutoSize = true;
+            this.Label_EngineX.Location = new System.Drawing.Point(100, 33);
+            this.Label_EngineX.Name = "Label_EngineX";
+            this.Label_EngineX.Size = new System.Drawing.Size(25, 13);
+            this.Label_EngineX.TabIndex = 5;
+            this.Label_EngineX.Text = "182";
             // 
             // Label_Version
             // 
@@ -157,36 +170,23 @@
             this.Label_Version.TabIndex = 4;
             this.Label_Version.Text = "Version";
             // 
-            // Label_EngineX
+            // label1
             // 
-            this.Label_EngineX.AutoSize = true;
-            this.Label_EngineX.Location = new System.Drawing.Point(100, 33);
-            this.Label_EngineX.Name = "Label_EngineX";
-            this.Label_EngineX.Size = new System.Drawing.Size(25, 13);
-            this.Label_EngineX.TabIndex = 5;
-            this.Label_EngineX.Text = "182";
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 33);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(88, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "EngineX Version:";
             // 
-            // label2
+            // Label_Release
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(6, 34);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(187, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Programmer: Jordi Martínez (jmarti856)";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(6, 52);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(230, 13);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Splash Image designed by: SphinxLuvDuvWuv";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Label_Release.AutoSize = true;
+            this.Label_Release.Location = new System.Drawing.Point(45, 16);
+            this.Label_Release.Name = "Label_Release";
+            this.Label_Release.Size = new System.Drawing.Size(49, 13);
+            this.Label_Release.TabIndex = 0;
+            this.Label_Release.Text = "Release:";
             // 
             // Frm_AboutEuroSound
             // 

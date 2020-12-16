@@ -44,9 +44,9 @@ namespace EuroSound_Application
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelStatusBar.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.PanelStatusBar.Controls.Add(this.Label_Status);
-            this.PanelStatusBar.Location = new System.Drawing.Point(0, 376);
+            this.PanelStatusBar.Location = new System.Drawing.Point(0, 377);
             this.PanelStatusBar.Name = "PanelStatusBar";
-            this.PanelStatusBar.Size = new System.Drawing.Size(501, 25);
+            this.PanelStatusBar.Size = new System.Drawing.Size(500, 25);
             this.PanelStatusBar.TabIndex = 0;
             // 
             // Label_Status
@@ -62,7 +62,7 @@ namespace EuroSound_Application
             // 
             this.Label_EuroSoundVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_EuroSoundVersion.AutoSize = true;
-            this.Label_EuroSoundVersion.Location = new System.Drawing.Point(507, 382);
+            this.Label_EuroSoundVersion.Location = new System.Drawing.Point(506, 383);
             this.Label_EuroSoundVersion.Name = "Label_EuroSoundVersion";
             this.Label_EuroSoundVersion.Size = new System.Drawing.Size(107, 13);
             this.Label_EuroSoundVersion.TabIndex = 1;
@@ -74,6 +74,7 @@ namespace EuroSound_Application
             this.PictureBox_Splash.Location = new System.Drawing.Point(0, 0);
             this.PictureBox_Splash.Name = "PictureBox_Splash";
             this.PictureBox_Splash.Size = new System.Drawing.Size(625, 375);
+            this.PictureBox_Splash.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.PictureBox_Splash.TabIndex = 2;
             this.PictureBox_Splash.TabStop = false;
             // 
@@ -81,7 +82,7 @@ namespace EuroSound_Application
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(626, 402);
+            this.ClientSize = new System.Drawing.Size(625, 403);
             this.Controls.Add(this.PictureBox_Splash);
             this.Controls.Add(this.Label_EuroSoundVersion);
             this.Controls.Add(this.PanelStatusBar);

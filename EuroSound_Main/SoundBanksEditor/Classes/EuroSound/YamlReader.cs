@@ -172,7 +172,7 @@ namespace EuroSound_Application
                                     {
                                         Reports.Add("1The file: " + AudioPropertiesPath + " can't be loaded because does not exists.");
                                     }
-                                    string MD5AudioFilehash = EXObjectsFunctions.LoadAudioAddToListAndTreeNode(AudioPath, SampleName, AudioDict, TreeViewControl, AudioProps);
+                                    string MD5AudioFilehash = EXObjectsFunctions.LoadAudioAddToListAndTreeNode(AudioPath, SampleName, AudioDict, TreeViewControl, AudioProps, Reports);
                                     NewSample.ComboboxSelectedAudio = MD5AudioFilehash;
                                 }
                                 else

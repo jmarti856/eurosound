@@ -32,11 +32,16 @@ namespace EuroSound_Application
             numeric_psi.Value = TemporalAudio.PSIsample;
             numeric_loopOffset.Value = TemporalAudio.LoopOffset;
 
-            /*--Test WaveViewer--*/
-            //set initial speed - it can be configured using UI slider
-            euroSound_WaveViewer1.RenderDelay = 0;
-            euroSound_WaveViewer1.WaveStream = new RawSourceWaveStream(new MemoryStream(TemporalAudio.PCMdata), new WaveFormat(TemporalAudio.Frequency, TemporalAudio.Bits, TemporalAudio.Channels));
-            euroSound_WaveViewer1.InitControl();
+            if (TemporalAudio.PCMdata != null)
+            {
+                euroSound_WaveViewer1.RenderDelay = 0;
+                euroSound_WaveViewer1.WaveStream = new RawSourceWaveStream(new MemoryStream(TemporalAudio.PCMdata), new WaveFormat(TemporalAudio.Frequency, TemporalAudio.Bits, TemporalAudio.Channels));
+                euroSound_WaveViewer1.InitControl();
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("AudioProperties_FileCorrupt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void Button_ReplaceAudio_Click(object sender, EventArgs e)
@@ -46,16 +51,24 @@ namespace EuroSound_Application
             {
                 TemporalAudioHash = GenericFunctions.CalculateMD5(AudioPath);
                 TemporalAudio = EXObjectsFunctions.LoadAudioData(AudioPath);
-                UpdateControls();
 
-                /*--Editable Data--*/
-                numeric_flags.Value = TemporalAudio.Flags;
-                numeric_psi.Value = TemporalAudio.PSIsample;
-                numeric_loopOffset.Value = TemporalAudio.LoopOffset;
-                Textbox_MD5Hash.Text = TemporalAudioHash;
+                if (TemporalAudio.PCMdata != null)
+                {
+                    UpdateControls();
 
-                euroSound_WaveViewer1.WaveStream = new RawSourceWaveStream(new MemoryStream(TemporalAudio.PCMdata), new WaveFormat(TemporalAudio.Frequency, TemporalAudio.Bits, TemporalAudio.Channels));
-                euroSound_WaveViewer1.InitControl();
+                    /*--Editable Data--*/
+                    numeric_flags.Value = TemporalAudio.Flags;
+                    numeric_psi.Value = TemporalAudio.PSIsample;
+                    numeric_loopOffset.Value = TemporalAudio.LoopOffset;
+                    Textbox_MD5Hash.Text = TemporalAudioHash;
+
+                    euroSound_WaveViewer1.WaveStream = new RawSourceWaveStream(new MemoryStream(TemporalAudio.PCMdata), new WaveFormat(TemporalAudio.Frequency, TemporalAudio.Bits, TemporalAudio.Channels));
+                    euroSound_WaveViewer1.InitControl();
+                }
+                else
+                {
+                    MessageBox.Show("Error reading this file, seems that is being used by another process", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -63,10 +76,17 @@ namespace EuroSound_Application
         {
             if (_waveOut.PlaybackState == PlaybackState.Stopped)
             {
-                AudioSample = new MemoryStream(TemporalAudio.PCMdata);
-                IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(TemporalAudio.Frequency, TemporalAudio.Bits, TemporalAudio.Channels));
-                _waveOut.Init(provider);
-                _waveOut.Play();
+                if (TemporalAudio.PCMdata != null)
+                {
+                    AudioSample = new MemoryStream(TemporalAudio.PCMdata);
+                    IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(TemporalAudio.Frequency, TemporalAudio.Bits, TemporalAudio.Channels));
+                    _waveOut.Init(provider);
+                    _waveOut.Play();
+                }
+                else
+                {
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("AudioProperties_FileCorrupt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -83,8 +103,13 @@ namespace EuroSound_Application
             {
                 if (!((Frm_Soundbanks_Main)ParentForm).AudioDataDict.ContainsKey(TemporalAudioHash))
                 {
+                    /*--Update Dictionary--*/
                     ((Frm_Soundbanks_Main)ParentForm).AudioDataDict.Remove(SelectedAudioMD5Hash);
                     EXObjectsFunctions.AddAudioToList(TemporalAudio, TemporalAudioHash, ((Frm_Soundbanks_Main)ParentForm).AudioDataDict);
+
+                    /*--Update Tree View--*/
+                    TreeNode[] Node = ((Frm_Soundbanks_Main)ParentForm).TreeView_File.Nodes.Find(SelectedAudioMD5Hash, true);
+                    Node[0].Name = TemporalAudioHash;
                 }
                 else
                 {
@@ -93,6 +118,12 @@ namespace EuroSound_Application
             }
             else
             {
+                /*--Add PCM data if the stored one is null--*/
+                if (SelectedAudio.PCMdata == null)
+                {
+                    SelectedAudio.PCMdata = TemporalAudio.PCMdata;
+                }
+
                 /*--Modify Temporal Audio Values--*/
                 TemporalAudio.Flags = int.Parse(numeric_flags.Value.ToString());
                 TemporalAudio.PSIsample = int.Parse(numeric_psi.Value.ToString());
@@ -129,12 +160,19 @@ namespace EuroSound_Application
 
         private void EuroSound_WaveViewer1_OnLineDrawEvent(Point point1, Point point2)
         {
-            using (Graphics gr = euroSound_WaveViewer1.CreateGraphics())
+            try
             {
-                using (Pen linePen = new Pen(Color.DarkBlue, 1))
+                using (Graphics gr = euroSound_WaveViewer1.CreateGraphics())
                 {
-                    gr.DrawLine(linePen, point1, point2);
+                    using (Pen linePen = new Pen(Color.DarkBlue, 1))
+                    {
+                        gr.DrawLine(linePen, point1, point2);
+                    }
                 }
+            }
+            catch
+            {
+
             }
         }
 

@@ -101,5 +101,68 @@ namespace EuroSound_Application
             return Info;
         }
         #endregion
+
+        #region TreeView Preferences
+        internal static void SaveTreeViewPreferences()
+        {
+            CreateEuroSoundSubkeyIfNotExists("SBEditorTreeView", true);
+            RegistryKey SoundBankTreeViewPrefs = EuroSoundKey.OpenSubKey("SBEditorTreeView", true);
+
+            SoundBankTreeViewPrefs.SetValue("SelectedFont", GlobalPreferences.SelectedFont, RegistryValueKind.String);
+            SoundBankTreeViewPrefs.SetValue("TreeViewIndent", GlobalPreferences.TreeViewIndent, RegistryValueKind.DWord);
+            SoundBankTreeViewPrefs.SetValue("ShowLines", GlobalPreferences.ShowLines, RegistryValueKind.String);
+            SoundBankTreeViewPrefs.SetValue("ShowRootLines", GlobalPreferences.ShowRootLines, RegistryValueKind.String);
+        }
+
+        internal static string[] LoadTreeViewPreferences()
+        {
+            string[] TreeViewPreferences = new string[4];
+            RegistryKey TreeViewConfig = EuroSoundKey.OpenSubKey("SBEditorTreeView", true);
+            if (TreeViewConfig != null)
+            {
+                TreeViewPreferences[0] = TreeViewConfig.GetValue("SelectedFont", "Microsoft Sans Serif; 8,25pt").ToString();
+                TreeViewPreferences[1] = TreeViewConfig.GetValue("ShowLines", "true").ToString();
+                TreeViewPreferences[2] = TreeViewConfig.GetValue("ShowRootLines", "true").ToString();
+                TreeViewPreferences[3] = TreeViewConfig.GetValue("TreeViewIndent", "19").ToString();
+            }
+            else
+            {
+                TreeViewPreferences[0] = "Microsoft Sans Serif; 8,25pt";
+                TreeViewPreferences[1] = "true";
+                TreeViewPreferences[2] = "true";
+                TreeViewPreferences[3] = "19";
+            }
+
+            return TreeViewPreferences;
+        }
+        #endregion
+
+        #region General Preferences
+        internal static void SaveGeneralPreferences()
+        {
+            CreateEuroSoundSubkeyIfNotExists("General", true);
+            RegistryKey SoundBankTreeViewPrefs = EuroSoundKey.OpenSubKey("General", true);
+
+            SoundBankTreeViewPrefs.SetValue("SFXOutputPath", GlobalPreferences.SFXOutputPath, RegistryValueKind.String);
+        }
+
+        internal static string LoadGeneralPreferences()
+        {
+            string TreeViewPreferences;
+            RegistryKey GeneralConfigs = EuroSoundKey.OpenSubKey("General", true);
+            if (GeneralConfigs != null)
+            {
+                TreeViewPreferences = GeneralConfigs.GetValue("SFXOutputPath", @"X:\Sphinx\Binary\_bin_PC\_Eng").ToString();
+            }
+            else
+            {
+                TreeViewPreferences = @"X:\Sphinx\Binary\_bin_PC\_Eng";
+            }
+
+            return TreeViewPreferences;
+        }
+
+
+        #endregion
     }
 }
