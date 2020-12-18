@@ -10,9 +10,11 @@ namespace EuroSound_Application
     public class EuroSound_WaveViewer : UserControl
     {
         #region declarations
+
         public Color PenColor { get; set; }
         public float PenWidth { get; set; }
         public Bitmap currentWaveImage = null;
+
         public Bitmap CurrentWaveImage
         {
             get
@@ -26,8 +28,11 @@ namespace EuroSound_Application
         }
 
         public int RenderDelay = 10;
+
         public delegate void OnLineDrawHandler(Point point1, Point point2);
+
         public event OnLineDrawHandler OnLineDrawEvent;
+
         private Dictionary<Point, Point> ControlPoints = new Dictionary<Point, Point>();
 
         private System.ComponentModel.Container components = null;
@@ -36,7 +41,8 @@ namespace EuroSound_Application
         private long startPosition;
         private int bytesPerSample;
         private Thread RenderThread;
-        #endregion
+
+        #endregion declarations
 
         public EuroSound_WaveViewer()
         {
@@ -155,7 +161,7 @@ namespace EuroSound_Application
                     int bytesRead;
                     byte[] waveData = new byte[samplesPerPixel * bytesPerSample];
                     waveStream.Position = startPosition + (e.ClipRectangle.Left * bytesPerSample * samplesPerPixel);
-                    ControlPoints.Clear();// clear points 
+                    ControlPoints.Clear();// clear points
 
                     using (Pen linePen = new Pen(PenColor, PenWidth))
                     {
@@ -216,7 +222,7 @@ namespace EuroSound_Application
             base.OnPaint(e);
         }
 
-        void TriggerDrawing()
+        private void TriggerDrawing()
         {
             //check if the event is attached
             if (OnLineDrawEvent != null)
@@ -240,7 +246,7 @@ namespace EuroSound_Application
             ControlPoints = null;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Clean up any resources being used.
         /// </summary>
         protected override void Dispose(bool disposing)
@@ -256,22 +262,23 @@ namespace EuroSound_Application
         }
 
         #region Component Designer generated code
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
             this.SuspendLayout();
-            // 
+            //
             // CustomWaveViewer
-            // 
+            //
             this.BackColor = Color.Gray;
             this.Name = "CustomWaveViewer";
             this.Size = new Size(569, 183);
             this.ResumeLayout(false);
-
         }
-        #endregion
+
+        #endregion Component Designer generated code
     }
 }

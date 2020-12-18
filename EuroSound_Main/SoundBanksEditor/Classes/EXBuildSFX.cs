@@ -6,20 +6,17 @@ using System.Text;
 
 namespace EuroSound_Application
 {
-    class EXBuildSFX
+    internal class EXBuildSFX
     {
         /*--[Global vars]--*/
-        long SampleInfoStartOffset, SampleDataStartOffset;
-        long SFXlength, SampleInfoLength, SampleDataLength;
+        private List<long> HashcodeOffsets = new List<long>();
+        private int ItemIndex;
+        private List<long> SampleDataOffsets = new List<long>();
+        private long SampleInfoStartOffset, SampleDataStartOffset;
+        private long SFXlength, SampleInfoLength, SampleDataLength;
 
-        long WholeFileSize;
-
-        int ItemIndex;
-
+        private long WholeFileSize;
         /*--[Data lists]--*/
-        List<long> HashcodeOffsets = new List<long>();
-        List<long> SampleDataOffsets = new List<long>();
-
         public void WriteFileHeader(BinaryWriter BWriter, string FileHashcode)
         {
             //*===============================================================================================
@@ -61,6 +58,109 @@ namespace EuroSound_Application
             BWriter.Write(Convert.ToUInt32(00000000));
 
             BWriter.Seek(0x800, SeekOrigin.Begin);
+        }
+
+        public void WriteFinalOffsets(BinaryWriter BWriter)
+        {
+            //*===============================================================================================
+            //* WRITE FINAL HEADER INFO
+            //*===============================================================================================
+
+            /*--Size of the whole file--*/
+            BWriter.BaseStream.Seek(0xC, SeekOrigin.Begin);
+            BWriter.Write(Convert.ToUInt32(WholeFileSize));
+
+            /*--SFX Length--*/
+            BWriter.BaseStream.Seek(0x14, SeekOrigin.Begin);
+            BWriter.Write(Convert.ToUInt32(SFXlength));
+
+            /*--Sample info start--*/
+            BWriter.BaseStream.Seek(0x18, SeekOrigin.Begin);
+            BWriter.Write(Convert.ToUInt32(SampleInfoStartOffset));
+            BWriter.Write(Convert.ToUInt32(SampleInfoLength));
+
+            /*--Special sample info start--*/
+            BWriter.BaseStream.Seek(0x20, SeekOrigin.Begin);
+            BWriter.Write(Convert.ToUInt32(SampleDataStartOffset));
+            BWriter.Write(Convert.ToUInt32(00000000));
+
+            /*--Sample Data Start--*/
+            BWriter.BaseStream.Seek(0x28, SeekOrigin.Begin);
+            BWriter.Write(Convert.ToUInt32(SampleDataStartOffset));
+            BWriter.Write(Convert.ToUInt32(SampleDataLength));
+
+            //*===============================================================================================
+            //* WRITE HASHCODE REAL OFFSETS
+            //*===============================================================================================
+            BWriter.Seek(0x804, SeekOrigin.Begin);
+            foreach (long offset in HashcodeOffsets)
+            {
+                BWriter.Seek(4, SeekOrigin.Current);
+                BWriter.Write(Convert.ToUInt32(offset));
+            }
+
+            //*===============================================================================================
+            //* WRITE FINAL OFFSETS TO SAMPLE DATA
+            //*===============================================================================================
+            BWriter.BaseStream.Seek(SampleInfoStartOffset + 4, SeekOrigin.Begin);
+            foreach (long item in SampleDataOffsets)
+            {
+                /*--Skip numsamples and flags--*/
+                BWriter.BaseStream.Seek(BWriter.BaseStream.Position + 4, SeekOrigin.Begin);
+
+                /*--Calculate Relative Offset--*/
+                BWriter.Write(Convert.ToUInt32(item));
+
+                /*--Skip other properties--*/
+                BWriter.BaseStream.Seek(BWriter.BaseStream.Position + 32, SeekOrigin.Begin);
+            }
+        }
+
+        public void WriteSampleDataSection(BinaryWriter BWriter, Dictionary<string, EXAudio> FinalAudioDataDict)
+        {
+            /*--[Start section offset]--*/
+            SampleDataStartOffset = (BWriter.BaseStream.Position);
+            foreach (KeyValuePair<string, EXAudio> entry in FinalAudioDataDict)
+            {
+                /*--Add Sample data offset to the list--*/
+                SampleDataOffsets.Add(BWriter.BaseStream.Position - SampleDataStartOffset);
+
+                /*--Write PCM Data--*/
+                BWriter.Write(entry.Value.PCMdata);
+            }
+
+            /*--Section length, current position - start position--*/
+            SampleDataLength = BWriter.BaseStream.Position - SampleDataStartOffset;
+
+            /*Get total file size*/
+            WholeFileSize = BWriter.BaseStream.Position;
+        }
+
+        public void WriteSampleInfoSection(BinaryWriter BWriter, Dictionary<string, EXAudio> FinalAudioDataDict)
+        {
+            /*--[Start section offset]--*/
+            SampleInfoStartOffset = (BWriter.BaseStream.Position);
+
+            /*--[Write total number of samples]--*/
+            BWriter.Write(Convert.ToUInt32(FinalAudioDataDict.Keys.Count));
+
+            foreach (KeyValuePair<string, EXAudio> entry in FinalAudioDataDict)
+            {
+                /*--[Write data]--*/
+                BWriter.Write(Convert.ToUInt32(entry.Value.Flags));
+                BWriter.Write(Convert.ToUInt32(00000000));
+                BWriter.Write(Convert.ToUInt32(entry.Value.DataSize));
+                BWriter.Write(Convert.ToUInt32(entry.Value.Frequency));
+                BWriter.Write(Convert.ToUInt32(entry.Value.RealSize));
+                BWriter.Write(Convert.ToUInt32(entry.Value.Channels));
+                BWriter.Write(Convert.ToUInt32(entry.Value.Bits));
+                BWriter.Write(Convert.ToUInt32(entry.Value.PSIsample));
+                BWriter.Write(Convert.ToUInt32(entry.Value.LoopOffset));
+                BWriter.Write(Convert.ToUInt32(entry.Value.Duration));
+            }
+
+            /*--[Section length, current position - start position]--*/
+            SampleInfoLength = BWriter.BaseStream.Position - SampleInfoStartOffset;
         }
 
         public void WriteSFXSection(BinaryWriter BWriter, Dictionary<int, EXSound> FinalSoundsDict, Dictionary<string, EXAudio> FinalAudioDataDict)
@@ -127,109 +227,17 @@ namespace EuroSound_Application
             /*--[Section length, current position - start position]--*/
             SFXlength = BWriter.BaseStream.Position - 2048;
         }
-
-        public void WriteSampleInfoSection(BinaryWriter BWriter, Dictionary<string, EXAudio> FinalAudioDataDict)
+        private void AddPaddingBytes(int NumberOfBytes, BinaryWriter BWriter)
         {
-            /*--[Start section offset]--*/
-            SampleInfoStartOffset = (BWriter.BaseStream.Position);
-
-            /*--[Write total number of samples]--*/
-            BWriter.Write(Convert.ToUInt32(FinalAudioDataDict.Keys.Count));
-
-            foreach (KeyValuePair<string, EXAudio> entry in FinalAudioDataDict)
+            for (int i = 0; i < NumberOfBytes; i++)
             {
-                /*--[Write data]--*/
-                BWriter.Write(Convert.ToUInt32(entry.Value.Flags));
-                BWriter.Write(Convert.ToUInt32(00000000));
-                BWriter.Write(Convert.ToUInt32(entry.Value.DataSize));
-                BWriter.Write(Convert.ToUInt32(entry.Value.Frequency));
-                BWriter.Write(Convert.ToUInt32(entry.Value.RealSize));
-                BWriter.Write(Convert.ToUInt32(entry.Value.Channels));
-                BWriter.Write(Convert.ToUInt32(entry.Value.Bits));
-                BWriter.Write(Convert.ToUInt32(entry.Value.PSIsample));
-                BWriter.Write(Convert.ToUInt32(entry.Value.LoopOffset));
-                BWriter.Write(Convert.ToUInt32(entry.Value.Duration));
+                BWriter.Write(Convert.ToSByte(0));
             }
-
-            /*--[Section length, current position - start position]--*/
-            SampleInfoLength = BWriter.BaseStream.Position - SampleInfoStartOffset;
         }
 
-        public void WriteSampleDataSection(BinaryWriter BWriter, Dictionary<string, EXAudio> FinalAudioDataDict)
+        private string GetHashcodeWithoutSection(string Hashcode)
         {
-            /*--[Start section offset]--*/
-            SampleDataStartOffset = (BWriter.BaseStream.Position);
-            foreach (KeyValuePair<string, EXAudio> entry in FinalAudioDataDict)
-            {
-                /*--Add Sample data offset to the list--*/
-                SampleDataOffsets.Add(BWriter.BaseStream.Position - SampleDataStartOffset);
-
-                /*--Write PCM Data--*/
-                BWriter.Write(entry.Value.PCMdata);
-            }
-
-            /*--Section length, current position - start position--*/
-            SampleDataLength = BWriter.BaseStream.Position - SampleDataStartOffset;
-
-            /*Get total file size*/
-            WholeFileSize = BWriter.BaseStream.Position;
-        }
-
-        public void WriteFinalOffsets(BinaryWriter BWriter)
-        {
-            //*===============================================================================================
-            //* WRITE FINAL HEADER INFO
-            //*===============================================================================================
-
-            /*--Size of the whole file--*/
-            BWriter.BaseStream.Seek(0xC, SeekOrigin.Begin);
-            BWriter.Write(Convert.ToUInt32(WholeFileSize));
-
-            /*--SFX Length--*/
-            BWriter.BaseStream.Seek(0x14, SeekOrigin.Begin);
-            BWriter.Write(Convert.ToUInt32(SFXlength));
-
-            /*--Sample info start--*/
-            BWriter.BaseStream.Seek(0x18, SeekOrigin.Begin);
-            BWriter.Write(Convert.ToUInt32(SampleInfoStartOffset));
-            BWriter.Write(Convert.ToUInt32(SampleInfoLength));
-
-            /*--Special sample info start--*/
-            BWriter.BaseStream.Seek(0x20, SeekOrigin.Begin);
-            BWriter.Write(Convert.ToUInt32(SampleDataStartOffset));
-            BWriter.Write(Convert.ToUInt32(00000000));
-
-            /*--Sample Data Start--*/
-            BWriter.BaseStream.Seek(0x28, SeekOrigin.Begin);
-            BWriter.Write(Convert.ToUInt32(SampleDataStartOffset));
-            BWriter.Write(Convert.ToUInt32(SampleDataLength));
-
-            //*===============================================================================================
-            //* WRITE HASHCODE REAL OFFSETS
-            //*===============================================================================================
-            BWriter.Seek(0x804, SeekOrigin.Begin);
-            foreach (long offset in HashcodeOffsets)
-            {
-                BWriter.Seek(4, SeekOrigin.Current);
-                BWriter.Write(Convert.ToUInt32(offset));
-            }
-
-            //*===============================================================================================
-            //* WRITE FINAL OFFSETS TO SAMPLE DATA
-            //*===============================================================================================
-            BWriter.BaseStream.Seek(SampleInfoStartOffset + 4, SeekOrigin.Begin);
-            foreach (long item in SampleDataOffsets)
-            {
-                /*--Skip numsamples and flags--*/
-                BWriter.BaseStream.Seek(BWriter.BaseStream.Position + 4, SeekOrigin.Begin);
-
-                /*--Calculate Relative Offset--*/
-                BWriter.Write(Convert.ToUInt32(item));
-
-                /*--Skip other properties--*/
-                BWriter.BaseStream.Seek(BWriter.BaseStream.Position + 32, SeekOrigin.Begin);
-            }
-
+            return "0x00" + Hashcode.Substring(4);
         }
 
         private int GetSteamIndexInSoundbank(string SampleName, Dictionary<string, EXAudio> AudioDataList, EXSample Sample, int Flags)
@@ -246,19 +254,6 @@ namespace EuroSound_Application
             }
 
             return index;
-        }
-
-        private string GetHashcodeWithoutSection(string Hashcode)
-        {
-            return "0x00" + Hashcode.Substring(4);
-        }
-
-        private void AddPaddingBytes(int NumberOfBytes, BinaryWriter BWriter)
-        {
-            for (int i = 0; i < NumberOfBytes; i++)
-            {
-                BWriter.Write(Convert.ToSByte(0));
-            }
         }
     }
 }

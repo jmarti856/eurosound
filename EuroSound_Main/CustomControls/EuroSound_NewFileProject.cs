@@ -5,17 +5,18 @@ namespace CustomControls
 {
     public partial class EuroSound_NewFileProject : Form
     {
-        public string[] FileProps { get; set; }
-
         public EuroSound_NewFileProject(string FormTitle)
         {
             InitializeComponent();
             this.Text = FormTitle;
         }
 
-        private void EuroSound_NewFileProject_Load(object sender, EventArgs e)
+        public string[] FileProps { get; set; }
+        private void Button_Cancel_Click(object sender, EventArgs e)
         {
-            Combobox_TypeOfData.SelectedIndex = 0;
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+            this.Dispose();
         }
 
         private void Button_OK_Click(object sender, EventArgs e)
@@ -32,11 +33,9 @@ namespace CustomControls
             this.Dispose();
         }
 
-        private void Button_Cancel_Click(object sender, EventArgs e)
+        private void EuroSound_NewFileProject_Load(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
-            this.Dispose();
+            Combobox_TypeOfData.SelectedIndex = 0;
         }
     }
 }

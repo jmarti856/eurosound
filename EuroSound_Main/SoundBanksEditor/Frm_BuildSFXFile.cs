@@ -9,24 +9,14 @@ namespace EuroSound_Application
 {
     public partial class Frm_BuildSFXFile : Form
     {
-        ProjectFile CurrentFileProperties;
-        List<string> Reports = new List<string>();
-        string FileName;
-
+        private ProjectFile CurrentFileProperties;
+        private string FileName;
+        private List<string> Reports = new List<string>();
         public Frm_BuildSFXFile(ProjectFile FileProperties, string SoundBankFinalName)
         {
             InitializeComponent();
             CurrentFileProperties = FileProperties;
             FileName = SoundBankFinalName;
-        }
-
-        private void Frm_BuildSFXFile_Load(object sender, EventArgs e)
-        {
-            //Run Background Worker
-            if (!BackgroundWorker_BuildSFX.IsBusy)
-            {
-                BackgroundWorker_BuildSFX.RunWorkerAsync();
-            }
         }
 
         private void BackgroundWorker_BuildSFX_DoWork(object sender, DoWorkEventArgs e)
@@ -285,6 +275,30 @@ namespace EuroSound_Application
             BackgroundWorker_BuildSFX.CancelAsync();
         }
 
+        private int CountNumberOfSamples(Dictionary<int, EXSound> SoundsList)
+        {
+            int Counter = 0;
+            foreach (KeyValuePair<int, EXSound> Sound in SoundsList)
+            {
+                foreach (EXSample Sample in Sound.Value.Samples)
+                {
+                    if (!Sample.IsStreamed)
+                    {
+                        Counter++;
+                    }
+                }
+            }
+            return Counter;
+        }
+
+        private void Frm_BuildSFXFile_Load(object sender, EventArgs e)
+        {
+            //Run Background Worker
+            if (!BackgroundWorker_BuildSFX.IsBusy)
+            {
+                BackgroundWorker_BuildSFX.RunWorkerAsync();
+            }
+        }
         //*===============================================================================================
         //* FUNCTIONS
         //*===============================================================================================
@@ -310,22 +324,6 @@ namespace EuroSound_Application
             {
                 LabelToChange.Text = TextToShow;
             });
-        }
-
-        private int CountNumberOfSamples(Dictionary<int, EXSound> SoundsList)
-        {
-            int Counter = 0;
-            foreach (KeyValuePair<int, EXSound> Sound in SoundsList)
-            {
-                foreach (EXSample Sample in Sound.Value.Samples)
-                {
-                    if (!Sample.IsStreamed)
-                    {
-                        Counter++;
-                    }
-                }
-            }
-            return Counter;
         }
     }
 }

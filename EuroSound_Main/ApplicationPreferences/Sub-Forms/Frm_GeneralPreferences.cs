@@ -36,7 +36,7 @@ namespace EuroSound_Application
         {
             try
             {
-                SetAssociation(".esf", "EuroSound.exe", Application.ExecutablePath, "EuroSound File");
+                SetAssociation(".esf", "EuroSound.exe", Application.ExecutablePath);
                 MessageBox.Show(GenericFunctions.ResourcesManager.GetString("EuroSoundFile-TypesRegisterdOK"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch
@@ -45,7 +45,7 @@ namespace EuroSound_Application
             }
         }
 
-        public static void SetAssociation(string Extension, string KeyName, string OpenWith, string FileDescription)
+        public static void SetAssociation(string Extension, string KeyName, string OpenWith)
         {
             RegistryKey FileReg = Registry.CurrentUser.CreateSubKey("Software\\Classes\\" + Extension);
             RegistryKey AppReg = Registry.CurrentUser.CreateSubKey("Software\\Classes\\Applications\\" + KeyName);

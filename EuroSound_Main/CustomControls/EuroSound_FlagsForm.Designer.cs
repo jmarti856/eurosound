@@ -67,6 +67,7 @@
             // Checkbox_Flag01
             // 
             this.Checkbox_Flag01.AutoSize = true;
+            this.Checkbox_Flag01.Enabled = false;
             this.Checkbox_Flag01.Location = new System.Drawing.Point(12, 12);
             this.Checkbox_Flag01.Name = "Checkbox_Flag01";
             this.Checkbox_Flag01.Size = new System.Drawing.Size(56, 17);
@@ -83,7 +84,7 @@
             this.Textbox_Flag16.ReadOnly = true;
             this.Textbox_Flag16.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag16.TabIndex = 64;
-            this.Textbox_Flag16.Text = "OneInstancePerFrame";
+            this.Textbox_Flag16.Text = "<Unset>";
             // 
             // Textbox_Flag01
             // 
@@ -93,7 +94,7 @@
             this.Textbox_Flag01.ReadOnly = true;
             this.Textbox_Flag01.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag01.TabIndex = 34;
-            this.Textbox_Flag01.Text = "MaxReject";
+            this.Textbox_Flag01.Text = "<Unset>";
             // 
             // Checkbox_Flag16
             // 
@@ -110,6 +111,7 @@
             // Checkbox_Flag02
             // 
             this.Checkbox_Flag02.AutoSize = true;
+            this.Checkbox_Flag02.Enabled = false;
             this.Checkbox_Flag02.Location = new System.Drawing.Point(12, 38);
             this.Checkbox_Flag02.Name = "Checkbox_Flag02";
             this.Checkbox_Flag02.Size = new System.Drawing.Size(56, 17);
@@ -126,7 +128,7 @@
             this.Textbox_Flag15.ReadOnly = true;
             this.Textbox_Flag15.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag15.TabIndex = 62;
-            this.Textbox_Flag15.Text = "GroupStealReject";
+            this.Textbox_Flag15.Text = "<Unset>";
             // 
             // Textbox_Flag02
             // 
@@ -136,7 +138,7 @@
             this.Textbox_Flag02.ReadOnly = true;
             this.Textbox_Flag02.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag02.TabIndex = 36;
-            this.Textbox_Flag02.Text = "UnPausable";
+            this.Textbox_Flag02.Text = "<Unset>";
             // 
             // Checkbox_Flag15
             // 
@@ -153,6 +155,7 @@
             // Checkbox_Flag03
             // 
             this.Checkbox_Flag03.AutoSize = true;
+            this.Checkbox_Flag03.Enabled = false;
             this.Checkbox_Flag03.Location = new System.Drawing.Point(12, 64);
             this.Checkbox_Flag03.Name = "Checkbox_Flag03";
             this.Checkbox_Flag03.Size = new System.Drawing.Size(56, 17);
@@ -169,7 +172,7 @@
             this.Textbox_Flag14.ReadOnly = true;
             this.Textbox_Flag14.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag14.TabIndex = 60;
-            this.Textbox_Flag14.Text = "KillMeOwnGroup";
+            this.Textbox_Flag14.Text = "<Unset>";
             // 
             // Textbox_Flag03
             // 
@@ -179,7 +182,7 @@
             this.Textbox_Flag03.ReadOnly = true;
             this.Textbox_Flag03.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag03.TabIndex = 38;
-            this.Textbox_Flag03.Text = "IgnoreMasterVolume";
+            this.Textbox_Flag03.Text = "<Unset>";
             // 
             // Checkbox_Flag14
             // 
@@ -196,6 +199,7 @@
             // Checkbox_Flag04
             // 
             this.Checkbox_Flag04.AutoSize = true;
+            this.Checkbox_Flag04.Enabled = false;
             this.Checkbox_Flag04.Location = new System.Drawing.Point(12, 90);
             this.Checkbox_Flag04.Name = "Checkbox_Flag04";
             this.Checkbox_Flag04.Size = new System.Drawing.Size(56, 17);
@@ -212,7 +216,7 @@
             this.Textbox_Flag13.ReadOnly = true;
             this.Textbox_Flag13.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag13.TabIndex = 58;
-            this.Textbox_Flag13.Text = "TreatLikeMusic";
+            this.Textbox_Flag13.Text = "<Unset>";
             // 
             // Textbox_Flag04
             // 
@@ -222,11 +226,12 @@
             this.Textbox_Flag04.ReadOnly = true;
             this.Textbox_Flag04.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag04.TabIndex = 40;
-            this.Textbox_Flag04.Text = "MultiSample";
+            this.Textbox_Flag04.Text = "<Unset>";
             // 
             // Checkbox_Flag13
             // 
             this.Checkbox_Flag13.AutoSize = true;
+            this.Checkbox_Flag13.Enabled = false;
             this.Checkbox_Flag13.Location = new System.Drawing.Point(240, 116);
             this.Checkbox_Flag13.Name = "Checkbox_Flag13";
             this.Checkbox_Flag13.Size = new System.Drawing.Size(56, 17);
@@ -238,6 +243,7 @@
             // Checkbox_Flag05
             // 
             this.Checkbox_Flag05.AutoSize = true;
+            this.Checkbox_Flag05.Enabled = false;
             this.Checkbox_Flag05.Location = new System.Drawing.Point(12, 116);
             this.Checkbox_Flag05.Name = "Checkbox_Flag05";
             this.Checkbox_Flag05.Size = new System.Drawing.Size(56, 17);
@@ -254,7 +260,7 @@
             this.Textbox_Flag12.ReadOnly = true;
             this.Textbox_Flag12.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag12.TabIndex = 56;
-            this.Textbox_Flag12.Text = "StealOnLouder";
+            this.Textbox_Flag12.Text = "<Unset>";
             // 
             // Textbox_Flag05
             // 
@@ -264,11 +270,12 @@
             this.Textbox_Flag05.ReadOnly = true;
             this.Textbox_Flag05.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag05.TabIndex = 42;
-            this.Textbox_Flag05.Text = "RandomPick";
+            this.Textbox_Flag05.Text = "<Unset>";
             // 
             // Checkbox_Flag12
             // 
             this.Checkbox_Flag12.AutoSize = true;
+            this.Checkbox_Flag12.Enabled = false;
             this.Checkbox_Flag12.Location = new System.Drawing.Point(240, 90);
             this.Checkbox_Flag12.Name = "Checkbox_Flag12";
             this.Checkbox_Flag12.Size = new System.Drawing.Size(56, 17);
@@ -280,6 +287,7 @@
             // Checkbox_Flag06
             // 
             this.Checkbox_Flag06.AutoSize = true;
+            this.Checkbox_Flag06.Enabled = false;
             this.Checkbox_Flag06.Location = new System.Drawing.Point(12, 142);
             this.Checkbox_Flag06.Name = "Checkbox_Flag06";
             this.Checkbox_Flag06.Size = new System.Drawing.Size(56, 17);
@@ -296,7 +304,7 @@
             this.Textbox_Flag11.ReadOnly = true;
             this.Textbox_Flag11.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag11.TabIndex = 54;
-            this.Textbox_Flag11.Text = "HasSubSfx";
+            this.Textbox_Flag11.Text = "<Unset>";
             // 
             // Textbox_Flag06
             // 
@@ -306,11 +314,12 @@
             this.Textbox_Flag06.ReadOnly = true;
             this.Textbox_Flag06.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag06.TabIndex = 44;
-            this.Textbox_Flag06.Text = "Shuffled";
+            this.Textbox_Flag06.Text = "<Unset>";
             // 
             // Checkbox_Flag11
             // 
             this.Checkbox_Flag11.AutoSize = true;
+            this.Checkbox_Flag11.Enabled = false;
             this.Checkbox_Flag11.Location = new System.Drawing.Point(240, 64);
             this.Checkbox_Flag11.Name = "Checkbox_Flag11";
             this.Checkbox_Flag11.Size = new System.Drawing.Size(56, 17);
@@ -322,6 +331,7 @@
             // Checkbox_Flag07
             // 
             this.Checkbox_Flag07.AutoSize = true;
+            this.Checkbox_Flag07.Enabled = false;
             this.Checkbox_Flag07.Location = new System.Drawing.Point(12, 168);
             this.Checkbox_Flag07.Name = "Checkbox_Flag07";
             this.Checkbox_Flag07.Size = new System.Drawing.Size(56, 17);
@@ -338,7 +348,7 @@
             this.Textbox_Flag10.ReadOnly = true;
             this.Textbox_Flag10.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag10.TabIndex = 52;
-            this.Textbox_Flag10.Text = "PauseInstant";
+            this.Textbox_Flag10.Text = "<Unset>";
             // 
             // Textbox_Flag07
             // 
@@ -348,11 +358,12 @@
             this.Textbox_Flag07.ReadOnly = true;
             this.Textbox_Flag07.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag07.TabIndex = 46;
-            this.Textbox_Flag07.Text = "Loop";
+            this.Textbox_Flag07.Text = "<Unset>";
             // 
             // Checkbox_Flag10
             // 
             this.Checkbox_Flag10.AutoSize = true;
+            this.Checkbox_Flag10.Enabled = false;
             this.Checkbox_Flag10.Location = new System.Drawing.Point(240, 38);
             this.Checkbox_Flag10.Name = "Checkbox_Flag10";
             this.Checkbox_Flag10.Size = new System.Drawing.Size(56, 17);
@@ -364,6 +375,7 @@
             // Checkbox_Flag08
             // 
             this.Checkbox_Flag08.AutoSize = true;
+            this.Checkbox_Flag08.Enabled = false;
             this.Checkbox_Flag08.Location = new System.Drawing.Point(12, 194);
             this.Checkbox_Flag08.Name = "Checkbox_Flag08";
             this.Checkbox_Flag08.Size = new System.Drawing.Size(56, 17);
@@ -380,7 +392,7 @@
             this.Textbox_Flag09.ReadOnly = true;
             this.Textbox_Flag09.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag09.TabIndex = 50;
-            this.Textbox_Flag09.Text = "UnderWater";
+            this.Textbox_Flag09.Text = "<Unset>";
             // 
             // Textbox_Flag08
             // 
@@ -390,11 +402,12 @@
             this.Textbox_Flag08.ReadOnly = true;
             this.Textbox_Flag08.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag08.TabIndex = 48;
-            this.Textbox_Flag08.Text = "Polyphonic";
+            this.Textbox_Flag08.Text = "<Unset>";
             // 
             // Checkbox_Flag09
             // 
             this.Checkbox_Flag09.AutoSize = true;
+            this.Checkbox_Flag09.Enabled = false;
             this.Checkbox_Flag09.Location = new System.Drawing.Point(240, 12);
             this.Checkbox_Flag09.Name = "Checkbox_Flag09";
             this.Checkbox_Flag09.Size = new System.Drawing.Size(56, 17);

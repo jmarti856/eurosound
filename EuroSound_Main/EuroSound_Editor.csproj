@@ -196,7 +196,7 @@
     <Compile Include="SoundBanksEditor\Classes\EuroSound\YamlReader.cs" />
     <Compile Include="SoundBanksEditor\Classes\EXObjectsFunctions.cs" />
     <Compile Include="SoundBanksEditor\Classes\EXObjects\EXAudio.cs" />
-    <Compile Include="SoundBanksEditor\Classes\EXObjects\EXBuildSFX.cs" />
+    <Compile Include="SoundBanksEditor\Classes\EXBuildSFX.cs" />
     <Compile Include="SoundBanksEditor\Classes\EXObjects\EXSample.cs" />
     <Compile Include="SoundBanksEditor\Classes\EXObjects\EXSound.cs" />
     <Compile Include="SoundBanksEditor\Classes\ProjectFile.cs" />

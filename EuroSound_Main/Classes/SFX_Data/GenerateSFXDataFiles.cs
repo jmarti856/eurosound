@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Windows.Forms;
 
 namespace EuroSound_Application
 {
-    class GenerateSFXDataFiles
+    internal class GenerateSFXDataFiles
     {
-        internal static void GenerateSFXDataBinaryFile(string OutputPath, ListView ControlToPrint)
+        internal static void GenerateSFXDataBinaryFile(string OutputPath)
         {
             BinaryWriter BWriter = new BinaryWriter(File.Open(OutputPath + "\\SFX_Data.bin", FileMode.Create, FileAccess.Write), Encoding.ASCII);
 
@@ -28,7 +27,6 @@ namespace EuroSound_Application
 
             BWriter.Close();
         }
-
 
         private static string FloatToHex(float Number)
         {

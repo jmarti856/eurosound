@@ -191,7 +191,7 @@
             "2D_PL2"});
             this.cbx_trackingtype.Location = new System.Drawing.Point(365, 16);
             this.cbx_trackingtype.Name = "cbx_trackingtype";
-            this.cbx_trackingtype.Size = new System.Drawing.Size(153, 21);
+            this.cbx_trackingtype.Size = new System.Drawing.Size(152, 21);
             this.cbx_trackingtype.TabIndex = 13;
             // 
             // numeric_maxvoices

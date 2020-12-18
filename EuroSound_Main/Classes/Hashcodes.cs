@@ -10,22 +10,45 @@ namespace EuroSound_Application
 {
     public static class Hashcodes
     {
-        public static Dictionary<string, string> SFX_Defines = new Dictionary<string, string>();
         public static Dictionary<string, string> SB_Defines = new Dictionary<string, string>();
         public static Dictionary<string, float[]> SFX_Data = new Dictionary<string, float[]>();
-
-        public static void LoadSoundHashcodes(string SoundHashcodesPath)
+        public static Dictionary<string, string> SFX_Defines = new Dictionary<string, string>();
+        public static void AddHashcodesToCombobox(ComboBox ControlToAddData, Dictionary<string, string> HashcodesDict)
         {
-            if (File.Exists(SoundHashcodesPath))
+            /*Datasource Combobox*/
+            ControlToAddData.DataSource = HashcodesDict.ToList();
+            ControlToAddData.ValueMember = "Key";
+            ControlToAddData.DisplayMember = "Value";
+        }
+
+        public static string GetHashcodeByLabel(Dictionary<string, string> DataDict, string Hashcode)
+        {
+            string HashcodeHex = string.Empty;
+            foreach (KeyValuePair<string, string> Entry in DataDict)
             {
-                /*Read Data*/
-                ReadHashcodes(SoundHashcodesPath);
-                GlobalPreferences.HT_SoundsMD5 = GenericFunctions.CalculateMD5(SoundHashcodesPath);
+                if (Entry.Value.ToUpper().Equals(Hashcode.ToUpper()))
+                {
+                    HashcodeHex = Entry.Key;
+                    break;
+                }
             }
-            else
+
+            return HashcodeHex;
+        }
+
+        public static string GetHashcodeLabel(Dictionary<string, string> DataDict, string Hashcode)
+        {
+            string HashcodeHex = string.Empty;
+            foreach (KeyValuePair<string, string> Entry in DataDict)
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Hashcodes_SFXDefines_NotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (Entry.Key.ToUpper().Equals(Hashcode.ToUpper()))
+                {
+                    HashcodeHex = Entry.Value;
+                    break;
+                }
             }
+
+            return HashcodeHex;
         }
 
         public static void LoadSoundDataFile()
@@ -42,7 +65,21 @@ namespace EuroSound_Application
             }
         }
 
+        public static void LoadSoundHashcodes(string SoundHashcodesPath)
+        {
+            if (File.Exists(SoundHashcodesPath))
+            {
+                /*Read Data*/
+                ReadHashcodes(SoundHashcodesPath);
+                GlobalPreferences.HT_SoundsMD5 = GenericFunctions.CalculateMD5(SoundHashcodesPath);
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Hashcodes_SFXDefines_NotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         #region SFX Defines && SB Defines dictionary
+
         public static void ReadHashcodes(string FilePath)
         {
             string line;
@@ -101,14 +138,15 @@ namespace EuroSound_Application
             fs.Close();
             fs.Dispose();
         }
-        #endregion
+
+        #endregion SFX Defines && SB Defines dictionary
 
         #region SFX DATA DICTIONARY
+
         internal static void ReadSFXData()
         {
             string[] SplitedLine;
             string line, hashcode;
-
 
             SFX_Data.Clear();
 
@@ -170,44 +208,7 @@ namespace EuroSound_Application
 
             return FinalNumber;
         }
-        #endregion
 
-        public static string GetHashcodeByLabel(Dictionary<string, string> DataDict, string Hashcode)
-        {
-            string HashcodeHex = string.Empty;
-            foreach (KeyValuePair<string, string> Entry in DataDict)
-            {
-                if (Entry.Value.ToUpper().Equals(Hashcode.ToUpper()))
-                {
-                    HashcodeHex = Entry.Key;
-                    break;
-                }
-            }
-
-            return HashcodeHex;
-        }
-
-        public static string GetHashcodeLabel(Dictionary<string, string> DataDict, string Hashcode)
-        {
-            string HashcodeHex = string.Empty;
-            foreach (KeyValuePair<string, string> Entry in DataDict)
-            {
-                if (Entry.Key.ToUpper().Equals(Hashcode.ToUpper()))
-                {
-                    HashcodeHex = Entry.Value;
-                    break;
-                }
-            }
-
-            return HashcodeHex;
-        }
-
-        public static void AddHashcodesToCombobox(ComboBox ControlToAddData, Dictionary<string, string> HashcodesDict)
-        {
-            /*Datasource Combobox*/
-            ControlToAddData.DataSource = HashcodesDict.ToList();
-            ControlToAddData.ValueMember = "Key";
-            ControlToAddData.DisplayMember = "Value";
-        }
+        #endregion SFX DATA DICTIONARY
     }
 }

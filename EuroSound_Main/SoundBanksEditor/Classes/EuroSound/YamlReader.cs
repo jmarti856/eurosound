@@ -10,6 +10,31 @@ namespace EuroSound_Application
     public static class YamlReader
     {
         internal static List<string> Reports = new List<string>();
+
+        internal static List<string> GetFilePaths(string LevelSoundBankPath, string FilePath)
+        {
+            List<string> Paths = new List<string>();
+
+            string[] lines = File.ReadAllLines(LevelSoundBankPath);
+            if (lines[0].Equals("#ftype:1"))
+            {
+                for (int i = 0; i < lines.Length; i += 1)
+                {
+                    if (!lines[i].StartsWith("#"))
+                    {
+                        string[] line = lines[i].Split(null);
+                        Paths.Add(Path.GetDirectoryName(FilePath) + "\\" + line[1] + "\\effectProperties.yml");
+                    }
+                }
+            }
+            else
+            {
+                Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect"));
+            }
+
+            return Paths;
+        }
+
         internal static void LoadDataFromSwyterUnpacker(Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDict, TreeView TreeViewControl, string FilePath, ProjectFile FileProperties)
         {
             List<string> SoundsPaths;
@@ -43,30 +68,6 @@ namespace EuroSound_Application
             });
 
             ShowErrorsWarningsList(FilePath);
-        }
-
-        internal static List<string> GetFilePaths(string LevelSoundBankPath, string FilePath)
-        {
-            List<string> Paths = new List<string>();
-
-            string[] lines = File.ReadAllLines(LevelSoundBankPath);
-            if (lines[0].Equals("#ftype:1"))
-            {
-                for (int i = 0; i < lines.Length; i += 1)
-                {
-                    if (!lines[i].StartsWith("#"))
-                    {
-                        string[] line = lines[i].Split(null);
-                        Paths.Add(Path.GetDirectoryName(FilePath) + "\\" + line[1] + "\\effectProperties.yml");
-                    }
-                }
-            }
-            else
-            {
-                Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect"));
-            }
-
-            return Paths;
         }
 
         internal static void ReadYamlFile(Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDict, TreeView TreeViewControl, string FilePath, string SoundName, string SoundHashcode, bool ShowResultsAtEnd, ProjectFile FileProperties)
@@ -192,7 +193,7 @@ namespace EuroSound_Application
                     Reports.Add("0The sound: " + SoundName + " can't be loaded because seems that exists (one item with the same name already exists).");
                 }
 
-                // Show results at end 
+                // Show results at end
                 if (ShowResultsAtEnd)
                 {
                     ShowErrorsWarningsList(FilePath);
@@ -210,112 +211,6 @@ namespace EuroSound_Application
 
             /*Update Status Bar*/
             GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
-        }
-
-        private static string GetSoundHashcode(uint Hashcode)
-        {
-            int FinalHashcode = ((int)(0x1A000000 | Hashcode));
-            return "0x" + FinalHashcode.ToString("X8");
-        }
-
-        private static int[] GetSoundParams(YamlMappingNode mapping)
-        {
-            bool[] SndFlags = new bool[12];
-            bool readingFlags = false;
-            int[] SndParams = new int[12];
-
-            int index = 0;
-
-            //Sound Parameters
-            YamlMappingNode SoundParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("params")];
-            foreach (KeyValuePair<YamlNode, YamlNode> entry in SoundParameters.Children)
-            {
-                //Read Parameters
-                if (index < 11)
-                {
-                    switch (entry.Value.ToString())
-                    {
-                        case "2D":
-                            SndParams[index] = 0;
-                            break;
-                        case "Amb":
-                            SndParams[index] = 1;
-                            break;
-                        case "3D":
-                            SndParams[index] = 2;
-                            break;
-                        case "3D_Rnd_Pos":
-                            SndParams[index] = 3;
-                            break;
-                        case "2D_PL2":
-                            SndParams[index] = 4;
-                            break;
-                        default:
-                            SndParams[index] = int.Parse(entry.Value.ToString());
-                            break;
-                    }
-                    index++;
-                }
-
-                //Check for flags node
-                if (entry.Key.ToString().Equals("flags"))
-                {
-                    readingFlags = true;
-                    index = 0;
-                }
-
-                //Read Flags value
-                if (readingFlags)
-                {
-                    YamlMappingNode Flags = (YamlMappingNode)SoundParameters.Children[new YamlScalarNode("flags")];
-                    foreach (KeyValuePair<YamlNode, YamlNode> flagsEntry in Flags.Children)
-                    {
-                        //Add the thirdteen flags to the array
-                        if (index < 12)
-                        {
-                            SndFlags[index] = Convert.ToBoolean(flagsEntry.Value.ToString());
-                            index++;
-                        }
-                    }
-                }
-            }
-            //Array of values to number
-            SndParams[11] = GetFlagsFromBoolArray(SndFlags);
-
-            return SndParams;
-        }
-
-        private static Dictionary<int, int[]> GetSamples(YamlMappingNode mapping)
-        {
-            int SampleIndex;
-            int index;
-
-            Dictionary<int, int[]> Samples = new Dictionary<int, int[]>();
-
-            YamlMappingNode SampleParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("samples")];
-            foreach (KeyValuePair<YamlNode, YamlNode> entry in SampleParameters.Children)
-            {
-                //Temporal array to store values
-                int[] SampleParams = new int[7];
-
-                //Get sample name
-                SampleIndex = int.Parse(entry.Key.ToString());
-                index = 0;
-
-                YamlMappingNode SampleProps = (YamlMappingNode)SampleParameters.Children[new YamlScalarNode(SampleIndex.ToString())];
-                foreach (KeyValuePair<YamlNode, YamlNode> flagsEntry in SampleProps.Children)
-                {
-                    //Get sample properties
-                    if (index < 7)
-                    {
-                        SampleParams[index] = int.Parse(flagsEntry.Value.ToString());
-                        index++;
-                    }
-                }
-                Samples.Add(SampleIndex, SampleParams);
-            }
-
-            return Samples;
         }
 
         private static string GetAudioFilePath(string EffectPropertiesPath, int SampleName, int type)
@@ -383,6 +278,117 @@ namespace EuroSound_Application
                 }
             }
             return bitfield;
+        }
+
+        private static Dictionary<int, int[]> GetSamples(YamlMappingNode mapping)
+        {
+            int SampleIndex;
+            int index;
+
+            Dictionary<int, int[]> Samples = new Dictionary<int, int[]>();
+
+            YamlMappingNode SampleParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("samples")];
+            foreach (KeyValuePair<YamlNode, YamlNode> entry in SampleParameters.Children)
+            {
+                //Temporal array to store values
+                int[] SampleParams = new int[7];
+
+                //Get sample name
+                SampleIndex = int.Parse(entry.Key.ToString());
+                index = 0;
+
+                YamlMappingNode SampleProps = (YamlMappingNode)SampleParameters.Children[new YamlScalarNode(SampleIndex.ToString())];
+                foreach (KeyValuePair<YamlNode, YamlNode> flagsEntry in SampleProps.Children)
+                {
+                    //Get sample properties
+                    if (index < 7)
+                    {
+                        SampleParams[index] = int.Parse(flagsEntry.Value.ToString());
+                        index++;
+                    }
+                }
+                Samples.Add(SampleIndex, SampleParams);
+            }
+
+            return Samples;
+        }
+
+        private static string GetSoundHashcode(uint Hashcode)
+        {
+            int FinalHashcode = ((int)(0x1A000000 | Hashcode));
+            return "0x" + FinalHashcode.ToString("X8");
+        }
+
+        private static int[] GetSoundParams(YamlMappingNode mapping)
+        {
+            bool[] SndFlags = new bool[12];
+            bool readingFlags = false;
+            int[] SndParams = new int[12];
+
+            int index = 0;
+
+            //Sound Parameters
+            YamlMappingNode SoundParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("params")];
+            foreach (KeyValuePair<YamlNode, YamlNode> entry in SoundParameters.Children)
+            {
+                //Read Parameters
+                if (index < 11)
+                {
+                    switch (entry.Value.ToString())
+                    {
+                        case "2D":
+                            SndParams[index] = 0;
+                            break;
+
+                        case "Amb":
+                            SndParams[index] = 1;
+                            break;
+
+                        case "3D":
+                            SndParams[index] = 2;
+                            break;
+
+                        case "3D_Rnd_Pos":
+                            SndParams[index] = 3;
+                            break;
+
+                        case "2D_PL2":
+                            SndParams[index] = 4;
+                            break;
+
+                        default:
+                            SndParams[index] = int.Parse(entry.Value.ToString());
+                            break;
+                    }
+                    index++;
+                }
+
+                //Check for flags node
+                if (entry.Key.ToString().Equals("flags"))
+                {
+                    readingFlags = true;
+                    index = 0;
+                }
+
+                //Read Flags value
+                if (readingFlags)
+                {
+                    YamlMappingNode Flags = (YamlMappingNode)SoundParameters.Children[new YamlScalarNode("flags")];
+                    foreach (KeyValuePair<YamlNode, YamlNode> flagsEntry in Flags.Children)
+                    {
+                        //Add the thirdteen flags to the array
+                        if (index < 12)
+                        {
+                            SndFlags[index] = Convert.ToBoolean(flagsEntry.Value.ToString());
+                            index++;
+                        }
+                    }
+                }
+            }
+            //Array of values to number
+            SndParams[11] = GetFlagsFromBoolArray(SndFlags);
+
+            return SndParams;
         }
 
         private static void ShowErrorsWarningsList(string FilePath)

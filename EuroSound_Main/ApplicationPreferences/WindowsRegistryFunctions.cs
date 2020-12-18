@@ -4,19 +4,10 @@ namespace EuroSound_Application
 {
     public static class WindowsRegistryFunctions
     {
-        private static RegistryKey SoftwareKey = Registry.CurrentUser.OpenSubKey("Software", true);
         private static RegistryKey EurocomKey;
         private static RegistryKey EuroSoundKey;
-
+        private static RegistryKey SoftwareKey = Registry.CurrentUser.OpenSubKey("Software", true);
         #region Create Keys and SubKeys
-        private static void CreateEurocomKeyIfNotExists()
-        {
-            if (SoftwareKey.OpenSubKey("Eurocomm", true) == null)
-            {
-                SoftwareKey.CreateSubKey("Eurocomm");
-            }
-            EurocomKey = SoftwareKey.OpenSubKey("Eurocomm", true);
-        }
 
         public static void CreateEuroSoundKeyIfNotExists()
         {
@@ -35,9 +26,19 @@ namespace EuroSound_Application
                 EuroSoundKey.CreateSubKey(SubKeyName);
             }
         }
-        #endregion
+
+        private static void CreateEurocomKeyIfNotExists()
+        {
+            if (SoftwareKey.OpenSubKey("Eurocomm", true) == null)
+            {
+                SoftwareKey.CreateSubKey("Eurocomm");
+            }
+            EurocomKey = SoftwareKey.OpenSubKey("Eurocomm", true);
+        }
+        #endregion Create Keys and SubKeys
 
         #region Color Picker Preferences
+
         public static void SaveCustomColors(int[] CustomColors)
         {
             CreateEuroSoundSubkeyIfNotExists("CustomColors", true);
@@ -76,17 +77,10 @@ namespace EuroSound_Application
             }
             return CustomColors;
         }
-        #endregion
 
-        #region Hash Table Paths 
-        internal static void SaveHashTablePathAndMD5(string HashTableName, string HashTablePath, string HashTableMD5)
-        {
-            CreateEuroSoundSubkeyIfNotExists("HashTables", true);
-            RegistryKey HashTables = EuroSoundKey.OpenSubKey("HashTables", true);
+        #endregion Color Picker Preferences
 
-            HashTables.SetValue(HashTableName, HashTablePath, RegistryValueKind.String);
-            HashTables.SetValue(HashTableName + "MD5", HashTableMD5, RegistryValueKind.String);
-        }
+        #region Hash Table Paths
 
         internal static string[] LoadHashTablePathAndMD5(string HashtableName)
         {
@@ -100,19 +94,18 @@ namespace EuroSound_Application
 
             return Info;
         }
-        #endregion
+
+        internal static void SaveHashTablePathAndMD5(string HashTableName, string HashTablePath, string HashTableMD5)
+        {
+            CreateEuroSoundSubkeyIfNotExists("HashTables", true);
+            RegistryKey HashTables = EuroSoundKey.OpenSubKey("HashTables", true);
+
+            HashTables.SetValue(HashTableName, HashTablePath, RegistryValueKind.String);
+            HashTables.SetValue(HashTableName + "MD5", HashTableMD5, RegistryValueKind.String);
+        }
+        #endregion Hash Table Paths
 
         #region TreeView Preferences
-        internal static void SaveTreeViewPreferences()
-        {
-            CreateEuroSoundSubkeyIfNotExists("SBEditorTreeView", true);
-            RegistryKey SoundBankTreeViewPrefs = EuroSoundKey.OpenSubKey("SBEditorTreeView", true);
-
-            SoundBankTreeViewPrefs.SetValue("SelectedFont", GlobalPreferences.SelectedFont, RegistryValueKind.String);
-            SoundBankTreeViewPrefs.SetValue("TreeViewIndent", GlobalPreferences.TreeViewIndent, RegistryValueKind.DWord);
-            SoundBankTreeViewPrefs.SetValue("ShowLines", GlobalPreferences.ShowLines, RegistryValueKind.String);
-            SoundBankTreeViewPrefs.SetValue("ShowRootLines", GlobalPreferences.ShowRootLines, RegistryValueKind.String);
-        }
 
         internal static string[] LoadTreeViewPreferences()
         {
@@ -135,16 +128,20 @@ namespace EuroSound_Application
 
             return TreeViewPreferences;
         }
-        #endregion
+
+        internal static void SaveTreeViewPreferences()
+        {
+            CreateEuroSoundSubkeyIfNotExists("SBEditorTreeView", true);
+            RegistryKey SoundBankTreeViewPrefs = EuroSoundKey.OpenSubKey("SBEditorTreeView", true);
+
+            SoundBankTreeViewPrefs.SetValue("SelectedFont", GlobalPreferences.SelectedFont, RegistryValueKind.String);
+            SoundBankTreeViewPrefs.SetValue("TreeViewIndent", GlobalPreferences.TreeViewIndent, RegistryValueKind.DWord);
+            SoundBankTreeViewPrefs.SetValue("ShowLines", GlobalPreferences.ShowLines, RegistryValueKind.String);
+            SoundBankTreeViewPrefs.SetValue("ShowRootLines", GlobalPreferences.ShowRootLines, RegistryValueKind.String);
+        }
+        #endregion TreeView Preferences
 
         #region General Preferences
-        internal static void SaveGeneralPreferences()
-        {
-            CreateEuroSoundSubkeyIfNotExists("General", true);
-            RegistryKey SoundBankTreeViewPrefs = EuroSoundKey.OpenSubKey("General", true);
-
-            SoundBankTreeViewPrefs.SetValue("SFXOutputPath", GlobalPreferences.SFXOutputPath, RegistryValueKind.String);
-        }
 
         internal static string LoadGeneralPreferences()
         {
@@ -162,7 +159,13 @@ namespace EuroSound_Application
             return TreeViewPreferences;
         }
 
+        internal static void SaveGeneralPreferences()
+        {
+            CreateEuroSoundSubkeyIfNotExists("General", true);
+            RegistryKey SoundBankTreeViewPrefs = EuroSoundKey.OpenSubKey("General", true);
 
-        #endregion
+            SoundBankTreeViewPrefs.SetValue("SFXOutputPath", GlobalPreferences.SFXOutputPath, RegistryValueKind.String);
+        }
+        #endregion General Preferences
     }
 }

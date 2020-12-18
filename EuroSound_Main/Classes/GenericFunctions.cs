@@ -10,71 +10,11 @@ namespace EuroSound_Application
 {
     public static class GenericFunctions
     {
-        private static ToolStripLabel ProgramStatusLabel;
-        public static ToolStripLabel FileNameLabel;
-        private static StatusStrip StatusBar;
-        public static ResourceManager ResourcesManager;
-
         public static string CurrentStatus;
-
-        //ChangeLabel Value Text
-        public static string OpenFileBrowser(string BrowserFilter, int SelectedIndexFilter)
-        {
-            string FilePath = string.Empty;
-
-            OpenFileDialog FileBrowser = new OpenFileDialog
-            {
-                Filter = BrowserFilter + "|All files(*.*)|*.*",
-                FilterIndex = SelectedIndexFilter
-            };
-
-            if (FileBrowser.ShowDialog() == DialogResult.OK)
-            {
-                FilePath = FileBrowser.FileName;
-            }
-            FileBrowser.Dispose();
-
-            return FilePath;
-        }
-
-        public static string SaveFileBrowser(string Filter, int SelectedIndexFilter, bool RestoreDirectory, string Name)
-        {
-            string SelectedPath = string.Empty;
-
-            SaveFileDialog SaveFile = new SaveFileDialog
-            {
-                Filter = Filter + "|All files(*.*)|*.*",
-                FilterIndex = SelectedIndexFilter,
-                RestoreDirectory = RestoreDirectory,
-                FileName = Name
-            };
-
-            if (SaveFile.ShowDialog() == DialogResult.OK)
-            {
-                SelectedPath = SaveFile.FileName;
-            }
-            SaveFile.Dispose();
-
-            return SelectedPath;
-        }
-
-
-
-        public static Color GetColorFromColorPicker()
-        {
-            Color PickedColor = Color.Black;
-            ColorDialog ColorDiag = new ColorDialog() { AllowFullOpen = true, FullOpen = true };
-            ColorDiag.CustomColors = WindowsRegistryFunctions.SetCustomColors();
-            if (ColorDiag.ShowDialog() == DialogResult.OK)
-            {
-                PickedColor = ColorDiag.Color;
-                WindowsRegistryFunctions.SaveCustomColors(ColorDiag.CustomColors);
-            }
-            ColorDiag.Dispose();
-
-            return PickedColor;
-        }
-
+        public static ToolStripLabel FileNameLabel;
+        public static ResourceManager ResourcesManager;
+        private static ToolStripLabel ProgramStatusLabel;
+        private static StatusStrip StatusBar;
         public static string CalculateMD5(string filename)
         {
             string MD5hash = string.Empty;
@@ -116,6 +56,69 @@ namespace EuroSound_Application
             return Modified;
         }
 
+        public static Color GetColorFromColorPicker()
+        {
+            Color PickedColor = Color.Black;
+            ColorDialog ColorDiag = new ColorDialog() { AllowFullOpen = true, FullOpen = true };
+            ColorDiag.CustomColors = WindowsRegistryFunctions.SetCustomColors();
+            if (ColorDiag.ShowDialog() == DialogResult.OK)
+            {
+                PickedColor = ColorDiag.Color;
+                WindowsRegistryFunctions.SaveCustomColors(ColorDiag.CustomColors);
+            }
+            ColorDiag.Dispose();
+
+            return PickedColor;
+        }
+
+        public static Form GetFormByName(string FormName, string tag)
+        {
+            Form Results = null;
+
+            /*--Change icon in the parent form--*/
+            FormCollection FormsToCheck = Application.OpenForms;
+            for (int i = 0; i < FormsToCheck.Count; i++)
+            {
+                if (FormsToCheck[i].Name.Equals(FormName))
+                {
+                    if (FormsToCheck[i].Tag.Equals(tag))
+                    {
+                        Results = FormsToCheck[i];
+                        break;
+                    }
+                }
+            }
+
+            return Results;
+        }
+
+        public static void GetStatusBarControls(StatusStrip v_StatusBar, ToolStripLabel v_ProgramStatusLabel, ToolStripLabel v_FileNameLabel)
+        {
+            ProgramStatusLabel = v_ProgramStatusLabel;
+            FileNameLabel = v_FileNameLabel;
+            StatusBar = v_StatusBar;
+        }
+
+        //ChangeLabel Value Text
+        public static string OpenFileBrowser(string BrowserFilter, int SelectedIndexFilter)
+        {
+            string FilePath = string.Empty;
+
+            OpenFileDialog FileBrowser = new OpenFileDialog
+            {
+                Filter = BrowserFilter + "|All files(*.*)|*.*",
+                FilterIndex = SelectedIndexFilter
+            };
+
+            if (FileBrowser.ShowDialog() == DialogResult.OK)
+            {
+                FilePath = FileBrowser.FileName;
+            }
+            FileBrowser.Dispose();
+
+            return FilePath;
+        }
+
         public static string OpenInputBox(string Text, string Title)
         {
             string SampleName = string.Empty;
@@ -131,13 +134,26 @@ namespace EuroSound_Application
             return SampleName;
         }
 
-        public static void GetStatusBarControls(StatusStrip v_StatusBar, ToolStripLabel v_ProgramStatusLabel, ToolStripLabel v_FileNameLabel)
+        public static string SaveFileBrowser(string Filter, int SelectedIndexFilter, bool RestoreDirectory, string Name)
         {
-            ProgramStatusLabel = v_ProgramStatusLabel;
-            FileNameLabel = v_FileNameLabel;
-            StatusBar = v_StatusBar;
-        }
+            string SelectedPath = string.Empty;
 
+            SaveFileDialog SaveFile = new SaveFileDialog
+            {
+                Filter = Filter + "|All files(*.*)|*.*",
+                FilterIndex = SelectedIndexFilter,
+                RestoreDirectory = RestoreDirectory,
+                FileName = Name
+            };
+
+            if (SaveFile.ShowDialog() == DialogResult.OK)
+            {
+                SelectedPath = SaveFile.FileName;
+            }
+            SaveFile.Dispose();
+
+            return SelectedPath;
+        }
         public static void SetCurrentFileLabel(string text)
         {
             if (StatusBar.Visible && StatusBar != null)
@@ -161,12 +177,17 @@ namespace EuroSound_Application
             }
         }
 
-        public static void StatusBarTutorialModeShowText(string TextToDisplay)
+        public static void ShowErrorsAndWarningsList(List<string> ListToPrint, string FormTitle)
         {
-            if (StatusBar.Visible)
+            //Show Import results
+            EuroSound_ErrorsAndWarningsList ImportResults = new EuroSound_ErrorsAndWarningsList(ListToPrint)
             {
-                StatusBarSetText(TextToDisplay);
-            }
+                Text = FormTitle,
+                ShowInTaskbar = false,
+                TopMost = true
+            };
+            ImportResults.ShowDialog();
+            ImportResults.Dispose();
         }
 
         public static void StatusBarTutorialMode(bool MenuStripOpened)
@@ -184,6 +205,13 @@ namespace EuroSound_Application
             }
         }
 
+        public static void StatusBarTutorialModeShowText(string TextToDisplay)
+        {
+            if (StatusBar.Visible)
+            {
+                StatusBarSetText(TextToDisplay);
+            }
+        }
         private static void StatusBarSetText(string TextToDisplay)
         {
             if (StatusBar.Visible && StatusBar != null)
@@ -193,40 +221,6 @@ namespace EuroSound_Application
                     ProgramStatusLabel.Text = TextToDisplay;
                 });
             }
-        }
-
-        public static void ShowErrorsAndWarningsList(List<string> ListToPrint, string FormTitle)
-        {
-            //Show Import results
-            EuroSound_ErrorsAndWarningsList ImportResults = new EuroSound_ErrorsAndWarningsList(ListToPrint)
-            {
-                Text = FormTitle,
-                ShowInTaskbar = false,
-                TopMost = true
-            };
-            ImportResults.ShowDialog();
-            ImportResults.Dispose();
-        }
-
-
-        public static Form GetFormByName(string FormName, string tag)
-        {
-            Form Results = null;
-
-            /*--Change icon in the parent form--*/
-            foreach (Form OpenForm in Application.OpenForms)
-            {
-                if (OpenForm.Name.Equals(FormName))
-                {
-                    if (OpenForm.Tag.Equals(tag))
-                    {
-                        Results = OpenForm;
-                        break;
-                    }
-                }
-            }
-
-            return Results;
         }
     }
 }

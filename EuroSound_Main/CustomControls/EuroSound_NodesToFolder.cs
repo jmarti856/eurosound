@@ -6,13 +6,17 @@ namespace EuroSound_Application
 {
     public partial class EuroSound_NodesToFolder : Form
     {
-        TreeView treeviewcontrol;
-        Dictionary<string, string> SoundsDictionary = new Dictionary<string, string>();
-
+        private Dictionary<string, string> SoundsDictionary = new Dictionary<string, string>();
+        private TreeView treeviewcontrol;
         public EuroSound_NodesToFolder(TreeView TreeViewControl)
         {
             InitializeComponent();
             treeviewcontrol = TreeViewControl;
+        }
+
+        private void Button_Cancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         private void Button_OK_Click(object sender, EventArgs e)
@@ -38,12 +42,6 @@ namespace EuroSound_Application
                 }
             }
         }
-
-        private void Button_Cancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         //*===============================================================================================
         //* FUNCTIONS
         //*===============================================================================================
@@ -63,10 +61,10 @@ namespace EuroSound_Application
             }
             ShowDataInList();
         }
+
         private List<string> GetAvailableFolders(TreeView control, string ParentName)
         {
             List<string> AvailableFolders = new List<string>();
-
             foreach (TreeNode node in control.Nodes)
             {
                 if (node.Name.Equals(ParentName))

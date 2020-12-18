@@ -237,6 +237,7 @@
             this.Controls.Add(this.Textbox_FileName);
             this.Controls.Add(this.Label_FileName);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Frm_FileProperties";

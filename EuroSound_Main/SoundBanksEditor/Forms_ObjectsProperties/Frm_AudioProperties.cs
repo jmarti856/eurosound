@@ -8,11 +8,10 @@ namespace EuroSound_Application
 {
     public partial class Frm_AudioProperties : Form
     {
-        EXAudio SelectedAudio, TemporalAudio;
-        string SelectedAudioMD5Hash, TemporalAudioHash;
-        WaveOut _waveOut = new WaveOut();
-        MemoryStream AudioSample;
-
+        private WaveOut _waveOut = new WaveOut();
+        private MemoryStream AudioSample;
+        private EXAudio SelectedAudio, TemporalAudio;
+        private string SelectedAudioMD5Hash, TemporalAudioHash;
         public Frm_AudioProperties(EXAudio AudioToCheck, string AudioKey)
         {
             InitializeComponent();
@@ -21,78 +20,20 @@ namespace EuroSound_Application
             SelectedAudioMD5Hash = AudioKey;
         }
 
-        private void Frm_AudioProperties_Load(object sender, EventArgs e)
+        internal void StopAudio()
         {
-            TemporalAudio = new EXAudio();
-            Reflection.CopyProperties(SelectedAudio, TemporalAudio);
-            UpdateControls();
-
-            /*--Editable Data--*/
-            numeric_flags.Value = TemporalAudio.Flags;
-            numeric_psi.Value = TemporalAudio.PSIsample;
-            numeric_loopOffset.Value = TemporalAudio.LoopOffset;
-
-            if (TemporalAudio.PCMdata != null)
+            if (_waveOut.PlaybackState == PlaybackState.Playing)
             {
-                euroSound_WaveViewer1.RenderDelay = 0;
-                euroSound_WaveViewer1.WaveStream = new RawSourceWaveStream(new MemoryStream(TemporalAudio.PCMdata), new WaveFormat(TemporalAudio.Frequency, TemporalAudio.Bits, TemporalAudio.Channels));
-                euroSound_WaveViewer1.InitControl();
-            }
-            else
-            {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("AudioProperties_FileCorrupt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _waveOut.Stop();
+                AudioSample.Close();
+                AudioSample.Dispose();
             }
         }
 
-        private void Button_ReplaceAudio_Click(object sender, EventArgs e)
-        {
-            string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files|*.wav", 0);
-            if (!string.IsNullOrEmpty(AudioPath))
-            {
-                TemporalAudioHash = GenericFunctions.CalculateMD5(AudioPath);
-                TemporalAudio = EXObjectsFunctions.LoadAudioData(AudioPath);
-
-                if (TemporalAudio.PCMdata != null)
-                {
-                    UpdateControls();
-
-                    /*--Editable Data--*/
-                    numeric_flags.Value = TemporalAudio.Flags;
-                    numeric_psi.Value = TemporalAudio.PSIsample;
-                    numeric_loopOffset.Value = TemporalAudio.LoopOffset;
-                    Textbox_MD5Hash.Text = TemporalAudioHash;
-
-                    euroSound_WaveViewer1.WaveStream = new RawSourceWaveStream(new MemoryStream(TemporalAudio.PCMdata), new WaveFormat(TemporalAudio.Frequency, TemporalAudio.Bits, TemporalAudio.Channels));
-                    euroSound_WaveViewer1.InitControl();
-                }
-                else
-                {
-                    MessageBox.Show("Error reading this file, seems that is being used by another process", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        private void Button_PlayAudio_Click(object sender, EventArgs e)
-        {
-            if (_waveOut.PlaybackState == PlaybackState.Stopped)
-            {
-                if (TemporalAudio.PCMdata != null)
-                {
-                    AudioSample = new MemoryStream(TemporalAudio.PCMdata);
-                    IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(TemporalAudio.Frequency, TemporalAudio.Bits, TemporalAudio.Channels));
-                    _waveOut.Init(provider);
-                    _waveOut.Play();
-                }
-                else
-                {
-                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("AudioProperties_FileCorrupt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        private void Button_StopAudio_Click(object sender, EventArgs e)
+        private void Button_Cancel_Click(object sender, EventArgs e)
         {
             StopAudio();
+            this.Close();
         }
 
         private void Button_OK_Click(object sender, EventArgs e)
@@ -125,7 +66,7 @@ namespace EuroSound_Application
                 }
 
                 /*--Modify Temporal Audio Values--*/
-                TemporalAudio.Flags = int.Parse(numeric_flags.Value.ToString());
+                TemporalAudio.Flags = int.Parse(Textbox_Flags.Text.ToString());
                 TemporalAudio.PSIsample = int.Parse(numeric_psi.Value.ToString());
                 TemporalAudio.LoopOffset = int.Parse(numeric_loopOffset.Value.ToString());
 
@@ -142,20 +83,55 @@ namespace EuroSound_Application
             this.Close();
         }
 
-        private void Button_Cancel_Click(object sender, EventArgs e)
+        private void Button_PlayAudio_Click(object sender, EventArgs e)
         {
-            StopAudio();
-            this.Close();
+            if (_waveOut.PlaybackState == PlaybackState.Stopped)
+            {
+                if (TemporalAudio.PCMdata != null)
+                {
+                    AudioSample = new MemoryStream(TemporalAudio.PCMdata);
+                    IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(TemporalAudio.Frequency, TemporalAudio.Bits, TemporalAudio.Channels));
+                    _waveOut.Init(provider);
+                    _waveOut.Play();
+                }
+                else
+                {
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("AudioProperties_FileCorrupt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
-        internal void StopAudio()
+        private void Button_ReplaceAudio_Click(object sender, EventArgs e)
         {
-            if (_waveOut.PlaybackState == PlaybackState.Playing)
+            string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files|*.wav", 0);
+            if (!string.IsNullOrEmpty(AudioPath))
             {
-                _waveOut.Stop();
-                AudioSample.Close();
-                AudioSample.Dispose();
+                TemporalAudioHash = GenericFunctions.CalculateMD5(AudioPath);
+                TemporalAudio = EXObjectsFunctions.LoadAudioData(AudioPath);
+
+                if (TemporalAudio.PCMdata != null)
+                {
+                    UpdateControls();
+
+                    /*--Editable Data--*/
+                    Textbox_Flags.Text = TemporalAudio.Flags.ToString();
+                    numeric_psi.Value = TemporalAudio.PSIsample;
+                    numeric_loopOffset.Value = TemporalAudio.LoopOffset;
+                    Textbox_MD5Hash.Text = TemporalAudioHash;
+
+                    euroSound_WaveViewer1.WaveStream = new RawSourceWaveStream(new MemoryStream(TemporalAudio.PCMdata), new WaveFormat(TemporalAudio.Frequency, TemporalAudio.Bits, TemporalAudio.Channels));
+                    euroSound_WaveViewer1.InitControl();
+                }
+                else
+                {
+                    MessageBox.Show("Error reading this file, seems that is being used by another process", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
+        }
+
+        private void Button_StopAudio_Click(object sender, EventArgs e)
+        {
+            StopAudio();
         }
 
         private void EuroSound_WaveViewer1_OnLineDrawEvent(Point point1, Point point2)
@@ -172,10 +148,50 @@ namespace EuroSound_Application
             }
             catch
             {
-
             }
         }
 
+        private void Frm_AudioProperties_Load(object sender, EventArgs e)
+        {
+            TemporalAudio = new EXAudio();
+            Reflection.CopyProperties(SelectedAudio, TemporalAudio);
+            UpdateControls();
+
+            /*--Editable Data--*/
+            Textbox_Flags.Text = TemporalAudio.Flags.ToString();
+            numeric_psi.Value = TemporalAudio.PSIsample;
+            numeric_loopOffset.Value = TemporalAudio.LoopOffset;
+
+            if (TemporalAudio.PCMdata != null)
+            {
+                euroSound_WaveViewer1.RenderDelay = 0;
+                euroSound_WaveViewer1.WaveStream = new RawSourceWaveStream(new MemoryStream(TemporalAudio.PCMdata), new WaveFormat(TemporalAudio.Frequency, TemporalAudio.Bits, TemporalAudio.Channels));
+                euroSound_WaveViewer1.InitControl();
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("AudioProperties_FileCorrupt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void Textbox_Flags_MouseClick(object sender, MouseEventArgs e)
+        {
+            string[] FlagsLabels = new string[]
+            {
+                "UseLoopOffset"
+            };
+            EuroSound_FlagsForm FormFlags = new EuroSound_FlagsForm(int.Parse(Textbox_Flags.Text), FlagsLabels, 1)
+            {
+                Text = "Audio Data Flags",
+                Tag = this.Tag,
+                Owner = this,
+                ShowInTaskbar = false
+            };
+            if (FormFlags.ShowDialog() == DialogResult.OK)
+            {
+                Textbox_Flags.Text = FormFlags.CheckedFlags.ToString();
+            }
+            FormFlags.Dispose();
+        }
         private void UpdateControls()
         {
             Textbox_MediaName.Text = TemporalAudio.Name;

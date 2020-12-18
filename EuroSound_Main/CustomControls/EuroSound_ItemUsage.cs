@@ -6,12 +6,17 @@ namespace EuroSound_Application
 {
     public partial class EuroSound_ItemUsage : Form
     {
-        List<string> UsageItemsList;
+        private List<string> UsageItemsList;
 
         public EuroSound_ItemUsage(List<string> ListToPrint)
         {
             InitializeComponent();
             UsageItemsList = ListToPrint;
+        }
+
+        private void Button_OK_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         private void EuroSound_ItemUsage_Shown(object sender, EventArgs e)
@@ -27,11 +32,6 @@ namespace EuroSound_Application
                 ListView_ItemUsage.Items.Add(ItemToAdd);
             }
             UsageItemsList.Clear();
-        }
-
-        private void Button_OK_Click(object sender, EventArgs e)
-        {
-            this.Close();
         }
     }
 }

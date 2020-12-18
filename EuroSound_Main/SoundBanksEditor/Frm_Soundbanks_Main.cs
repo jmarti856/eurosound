@@ -10,27 +10,23 @@ namespace EuroSound_Application
 {
     public partial class Frm_Soundbanks_Main : Form
     {
-        [DllImport("user32.dll")]
-        private static extern int SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
-
-        /*Key will be an unique int ID, this way will be faster to access to a sound*/
-        public Dictionary<int, EXSound> SoundsList = new Dictionary<int, EXSound>();
-        /*Key will be the md5 hash to ensure we don't have duplicated sounds*/
         public Dictionary<string, EXAudio> AudioDataDict = new Dictionary<string, EXAudio>();
 
-        //*===============================================================================================
-        //* Global Variables
-        //*===============================================================================================
-        string LoadedFile = string.Empty;
-        string FileToLoadArg, ProjectName;
-
-        //*===============================================================================================
-        //* Global Variables
-        //*===============================================================================================
-        Thread UpdateList, UpdateWavList, UpdateStreamDataList;
-
-        /*--ProjectFile Classs where we will store all info related with the project*/
         public ProjectFile ProjectInfo = new ProjectFile();
+
+        public Dictionary<int, EXSound> SoundsList = new Dictionary<int, EXSound>();
+
+        private string FileToLoadArg, ProjectName;
+
+        //*===============================================================================================
+        //* Global Variables
+        //*===============================================================================================
+        private string LoadedFile = string.Empty;
+
+        //*===============================================================================================
+        //* Global Variables
+        //*===============================================================================================
+        private Thread UpdateList, UpdateWavList, UpdateStreamDataList;
 
         public Frm_Soundbanks_Main(string FilePath, string v_ProjectName)
         {
@@ -51,7 +47,6 @@ namespace EuroSound_Application
             MenuItem_File_SaveAs.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuItem_File.Visible);
             MenuItem_File_Export.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuItem_File.Visible);
 
-
             /*Menu Item: Edit*/
             MenuItem_Edit.DropDownOpened += (se, ev) => { GenericFunctions.StatusBarTutorialModeShowText(""); };
             MenuItem_Edit.DropDownClosed += (se, ev) => { GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); };
@@ -59,6 +54,96 @@ namespace EuroSound_Application
             MenuItem_Edit_FileProps.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItem_Edit_FileProps"));
 
             MenuItem_Edit_FileProps.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuItem_Edit.Visible);
+        }
+
+        [DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
+
+        private void Button_GenerateList_Click(object sender, EventArgs e)
+        {
+            string SavePath = GenericFunctions.SaveFileBrowser("YAML Files (*.yaml)|*.yaml", 1, true, ProjectName);
+            if (!string.IsNullOrEmpty(SavePath))
+            {
+                StreamWriter file = new StreamWriter(SavePath);
+                file.WriteLine("#ftype:1");
+                file.WriteLine("# swy: EngineX sound bank exported from " + Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, ProjectInfo.Hashcode) + " / " + ProjectInfo.Hashcode);
+                foreach (KeyValuePair<int, EXSound> Sound in SoundsList)
+                {
+                    file.WriteLine("- " + Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, Sound.Value.Hashcode));
+                }
+                file.Close();
+                file.Dispose();
+            }
+        }
+
+        private void Button_Search_Click(object sender, EventArgs e)
+        {
+            string searchFor = Textbox_SearchHint.Text.Trim().ToUpper();
+            if (searchFor != "")
+            {
+                if (TreeView_File.Nodes.Count > 0)
+                {
+                    TreeNode search = TreeNodeFunctions.SearchNodeRecursiveByText(TreeView_File.Nodes, searchFor, TreeView_File, RadioButton_MatchText.Checked);
+                    if (search != null)
+                    {
+                        TreeView_File.SelectedNode = search;
+                        TreeView_File.SelectedNode.Expand();
+                        TreeView_File.Focus();
+                    }
+                    else
+                    {
+                        MessageBox.Show("No results found", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+        }
+
+        private void Button_UpdateList_Hashcodes_Click(object sender, EventArgs e)
+        {
+            /*Check New data*/
+            UpdateHashcodesValidList();
+        }
+
+        private void Button_UpdateList_StreamData_Click(object sender, EventArgs e)
+        {
+            /*Check Stream Data*/
+            UpdateStreamedDataList();
+        }
+
+        //*===============================================================================================
+        //* LIST VIEWS DATA
+        //*===============================================================================================
+        private void Button_UpdateList_WavData_Click(object sender, EventArgs e)
+        {
+            /*Check Audio properties*/
+            UpdateWavDataList();
+        }
+
+        private void Frm_Soundbanks_Main_Enter(object sender, System.EventArgs e)
+        {
+            GenericFunctions.SetCurrentFileLabel(ProjectInfo.FileName);
+        }
+
+        private void Frm_Soundbanks_Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (ProjectInfo.FileHasBeenModified)
+            {
+                DialogResult dialogResult = MessageBox.Show("Save changes to " + ProjectInfo.FileName + "?", "EuroSound", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    e.Cancel = true;
+                    LoadedFile = SaveDocument(LoadedFile, TreeView_File, SoundsList, AudioDataDict, ProjectInfo);
+                    ProjectInfo.FileHasBeenModified = false;
+                    e.Cancel = false;
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                }
+                else if (dialogResult == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+            }
         }
 
         //*===============================================================================================
@@ -115,89 +200,89 @@ namespace EuroSound_Application
             GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
-        private void Frm_Soundbanks_Main_FormClosing(object sender, FormClosingEventArgs e)
+        //*===============================================================================================
+        //* MAIN MENU EDIT
+        //*===============================================================================================
+        private void MenuItem_Edit_FileProps_Click(object sender, EventArgs e)
         {
-            if (ProjectInfo.FileHasBeenModified)
+            Frm_FileProperties Props = new Frm_FileProperties(ProjectInfo)
             {
-                DialogResult dialogResult = MessageBox.Show("Save changes to " + ProjectInfo.FileName + "?", "EuroSound", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    e.Cancel = true;
-                    LoadedFile = SaveDocument(LoadedFile, TreeView_File, SoundsList, AudioDataDict, ProjectInfo);
-                    ProjectInfo.FileHasBeenModified = false;
-                    e.Cancel = false;
-                }
-                else if (dialogResult == DialogResult.No)
-                {
-
-                }
-                else if (dialogResult == DialogResult.Cancel)
-                {
-                    e.Cancel = true;
-                }
-            }
-        }
-
-        private void Frm_Soundbanks_Main_Enter(object sender, System.EventArgs e)
-        {
-            GenericFunctions.SetCurrentFileLabel(ProjectInfo.FileName);
+                Owner = this,
+                ShowInTaskbar = false,
+                Tag = this.Tag
+            };
+            Props.ShowDialog();
         }
 
         //*===============================================================================================
-        //* Tree View Events
+        //* MAIN MENU FILE
         //*===============================================================================================
-        private void TreeView_File_MouseClick(object sender, MouseEventArgs e)
+        private void MenuItem_File_Save_Click(object sender, EventArgs e)
         {
-            /*Select node*/
-            TreeView_File.SelectedNode = TreeView_File.GetNodeAt(e.X, e.Y);
+            LoadedFile = SaveDocument(LoadedFile, TreeView_File, SoundsList, AudioDataDict, ProjectInfo);
+            ProjectInfo.FileHasBeenModified = false;
+        }
 
-            /*Open context menu depending of the selected node*/
-            if (e.Button == MouseButtons.Right)
+        private void MenuItem_File_SaveAs_Click(object sender, EventArgs e)
+        {
+            LoadedFile = OpenSaveAsDialog(TreeView_File, SoundsList, AudioDataDict, ProjectInfo);
+            ProjectInfo.FileHasBeenModified = false;
+        }
+
+        private void MenuItemFile_Export_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(ProjectInfo.Hashcode))
             {
-                if (TreeView_File.SelectedNode.Tag.Equals("Folder") || TreeView_File.SelectedNode.Tag.Equals("Root"))
+                string FileName = "HC" + ProjectInfo.Hashcode.Substring(4);
+                Frm_BuildSFXFile BuildFile = new Frm_BuildSFXFile(ProjectInfo, FileName)
                 {
-                    if (TreeView_File.SelectedNode != null)
-                    {
-                        ContextMenu_Folders.Show(Cursor.Position);
-                        if (TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name.Equals("AudioData"))
-                        {
-                            ContextMenuFolder_AddSound.Visible = false;
-                            ContextMenuFolder_AddAudio.Visible = true;
-                        }
-                        else
-                        {
-                            ContextMenuFolder_AddSound.Visible = true;
-                            ContextMenuFolder_AddAudio.Visible = false;
-                        }
-                    }
-                }
-                else if (TreeView_File.SelectedNode.Tag.Equals("Sound"))
-                {
-                    ContextMenu_Sound.Show(Cursor.Position);
-                }
-                else if (TreeView_File.SelectedNode.Tag.Equals("Sample"))
-                {
-                    ContextMenu_Sample.Show(Cursor.Position);
-                }
-                else if (TreeView_File.SelectedNode.Tag.Equals("Audio"))
-                {
-                    ContextMenu_Audio.Show(Cursor.Position);
-                }
+                    Tag = this.Tag,
+                    Owner = this.Owner,
+                    ShowInTaskbar = false
+                };
+                BuildFile.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_BuildSFX_NoHashcode"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void TreeView_File_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void MenuItemFile_ReadSound_Click(object sender, EventArgs e)
         {
-            /*Select node*/
-            TreeView_File.SelectedNode = TreeView_File.GetNodeAt(e.X, e.Y);
+            string SoundName, SoundHashcode;
 
-            if (TreeView_File.SelectedNode.Tag.Equals("Sample"))
+            string FilePath = GenericFunctions.OpenFileBrowser("YML Files|*.yml", 0);
+            if (!string.IsNullOrEmpty(FilePath))
             {
-                OpenSelectedNodeSampleProperties();
+                SoundName = new DirectoryInfo(Path.GetDirectoryName(FilePath)).Name;
+                SoundHashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SFX_Defines, SoundName);
+                YamlReader.ReadYamlFile(SoundsList, AudioDataDict, TreeView_File, FilePath, SoundName, SoundHashcode, true, ProjectInfo);
+                ProjectInfo.FileHasBeenModified = true;
             }
-            if (TreeView_File.SelectedNode.Tag.Equals("Audio"))
+        }
+
+        private void MenuItemFile_ReadYml_Click(object sender, EventArgs e)
+        {
+            string FilePath = GenericFunctions.OpenFileBrowser("YML Files|*.yml", 0);
+            if (!string.IsNullOrEmpty(FilePath))
             {
-                OpenAudioProperties();
+                /*--Ask user for a fully reimport--*/
+                DialogResult ReimportQuestion = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("MenuItem_File_LoadListCleanData"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (ReimportQuestion == DialogResult.Yes)
+                {
+                    //Clear Data
+                    ProjectInfo.ClearAllStoredData(SoundsList, AudioDataDict, TreeView_File);
+                }
+
+                /*--Load New data--*/
+                Thread LoadYamlFile = new Thread(() => YamlReader.LoadDataFromSwyterUnpacker(SoundsList, AudioDataDict, TreeView_File, FilePath, ProjectInfo))
+                {
+                    IsBackground = true
+                };
+                LoadYamlFile.Start();
+
+                ProjectInfo.FileHasBeenModified = true;
             }
         }
 
@@ -264,28 +349,52 @@ namespace EuroSound_Application
             }
         }
 
-        private void TreeView_File_ItemDrag(object sender, ItemDragEventArgs e)
+        //---------------------------------------------Change Nodes Images---------------------------------------------
+        private void TreeView_File_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
         {
-            DoDragDrop(e.Item, DragDropEffects.Move);
+            /*Change node images depending of the type*/
+            if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
+            {
+                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 0, 0);
+            }
+            else if (e.Node.Tag.Equals("Sound"))
+            {
+                if (EXObjectsFunctions.SoundWillBeOutputed(SoundsList, e.Node.Name))
+                {
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 2, 2);
+                }
+                else
+                {
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 5, 5);
+                }
+            }
+            else if (e.Node.Tag.Equals("Sample"))
+            {
+                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 4, 4);
+            }
         }
 
-        private void TreeView_File_DragEnter(object sender, DragEventArgs e)
+        private void TreeView_File_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
-            if (draggedNode != null)
+            /*Change node images depending of the type*/
+            if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
             {
-                Point targetPoint = TreeView_File.PointToClient(new Point(e.X, e.Y));
-                TreeNode targetNode = TreeView_File.GetNodeAt(targetPoint);
-
-                if (targetNode != null)
+                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 1, 1);
+            }
+            else if (e.Node.Tag.Equals("Sound"))
+            {
+                if (EXObjectsFunctions.SoundWillBeOutputed(SoundsList, e.Node.Name))
                 {
-                    //Type of nodes that are allowed to be re-ubicated
-                    if (draggedNode.Tag.Equals("Folder") || draggedNode.Tag.Equals("Sound") || draggedNode.Tag.Equals("Audio"))
-                    {
-                        e.Effect = DragDropEffects.Move;
-                    }
-                    TreeView_File.SelectedNode = targetNode;
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 3, 3);
                 }
+                else
+                {
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 6, 6);
+                }
+            }
+            else if (e.Node.Tag.Equals("Sample"))
+            {
+                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 4, 4);
             }
         }
 
@@ -305,7 +414,7 @@ namespace EuroSound_Application
             TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
             SourceSection = TreeNodeFunctions.FindRootNode(draggedNode).Text;
 
-            // Confirm that the node at the drop location is not 
+            // Confirm that the node at the drop location is not
             // the dragged node and that target node isn't null
             // (for example if you drag outside the control)
             if (!draggedNode.Equals(targetNode) && targetNode != null)
@@ -316,13 +425,33 @@ namespace EuroSound_Application
                 */
                 if (SourceSection.Equals(DestSection) && (DestNodeType.Equals("Folder") || DestNodeType.Equals("Root")))
                 {
-                    // Remove the node from its current 
+                    // Remove the node from its current
                     // location and add it to the node at the drop location.
                     draggedNode.Remove();
                     targetNode.Nodes.Add(draggedNode);
                     targetNode.Expand();
                     TreeView_File.SelectedNode = draggedNode;
                     ProjectInfo.FileHasBeenModified = true;
+                }
+            }
+        }
+
+        private void TreeView_File_DragEnter(object sender, DragEventArgs e)
+        {
+            TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
+            if (draggedNode != null)
+            {
+                Point targetPoint = TreeView_File.PointToClient(new Point(e.X, e.Y));
+                TreeNode targetNode = TreeView_File.GetNodeAt(targetPoint);
+
+                if (targetNode != null)
+                {
+                    //Type of nodes that are allowed to be re-ubicated
+                    if (draggedNode.Tag.Equals("Folder") || draggedNode.Tag.Equals("Sound") || draggedNode.Tag.Equals("Audio"))
+                    {
+                        e.Effect = DragDropEffects.Move;
+                    }
+                    TreeView_File.SelectedNode = targetNode;
                 }
             }
         }
@@ -349,52 +478,9 @@ namespace EuroSound_Application
             TreeView_File.SelectedNode = node;
         }
 
-        private void TreeView_File_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        private void TreeView_File_ItemDrag(object sender, ItemDragEventArgs e)
         {
-            /*Change node images depending of the type*/
-            if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
-            {
-                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 1, 1);
-            }
-            else if (e.Node.Tag.Equals("Sound"))
-            {
-                if (EXObjectsFunctions.SoundWillBeOutputed(SoundsList, e.Node.Name))
-                {
-                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 3, 3);
-                }
-                else
-                {
-                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 6, 6);
-                }
-            }
-            else if (e.Node.Tag.Equals("Sample"))
-            {
-                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 4, 4);
-            }
-        }
-        //---------------------------------------------Change Nodes Images---------------------------------------------
-        private void TreeView_File_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
-        {
-            /*Change node images depending of the type*/
-            if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
-            {
-                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 0, 0);
-            }
-            else if (e.Node.Tag.Equals("Sound"))
-            {
-                if (EXObjectsFunctions.SoundWillBeOutputed(SoundsList, e.Node.Name))
-                {
-                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 2, 2);
-                }
-                else
-                {
-                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 5, 5);
-                }
-            }
-            else if (e.Node.Tag.Equals("Sample"))
-            {
-                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 4, 4);
-            }
+            DoDragDrop(e.Item, DragDropEffects.Move);
         }
 
         //*===============================================================================================
@@ -435,150 +521,61 @@ namespace EuroSound_Application
         }
 
         //*===============================================================================================
-        //* MAIN MENU FILE
+        //* Tree View Events
         //*===============================================================================================
-        private void MenuItem_File_Save_Click(object sender, EventArgs e)
+        private void TreeView_File_MouseClick(object sender, MouseEventArgs e)
         {
-            LoadedFile = SaveDocument(LoadedFile, TreeView_File, SoundsList, AudioDataDict, ProjectInfo);
-            ProjectInfo.FileHasBeenModified = false;
-        }
+            /*Select node*/
+            TreeView_File.SelectedNode = TreeView_File.GetNodeAt(e.X, e.Y);
 
-        private void MenuItem_File_SaveAs_Click(object sender, EventArgs e)
-        {
-            LoadedFile = OpenSaveAsDialog(TreeView_File, SoundsList, AudioDataDict, ProjectInfo);
-            ProjectInfo.FileHasBeenModified = false;
-        }
-
-        private void MenuItemFile_Export_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(ProjectInfo.Hashcode))
+            /*Open context menu depending of the selected node*/
+            if (e.Button == MouseButtons.Right)
             {
-                string FileName = "HC" + ProjectInfo.Hashcode.Substring(4);
-                Frm_BuildSFXFile BuildFile = new Frm_BuildSFXFile(ProjectInfo, FileName)
+                if (TreeView_File.SelectedNode.Tag.Equals("Folder") || TreeView_File.SelectedNode.Tag.Equals("Root"))
                 {
-                    Tag = this.Tag,
-                    Owner = this.Owner,
-                    ShowInTaskbar = false
-                };
-                BuildFile.ShowDialog();
-            }
-            else
-            {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_BuildSFX_NoHashcode"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void MenuItemFile_ReadYml_Click(object sender, EventArgs e)
-        {
-            string FilePath = GenericFunctions.OpenFileBrowser("YML Files|*.yml", 0);
-            if (!string.IsNullOrEmpty(FilePath))
-            {
-                /*--Ask user for a fully reimport--*/
-                DialogResult ReimportQuestion = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("MenuItem_File_LoadListCleanData"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (ReimportQuestion == DialogResult.Yes)
-                {
-                    //Clear Data
-                    ProjectInfo.ClearAllStoredData(SoundsList, AudioDataDict, TreeView_File);
-                }
-
-
-                /*--Load New data--*/
-                Thread LoadYamlFile = new Thread(() => YamlReader.LoadDataFromSwyterUnpacker(SoundsList, AudioDataDict, TreeView_File, FilePath, ProjectInfo))
-                {
-                    IsBackground = true
-                };
-                LoadYamlFile.Start();
-
-                ProjectInfo.FileHasBeenModified = true;
-            }
-        }
-
-        private void Button_Search_Click(object sender, EventArgs e)
-        {
-            string searchFor = Textbox_SearchHint.Text.Trim().ToUpper();
-            if (searchFor != "")
-            {
-                if (TreeView_File.Nodes.Count > 0)
-                {
-                    TreeNode search = TreeNodeFunctions.SearchNodeRecursiveByText(TreeView_File.Nodes, searchFor, TreeView_File, RadioButton_MatchText.Checked);
-                    if (search != null)
+                    if (TreeView_File.SelectedNode != null)
                     {
-                        TreeView_File.SelectedNode = search;
-                        TreeView_File.SelectedNode.Expand();
-                        TreeView_File.Focus();
-                    }
-                    else
-                    {
-                        MessageBox.Show("No results found", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        ContextMenu_Folders.Show(Cursor.Position);
+                        if (TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name.Equals("AudioData"))
+                        {
+                            ContextMenuFolder_AddSound.Visible = false;
+                            ContextMenuFolder_AddAudio.Visible = true;
+                        }
+                        else
+                        {
+                            ContextMenuFolder_AddSound.Visible = true;
+                            ContextMenuFolder_AddAudio.Visible = false;
+                        }
                     }
                 }
-            }
-        }
-
-        private void MenuItemFile_ReadSound_Click(object sender, EventArgs e)
-        {
-            string SoundName, SoundHashcode;
-
-            string FilePath = GenericFunctions.OpenFileBrowser("YML Files|*.yml", 0);
-            if (!string.IsNullOrEmpty(FilePath))
-            {
-                SoundName = new DirectoryInfo(Path.GetDirectoryName(FilePath)).Name;
-                SoundHashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SFX_Defines, SoundName);
-                YamlReader.ReadYamlFile(SoundsList, AudioDataDict, TreeView_File, FilePath, SoundName, SoundHashcode, true, ProjectInfo);
-                ProjectInfo.FileHasBeenModified = true;
-            }
-        }
-
-        //*===============================================================================================
-        //* MAIN MENU EDIT
-        //*===============================================================================================
-        private void MenuItem_Edit_FileProps_Click(object sender, EventArgs e)
-        {
-            Frm_FileProperties Props = new Frm_FileProperties(ProjectInfo)
-            {
-                Owner = this,
-                ShowInTaskbar = false,
-                Tag = this.Tag
-            };
-            Props.ShowDialog();
-        }
-
-        private void Button_GenerateList_Click(object sender, EventArgs e)
-        {
-            string SavePath = GenericFunctions.SaveFileBrowser("YAML Files (*.yaml)|*.yaml", 1, true, ProjectName);
-            if (!string.IsNullOrEmpty(SavePath))
-            {
-                StreamWriter file = new StreamWriter(SavePath);
-                file.WriteLine("#ftype:1");
-                file.WriteLine("# swy: EngineX sound bank exported from " + Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, ProjectInfo.Hashcode) + " / " + ProjectInfo.Hashcode);
-                foreach (KeyValuePair<int, EXSound> Sound in SoundsList)
+                else if (TreeView_File.SelectedNode.Tag.Equals("Sound"))
                 {
-                    file.WriteLine("- " + Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, Sound.Value.Hashcode));
+                    ContextMenu_Sound.Show(Cursor.Position);
                 }
-                file.Close();
-                file.Dispose();
+                else if (TreeView_File.SelectedNode.Tag.Equals("Sample"))
+                {
+                    ContextMenu_Sample.Show(Cursor.Position);
+                }
+                else if (TreeView_File.SelectedNode.Tag.Equals("Audio"))
+                {
+                    ContextMenu_Audio.Show(Cursor.Position);
+                }
             }
         }
 
-        //*===============================================================================================
-        //* LIST VIEWS DATA
-        //*===============================================================================================
-        private void Button_UpdateList_WavData_Click(object sender, EventArgs e)
+        private void TreeView_File_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            /*Check Audio properties*/
-            UpdateWavDataList();
-        }
+            /*Select node*/
+            TreeView_File.SelectedNode = TreeView_File.GetNodeAt(e.X, e.Y);
 
-        private void Button_UpdateList_Hashcodes_Click(object sender, EventArgs e)
-        {
-            /*Check New data*/
-            UpdateHashcodesValidList();
-        }
-
-        private void Button_UpdateList_StreamData_Click(object sender, EventArgs e)
-        {
-            /*Check Stream Data*/
-            UpdateStreamedDataList();
+            if (TreeView_File.SelectedNode.Tag.Equals("Sample"))
+            {
+                OpenSelectedNodeSampleProperties();
+            }
+            if (TreeView_File.SelectedNode.Tag.Equals("Audio"))
+            {
+                OpenAudioProperties();
+            }
         }
     }
 }

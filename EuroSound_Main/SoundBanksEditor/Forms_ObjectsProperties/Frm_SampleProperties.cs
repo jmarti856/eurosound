@@ -11,10 +11,11 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
-        EXSample SelectedSample;
-        WaveOut _waveOut = new WaveOut();
-        MemoryStream AudioSample;
-        bool IsSubSFX;
+        private EXSample SelectedSample;
+
+        private WaveOut _waveOut = new WaveOut();
+        private MemoryStream AudioSample;
+        private bool IsSubSFX;
 
         public Frm_SampleProperties(EXSample Sample, bool SubSFX)
         {
@@ -94,6 +95,7 @@ namespace EuroSound_Application
                 }
             }
         }
+
         private void Button_Stop_Click(object sender, EventArgs e)
         {
             StopAudio();
@@ -141,6 +143,7 @@ namespace EuroSound_Application
                 EnableOrDisableMediaSection(true);
             }
         }
+
         private void EnableOrDisableMediaSection(bool Action)
         {
             Combobox_SelectedAudio.Enabled = Action;

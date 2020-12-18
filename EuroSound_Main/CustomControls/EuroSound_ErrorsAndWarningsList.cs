@@ -8,44 +8,13 @@ namespace EuroSound_Application
 {
     public partial class EuroSound_ErrorsAndWarningsList : Form
     {
-        List<string> ErrorsAndWarningsListToPrint;
+        private List<string> ErrorsAndWarningsListToPrint;
+
         public EuroSound_ErrorsAndWarningsList(List<string> ErrorsAndWarningsList)
         {
             InitializeComponent();
 
             ErrorsAndWarningsListToPrint = ErrorsAndWarningsList;
-        }
-
-        private void Button_OK_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void EuroSound_ImportResultsList_Load(object sender, EventArgs e)
-        {
-            foreach (string item in ErrorsAndWarningsListToPrint)
-            {
-                char MessageType = item[0];
-                ListViewItem Item = new ListViewItem(new[] { "", item.Substring(1) });
-
-                if (MessageType == '0')
-                {
-                    Item.SubItems[0].Text = "Error";
-                    Item.ImageIndex = 0;
-                }
-                else if (MessageType == '1')
-                {
-                    Item.SubItems[0].Text = "Warning";
-                    Item.ImageIndex = 1;
-                }
-                else
-                {
-                    Item.SubItems[0].Text = "Info";
-                    Item.ImageIndex = 2;
-                }
-                ListView_Reports.Items.Add(Item);
-            }
-            ErrorsAndWarningsListToPrint.Clear();
         }
 
         private void Button_Copy_Click(object sender, EventArgs e)
@@ -79,7 +48,38 @@ namespace EuroSound_Application
             };
             CopyDataToClipboard.SetApartmentState(ApartmentState.STA);
             CopyDataToClipboard.Start();
+        }
 
+        private void Button_OK_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void EuroSound_ImportResultsList_Load(object sender, EventArgs e)
+        {
+            foreach (string item in ErrorsAndWarningsListToPrint)
+            {
+                char MessageType = item[0];
+                ListViewItem Item = new ListViewItem(new[] { "", item.Substring(1) });
+
+                if (MessageType == '0')
+                {
+                    Item.SubItems[0].Text = "Error";
+                    Item.ImageIndex = 0;
+                }
+                else if (MessageType == '1')
+                {
+                    Item.SubItems[0].Text = "Warning";
+                    Item.ImageIndex = 1;
+                }
+                else
+                {
+                    Item.SubItems[0].Text = "Info";
+                    Item.ImageIndex = 2;
+                }
+                ListView_Reports.Items.Add(Item);
+            }
+            ErrorsAndWarningsListToPrint.Clear();
         }
     }
 }

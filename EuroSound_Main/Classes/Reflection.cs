@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+
 /// <summary>
 /// A static class for reflection type functions
 /// </summary>
@@ -21,16 +22,17 @@ public static class Reflection
         Type typeDest = destination.GetType();
         Type typeSrc = source.GetType();
 
-        // Iterate the Properties of the source instance and  
-        // populate them from their desination counterparts  
+        // Iterate the Properties of the source instance and
+        // populate them from their desination counterparts
         PropertyInfo[] srcProps = typeSrc.GetProperties();
-        foreach (PropertyInfo srcProp in srcProps)
+
+        for (int i = 0; i < srcProps.Length; i++)
         {
-            if (!srcProp.CanRead)
+            if (!srcProps[i].CanRead)
             {
                 continue;
             }
-            PropertyInfo targetProperty = typeDest.GetProperty(srcProp.Name);
+            PropertyInfo targetProperty = typeDest.GetProperty(srcProps[i].Name);
             if (targetProperty == null)
             {
                 continue;
@@ -47,12 +49,12 @@ public static class Reflection
             {
                 continue;
             }
-            if (!targetProperty.PropertyType.IsAssignableFrom(srcProp.PropertyType))
+            if (!targetProperty.PropertyType.IsAssignableFrom(srcProps[i].PropertyType))
             {
                 continue;
             }
             // Passed all tests, lets set the value
-            targetProperty.SetValue(destination, srcProp.GetValue(source, null), null);
+            targetProperty.SetValue(destination, srcProps[i].GetValue(source, null), null);
         }
     }
 }

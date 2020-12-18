@@ -19,9 +19,6 @@ namespace EuroSound_Application
         private void Frm_AboutEuroSound_Load(object sender, EventArgs e)
         {
             Label_Version.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
         }
     }
-
-
 }

@@ -8,7 +8,7 @@ namespace EuroSound_Application
 {
     public partial class Frm_EuroSound_Splash : Form
     {
-        string ArgumentFileToLoad;
+        private string ArgumentFileToLoad;
 
         public Frm_EuroSound_Splash(string FileToLoad)
         {
@@ -16,16 +16,40 @@ namespace EuroSound_Application
             ArgumentFileToLoad = FileToLoad;
         }
 
+        public string AssemblyDescription
+        {
+            get
+            {
+                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
+                if (attributes.Length == 0)
+                {
+                    return "";
+                }
+                return ((AssemblyDescriptionAttribute)attributes[0]).Description;
+            }
+        }
+
+        public string AssemblyVersion
+        {
+            get
+            {
+                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            }
+        }
+
         private async void Frm_EuroSound_Splash_Shown(object sender, EventArgs e)
         {
+            //*===============================================================================================
+            //* Variables Declaration
+            //*===============================================================================================
             GenericFunctions.ResourcesManager = new ResourceManager(typeof(Properties.Resources));
-
-            /*Declare Variables*/
             string[] HashTable_Sounds, HashTable_SoundsData, HashTable_Musics, TreeViewPreferences;
 
             Label_EuroSoundVersion.Text = AssemblyDescription + " Version " + AssemblyVersion[0];
 
-            /*--Load Preferences--*/
+            //*===============================================================================================
+            //* --Load Preferences--
+            //*===============================================================================================
             Label_Status.Text = "Loading preferences, please wait...";
             WindowsRegistryFunctions.CreateEuroSoundKeyIfNotExists();
             HashTable_Sounds = WindowsRegistryFunctions.LoadHashTablePathAndMD5("Sounds");
@@ -54,19 +78,25 @@ namespace EuroSound_Application
             await Task.Delay(4);
             GlobalPreferences.SFXOutputPath = WindowsRegistryFunctions.LoadGeneralPreferences();
 
-            /*--Load Sound Data Hashcodes--*/
+            //*===============================================================================================
+            //* --Load Sound Data Hashcodes--
+            //*===============================================================================================
             Label_Status.Text = "Loading Hashcodes Sounds Data, please wait...";
             Hashcodes.LoadSoundDataFile();
 
             await Task.Delay(340);
 
-            /*--Load Sound Hashcodes--*/
+            //*===============================================================================================
+            //* --Load Sound Hashcodes--
+            //*===============================================================================================
             Label_Status.Text = "Loading Hashcodes Sounds, please wait...";
             Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
 
             await Task.Delay(500);
 
-            /*--Start Form--*/
+            //*===============================================================================================
+            //* --Start Form--
+            //*===============================================================================================
             Frm_EuroSound_Main EuroSoundMain = new Frm_EuroSound_Main(ArgumentFileToLoad)
             {
                 Owner = this
@@ -74,27 +104,6 @@ namespace EuroSound_Application
             this.Hide();
             EuroSoundMain.ShowDialog();
             this.Close();
-        }
-
-        public string AssemblyDescription
-        {
-            get
-            {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    return "";
-                }
-                return ((AssemblyDescriptionAttribute)attributes[0]).Description;
-            }
-        }
-
-        public string AssemblyVersion
-        {
-            get
-            {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            }
         }
     }
 }

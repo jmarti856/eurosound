@@ -45,6 +45,7 @@
             this.button_ok = new System.Windows.Forms.Button();
             this.button_cancel = new System.Windows.Forms.Button();
             this.GroupBoxMedia = new System.Windows.Forms.GroupBox();
+            this.Button_Edit = new System.Windows.Forms.Button();
             this.Button_Stop = new System.Windows.Forms.Button();
             this.Button_PlayAudio = new System.Windows.Forms.Button();
             this.Label_AudioSelected = new System.Windows.Forms.Label();
@@ -54,7 +55,6 @@
             this.Combobox_Hashcode = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.Label_SubSFX = new System.Windows.Forms.Label();
-            this.Button_Edit = new System.Windows.Forms.Button();
             this.groupbox_properties.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_BaseVolume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_randomPitchOffset)).BeginInit();
@@ -270,6 +270,16 @@
             this.GroupBoxMedia.TabStop = false;
             this.GroupBoxMedia.Text = "Media";
             // 
+            // Button_Edit
+            // 
+            this.Button_Edit.Location = new System.Drawing.Point(190, 80);
+            this.Button_Edit.Name = "Button_Edit";
+            this.Button_Edit.Size = new System.Drawing.Size(92, 23);
+            this.Button_Edit.TabIndex = 3;
+            this.Button_Edit.Text = "Open Properties";
+            this.Button_Edit.UseVisualStyleBackColor = true;
+            this.Button_Edit.Click += new System.EventHandler(this.Button_Edit_Click);
+            // 
             // Button_Stop
             // 
             this.Button_Stop.Location = new System.Drawing.Point(369, 80);
@@ -366,16 +376,6 @@
             this.Label_SubSFX.Text = "If the flag \"hasSubSfx\" is checked, the file reference of the first \"sample\" entr" +
     "y gets interpreted as a SFX hashcode and played as a 3D sound at the current pos" +
     "ition.";
-            // 
-            // Button_Edit
-            // 
-            this.Button_Edit.Location = new System.Drawing.Point(190, 80);
-            this.Button_Edit.Name = "Button_Edit";
-            this.Button_Edit.Size = new System.Drawing.Size(92, 23);
-            this.Button_Edit.TabIndex = 3;
-            this.Button_Edit.Text = "Open Properties";
-            this.Button_Edit.UseVisualStyleBackColor = true;
-            this.Button_Edit.Click += new System.EventHandler(this.Button_Edit_Click);
             // 
             // Frm_SampleProperties
             // 

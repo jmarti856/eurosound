@@ -8,65 +8,8 @@ using System.Windows.Forms;
 
 namespace EuroSound_Application
 {
-    static class SaveAndLoadESF
+    internal static class SaveAndLoadESF
     {
-        internal static string SaveSoundBanksDocument(TreeView TreeViewControl, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
-        {
-            BinaryWriter BWriter = new BinaryWriter(File.Open(FilePath, FileMode.Create, FileAccess.Write), Encoding.ASCII);
-            //*===============================================================================================
-            //* HEADER
-            //*===============================================================================================
-            BWriter.Write(Encoding.ASCII.GetBytes("ESF"));
-            /*FileVersion*/
-            BWriter.Write(Convert.ToInt32(10));
-            /*File Hashcode*/
-            BWriter.Write(FileProperties.Hashcode);
-            /*Latest SoundID value*/
-            BWriter.Write(Convert.ToInt32(FileProperties.SoundID));
-            /*SoundsListData Offset*/
-            BWriter.Write(Convert.ToUInt32(4294967295));
-            /*AudioData Offset*/
-            BWriter.Write(Convert.ToUInt32(2863311530));
-            /*Type of stored data*/
-            BWriter.Write(Convert.ToInt32(FileProperties.TypeOfData));
-            /*File Name*/
-            BWriter.Write(FileProperties.FileName);
-
-            //*===============================================================================================
-            //* TreeView 
-            //*===============================================================================================
-            BWriter.Write((Convert.ToInt32(BWriter.BaseStream.Position) + 200));
-            BWriter.Seek(200, SeekOrigin.Current);
-            SaveTreeViewData(TreeViewControl, BWriter);
-
-            //*===============================================================================================
-            //* Sounds List Data 
-            //*===============================================================================================
-            BWriter.Write((Convert.ToInt32(BWriter.BaseStream.Position) + 100));
-            BWriter.Seek(100, SeekOrigin.Current);
-            long SoundsListDataOffset = BWriter.BaseStream.Position;
-            SaveSoundsListData(SoundsList, BWriter);
-
-            //*===============================================================================================
-            //* Audio Data
-            //*===============================================================================================
-            long AudioDataOffset = BWriter.BaseStream.Position;
-            SaveAudiosData(AudiosList, BWriter);
-
-            /*Write final sounds list data offset*/
-            BWriter.Seek(0x13, SeekOrigin.Begin);
-            BWriter.Write(Convert.ToUInt32(SoundsListDataOffset));
-
-            /*Write final audio data offset*/
-            BWriter.Seek(0x17, SeekOrigin.Begin);
-            BWriter.Write(Convert.ToUInt32(AudioDataOffset));
-
-            BWriter.Close();
-            BWriter.Dispose();
-
-            return FilePath;
-        }
-
         internal static void LoadSoundBanksDocument(TreeView TreeViewControl, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties, ResourceManager ResxM)
         {
             /*Update Status Bar*/
@@ -143,133 +86,112 @@ namespace EuroSound_Application
             GenericFunctions.SetProgramStateShowToStatusBar(ResxM.GetString("StatusBar_Status_Ready"));
         }
 
-        private static void SaveSoundsListData(Dictionary<int, EXSound> SoundsList, BinaryWriter BWriter)
+        internal static string SaveSoundBanksDocument(TreeView TreeViewControl, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
         {
-            BWriter.Write(SoundsList.Count);
+            BinaryWriter BWriter = new BinaryWriter(File.Open(FilePath, FileMode.Create, FileAccess.Write), Encoding.ASCII);
+            //*===============================================================================================
+            //* HEADER
+            //*===============================================================================================
+            BWriter.Write(Encoding.ASCII.GetBytes("ESF"));
+            /*FileVersion*/
+            BWriter.Write(Convert.ToInt32(10));
+            /*File Hashcode*/
+            BWriter.Write(FileProperties.Hashcode);
+            /*Latest SoundID value*/
+            BWriter.Write(Convert.ToInt32(FileProperties.SoundID));
+            /*SoundsListData Offset*/
+            BWriter.Write(Convert.ToUInt32(4294967295));
+            /*AudioData Offset*/
+            BWriter.Write(Convert.ToUInt32(2863311530));
+            /*Type of stored data*/
+            BWriter.Write(Convert.ToInt32(FileProperties.TypeOfData));
+            /*File Name*/
+            BWriter.Write(FileProperties.FileName);
 
-            foreach (KeyValuePair<int, EXSound> SoundItem in SoundsList)
-            {
-                /*Display Info*/
-                BWriter.Write(SoundItem.Key);
-                BWriter.Write(SoundItem.Value.Hashcode);
-                BWriter.Write(SoundItem.Value.DisplayName);
-                BWriter.Write(SoundItem.Value.OutputThisSound);
+            //*===============================================================================================
+            //* TreeView
+            //*===============================================================================================
+            BWriter.Write((Convert.ToInt32(BWriter.BaseStream.Position) + 200));
+            BWriter.Seek(200, SeekOrigin.Current);
+            SaveTreeViewData(TreeViewControl, BWriter);
 
-                /*---Required for EngineX---*/
-                BWriter.Write(SoundItem.Value.DuckerLenght);
-                BWriter.Write(SoundItem.Value.MinDelay);
-                BWriter.Write(SoundItem.Value.MaxDelay);
-                BWriter.Write(SoundItem.Value.InnerRadiusReal);
-                BWriter.Write(SoundItem.Value.OuterRadiusReal);
-                BWriter.Write(SoundItem.Value.ReverbSend);
-                BWriter.Write(SoundItem.Value.TrackingType);
-                BWriter.Write(SoundItem.Value.MaxVoices);
-                BWriter.Write(SoundItem.Value.Priority);
-                BWriter.Write(SoundItem.Value.Ducker);
-                BWriter.Write(SoundItem.Value.MasterVolume);
-                BWriter.Write(SoundItem.Value.Flags);
+            //*===============================================================================================
+            //* Sounds List Data
+            //*===============================================================================================
+            BWriter.Write((Convert.ToInt32(BWriter.BaseStream.Position) + 100));
+            BWriter.Seek(100, SeekOrigin.Current);
+            long SoundsListDataOffset = BWriter.BaseStream.Position;
+            SaveSoundsListData(SoundsList, BWriter);
 
-                /*Write Samples*/
-                BWriter.Write(SoundItem.Value.Samples.Count);
-                foreach (EXSample ItemSample in SoundItem.Value.Samples)
-                {
-                    /*Display Info*/
-                    BWriter.Write(ItemSample.Name);
-                    BWriter.Write(ItemSample.DisplayName);
-                    BWriter.Write(ItemSample.IsStreamed);
-                    BWriter.Write(ItemSample.FileRef);
-                    BWriter.Write(ItemSample.ComboboxSelectedAudio);
-                    BWriter.Write(ItemSample.HashcodeSubSFX);
+            //*===============================================================================================
+            //* Audio Data
+            //*===============================================================================================
+            long AudioDataOffset = BWriter.BaseStream.Position;
+            SaveAudiosData(AudiosList, BWriter);
 
-                    /*---Required for EngineX---*/
-                    BWriter.Write(ItemSample.PitchOffset);
-                    BWriter.Write(ItemSample.RandomPitchOffset);
-                    BWriter.Write(ItemSample.BaseVolume);
-                    BWriter.Write(ItemSample.RandomVolumeOffset);
-                    BWriter.Write(ItemSample.Pan);
-                    BWriter.Write(ItemSample.RandomPan);
-                }
-            }
+            /*Write final sounds list data offset*/
+            BWriter.Seek(0x13, SeekOrigin.Begin);
+            BWriter.Write(Convert.ToUInt32(SoundsListDataOffset));
+
+            /*Write final audio data offset*/
+            BWriter.Seek(0x17, SeekOrigin.Begin);
+            BWriter.Write(Convert.ToUInt32(AudioDataOffset));
+
+            BWriter.Close();
+            BWriter.Dispose();
+
+            return FilePath;
         }
-
-        private static void SaveTreeViewData(TreeView TreeViewControl, BinaryWriter BWriter)
+        private static bool FileIsCorrect(BinaryReader BReader)
         {
-            BWriter.Write((TreeViewControl.GetNodeCount(true) - 3));
-            SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[0], BWriter);
-            SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[1], BWriter);
-            SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[2], BWriter);
-        }
+            string Magic;
+            bool FileCorrect;
 
-        private static void SaveTreeNodes(TreeView TreeViewControl, TreeNode Selected, BinaryWriter BWriter)
-        {
-            if (!Selected.Tag.Equals("Root"))
+            //Read MAGIC
+            Magic = Encoding.ASCII.GetString(BReader.ReadBytes(3));
+
+            if (Magic.Equals("ESF"))
             {
-                if (Selected.Parent == null)
-                {
-                    BWriter.Write("Root");
-                }
-                else
-                {
-                    BWriter.Write(Selected.Parent.Name);
-                }
-                BWriter.Write(Selected.Name);
-                BWriter.Write(Selected.Text);
-                BWriter.Write(Selected.SelectedImageIndex);
-                BWriter.Write(Selected.ImageIndex);
-                BWriter.Write(Selected.Tag.ToString());
-                BWriter.Write(Selected.ForeColor.ToArgb());
-
-            }
-            foreach (TreeNode Node in Selected.Nodes)
-            {
-                SaveTreeNodes(TreeViewControl, Node, BWriter);
-            }
-        }
-
-        private static void SaveAudiosData(Dictionary<string, EXAudio> AudiosList, BinaryWriter BWriter)
-        {
-            BWriter.Write(AudiosList.Count);
-
-            foreach (KeyValuePair<string, EXAudio> Entry in AudiosList)
-            {
-                BWriter.Write(Entry.Key);
-                BWriter.Write(Entry.Value.Dependencies);
-                BWriter.Write(Entry.Value.DisplayName);
-                BWriter.Write(Entry.Value.Name);
-                BWriter.Write(Entry.Value.Encoding);
-                BWriter.Write(Entry.Value.Flags);
-                BWriter.Write(Entry.Value.DataSize);
-                BWriter.Write(Entry.Value.Frequency);
-                BWriter.Write(Entry.Value.RealSize);
-                BWriter.Write(Entry.Value.Channels);
-                BWriter.Write(Entry.Value.Bits);
-                BWriter.Write(Entry.Value.PSIsample);
-                BWriter.Write(Entry.Value.LoopOffset);
-                BWriter.Write(Entry.Value.Duration);
-                BWriter.Write(Entry.Value.PCMdata.Length);
-                BWriter.Write(Entry.Value.PCMdata);
-            }
-        }
-
-        private static void UpdateNodeImages(TreeNode Node, Dictionary<int, EXSound> SoundsList)
-        {
-            if (Node.Tag.Equals("Sound"))
-            {
-                EXSound sound = EXObjectsFunctions.GetSoundByName(int.Parse(Node.Name), SoundsList);
-                if (sound != null)
-                {
-                    if (!sound.OutputThisSound)
-                    {
-                        TreeNodeFunctions.TreeNodeSetNodeImage(Node, 5, 5);
-                    }
-                }
+                FileCorrect = true;
             }
             else
             {
-                foreach (TreeNode tn in Node.Nodes)
+                FileCorrect = false;
+            }
+
+            return FileCorrect;
+        }
+
+        private static void ReadAudiosDictionary(BinaryReader BReader, Dictionary<string, EXAudio> AudiosList)
+        {
+            int TotalEntries, PCMDataLength;
+            string HashMD5;
+
+            TotalEntries = BReader.ReadInt32();
+
+            for (int i = 0; i < TotalEntries; i++)
+            {
+                HashMD5 = BReader.ReadString();
+                EXAudio AudioToAdd = new EXAudio
                 {
-                    UpdateNodeImages(tn, SoundsList);
-                }
+                    DisplayName = BReader.ReadString(),
+                    Dependencies = BReader.ReadString(),
+                    Name = BReader.ReadString(),
+                    Encoding = BReader.ReadString(),
+                    Flags = BReader.ReadInt32(),
+                    DataSize = BReader.ReadInt32(),
+                    Frequency = BReader.ReadInt32(),
+                    RealSize = BReader.ReadInt32(),
+                    Channels = BReader.ReadInt32(),
+                    Bits = BReader.ReadInt32(),
+                    PSIsample = BReader.ReadInt32(),
+                    LoopOffset = BReader.ReadInt32(),
+                    Duration = BReader.ReadInt32()
+                };
+                PCMDataLength = BReader.ReadInt32();
+                AudioToAdd.PCMdata = BReader.ReadBytes(PCMDataLength);
+
+                AudiosList.Add(HashMD5, AudioToAdd);
             }
         }
 
@@ -342,57 +264,132 @@ namespace EuroSound_Application
             }
         }
 
-        private static void ReadAudiosDictionary(BinaryReader BReader, Dictionary<string, EXAudio> AudiosList)
+        private static void SaveAudiosData(Dictionary<string, EXAudio> AudiosList, BinaryWriter BWriter)
         {
-            int TotalEntries, PCMDataLength;
-            string HashMD5;
+            BWriter.Write(AudiosList.Count);
 
-            TotalEntries = BReader.ReadInt32();
-
-            for (int i = 0; i < TotalEntries; i++)
+            foreach (KeyValuePair<string, EXAudio> Entry in AudiosList)
             {
-                HashMD5 = BReader.ReadString();
-                EXAudio AudioToAdd = new EXAudio
-                {
-                    DisplayName = BReader.ReadString(),
-                    Dependencies = BReader.ReadString(),
-                    Name = BReader.ReadString(),
-                    Encoding = BReader.ReadString(),
-                    Flags = BReader.ReadInt32(),
-                    DataSize = BReader.ReadInt32(),
-                    Frequency = BReader.ReadInt32(),
-                    RealSize = BReader.ReadInt32(),
-                    Channels = BReader.ReadInt32(),
-                    Bits = BReader.ReadInt32(),
-                    PSIsample = BReader.ReadInt32(),
-                    LoopOffset = BReader.ReadInt32(),
-                    Duration = BReader.ReadInt32()
-                };
-                PCMDataLength = BReader.ReadInt32();
-                AudioToAdd.PCMdata = BReader.ReadBytes(PCMDataLength);
-
-                AudiosList.Add(HashMD5, AudioToAdd);
+                BWriter.Write(Entry.Key);
+                BWriter.Write(Entry.Value.Dependencies);
+                BWriter.Write(Entry.Value.DisplayName);
+                BWriter.Write(Entry.Value.Name);
+                BWriter.Write(Entry.Value.Encoding);
+                BWriter.Write(Entry.Value.Flags);
+                BWriter.Write(Entry.Value.DataSize);
+                BWriter.Write(Entry.Value.Frequency);
+                BWriter.Write(Entry.Value.RealSize);
+                BWriter.Write(Entry.Value.Channels);
+                BWriter.Write(Entry.Value.Bits);
+                BWriter.Write(Entry.Value.PSIsample);
+                BWriter.Write(Entry.Value.LoopOffset);
+                BWriter.Write(Entry.Value.Duration);
+                BWriter.Write(Entry.Value.PCMdata.Length);
+                BWriter.Write(Entry.Value.PCMdata);
             }
         }
 
-        private static bool FileIsCorrect(BinaryReader BReader)
+        private static void SaveSoundsListData(Dictionary<int, EXSound> SoundsList, BinaryWriter BWriter)
         {
-            string Magic;
-            bool FileCorrect;
+            BWriter.Write(SoundsList.Count);
 
-            //Read MAGIC
-            Magic = Encoding.ASCII.GetString(BReader.ReadBytes(3));
-
-            if (Magic.Equals("ESF"))
+            foreach (KeyValuePair<int, EXSound> SoundItem in SoundsList)
             {
-                FileCorrect = true;
+                /*Display Info*/
+                BWriter.Write(SoundItem.Key);
+                BWriter.Write(SoundItem.Value.Hashcode);
+                BWriter.Write(SoundItem.Value.DisplayName);
+                BWriter.Write(SoundItem.Value.OutputThisSound);
+
+                /*---Required for EngineX---*/
+                BWriter.Write(SoundItem.Value.DuckerLenght);
+                BWriter.Write(SoundItem.Value.MinDelay);
+                BWriter.Write(SoundItem.Value.MaxDelay);
+                BWriter.Write(SoundItem.Value.InnerRadiusReal);
+                BWriter.Write(SoundItem.Value.OuterRadiusReal);
+                BWriter.Write(SoundItem.Value.ReverbSend);
+                BWriter.Write(SoundItem.Value.TrackingType);
+                BWriter.Write(SoundItem.Value.MaxVoices);
+                BWriter.Write(SoundItem.Value.Priority);
+                BWriter.Write(SoundItem.Value.Ducker);
+                BWriter.Write(SoundItem.Value.MasterVolume);
+                BWriter.Write(SoundItem.Value.Flags);
+
+                /*Write Samples*/
+                BWriter.Write(SoundItem.Value.Samples.Count);
+                foreach (EXSample ItemSample in SoundItem.Value.Samples)
+                {
+                    /*Display Info*/
+                    BWriter.Write(ItemSample.Name);
+                    BWriter.Write(ItemSample.DisplayName);
+                    BWriter.Write(ItemSample.IsStreamed);
+                    BWriter.Write(ItemSample.FileRef);
+                    BWriter.Write(ItemSample.ComboboxSelectedAudio);
+                    BWriter.Write(ItemSample.HashcodeSubSFX);
+
+                    /*---Required for EngineX---*/
+                    BWriter.Write(ItemSample.PitchOffset);
+                    BWriter.Write(ItemSample.RandomPitchOffset);
+                    BWriter.Write(ItemSample.BaseVolume);
+                    BWriter.Write(ItemSample.RandomVolumeOffset);
+                    BWriter.Write(ItemSample.Pan);
+                    BWriter.Write(ItemSample.RandomPan);
+                }
+            }
+        }
+
+        private static void SaveTreeNodes(TreeView TreeViewControl, TreeNode Selected, BinaryWriter BWriter)
+        {
+            if (!Selected.Tag.Equals("Root"))
+            {
+                if (Selected.Parent == null)
+                {
+                    BWriter.Write("Root");
+                }
+                else
+                {
+                    BWriter.Write(Selected.Parent.Name);
+                }
+                BWriter.Write(Selected.Name);
+                BWriter.Write(Selected.Text);
+                BWriter.Write(Selected.SelectedImageIndex);
+                BWriter.Write(Selected.ImageIndex);
+                BWriter.Write(Selected.Tag.ToString());
+                BWriter.Write(Selected.ForeColor.ToArgb());
+            }
+            foreach (TreeNode Node in Selected.Nodes)
+            {
+                SaveTreeNodes(TreeViewControl, Node, BWriter);
+            }
+        }
+
+        private static void SaveTreeViewData(TreeView TreeViewControl, BinaryWriter BWriter)
+        {
+            BWriter.Write((TreeViewControl.GetNodeCount(true) - 3));
+            SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[0], BWriter);
+            SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[1], BWriter);
+            SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[2], BWriter);
+        }
+        private static void UpdateNodeImages(TreeNode Node, Dictionary<int, EXSound> SoundsList)
+        {
+            if (Node.Tag.Equals("Sound"))
+            {
+                EXSound sound = EXObjectsFunctions.GetSoundByName(int.Parse(Node.Name), SoundsList);
+                if (sound != null)
+                {
+                    if (!sound.OutputThisSound)
+                    {
+                        TreeNodeFunctions.TreeNodeSetNodeImage(Node, 5, 5);
+                    }
+                }
             }
             else
             {
-                FileCorrect = false;
+                foreach (TreeNode tn in Node.Nodes)
+                {
+                    UpdateNodeImages(tn, SoundsList);
+                }
             }
-
-            return FileCorrect;
         }
     }
 }

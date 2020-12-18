@@ -6,17 +6,26 @@ namespace EuroSound_Application
     public partial class Frm_MainPreferences : Form
     {
         private Frm_HashTablesConfig GeneralHashTable;
-        private Frm_TreeViewPrefs TreeViewPrefs;
         private Frm_General GeneralPreferences;
-
+        private Frm_TreeViewPrefs TreeViewPrefs;
         public Frm_MainPreferences()
         {
             InitializeComponent();
         }
 
-        private void Frm_MainPreferences_Load(object sender, EventArgs e)
+        private static void RemoveAllFormsInsidePanel(Panel p_control)
         {
-            TreeViewPreferences.ExpandAll();
+            Control.ControlCollection FormsToClose = p_control.Controls;
+            for (int i = 0; i < FormsToClose.Count; i++)
+            {
+                ((Form)FormsToClose[i]).Close();
+                ((Form)FormsToClose[i]).Dispose();
+            }
+        }
+
+        private void Button_Cancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         private void Button_OK_Click(object sender, EventArgs e)
@@ -48,15 +57,13 @@ namespace EuroSound_Application
             //SaveConfig in Registry
             WindowsRegistryFunctions.SaveGeneralPreferences();
 
-
             this.Close();
         }
 
-        private void Button_Cancel_Click(object sender, EventArgs e)
+        private void Frm_MainPreferences_Load(object sender, EventArgs e)
         {
-            this.Close();
+            TreeViewPreferences.ExpandAll();
         }
-
         private void TreeViewPreferences_AfterSelect(object sender, TreeViewEventArgs e)
         {
             //Open Sub-form "Frm_HashTablesConfig"
@@ -109,15 +116,6 @@ namespace EuroSound_Application
                     GeneralPreferences.Dock = DockStyle.Fill;
                     GeneralPreferences.Show();
                 }
-            }
-        }
-
-        private static void RemoveAllFormsInsidePanel(Panel p_control)
-        {
-            foreach (object control in p_control.Controls)
-            {
-                ((Form)control).Close();
-                ((Form)control).Dispose();
             }
         }
     }
