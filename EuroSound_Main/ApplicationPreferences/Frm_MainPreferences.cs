@@ -16,10 +16,12 @@ namespace EuroSound_Application
         private static void RemoveAllFormsInsidePanel(Panel p_control)
         {
             Control.ControlCollection FormsToClose = p_control.Controls;
-            for (int i = 0; i < FormsToClose.Count; i++)
+            if (FormsToClose.Count > 0)
             {
-                ((Form)FormsToClose[i]).Close();
-                ((Form)FormsToClose[i]).Dispose();
+                for (int i = 0; i < FormsToClose.Count; i++)
+                {
+                    ((Form)FormsToClose[i]).Close();
+                }
             }
         }
 
@@ -33,29 +35,38 @@ namespace EuroSound_Application
             RemoveAllFormsInsidePanel(Panel_SecondaryForms);
 
             /*-----------------[Frm_HashTablesConfig]-----------------*/
-            GlobalPreferences.HT_SoundsPath = GlobalPreferences.HT_SoundsPathTEMPORAL;
-            GlobalPreferences.HT_SoundsDataPath = GlobalPreferences.HT_SoundsDataPathTEMPORAL;
-            GlobalPreferences.HT_MusicPath = GlobalPreferences.HT_MusicPathTEMPORAL;
+            if (!string.IsNullOrEmpty(GlobalPreferences.HT_SoundsPathTEMPORAL))
+            {
+                GlobalPreferences.HT_SoundsPath = GlobalPreferences.HT_SoundsPathTEMPORAL;
+                GlobalPreferences.HT_SoundsDataPath = GlobalPreferences.HT_SoundsDataPathTEMPORAL;
+                GlobalPreferences.HT_MusicPath = GlobalPreferences.HT_MusicPathTEMPORAL;
 
-            //SaveConfigs in Registry
-            WindowsRegistryFunctions.SaveHashTablePathAndMD5("Sounds", GlobalPreferences.HT_SoundsPath, GenericFunctions.CalculateMD5(GlobalPreferences.HT_SoundsPath));
-            WindowsRegistryFunctions.SaveHashTablePathAndMD5("SoundsData", GlobalPreferences.HT_SoundsDataPath, GenericFunctions.CalculateMD5(GlobalPreferences.HT_SoundsDataPath));
-            WindowsRegistryFunctions.SaveHashTablePathAndMD5("Musics", GlobalPreferences.HT_MusicPath, GenericFunctions.CalculateMD5(GlobalPreferences.HT_MusicPath));
+                //SaveConfigs in Registry
+                WindowsRegistryFunctions.SaveHashTablePathAndMD5("Sounds", GlobalPreferences.HT_SoundsPath, GenericFunctions.CalculateMD5(GlobalPreferences.HT_SoundsPath));
+                WindowsRegistryFunctions.SaveHashTablePathAndMD5("SoundsData", GlobalPreferences.HT_SoundsDataPath, GenericFunctions.CalculateMD5(GlobalPreferences.HT_SoundsDataPath));
+                WindowsRegistryFunctions.SaveHashTablePathAndMD5("Musics", GlobalPreferences.HT_MusicPath, GenericFunctions.CalculateMD5(GlobalPreferences.HT_MusicPath));
+            }
 
             /*-----------------[Frm_TreeViewPrefs]-----------------*/
-            GlobalPreferences.SelectedFont = GlobalPreferences.SelectedFontTEMPORAL;
-            GlobalPreferences.TreeViewIndent = GlobalPreferences.TreeViewIndentTEMPORAL;
-            GlobalPreferences.ShowLines = GlobalPreferences.ShowLinesTEMPORAL;
-            GlobalPreferences.ShowRootLines = GlobalPreferences.ShowRootLinesTEMPORAL;
+            if (!string.IsNullOrEmpty(GlobalPreferences.SelectedFontTEMPORAL))
+            {
+                GlobalPreferences.SelectedFont = GlobalPreferences.SelectedFontTEMPORAL;
+                GlobalPreferences.TreeViewIndent = GlobalPreferences.TreeViewIndentTEMPORAL;
+                GlobalPreferences.ShowLines = GlobalPreferences.ShowLinesTEMPORAL;
+                GlobalPreferences.ShowRootLines = GlobalPreferences.ShowRootLinesTEMPORAL;
 
-            //SaveConfig in Registry
-            WindowsRegistryFunctions.SaveTreeViewPreferences();
+                //SaveConfig in Registry
+                WindowsRegistryFunctions.SaveTreeViewPreferences();
+            }
 
             /*-----------------[Frm_GeneralPreferences]-----------------*/
-            GlobalPreferences.SFXOutputPath = GlobalPreferences.SFXOutputPathTEMPORAL;
+            if (!string.IsNullOrEmpty(GlobalPreferences.SFXOutputPathTEMPORAL))
+            {
+                GlobalPreferences.SFXOutputPath = GlobalPreferences.SFXOutputPathTEMPORAL;
 
-            //SaveConfig in Registry
-            WindowsRegistryFunctions.SaveGeneralPreferences();
+                //SaveConfig in Registry
+                WindowsRegistryFunctions.SaveGeneralPreferences();
+            }
 
             this.Close();
         }

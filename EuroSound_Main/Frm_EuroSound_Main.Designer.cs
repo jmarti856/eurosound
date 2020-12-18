@@ -216,7 +216,7 @@ namespace EuroSound_Application
             // MainMenuTools_SFXDataGen
             // 
             this.MainMenuTools_SFXDataGen.Name = "MainMenuTools_SFXDataGen";
-            this.MainMenuTools_SFXDataGen.Size = new System.Drawing.Size(180, 22);
+            this.MainMenuTools_SFXDataGen.Size = new System.Drawing.Size(177, 22);
             this.MainMenuTools_SFXDataGen.Text = "SFX Data Binary File";
             this.MainMenuTools_SFXDataGen.Click += new System.EventHandler(this.MainMenuTools_SFXDataGen_Click);
             // 

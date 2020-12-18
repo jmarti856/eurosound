@@ -199,7 +199,7 @@ namespace EuroSound_Application
                     ShowErrorsWarningsList(FilePath);
                 }
 
-                SamplesProperties.Clear();
+                SamplesProperties = null;
             }
             else
             {
@@ -396,7 +396,7 @@ namespace EuroSound_Application
             if (Reports.Count > 0)
             {
                 GenericFunctions.ShowErrorsAndWarningsList(Reports, Path.GetFileName(FilePath) + " Import results");
-                Reports.Clear();
+                Reports = null;
             }
         }
     }

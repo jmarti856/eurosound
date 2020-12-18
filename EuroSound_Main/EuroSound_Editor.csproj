@@ -112,7 +112,7 @@
     <Compile Include="Classes\GenericFunctions.cs" />
     <Compile Include="Classes\Hashcodes.cs" />
     <Compile Include="Classes\Reflection.cs" />
-    <Compile Include="Classes\SFX_Data\GenerateSFXDataFiles.cs" />
+    <Compile Include="Classes\SFX_Files\GenerateSFXDataDin.cs" />
     <Compile Include="CustomControls\EuroSound_ErrorsAndWarningsList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -196,7 +196,7 @@
     <Compile Include="SoundBanksEditor\Classes\EuroSound\YamlReader.cs" />
     <Compile Include="SoundBanksEditor\Classes\EXObjectsFunctions.cs" />
     <Compile Include="SoundBanksEditor\Classes\EXObjects\EXAudio.cs" />
-    <Compile Include="SoundBanksEditor\Classes\EXBuildSFX.cs" />
+    <Compile Include="Classes\SFX_Files\GenerateSFXSoundBank.cs" />
     <Compile Include="SoundBanksEditor\Classes\EXObjects\EXSample.cs" />
     <Compile Include="SoundBanksEditor\Classes\EXObjects\EXSound.cs" />
     <Compile Include="SoundBanksEditor\Classes\ProjectFile.cs" />
@@ -224,10 +224,10 @@
     <Compile Include="SoundBanksEditor\Frm_BuildSFXFile.Designer.cs">
       <DependentUpon>Frm_BuildSFXFile.cs</DependentUpon>
     </Compile>
-    <Compile Include="SoundBanksEditor\Frm_FileProperties.cs">
+    <Compile Include="Frm_FileProperties.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SoundBanksEditor\Frm_FileProperties.Designer.cs">
+    <Compile Include="Frm_FileProperties.Designer.cs">
       <DependentUpon>Frm_FileProperties.cs</DependentUpon>
     </Compile>
     <Compile Include="SoundBanksEditor\Frm_Soundbanks_Main.cs">
@@ -241,6 +241,12 @@
     </Compile>
     <Compile Include="SoundBanksEditor\Frm_Soundbanks_Main_Functions.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StreamSoundsEditor\Frm_StreamSoundsEditorMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StreamSoundsEditor\Frm_StreamSoundsEditorMain.Designer.cs">
+      <DependentUpon>Frm_StreamSoundsEditorMain.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_HashTablesConfig.resx">
       <DependentUpon>Frm_HashTablesConfig.cs</DependentUpon>
@@ -314,11 +320,14 @@
     <EmbeddedResource Include="SoundBanksEditor\Frm_BuildSFXFile.resx">
       <DependentUpon>Frm_BuildSFXFile.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SoundBanksEditor\Frm_FileProperties.resx">
+    <EmbeddedResource Include="Frm_FileProperties.resx">
       <DependentUpon>Frm_FileProperties.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SoundBanksEditor\Frm_Soundbanks_Main.resx">
       <DependentUpon>Frm_Soundbanks_Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StreamSoundsEditor\Frm_StreamSoundsEditorMain.resx">
+      <DependentUpon>Frm_StreamSoundsEditorMain.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

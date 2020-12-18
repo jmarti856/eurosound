@@ -79,7 +79,7 @@ namespace EuroSound_Application
                 }
                 ListView_Reports.Items.Add(Item);
             }
-            ErrorsAndWarningsListToPrint.Clear();
+            ErrorsAndWarningsListToPrint = null;
         }
     }
 }

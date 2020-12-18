@@ -31,7 +31,7 @@ namespace EuroSound_Application
                 };
                 ListView_ItemUsage.Items.Add(ItemToAdd);
             }
-            UsageItemsList.Clear();
+            UsageItemsList = null;
         }
     }
 }

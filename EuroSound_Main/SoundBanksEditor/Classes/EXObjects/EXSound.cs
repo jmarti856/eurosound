@@ -15,7 +15,7 @@ namespace EuroSound_Application
         public int MaxVoices { get; set; } = 0;
         public int MinDelay { get; set; } = 0;
         public int OuterRadiusReal { get; set; } = 0;
-        public bool OutputThisSound { get; set; }
+        public bool OutputThisSound { get; set; } = true;
         public int Priority { get; set; } = 0;
         public int ReverbSend { get; set; } = 0;
         public List<EXSample> Samples { get; set; } = new List<EXSample>();
