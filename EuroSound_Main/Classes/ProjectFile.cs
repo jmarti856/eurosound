@@ -11,7 +11,7 @@ namespace EuroSound_Application
         public int SoundID { get; set; } = 0;
         public bool FileHasBeenModified { get; set; } = false;
 
-        public void ClearAllStoredData(Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, TreeView TreeViewControl)
+        public void ClearSoundBankStoredData(Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, TreeView TreeViewControl)
         {
             SoundsList.Clear();
             AudioDataDict.Clear();

@@ -208,12 +208,12 @@
             // 
             this.numeric_pitchoffset.Location = new System.Drawing.Point(94, 19);
             this.numeric_pitchoffset.Maximum = new decimal(new int[] {
-            99999999,
+            299999,
             0,
             0,
             0});
             this.numeric_pitchoffset.Minimum = new decimal(new int[] {
-            99999999,
+            19999,
             0,
             0,
             -2147483648});

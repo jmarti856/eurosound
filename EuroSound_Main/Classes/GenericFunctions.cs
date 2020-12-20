@@ -15,6 +15,7 @@ namespace EuroSound_Application
         public static ResourceManager ResourcesManager;
         private static ToolStripLabel ProgramStatusLabel;
         private static StatusStrip StatusBar;
+
         public static string CalculateMD5(string filename)
         {
             string MD5hash = string.Empty;
@@ -75,7 +76,6 @@ namespace EuroSound_Application
         {
             Form Results = null;
 
-            /*--Change icon in the parent form--*/
             FormCollection FormsToCheck = Application.OpenForms;
             for (int i = 0; i < FormsToCheck.Count; i++)
             {
@@ -163,6 +163,7 @@ namespace EuroSound_Application
                     FileNameLabel.Text = text;
                 });
             }
+            text = null;
         }
 
         public static void SetProgramStateShowToStatusBar(string NewStatus)
@@ -212,6 +213,7 @@ namespace EuroSound_Application
                 StatusBarSetText(TextToDisplay);
             }
         }
+
         private static void StatusBarSetText(string TextToDisplay)
         {
             if (StatusBar.Visible && StatusBar != null)
@@ -221,6 +223,7 @@ namespace EuroSound_Application
                     ProgramStatusLabel.Text = TextToDisplay;
                 });
             }
+            TextToDisplay = null;
         }
     }
 }

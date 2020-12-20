@@ -277,29 +277,39 @@ namespace EuroSound_Application
                 AddItemToListView(LevelHashcode, ListView_Hashcodes);
 
                 /*Sounds Hashcodes*/
-                foreach (KeyValuePair<int, EXSound> Sound in SoundsList)
+                try
                 {
-                    ListViewItem Hashcode = new ListViewItem(new[] { "", Sound.Value.Hashcode, "<Label Not Found>", Sound.Value.DisplayName });
-                    if (Hashcodes.SFX_Defines.ContainsKey(Sound.Value.Hashcode))
+                    foreach (KeyValuePair<int, EXSound> Sound in SoundsList)
                     {
-                        Hashcode.SubItems[0].Text = "OK";
-                        Hashcode.ImageIndex = 2;
-                        Hashcode.SubItems[2].Text = Hashcodes.SFX_Defines[Sound.Value.Hashcode];
-                    }
-                    else
-                    {
-                        Hashcode.SubItems[0].Text = "Missing";
-                        Hashcode.ImageIndex = 0;
-                        Hashcode.SubItems[2].Text = "<Hashcode Not Found>";
-                    }
-                    Hashcode.UseItemStyleForSubItems = false;
-                    AddItemToListView(Hashcode, ListView_Hashcodes);
+                        ListViewItem Hashcode = new ListViewItem(new[] { "", Sound.Value.Hashcode, "<Label Not Found>", Sound.Value.DisplayName });
+                        if (Hashcodes.SFX_Defines.ContainsKey(Sound.Value.Hashcode))
+                        {
+                            Hashcode.SubItems[0].Text = "OK";
+                            Hashcode.ImageIndex = 2;
+                            Hashcode.SubItems[2].Text = Hashcodes.SFX_Defines[Sound.Value.Hashcode];
+                        }
+                        else
+                        {
+                            Hashcode.SubItems[0].Text = "Missing";
+                            Hashcode.ImageIndex = 0;
+                            Hashcode.SubItems[2].Text = "<Hashcode Not Found>";
+                        }
+                        Hashcode.UseItemStyleForSubItems = false;
+                        AddItemToListView(Hashcode, ListView_Hashcodes);
 
-                    GenericFunctions.SetProgramStateShowToStatusBar("Checking hashcode: " + Hashcode.SubItems[2].Text);
+                        GenericFunctions.SetProgramStateShowToStatusBar("Checking hashcode: " + Hashcode.SubItems[2].Text);
 
-                    Thread.Sleep(5);
+                        Thread.Sleep(5);
+                    }
                 }
-
+                catch
+                {
+                    /*Clear List*/
+                    ListView_Hashcodes.Invoke((MethodInvoker)delegate
+                    {
+                        ListView_Hashcodes.Items.Clear();
+                    });
+                }
                 GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {

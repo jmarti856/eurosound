@@ -26,7 +26,7 @@ namespace EuroSound_Application
         {
             /*Update properties*/
             CurrentFileProperties.FileName = Textbox_FileName.Text;
-            CurrentFileProperties.TypeOfData = Combobox_TypeOfData.SelectedIndex;
+            //CurrentFileProperties.TypeOfData = Combobox_TypeOfData.SelectedIndex;
 
             CurrentFileProperties.Hashcode = Combobox_FileHashcode.SelectedValue.ToString();
 
@@ -58,6 +58,7 @@ namespace EuroSound_Application
             Combobox_TypeOfData.SelectedIndex = CurrentFileProperties.TypeOfData;
             Textbox_Sounds_Path.Text = GlobalPreferences.HT_SoundsPath;
             Textbox_SFXData_Path.Text = GlobalPreferences.HT_SoundsDataPath;
+            Textbox_Musics_Path.Text = GlobalPreferences.HT_MusicPath;
 
             /*Put the selected hashcode in case is not null*/
             if (CurrentFileProperties.Hashcode != null)

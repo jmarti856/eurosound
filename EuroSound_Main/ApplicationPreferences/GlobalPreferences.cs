@@ -48,6 +48,7 @@
         //*===============================================================================================
         //* OTHER TEMPORAL PROPERTIES
         //*===============================================================================================
+        public static bool CancelApplicationClose { get; set; } = false;
         public static bool ShowWarningMessagesBox { get; set; } = true;
     }
 }

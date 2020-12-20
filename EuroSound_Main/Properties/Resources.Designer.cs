@@ -160,6 +160,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The hashtable paths are not correct, please fix them first before continue..
+        /// </summary>
+        internal static string GenericHashtablesNotCorrect {
+            get {
+                return ResourceManager.GetString("GenericHashtablesNotCorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Error: &quot;SFX_Data.h&quot; not found. Please fix the file path before creating or modifying a soundbank..
         /// </summary>
         internal static string Hashcodes_SFXData_NotFound {

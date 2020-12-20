@@ -109,6 +109,7 @@
     <Compile Include="ApplicationPreferences\Frm_MainPreferences.Designer.cs">
       <DependentUpon>Frm_MainPreferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="Classes\AudioFunctions.cs" />
     <Compile Include="Classes\GenericFunctions.cs" />
     <Compile Include="Classes\Hashcodes.cs" />
     <Compile Include="Classes\Reflection.cs" />
@@ -199,7 +200,7 @@
     <Compile Include="Classes\SFX_Files\GenerateSFXSoundBank.cs" />
     <Compile Include="SoundBanksEditor\Classes\EXObjects\EXSample.cs" />
     <Compile Include="SoundBanksEditor\Classes\EXObjects\EXSound.cs" />
-    <Compile Include="SoundBanksEditor\Classes\ProjectFile.cs" />
+    <Compile Include="Classes\ProjectFile.cs" />
     <Compile Include="SoundBanksEditor\Forms_ObjectsProperties\Frm_AudioProperties.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -242,11 +243,25 @@
     <Compile Include="SoundBanksEditor\Frm_Soundbanks_Main_Functions.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="StreamSoundsEditor\Classes\EXObjects\EXSoundStream.cs" />
+    <Compile Include="StreamSoundsEditor\Classes\EXObjects\EXStreamSoundMarkerData.cs" />
     <Compile Include="StreamSoundsEditor\Frm_StreamSoundsEditorMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="StreamSoundsEditor\Frm_StreamSoundsEditorMain.Designer.cs">
       <DependentUpon>Frm_StreamSoundsEditorMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StreamSoundsEditor\Frm_StreamSounds_MarkersEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StreamSoundsEditor\Frm_StreamSounds_MarkersEditor.Designer.cs">
+      <DependentUpon>Frm_StreamSounds_MarkersEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StreamSoundsEditor\Frm_StreamSounds_Properties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StreamSoundsEditor\Frm_StreamSounds_Properties.Designer.cs">
+      <DependentUpon>Frm_StreamSounds_Properties.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_HashTablesConfig.resx">
       <DependentUpon>Frm_HashTablesConfig.cs</DependentUpon>
@@ -328,6 +343,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="StreamSoundsEditor\Frm_StreamSoundsEditorMain.resx">
       <DependentUpon>Frm_StreamSoundsEditorMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StreamSoundsEditor\Frm_StreamSounds_MarkersEditor.resx">
+      <DependentUpon>Frm_StreamSounds_MarkersEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StreamSoundsEditor\Frm_StreamSounds_Properties.resx">
+      <DependentUpon>Frm_StreamSounds_Properties.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

@@ -84,6 +84,11 @@ namespace EuroSound_Application
             ProjectInfo.FileHasBeenModified = true;
         }
 
+        private void MenuItem_Folder_Collapse_Click(object sender, System.EventArgs e)
+        {
+            TreeView_File.SelectedNode.Collapse();
+        }
+
         private void ContextMenu_Folders_Expand_Click(object sender, System.EventArgs e)
         {
             TreeView_File.SelectedNode.Expand();
@@ -166,10 +171,6 @@ namespace EuroSound_Application
         {
             TreeView_File.SelectedNode.ForeColor = GenericFunctions.GetColorFromColorPicker(); ;
             ProjectInfo.FileHasBeenModified = true;
-        }
-        private void MenuItem_Folder_Collapse_Click(object sender, System.EventArgs e)
-        {
-            TreeView_File.SelectedNode.Collapse();
         }
 
         #endregion ContextMenu_Folders_EVENTS

@@ -48,6 +48,7 @@
             // TextBox_InputText
             // 
             this.TextBox_InputText.Location = new System.Drawing.Point(15, 51);
+            this.TextBox_InputText.MaxLength = 300;
             this.TextBox_InputText.Name = "TextBox_InputText";
             this.TextBox_InputText.Size = new System.Drawing.Size(458, 20);
             this.TextBox_InputText.TabIndex = 1;

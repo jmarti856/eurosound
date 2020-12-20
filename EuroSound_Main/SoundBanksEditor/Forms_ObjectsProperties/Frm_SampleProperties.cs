@@ -14,7 +14,6 @@ namespace EuroSound_Application
         private EXSample SelectedSample;
 
         private WaveOut _waveOut = new WaveOut();
-        private MemoryStream AudioSample;
         private bool IsSubSFX;
 
         public Frm_SampleProperties(EXSample Sample, bool SubSFX)
@@ -62,7 +61,7 @@ namespace EuroSound_Application
 
         private void Frm_SampleProperties_FormClosing(object sender, FormClosingEventArgs e)
         {
-            StopAudio();
+            AudioFunctions.StopAudio(_waveOut);
         }
 
         //*===============================================================================================
@@ -74,31 +73,16 @@ namespace EuroSound_Application
             if (Combobox_SelectedAudio.SelectedValue != null)
             {
                 EXAudio AudioSelected = TreeNodeFunctions.GetSelectedAudio(Combobox_SelectedAudio.SelectedValue.ToString(), ((Frm_Soundbanks_Main)ParentForm).AudioDataDict);
-                if (AudioSelected != null)
+                if (AudioSelected != null && AudioSelected.PCMdata != null)
                 {
-                    if (_waveOut.PlaybackState == PlaybackState.Stopped)
-                    {
-                        if (AudioSelected.PCMdata != null)
-                        {
-                            AudioSample = new MemoryStream(AudioSelected.PCMdata);
-                            IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(AudioSelected.Frequency + Convert.ToInt32(numeric_pitchoffset.Value), AudioSelected.Bits, AudioSelected.Channels));
-                            VolumeSampleProvider volumeProvider = new VolumeSampleProvider(provider.ToSampleProvider());
-                            PanningSampleProvider panProvider = new PanningSampleProvider(volumeProvider)
-                            {
-                                Pan = (Convert.ToInt32(numeric_pan.Value) / 100)
-                            };
-                            _waveOut.Volume = 1;
-                            _waveOut.Init(panProvider);
-                            _waveOut.Play();
-                        }
-                    }
+                    AudioFunctions.PlayAudio(_waveOut, AudioSelected.PCMdata, AudioSelected.Frequency, int.Parse(numeric_pitchoffset.Value.ToString()), AudioSelected.Bits, AudioSelected.Channels, int.Parse(numeric_pan.Value.ToString()));
                 }
             }
         }
 
         private void Button_Stop_Click(object sender, EventArgs e)
         {
-            StopAudio();
+            AudioFunctions.StopAudio(_waveOut);
         }
 
         private void Button_ok_Click(object sender, EventArgs e)
@@ -150,21 +134,15 @@ namespace EuroSound_Application
             Combobox_Hashcode.Enabled = Action;
             Button_PlayAudio.Enabled = Action;
             Button_Stop.Enabled = Action;
+            Button_Edit.Enabled = Action;
         }
 
         private void EnableOrDisableSubSFXSection(bool Action)
         {
-            Combobox_Hashcode.Enabled = Action;
-            Combobox_SelectedAudio.Enabled = _ = !Action;
-        }
-
-        private void StopAudio()
-        {
-            if (_waveOut.PlaybackState == PlaybackState.Playing)
+            if (!Checkbox_IsStreamedSound.Checked)
             {
-                _waveOut.Stop();
-                AudioSample.Close();
-                AudioSample.Dispose();
+                Combobox_Hashcode.Enabled = Action;
+                Combobox_SelectedAudio.Enabled = _ = !Action;
             }
         }
 

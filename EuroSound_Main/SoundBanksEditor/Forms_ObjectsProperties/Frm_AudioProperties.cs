@@ -9,7 +9,6 @@ namespace EuroSound_Application
     public partial class Frm_AudioProperties : Form
     {
         private WaveOut _waveOut = new WaveOut();
-        private MemoryStream AudioSample;
         private EXAudio SelectedAudio, TemporalAudio;
         private string SelectedAudioMD5Hash, TemporalAudioHash;
         public Frm_AudioProperties(EXAudio AudioToCheck, string AudioKey)
@@ -20,19 +19,9 @@ namespace EuroSound_Application
             SelectedAudioMD5Hash = AudioKey;
         }
 
-        internal void StopAudio()
-        {
-            if (_waveOut.PlaybackState == PlaybackState.Playing)
-            {
-                _waveOut.Stop();
-                AudioSample.Close();
-                AudioSample.Dispose();
-            }
-        }
-
         private void Button_Cancel_Click(object sender, EventArgs e)
         {
-            StopAudio();
+            AudioFunctions.StopAudio(_waveOut);
             this.Close();
         }
 
@@ -77,7 +66,7 @@ namespace EuroSound_Application
             }
 
             /*--Stop Audio and liberate Memmory*/
-            StopAudio();
+            AudioFunctions.StopAudio(_waveOut);
 
             /*--Close this form--*/
             this.Close();
@@ -89,10 +78,7 @@ namespace EuroSound_Application
             {
                 if (TemporalAudio.PCMdata != null)
                 {
-                    AudioSample = new MemoryStream(TemporalAudio.PCMdata);
-                    IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(TemporalAudio.Frequency, TemporalAudio.Bits, TemporalAudio.Channels));
-                    _waveOut.Init(provider);
-                    _waveOut.Play();
+                    AudioFunctions.PlayAudio(_waveOut, TemporalAudio.PCMdata, TemporalAudio.Frequency, 0, TemporalAudio.Bits, TemporalAudio.Channels, 0);
                 }
                 else
                 {
@@ -131,7 +117,7 @@ namespace EuroSound_Application
 
         private void Button_StopAudio_Click(object sender, EventArgs e)
         {
-            StopAudio();
+            AudioFunctions.StopAudio(_waveOut);
         }
 
         private void EuroSound_WaveViewer1_OnLineDrawEvent(Point point1, Point point2)

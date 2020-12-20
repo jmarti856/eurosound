@@ -9,11 +9,12 @@ namespace EuroSound_Application
 {
     public static class YamlReader
     {
-        internal static List<string> Reports = new List<string>();
+        internal static List<string> Reports;
 
         internal static List<string> GetFilePaths(string LevelSoundBankPath, string FilePath)
         {
             List<string> Paths = new List<string>();
+            Reports = new List<string>();
 
             string[] lines = File.ReadAllLines(LevelSoundBankPath);
             if (lines[0].Equals("#ftype:1"))
@@ -29,7 +30,7 @@ namespace EuroSound_Application
             }
             else
             {
-                Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect"));
+                Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect") + ": " + LevelSoundBankPath);
             }
 
             return Paths;
@@ -79,6 +80,11 @@ namespace EuroSound_Application
 
             /*Update Status Bar*/
             GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_ReadingYamlFile") + ": " + SoundName);
+
+            if (Reports == null)
+            {
+                Reports = new List<string>();
+            }
 
             StreamReader reader = new StreamReader(FilePath);
             string FileCheck = reader.ReadLine();
@@ -198,8 +204,6 @@ namespace EuroSound_Application
                 {
                     ShowErrorsWarningsList(FilePath);
                 }
-
-                SamplesProperties = null;
             }
             else
             {

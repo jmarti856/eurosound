@@ -7,8 +7,8 @@ namespace EuroSound_Application
         private static RegistryKey EurocomKey;
         private static RegistryKey EuroSoundKey;
         private static RegistryKey SoftwareKey = Registry.CurrentUser.OpenSubKey("Software", true);
-        #region Create Keys and SubKeys
 
+        #region Create Keys and SubKeys
         public static void CreateEuroSoundKeyIfNotExists()
         {
             CreateEurocomKeyIfNotExists();
@@ -81,7 +81,6 @@ namespace EuroSound_Application
         #endregion Color Picker Preferences
 
         #region Hash Table Paths
-
         internal static string[] LoadHashTablePathAndMD5(string HashtableName)
         {
             string[] Info = new string[2];
@@ -106,7 +105,6 @@ namespace EuroSound_Application
         #endregion Hash Table Paths
 
         #region TreeView Preferences
-
         internal static string[] LoadTreeViewPreferences()
         {
             string[] TreeViewPreferences = new string[4];
@@ -142,7 +140,6 @@ namespace EuroSound_Application
         #endregion TreeView Preferences
 
         #region General Preferences
-
         internal static string LoadGeneralPreferences()
         {
             string TreeViewPreferences;
