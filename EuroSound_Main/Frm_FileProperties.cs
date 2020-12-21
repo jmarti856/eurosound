@@ -16,6 +16,30 @@ namespace EuroSound_Application
             CurrentFileProperties = FileProperties;
         }
 
+        //*===============================================================================================
+        //* Form Events
+        //*===============================================================================================
+        private void Frm_FileProperties_Load(object sender, EventArgs e)
+        {
+            /*Datasource Combobox*/
+            Hashcodes.AddHashcodesToCombobox(Combobox_FileHashcode, Hashcodes.SB_Defines);
+
+            Textbox_FileName.Text = CurrentFileProperties.FileName;
+            Combobox_TypeOfData.SelectedIndex = CurrentFileProperties.TypeOfData;
+            Textbox_Sounds_Path.Text = GlobalPreferences.HT_SoundsPath;
+            Textbox_SFXData_Path.Text = GlobalPreferences.HT_SoundsDataPath;
+            Textbox_Musics_Path.Text = GlobalPreferences.HT_MusicPath;
+
+            /*Put the selected hashcode in case is not null*/
+            if (CurrentFileProperties.Hashcode != null)
+            {
+                Combobox_FileHashcode.SelectedValue = CurrentFileProperties.Hashcode;
+            }
+        }
+
+        //*===============================================================================================
+        //* Form Controls Events
+        //*===============================================================================================
         private void Button_Cancel_Click(object sender, EventArgs e)
         {
             /*Close current form*/
@@ -43,27 +67,6 @@ namespace EuroSound_Application
             {
                 Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
                 Hashcodes.AddHashcodesToCombobox(Combobox_FileHashcode, Hashcodes.SB_Defines);
-            }
-        }
-
-        //*===============================================================================================
-        //* Form Load
-        //*===============================================================================================
-        private void Frm_FileProperties_Load(object sender, EventArgs e)
-        {
-            /*Datasource Combobox*/
-            Hashcodes.AddHashcodesToCombobox(Combobox_FileHashcode, Hashcodes.SB_Defines);
-
-            Textbox_FileName.Text = CurrentFileProperties.FileName;
-            Combobox_TypeOfData.SelectedIndex = CurrentFileProperties.TypeOfData;
-            Textbox_Sounds_Path.Text = GlobalPreferences.HT_SoundsPath;
-            Textbox_SFXData_Path.Text = GlobalPreferences.HT_SoundsDataPath;
-            Textbox_Musics_Path.Text = GlobalPreferences.HT_MusicPath;
-
-            /*Put the selected hashcode in case is not null*/
-            if (CurrentFileProperties.Hashcode != null)
-            {
-                Combobox_FileHashcode.SelectedValue = CurrentFileProperties.Hashcode;
             }
         }
     }

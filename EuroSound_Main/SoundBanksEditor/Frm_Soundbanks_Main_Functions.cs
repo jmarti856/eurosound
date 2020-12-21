@@ -25,7 +25,7 @@ namespace EuroSound_Application
 
         internal static string OpenSaveAsDialog(TreeView TreeView_File, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, ProjectFile FileProperties)
         {
-            string SavePath = GenericFunctions.SaveFileBrowser("EuroSound Files (*.ESF)|*.ESF|All files (*.*)|*.*", 1, true, Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, FileProperties.Hashcode));
+            string SavePath = GenericFunctions.SaveFileBrowser("EuroSound Files (*.esf)|*.esf|All files (*.*)|*.*", 1, true, Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, FileProperties.Hashcode));
             if (!string.IsNullOrEmpty(SavePath))
             {
                 if (Directory.Exists(Path.GetDirectoryName(SavePath)))
@@ -56,10 +56,10 @@ namespace EuroSound_Application
 
         internal void OpenSampleProperties()
         {
-            EXSound ParentSound = EXObjectsFunctions.GetSoundByName(int.Parse(TreeView_File.SelectedNode.Parent.Name), SoundsList);
+            EXSound ParentSound = EXSoundbanksFunctions.GetSoundByName(int.Parse(TreeView_File.SelectedNode.Parent.Name), SoundsList);
             EXSample SelectedSample = TreeNodeFunctions.GetSelectedSample(ParentSound, TreeView_File.SelectedNode.Name);
 
-            Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(SelectedSample, EXObjectsFunctions.SubSFXFlagChecked(ParentSound.Flags))
+            Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(SelectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(ParentSound.Flags))
             {
                 Text = TreeView_File.SelectedNode.Text + " Properties",
                 Tag = this.Tag,
@@ -88,7 +88,7 @@ namespace EuroSound_Application
 
         internal void OpenSoundProperties()
         {
-            EXSound SelectedSound = EXObjectsFunctions.GetSoundByName(int.Parse(TreeView_File.SelectedNode.Name), SoundsList);
+            EXSound SelectedSound = EXSoundbanksFunctions.GetSoundByName(int.Parse(TreeView_File.SelectedNode.Name), SoundsList);
             Frm_EffectProperties FormSoundProps = new Frm_EffectProperties(SelectedSound, TreeView_File.SelectedNode.Name)
             {
                 Text = TreeView_File.SelectedNode.Text + " Properties",
@@ -103,7 +103,7 @@ namespace EuroSound_Application
 
         internal void RemoveAudioAndWarningDependencies()
         {
-            List<string> Dependencies = EXObjectsFunctions.GetAudioDependencies(TreeView_File.SelectedNode.Name, TreeView_File.SelectedNode.Text, SoundsList, false);
+            List<string> Dependencies = EXSoundbanksFunctions.GetAudioDependencies(TreeView_File.SelectedNode.Name, TreeView_File.SelectedNode.Text, SoundsList, false);
             if (Dependencies.Count > 0)
             {
                 EuroSound_ErrorsAndWarningsList ShowDependencies = new EuroSound_ErrorsAndWarningsList(Dependencies)
@@ -222,7 +222,7 @@ namespace EuroSound_Application
         private void RemoveAudio()
         {
             //EXObjectsFunctions.RemoveSound(TreeView_File.SelectedNode.Name, SoundsList);
-            EXObjectsFunctions.DeleteAudio(AudioDataDict, TreeView_File.SelectedNode.Name);
+            EXSoundbanksFunctions.DeleteAudio(AudioDataDict, TreeView_File.SelectedNode.Name);
             TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, TreeView_File.SelectedNode, TreeView_File.SelectedNode.Tag.ToString());
         }
 
@@ -232,21 +232,25 @@ namespace EuroSound_Application
             IList<TreeNode> ChildNodesCollection = new List<TreeNode>();
             foreach (TreeNode ChildNode in TreeNodeFunctions.GetNodesInsideFolder(TreeView_File, TreeView_File.SelectedNode, ChildNodesCollection))
             {
-                EXObjectsFunctions.RemoveSound(ChildNode.Name, SoundsList);
+                EXSoundbanksFunctions.RemoveSound(ChildNode.Name, SoundsList);
             }
             TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, TreeView_File.SelectedNode, TreeView_File.SelectedNode.Tag.ToString());
         }
 
         private void RemoveSample()
         {
-            EXSound ParentSound = EXObjectsFunctions.GetSoundByName(int.Parse(TreeView_File.SelectedNode.Parent.Name), SoundsList);
-            EXObjectsFunctions.RemoveSampleFromSound(ParentSound, TreeView_File.SelectedNode.Name);
+            EXSound ParentSound = EXSoundbanksFunctions.GetSoundByName(int.Parse(TreeView_File.SelectedNode.Parent.Name), SoundsList);
+            EXSample SampleToRemove = TreeNodeFunctions.GetSelectedSample(ParentSound, TreeView_File.SelectedNode.Name);
+            if (SampleToRemove != null)
+            {
+                ParentSound.Samples.Remove(SampleToRemove);
+            }
             TreeView_File.SelectedNode.Remove();
         }
 
         private void RemoveSound()
         {
-            EXObjectsFunctions.RemoveSound(TreeView_File.SelectedNode.Name, SoundsList);
+            EXSoundbanksFunctions.RemoveSound(TreeView_File.SelectedNode.Name, SoundsList);
             TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, TreeView_File.SelectedNode, TreeView_File.SelectedNode.Tag.ToString());
         }
 

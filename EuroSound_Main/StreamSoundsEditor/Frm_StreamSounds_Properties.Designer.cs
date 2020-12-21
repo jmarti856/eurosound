@@ -39,6 +39,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Textbox_PCM_Data = new System.Windows.Forms.TextBox();
             this.Label_PCM_Data = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.Button_MarkersEditor = new System.Windows.Forms.Button();
             this.Combobox_Hashcode = new System.Windows.Forms.ComboBox();
             this.Label_Hashcode = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
@@ -64,7 +65,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Label_Frequency = new System.Windows.Forms.Label();
             this.Textbox_DataSize = new System.Windows.Forms.TextBox();
             this.Label_DataSize = new System.Windows.Forms.Label();
-            this.Button_MarkersEditor = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.GroupBox_AudioData.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -79,7 +80,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Button_OK.Location = new System.Drawing.Point(340, 529);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
-            this.Button_OK.TabIndex = 2;
+            this.Button_OK.TabIndex = 5;
             this.Button_OK.Text = "OK";
             this.Button_OK.UseVisualStyleBackColor = true;
             // 
@@ -90,7 +91,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Button_Cancel.Location = new System.Drawing.Point(421, 529);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
-            this.Button_Cancel.TabIndex = 3;
+            this.Button_Cancel.TabIndex = 6;
             this.Button_Cancel.Text = "Cancel";
             this.Button_Cancel.UseVisualStyleBackColor = true;
             // 
@@ -107,7 +108,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.GroupBox_AudioData.Location = new System.Drawing.Point(12, 98);
             this.GroupBox_AudioData.Name = "GroupBox_AudioData";
             this.GroupBox_AudioData.Size = new System.Drawing.Size(484, 81);
-            this.GroupBox_AudioData.TabIndex = 5;
+            this.GroupBox_AudioData.TabIndex = 1;
             this.GroupBox_AudioData.TabStop = false;
             this.GroupBox_AudioData.Text = "Audio Data";
             // 
@@ -183,9 +184,19 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(484, 80);
-            this.groupBox1.TabIndex = 6;
+            this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Sound Properties";
+            // 
+            // Button_MarkersEditor
+            // 
+            this.Button_MarkersEditor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_MarkersEditor.Location = new System.Drawing.Point(194, 46);
+            this.Button_MarkersEditor.Name = "Button_MarkersEditor";
+            this.Button_MarkersEditor.Size = new System.Drawing.Size(146, 23);
+            this.Button_MarkersEditor.TabIndex = 4;
+            this.Button_MarkersEditor.Text = "Open Markers Editor";
+            this.Button_MarkersEditor.UseVisualStyleBackColor = true;
             // 
             // Combobox_Hashcode
             // 
@@ -196,7 +207,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Combobox_Hashcode.Location = new System.Drawing.Point(84, 19);
             this.Combobox_Hashcode.Name = "Combobox_Hashcode";
             this.Combobox_Hashcode.Size = new System.Drawing.Size(394, 21);
-            this.Combobox_Hashcode.TabIndex = 3;
+            this.Combobox_Hashcode.TabIndex = 1;
             // 
             // Label_Hashcode
             // 
@@ -204,7 +215,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Label_Hashcode.Location = new System.Drawing.Point(19, 22);
             this.Label_Hashcode.Name = "Label_Hashcode";
             this.Label_Hashcode.Size = new System.Drawing.Size(59, 13);
-            this.Label_Hashcode.TabIndex = 2;
+            this.Label_Hashcode.TabIndex = 0;
             this.Label_Hashcode.Text = "Hashcode:";
             // 
             // numericUpDown1
@@ -212,7 +223,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.numericUpDown1.Location = new System.Drawing.Point(84, 46);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(104, 20);
-            this.numericUpDown1.TabIndex = 1;
+            this.numericUpDown1.TabIndex = 3;
             // 
             // Label_BaseVolume
             // 
@@ -220,7 +231,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Label_BaseVolume.Location = new System.Drawing.Point(6, 48);
             this.Label_BaseVolume.Name = "Label_BaseVolume";
             this.Label_BaseVolume.Size = new System.Drawing.Size(72, 13);
-            this.Label_BaseVolume.TabIndex = 0;
+            this.Label_BaseVolume.TabIndex = 2;
             this.Label_BaseVolume.Text = "Base Volume:";
             // 
             // Groupbox_FileProperties
@@ -232,7 +243,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Groupbox_FileProperties.Location = new System.Drawing.Point(12, 455);
             this.Groupbox_FileProperties.Name = "Groupbox_FileProperties";
             this.Groupbox_FileProperties.Size = new System.Drawing.Size(484, 60);
-            this.Groupbox_FileProperties.TabIndex = 39;
+            this.Groupbox_FileProperties.TabIndex = 3;
             this.Groupbox_FileProperties.TabStop = false;
             this.Groupbox_FileProperties.Text = "File Properties";
             // 
@@ -245,7 +256,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Textbox_MD5Hash.Name = "Textbox_MD5Hash";
             this.Textbox_MD5Hash.ReadOnly = true;
             this.Textbox_MD5Hash.Size = new System.Drawing.Size(405, 20);
-            this.Textbox_MD5Hash.TabIndex = 13;
+            this.Textbox_MD5Hash.TabIndex = 1;
             // 
             // Label_MD5Hash
             // 
@@ -253,7 +264,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Label_MD5Hash.Location = new System.Drawing.Point(6, 22);
             this.Label_MD5Hash.Name = "Label_MD5Hash";
             this.Label_MD5Hash.Size = new System.Drawing.Size(61, 13);
-            this.Label_MD5Hash.TabIndex = 12;
+            this.Label_MD5Hash.TabIndex = 0;
             this.Label_MD5Hash.Text = "MD5 Hash:";
             // 
             // Groupbox_AudioProperties
@@ -280,7 +291,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Groupbox_AudioProperties.Location = new System.Drawing.Point(12, 185);
             this.Groupbox_AudioProperties.Name = "Groupbox_AudioProperties";
             this.Groupbox_AudioProperties.Size = new System.Drawing.Size(484, 264);
-            this.Groupbox_AudioProperties.TabIndex = 38;
+            this.Groupbox_AudioProperties.TabIndex = 2;
             this.Groupbox_AudioProperties.TabStop = false;
             this.Groupbox_AudioProperties.Text = "Audio Properties:";
             // 
@@ -300,7 +311,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.euroSound_WaveViewer1.SamplesPerPixel = 128;
             this.euroSound_WaveViewer1.Size = new System.Drawing.Size(472, 150);
             this.euroSound_WaveViewer1.StartPosition = ((long)(0));
-            this.euroSound_WaveViewer1.TabIndex = 22;
+            this.euroSound_WaveViewer1.TabIndex = 17;
             this.euroSound_WaveViewer1.WaveStream = null;
             // 
             // Textbox_Encoding
@@ -310,7 +321,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Textbox_Encoding.Name = "Textbox_Encoding";
             this.Textbox_Encoding.ReadOnly = true;
             this.Textbox_Encoding.Size = new System.Drawing.Size(84, 20);
-            this.Textbox_Encoding.TabIndex = 19;
+            this.Textbox_Encoding.TabIndex = 14;
             // 
             // Label_Encoding
             // 
@@ -318,7 +329,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Label_Encoding.Location = new System.Drawing.Point(7, 77);
             this.Label_Encoding.Name = "Label_Encoding";
             this.Label_Encoding.Size = new System.Drawing.Size(55, 13);
-            this.Label_Encoding.TabIndex = 18;
+            this.Label_Encoding.TabIndex = 13;
             this.Label_Encoding.Text = "Encoding:";
             // 
             // Button_StopAudio
@@ -327,7 +338,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Button_StopAudio.Location = new System.Drawing.Point(403, 74);
             this.Button_StopAudio.Name = "Button_StopAudio";
             this.Button_StopAudio.Size = new System.Drawing.Size(75, 23);
-            this.Button_StopAudio.TabIndex = 21;
+            this.Button_StopAudio.TabIndex = 16;
             this.Button_StopAudio.Text = "Stop Audio";
             this.Button_StopAudio.UseVisualStyleBackColor = true;
             // 
@@ -337,7 +348,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Button_PlayAudio.Location = new System.Drawing.Point(322, 74);
             this.Button_PlayAudio.Name = "Button_PlayAudio";
             this.Button_PlayAudio.Size = new System.Drawing.Size(75, 23);
-            this.Button_PlayAudio.TabIndex = 20;
+            this.Button_PlayAudio.TabIndex = 15;
             this.Button_PlayAudio.Text = "Play Audio";
             this.Button_PlayAudio.UseVisualStyleBackColor = true;
             // 
@@ -449,15 +460,17 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Label_DataSize.TabIndex = 0;
             this.Label_DataSize.Text = "Data Size:";
             // 
-            // Button_MarkersEditor
+            // checkBox1
             // 
-            this.Button_MarkersEditor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_MarkersEditor.Location = new System.Drawing.Point(194, 46);
-            this.Button_MarkersEditor.Name = "Button_MarkersEditor";
-            this.Button_MarkersEditor.Size = new System.Drawing.Size(146, 23);
-            this.Button_MarkersEditor.TabIndex = 4;
-            this.Button_MarkersEditor.Text = "Open Markers Editor";
-            this.Button_MarkersEditor.UseVisualStyleBackColor = true;
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox1.Location = new System.Drawing.Point(12, 535);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(109, 17);
+            this.checkBox1.TabIndex = 4;
+            this.checkBox1.Text = "Output this sound";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // Frm_StreamSounds_Properties
             // 
@@ -466,6 +479,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Button_Cancel;
             this.ClientSize = new System.Drawing.Size(508, 564);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.Groupbox_FileProperties);
             this.Controls.Add(this.Groupbox_AudioProperties);
             this.Controls.Add(this.groupBox1);
@@ -485,6 +499,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Groupbox_AudioProperties.ResumeLayout(false);
             this.Groupbox_AudioProperties.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -525,5 +540,6 @@ namespace EuroSound_Application.StreamSoundsEditor
         private System.Windows.Forms.TextBox Textbox_DataSize;
         private System.Windows.Forms.Label Label_DataSize;
         private System.Windows.Forms.Button Button_MarkersEditor;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

@@ -79,7 +79,7 @@ namespace EuroSound_Application
             MenuItemHelp_OnlineHelp.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItemHelp_OnlineHelp"));
 
             MenuItemHelp_About.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuItemsOpened);
-            MenuItemHelp_OnlineHelp.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(false);
+            MenuItemHelp_OnlineHelp.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuItemsOpened);
             MenuItemHelp_OnlineHelp.Click += (se, ev) => { MenuItemsOpened = false; Process.Start("https://sphinxandthecursedmummy.fandom.com/wiki/SFX"); };
         }
 
@@ -89,7 +89,7 @@ namespace EuroSound_Application
         private void Frm_EuroSound_Main_Load(object sender, EventArgs e)
         {
             /*GetControl*/
-            GenericFunctions.GetStatusBarControls(EuroSound_Main_StatusBar, EuroSound_StatusBar_Status, EuroSound_StatusBar_FileName);
+            GenericFunctions.GetStatusbar(MainStatusBar);
 
             /*Update Status Bar*/
             GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
@@ -151,6 +151,9 @@ namespace EuroSound_Application
             GlobalPreferences.CancelApplicationClose = false;
         }
 
+        //*===============================================================================================
+        //* MAIN MENU -- TOOLS
+        //*===============================================================================================
         private void MainMenuTools_SFXDataGen_Click(object sender, EventArgs e)
         {
             MenuItemsOpened = false;
@@ -205,7 +208,7 @@ namespace EuroSound_Application
         private void MenuItemFile_OpenESF_Click(object sender, EventArgs e)
         {
             MenuItemsOpened = false;
-            string FilePath = GenericFunctions.OpenFileBrowser("EuroSoundFile|*.ESF", 0);
+            string FilePath = GenericFunctions.OpenFileBrowser("EuroSound Files (*.esf)|*.esf", 0);
             if (!string.IsNullOrEmpty(FilePath))
             {
                 LoadSoundBank(FilePath);
@@ -244,7 +247,7 @@ namespace EuroSound_Application
 
         private void MenuItemView_StatusBar_CheckStateChanged(object sender, EventArgs e)
         {
-            EuroSound_Main_StatusBar.Visible = MenuItemView_StatusBar.Checked;
+            //EuroSound_Main_StatusBar.Visible = MenuItemView_StatusBar.Checked;
         }
 
         //*===============================================================================================
@@ -258,7 +261,7 @@ namespace EuroSound_Application
         private void OpenSoundBanksForm(string FilePath, string ProjectName)
         {
             string FormTitle;
-            if (File.Exists(GlobalPreferences.HT_SoundsPath) && File.Exists(GlobalPreferences.HT_SoundsDataPath))
+            if (System.IO.File.Exists(GlobalPreferences.HT_SoundsPath) && System.IO.File.Exists(GlobalPreferences.HT_SoundsDataPath))
             {
                 if (string.IsNullOrEmpty(FilePath))
                 {
@@ -289,7 +292,7 @@ namespace EuroSound_Application
         private void OpenStreamedSoundsForm(string FilePath, string ProjectName)
         {
             string FormTitle;
-            if (File.Exists(GlobalPreferences.HT_SoundsPath) && File.Exists(GlobalPreferences.HT_SoundsDataPath))
+            if (System.IO.File.Exists(GlobalPreferences.HT_SoundsPath) && System.IO.File.Exists(GlobalPreferences.HT_SoundsDataPath))
             {
                 if (string.IsNullOrEmpty(FilePath))
                 {

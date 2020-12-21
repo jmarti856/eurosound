@@ -59,7 +59,7 @@ namespace EuroSound_Application
 
         private void Button_GenerateList_Click(object sender, EventArgs e)
         {
-            string SavePath = GenericFunctions.SaveFileBrowser("YAML Files (*.yaml)|*.yaml", 1, true, ProjectName);
+            string SavePath = GenericFunctions.SaveFileBrowser("YML Files (*.yml)|*.yml", 1, true, ProjectName);
             if (!string.IsNullOrEmpty(SavePath))
             {
                 StreamWriter file = new StreamWriter(SavePath);
@@ -253,7 +253,7 @@ namespace EuroSound_Application
         {
             string SoundName, SoundHashcode;
 
-            string FilePath = GenericFunctions.OpenFileBrowser("YML Files|*.yml", 0);
+            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0);
             if (!string.IsNullOrEmpty(FilePath))
             {
                 SoundName = new DirectoryInfo(Path.GetDirectoryName(FilePath)).Name;
@@ -265,7 +265,7 @@ namespace EuroSound_Application
 
         private void MenuItemFile_ReadYml_Click(object sender, EventArgs e)
         {
-            string FilePath = GenericFunctions.OpenFileBrowser("YML Files|*.yml", 0);
+            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0);
             if (!string.IsNullOrEmpty(FilePath))
             {
                 /*--Ask user for a fully reimport--*/
@@ -324,7 +324,7 @@ namespace EuroSound_Application
                         /*Rename sound sample*/
                         else if (e.Node.Tag.Equals("Sample"))
                         {
-                            EXSound ParentSound = EXObjectsFunctions.GetSoundByName(int.Parse(e.Node.Parent.Name), SoundsList);
+                            EXSound ParentSound = EXSoundbanksFunctions.GetSoundByName(int.Parse(e.Node.Parent.Name), SoundsList);
                             for (int i = 0; i < ParentSound.Samples.Count; i++)
                             {
                                 if (ParentSound.Samples[i].Name.Equals(e.Node.Name))
@@ -363,7 +363,7 @@ namespace EuroSound_Application
             }
             else if (e.Node.Tag.Equals("Sound"))
             {
-                if (EXObjectsFunctions.SoundWillBeOutputed(SoundsList, e.Node.Name))
+                if (EXSoundbanksFunctions.SoundWillBeOutputed(SoundsList, e.Node.Name))
                 {
                     TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 2, 2);
                 }
@@ -387,7 +387,7 @@ namespace EuroSound_Application
             }
             else if (e.Node.Tag.Equals("Sound"))
             {
-                if (EXObjectsFunctions.SoundWillBeOutputed(SoundsList, e.Node.Name))
+                if (EXSoundbanksFunctions.SoundWillBeOutputed(SoundsList, e.Node.Name))
                 {
                     TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 3, 3);
                 }

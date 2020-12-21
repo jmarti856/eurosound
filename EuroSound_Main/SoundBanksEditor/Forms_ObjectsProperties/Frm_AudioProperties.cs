@@ -35,7 +35,7 @@ namespace EuroSound_Application
                 {
                     /*--Update Dictionary--*/
                     ((Frm_Soundbanks_Main)ParentForm).AudioDataDict.Remove(SelectedAudioMD5Hash);
-                    EXObjectsFunctions.AddAudioToList(TemporalAudio, TemporalAudioHash, ((Frm_Soundbanks_Main)ParentForm).AudioDataDict);
+                    EXSoundbanksFunctions.AddAudioToList(TemporalAudio, TemporalAudioHash, ((Frm_Soundbanks_Main)ParentForm).AudioDataDict);
 
                     /*--Update Tree View--*/
                     TreeNode[] Node = ((Frm_Soundbanks_Main)ParentForm).TreeView_File.Nodes.Find(SelectedAudioMD5Hash, true);
@@ -89,11 +89,11 @@ namespace EuroSound_Application
 
         private void Button_ReplaceAudio_Click(object sender, EventArgs e)
         {
-            string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files|*.wav", 0);
+            string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0);
             if (!string.IsNullOrEmpty(AudioPath))
             {
                 TemporalAudioHash = GenericFunctions.CalculateMD5(AudioPath);
-                TemporalAudio = EXObjectsFunctions.LoadAudioData(AudioPath);
+                TemporalAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);
 
                 if (TemporalAudio.PCMdata != null)
                 {

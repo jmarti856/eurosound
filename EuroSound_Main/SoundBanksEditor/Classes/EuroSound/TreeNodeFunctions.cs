@@ -34,7 +34,7 @@ namespace EuroSound_Application
 
         internal static bool CheckIfNodeExistsByText(TreeView SearchControl, string Name)
         {
-            return (SearchNodeRecursiveByText(SearchControl.Nodes, Name, SearchControl, false) != null);
+            return (SearchNodeRecursiveByText(SearchControl.Nodes, Name.ToLower(), SearchControl, false) != null);
         }
 
         internal static void EditNodeLabel(TreeView TreeViewFile, TreeNode NodeToEdit)
@@ -95,14 +95,14 @@ namespace EuroSound_Application
             {
                 if (MatchOnly)
                 {
-                    if (node.Text.ToUpper().Contains(searchFor))
+                    if (node.Text.ToLower().Contains(searchFor))
                     {
                         return node;
                     }
                 }
                 else
                 {
-                    if (node.Text.ToUpper().Equals(searchFor))
+                    if (node.Text.ToLower().Equals(searchFor))
                     {
                         return node;
                     }

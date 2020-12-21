@@ -103,7 +103,7 @@ namespace EuroSound_Application
                 if (!TreeNodeFunctions.CheckIfNodeExistsByText(TreeViewControl, SoundName))
                 {
                     /*--Add Sound--*/
-                    SoundID = EXObjectsFunctions.GetSoundID(FileProperties);
+                    SoundID = GenericFunctions.GetSoundID(FileProperties);
                     EXSound NewSound = new EXSound()
                     {
                         DisplayName = SoundName,
@@ -158,7 +158,7 @@ namespace EuroSound_Application
                                 SoundNodeAdded = true;
                             }
 
-                            if (EXObjectsFunctions.SubSFXFlagChecked(CurrentSoundParams[11]))
+                            if (EXSoundbanksFunctions.SubSFXFlagChecked(CurrentSoundParams[11]))
                             {
                                 uint GetHashcode = Convert.ToUInt32("0x" + Entry.Value[0].ToString("X8"), 16);
                                 NewSample.HashcodeSubSFX = GetSoundHashcode(GetHashcode);
@@ -179,7 +179,7 @@ namespace EuroSound_Application
                                     {
                                         Reports.Add("1The file: " + AudioPropertiesPath + " can't be loaded because does not exists.");
                                     }
-                                    string MD5AudioFilehash = EXObjectsFunctions.LoadAudioAddToListAndTreeNode(AudioPath, SampleName, AudioDict, TreeViewControl, AudioProps, Reports);
+                                    string MD5AudioFilehash = EXSoundbanksFunctions.LoadAudioAddToListAndTreeNode(AudioPath, SampleName, AudioDict, TreeViewControl, AudioProps, Reports);
                                     NewSample.ComboboxSelectedAudio = MD5AudioFilehash;
                                 }
                                 else

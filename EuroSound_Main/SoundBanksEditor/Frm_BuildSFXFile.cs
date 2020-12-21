@@ -89,7 +89,7 @@ namespace EuroSound_Application
 
                 //Update Label
                 SetLabelText(Label_CurrentTask, "Getting Audio Data To export");
-                List<string> UsedAudios = EXObjectsFunctions.GetUsedAudios(FinalSoundsDict, true);
+                List<string> UsedAudios = EXSoundbanksFunctions.GetUsedAudios(FinalSoundsDict, true);
 
                 //Update Progress Bar
                 ProgressBarSetMaximum(ProgressBar_CurrentTask, UsedAudios.Count);

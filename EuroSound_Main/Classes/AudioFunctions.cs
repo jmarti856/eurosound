@@ -1,11 +1,6 @@
 ﻿using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EuroSound_Application
 {
@@ -13,7 +8,7 @@ namespace EuroSound_Application
     {
         private static MemoryStream AudioSample;
 
-        internal static void PlayAudio( WaveOut _waveOut, byte[] PCMData, int Frequency, int Pitch, int Bits, int Channels, int Pan)
+        internal static void PlayAudio(WaveOut _waveOut, byte[] PCMData, int Frequency, int Pitch, int Bits, int Channels, int Pan)
         {
             if (_waveOut.PlaybackState == PlaybackState.Stopped)
             {

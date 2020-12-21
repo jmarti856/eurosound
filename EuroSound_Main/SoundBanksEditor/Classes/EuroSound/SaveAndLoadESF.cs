@@ -374,7 +374,7 @@ namespace EuroSound_Application
         {
             if (Node.Tag.Equals("Sound"))
             {
-                EXSound sound = EXObjectsFunctions.GetSoundByName(int.Parse(Node.Name), SoundsList);
+                EXSound sound = EXSoundbanksFunctions.GetSoundByName(int.Parse(Node.Name), SoundsList);
                 if (sound != null)
                 {
                     if (!sound.OutputThisSound)

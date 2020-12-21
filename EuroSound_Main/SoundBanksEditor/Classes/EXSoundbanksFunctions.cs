@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace EuroSound_Application
 {
-    public static class EXObjectsFunctions
+    public static class EXSoundbanksFunctions
     {
         public static bool SoundWillBeOutputed(Dictionary<int, EXSound> SoundsList, string SoundName)
         {
@@ -32,17 +32,6 @@ namespace EuroSound_Application
             {
                 AudioDataDict.Add(Hash, AudioToAdd);
             }
-        }
-
-        internal static void AddEmptySoundWithName(int Index, string v_DisplayName, string v_Hashcode, Dictionary<int, EXSound> SoundsList)
-        {
-            EXSound Sound = new EXSound
-            {
-                DisplayName = v_DisplayName,
-                Hashcode = v_Hashcode,
-            };
-
-            SoundsList.Add(Index, Sound);
         }
 
         internal static bool AddSampleToSound(EXSound Sound, string SampleName, bool StreamedSample)
@@ -115,21 +104,6 @@ namespace EuroSound_Application
             return AudiosToPurge;
         }
 
-        internal static Dictionary<int, EXSound> GetFinalListToExport(Dictionary<int, EXSound> SoundsList)
-        {
-            Dictionary<int, EXSound> FinalList = new Dictionary<int, EXSound>();
-
-            foreach (KeyValuePair<int, EXSound> Sound in SoundsList)
-            {
-                if (Sound.Value.OutputThisSound)
-                {
-                    FinalList.Add(Sound.Key, Sound.Value);
-                }
-            }
-
-            return FinalList;
-        }
-
         internal static Dictionary<string, string> GetListAudioData(Dictionary<string, EXAudio> AudiosList, TreeView ControlToSearch)
         {
             Dictionary<string, string> DictionaryToShow = new Dictionary<string, string>
@@ -188,15 +162,6 @@ namespace EuroSound_Application
             }
 
             return SearchedSound;
-        }
-
-        internal static int GetSoundID(ProjectFile FileProperties)
-        {
-            int index;
-
-            index = (FileProperties.SoundID += 1);
-
-            return index;
         }
 
         internal static List<string> GetUsedAudios(Dictionary<int, EXSound> SoundsList, bool OnlyOutputAudios)
@@ -313,15 +278,6 @@ namespace EuroSound_Application
             return null;
         }
 
-        internal static void RemoveSampleFromSound(EXSound SoundName, string SampleName)
-        {
-            EXSample SampleToRemove = TreeNodeFunctions.GetSelectedSample(SoundName, SampleName);
-            if (SampleToRemove != null)
-            {
-                SoundName.Samples.Remove(SampleToRemove);
-            }
-        }
-
         internal static void RemoveSound(string Name, Dictionary<int, EXSound> SoundsList)
         {
             EXSound itemToRemove = GetSoundByName(int.Parse(Name), SoundsList);
@@ -330,6 +286,7 @@ namespace EuroSound_Application
                 SoundsList.Remove(int.Parse(Name));
             }
         }
+
         internal static string RemoveWhiteSpaces(string TextToModify)
         {
             string NewString = string.Empty;
@@ -342,6 +299,7 @@ namespace EuroSound_Application
 
             return NewString;
         }
+
         internal static bool SubSFXFlagChecked(int Flags)
         {
             return Convert.ToBoolean((Flags >> 10) & 1);

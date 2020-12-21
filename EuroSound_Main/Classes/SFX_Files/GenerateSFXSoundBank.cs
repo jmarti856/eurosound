@@ -244,7 +244,7 @@ namespace EuroSound_Application
         {
             int index;
 
-            if (EXObjectsFunctions.SubSFXFlagChecked(Flags))
+            if (EXSoundbanksFunctions.SubSFXFlagChecked(Flags))
             {
                 index = Convert.ToInt32(GetHashcodeWithoutSection(Sample.HashcodeSubSFX), 16);
             }

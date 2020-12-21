@@ -22,11 +22,11 @@ namespace EuroSound_Application
             {
                 if (!string.IsNullOrEmpty(Name))
                 {
-                    string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files|*.wav", 0);
+                    string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0);
                     if (!string.IsNullOrEmpty(AudioPath))
                     {
                         string MD5Hash = GenericFunctions.CalculateMD5(AudioPath);
-                        if (EXObjectsFunctions.LoadAudioAndAddToList(AudioPath, Name, AudioDataDict, MD5Hash))
+                        if (EXSoundbanksFunctions.LoadAudioAndAddToList(AudioPath, Name, AudioDataDict, MD5Hash))
                         {
                             TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, MD5Hash, Name, 7, 7, "Audio", Color.Black, TreeView_File);
                             ProjectInfo.FileHasBeenModified = true;
@@ -47,14 +47,14 @@ namespace EuroSound_Application
             {
                 if (TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name.Equals("StreamedSounds"))
                 {
-                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, EXObjectsFunctions.RemoveWhiteSpaces(Name), Name, 4, 4, "Sample", Color.Black, TreeView_File);
-                    EXObjectsFunctions.AddSampleToSound(EXObjectsFunctions.GetSoundByName(int.Parse(TreeView_File.SelectedNode.Name), SoundsList), Name, true);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, EXSoundbanksFunctions.RemoveWhiteSpaces(Name), Name, 4, 4, "Sample", Color.Black, TreeView_File);
+                    EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.GetSoundByName(int.Parse(TreeView_File.SelectedNode.Name), SoundsList), Name, true);
                     ProjectInfo.FileHasBeenModified = true;
                 }
                 else
                 {
-                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, EXObjectsFunctions.RemoveWhiteSpaces(Name), Name, 4, 4, "Sample", Color.Black, TreeView_File);
-                    EXObjectsFunctions.AddSampleToSound(EXObjectsFunctions.GetSoundByName(int.Parse(TreeView_File.SelectedNode.Name), SoundsList), Name, false);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, EXSoundbanksFunctions.RemoveWhiteSpaces(Name), Name, 4, 4, "Sample", Color.Black, TreeView_File);
+                    EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.GetSoundByName(int.Parse(TreeView_File.SelectedNode.Name), SoundsList), Name, false);
                 }
             }
         }
@@ -70,9 +70,18 @@ namespace EuroSound_Application
             {
                 if (!string.IsNullOrEmpty(Name))
                 {
-                    int SoundID = EXObjectsFunctions.GetSoundID(ProjectInfo);
+                    int SoundID = GenericFunctions.GetSoundID(ProjectInfo);
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SoundID.ToString(), Name, 2, 2, "Sound", Color.Black, TreeView_File);
-                    EXObjectsFunctions.AddEmptySoundWithName(SoundID, Name, "0x1A000001", SoundsList);
+
+                    //Add Empty Sound
+                    EXSound Sound = new EXSound
+                    {
+                        DisplayName = Name,
+                        Hashcode = "0x1A000001",
+                    };
+                    SoundsList.Add(SoundID, Sound);
+
+                    //File has been modified
                     ProjectInfo.FileHasBeenModified = true;
                 }
             }
@@ -117,7 +126,7 @@ namespace EuroSound_Application
             {
                 if (!string.IsNullOrEmpty(Name))
                 {
-                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, EXObjectsFunctions.RemoveWhiteSpaces(Name), Name, 1, 1, "Folder", Color.Black, TreeView_File);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, EXSoundbanksFunctions.RemoveWhiteSpaces(Name), Name, 1, 1, "Folder", Color.Black, TreeView_File);
                     ProjectInfo.FileHasBeenModified = true;
                 }
             }
@@ -132,7 +141,7 @@ namespace EuroSound_Application
         private void ContextMenuFolder_Purge_Click(object sender, System.EventArgs e)
         {
             List<string> PurgedAudios = new List<string>();
-            List<string> GetAudiosListToRemove = EXObjectsFunctions.GetAudiosToPurge(AudioDataDict, SoundsList);
+            List<string> GetAudiosListToRemove = EXSoundbanksFunctions.GetAudiosToPurge(AudioDataDict, SoundsList);
             if (GetAudiosListToRemove.Count > 0)
             {
                 foreach (string AudioToRemove in GetAudiosListToRemove)
@@ -142,7 +151,7 @@ namespace EuroSound_Application
                     {
                         PurgedAudios.Add("2Purged Audio: " + NodeToRemove.Text);
                         TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, NodeToRemove, "Audio");
-                        EXObjectsFunctions.DeleteAudio(AudioDataDict, NodeToRemove.Name);
+                        EXSoundbanksFunctions.DeleteAudio(AudioDataDict, NodeToRemove.Name);
                     }
                 }
 
@@ -275,7 +284,7 @@ namespace EuroSound_Application
 
         private void ContextMenuAudio_Usage_Click(object sender, System.EventArgs e)
         {
-            List<string> Dependencies = EXObjectsFunctions.GetAudioDependencies(TreeView_File.SelectedNode.Name, TreeView_File.SelectedNode.Text, SoundsList, true);
+            List<string> Dependencies = EXSoundbanksFunctions.GetAudioDependencies(TreeView_File.SelectedNode.Name, TreeView_File.SelectedNode.Text, SoundsList, true);
             if (Dependencies.Count > 0)
             {
                 EuroSound_ItemUsage ShowDependencies = new EuroSound_ItemUsage(Dependencies)

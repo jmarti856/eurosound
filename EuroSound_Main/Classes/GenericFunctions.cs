@@ -11,10 +11,72 @@ namespace EuroSound_Application
     public static class GenericFunctions
     {
         public static string CurrentStatus;
-        public static ToolStripLabel FileNameLabel;
         public static ResourceManager ResourcesManager;
-        private static ToolStripLabel ProgramStatusLabel;
-        private static StatusStrip StatusBar;
+        public static StatusBar ParentFormStatusBar;
+
+        public static void GetStatusbar(StatusBar ControlToCapture)
+        {
+            ParentFormStatusBar = ControlToCapture;
+        }
+
+        public static void SetCurrentFileLabel(string text)
+        {
+            if (ParentFormStatusBar.Visible && ParentFormStatusBar != null)
+            {
+                ParentFormStatusBar.Invoke((MethodInvoker)delegate
+                {
+                    ParentFormStatusBar.Panels["File"].Text = text;
+                });
+            }
+            text = null;
+        }
+
+        public static void SetProgramStateShowToStatusBar(string NewStatus)
+        {
+            if (!NewStatus.Equals("CurrentStatus"))
+            {
+                CurrentStatus = NewStatus;
+            }
+            if (ParentFormStatusBar.Visible)
+            {
+                StatusBarSetText(CurrentStatus);
+            }
+        }
+
+        public static void StatusBarTutorialMode(bool MenuStripOpened)
+        {
+            if (ParentFormStatusBar.Visible)
+            {
+                if (MenuStripOpened)
+                {
+                    StatusBarSetText("");
+                }
+                else
+                {
+                    StatusBarSetText(CurrentStatus);
+                }
+            }
+        }
+
+        public static void StatusBarTutorialModeShowText(string TextToDisplay)
+        {
+            if (ParentFormStatusBar.Visible)
+            {
+                StatusBarSetText(TextToDisplay);
+            }
+        }
+
+        private static void StatusBarSetText(string TextToDisplay)
+        {
+            if (ParentFormStatusBar.Visible && ParentFormStatusBar != null)
+            {
+                ParentFormStatusBar.Invoke((MethodInvoker)delegate
+                {
+                    ParentFormStatusBar.Panels["Status"].Text = TextToDisplay;
+                });
+            }
+            TextToDisplay = null;
+        }
 
         public static string CalculateMD5(string filename)
         {
@@ -92,13 +154,6 @@ namespace EuroSound_Application
             return Results;
         }
 
-        public static void GetStatusBarControls(StatusStrip v_StatusBar, ToolStripLabel v_ProgramStatusLabel, ToolStripLabel v_FileNameLabel)
-        {
-            ProgramStatusLabel = v_ProgramStatusLabel;
-            FileNameLabel = v_FileNameLabel;
-            StatusBar = v_StatusBar;
-        }
-
         //ChangeLabel Value Text
         public static string OpenFileBrowser(string BrowserFilter, int SelectedIndexFilter)
         {
@@ -154,29 +209,6 @@ namespace EuroSound_Application
 
             return SelectedPath;
         }
-        public static void SetCurrentFileLabel(string text)
-        {
-            if (StatusBar.Visible && StatusBar != null)
-            {
-                StatusBar.Invoke((MethodInvoker)delegate
-                {
-                    FileNameLabel.Text = text;
-                });
-            }
-            text = null;
-        }
-
-        public static void SetProgramStateShowToStatusBar(string NewStatus)
-        {
-            if (!NewStatus.Equals("CurrentStatus"))
-            {
-                CurrentStatus = NewStatus;
-            }
-            if (StatusBar.Visible)
-            {
-                StatusBarSetText(CurrentStatus);
-            }
-        }
 
         public static void ShowErrorsAndWarningsList(List<string> ListToPrint, string FormTitle)
         {
@@ -191,39 +223,23 @@ namespace EuroSound_Application
             ImportResults.Dispose();
         }
 
-        public static void StatusBarTutorialMode(bool MenuStripOpened)
+
+        internal static int GetSoundID(ProjectFile FileProperties)
         {
-            if (StatusBar.Visible)
-            {
-                if (MenuStripOpened)
-                {
-                    StatusBarSetText("");
-                }
-                else
-                {
-                    StatusBarSetText(CurrentStatus);
-                }
-            }
+            int index;
+
+            index = (FileProperties.SoundID += 1);
+
+            return index;
         }
 
-        public static void StatusBarTutorialModeShowText(string TextToDisplay)
+        internal static int GetStreamedSoundID(ProjectFile FileProperties)
         {
-            if (StatusBar.Visible)
-            {
-                StatusBarSetText(TextToDisplay);
-            }
-        }
+            int index;
 
-        private static void StatusBarSetText(string TextToDisplay)
-        {
-            if (StatusBar.Visible && StatusBar != null)
-            {
-                StatusBar.Invoke((MethodInvoker)delegate
-                {
-                    ProgramStatusLabel.Text = TextToDisplay;
-                });
-            }
-            TextToDisplay = null;
+            index = (FileProperties.StreamedSoundID += 1);
+
+            return index;
         }
     }
 }

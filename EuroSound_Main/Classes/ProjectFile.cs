@@ -9,6 +9,7 @@ namespace EuroSound_Application
         public int TypeOfData { get; set; } = 0;
         public string Hashcode { get; set; } = "0x00000001";
         public int SoundID { get; set; } = 0;
+        public int StreamedSoundID { get; set; } = 0;
         public bool FileHasBeenModified { get; set; } = false;
 
         public void ClearSoundBankStoredData(Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, TreeView TreeViewControl)

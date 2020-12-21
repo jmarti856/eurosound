@@ -1,7 +1,5 @@
 ﻿using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
 using System;
-using System.IO;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -36,7 +34,7 @@ namespace EuroSound_Application
             numeric_pan.Value = SelectedSample.Pan;
             numeric_randompan.Value = SelectedSample.RandomPan;
             Checkbox_IsStreamedSound.Checked = SelectedSample.IsStreamed;
-            Hashcodes.AddHashcodesToCombobox(Combobox_SelectedAudio, EXObjectsFunctions.GetListAudioData(((Frm_Soundbanks_Main)ParentForm).AudioDataDict, ((Frm_Soundbanks_Main)ParentForm).TreeView_File));
+            Hashcodes.AddHashcodesToCombobox(Combobox_SelectedAudio, EXSoundbanksFunctions.GetListAudioData(((Frm_Soundbanks_Main)ParentForm).AudioDataDict, ((Frm_Soundbanks_Main)ParentForm).TreeView_File));
 
             /*---Put the selected audio in case is not null---*/
             if (SelectedSample.ComboboxSelectedAudio != null)

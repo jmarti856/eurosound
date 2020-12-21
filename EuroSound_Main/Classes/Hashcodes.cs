@@ -13,6 +13,7 @@ namespace EuroSound_Application
         public static Dictionary<string, string> SB_Defines = new Dictionary<string, string>();
         public static Dictionary<string, float[]> SFX_Data = new Dictionary<string, float[]>();
         public static Dictionary<string, string> SFX_Defines = new Dictionary<string, string>();
+
         public static void AddHashcodesToCombobox(ComboBox ControlToAddData, Dictionary<string, string> HashcodesDict)
         {
             /*Datasource Combobox*/
