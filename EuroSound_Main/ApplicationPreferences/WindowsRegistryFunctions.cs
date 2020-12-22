@@ -2,14 +2,14 @@
 
 namespace EuroSound_Application
 {
-    public static class WindowsRegistryFunctions
+    internal class WindowsRegistryFunctions
     {
-        private static RegistryKey EurocomKey;
-        private static RegistryKey EuroSoundKey;
-        private static RegistryKey SoftwareKey = Registry.CurrentUser.OpenSubKey("Software", true);
+        private RegistryKey EurocomKey;
+        private RegistryKey EuroSoundKey;
+        private RegistryKey SoftwareKey = Registry.CurrentUser.OpenSubKey("Software", true);
 
         #region Create Keys and SubKeys
-        public static void CreateEuroSoundKeyIfNotExists()
+        internal void CreateEuroSoundKeyIfNotExists()
         {
             CreateEurocomKeyIfNotExists();
             if (EurocomKey.OpenSubKey("Eurocomm", true) == null)
@@ -19,7 +19,7 @@ namespace EuroSound_Application
             EuroSoundKey = EurocomKey.OpenSubKey("EuroSound", true);
         }
 
-        public static void CreateEuroSoundSubkeyIfNotExists(string SubKeyName, bool Writable)
+        internal void CreateEuroSoundSubkeyIfNotExists(string SubKeyName, bool Writable)
         {
             if (EuroSoundKey.OpenSubKey(SubKeyName, Writable) == null)
             {
@@ -27,7 +27,7 @@ namespace EuroSound_Application
             }
         }
 
-        private static void CreateEurocomKeyIfNotExists()
+        internal void CreateEurocomKeyIfNotExists()
         {
             if (SoftwareKey.OpenSubKey("Eurocomm", true) == null)
             {
@@ -39,7 +39,7 @@ namespace EuroSound_Application
 
         #region Color Picker Preferences
 
-        public static void SaveCustomColors(int[] CustomColors)
+        internal void SaveCustomColors(int[] CustomColors)
         {
             CreateEuroSoundSubkeyIfNotExists("CustomColors", true);
             RegistryKey CustomColorKey = EuroSoundKey.OpenSubKey("CustomColors", true);
@@ -50,7 +50,7 @@ namespace EuroSound_Application
             }
         }
 
-        public static int[] SetCustomColors()
+        internal int[] SetCustomColors()
         {
             int[] CustomColors = new int[16];
             RegistryKey CustomColorKey = EuroSoundKey.OpenSubKey("CustomColors", true);
@@ -81,7 +81,7 @@ namespace EuroSound_Application
         #endregion Color Picker Preferences
 
         #region Hash Table Paths
-        internal static string[] LoadHashTablePathAndMD5(string HashtableName)
+        internal string[] LoadHashTablePathAndMD5(string HashtableName)
         {
             string[] Info = new string[2];
             RegistryKey HashTables = EuroSoundKey.OpenSubKey("HashTables", true);
@@ -94,7 +94,7 @@ namespace EuroSound_Application
             return Info;
         }
 
-        internal static void SaveHashTablePathAndMD5(string HashTableName, string HashTablePath, string HashTableMD5)
+        internal void SaveHashTablePathAndMD5(string HashTableName, string HashTablePath, string HashTableMD5)
         {
             CreateEuroSoundSubkeyIfNotExists("HashTables", true);
             RegistryKey HashTables = EuroSoundKey.OpenSubKey("HashTables", true);
@@ -105,7 +105,7 @@ namespace EuroSound_Application
         #endregion Hash Table Paths
 
         #region TreeView Preferences
-        internal static string[] LoadTreeViewPreferences()
+        internal string[] LoadTreeViewPreferences()
         {
             string[] TreeViewPreferences = new string[4];
             RegistryKey TreeViewConfig = EuroSoundKey.OpenSubKey("SBEditorTreeView", true);
@@ -127,7 +127,7 @@ namespace EuroSound_Application
             return TreeViewPreferences;
         }
 
-        internal static void SaveTreeViewPreferences()
+        internal void SaveTreeViewPreferences()
         {
             CreateEuroSoundSubkeyIfNotExists("SBEditorTreeView", true);
             RegistryKey SoundBankTreeViewPrefs = EuroSoundKey.OpenSubKey("SBEditorTreeView", true);
@@ -140,7 +140,7 @@ namespace EuroSound_Application
         #endregion TreeView Preferences
 
         #region General Preferences
-        internal static string LoadGeneralPreferences()
+        internal string LoadGeneralPreferences()
         {
             string TreeViewPreferences;
             RegistryKey GeneralConfigs = EuroSoundKey.OpenSubKey("General", true);
@@ -156,7 +156,7 @@ namespace EuroSound_Application
             return TreeViewPreferences;
         }
 
-        internal static void SaveGeneralPreferences()
+        internal void SaveGeneralPreferences()
         {
             CreateEuroSoundSubkeyIfNotExists("General", true);
             RegistryKey SoundBankTreeViewPrefs = EuroSoundKey.OpenSubKey("General", true);

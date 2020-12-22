@@ -7,11 +7,11 @@ namespace EuroSound_Application
 {
     internal class GenerateSFXDataFiles
     {
-        internal static void GenerateSFXDataBinaryFile(string OutputPath)
+        internal void GenerateSFXDataBinaryFile(string OutputPath)
         {
             BinaryWriter BWriter = new BinaryWriter(File.Open(OutputPath + "\\SFX_Data.bin", FileMode.Create, FileAccess.Write), Encoding.ASCII);
 
-            foreach (KeyValuePair<string, float[]> Item in Hashcodes.SFX_Data)
+            foreach (KeyValuePair<Int32, float[]> Item in Hashcodes.SFX_Data)
             {
                 float[] Values = Item.Value;
                 BWriter.Write(Convert.ToUInt32(((int)Values[0]).ToString("X8"), 16));
@@ -28,7 +28,7 @@ namespace EuroSound_Application
             BWriter.Close();
         }
 
-        private static string FloatToHex(float Number)
+        private string FloatToHex(float Number)
         {
             string HexNumber;
 

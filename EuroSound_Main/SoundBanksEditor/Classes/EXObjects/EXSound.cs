@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EuroSound_Application
 {
@@ -8,7 +9,7 @@ namespace EuroSound_Application
         public int Ducker { get; set; } = 0;
         public int DuckerLenght { get; set; } = 0;
         public int Flags { get; set; } = 0;
-        public string Hashcode { get; set; }
+        public Int32 Hashcode { get; set; }
         public int InnerRadiusReal { get; set; } = 0;
         public int MasterVolume { get; set; } = 0;
         public int MaxDelay { get; set; } = 0;

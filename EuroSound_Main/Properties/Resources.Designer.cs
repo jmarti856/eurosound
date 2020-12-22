@@ -61,6 +61,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a This audio does not use a loop offset.
+        /// </summary>
+        internal static string AudioNotUseOffset {
+            get {
+                return ResourceManager.GetString("AudioNotUseOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a This audio seems to be corrupt, please load it again.
         /// </summary>
         internal static string AudioProperties_FileCorrupt {
@@ -115,7 +124,7 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a An error ocurred registering EuroSound File-Types with the shell.
+        ///   Busca una cadena traducida similar a An error occurred registering EuroSound File-Types with the shell.
         /// </summary>
         internal static string EuroSoundFile_TypesRegisterdError {
             get {
@@ -142,7 +151,7 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Error reading the file, the fileformat is corrupt or incorrect.
+        ///   Busca una cadena traducida similar a Error reading the file, the file format is corrupt or incorrect.
         /// </summary>
         internal static string Gen_ErrorReading_FileIncorrect {
             get {
@@ -358,6 +367,24 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Output cancelled by user.
+        /// </summary>
+        internal static string OutputSFXSoundbankCancelled {
+            get {
+                return ResourceManager.GetString("OutputSFXSoundbankCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An error occurred in the output and the file might be corrupt.
+        /// </summary>
+        internal static string OutputSFXSoundbankErrors {
+            get {
+                return ResourceManager.GetString("OutputSFXSoundbankErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Reading ESF File.
         /// </summary>
         internal static string StatusBar_ReadingESFFile {
@@ -385,7 +412,7 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Reading Yaml File.
+        ///   Busca una cadena traducida similar a Reading YML File.
         /// </summary>
         internal static string StatusBar_Status_ReadingYamlFile {
             get {

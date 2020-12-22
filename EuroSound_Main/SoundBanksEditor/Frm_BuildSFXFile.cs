@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -59,31 +60,33 @@ namespace EuroSound_Application
                 //Discard SFXs that has checked as "no output"
                 foreach (KeyValuePair<int, EXSound> Sound in ((Frm_Soundbanks_Main)ParentForm).SoundsList)
                 {
-                    if (Sound.Value.OutputThisSound)
+                    //Check For Cancelation;
+                    if (BackgroundWorker_BuildSFX.CancellationPending)
                     {
-                        FinalSoundsDict.Add(Sound.Key, Sound.Value);
+                        BWriter.Close();
+                        BWriter.Dispose();
+                        e.Cancel = true;
+                        break;
                     }
-                    SetLabelText(Label_CurrentTask, "Checking SFX: " + Sound.Value.DisplayName);
-                    ProgressBar_CurrentTask.Invoke((MethodInvoker)delegate
+                    else
                     {
-                        ProgressBar_CurrentTask.Value += 1;
-                    });
-                    //Thread.Sleep(1);
+                        if (Sound.Value.OutputThisSound)
+                        {
+                            FinalSoundsDict.Add(Sound.Key, Sound.Value);
+                        }
+                        SetLabelText(Label_CurrentTask, "Checking SFX: " + Sound.Value.DisplayName);
+                        ProgressBar_CurrentTask.Invoke((MethodInvoker)delegate
+                        {
+                            ProgressBar_CurrentTask.Value += 1;
+                        });
+                    }
                 }
-                TotalProgress *= 20;
+                TotalProgress += 20;
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
 
                 //*===============================================================================================
                 //* STEP 2: DISCARD AUDIO DATA THAT SHOULD HAVE BEEN PURGED (40%)
                 //*===============================================================================================
-                //Check For Cancelation;
-                if (BackgroundWorker_BuildSFX.CancellationPending == true)
-                {
-                    BWriter.Close();
-                    BWriter.Dispose();
-                    e.Cancel = true;
-                }
-
                 //Get Final Audios To Export
                 ProgressBarValue(ProgressBar_CurrentTask, 0);
 
@@ -97,22 +100,33 @@ namespace EuroSound_Application
                 //Add data
                 foreach (string Key in UsedAudios)
                 {
-                    KeyValuePair<string, EXAudio> ObjectToAdd;
-                    if (((Frm_Soundbanks_Main)ParentForm).AudioDataDict.ContainsKey(Key))
+                    //Check For Cancelation;
+                    if (BackgroundWorker_BuildSFX.CancellationPending)
                     {
-                        ObjectToAdd = new KeyValuePair<string, EXAudio>(Key, ((Frm_Soundbanks_Main)ParentForm).AudioDataDict[Key]);
-                        FinalAudioDataDict.Add(ObjectToAdd.Key, ObjectToAdd.Value);
+                        BWriter.Close();
+                        BWriter.Dispose();
+                        e.Cancel = true;
+                        break;
                     }
-                    ProgressBar_CurrentTask.Invoke((MethodInvoker)delegate
+                    else
                     {
-                        ProgressBar_CurrentTask.Value += 1;
-                    });
-                    //Thread.Sleep(1);
+                        KeyValuePair<string, EXAudio> ObjectToAdd;
+                        if (((Frm_Soundbanks_Main)ParentForm).AudioDataDict.ContainsKey(Key))
+                        {
+                            ObjectToAdd = new KeyValuePair<string, EXAudio>(Key, ((Frm_Soundbanks_Main)ParentForm).AudioDataDict[Key]);
+                            FinalAudioDataDict.Add(ObjectToAdd.Key, ObjectToAdd.Value);
+                        }
+                        ProgressBar_CurrentTask.Invoke((MethodInvoker)delegate
+                        {
+                            ProgressBar_CurrentTask.Value += 1;
+                        });
+                    }
                 }
 
                 //Reset maximum
                 ProgressBarSetMaximum(ProgressBar_CurrentTask, 100);
 
+                /*Update Total Progress*/
                 TotalProgress += 20;
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
 
@@ -127,75 +141,53 @@ namespace EuroSound_Application
                     e.Cancel = true;
                 }
 
-                //Get Final Audios To Export
-                ProgressBarValue(ProgressBar_CurrentTask, 0);
                 //--------------------------------------[WRITE FILE HEADER]--------------------------------------
                 /*Update Label*/
                 SetLabelText(Label_CurrentTask, "Writting File Header");
 
                 /*Write Data*/
-                SFXCreator.WriteFileHeader(BWriter, CurrentFileProperties.Hashcode);
+                SFXCreator.WriteFileHeader(BWriter, CurrentFileProperties.Hashcode, ProgressBar_CurrentTask);
 
-                /*Update Progress Bar*/
-                ProgressBar_CurrentTask.Invoke((MethodInvoker)delegate
-                {
-                    ProgressBar_CurrentTask.Value += 20;
-                });
+                /*Update Total Progress*/
+                TotalProgress += 10;
+                BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+
 
                 //--------------------------------------[Write SECTIONS]--------------------------------------
                 /*Update Label*/
                 SetLabelText(Label_CurrentTask, "Writting File Sections");
 
                 /*Write Data*/
-                SFXCreator.WriteFileSections(BWriter, CountNumberOfSamples(FinalSoundsDict));
-
-                /*Update Progress Bar*/
-                ProgressBar_CurrentTask.Invoke((MethodInvoker)delegate
-                {
-                    ProgressBar_CurrentTask.Value += 20;
-                });
-
-                //--------------------------------------[SECTION SFX elements]--------------------------------------
-                /*Update Label*/
-                SetLabelText(Label_CurrentTask, "Writting SFX Section");
-
-                /*Write Data*/
-                SFXCreator.WriteSFXSection(BWriter, FinalSoundsDict, FinalAudioDataDict);
-
-                /*Update Progress Bar*/
-                ProgressBar_CurrentTask.Invoke((MethodInvoker)delegate
-                {
-                    ProgressBar_CurrentTask.Value += 20;
-                });
-
-                //--------------------------------------[SECTION Sample info elements]--------------------------------------
-                /*Update Label*/
-                SetLabelText(Label_CurrentTask, "Writting Sample Info Section");
-
-                /*Write Data*/
-                SFXCreator.WriteSampleInfoSection(BWriter, FinalAudioDataDict);
-
-                /*Update Progress Bar*/
-                ProgressBar_CurrentTask.Invoke((MethodInvoker)delegate
-                {
-                    ProgressBar_CurrentTask.Value += 20;
-                });
-
-                //--------------------------------------[SECTION Sample data]--------------------------------------
-                /*Update Label*/
-                SetLabelText(Label_CurrentTask, "Writting Sample Data Section");
-
-                /*Write Data*/
-                SFXCreator.WriteSampleDataSection(BWriter, FinalAudioDataDict);
-
-                /*Update Progress Bar*/
-                ProgressBar_CurrentTask.Invoke((MethodInvoker)delegate
-                {
-                    ProgressBar_CurrentTask.Value += 20;
-                });
+                SFXCreator.WriteFileSections(BWriter, CountNumberOfSamples(FinalSoundsDict), ProgressBar_CurrentTask);
 
                 /*Update Total Progress*/
-                TotalProgress += 40;
+                TotalProgress += 10;
+                BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+
+
+                //--------------------------------------[SECTION SFX elements]--------------------------------------
+                /*Write Data*/
+                SFXCreator.WriteSFXSection(BWriter, FinalSoundsDict, FinalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
+
+                /*Update Total Progress*/
+                TotalProgress += 10;
+                BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+
+
+                //--------------------------------------[SECTION Sample info elements]--------------------------------------
+                /*Write Data*/
+                SFXCreator.WriteSampleInfoSection(BWriter, FinalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
+
+                /*Update Total Progress*/
+                TotalProgress += 10;
+                BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+
+                //--------------------------------------[SECTION Sample data]--------------------------------------
+                /*Write Data*/
+                SFXCreator.WriteSampleDataSection(BWriter, FinalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
+
+                /*Update Total Progress*/
+                TotalProgress += 10;
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
 
                 //*===============================================================================================
@@ -210,24 +202,18 @@ namespace EuroSound_Application
                 }
 
                 //Update Label
-                SetLabelText(Label_CurrentTask, "Writting final offsets");
+                SetLabelText(Label_CurrentTask, "WrittingFinalOffsets");
 
                 /*Write Data*/
-                SFXCreator.WriteFinalOffsets(BWriter);
+                SFXCreator.WriteFinalOffsets(BWriter, ProgressBar_CurrentTask, Label_CurrentTask);
                 BWriter.Close();
                 BWriter.Dispose();
 
                 //Update Label
                 SetLabelText(Label_CurrentTask, "Output Completed");
 
-                /*Update Progress Bar*/
-                ProgressBar_CurrentTask.Invoke((MethodInvoker)delegate
-                {
-                    ProgressBar_CurrentTask.Value = 100;
-                });
-
                 /*Update Total Progress*/
-                TotalProgress += 20;
+                TotalProgress += 9;
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
             }
             else
@@ -245,11 +231,11 @@ namespace EuroSound_Application
         {
             if (e.Cancelled)
             {
-                Reports.Add("2Output cancelled by user");
+                Reports.Add("2"+GenericFunctions.ResourcesManager.GetString("OutputSFXSoundbankCancelled"));
             }
             else if (e.Error != null)
             {
-                Reports.Add("0An error occurred in the output and the file might be corrupt");
+                Reports.Add("0"+GenericFunctions.ResourcesManager.GetString("OutputSFXSoundbankErrors"));
             }
 
             if (Reports.Count > 0)

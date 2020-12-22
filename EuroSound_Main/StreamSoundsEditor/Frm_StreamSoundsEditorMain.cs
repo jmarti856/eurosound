@@ -33,7 +33,7 @@ namespace EuroSound_Application
             if (Hashcodes.SFX_Defines.Keys.Count == 0 || Hashcodes.SFX_Data.Keys.Count == 0)
             {
                 /*Update Status Bar*/
-                GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
+                GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
 
                 /*Load Data*/
                 Thread LoadHashcodeData = new Thread(() => Hashcodes.LoadSoundDataFile())
@@ -68,7 +68,7 @@ namespace EuroSound_Application
             TreeView_StreamData.ShowRootLines = GlobalPreferences.ShowRootLines;
 
             /*Update Status Bar*/
-            GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         private void Frm_StreamSoundsEditorMain_Shown(object sender, System.EventArgs e)
@@ -77,7 +77,7 @@ namespace EuroSound_Application
             TreeView_StreamData.Nodes["Sounds"].Expand();
 
             /*Set Program status*/
-            GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         //*===============================================================================================

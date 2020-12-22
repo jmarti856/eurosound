@@ -8,18 +8,18 @@ using System.Windows.Forms;
 
 namespace EuroSound_Application
 {
-    public static class GenericFunctions
+    internal static class GenericFunctions
     {
-        public static string CurrentStatus;
-        public static ResourceManager ResourcesManager;
-        public static StatusBar ParentFormStatusBar;
+        internal static string CurrentStatus;
+        internal static ResourceManager ResourcesManager;
+        internal static StatusBar ParentFormStatusBar;
 
-        public static void GetStatusbar(StatusBar ControlToCapture)
+        internal static void GetStatusbar(StatusBar ControlToCapture)
         {
             ParentFormStatusBar = ControlToCapture;
         }
 
-        public static void SetCurrentFileLabel(string text)
+        internal static void SetCurrentFileLabel(string text)
         {
             if (ParentFormStatusBar.Visible && ParentFormStatusBar != null)
             {
@@ -31,23 +31,24 @@ namespace EuroSound_Application
             text = null;
         }
 
-        public static void SetProgramStateShowToStatusBar(string NewStatus)
+        internal static void SetStatusToStatusBar(string NewStatus)
         {
-            if (!NewStatus.Equals("CurrentStatus"))
-            {
-                CurrentStatus = NewStatus;
-            }
+            CurrentStatus = NewStatus;
             if (ParentFormStatusBar.Visible)
             {
-                StatusBarSetText(CurrentStatus);
+                if (!GlobalPreferences.StatusBar_ToolTipMode)
+                {
+                    StatusBarSetText(CurrentStatus);
+                }
             }
         }
 
-        public static void StatusBarTutorialMode(bool MenuStripOpened)
+        internal static void StatusBarToolTipMode(bool MenuStripOpened)
         {
             if (ParentFormStatusBar.Visible)
             {
-                if (MenuStripOpened)
+                GlobalPreferences.StatusBar_ToolTipMode = MenuStripOpened;
+                if (GlobalPreferences.StatusBar_ToolTipMode)
                 {
                     StatusBarSetText("");
                 }
@@ -58,15 +59,18 @@ namespace EuroSound_Application
             }
         }
 
-        public static void StatusBarTutorialModeShowText(string TextToDisplay)
+        internal static void StatusBarShowToolTip(string TextToDisplay)
         {
             if (ParentFormStatusBar.Visible)
             {
-                StatusBarSetText(TextToDisplay);
+                if (GlobalPreferences.StatusBar_ToolTipMode)
+                {
+                    StatusBarSetText(TextToDisplay);
+                }
             }
         }
 
-        private static void StatusBarSetText(string TextToDisplay)
+        internal static void StatusBarSetText(string TextToDisplay)
         {
             if (ParentFormStatusBar.Visible && ParentFormStatusBar != null)
             {
@@ -78,7 +82,7 @@ namespace EuroSound_Application
             TextToDisplay = null;
         }
 
-        public static string CalculateMD5(string filename)
+        internal static string CalculateMD5(string filename)
         {
             string MD5hash = string.Empty;
 
@@ -104,7 +108,7 @@ namespace EuroSound_Application
             return MD5hash;
         }
 
-        public static bool FileIsModified(string StoredMD5Hash, string FileToCheck)
+        internal static bool FileIsModified(string StoredMD5Hash, string FileToCheck)
         {
             string hash;
             bool Modified = true;
@@ -119,22 +123,24 @@ namespace EuroSound_Application
             return Modified;
         }
 
-        public static Color GetColorFromColorPicker()
+        internal static Color GetColorFromColorPicker()
         {
+            WindowsRegistryFunctions WRegistryFunctions = new WindowsRegistryFunctions();
+
             Color PickedColor = Color.Black;
             ColorDialog ColorDiag = new ColorDialog() { AllowFullOpen = true, FullOpen = true };
-            ColorDiag.CustomColors = WindowsRegistryFunctions.SetCustomColors();
+            ColorDiag.CustomColors = WRegistryFunctions.SetCustomColors();
             if (ColorDiag.ShowDialog() == DialogResult.OK)
             {
                 PickedColor = ColorDiag.Color;
-                WindowsRegistryFunctions.SaveCustomColors(ColorDiag.CustomColors);
+                WRegistryFunctions.SaveCustomColors(ColorDiag.CustomColors);
             }
             ColorDiag.Dispose();
 
             return PickedColor;
         }
 
-        public static Form GetFormByName(string FormName, string tag)
+        internal static Form GetFormByName(string FormName, string tag)
         {
             Form Results = null;
 
@@ -155,7 +161,7 @@ namespace EuroSound_Application
         }
 
         //ChangeLabel Value Text
-        public static string OpenFileBrowser(string BrowserFilter, int SelectedIndexFilter)
+        internal static string OpenFileBrowser(string BrowserFilter, int SelectedIndexFilter)
         {
             string FilePath = string.Empty;
 
@@ -174,7 +180,7 @@ namespace EuroSound_Application
             return FilePath;
         }
 
-        public static string OpenInputBox(string Text, string Title)
+        internal static string OpenInputBox(string Text, string Title)
         {
             string SampleName = string.Empty;
 
@@ -189,7 +195,7 @@ namespace EuroSound_Application
             return SampleName;
         }
 
-        public static string SaveFileBrowser(string Filter, int SelectedIndexFilter, bool RestoreDirectory, string Name)
+        internal static string SaveFileBrowser(string Filter, int SelectedIndexFilter, bool RestoreDirectory, string Name)
         {
             string SelectedPath = string.Empty;
 
@@ -210,7 +216,7 @@ namespace EuroSound_Application
             return SelectedPath;
         }
 
-        public static void ShowErrorsAndWarningsList(List<string> ListToPrint, string FormTitle)
+        internal static void ShowErrorsAndWarningsList(List<string> ListToPrint, string FormTitle)
         {
             //Show Import results
             EuroSound_ErrorsAndWarningsList ImportResults = new EuroSound_ErrorsAndWarningsList(ListToPrint)

@@ -110,6 +110,7 @@
       <DependentUpon>Frm_MainPreferences.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\AudioFunctions.cs" />
+    <Compile Include="Classes\LoopStream.cs" />
     <Compile Include="Classes\GenericFunctions.cs" />
     <Compile Include="Classes\Hashcodes.cs" />
     <Compile Include="Classes\Reflection.cs" />

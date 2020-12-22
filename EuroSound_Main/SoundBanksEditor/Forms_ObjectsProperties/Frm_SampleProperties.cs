@@ -1,5 +1,6 @@
 ﻿using NAudio.Wave;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -10,8 +11,8 @@ namespace EuroSound_Application
         //* Global Variables
         //*===============================================================================================
         private EXSample SelectedSample;
-
         private WaveOut _waveOut = new WaveOut();
+        private AudioFunctions AudioFunctionsLibrary;
         private bool IsSubSFX;
 
         public Frm_SampleProperties(EXSample Sample, bool SubSFX)
@@ -26,6 +27,8 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void Frm_SampleProperties_Load(object sender, EventArgs e)
         {
+            AudioFunctionsLibrary = new AudioFunctions();
+
             Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", this.Tag.ToString());
             numeric_pitchoffset.Value = SelectedSample.PitchOffset;
             numeric_randomPitchOffset.Value = SelectedSample.RandomPitchOffset;
@@ -34,7 +37,11 @@ namespace EuroSound_Application
             numeric_pan.Value = SelectedSample.Pan;
             numeric_randompan.Value = SelectedSample.RandomPan;
             Checkbox_IsStreamedSound.Checked = SelectedSample.IsStreamed;
-            Hashcodes.AddHashcodesToCombobox(Combobox_SelectedAudio, EXSoundbanksFunctions.GetListAudioData(((Frm_Soundbanks_Main)ParentForm).AudioDataDict, ((Frm_Soundbanks_Main)ParentForm).TreeView_File));
+
+            /*Datasource Combobox*/
+            Combobox_SelectedAudio.DataSource = EXSoundbanksFunctions.GetListAudioData(((Frm_Soundbanks_Main)ParentForm).AudioDataDict, ((Frm_Soundbanks_Main)ParentForm).TreeView_File).ToList();
+            Combobox_SelectedAudio.ValueMember = "Key";
+            Combobox_SelectedAudio.DisplayMember = "Value";
 
             /*---Put the selected audio in case is not null---*/
             if (SelectedSample.ComboboxSelectedAudio != null)
@@ -59,7 +66,7 @@ namespace EuroSound_Application
 
         private void Frm_SampleProperties_FormClosing(object sender, FormClosingEventArgs e)
         {
-            AudioFunctions.StopAudio(_waveOut);
+            AudioFunctionsLibrary.StopAudio(_waveOut);
         }
 
         //*===============================================================================================
@@ -73,14 +80,14 @@ namespace EuroSound_Application
                 EXAudio AudioSelected = TreeNodeFunctions.GetSelectedAudio(Combobox_SelectedAudio.SelectedValue.ToString(), ((Frm_Soundbanks_Main)ParentForm).AudioDataDict);
                 if (AudioSelected != null && AudioSelected.PCMdata != null)
                 {
-                    AudioFunctions.PlayAudio(_waveOut, AudioSelected.PCMdata, AudioSelected.Frequency, int.Parse(numeric_pitchoffset.Value.ToString()), AudioSelected.Bits, AudioSelected.Channels, int.Parse(numeric_pan.Value.ToString()));
+                    AudioFunctionsLibrary.PlayAudio(_waveOut, AudioSelected.PCMdata, AudioSelected.Frequency, int.Parse(numeric_pitchoffset.Value.ToString()), AudioSelected.Bits, AudioSelected.Channels, int.Parse(numeric_pan.Value.ToString()));
                 }
             }
         }
 
         private void Button_Stop_Click(object sender, EventArgs e)
         {
-            AudioFunctions.StopAudio(_waveOut);
+            AudioFunctionsLibrary.StopAudio(_waveOut);
         }
 
         private void Button_ok_Click(object sender, EventArgs e)

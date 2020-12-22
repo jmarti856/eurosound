@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -23,7 +24,7 @@ namespace EuroSound_Application
         {
             for (int i = 0; i < ParentSound.Samples.Count; i++)
             {
-                if (ParentSound.Samples[i].Name.Equals(SelectedNodeName))
+                if (ParentSound.Samples[i].Name.Equals(SelectedNodeName, StringComparison.OrdinalIgnoreCase))
                 {
                     return ParentSound.Samples[i];
                 }

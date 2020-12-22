@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -7,7 +8,7 @@ namespace EuroSound_Application
     {
         public string FileName { get; set; } = "Unnamed";
         public int TypeOfData { get; set; } = 0;
-        public string Hashcode { get; set; } = "0x00000001";
+        public Int32 Hashcode { get; set; } = 0x00000000;
         public int SoundID { get; set; } = 0;
         public int StreamedSoundID { get; set; } = 0;
         public bool FileHasBeenModified { get; set; } = false;

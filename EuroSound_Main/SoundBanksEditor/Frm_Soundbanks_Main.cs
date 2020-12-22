@@ -10,21 +10,17 @@ namespace EuroSound_Application
 {
     public partial class Frm_Soundbanks_Main : Form
     {
-        public Dictionary<string, EXAudio> AudioDataDict = new Dictionary<string, EXAudio>();
-        public ProjectFile ProjectInfo = new ProjectFile();
-        public Dictionary<int, EXSound> SoundsList = new Dictionary<int, EXSound>();
-
-        private string FileToLoadArg, ProjectName;
-
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
-        private string LoadedFile = string.Empty;
-
-        //*===============================================================================================
-        //* Global Variables
-        //*===============================================================================================
+        internal Dictionary<string, EXAudio> AudioDataDict = new Dictionary<string, EXAudio>();
+        internal Dictionary<int, EXSound> SoundsList = new Dictionary<int, EXSound>();
+        internal ProjectFile ProjectInfo = new ProjectFile();
+        private SaveAndLoadESF SerializeInfo = new SaveAndLoadESF();
         private Thread UpdateList, UpdateWavList, UpdateStreamDataList;
+        private YamlReader LibYamlReader = new YamlReader();
+        private string FileToLoadArg, ProjectName;
+        private string LoadedFile = string.Empty;
 
         public Frm_Soundbanks_Main(string FilePath, string v_ProjectName)
         {
@@ -34,24 +30,21 @@ namespace EuroSound_Application
             ProjectName = v_ProjectName;
 
             /*Menu Item: File*/
-            MenuItem_File.DropDownOpened += (se, ev) => { GenericFunctions.StatusBarTutorialModeShowText(""); };
-            MenuItem_File.DropDownClosed += (se, ev) => { GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); };
+            MenuItem_File_Save.MouseHover += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.StatusBarShowToolTip(GenericFunctions.ResourcesManager.GetString("MenuItem_File_Save")); };
+            MenuItem_File_SaveAs.MouseHover += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.StatusBarShowToolTip(GenericFunctions.ResourcesManager.GetString("MenuItem_File_SaveAs")); };
+            MenuItem_File_Export.MouseHover += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.StatusBarShowToolTip(GenericFunctions.ResourcesManager.GetString("MenuItem_File_Export")); };
 
-            MenuItem_File_Save.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_Save"));
-            MenuItem_File_SaveAs.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_SaveAs"));
-            MenuItem_File_Export.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_Export"));
-
-            MenuItem_File_Save.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuItem_File.Visible);
-            MenuItem_File_SaveAs.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuItem_File.Visible);
-            MenuItem_File_Export.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuItem_File.Visible);
+            MenuItem_File_Save.MouseLeave += (se, ev) => GenericFunctions.StatusBarToolTipMode(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItem_File_SaveAs.MouseLeave += (se, ev) => GenericFunctions.StatusBarToolTipMode(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItem_File_Export.MouseLeave += (se, ev) => GenericFunctions.StatusBarToolTipMode(GlobalPreferences.StatusBar_ToolTipMode);
 
             /*Menu Item: Edit*/
-            MenuItem_Edit.DropDownOpened += (se, ev) => { GenericFunctions.StatusBarTutorialModeShowText(""); };
-            MenuItem_Edit.DropDownClosed += (se, ev) => { GenericFunctions.SetProgramStateShowToStatusBar("CurrentStatus"); };
+            MenuItem_Edit.DropDownOpened += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.StatusBarToolTipMode(GlobalPreferences.StatusBar_ToolTipMode); };
+            MenuItem_Edit.DropDownClosed += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.StatusBarToolTipMode(GlobalPreferences.StatusBar_ToolTipMode); };
 
-            MenuItem_Edit_FileProps.MouseHover += (se, ev) => GenericFunctions.StatusBarTutorialModeShowText(GenericFunctions.ResourcesManager.GetString("MenuItem_Edit_FileProps"));
+            MenuItem_Edit_FileProps.MouseHover += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.StatusBarShowToolTip(GenericFunctions.ResourcesManager.GetString("MenuItem_Edit_FileProps")); };
 
-            MenuItem_Edit_FileProps.MouseLeave += (se, ev) => GenericFunctions.StatusBarTutorialMode(MenuItem_Edit.Visible);
+            MenuItem_Edit_FileProps.MouseLeave += (se, ev) => GenericFunctions.StatusBarToolTipMode(GlobalPreferences.StatusBar_ToolTipMode);
         }
 
         [DllImport("user32.dll")]
@@ -67,7 +60,7 @@ namespace EuroSound_Application
                 file.WriteLine("# swy: EngineX sound bank exported from " + Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, ProjectInfo.Hashcode) + " / " + ProjectInfo.Hashcode);
                 foreach (KeyValuePair<int, EXSound> Sound in SoundsList)
                 {
-                    file.WriteLine("- " + Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, Sound.Value.Hashcode));
+                    file.WriteLine("- " + Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, Convert.ToInt32(Sound.Value.Hashcode)));
                 }
                 file.Close();
                 file.Dispose();
@@ -76,7 +69,7 @@ namespace EuroSound_Application
 
         private void Button_Search_Click(object sender, EventArgs e)
         {
-            string searchFor = Textbox_SearchHint.Text.Trim().ToUpper();
+            string searchFor = Textbox_SearchHint.Text.Trim();
             if (searchFor != "")
             {
                 if (TreeView_File.Nodes.Count > 0)
@@ -117,7 +110,6 @@ namespace EuroSound_Application
             UpdateWavDataList();
         }
 
-
         //*===============================================================================================
         //* MAIN FORM EVENTS
         //*===============================================================================================
@@ -128,7 +120,7 @@ namespace EuroSound_Application
             if (Hashcodes.SFX_Defines.Keys.Count == 0 || Hashcodes.SFX_Data.Keys.Count == 0)
             {
                 /*Update Status Bar*/
-                GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
+                GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
 
                 /*Load Data*/
                 Thread LoadHashcodeData = new Thread(() => Hashcodes.LoadSoundDataFile())
@@ -148,7 +140,7 @@ namespace EuroSound_Application
             if (!string.IsNullOrEmpty(FileToLoadArg))
             {
                 LoadedFile = FileToLoadArg;
-                SaveAndLoadESF.LoadSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, FileToLoadArg, ProjectInfo, GenericFunctions.ResourcesManager);
+                SerializeInfo.LoadSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, FileToLoadArg, ProjectInfo, GenericFunctions.ResourcesManager);
             }
             else
             {
@@ -169,16 +161,17 @@ namespace EuroSound_Application
             TreeView_File.Nodes["Sounds"].Expand();
 
             /*Set Program status*/
-            GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
-        private void Frm_Soundbanks_Main_Enter(object sender, System.EventArgs e)
+        private void Frm_Soundbanks_Main_Enter(object sender, EventArgs e)
         {
             GenericFunctions.SetCurrentFileLabel(ProjectInfo.FileName);
         }
 
         private void Frm_Soundbanks_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
+            GenericFunctions.SetCurrentFileLabel("");
             if (ProjectInfo.FileHasBeenModified)
             {
                 DialogResult dialogResult = MessageBox.Show("Save changes to " + ProjectInfo.FileName + "?", "EuroSound", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
@@ -191,6 +184,8 @@ namespace EuroSound_Application
                 }
                 else if (dialogResult == DialogResult.No)
                 {
+                    GlobalPreferences.CancelApplicationClose = false;
+                    e.Cancel = false;
                 }
                 else if (dialogResult == DialogResult.Cancel)
                 {
@@ -205,6 +200,8 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void MenuItem_Edit_FileProps_Click(object sender, EventArgs e)
         {
+            GlobalPreferences.StatusBar_ToolTipMode = false;
+
             Frm_FileProperties Props = new Frm_FileProperties(ProjectInfo)
             {
                 Owner = this,
@@ -232,9 +229,9 @@ namespace EuroSound_Application
 
         private void MenuItemFile_Export_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(ProjectInfo.Hashcode))
+            if (ProjectInfo.Hashcode != 0x00000000)
             {
-                string FileName = "HC" + ProjectInfo.Hashcode.Substring(4);
+                string FileName = "HC" + ProjectInfo.Hashcode.ToString("X8").Substring(2);
                 Frm_BuildSFXFile BuildFile = new Frm_BuildSFXFile(ProjectInfo, FileName)
                 {
                     Tag = this.Tag,
@@ -251,14 +248,15 @@ namespace EuroSound_Application
 
         private void MenuItemFile_ReadSound_Click(object sender, EventArgs e)
         {
-            string SoundName, SoundHashcode;
+            string SoundName;
+            Int32 SoundHashcode;
 
             string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0);
             if (!string.IsNullOrEmpty(FilePath))
             {
                 SoundName = new DirectoryInfo(Path.GetDirectoryName(FilePath)).Name;
                 SoundHashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SFX_Defines, SoundName);
-                YamlReader.ReadYamlFile(SoundsList, AudioDataDict, TreeView_File, FilePath, SoundName, SoundHashcode, true, ProjectInfo);
+                LibYamlReader.ReadYamlFile(SoundsList, AudioDataDict, TreeView_File, FilePath, SoundName, SoundHashcode, true, ProjectInfo);
                 ProjectInfo.FileHasBeenModified = true;
             }
         }
@@ -277,7 +275,7 @@ namespace EuroSound_Application
                 }
 
                 /*--Load New data--*/
-                Thread LoadYamlFile = new Thread(() => YamlReader.LoadDataFromSwyterUnpacker(SoundsList, AudioDataDict, TreeView_File, FilePath, ProjectInfo))
+                Thread LoadYamlFile = new Thread(() => LibYamlReader.LoadDataFromSwyterUnpacker(SoundsList, AudioDataDict, TreeView_File, FilePath, ProjectInfo))
                 {
                     IsBackground = true
                 };

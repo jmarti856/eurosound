@@ -4,14 +4,14 @@ using System.Reflection;
 /// <summary>
 /// A static class for reflection type functions
 /// </summary>
-public static class Reflection
+internal static class Reflection
 {
     /// <summary>
     /// Extension for 'Object' that copies the properties to a destination object.
     /// </summary>
     /// <param name="source">The source.</param>
     /// <param name="destination">The destination.</param>
-    public static void CopyProperties(this object source, object destination)
+    internal static void CopyProperties(this object source, object destination)
     {
         // If any this null throw an exception
         if (source == null || destination == null)

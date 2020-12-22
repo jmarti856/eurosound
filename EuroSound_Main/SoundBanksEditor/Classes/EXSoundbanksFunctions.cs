@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace EuroSound_Application
 {
-    public static class EXSoundbanksFunctions
+    internal static class EXSoundbanksFunctions
     {
-        public static bool SoundWillBeOutputed(Dictionary<int, EXSound> SoundsList, string SoundName)
+        internal static bool SoundWillBeOutputed(Dictionary<int, EXSound> SoundsList, string SoundName)
         {
             bool Output = false;
 

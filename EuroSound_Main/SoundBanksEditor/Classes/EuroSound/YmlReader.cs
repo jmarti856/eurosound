@@ -7,17 +7,17 @@ using YamlDotNet.RepresentationModel;
 
 namespace EuroSound_Application
 {
-    public static class YamlReader
+    public class YamlReader
     {
-        internal static List<string> Reports;
+        internal List<string> Reports;
 
-        internal static List<string> GetFilePaths(string LevelSoundBankPath, string FilePath)
+        internal List<string> GetFilePaths(string LevelSoundBankPath, string FilePath)
         {
             List<string> Paths = new List<string>();
             Reports = new List<string>();
 
             string[] lines = File.ReadAllLines(LevelSoundBankPath);
-            if (lines[0].Equals("#ftype:1"))
+            if (lines[0].Equals("#ftype:1", StringComparison.OrdinalIgnoreCase))
             {
                 for (int i = 0; i < lines.Length; i += 1)
                 {
@@ -36,10 +36,11 @@ namespace EuroSound_Application
             return Paths;
         }
 
-        internal static void LoadDataFromSwyterUnpacker(Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDict, TreeView TreeViewControl, string FilePath, ProjectFile FileProperties)
+        internal void LoadDataFromSwyterUnpacker(Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDict, TreeView TreeViewControl, string FilePath, ProjectFile FileProperties)
         {
             List<string> SoundsPaths;
-            string SoundName, SoundHashcode;
+            Int32 SoundHashcode;
+            string SoundName;
 
             //Read sounds from the unpacker folder
             SoundsPaths = GetFilePaths(FilePath, FilePath);
@@ -48,7 +49,7 @@ namespace EuroSound_Application
                 SoundName = new DirectoryInfo(Path.GetDirectoryName(path)).Name;
                 SoundHashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SFX_Defines, SoundName);
                 FileProperties.Hashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SB_Defines, Path.GetFileNameWithoutExtension(FilePath));
-                if (string.IsNullOrEmpty(SoundHashcode))
+                if (SoundHashcode == 0x00000000)
                 {
                     Reports.Add("0Hashcode not found for the sound ");
                 }
@@ -71,7 +72,7 @@ namespace EuroSound_Application
             ShowErrorsWarningsList(FilePath);
         }
 
-        internal static void ReadYamlFile(Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDict, TreeView TreeViewControl, string FilePath, string SoundName, string SoundHashcode, bool ShowResultsAtEnd, ProjectFile FileProperties)
+        internal void ReadYamlFile(Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDict, TreeView TreeViewControl, string FilePath, string SoundName, Int32 SoundHashcode, bool ShowResultsAtEnd, ProjectFile FileProperties)
         {
             int SoundID;
             int[] CurrentSoundParams;
@@ -79,7 +80,7 @@ namespace EuroSound_Application
             Dictionary<int, int[]> SamplesProperties;
 
             /*Update Status Bar*/
-            GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_ReadingYamlFile") + ": " + SoundName);
+            GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_ReadingYamlFile") + ": " + SoundName);
 
             if (Reports == null)
             {
@@ -88,7 +89,7 @@ namespace EuroSound_Application
 
             StreamReader reader = new StreamReader(FilePath);
             string FileCheck = reader.ReadLine();
-            if (FileCheck.Equals("#ftype:2"))
+            if (FileCheck.Equals("#ftype:2", StringComparison.OrdinalIgnoreCase))
             {
                 // Load the stream
                 YamlStream yaml = new YamlStream();
@@ -214,10 +215,10 @@ namespace EuroSound_Application
             reader.Dispose();
 
             /*Update Status Bar*/
-            GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
-        private static string GetAudioFilePath(string EffectPropertiesPath, int SampleName, int type)
+        private string GetAudioFilePath(string EffectPropertiesPath, int SampleName, int type)
         {
             string alphabet_string = "abcdefghijklmnopqrstuvwxyz";
             string AudioPath;
@@ -234,27 +235,24 @@ namespace EuroSound_Application
             return AudioPath;
         }
 
-        private static int[] GetAudioProperties(string PropertiesFilePath)
+        private int[] GetAudioProperties(string PropertiesFilePath)
         {
             int[] Properties = new int[3];
             string[] Lines = File.ReadAllLines(PropertiesFilePath);
 
-            if (Lines[0].Equals("#ftype:3"))
+            if (Lines[0].Equals("#ftype:3", StringComparison.OrdinalIgnoreCase))
             {
                 if (Lines.Length == 5)
                 {
-                    if (Lines[0].Equals("#ftype:3"))
+                    for (int i = 0; i < Lines.Length; i++)
                     {
-                        for (int i = 0; i < Lines.Length; i++)
+                        if (Lines[i].StartsWith("#"))
                         {
-                            if (Lines[i].StartsWith("#"))
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                Properties[i - 2] = int.Parse(Lines[i]);
-                            }
+                            continue;
+                        }
+                        else
+                        {
+                            Properties[i - 2] = int.Parse(Lines[i]);
                         }
                     }
                 }
@@ -271,7 +269,7 @@ namespace EuroSound_Application
             return Properties;
         }
 
-        private static int GetFlagsFromBoolArray(bool[] Flags)
+        private int GetFlagsFromBoolArray(bool[] Flags)
         {
             int bitfield = 0;
             for (int i = 0; i < Flags.Length; i++)
@@ -284,7 +282,7 @@ namespace EuroSound_Application
             return bitfield;
         }
 
-        private static Dictionary<int, int[]> GetSamples(YamlMappingNode mapping)
+        private Dictionary<int, int[]> GetSamples(YamlMappingNode mapping)
         {
             int SampleIndex;
             int index;
@@ -317,13 +315,13 @@ namespace EuroSound_Application
             return Samples;
         }
 
-        private static string GetSoundHashcode(uint Hashcode)
+        private string GetSoundHashcode(uint Hashcode)
         {
             int FinalHashcode = ((int)(0x1A000000 | Hashcode));
             return "0x" + FinalHashcode.ToString("X8");
         }
 
-        private static int[] GetSoundParams(YamlMappingNode mapping)
+        private int[] GetSoundParams(YamlMappingNode mapping)
         {
             bool[] SndFlags = new bool[12];
             bool readingFlags = false;
@@ -395,7 +393,7 @@ namespace EuroSound_Application
             return SndParams;
         }
 
-        private static void ShowErrorsWarningsList(string FilePath)
+        private void ShowErrorsWarningsList(string FilePath)
         {
             if (Reports.Count > 0)
             {

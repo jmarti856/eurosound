@@ -18,17 +18,32 @@ namespace EuroSound_Application
 
         private void Button_HT_Sound_Click(object sender, System.EventArgs e)
         {
-            Textbox_HT_Sound.Text = GenericFunctions.OpenFileBrowser("Header Files (*.h)|*.h", 0);
+            string HeaderSoundPath = GenericFunctions.OpenFileBrowser("Header Files (*.h)|*.h", 0);
+
+            if (!string.IsNullOrEmpty(HeaderSoundPath))
+            {
+                Textbox_HT_Sound.Text = HeaderSoundPath;
+            }
         }
 
         private void Button_HT_SoundData_Click(object sender, System.EventArgs e)
         {
-            Textbox_HT_Sound_Data.Text = GenericFunctions.OpenFileBrowser("Header Files (*.h)|*.h", 0);
+            string HeaderSoundData = GenericFunctions.OpenFileBrowser("Header Files (*.h)|*.h", 0);
+
+            if (!string.IsNullOrEmpty(HeaderSoundData))
+            {
+                Textbox_HT_Sound_Data.Text = HeaderSoundData;
+            }
         }
 
         private void Button_HT_Music_Click(object sender, System.EventArgs e)
         {
-            Textbox_HT_Music.Text = GenericFunctions.OpenFileBrowser("Header Files (*.h)|*.h", 0);
+            string HeaderMusicFile = GenericFunctions.OpenFileBrowser("Header Files (*.h)|*.h", 0);
+
+            if (!string.IsNullOrEmpty(HeaderMusicFile))
+            {
+                Textbox_HT_Music.Text = HeaderMusicFile;
+            }
         }
 
         private void Frm_HashTablesConfig_FormClosing(object sender, FormClosingEventArgs e)

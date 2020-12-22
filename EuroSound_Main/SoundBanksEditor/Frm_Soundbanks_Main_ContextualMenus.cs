@@ -77,7 +77,7 @@ namespace EuroSound_Application
                     EXSound Sound = new EXSound
                     {
                         DisplayName = Name,
-                        Hashcode = "0x1A000001",
+                        Hashcode = 0x00000000,
                     };
                     SoundsList.Add(SoundID, Sound);
 

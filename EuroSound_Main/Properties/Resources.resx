@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AudioNotUseOffset" xml:space="preserve">
+    <value>This audio does not use a loop offset</value>
+  </data>
   <data name="AudioPropertiesFormAudioExists" xml:space="preserve">
     <value>The audio will not be replaced, this audio is already loaded and stored in this project. The current one will remain.</value>
   </data>
@@ -136,7 +139,7 @@
     <value>Sorry, cannot rename this item, an item with this name already exists</value>
   </data>
   <data name="EuroSoundFile-TypesRegisterdError" xml:space="preserve">
-    <value>An error ocurred registering EuroSound File-Types with the shell</value>
+    <value>An error occurred registering EuroSound File-Types with the shell</value>
   </data>
   <data name="EuroSoundFile-TypesRegisterdOK" xml:space="preserve">
     <value>EuroSound File-Types registered with the Shell</value>
@@ -145,7 +148,7 @@
     <value>The hashtable paths are not correct, please fix them first before continue.</value>
   </data>
   <data name="Gen_ErrorReading_FileIncorrect" xml:space="preserve">
-    <value>Error reading the file, the fileformat is corrupt or incorrect</value>
+    <value>Error reading the file, the file format is corrupt or incorrect</value>
   </data>
   <data name="Gen_Error_NameIsEmpty" xml:space="preserve">
     <value>The name can't be empty</value>
@@ -216,6 +219,12 @@
   <data name="MenuTools_SFXDataGenerator" xml:space="preserve">
     <value>Generate again SFX Data Binary file</value>
   </data>
+  <data name="OutputSFXSoundbankCancelled" xml:space="preserve">
+    <value>Output cancelled by user</value>
+  </data>
+  <data name="OutputSFXSoundbankErrors" xml:space="preserve">
+    <value>An error occurred in the output and the file might be corrupt</value>
+  </data>
   <data name="StatusBar_ReadingESFFile" xml:space="preserve">
     <value>Reading ESF File</value>
   </data>
@@ -226,7 +235,7 @@
     <value>Reading Hashcodes Sound File</value>
   </data>
   <data name="StatusBar_Status_ReadingYamlFile" xml:space="preserve">
-    <value>Reading Yaml File</value>
+    <value>Reading YML File</value>
   </data>
   <data name="StatusBar_Status_Ready" xml:space="preserve">
     <value>Ready</value>

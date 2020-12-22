@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -7,13 +8,13 @@ namespace EuroSound_Application
 {
     public partial class Frm_Soundbanks_Main
     {
-        public static string SaveDocument(string LoadedFile, TreeView TreeView_File, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, ProjectFile ProjectProperties)
+        public string SaveDocument(string LoadedFile, TreeView TreeView_File, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, ProjectFile ProjectProperties)
         {
             string NewFilePath;
 
             if (!string.IsNullOrEmpty(LoadedFile))
             {
-                NewFilePath = SaveAndLoadESF.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, LoadedFile, ProjectProperties);
+                NewFilePath = SerializeInfo.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, LoadedFile, ProjectProperties);
             }
             else
             {
@@ -23,14 +24,14 @@ namespace EuroSound_Application
             return NewFilePath;
         }
 
-        internal static string OpenSaveAsDialog(TreeView TreeView_File, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, ProjectFile FileProperties)
+        internal string OpenSaveAsDialog(TreeView TreeView_File, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, ProjectFile FileProperties)
         {
             string SavePath = GenericFunctions.SaveFileBrowser("EuroSound Files (*.esf)|*.esf|All files (*.*)|*.*", 1, true, Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, FileProperties.Hashcode));
             if (!string.IsNullOrEmpty(SavePath))
             {
                 if (Directory.Exists(Path.GetDirectoryName(SavePath)))
                 {
-                    SaveAndLoadESF.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, SavePath, FileProperties);
+                    SerializeInfo.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, SavePath, FileProperties);
                 }
             }
             return SavePath;
@@ -265,7 +266,7 @@ namespace EuroSound_Application
                 });
 
                 /*Level Hashcode*/
-                ListViewItem LevelHashcode = new ListViewItem(new[] { "", ProjectInfo.Hashcode, "<Label Not Found>", "File Properties" });
+                ListViewItem LevelHashcode = new ListViewItem(new[] { "", ProjectInfo.Hashcode.ToString(), "<Label Not Found>", "File Properties" });
                 if (Hashcodes.SB_Defines.ContainsKey(ProjectInfo.Hashcode))
                 {
                     LevelHashcode.SubItems[0].Text = "OK";
@@ -285,12 +286,12 @@ namespace EuroSound_Application
                 {
                     foreach (KeyValuePair<int, EXSound> Sound in SoundsList)
                     {
-                        ListViewItem Hashcode = new ListViewItem(new[] { "", Sound.Value.Hashcode, "<Label Not Found>", Sound.Value.DisplayName });
-                        if (Hashcodes.SFX_Defines.ContainsKey(Sound.Value.Hashcode))
+                        ListViewItem Hashcode = new ListViewItem(new[] { "", Sound.Value.Hashcode.ToString(), "<Label Not Found>", Sound.Value.DisplayName });
+                        if (Hashcodes.SFX_Defines.ContainsKey(Convert.ToInt32(Sound.Value.Hashcode)))
                         {
                             Hashcode.SubItems[0].Text = "OK";
                             Hashcode.ImageIndex = 2;
-                            Hashcode.SubItems[2].Text = Hashcodes.SFX_Defines[Sound.Value.Hashcode];
+                            Hashcode.SubItems[2].Text = Hashcodes.SFX_Defines[Convert.ToInt32(Sound.Value.Hashcode)];
                         }
                         else
                         {
@@ -301,7 +302,7 @@ namespace EuroSound_Application
                         Hashcode.UseItemStyleForSubItems = false;
                         AddItemToListView(Hashcode, ListView_Hashcodes);
 
-                        GenericFunctions.SetProgramStateShowToStatusBar("Checking hashcode: " + Hashcode.SubItems[2].Text);
+                        GenericFunctions.SetStatusToStatusBar("Checking hashcode: " + Hashcode.SubItems[2].Text);
 
                         Thread.Sleep(5);
                     }
@@ -314,7 +315,7 @@ namespace EuroSound_Application
                         ListView_Hashcodes.Items.Clear();
                     });
                 }
-                GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {
                 IsBackground = true
@@ -352,7 +353,7 @@ namespace EuroSound_Application
                                 };
                                 AddItemToListView(ItemStreamed, ListView_StreamData);
 
-                                GenericFunctions.SetProgramStateShowToStatusBar("Checking Sample: " + Sample.DisplayName);
+                                GenericFunctions.SetStatusToStatusBar("Checking Sample: " + Sample.DisplayName);
 
                                 Thread.Sleep(5);
                             }
@@ -367,7 +368,7 @@ namespace EuroSound_Application
                         ListView_StreamData.Items.Clear();
                     });
                 }
-                GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {
                 IsBackground = true
@@ -406,7 +407,7 @@ namespace EuroSound_Application
                         };
                         AddItemToListView(Hashcode, ListView_WavHeaderData);
 
-                        GenericFunctions.SetProgramStateShowToStatusBar("Checking audio: " + item.Value.Name.ToString());
+                        GenericFunctions.SetStatusToStatusBar("Checking audio: " + item.Value.Name.ToString());
 
                         Thread.Sleep(5);
                     }
@@ -419,7 +420,7 @@ namespace EuroSound_Application
                         ListView_WavHeaderData.Items.Clear();
                     });
                 }
-                GenericFunctions.SetProgramStateShowToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {
                 IsBackground = true

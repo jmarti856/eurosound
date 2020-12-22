@@ -70,8 +70,8 @@ namespace EuroSound_Application
             this.MenuStrip_MainMenu.MdiWindowListItem = this.MainMenu_Window;
             this.MenuStrip_MainMenu.Name = "MenuStrip_MainMenu";
             this.MenuStrip_MainMenu.Size = new System.Drawing.Size(1421, 24);
-            this.MenuStrip_MainMenu.TabIndex = 3;
-            this.MenuStrip_MainMenu.Text = "menuStrip1";
+            this.MenuStrip_MainMenu.TabIndex = 0;
+            this.MenuStrip_MainMenu.Text = "MainMenu";
             // 
             // MainMenu_File
             // 
@@ -229,7 +229,7 @@ namespace EuroSound_Application
             this.File});
             this.MainStatusBar.ShowPanels = true;
             this.MainStatusBar.Size = new System.Drawing.Size(1421, 22);
-            this.MainStatusBar.TabIndex = 5;
+            this.MainStatusBar.TabIndex = 1;
             this.MainStatusBar.Text = "statusBar1";
             // 
             // Status
@@ -245,7 +245,6 @@ namespace EuroSound_Application
             this.File.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
             this.File.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Spring;
             this.File.Name = "File";
-            this.File.Text = "File";
             this.File.Width = 702;
             // 
             // Frm_EuroSound_Main

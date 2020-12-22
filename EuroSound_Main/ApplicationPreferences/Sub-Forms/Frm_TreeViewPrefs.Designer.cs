@@ -113,7 +113,7 @@ namespace EuroSound_Application
             // Label_Font
             // 
             this.Label_Font.AutoSize = true;
-            this.Label_Font.Location = new System.Drawing.Point(15, 135);
+            this.Label_Font.Location = new System.Drawing.Point(24, 135);
             this.Label_Font.Name = "Label_Font";
             this.Label_Font.Size = new System.Drawing.Size(31, 13);
             this.Label_Font.TabIndex = 7;
@@ -122,7 +122,7 @@ namespace EuroSound_Application
             // Textbox_SelectedFont
             // 
             this.Textbox_SelectedFont.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Textbox_SelectedFont.Location = new System.Drawing.Point(52, 132);
+            this.Textbox_SelectedFont.Location = new System.Drawing.Point(61, 132);
             this.Textbox_SelectedFont.Name = "Textbox_SelectedFont";
             this.Textbox_SelectedFont.ReadOnly = true;
             this.Textbox_SelectedFont.Size = new System.Drawing.Size(236, 20);

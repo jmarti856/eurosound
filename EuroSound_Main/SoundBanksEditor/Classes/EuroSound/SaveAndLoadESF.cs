@@ -8,12 +8,12 @@ using System.Windows.Forms;
 
 namespace EuroSound_Application
 {
-    internal static class SaveAndLoadESF
+    internal class SaveAndLoadESF
     {
-        internal static void LoadSoundBanksDocument(TreeView TreeViewControl, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties, ResourceManager ResxM)
+        internal void LoadSoundBanksDocument(TreeView TreeViewControl, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties, ResourceManager ResxM)
         {
             /*Update Status Bar*/
-            GenericFunctions.SetProgramStateShowToStatusBar(ResxM.GetString("StatusBar_ReadingESFFile"));
+            GenericFunctions.SetStatusToStatusBar(ResxM.GetString("StatusBar_ReadingESFFile"));
 
             //Disable temporaly the treeview
             TreeViewControl.Enabled = false;
@@ -30,7 +30,7 @@ namespace EuroSound_Application
                 if (Version == 10)
                 {
                     /*File Hashcode*/
-                    FileProperties.Hashcode = BReader.ReadString();
+                    FileProperties.Hashcode = Convert.ToInt32(BReader.ReadString(),16);
                     /*Latest SoundID value*/
                     FileProperties.SoundID = BReader.ReadInt32();
                     /*SoundsListData Offset -- Not used for now*/
@@ -83,10 +83,10 @@ namespace EuroSound_Application
             TreeViewControl.Enabled = true;
 
             /*Update Status Bar*/
-            GenericFunctions.SetProgramStateShowToStatusBar(ResxM.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.SetStatusToStatusBar(ResxM.GetString("StatusBar_Status_Ready"));
         }
 
-        internal static string SaveSoundBanksDocument(TreeView TreeViewControl, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
+        internal string SaveSoundBanksDocument(TreeView TreeViewControl, Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
         {
             BinaryWriter BWriter = new BinaryWriter(File.Open(FilePath, FileMode.Create, FileAccess.Write), Encoding.ASCII);
             //*===============================================================================================
@@ -142,7 +142,7 @@ namespace EuroSound_Application
 
             return FilePath;
         }
-        private static bool FileIsCorrect(BinaryReader BReader)
+        private bool FileIsCorrect(BinaryReader BReader)
         {
             string Magic;
             bool FileCorrect;
@@ -162,7 +162,7 @@ namespace EuroSound_Application
             return FileCorrect;
         }
 
-        private static void ReadAudiosDictionary(BinaryReader BReader, Dictionary<string, EXAudio> AudiosList)
+        private void ReadAudiosDictionary(BinaryReader BReader, Dictionary<string, EXAudio> AudiosList)
         {
             int TotalEntries, PCMDataLength;
             string HashMD5;
@@ -195,7 +195,7 @@ namespace EuroSound_Application
             }
         }
 
-        private static void ReadSoundsListData(BinaryReader BReader, Dictionary<int, EXSound> SoundsList)
+        private void ReadSoundsListData(BinaryReader BReader, Dictionary<int, EXSound> SoundsList)
         {
             int NumberOfSounds, NumberOfSamples, SoundID;
 
@@ -206,7 +206,7 @@ namespace EuroSound_Application
                 SoundID = BReader.ReadInt32();
                 EXSound NewSound = new EXSound
                 {
-                    Hashcode = BReader.ReadString(),
+                    Hashcode = Convert.ToInt32(BReader.ReadString(),16),
                     DisplayName = BReader.ReadString(),
                     OutputThisSound = BReader.ReadBoolean(),
 
@@ -252,7 +252,7 @@ namespace EuroSound_Application
             }
         }
 
-        private static void ReadTreeViewData(BinaryReader BReader, TreeView TreeViewControl)
+        private void ReadTreeViewData(BinaryReader BReader, TreeView TreeViewControl)
         {
             int NumberOfNodes;
 
@@ -264,7 +264,7 @@ namespace EuroSound_Application
             }
         }
 
-        private static void SaveAudiosData(Dictionary<string, EXAudio> AudiosList, BinaryWriter BWriter)
+        private void SaveAudiosData(Dictionary<string, EXAudio> AudiosList, BinaryWriter BWriter)
         {
             BWriter.Write(AudiosList.Count);
 
@@ -289,7 +289,7 @@ namespace EuroSound_Application
             }
         }
 
-        private static void SaveSoundsListData(Dictionary<int, EXSound> SoundsList, BinaryWriter BWriter)
+        private void SaveSoundsListData(Dictionary<int, EXSound> SoundsList, BinaryWriter BWriter)
         {
             BWriter.Write(SoundsList.Count);
 
@@ -338,7 +338,7 @@ namespace EuroSound_Application
             }
         }
 
-        private static void SaveTreeNodes(TreeView TreeViewControl, TreeNode Selected, BinaryWriter BWriter)
+        private void SaveTreeNodes(TreeView TreeViewControl, TreeNode Selected, BinaryWriter BWriter)
         {
             if (!Selected.Tag.Equals("Root"))
             {
@@ -363,14 +363,14 @@ namespace EuroSound_Application
             }
         }
 
-        private static void SaveTreeViewData(TreeView TreeViewControl, BinaryWriter BWriter)
+        private void SaveTreeViewData(TreeView TreeViewControl, BinaryWriter BWriter)
         {
             BWriter.Write((TreeViewControl.GetNodeCount(true) - 3));
             SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[0], BWriter);
             SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[1], BWriter);
             SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[2], BWriter);
         }
-        private static void UpdateNodeImages(TreeNode Node, Dictionary<int, EXSound> SoundsList)
+        private void UpdateNodeImages(TreeNode Node, Dictionary<int, EXSound> SoundsList)
         {
             if (Node.Tag.Equals("Sound"))
             {

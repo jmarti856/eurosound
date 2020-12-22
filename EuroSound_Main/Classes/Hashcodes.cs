@@ -8,13 +8,13 @@ using System.Windows.Forms;
 
 namespace EuroSound_Application
 {
-    public static class Hashcodes
+    internal static class Hashcodes
     {
-        public static Dictionary<string, string> SB_Defines = new Dictionary<string, string>();
-        public static Dictionary<string, float[]> SFX_Data = new Dictionary<string, float[]>();
-        public static Dictionary<string, string> SFX_Defines = new Dictionary<string, string>();
+        internal static Dictionary<Int32, string> SB_Defines = new Dictionary<Int32, string>();
+        internal static Dictionary<Int32, float[]> SFX_Data = new Dictionary<Int32, float[]>();
+        internal static Dictionary<Int32, string> SFX_Defines = new Dictionary<Int32, string>();
 
-        public static void AddHashcodesToCombobox(ComboBox ControlToAddData, Dictionary<string, string> HashcodesDict)
+        internal static void AddHashcodesToCombobox(ComboBox ControlToAddData, Dictionary<Int32, string> HashcodesDict)
         {
             /*Datasource Combobox*/
             ControlToAddData.DataSource = HashcodesDict.ToList();
@@ -22,12 +22,12 @@ namespace EuroSound_Application
             ControlToAddData.DisplayMember = "Value";
         }
 
-        public static string GetHashcodeByLabel(Dictionary<string, string> DataDict, string Hashcode)
+        internal static Int32 GetHashcodeByLabel(Dictionary<Int32, string> DataDict, string Hashcode)
         {
-            string HashcodeHex = string.Empty;
-            foreach (KeyValuePair<string, string> Entry in DataDict)
+            Int32 HashcodeHex = 0x00000000;
+            foreach (KeyValuePair<Int32, string> Entry in DataDict)
             {
-                if (Entry.Value.ToUpper().Equals(Hashcode.ToUpper()))
+                if (Entry.Value.Equals(Hashcode, StringComparison.OrdinalIgnoreCase))
                 {
                     HashcodeHex = Entry.Key;
                     break;
@@ -37,12 +37,12 @@ namespace EuroSound_Application
             return HashcodeHex;
         }
 
-        public static string GetHashcodeLabel(Dictionary<string, string> DataDict, string Hashcode)
+        internal static string GetHashcodeLabel(Dictionary<Int32, string> DataDict, Int32 Hashcode)
         {
             string HashcodeHex = string.Empty;
-            foreach (KeyValuePair<string, string> Entry in DataDict)
+            foreach (KeyValuePair<Int32, string> Entry in DataDict)
             {
-                if (Entry.Key.ToUpper().Equals(Hashcode.ToUpper()))
+                if (Entry.Key == Hashcode)
                 {
                     HashcodeHex = Entry.Value;
                     break;
@@ -52,7 +52,7 @@ namespace EuroSound_Application
             return HashcodeHex;
         }
 
-        public static void LoadSoundDataFile()
+        internal static void LoadSoundDataFile()
         {
             if (File.Exists(GlobalPreferences.HT_SoundsDataPath))
             {
@@ -66,7 +66,7 @@ namespace EuroSound_Application
             }
         }
 
-        public static void LoadSoundHashcodes(string SoundHashcodesPath)
+        internal static void LoadSoundHashcodes(string SoundHashcodesPath)
         {
             if (File.Exists(SoundHashcodesPath))
             {
@@ -81,10 +81,11 @@ namespace EuroSound_Application
         }
         #region SFX Defines && SB Defines dictionary
 
-        public static void ReadHashcodes(string FilePath)
+        internal static void ReadHashcodes(string FilePath)
         {
             string line;
-            string HexNum, HexLabel;
+            Int32 HexNum;
+            string HexLabel;
 
             //Clear dictionaries
             SFX_Defines.Clear();
@@ -108,9 +109,9 @@ namespace EuroSound_Application
                     if (matches.Count >= 2)
                     {
                         HexLabel = matches[0].Value.Trim();
-                        HexNum = matches[1].Value.Trim();
+                        HexNum = Convert.ToInt32(matches[1].Value.Trim(),16);
 
-                        if (HexNum.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+                        if (HexNum != 0x00000000)
                         {
                             if (HexLabel.StartsWith("SF", StringComparison.OrdinalIgnoreCase))
                             {
@@ -175,9 +176,9 @@ namespace EuroSound_Application
                         ArrayOfValues[6] = StringFloatToDouble(SplitedLine[6]);
                         ArrayOfValues[7] = StringFloatToDouble(SplitedLine[7]);
                         hashcode = "0x1A" + (int.Parse(ArrayOfValues[0].ToString()).ToString("X8").Substring(2));
-                        if (!SFX_Data.ContainsKey(hashcode))
+                        if (!SFX_Data.ContainsKey(Convert.ToInt32(hashcode, 16)))
                         {
-                            SFX_Data.Add(hashcode, ArrayOfValues);
+                            SFX_Data.Add(Convert.ToInt32(hashcode, 16), ArrayOfValues);
                         }
                     }
                 }

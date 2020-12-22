@@ -5,26 +5,30 @@ namespace EuroSound_Application
 {
     public partial class Frm_MainPreferences : Form
     {
+        //*===============================================================================================
+        //* GLOBAL VARS
+        //*===============================================================================================
         private Frm_HashTablesConfig GeneralHashTable;
         private Frm_General GeneralPreferences;
         private Frm_TreeViewPrefs TreeViewPrefs;
+
         public Frm_MainPreferences()
         {
             InitializeComponent();
         }
 
-        private static void RemoveAllFormsInsidePanel(Panel p_control)
+        //*===============================================================================================
+        //* FORM EVENTS
+        //*===============================================================================================
+        private void Frm_MainPreferences_Load(object sender, EventArgs e)
         {
-            Control.ControlCollection FormsToClose = p_control.Controls;
-            if (FormsToClose.Count > 0)
-            {
-                for (int i = 0; i < FormsToClose.Count; i++)
-                {
-                    ((Form)FormsToClose[i]).Close();
-                }
-            }
+            TreeViewPreferences.ExpandAll();
         }
 
+
+        //*===============================================================================================
+        //* FORM CONTROLS EVENTS
+        //*===============================================================================================
         private void Button_Cancel_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -32,6 +36,7 @@ namespace EuroSound_Application
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
+            WindowsRegistryFunctions WRegistryFunctions = new WindowsRegistryFunctions();
             RemoveAllFormsInsidePanel(Panel_SecondaryForms);
 
             /*-----------------[Frm_HashTablesConfig]-----------------*/
@@ -42,9 +47,9 @@ namespace EuroSound_Application
                 GlobalPreferences.HT_MusicPath = GlobalPreferences.HT_MusicPathTEMPORAL;
 
                 //SaveConfigs in Registry
-                WindowsRegistryFunctions.SaveHashTablePathAndMD5("Sounds", GlobalPreferences.HT_SoundsPath, GenericFunctions.CalculateMD5(GlobalPreferences.HT_SoundsPath));
-                WindowsRegistryFunctions.SaveHashTablePathAndMD5("SoundsData", GlobalPreferences.HT_SoundsDataPath, GenericFunctions.CalculateMD5(GlobalPreferences.HT_SoundsDataPath));
-                WindowsRegistryFunctions.SaveHashTablePathAndMD5("Musics", GlobalPreferences.HT_MusicPath, GenericFunctions.CalculateMD5(GlobalPreferences.HT_MusicPath));
+                WRegistryFunctions.SaveHashTablePathAndMD5("Sounds", GlobalPreferences.HT_SoundsPath, GenericFunctions.CalculateMD5(GlobalPreferences.HT_SoundsPath));
+                WRegistryFunctions.SaveHashTablePathAndMD5("SoundsData", GlobalPreferences.HT_SoundsDataPath, GenericFunctions.CalculateMD5(GlobalPreferences.HT_SoundsDataPath));
+                WRegistryFunctions.SaveHashTablePathAndMD5("Musics", GlobalPreferences.HT_MusicPath, GenericFunctions.CalculateMD5(GlobalPreferences.HT_MusicPath));
             }
 
             /*-----------------[Frm_TreeViewPrefs]-----------------*/
@@ -56,7 +61,7 @@ namespace EuroSound_Application
                 GlobalPreferences.ShowRootLines = GlobalPreferences.ShowRootLinesTEMPORAL;
 
                 //SaveConfig in Registry
-                WindowsRegistryFunctions.SaveTreeViewPreferences();
+                WRegistryFunctions.SaveTreeViewPreferences();
             }
 
             /*-----------------[Frm_GeneralPreferences]-----------------*/
@@ -65,16 +70,12 @@ namespace EuroSound_Application
                 GlobalPreferences.SFXOutputPath = GlobalPreferences.SFXOutputPathTEMPORAL;
 
                 //SaveConfig in Registry
-                WindowsRegistryFunctions.SaveGeneralPreferences();
+                WRegistryFunctions.SaveGeneralPreferences();
             }
 
             this.Close();
         }
 
-        private void Frm_MainPreferences_Load(object sender, EventArgs e)
-        {
-            TreeViewPreferences.ExpandAll();
-        }
         private void TreeViewPreferences_AfterSelect(object sender, TreeViewEventArgs e)
         {
             //Open Sub-form "Frm_HashTablesConfig"
@@ -126,6 +127,21 @@ namespace EuroSound_Application
                     Panel_SecondaryForms.Controls.Add(GeneralPreferences);
                     GeneralPreferences.Dock = DockStyle.Fill;
                     GeneralPreferences.Show();
+                }
+            }
+        }
+
+        //*===============================================================================================
+        //* FUNCTIONS
+        //*===============================================================================================
+        private static void RemoveAllFormsInsidePanel(Panel p_control)
+        {
+            Control.ControlCollection FormsToClose = p_control.Controls;
+            if (FormsToClose.Count > 0)
+            {
+                for (int i = 0; i < FormsToClose.Count; i++)
+                {
+                    ((Form)FormsToClose[i]).Close();
                 }
             }
         }

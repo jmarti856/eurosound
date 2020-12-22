@@ -26,7 +26,7 @@ namespace EuroSound_Application
 
         private void Button_ok_Click(object sender, EventArgs e)
         {
-            SelectedSound.Hashcode = cbx_hashcode.SelectedValue.ToString();
+            SelectedSound.Hashcode = Convert.ToInt32(cbx_hashcode.SelectedValue.ToString());
             SelectedSound.DuckerLenght = Convert.ToInt32(numeric_duckerlength.Value);
             SelectedSound.MinDelay = Convert.ToInt32(numeric_mindelay.Value);
             SelectedSound.MaxDelay = Convert.ToInt32(numeric_maxdelay.Value);
@@ -77,7 +77,7 @@ namespace EuroSound_Application
 
         private void Cbx_hashcode_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            float[] items = Hashcodes.SFX_Data[cbx_hashcode.SelectedValue.ToString()];
+            float[] items = Hashcodes.SFX_Data[Convert.ToInt32(cbx_hashcode.SelectedValue)];
             /*
             [0] HashCode;    --USED--
             [1] InnerRadius; --USED--
@@ -120,10 +120,7 @@ namespace EuroSound_Application
             Hashcodes.AddHashcodesToCombobox(cbx_hashcode, Hashcodes.SFX_Defines);
 
             /*---Put the selected hashcode in case is not null---*/
-            if (SelectedSound.Hashcode != null)
-            {
-                cbx_hashcode.SelectedValue = SelectedSound.Hashcode;
-            }
+            cbx_hashcode.SelectedValue = SelectedSound.Hashcode;
 
             /*---Required for Engine X---*/
             numeric_duckerlength.Value = SelectedSound.DuckerLenght;

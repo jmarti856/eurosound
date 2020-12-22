@@ -17,20 +17,5 @@
         public byte[] PCMdata { get; set; } = new byte[] { 1, 0, 8 };
         public int PSIsample { get; set; }
         public int RealSize { get; set; }
-        /*--Functions--*/
-
-        public bool IsEmpty()
-        {
-            bool Empty = false;
-            if (PCMdata.Length == 3)
-            {
-                if (PCMdata[0] == 1 && PCMdata[1] == 0 && PCMdata[2] == 8)
-                {
-                    Empty = true;
-                }
-            }
-
-            return Empty;
-        }
     }
 }

@@ -31,7 +31,7 @@ namespace EuroSound_Application
             Textbox_Musics_Path.Text = GlobalPreferences.HT_MusicPath;
 
             /*Put the selected hashcode in case is not null*/
-            if (CurrentFileProperties.Hashcode != null)
+            if (CurrentFileProperties.Hashcode != 0x00000000)
             {
                 Combobox_FileHashcode.SelectedValue = CurrentFileProperties.Hashcode;
             }
@@ -52,7 +52,7 @@ namespace EuroSound_Application
             CurrentFileProperties.FileName = Textbox_FileName.Text;
             //CurrentFileProperties.TypeOfData = Combobox_TypeOfData.SelectedIndex;
 
-            CurrentFileProperties.Hashcode = Combobox_FileHashcode.SelectedValue.ToString();
+            CurrentFileProperties.Hashcode = Convert.ToInt32(Combobox_FileHashcode.SelectedValue.ToString());
 
             /*Update Current File label*/
             GenericFunctions.SetCurrentFileLabel(CurrentFileProperties.FileName);
