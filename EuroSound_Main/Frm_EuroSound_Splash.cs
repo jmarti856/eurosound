@@ -34,7 +34,6 @@ namespace EuroSound_Application
 
             //* --Load Preferences--
             Label_Status.Text = "Loading preferences, please wait...";
-            WRegistryFunctions.CreateEuroSoundKeyIfNotExists();
             HashTable_Sounds = WRegistryFunctions.LoadHashTablePathAndMD5("Sounds");
             GlobalPreferences.HT_SoundsPath = HashTable_Sounds[0];
             GlobalPreferences.HT_SoundsMD5 = HashTable_Sounds[1];

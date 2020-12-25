@@ -1,5 +1,5 @@
 ﻿
-namespace EuroSound_Application.StreamSoundsEditor
+namespace EuroSound_Application
 {
     partial class Frm_StreamSounds_MarkersEditor
     {
@@ -241,6 +241,7 @@ namespace EuroSound_Application.StreamSoundsEditor
             this.Controls.Add(this.GroupBox_MarkerData);
             this.Controls.Add(this.GroupBox_StartData);
             this.Name = "Frm_StreamSounds_MarkersEditor";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Frm_StreamSounds_MarkersEditor";
             this.GroupBox_MarkerData.ResumeLayout(false);
             this.GroupBox_MarkerData.PerformLayout();

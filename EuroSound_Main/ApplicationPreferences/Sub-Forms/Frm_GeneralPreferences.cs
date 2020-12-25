@@ -53,7 +53,11 @@ namespace EuroSound_Application
 
             FileReg.CreateSubKey("shell\\open\\command").SetValue("", "\"" + OpenWith + "\"" + " \"%1\"");
             AppReg.CreateSubKey("shell\\open\\command").SetValue("", "\"" + OpenWith + "\"" + " \"%1\"");
-            AppAssoc.CreateSubKey("UserChoice").SetValue("Progid", KeyName, RegistryValueKind.String);
+            AppAssoc.CreateSubKey("OpenWithList").SetValue("a", KeyName, RegistryValueKind.String);
+            AppAssoc.CreateSubKey("OpenWithList").SetValue("b", "a", RegistryValueKind.String);
+            AppAssoc.CreateSubKey("OpenWithList").SetValue("MRUList", "ab", RegistryValueKind.String);
+            AppAssoc.CreateSubKey("OpenWithProgids").SetValue(Extension, new byte[0], RegistryValueKind.None);
+            AppAssoc.CreateSubKey("UserChoice").SetValue("Progid", "Applications\\" + KeyName, RegistryValueKind.String);
 
             SHChangeNotify(0x08000000, 0x0000, IntPtr.Zero, IntPtr.Zero);
         }

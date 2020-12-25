@@ -1,5 +1,4 @@
 ﻿using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
 using System;
 using System.Drawing;
 using System.IO;
@@ -45,13 +44,18 @@ namespace EuroSound_Application
             if (TemporalAudio.PCMdata != null)
             {
                 euroSound_WaveViewer1.RenderDelay = 0;
-                euroSound_WaveViewer1.WaveStream = new RawSourceWaveStream(new MemoryStream(TemporalAudio.PCMdata), new WaveFormat(TemporalAudio.Frequency, TemporalAudio.Bits, TemporalAudio.Channels));
+                euroSound_WaveViewer1.WaveStream = new RawSourceWaveStream(new MemoryStream(TemporalAudio.PCMdata), new WaveFormat((int)TemporalAudio.Frequency, (int)TemporalAudio.Bits, (int)TemporalAudio.Channels));
                 euroSound_WaveViewer1.InitControl();
             }
             else
             {
                 MessageBox.Show(GenericFunctions.ResourcesManager.GetString("AudioProperties_FileCorrupt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void Frm_AudioProperties_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            AudioFunctionsLibrary.StopAudio(_waveOut);
         }
 
         //*===============================================================================================
@@ -75,7 +79,7 @@ namespace EuroSound_Application
                     numeric_loopOffset.Value = TemporalAudio.LoopOffset;
                     Textbox_MD5Hash.Text = TemporalAudioHash;
 
-                    euroSound_WaveViewer1.WaveStream = new RawSourceWaveStream(new MemoryStream(TemporalAudio.PCMdata), new WaveFormat(TemporalAudio.Frequency, TemporalAudio.Bits, TemporalAudio.Channels));
+                    euroSound_WaveViewer1.WaveStream = new RawSourceWaveStream(new MemoryStream(TemporalAudio.PCMdata), new WaveFormat((int)TemporalAudio.Frequency, (int)TemporalAudio.Bits, (int)TemporalAudio.Channels));
                     euroSound_WaveViewer1.InitControl();
                 }
                 else
@@ -113,7 +117,7 @@ namespace EuroSound_Application
                 int SamplesToSkip = (int.Parse(numeric_loopOffset.Value.ToString()) * 2);
 
                 LoopSamples = TemporalAudio.PCMdata.Skip(SamplesToSkip).ToArray();
-                AudioFunctionsLibrary.PlayAudioLoopOffset(_waveOut, LoopSamples, TemporalAudio.Frequency, 0, TemporalAudio.Bits, TemporalAudio.Channels, 0);
+                AudioFunctionsLibrary.PlayAudioLoopOffset(_waveOut, LoopSamples, (int)TemporalAudio.Frequency, 0, (int)TemporalAudio.Bits, (int)TemporalAudio.Channels, 0);
             }
             else
             {
@@ -125,7 +129,7 @@ namespace EuroSound_Application
         {
             if (TemporalAudio.PCMdata != null)
             {
-                AudioFunctionsLibrary.PlayAudio(_waveOut, TemporalAudio.PCMdata, TemporalAudio.Frequency, 0, TemporalAudio.Bits, TemporalAudio.Channels, 0);
+                AudioFunctionsLibrary.PlayAudio(_waveOut, TemporalAudio.PCMdata, (int)TemporalAudio.Frequency, 0, (int)TemporalAudio.Bits, (int)TemporalAudio.Channels, 0);
             }
             else
             {
@@ -185,9 +189,9 @@ namespace EuroSound_Application
                 }
 
                 /*--Modify Temporal Audio Values--*/
-                TemporalAudio.Flags = int.Parse(Textbox_Flags.Text.ToString());
-                TemporalAudio.PSIsample = int.Parse(numeric_psi.Value.ToString());
-                TemporalAudio.LoopOffset = int.Parse(numeric_loopOffset.Value.ToString());
+                TemporalAudio.Flags = Convert.ToUInt16(Textbox_Flags.Text);
+                TemporalAudio.PSIsample = (uint)numeric_psi.Value;
+                TemporalAudio.LoopOffset = (uint)numeric_loopOffset.Value;
 
                 /*--Update Selected Audio-*/
                 SelectedAudio.Flags = TemporalAudio.Flags;

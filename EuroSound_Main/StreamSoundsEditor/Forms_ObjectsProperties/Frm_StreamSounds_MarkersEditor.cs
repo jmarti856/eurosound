@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace EuroSound_Application.StreamSoundsEditor
+namespace EuroSound_Application
 {
     public partial class Frm_StreamSounds_MarkersEditor : Form
     {

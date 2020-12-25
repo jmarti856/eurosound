@@ -29,13 +29,13 @@ namespace EuroSound_Application
             {
                 if (!string.IsNullOrEmpty(Name))
                 {
-                    int SoundID = GenericFunctions.GetSoundID(ProjectInfo);
+                    uint SoundID = GenericFunctions.GetSoundID(ProjectInfo);
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_StreamData.SelectedNode.Name, SoundID.ToString(), Name, 2, 2, "Sound", Color.Black, TreeView_StreamData);
                     //Add Empty Sound
                     EXSoundStream Sound = new EXSoundStream
                     {
                         DisplayName = Name,
-                        Hashcode = "0x1A000001",
+                        Hashcode = 0,
                     };
                     StreamSoundsList.Add(SoundID, Sound);
                     ProjectInfo.FileHasBeenModified = true;
@@ -58,6 +58,12 @@ namespace EuroSound_Application
         {
             TreeView_StreamData.SelectedNode.ForeColor = GenericFunctions.GetColorFromColorPicker(); ;
             ProjectInfo.FileHasBeenModified = true;
+        }
+
+
+        private void ContextMenuSounds_Properties_Click(object sender, System.EventArgs e)
+        {
+            OpenSoundPropertiesForm();
         }
     }
 }

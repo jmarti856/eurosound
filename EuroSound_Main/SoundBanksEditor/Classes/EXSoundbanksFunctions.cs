@@ -10,11 +10,11 @@ namespace EuroSound_Application
 {
     internal static class EXSoundbanksFunctions
     {
-        internal static bool SoundWillBeOutputed(Dictionary<int, EXSound> SoundsList, string SoundName)
+        internal static bool SoundWillBeOutputed(Dictionary<uint, EXSound> SoundsList, string SoundName)
         {
             bool Output = false;
 
-            EXSound Test = GetSoundByName(int.Parse(SoundName), SoundsList);
+            EXSound Test = GetSoundByName(uint.Parse(SoundName), SoundsList);
             if (Test != null)
             {
                 if (Test.OutputThisSound)
@@ -63,11 +63,11 @@ namespace EuroSound_Application
             return DeletedSuccessfully;
         }
 
-        internal static List<string> GetAudioDependencies(string AudioKey, string AudioName, Dictionary<int, EXSound> SoundsList, bool ItemUsage)
+        internal static List<string> GetAudioDependencies(string AudioKey, string AudioName, Dictionary<uint, EXSound> SoundsList, bool ItemUsage)
         {
             List<string> Dependencies = new List<string>();
 
-            foreach (KeyValuePair<int, EXSound> Sound in SoundsList)
+            foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
             {
                 foreach (EXSample Sample in Sound.Value.Samples)
                 {
@@ -87,7 +87,7 @@ namespace EuroSound_Application
             return Dependencies;
         }
 
-        internal static List<string> GetAudiosToPurge(Dictionary<string, EXAudio> AudioDataDict, Dictionary<int, EXSound> SoundsList)
+        internal static List<string> GetAudiosToPurge(Dictionary<string, EXAudio> AudioDataDict, Dictionary<uint, EXSound> SoundsList)
         {
             List<string> AudiosToPurge = new List<string>();
             List<string> UsedAudios = GetUsedAudios(SoundsList, false);
@@ -151,7 +151,7 @@ namespace EuroSound_Application
             return byteArray;
         }
 
-        internal static EXSound GetSoundByName(int NameToSearch, Dictionary<int, EXSound> SoundsList)
+        internal static EXSound GetSoundByName(uint NameToSearch, Dictionary<uint, EXSound> SoundsList)
         {
             EXSound SearchedSound = null;
 
@@ -164,12 +164,12 @@ namespace EuroSound_Application
             return SearchedSound;
         }
 
-        internal static List<string> GetUsedAudios(Dictionary<int, EXSound> SoundsList, bool OnlyOutputAudios)
+        internal static List<string> GetUsedAudios(Dictionary<uint, EXSound> SoundsList, bool OnlyOutputAudios)
         {
             List<string> UsedAudios = new List<string>();
 
             /*First we need to know which audios are used*/
-            foreach (KeyValuePair<int, EXSound> SoundToCheck in SoundsList)
+            foreach (KeyValuePair<uint, EXSound> SoundToCheck in SoundsList)
             {
                 if (OnlyOutputAudios)
                 {
@@ -213,9 +213,9 @@ namespace EuroSound_Application
             {
                 EXAudio NewAudio = LoadAudioData(AudioFilePath);
                 NewAudio.DisplayName = DisplayName;
-                NewAudio.Flags = Props[0];
-                NewAudio.PSIsample = Props[1];
-                NewAudio.LoopOffset = Props[2];
+                NewAudio.Flags = Convert.ToUInt16(Props[0]);
+                NewAudio.PSIsample = Convert.ToUInt32(Props[1]);
+                NewAudio.LoopOffset = Convert.ToUInt32(Props[2]);
                 AddAudioToList(NewAudio, FileMD5Hash, AudioDataDict);
                 TreeNodeFunctions.TreeNodeAddNewNode("AudioData", FileMD5Hash, "AD_" + DisplayName, 7, 7, "Audio", Color.Black, TreeViewControl);
 
@@ -254,12 +254,12 @@ namespace EuroSound_Application
                 EXAudio Audio = new EXAudio
                 {
                     Name = Path.GetFileName(FilePath),
-                    DataSize = Convert.ToInt32(AudioReader.Length),
-                    Frequency = AudioReader.WaveFormat.SampleRate,
-                    RealSize = Convert.ToInt32(new FileInfo(FilePath).Length),
-                    Channels = AudioReader.WaveFormat.Channels,
-                    Bits = AudioReader.WaveFormat.BitsPerSample,
-                    Duration = Convert.ToInt32(Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1)),
+                    DataSize = Convert.ToUInt32(AudioReader.Length),
+                    Frequency = Convert.ToUInt32(AudioReader.WaveFormat.SampleRate),
+                    RealSize = Convert.ToUInt32(new FileInfo(FilePath).Length),
+                    Channels = Convert.ToUInt32(AudioReader.WaveFormat.Channels),
+                    Bits = Convert.ToUInt32(AudioReader.WaveFormat.BitsPerSample),
+                    Duration = Convert.ToUInt32(Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1)),
                     Encoding = AudioReader.WaveFormat.Encoding.ToString(),
                     Flags = 0,
                     LoopOffset = 0,
@@ -278,12 +278,12 @@ namespace EuroSound_Application
             return null;
         }
 
-        internal static void RemoveSound(string Name, Dictionary<int, EXSound> SoundsList)
+        internal static void RemoveSound(string Name, Dictionary<uint, EXSound> SoundsList)
         {
-            EXSound itemToRemove = GetSoundByName(int.Parse(Name), SoundsList);
+            EXSound itemToRemove = GetSoundByName(uint.Parse(Name), SoundsList);
             if (itemToRemove != null)
             {
-                SoundsList.Remove(int.Parse(Name));
+                SoundsList.Remove(uint.Parse(Name));
             }
         }
 

@@ -4,25 +4,23 @@ namespace EuroSound_Application
 {
     public class EXSoundStream
     {
-        public string DisplayName { get; set; }
-        public string Marker { get; set; }
-        public int MarkerPosition { get; set; }
-        public int BaseVolume { get; set; }
+        public string DisplayName;
+        public string Marker;
+        public uint MarkerPosition;
+        public uint BaseVolume;
+        public uint Hashcode;
         public List<EXStreamSoundMarkerData> MarkersData = new List<EXStreamSoundMarkerData>();
-        public bool IsInstant { get; set; }
-        public bool InstantBuffer { get; set; }
-        public byte[] State { get; set; } = new byte[2];
-        public byte[] IMA_ADPCM_DATA { get; set; }
-        public byte[] PCM_DATA { get; set; }
+        public EXAudio WAV_Audio = new EXAudio();
+        public bool IsInstant;
+        public bool InstantBuffer;
+        public bool OutputThisSound;
+        public byte[] State = new byte[2];
+        public byte[] IMA_ADPCM_DATA;
 
         //Extra info (Not required for the output)
-        public string Hashcode { get; set; }
-        public int DataSize { get; set; }
-        public int Channels { get; set; }
-        public string Encoding { get; set; } = "<Null>";
-        public int Frequency { get; set; }
-        public int Bits { get; set; }
-        public int RealSize { get; set; }
-        public int Duration { get; set; }
+        public string PCM_Data_MD5;
+        public string IMA_Data_MD5;
+        public string IMA_Data_Name;
+        public string PCM_Data_Name;
     }
 }

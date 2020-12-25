@@ -56,10 +56,7 @@ namespace EuroSound_Application
             }
             Hashcodes.AddHashcodesToCombobox(Combobox_Hashcode, Hashcodes.SFX_Defines);
 
-            if (!string.IsNullOrEmpty(SelectedSample.HashcodeSubSFX))
-            {
-                Combobox_Hashcode.SelectedValue = SelectedSample.HashcodeSubSFX;
-            }
+            Combobox_Hashcode.SelectedValue = SelectedSample.HashcodeSubSFX;
 
             EnableOrDisableSubSFXSection(IsSubSFX);
         }
@@ -80,7 +77,7 @@ namespace EuroSound_Application
                 EXAudio AudioSelected = TreeNodeFunctions.GetSelectedAudio(Combobox_SelectedAudio.SelectedValue.ToString(), ((Frm_Soundbanks_Main)ParentForm).AudioDataDict);
                 if (AudioSelected != null && AudioSelected.PCMdata != null)
                 {
-                    AudioFunctionsLibrary.PlayAudio(_waveOut, AudioSelected.PCMdata, AudioSelected.Frequency, int.Parse(numeric_pitchoffset.Value.ToString()), AudioSelected.Bits, AudioSelected.Channels, int.Parse(numeric_pan.Value.ToString()));
+                    AudioFunctionsLibrary.PlayAudio(_waveOut, AudioSelected.PCMdata, (int)AudioSelected.Frequency, int.Parse(numeric_pitchoffset.Value.ToString()), (int)AudioSelected.Bits, (int)AudioSelected.Channels, int.Parse(numeric_pan.Value.ToString()));
                 }
             }
         }
@@ -92,23 +89,24 @@ namespace EuroSound_Application
 
         private void Button_ok_Click(object sender, EventArgs e)
         {
-            SelectedSample.PitchOffset = Convert.ToInt32(numeric_pitchoffset.Value);
-            SelectedSample.RandomPitchOffset = Convert.ToInt32(numeric_randomPitchOffset.Value);
-            SelectedSample.BaseVolume = Convert.ToInt32(Numeric_BaseVolume.Value);
-            SelectedSample.RandomVolumeOffset = Convert.ToInt32(numeric_randomvolumeoffset.Value);
-            SelectedSample.Pan = Convert.ToInt32(numeric_pan.Value);
-            SelectedSample.RandomPan = Convert.ToInt32(numeric_randompan.Value);
+            SelectedSample.PitchOffset = (Int16)numeric_pitchoffset.Value;
+            SelectedSample.RandomPitchOffset = (Int16)numeric_randomPitchOffset.Value;
+            SelectedSample.BaseVolume = (sbyte)Numeric_BaseVolume.Value;
+            SelectedSample.RandomVolumeOffset = (sbyte)numeric_randomvolumeoffset.Value;
+            SelectedSample.Pan = (sbyte)numeric_pan.Value;
+            SelectedSample.RandomPan = (sbyte)numeric_randompan.Value;
             SelectedSample.IsStreamed = Checkbox_IsStreamedSound.Checked;
 
-            if (!string.IsNullOrEmpty(Combobox_SelectedAudio.SelectedValue.ToString()))
+            if (Combobox_SelectedAudio.SelectedValue != null)
             {
                 SelectedSample.ComboboxSelectedAudio = Combobox_SelectedAudio.SelectedValue.ToString();
             }
 
-            if (!string.IsNullOrEmpty(Combobox_Hashcode.SelectedValue.ToString()))
+            if (Combobox_Hashcode.SelectedValue != null)
             {
-                SelectedSample.HashcodeSubSFX = Combobox_Hashcode.SelectedValue.ToString();
+                SelectedSample.HashcodeSubSFX = (uint)Combobox_Hashcode.SelectedValue;
             }
+
 
             this.Close();
         }

@@ -46,7 +46,7 @@ namespace EuroSound_Application
                 ListView_HashTableData.Items.Clear();
             });
 
-            foreach (KeyValuePair<Int32, float[]> Item in Hashcodes.SFX_Data)
+            foreach (KeyValuePair<uint, float[]> Item in Hashcodes.SFX_Data)
             {
                 if (BackgroundWorker_LoadData.CancellationPending)
                 {
@@ -131,7 +131,7 @@ namespace EuroSound_Application
         private void ListView_HashTableData_SelectedIndexChanged(object sender, EventArgs e)
         {
             int SelectedHash;
-            Int32 Hashcode;
+            uint Hashcode;
 
             if (ListView_HashTableData.SelectedItems.Count > 0)
             {
@@ -139,7 +139,7 @@ namespace EuroSound_Application
                 if (SelectedItem.SubItems.Count > 0)
                 {
                     SelectedHash = int.Parse(SelectedItem.SubItems[0].Text);
-                    Hashcode = Convert.ToInt32("0x1A" + SelectedHash.ToString("X8").Substring(2),16);
+                    Hashcode = Convert.ToUInt32("0x1A" + SelectedHash.ToString("X8").Substring(2), 16);
                     if (Hashcodes.SFX_Defines.ContainsKey(Hashcode))
                     {
                         Textbox_SelectedHashcode.Text = Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, Hashcode);

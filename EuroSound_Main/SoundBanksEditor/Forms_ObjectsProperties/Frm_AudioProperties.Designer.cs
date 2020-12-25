@@ -74,7 +74,7 @@ namespace EuroSound_Application
             // 
             this.numeric_psi.Location = new System.Drawing.Point(390, 74);
             this.numeric_psi.Maximum = new decimal(new int[] {
-            999999999,
+            -1,
             0,
             0,
             0});
@@ -106,7 +106,7 @@ namespace EuroSound_Application
             // 
             this.numeric_loopOffset.Location = new System.Drawing.Point(229, 74);
             this.numeric_loopOffset.Maximum = new decimal(new int[] {
-            999999999,
+            -1,
             0,
             0,
             0});
@@ -463,6 +463,7 @@ namespace EuroSound_Application
             this.Name = "Frm_AudioProperties";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Frm_AudioProperties";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_AudioProperties_FormClosing);
             this.Load += new System.EventHandler(this.Frm_AudioProperties_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numeric_psi)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_loopOffset)).EndInit();

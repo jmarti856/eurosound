@@ -92,6 +92,16 @@
             // Numeric_BaseVolume
             // 
             this.Numeric_BaseVolume.Location = new System.Drawing.Point(94, 45);
+            this.Numeric_BaseVolume.Maximum = new decimal(new int[] {
+            127,
+            0,
+            0,
+            0});
+            this.Numeric_BaseVolume.Minimum = new decimal(new int[] {
+            128,
+            0,
+            0,
+            -2147483648});
             this.Numeric_BaseVolume.Name = "Numeric_BaseVolume";
             this.Numeric_BaseVolume.Size = new System.Drawing.Size(94, 20);
             this.Numeric_BaseVolume.TabIndex = 8;
@@ -109,12 +119,12 @@
             // 
             this.numeric_randomPitchOffset.Location = new System.Drawing.Point(342, 19);
             this.numeric_randomPitchOffset.Maximum = new decimal(new int[] {
-            99999999,
+            32767,
             0,
             0,
             0});
             this.numeric_randomPitchOffset.Minimum = new decimal(new int[] {
-            99999999,
+            32768,
             0,
             0,
             -2147483648});
@@ -135,12 +145,12 @@
             // 
             this.numeric_randompan.Location = new System.Drawing.Point(342, 71);
             this.numeric_randompan.Maximum = new decimal(new int[] {
-            99999999,
+            127,
             0,
             0,
             0});
             this.numeric_randompan.Minimum = new decimal(new int[] {
-            99999999,
+            128,
             0,
             0,
             -2147483648});
@@ -160,8 +170,13 @@
             // numeric_pan
             // 
             this.numeric_pan.Location = new System.Drawing.Point(94, 71);
+            this.numeric_pan.Maximum = new decimal(new int[] {
+            127,
+            0,
+            0,
+            0});
             this.numeric_pan.Minimum = new decimal(new int[] {
-            100,
+            128,
             0,
             0,
             -2147483648});
@@ -182,12 +197,12 @@
             // 
             this.numeric_randomvolumeoffset.Location = new System.Drawing.Point(342, 45);
             this.numeric_randomvolumeoffset.Maximum = new decimal(new int[] {
-            99999999,
+            127,
             0,
             0,
             0});
             this.numeric_randomvolumeoffset.Minimum = new decimal(new int[] {
-            99999999,
+            128,
             0,
             0,
             -2147483648});
@@ -208,12 +223,12 @@
             // 
             this.numeric_pitchoffset.Location = new System.Drawing.Point(94, 19);
             this.numeric_pitchoffset.Maximum = new decimal(new int[] {
-            299999,
+            32767,
             0,
             0,
             0});
             this.numeric_pitchoffset.Minimum = new decimal(new int[] {
-            19999,
+            22000,
             0,
             0,
             -2147483648});

@@ -52,7 +52,7 @@ namespace EuroSound_Application
             CurrentFileProperties.FileName = Textbox_FileName.Text;
             //CurrentFileProperties.TypeOfData = Combobox_TypeOfData.SelectedIndex;
 
-            CurrentFileProperties.Hashcode = Convert.ToInt32(Combobox_FileHashcode.SelectedValue.ToString());
+            CurrentFileProperties.Hashcode = Convert.ToUInt32(Combobox_FileHashcode.SelectedValue.ToString());
 
             /*Update Current File label*/
             GenericFunctions.SetCurrentFileLabel(CurrentFileProperties.FileName);

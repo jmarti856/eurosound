@@ -87,7 +87,7 @@ namespace EuroSound_Application
         private void Frm_EuroSound_Main_Load(object sender, EventArgs e)
         {
             /*GetControl*/
-            GenericFunctions.GetStatusbar(MainStatusBar);
+            GenericFunctions.ParentFormStatusBar = MainStatusBar;
 
             /*Update Status Bar*/
             GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));

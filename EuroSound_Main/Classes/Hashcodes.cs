@@ -10,11 +10,11 @@ namespace EuroSound_Application
 {
     internal static class Hashcodes
     {
-        internal static Dictionary<Int32, string> SB_Defines = new Dictionary<Int32, string>();
-        internal static Dictionary<Int32, float[]> SFX_Data = new Dictionary<Int32, float[]>();
-        internal static Dictionary<Int32, string> SFX_Defines = new Dictionary<Int32, string>();
+        internal static Dictionary<uint, string> SB_Defines = new Dictionary<uint, string>();
+        internal static Dictionary<uint, float[]> SFX_Data = new Dictionary<uint, float[]>();
+        internal static Dictionary<uint, string> SFX_Defines = new Dictionary<uint, string>();
 
-        internal static void AddHashcodesToCombobox(ComboBox ControlToAddData, Dictionary<Int32, string> HashcodesDict)
+        internal static void AddHashcodesToCombobox(ComboBox ControlToAddData, Dictionary<uint, string> HashcodesDict)
         {
             /*Datasource Combobox*/
             ControlToAddData.DataSource = HashcodesDict.ToList();
@@ -22,10 +22,10 @@ namespace EuroSound_Application
             ControlToAddData.DisplayMember = "Value";
         }
 
-        internal static Int32 GetHashcodeByLabel(Dictionary<Int32, string> DataDict, string Hashcode)
+        internal static uint GetHashcodeByLabel(Dictionary<uint, string> DataDict, string Hashcode)
         {
-            Int32 HashcodeHex = 0x00000000;
-            foreach (KeyValuePair<Int32, string> Entry in DataDict)
+            uint HashcodeHex = 0x00000000;
+            foreach (KeyValuePair<uint, string> Entry in DataDict)
             {
                 if (Entry.Value.Equals(Hashcode, StringComparison.OrdinalIgnoreCase))
                 {
@@ -37,10 +37,10 @@ namespace EuroSound_Application
             return HashcodeHex;
         }
 
-        internal static string GetHashcodeLabel(Dictionary<Int32, string> DataDict, Int32 Hashcode)
+        internal static string GetHashcodeLabel(Dictionary<uint, string> DataDict, uint Hashcode)
         {
             string HashcodeHex = string.Empty;
-            foreach (KeyValuePair<Int32, string> Entry in DataDict)
+            foreach (KeyValuePair<uint, string> Entry in DataDict)
             {
                 if (Entry.Key == Hashcode)
                 {
@@ -84,7 +84,7 @@ namespace EuroSound_Application
         internal static void ReadHashcodes(string FilePath)
         {
             string line;
-            Int32 HexNum;
+            uint HexNum;
             string HexLabel;
 
             //Clear dictionaries
@@ -109,9 +109,9 @@ namespace EuroSound_Application
                     if (matches.Count >= 2)
                     {
                         HexLabel = matches[0].Value.Trim();
-                        HexNum = Convert.ToInt32(matches[1].Value.Trim(),16);
+                        HexNum = Convert.ToUInt32(matches[1].Value.Trim(), 16);
 
-                        if (HexNum != 0x00000000)
+                        if (HexNum >= 436207616)
                         {
                             if (HexLabel.StartsWith("SF", StringComparison.OrdinalIgnoreCase))
                             {
@@ -120,12 +120,12 @@ namespace EuroSound_Application
                                     SFX_Defines.Add(HexNum, HexLabel);
                                 }
                             }
-                            else if (HexLabel.StartsWith("SB_", StringComparison.OrdinalIgnoreCase))
+                        }
+                        else if (HexLabel.StartsWith("SB_", StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (!SB_Defines.ContainsKey(HexNum))
                             {
-                                if (!SB_Defines.ContainsKey(HexNum))
-                                {
-                                    SB_Defines.Add(HexNum, HexLabel);
-                                }
+                                SB_Defines.Add(HexNum, HexLabel);
                             }
                         }
                     }
@@ -176,9 +176,9 @@ namespace EuroSound_Application
                         ArrayOfValues[6] = StringFloatToDouble(SplitedLine[6]);
                         ArrayOfValues[7] = StringFloatToDouble(SplitedLine[7]);
                         hashcode = "0x1A" + (int.Parse(ArrayOfValues[0].ToString()).ToString("X8").Substring(2));
-                        if (!SFX_Data.ContainsKey(Convert.ToInt32(hashcode, 16)))
+                        if (!SFX_Data.ContainsKey(Convert.ToUInt32(hashcode, 16)))
                         {
-                            SFX_Data.Add(Convert.ToInt32(hashcode, 16), ArrayOfValues);
+                            SFX_Data.Add(Convert.ToUInt32(hashcode, 16), ArrayOfValues);
                         }
                     }
                 }

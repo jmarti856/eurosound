@@ -11,7 +11,7 @@ namespace EuroSound_Application
         {
             BinaryWriter BWriter = new BinaryWriter(File.Open(OutputPath + "\\SFX_Data.bin", FileMode.Create, FileAccess.Write), Encoding.ASCII);
 
-            foreach (KeyValuePair<Int32, float[]> Item in Hashcodes.SFX_Data)
+            foreach (KeyValuePair<uint, float[]> Item in Hashcodes.SFX_Data)
             {
                 float[] Values = Item.Value;
                 BWriter.Write(Convert.ToUInt32(((int)Values[0]).ToString("X8"), 16));

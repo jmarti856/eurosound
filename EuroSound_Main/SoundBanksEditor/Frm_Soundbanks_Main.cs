@@ -14,9 +14,9 @@ namespace EuroSound_Application
         //* Global Variables
         //*===============================================================================================
         internal Dictionary<string, EXAudio> AudioDataDict = new Dictionary<string, EXAudio>();
-        internal Dictionary<int, EXSound> SoundsList = new Dictionary<int, EXSound>();
+        internal Dictionary<uint, EXSound> SoundsList = new Dictionary<uint, EXSound>();
         internal ProjectFile ProjectInfo = new ProjectFile();
-        private SaveAndLoadESF SerializeInfo = new SaveAndLoadESF();
+        private EuroSoundFiles SerializeInfo = new EuroSoundFiles();
         private Thread UpdateList, UpdateWavList, UpdateStreamDataList;
         private YamlReader LibYamlReader = new YamlReader();
         private string FileToLoadArg, ProjectName;
@@ -58,9 +58,9 @@ namespace EuroSound_Application
                 StreamWriter file = new StreamWriter(SavePath);
                 file.WriteLine("#ftype:1");
                 file.WriteLine("# swy: EngineX sound bank exported from " + Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, ProjectInfo.Hashcode) + " / " + ProjectInfo.Hashcode);
-                foreach (KeyValuePair<int, EXSound> Sound in SoundsList)
+                foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
                 {
-                    file.WriteLine("- " + Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, Convert.ToInt32(Sound.Value.Hashcode)));
+                    file.WriteLine("- " + Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, Convert.ToUInt32(Sound.Value.Hashcode)));
                 }
                 file.Close();
                 file.Dispose();
@@ -249,7 +249,7 @@ namespace EuroSound_Application
         private void MenuItemFile_ReadSound_Click(object sender, EventArgs e)
         {
             string SoundName;
-            Int32 SoundHashcode;
+            uint SoundHashcode;
 
             string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0);
             if (!string.IsNullOrEmpty(FilePath))
@@ -290,7 +290,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void TreeView_File_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            int SoundID;
+            uint SoundID;
             /*Check that we have selected a node, and we have not selected the root folder*/
             if (e.Node.Parent != null && !e.Node.Tag.Equals("Root"))
             {
@@ -313,7 +313,7 @@ namespace EuroSound_Application
                         /*Rename Sound item*/
                         if (e.Node.Tag.Equals("Sound"))
                         {
-                            SoundID = int.Parse(e.Node.Name);
+                            SoundID = uint.Parse(e.Node.Name);
                             if (SoundsList.ContainsKey(SoundID))
                             {
                                 SoundsList[SoundID].DisplayName = e.Label;
@@ -322,7 +322,7 @@ namespace EuroSound_Application
                         /*Rename sound sample*/
                         else if (e.Node.Tag.Equals("Sample"))
                         {
-                            EXSound ParentSound = EXSoundbanksFunctions.GetSoundByName(int.Parse(e.Node.Parent.Name), SoundsList);
+                            EXSound ParentSound = EXSoundbanksFunctions.GetSoundByName(uint.Parse(e.Node.Parent.Name), SoundsList);
                             for (int i = 0; i < ParentSound.Samples.Count; i++)
                             {
                                 if (ParentSound.Samples[i].Name.Equals(e.Node.Name))
@@ -528,15 +528,16 @@ namespace EuroSound_Application
         private void TreeView_File_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             /*Select node*/
-            TreeView_File.SelectedNode = TreeView_File.GetNodeAt(e.X, e.Y);
+            TreeNode SelectedNode = TreeView_File.GetNodeAt(e.X, e.Y);
+            TreeView_File.SelectedNode = SelectedNode;
 
-            if (TreeView_File.SelectedNode.Tag.Equals("Sample"))
+            if (SelectedNode.Tag.Equals("Sample"))
             {
-                OpenSelectedNodeSampleProperties();
+                OpenSelectedNodeSampleProperties(SelectedNode);
             }
-            if (TreeView_File.SelectedNode.Tag.Equals("Audio"))
+            if (SelectedNode.Tag.Equals("Audio"))
             {
-                OpenAudioProperties();
+                OpenAudioProperties(TreeView_File.SelectedNode);
             }
         }
 
@@ -556,22 +557,22 @@ namespace EuroSound_Application
             {
                 if (TreeView_File.SelectedNode.Tag.Equals("Sound"))
                 {
-                    RemoveSoundSelectedNode();
+                    RemoveSoundSelectedNode(TreeView_File.SelectedNode);
                     ProjectInfo.FileHasBeenModified = true;
                 }
                 else if (TreeView_File.SelectedNode.Tag.Equals("Sample"))
                 {
-                    RemoveSampleSelectedNode();
+                    RemoveSampleSelectedNode(TreeView_File.SelectedNode);
                     ProjectInfo.FileHasBeenModified = true;
                 }
                 else if (TreeView_File.SelectedNode.Tag.Equals("Audio"))
                 {
-                    RemoveAudioAndWarningDependencies();
+                    RemoveAudioAndWarningDependencies(TreeView_File.SelectedNode);
                     ProjectInfo.FileHasBeenModified = true;
                 }
                 else
                 {
-                    RemoveFolderSelectedNode();
+                    RemoveFolderSelectedNode(TreeView_File.SelectedNode);
                     ProjectInfo.FileHasBeenModified = true;
                 }
             }

@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
 {
     public class ProjectFile
     {
-        public string FileName { get; set; } = "Unnamed";
-        public int TypeOfData { get; set; } = 0;
-        public Int32 Hashcode { get; set; } = 0x00000000;
-        public int SoundID { get; set; } = 0;
-        public int StreamedSoundID { get; set; } = 0;
-        public bool FileHasBeenModified { get; set; } = false;
+        public string FileName = "Unnamed";
+        public byte TypeOfData = 0;
+        public uint Hashcode = 0x00000000;
+        public uint SoundID = 0;
+        public uint StreamedSoundID = 0;
+        public bool FileHasBeenModified = false;
 
-        public void ClearSoundBankStoredData(Dictionary<int, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, TreeView TreeViewControl)
+        public void ClearSoundBankStoredData(Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, TreeView TreeViewControl)
         {
             SoundsList.Clear();
             AudioDataDict.Clear();

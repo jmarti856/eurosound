@@ -15,12 +15,20 @@ namespace EuroSound_Application
                 AudioSample = new MemoryStream(PCMData);
                 IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency + Pitch, Bits, Channels));
                 VolumeSampleProvider volumeProvider = new VolumeSampleProvider(provider.ToSampleProvider());
-                PanningSampleProvider panProvider = new PanningSampleProvider(volumeProvider)
-                {
-                    Pan = (Pan / 100)
-                };
                 _waveOut.Volume = 1;
-                _waveOut.Init(panProvider);
+                //Pan is only for mono audio
+                if (Channels == 1)
+                {
+                    PanningSampleProvider panProvider = new PanningSampleProvider(volumeProvider)
+                    {
+                        Pan = (Pan / 100)
+                    };
+                    _waveOut.Init(panProvider);
+                }
+                else
+                {
+                    _waveOut.Init(provider);
+                }
                 _waveOut.Play();
             }
         }

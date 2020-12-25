@@ -4,16 +4,16 @@ namespace EuroSound_Application
 {
     internal static class EXStreamSoundsFunctions
     {
-        internal static void RemoveStreamedSound(string Name, Dictionary<int, EXSoundStream> SoundsList)
+        internal static void RemoveStreamedSound(string Name, Dictionary<uint, EXSoundStream> SoundsList)
         {
-            EXSoundStream itemToRemove = GetSoundByName(int.Parse(Name), SoundsList);
+            EXSoundStream itemToRemove = GetSoundByName(uint.Parse(Name), SoundsList);
             if (itemToRemove != null)
             {
-                SoundsList.Remove(int.Parse(Name));
+                SoundsList.Remove(uint.Parse(Name));
             }
         }
 
-        internal static EXSoundStream GetSoundByName(int NameToSearch, Dictionary<int, EXSoundStream> SoundsList)
+        internal static EXSoundStream GetSoundByName(uint NameToSearch, Dictionary<uint, EXSoundStream> SoundsList)
         {
             EXSoundStream SearchedSound = null;
 

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace EuroSound_Application
 {
-    internal class EXBuildSFX
+    internal class GenerateSFXSoundBank
     {
         /*--[Global vars]--*/
         private List<long> HashcodeOffsets = new List<long>();
@@ -19,7 +19,7 @@ namespace EuroSound_Application
 
         private long WholeFileSize;
         /*--[Data lists]--*/
-        internal void WriteFileHeader(BinaryWriter BWriter, Int32 FileHashcode, ProgressBar Bar)
+        internal void WriteFileHeader(BinaryWriter BWriter, uint FileHashcode, ProgressBar Bar)
         {
             //*===============================================================================================
             //* HEADER
@@ -244,7 +244,7 @@ namespace EuroSound_Application
             }
         }
 
-        internal void WriteSFXSection(BinaryWriter BWriter, Dictionary<int, EXSound> FinalSoundsDict, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
+        internal void WriteSFXSection(BinaryWriter BWriter, Dictionary<uint, EXSound> FinalSoundsDict, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
         {
             try
             {
@@ -256,14 +256,14 @@ namespace EuroSound_Application
                 BWriter.Write(Convert.ToUInt32(FinalSoundsDict.Count));
 
                 /*--[SFX header]--*/
-                foreach (KeyValuePair<int, EXSound> Sound in FinalSoundsDict)
+                foreach (KeyValuePair<uint, EXSound> Sound in FinalSoundsDict)
                 {
                     Hashcode = Sound.Value.Hashcode.ToString("X8");
                     BWriter.Write(Convert.ToUInt32("0x00" + Hashcode.Substring(2), 16));
                     BWriter.Write(Convert.ToUInt32(BWriter.BaseStream.Position));
                 }
                 /*--[Linear array of sorted SFX headers laid out in this format]--*/
-                foreach (KeyValuePair<int, EXSound> Sound in FinalSoundsDict)
+                foreach (KeyValuePair<uint, EXSound> Sound in FinalSoundsDict)
                 {
                     /*--[Add hashcode offset to the dictionary]--*/
                     HashcodeOffsets.Add(BWriter.BaseStream.Position - 2048);
@@ -323,6 +323,50 @@ namespace EuroSound_Application
 
             }
         }
+
+        internal Dictionary<uint, EXSound> GetFinalSoundsDictionary(Dictionary<uint, EXSound> SoundsList, ProgressBar Bar, Label LabelInfo)
+        {
+            Dictionary<uint, EXSound> FinalSoundsDict = new Dictionary<uint, EXSound>();
+
+            ProgressBarReset(Bar);
+            ProgressBarMaximum(Bar, SoundsList.Count());
+
+            //Discard SFXs that has checked as "no output"
+            foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
+            {
+                if (Sound.Value.OutputThisSound)
+                {
+                    FinalSoundsDict.Add(Sound.Key, Sound.Value);
+                }
+                SetLabelText(LabelInfo, "Checking SFX: " + Sound.Value.DisplayName);
+                ProgressBarUpdate(Bar, 1);
+            }
+
+            return FinalSoundsDict;
+        }
+
+        internal Dictionary<string, EXAudio> GetFinalAudioDictionary(List<string> UsedAudios, Dictionary<string, EXAudio> AudiosList, ProgressBar Bar)
+        {
+            Dictionary<string, EXAudio> FinalAudioDataDict = new Dictionary<string, EXAudio>();
+
+            ProgressBarReset(Bar);
+            ProgressBarMaximum(Bar, UsedAudios.Count());
+
+            //Add data
+            foreach (string Key in UsedAudios)
+            {
+                KeyValuePair<string, EXAudio> ObjectToAdd;
+                if (AudiosList.ContainsKey(Key))
+                {
+                    ObjectToAdd = new KeyValuePair<string, EXAudio>(Key, AudiosList[Key]);
+                    FinalAudioDataDict.Add(ObjectToAdd.Key, ObjectToAdd.Value);
+                }
+                ProgressBarUpdate(Bar, 1);
+            }
+
+            return FinalAudioDataDict;
+        }
+
         private void AddPaddingBytes(int NumberOfBytes, BinaryWriter BWriter)
         {
             for (int i = 0; i < NumberOfBytes; i++)
@@ -331,9 +375,10 @@ namespace EuroSound_Application
             }
         }
 
-        private string GetHashcodeWithoutSection(string Hashcode)
+        private uint GetHashcodeWithoutSection(uint Hashcode)
         {
-            return "0x00" + Hashcode.Substring(4);
+            uint FinalHashcode = Hashcode - 0x1A000000;
+            return FinalHashcode;
         }
 
         private int GetSteamIndexInSoundbank(string SampleName, Dictionary<string, EXAudio> AudioDataList, EXSample Sample, int Flags)
@@ -342,7 +387,7 @@ namespace EuroSound_Application
 
             if (EXSoundbanksFunctions.SubSFXFlagChecked(Flags))
             {
-                index = Convert.ToInt32(GetHashcodeWithoutSection(Sample.HashcodeSubSFX), 16);
+                index = (int)GetHashcodeWithoutSection(Sample.HashcodeSubSFX);
             }
             else
             {
@@ -354,37 +399,49 @@ namespace EuroSound_Application
 
         private void ProgressBarReset(ProgressBar BarToReset)
         {
-            /*Update Progress Bar*/
-            BarToReset.Invoke((MethodInvoker)delegate
+            if (BarToReset != null)
             {
-                BarToReset.Value = 0;
-            });
+                /*Update Progress Bar*/
+                BarToReset.Invoke((MethodInvoker)delegate
+                {
+                    BarToReset.Value = 0;
+                });
+            }
         }
 
         private void ProgressBarUpdate(ProgressBar BarToUpdate, int ValueToAdd)
         {
             /*Update Progress Bar*/
-            BarToUpdate.Invoke((MethodInvoker)delegate
+            if (BarToUpdate != null)
             {
-                BarToUpdate.Value += ValueToAdd;
-            });
-            Thread.Sleep(1);
+                BarToUpdate.Invoke((MethodInvoker)delegate
+                {
+                    BarToUpdate.Value += ValueToAdd;
+                });
+                Thread.Sleep(1);
+            }
         }
 
         private void ProgressBarMaximum(ProgressBar BarToChange, int Maximum)
         {
-            /*Update Progress Bar*/
-            BarToChange.Invoke((MethodInvoker)delegate
+            if (BarToChange != null)
             {
-                BarToChange.Maximum = Maximum;
-            });
+                /*Update Progress Bar*/
+                BarToChange.Invoke((MethodInvoker)delegate
+                {
+                    BarToChange.Maximum = Maximum;
+                });
+            }
         }
         private void SetLabelText(Label LabelToChange, string TextToShow)
         {
-            LabelToChange.Invoke((MethodInvoker)delegate
+            if (LabelToChange != null)
             {
-                LabelToChange.Text = TextToShow;
-            });
+                LabelToChange.Invoke((MethodInvoker)delegate
+                {
+                    LabelToChange.Text = TextToShow;
+                });
+            }
         }
     }
 }

@@ -115,6 +115,16 @@
             // numeric_mastervolume
             // 
             this.numeric_mastervolume.Location = new System.Drawing.Point(365, 121);
+            this.numeric_mastervolume.Maximum = new decimal(new int[] {
+            127,
+            0,
+            0,
+            0});
+            this.numeric_mastervolume.Minimum = new decimal(new int[] {
+            128,
+            0,
+            0,
+            -2147483648});
             this.numeric_mastervolume.Name = "numeric_mastervolume";
             this.numeric_mastervolume.Size = new System.Drawing.Size(152, 20);
             this.numeric_mastervolume.TabIndex = 21;
@@ -150,6 +160,16 @@
             // numeric_ducker
             // 
             this.numeric_ducker.Location = new System.Drawing.Point(365, 95);
+            this.numeric_ducker.Maximum = new decimal(new int[] {
+            127,
+            0,
+            0,
+            0});
+            this.numeric_ducker.Minimum = new decimal(new int[] {
+            128,
+            0,
+            0,
+            -2147483648});
             this.numeric_ducker.Name = "numeric_ducker";
             this.numeric_ducker.Size = new System.Drawing.Size(152, 20);
             this.numeric_ducker.TabIndex = 19;
@@ -166,6 +186,16 @@
             // numeric_priority
             // 
             this.numeric_priority.Location = new System.Drawing.Point(365, 69);
+            this.numeric_priority.Maximum = new decimal(new int[] {
+            127,
+            0,
+            0,
+            0});
+            this.numeric_priority.Minimum = new decimal(new int[] {
+            128,
+            0,
+            0,
+            -2147483648});
             this.numeric_priority.Name = "numeric_priority";
             this.numeric_priority.Size = new System.Drawing.Size(152, 20);
             this.numeric_priority.TabIndex = 17;
@@ -198,10 +228,15 @@
             // 
             this.numeric_maxvoices.Location = new System.Drawing.Point(365, 43);
             this.numeric_maxvoices.Maximum = new decimal(new int[] {
-            10,
+            127,
             0,
             0,
             0});
+            this.numeric_maxvoices.Minimum = new decimal(new int[] {
+            128,
+            0,
+            0,
+            -2147483648});
             this.numeric_maxvoices.Name = "numeric_maxvoices";
             this.numeric_maxvoices.Size = new System.Drawing.Size(152, 20);
             this.numeric_maxvoices.TabIndex = 15;
@@ -228,12 +263,12 @@
             // 
             this.numeric_reverbsend.Location = new System.Drawing.Point(107, 147);
             this.numeric_reverbsend.Maximum = new decimal(new int[] {
-            99999999,
+            127,
             0,
             0,
             0});
             this.numeric_reverbsend.Minimum = new decimal(new int[] {
-            99999999,
+            128,
             0,
             0,
             -2147483648});
@@ -254,12 +289,12 @@
             // 
             this.numeric_outerradiusreal.Location = new System.Drawing.Point(107, 121);
             this.numeric_outerradiusreal.Maximum = new decimal(new int[] {
-            99999999,
+            32767,
             0,
             0,
             0});
             this.numeric_outerradiusreal.Minimum = new decimal(new int[] {
-            99999999,
+            32768,
             0,
             0,
             -2147483648});
@@ -280,12 +315,12 @@
             // 
             this.numeric_innerradiusreal.Location = new System.Drawing.Point(107, 95);
             this.numeric_innerradiusreal.Maximum = new decimal(new int[] {
-            99999999,
+            32767,
             0,
             0,
             0});
             this.numeric_innerradiusreal.Minimum = new decimal(new int[] {
-            99999999,
+            32768,
             0,
             0,
             -2147483648});
@@ -306,12 +341,12 @@
             // 
             this.numeric_maxdelay.Location = new System.Drawing.Point(107, 69);
             this.numeric_maxdelay.Maximum = new decimal(new int[] {
-            99999999,
+            32767,
             0,
             0,
             0});
             this.numeric_maxdelay.Minimum = new decimal(new int[] {
-            99999999,
+            32768,
             0,
             0,
             -2147483648});
@@ -332,12 +367,12 @@
             // 
             this.numeric_mindelay.Location = new System.Drawing.Point(107, 43);
             this.numeric_mindelay.Maximum = new decimal(new int[] {
-            99999999,
+            32767,
             0,
             0,
             0});
             this.numeric_mindelay.Minimum = new decimal(new int[] {
-            99999999,
+            32768,
             0,
             0,
             -2147483648});
@@ -358,12 +393,12 @@
             // 
             this.numeric_duckerlength.Location = new System.Drawing.Point(107, 17);
             this.numeric_duckerlength.Maximum = new decimal(new int[] {
-            99999999,
+            32767,
             0,
             0,
             0});
             this.numeric_duckerlength.Minimum = new decimal(new int[] {
-            99999999,
+            32768,
             0,
             0,
             -2147483648});

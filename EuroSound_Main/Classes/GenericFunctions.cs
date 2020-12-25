@@ -14,11 +14,6 @@ namespace EuroSound_Application
         internal static ResourceManager ResourcesManager;
         internal static StatusBar ParentFormStatusBar;
 
-        internal static void GetStatusbar(StatusBar ControlToCapture)
-        {
-            ParentFormStatusBar = ControlToCapture;
-        }
-
         internal static void SetCurrentFileLabel(string text)
         {
             if (ParentFormStatusBar.Visible && ParentFormStatusBar != null)
@@ -230,22 +225,37 @@ namespace EuroSound_Application
         }
 
 
-        internal static int GetSoundID(ProjectFile FileProperties)
+        internal static uint GetSoundID(ProjectFile FileProperties)
         {
-            int index;
+            uint index;
 
             index = (FileProperties.SoundID += 1);
 
             return index;
         }
 
-        internal static int GetStreamedSoundID(ProjectFile FileProperties)
+        internal static uint GetStreamedSoundID(ProjectFile FileProperties)
         {
-            int index;
+            uint index;
 
             index = (FileProperties.StreamedSoundID += 1);
 
             return index;
+        }
+        internal static int CountNumberOfSamples(Dictionary<uint, EXSound> SoundsList)
+        {
+            int Counter = 0;
+            foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
+            {
+                foreach (EXSample Sample in Sound.Value.Samples)
+                {
+                    if (!Sample.IsStreamed)
+                    {
+                        Counter++;
+                    }
+                }
+            }
+            return Counter;
         }
     }
 }

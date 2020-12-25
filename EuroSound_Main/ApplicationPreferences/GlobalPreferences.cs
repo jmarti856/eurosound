@@ -6,41 +6,38 @@
         //* FINAL PROPERTIES
         //*===============================================================================================
         //Frm_HashTablesConfig
-        internal static string HT_SoundsPath { get; set; }
-        internal static string HT_SoundsDataPath { get; set; }
-        internal static string HT_SoundsMD5 { get; set; }
-        internal static string HT_SoundsDataMD5 { get; set; }
-        internal static string HT_MusicPath { get; set; }
-        internal static string HT_MusicMD5 { get; set; }
+        internal static string HT_SoundsPath;
+        internal static string HT_SoundsDataPath;
+        internal static string HT_SoundsMD5;
+        internal static string HT_SoundsDataMD5;
+        internal static string HT_MusicPath;
+        internal static string HT_MusicMD5;
 
         //Frm_TreeViewPrefs
-        internal static string SelectedFont { get; set; }
-        internal static int TreeViewIndent { get; set; }
-        internal static bool ShowLines { get; set; }
-        internal static bool ShowRootLines { get; set; }
+        internal static string SelectedFont;
+        internal static int TreeViewIndent;
+        internal static bool ShowLines;
+        internal static bool ShowRootLines;
 
         //Frm_GeneralPreferences
-        internal static string SFXOutputPath { get; set; }
+        internal static string SFXOutputPath;
 
         //*===============================================================================================
         //* TEMPORAL PROPERTIES
         //*===============================================================================================
         //Frm_HashTablesConfig
-        internal static string HT_SoundsPathTEMPORAL { get; set; }
-
-        internal static string HT_SoundsDataPathTEMPORAL { get; set; }
-        internal static string HT_SoundsMD5TEMPORAL { get; set; }
-        internal static string HT_SoundsDataMD5TEMPORAL { get; set; }
-        internal static string HT_MusicPathTEMPORAL { get; set; }
+        internal static string HT_SoundsPathTEMPORAL;
+        internal static string HT_SoundsDataPathTEMPORAL;
+        internal static string HT_MusicPathTEMPORAL;
 
         //Frm_TreeViewPrefs
-        internal static string SelectedFontTEMPORAL { get; set; }
-        internal static int TreeViewIndentTEMPORAL { get; set; }
-        internal static bool ShowLinesTEMPORAL { get; set; }
-        internal static bool ShowRootLinesTEMPORAL { get; set; }
+        internal static string SelectedFontTEMPORAL;
+        internal static int TreeViewIndentTEMPORAL;
+        internal static bool ShowLinesTEMPORAL;
+        internal static bool ShowRootLinesTEMPORAL;
 
         //Frm_GeneralPreferences
-        internal static string SFXOutputPathTEMPORAL { get; set; }
+        internal static string SFXOutputPathTEMPORAL;
 
         //*===============================================================================================
         //* OTHER TEMPORAL VARIABLES

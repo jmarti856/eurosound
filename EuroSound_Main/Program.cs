@@ -20,7 +20,15 @@ namespace EuroSound_Application
 
                 if (args.Length > 0)
                 {
-                    Application.Run(new Frm_EuroSound_Splash(args[0]));
+                    if (args[0].StartsWith("/"))
+                    {
+                        EuroSoundBashMode BashMode = new EuroSoundBashMode();
+                        BashMode.ExecuteCommand(args);
+                    }
+                    else
+                    {
+                        Application.Run(new Frm_EuroSound_Splash(args[0]));
+                    }
                 }
                 else
                 {

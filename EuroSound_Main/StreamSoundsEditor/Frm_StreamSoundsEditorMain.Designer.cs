@@ -33,6 +33,7 @@ namespace EuroSound_Application
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Sounds", 0, 0);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_StreamSoundsEditorMain));
             this.TreeView_StreamData = new System.Windows.Forms.TreeView();
+            this.ImageList_TreeNode = new System.Windows.Forms.ImageList(this.components);
             this.ContextMenu_Folders = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ContextMenuMain_Folder = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuFolder_CollapseAll = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,7 +44,6 @@ namespace EuroSound_Application
             this.ContextMenuMain_Rename = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuMain_TextColor = new System.Windows.Forms.ToolStripMenuItem();
-            this.ImageList_TreeNode = new System.Windows.Forms.ImageList(this.components);
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.MenuItem_File = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_File_Save = new System.Windows.Forms.ToolStripMenuItem();
@@ -82,7 +82,6 @@ namespace EuroSound_Application
             this.TreeView_StreamData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.TreeView_StreamData.ContextMenuStrip = this.ContextMenu_Folders;
             this.TreeView_StreamData.ImageIndex = 0;
             this.TreeView_StreamData.ImageList = this.ImageList_TreeNode;
             this.TreeView_StreamData.LabelEdit = true;
@@ -109,6 +108,19 @@ namespace EuroSound_Application
             this.TreeView_StreamData.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TreeView_StreamData_KeyDown);
             this.TreeView_StreamData.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TreeView_StreamData_MouseClick);
             this.TreeView_StreamData.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TreeView_StreamData_MouseDoubleClick);
+            // 
+            // ImageList_TreeNode
+            // 
+            this.ImageList_TreeNode.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ImageList_TreeNode.ImageStream")));
+            this.ImageList_TreeNode.TransparentColor = System.Drawing.Color.Transparent;
+            this.ImageList_TreeNode.Images.SetKeyName(0, "directory_closed-1.png");
+            this.ImageList_TreeNode.Images.SetKeyName(1, "directory_open_cool-1.png");
+            this.ImageList_TreeNode.Images.SetKeyName(2, "cd_audio_cd-1.png");
+            this.ImageList_TreeNode.Images.SetKeyName(3, "cd_audio_cd-2.png");
+            this.ImageList_TreeNode.Images.SetKeyName(4, "audio_compression-1.png");
+            this.ImageList_TreeNode.Images.SetKeyName(5, "cd_audio_cd-1 - no_output.png");
+            this.ImageList_TreeNode.Images.SetKeyName(6, "cd_audio_cd-2 - no_output.png");
+            this.ImageList_TreeNode.Images.SetKeyName(7, "amplify.png");
             // 
             // ContextMenu_Folders
             // 
@@ -184,19 +196,6 @@ namespace EuroSound_Application
             this.ContextMenuMain_TextColor.Size = new System.Drawing.Size(144, 22);
             this.ContextMenuMain_TextColor.Text = "Text Color...";
             this.ContextMenuMain_TextColor.Click += new System.EventHandler(this.ContextMenuMain_TextColor_Click);
-            // 
-            // ImageList_TreeNode
-            // 
-            this.ImageList_TreeNode.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ImageList_TreeNode.ImageStream")));
-            this.ImageList_TreeNode.TransparentColor = System.Drawing.Color.Transparent;
-            this.ImageList_TreeNode.Images.SetKeyName(0, "directory_closed-1.png");
-            this.ImageList_TreeNode.Images.SetKeyName(1, "directory_open_cool-1.png");
-            this.ImageList_TreeNode.Images.SetKeyName(2, "cd_audio_cd-1.png");
-            this.ImageList_TreeNode.Images.SetKeyName(3, "cd_audio_cd-2.png");
-            this.ImageList_TreeNode.Images.SetKeyName(4, "audio_compression-1.png");
-            this.ImageList_TreeNode.Images.SetKeyName(5, "cd_audio_cd-1 - no_output.png");
-            this.ImageList_TreeNode.Images.SetKeyName(6, "cd_audio_cd-2 - no_output.png");
-            this.ImageList_TreeNode.Images.SetKeyName(7, "amplify.png");
             // 
             // MainMenu
             // 
@@ -382,30 +381,31 @@ namespace EuroSound_Application
             this.toolStripSeparator5,
             this.ContextMenuSounds_TextColor});
             this.ContextMenu_Sounds.Name = "ContextMenu_Sounds";
-            this.ContextMenu_Sounds.Size = new System.Drawing.Size(137, 76);
+            this.ContextMenu_Sounds.Size = new System.Drawing.Size(181, 98);
             this.ContextMenu_Sounds.Text = "ContextMenu_StreamSounds";
             // 
             // ContextMenuSounds_Rename
             // 
             this.ContextMenuSounds_Rename.Name = "ContextMenuSounds_Rename";
-            this.ContextMenuSounds_Rename.Size = new System.Drawing.Size(136, 22);
+            this.ContextMenuSounds_Rename.Size = new System.Drawing.Size(180, 22);
             this.ContextMenuSounds_Rename.Text = "Rename";
             // 
             // ContextMenuSounds_Properties
             // 
             this.ContextMenuSounds_Properties.Name = "ContextMenuSounds_Properties";
-            this.ContextMenuSounds_Properties.Size = new System.Drawing.Size(136, 22);
+            this.ContextMenuSounds_Properties.Size = new System.Drawing.Size(180, 22);
             this.ContextMenuSounds_Properties.Text = "Properties...";
+            this.ContextMenuSounds_Properties.Click += new System.EventHandler(this.ContextMenuSounds_Properties_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(133, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
             // 
             // ContextMenuSounds_TextColor
             // 
             this.ContextMenuSounds_TextColor.Name = "ContextMenuSounds_TextColor";
-            this.ContextMenuSounds_TextColor.Size = new System.Drawing.Size(136, 22);
+            this.ContextMenuSounds_TextColor.Size = new System.Drawing.Size(180, 22);
             this.ContextMenuSounds_TextColor.Text = "Text Color...";
             // 
             // Frm_StreamSoundsEditorMain

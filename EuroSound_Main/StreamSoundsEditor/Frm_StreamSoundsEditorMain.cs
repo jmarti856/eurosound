@@ -10,7 +10,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
-        public Dictionary<int, EXSoundStream> StreamSoundsList = new Dictionary<int, EXSoundStream>();
+        public Dictionary<uint, EXSoundStream> StreamSoundsList = new Dictionary<uint, EXSoundStream>();
         public ProjectFile ProjectInfo = new ProjectFile();
         private string FileToLoadArg, ProjectName;
 
@@ -85,7 +85,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void TreeView_StreamData_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            int SoundID;
+            uint SoundID;
 
             /*Check that we have selected a node, and we have not selected the root folder*/
             if (e.Node.Parent != null && !e.Node.Tag.Equals("Root"))
@@ -109,7 +109,7 @@ namespace EuroSound_Application
                         /*Rename Sound item*/
                         if (e.Node.Tag.Equals("Sound"))
                         {
-                            SoundID = int.Parse(e.Node.Name);
+                            SoundID = uint.Parse(e.Node.Name);
                             if (StreamSoundsList.ContainsKey(SoundID))
                             {
                                 StreamSoundsList[SoundID].DisplayName = e.Label;
@@ -189,21 +189,21 @@ namespace EuroSound_Application
             {
                 if (TreeView_StreamData.SelectedNode.Tag.Equals("Folder") || TreeView_StreamData.SelectedNode.Tag.Equals("Root"))
                 {
-                    if (TreeView_StreamData.SelectedNode != null)
-                    {
-                        ContextMenu_Folders.Show(Cursor.Position);
-                    }
+                    ContextMenu_Folders.Show(Cursor.Position);
                 }
                 else if (TreeView_StreamData.SelectedNode.Tag.Equals("Sound"))
                 {
-                    ContextMenu_Folders.Show(Cursor.Position);
+                    ContextMenu_Sounds.Show(Cursor.Position);
                 }
             }
         }
 
         private void TreeView_StreamData_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-
+            if (TreeView_StreamData.SelectedNode.Tag.Equals("Sound"))
+            {
+                OpenSoundPropertiesForm();
+            }
         }
     }
 }
