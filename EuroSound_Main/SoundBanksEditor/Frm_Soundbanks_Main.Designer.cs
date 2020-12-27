@@ -47,20 +47,20 @@
             this.ContextMenuFolder_Sort = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuFolder_Move = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextMenuFolders_Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuFolder_AddSound = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuFolder_Rename = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuFolder_AddAudio = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextMenuFolders_Separator2 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuFolder_Purge = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextMenuFolders_Separator3 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuFolder_TextColor = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenu_Sound = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ContextMenuSound_AddSample = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuSound_Remove = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuSound_Rename = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuSound_Properties = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextMenuSound_Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuSound_TextColor = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.MenuItem_File = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,7 +77,7 @@
             this.ContextMenuSample_Remove = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuSample_Rename = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuSample_Properties = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextMenuSample_Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuSample_TextColor = new System.Windows.Forms.ToolStripMenuItem();
             this.Button_UpdateList_WavData = new System.Windows.Forms.Button();
             this.GroupBox_Hashcodes = new System.Windows.Forms.GroupBox();
@@ -108,11 +108,11 @@
             this.Col_StoredIn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ContextMenu_Audio = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ContextMenuAudio_Usage = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextMenuAudio_Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuAudio_Remove = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuAudio_Rename = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuAudio_Properties = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextMenuAudio_Separator2 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuAudio_TextColor = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.RadioButton_WholeWord = new System.Windows.Forms.RadioButton();
@@ -195,13 +195,13 @@
             // 
             this.ContextMenu_Folders.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ContextMenuFolders_Folder,
-            this.toolStripSeparator7,
+            this.ContextMenuFolders_Separator1,
             this.ContextMenuFolder_AddSound,
             this.ContextMenuFolder_Rename,
             this.ContextMenuFolder_AddAudio,
-            this.toolStripSeparator9,
+            this.ContextMenuFolders_Separator2,
             this.ContextMenuFolder_Purge,
-            this.toolStripSeparator5,
+            this.ContextMenuFolders_Separator3,
             this.ContextMenuFolder_TextColor});
             this.ContextMenu_Folders.Name = "contextMenuStrip1";
             this.ContextMenu_Folders.Size = new System.Drawing.Size(168, 154);
@@ -285,10 +285,10 @@
             this.ContextMenuFolder_Move.Text = "Move Multiple Items";
             this.ContextMenuFolder_Move.Click += new System.EventHandler(this.ContextMenu_Folders_Move_Click);
             // 
-            // toolStripSeparator7
+            // ContextMenuFolders_Separator1
             // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(164, 6);
+            this.ContextMenuFolders_Separator1.Name = "ContextMenuFolders_Separator1";
+            this.ContextMenuFolders_Separator1.Size = new System.Drawing.Size(164, 6);
             // 
             // ContextMenuFolder_AddSound
             // 
@@ -311,10 +311,10 @@
             this.ContextMenuFolder_AddAudio.Text = "Add Audio";
             this.ContextMenuFolder_AddAudio.Click += new System.EventHandler(this.ContextMenu_Folders_AddAudio_Click);
             // 
-            // toolStripSeparator9
+            // ContextMenuFolders_Separator2
             // 
-            this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(164, 6);
+            this.ContextMenuFolders_Separator2.Name = "ContextMenuFolders_Separator2";
+            this.ContextMenuFolders_Separator2.Size = new System.Drawing.Size(164, 6);
             // 
             // ContextMenuFolder_Purge
             // 
@@ -323,10 +323,10 @@
             this.ContextMenuFolder_Purge.Text = "Purge Audio Data";
             this.ContextMenuFolder_Purge.Click += new System.EventHandler(this.ContextMenuFolder_Purge_Click);
             // 
-            // toolStripSeparator5
+            // ContextMenuFolders_Separator3
             // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(164, 6);
+            this.ContextMenuFolders_Separator3.Name = "ContextMenuFolders_Separator3";
+            this.ContextMenuFolders_Separator3.Size = new System.Drawing.Size(164, 6);
             // 
             // ContextMenuFolder_TextColor
             // 
@@ -342,7 +342,7 @@
             this.ContextMenuSound_Remove,
             this.ContextMenuSound_Rename,
             this.ContextMenuSound_Properties,
-            this.toolStripSeparator6,
+            this.ContextMenuSound_Separator1,
             this.ContextMenuSound_TextColor});
             this.ContextMenu_Sound.Name = "ContextMenu_Sound";
             this.ContextMenu_Sound.Size = new System.Drawing.Size(145, 120);
@@ -376,10 +376,10 @@
             this.ContextMenuSound_Properties.Text = "Properties...";
             this.ContextMenuSound_Properties.Click += new System.EventHandler(this.ContextMenu_Sound_Properties_Click);
             // 
-            // toolStripSeparator6
+            // ContextMenuSound_Separator1
             // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(141, 6);
+            this.ContextMenuSound_Separator1.Name = "ContextMenuSound_Separator1";
+            this.ContextMenuSound_Separator1.Size = new System.Drawing.Size(141, 6);
             // 
             // ContextMenuSound_TextColor
             // 
@@ -396,7 +396,7 @@
             this.MainMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(1191, 24);
+            this.MainMenu.Size = new System.Drawing.Size(981, 24);
             this.MainMenu.TabIndex = 0;
             this.MainMenu.Text = "MainMenu";
             this.MainMenu.Visible = false;
@@ -499,7 +499,7 @@
             this.ContextMenuSample_Remove,
             this.ContextMenuSample_Rename,
             this.ContextMenuSample_Properties,
-            this.toolStripSeparator4,
+            this.ContextMenuSample_Separator1,
             this.ContextMenuSample_TextColor});
             this.ContextMenu_Sample.Name = "ContextMenu_Sample";
             this.ContextMenu_Sample.Size = new System.Drawing.Size(150, 98);
@@ -525,10 +525,10 @@
             this.ContextMenuSample_Properties.Text = "Properties...";
             this.ContextMenuSample_Properties.Click += new System.EventHandler(this.ContextMenu_Sample_Properties_Click);
             // 
-            // toolStripSeparator4
+            // ContextMenuSample_Separator1
             // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(146, 6);
+            this.ContextMenuSample_Separator1.Name = "ContextMenuSample_Separator1";
+            this.ContextMenuSample_Separator1.Size = new System.Drawing.Size(146, 6);
             // 
             // ContextMenuSample_TextColor
             // 
@@ -771,11 +771,11 @@
             // 
             this.ContextMenu_Audio.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ContextMenuAudio_Usage,
-            this.toolStripSeparator3,
+            this.ContextMenuAudio_Separator1,
             this.ContextMenuAudio_Remove,
             this.ContextMenuAudio_Rename,
             this.ContextMenuAudio_Properties,
-            this.toolStripSeparator14,
+            this.ContextMenuAudio_Separator2,
             this.ContextMenuAudio_TextColor});
             this.ContextMenu_Audio.Name = "ContextMenu_Audio";
             this.ContextMenu_Audio.Size = new System.Drawing.Size(143, 126);
@@ -787,10 +787,10 @@
             this.ContextMenuAudio_Usage.Text = "Usage";
             this.ContextMenuAudio_Usage.Click += new System.EventHandler(this.ContextMenuAudio_Usage_Click);
             // 
-            // toolStripSeparator3
+            // ContextMenuAudio_Separator1
             // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(139, 6);
+            this.ContextMenuAudio_Separator1.Name = "ContextMenuAudio_Separator1";
+            this.ContextMenuAudio_Separator1.Size = new System.Drawing.Size(139, 6);
             // 
             // ContextMenuAudio_Remove
             // 
@@ -813,10 +813,10 @@
             this.ContextMenuAudio_Properties.Text = "Properties...";
             this.ContextMenuAudio_Properties.Click += new System.EventHandler(this.ContextMenuAudio_Properties_Click);
             // 
-            // toolStripSeparator14
+            // ContextMenuAudio_Separator2
             // 
-            this.toolStripSeparator14.Name = "toolStripSeparator14";
-            this.toolStripSeparator14.Size = new System.Drawing.Size(139, 6);
+            this.ContextMenuAudio_Separator2.Name = "ContextMenuAudio_Separator2";
+            this.ContextMenuAudio_Separator2.Size = new System.Drawing.Size(139, 6);
             // 
             // ContextMenuAudio_TextColor
             // 
@@ -959,11 +959,11 @@
         private System.Windows.Forms.ContextMenuStrip ContextMenu_Sample;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuSample_Remove;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuSample_Properties;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripSeparator ContextMenuSample_Separator1;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuSample_Rename;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripSeparator ContextMenuFolders_Separator3;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_TextColor;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripSeparator ContextMenuSound_Separator1;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuSound_TextColor;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuSample_TextColor;
         private System.Windows.Forms.Button Button_UpdateList_WavData;
@@ -983,7 +983,7 @@
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolders_Folder;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_ExpandAll;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_CollapseAll;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripSeparator ContextMenuFolders_Separator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_Delete;
         private System.Windows.Forms.ToolStripMenuItem MenuItemFile_ReadSound;
@@ -999,7 +999,7 @@
         private System.Windows.Forms.ToolStripMenuItem ContextMenuAudio_Remove;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuAudio_Rename;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuAudio_Properties;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
+        private System.Windows.Forms.ToolStripSeparator ContextMenuAudio_Separator2;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuAudio_TextColor;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox Textbox_SearchHint;
@@ -1009,7 +1009,7 @@
         private System.Windows.Forms.RadioButton RadioButton_MatchText;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_Rename;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuAudio_Usage;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripSeparator ContextMenuAudio_Separator1;
         private System.Windows.Forms.ImageList ImageList_ListView;
         private ListViewExtendedMethods.ListView_ColumnSortingClick ListView_WavHeaderData;
         private System.Windows.Forms.ColumnHeader Col_Name;
@@ -1026,7 +1026,7 @@
         private System.Windows.Forms.ColumnHeader Col_FileRef;
         private System.Windows.Forms.ColumnHeader Col_Sound;
         private System.Windows.Forms.ColumnHeader Col_StoredIn;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+        private System.Windows.Forms.ToolStripSeparator ContextMenuFolders_Separator2;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_Purge;
         private System.Windows.Forms.Button Button_GenerateList;
     }

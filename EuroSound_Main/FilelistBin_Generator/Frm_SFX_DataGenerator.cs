@@ -8,7 +8,7 @@ namespace EuroSound_Application
 {
     public partial class Frm_SFX_DataGenerator : Form
     {
-        private GenerateSFXDataFiles SFXDataBin_Generator;
+        private GenerateSFXDataFiles SFXDataBin_Generator = new GenerateSFXDataFiles();
 
         public Frm_SFX_DataGenerator()
         {
@@ -18,10 +18,9 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* FORM EVENTS
         //*===============================================================================================
-        private void Frm_FilelistBinGenerator_Load(object sender, EventArgs e)
+        private void Frm_SFX_DataGenerator_Shown(object sender, EventArgs e)
         {
-            SFXDataBin_Generator = new GenerateSFXDataFiles();
-
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
             if (!BackgroundWorker_LoadData.IsBusy)
             {
                 ListView_HashTableData.Enabled = false;
@@ -41,6 +40,9 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void BackgroundWorker_LoadData_DoWork(object sender, DoWorkEventArgs e)
         {
+            ListViewItem ItemToAdd;
+            float[] ItemValue;
+
             ListView_HashTableData.Invoke((MethodInvoker)delegate
             {
                 ListView_HashTableData.Items.Clear();
@@ -55,25 +57,27 @@ namespace EuroSound_Application
                 }
                 else
                 {
-                    float[] ItemValue = Item.Value;
-                    ListViewItem ItemToAdd = new ListViewItem(new[] { ItemValue[0].ToString(), ItemValue[1].ToString("n1"), ItemValue[2].ToString("n1"), ItemValue[3].ToString("n1"), ItemValue[4].ToString("n6"), ItemValue[5].ToString(), ItemValue[6].ToString(), ItemValue[7].ToString() });
-
-                    //Save check in case the object is disposed. 
-                    try
+                    if (Item.Key != 436207616)
                     {
-                        ListView_HashTableData.Invoke((MethodInvoker)delegate
+                        ItemValue = Item.Value;
+                        ItemToAdd = new ListViewItem(new[] { ItemValue[0].ToString(), ItemValue[1].ToString("n1"), ItemValue[2].ToString("n1"), ItemValue[3].ToString("n1"), ItemValue[4].ToString("n6"), ItemValue[5].ToString(), ItemValue[6].ToString(), ItemValue[7].ToString() });
+
+                        //Save check in case the object is disposed. 
+                        try
                         {
-                            ListView_HashTableData.Items.Add(ItemToAdd);
-                        });
-                    }
-                    catch
-                    {
+                            ListView_HashTableData.Invoke((MethodInvoker)delegate
+                            {
+                                ListView_HashTableData.Items.Add(ItemToAdd);
+                            });
+                        }
+                        catch
+                        {
 
+                        }
+                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking Hashcode: " + Item.Key);
                     }
-                    Thread.Sleep(5);
-
-                    GenericFunctions.SetStatusToStatusBar("Checking Hashcode: " + Item.Key);
                 }
+                Thread.Sleep(14);
             }
         }
 
@@ -92,7 +96,7 @@ namespace EuroSound_Application
             }
 
             /*Set Program status*/
-            GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         //*===============================================================================================
@@ -100,21 +104,30 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void Button_generateFile_Click(object sender, EventArgs e)
         {
-            if (FolderSavePath.ShowDialog() == DialogResult.OK)
+            List<string> ListToPrint = SFXDataBin_Generator.GenerateSFXDataBinaryFile();
+            if (ListToPrint.Count > 0)
             {
-                SFXDataBin_Generator.GenerateSFXDataBinaryFile(FolderSavePath.SelectedPath);
+                //Show Import results
+                EuroSound_ErrorsAndWarningsList ImportResults = new EuroSound_ErrorsAndWarningsList(ListToPrint)
+                {
+                    Text = "Output Errors",
+                    ShowInTaskbar = false,
+                    TopMost = true
+                };
+                ImportResults.ShowDialog();
+                ImportResults.Dispose();
             }
         }
 
         private void Button_Reload_Click(object sender, EventArgs e)
         {
             /*--Load Sound Data Hashcodes--*/
-            GenericFunctions.SetStatusToStatusBar("Loading Hashcodes Sounds Data");
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Loading Hashcodes Sounds Data");
 
             Hashcodes.LoadSoundDataFile();
 
             /*Update Status Bar*/
-            GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
             if (!BackgroundWorker_LoadData.IsBusy)
             {
@@ -130,26 +143,21 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void ListView_HashTableData_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int SelectedHash;
-            uint Hashcode;
+            uint SelectedHash;
 
             if (ListView_HashTableData.SelectedItems.Count > 0)
             {
                 ListViewItem SelectedItem = ListView_HashTableData.SelectedItems[0];
                 if (SelectedItem.SubItems.Count > 0)
                 {
-                    SelectedHash = int.Parse(SelectedItem.SubItems[0].Text);
-                    Hashcode = Convert.ToUInt32("0x1A" + SelectedHash.ToString("X8").Substring(2), 16);
-                    if (Hashcodes.SFX_Defines.ContainsKey(Hashcode))
+                    SelectedHash = 436207616 + uint.Parse(SelectedItem.SubItems[0].Text);
+                    if (Hashcodes.SFX_Defines.ContainsKey(SelectedHash))
                     {
-                        Textbox_SelectedHashcode.Text = Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, Hashcode);
+                        Textbox_SelectedHashcode.Text = Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, SelectedHash);
                     }
                     else
                     {
-                        if (!Hashcode.Equals("0x1A000000"))
-                        {
-                            MessageBox.Show("The hashcode: " + Hashcode + " has not found, please check the \"SFX_Defines\" hashtable", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
+                        MessageBox.Show("The hashcode: 0x" + SelectedHash.ToString("X8") + " has not found, please check the \"SFX_Defines\" hashtable", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
             }

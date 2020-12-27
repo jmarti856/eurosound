@@ -44,8 +44,8 @@ namespace EuroSound_Application
             {
                 Frm_AudioProperties FormAudioProps = new Frm_AudioProperties(SelectedSound, SelectedNode.Name)
                 {
-                    Text = SelectedNode.Text + " Properties",
-                    Tag = this.Tag,
+                    Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
+                    Tag = Tag,
                     Owner = this,
                     ShowInTaskbar = false
                 };
@@ -62,8 +62,8 @@ namespace EuroSound_Application
 
             Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(SelectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(ParentSound.Flags))
             {
-                Text = SelectedNode.Text + " Properties",
-                Tag = this.Tag,
+                Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
+                Tag = Tag,
                 Owner = this,
                 ShowInTaskbar = false
             };
@@ -92,8 +92,8 @@ namespace EuroSound_Application
             EXSound SelectedSound = EXSoundbanksFunctions.GetSoundByName(uint.Parse(SelectedNode.Name), SoundsList);
             Frm_EffectProperties FormSoundProps = new Frm_EffectProperties(SelectedSound, SelectedNode.Name)
             {
-                Text = SelectedNode.Text + " Properties",
-                Tag = this.Tag,
+                Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
+                Tag = Tag,
                 Owner = this,
                 ShowInTaskbar = false,
             };
@@ -302,7 +302,7 @@ namespace EuroSound_Application
                         Hashcode.UseItemStyleForSubItems = false;
                         AddItemToListView(Hashcode, ListView_Hashcodes);
 
-                        GenericFunctions.SetStatusToStatusBar("Checking hashcode: " + Hashcode.SubItems[2].Text);
+                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking hashcode: " + Hashcode.SubItems[2].Text);
 
                         Thread.Sleep(5);
                     }
@@ -315,7 +315,7 @@ namespace EuroSound_Application
                         ListView_Hashcodes.Items.Clear();
                     });
                 }
-                GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {
                 IsBackground = true
@@ -353,9 +353,9 @@ namespace EuroSound_Application
                                 };
                                 AddItemToListView(ItemStreamed, ListView_StreamData);
 
-                                GenericFunctions.SetStatusToStatusBar("Checking Sample: " + Sample.DisplayName);
+                                GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking Sample: " + Sample.DisplayName);
 
-                                Thread.Sleep(5);
+                                Thread.Sleep(6);
                             }
                         }
                     }
@@ -368,7 +368,7 @@ namespace EuroSound_Application
                         ListView_StreamData.Items.Clear();
                     });
                 }
-                GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {
                 IsBackground = true
@@ -407,9 +407,9 @@ namespace EuroSound_Application
                         };
                         AddItemToListView(Hashcode, ListView_WavHeaderData);
 
-                        GenericFunctions.SetStatusToStatusBar("Checking audio: " + item.Value.Name.ToString());
+                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking audio: " + item.Value.Name.ToString());
 
-                        Thread.Sleep(5);
+                        Thread.Sleep(6);
                     }
                 }
                 catch
@@ -420,7 +420,7 @@ namespace EuroSound_Application
                         ListView_WavHeaderData.Items.Clear();
                     });
                 }
-                GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {
                 IsBackground = true

@@ -10,9 +10,9 @@ namespace EuroSound_Application
         //* ContextMenu_Folders
         //*===============================================================================================
         #region ContextMenu_Folders_EVENTS
-
         private void ContextMenu_Folders_AddAudio_Click(object sender, System.EventArgs e)
         {
+            int Status;
             string Name = GenericFunctions.OpenInputBox("Enter a name for new a new audio.", "New Audio");
             if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, Name))
             {
@@ -26,12 +26,17 @@ namespace EuroSound_Application
                     if (!string.IsNullOrEmpty(AudioPath))
                     {
                         string MD5Hash = GenericFunctions.CalculateMD5(AudioPath);
-                        if (EXSoundbanksFunctions.LoadAudioAndAddToList(AudioPath, Name, AudioDataDict, MD5Hash))
+                        Status = EXSoundbanksFunctions.LoadAudioAndAddToList(AudioPath, Name, AudioDataDict, MD5Hash);
+                        if (Status == 0)
                         {
                             TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, MD5Hash, Name, 7, 7, "Audio", Color.Black, TreeView_File);
                             ProjectInfo.FileHasBeenModified = true;
                         }
-                        else
+                        else if (Status == -1)
+                        {
+                            MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrect"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        else if (Status == -2)
                         {
                             MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AudioExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
@@ -178,8 +183,14 @@ namespace EuroSound_Application
         }
         private void ContextMenuFolders_TextColor_Click(object sender, System.EventArgs e)
         {
-            TreeView_File.SelectedNode.ForeColor = GenericFunctions.GetColorFromColorPicker(); ;
-            ProjectInfo.FileHasBeenModified = true;
+            int SelectedColor;
+
+            SelectedColor = GenericFunctions.GetColorFromColorPicker();
+            if (SelectedColor != -1)
+            {
+                TreeView_File.SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
+                ProjectInfo.FileHasBeenModified = true;
+            }
         }
 
         #endregion ContextMenu_Folders_EVENTS
@@ -187,9 +198,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* ContextMenu_Sound
         //*===============================================================================================
-
         #region ContextMenu_Sound_EVENTS
-
         private void ContextMenu_Sound_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name.Equals("StreamedSounds"))
@@ -212,6 +221,7 @@ namespace EuroSound_Application
             RemoveSoundSelectedNode(TreeView_File.SelectedNode);
             ProjectInfo.FileHasBeenModified = true;
         }
+
         private void ContextMenu_Sound_Rename_Click(object sender, System.EventArgs e)
         {
             TreeNodeFunctions.EditNodeLabel(TreeView_File, TreeView_File.SelectedNode);
@@ -220,16 +230,21 @@ namespace EuroSound_Application
 
         private void ContextMenu_Sound_TextColor_Click(object sender, System.EventArgs e)
         {
-            TreeView_File.SelectedNode.ForeColor = GenericFunctions.GetColorFromColorPicker();
+            int SelectedColor;
+
+            SelectedColor = GenericFunctions.GetColorFromColorPicker();
+            if (SelectedColor != -1)
+            {
+                TreeView_File.SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
+                ProjectInfo.FileHasBeenModified = true;
+            }
         }
         #endregion ContextMenu_Sound_EVENTS
 
         //*===============================================================================================
         //* ContextMenu_Sample
         //*===============================================================================================
-
         #region ContextMenu_Sample_EVENTS
-
         private void ContextMenu_Sample_Properties_Click(object sender, System.EventArgs e)
         {
             OpenSelectedNodeSampleProperties(TreeView_File.SelectedNode);
@@ -248,7 +263,14 @@ namespace EuroSound_Application
 
         private void ContextMenu_Sample_TextColor_Click(object sender, System.EventArgs e)
         {
-            TreeView_File.SelectedNode.ForeColor = GenericFunctions.GetColorFromColorPicker();
+            int SelectedColor;
+
+            SelectedColor = GenericFunctions.GetColorFromColorPicker();
+            if (SelectedColor != -1)
+            {
+                TreeView_File.SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
+                ProjectInfo.FileHasBeenModified = true;
+            }
         }
 
         #endregion ContextMenu_Sample_EVENTS
@@ -256,9 +278,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* ContextMenu_Audio
         //*===============================================================================================
-
         #region ContextMenu_Audio_EVENTS
-
         private void ContextMenuAudio_Properties_Click(object sender, System.EventArgs e)
         {
             OpenAudioProperties(TreeView_File.SelectedNode);
@@ -278,8 +298,14 @@ namespace EuroSound_Application
 
         private void ContextMenuAudio_TextColor_Click(object sender, System.EventArgs e)
         {
-            TreeView_File.SelectedNode.ForeColor = GenericFunctions.GetColorFromColorPicker();
-            ProjectInfo.FileHasBeenModified = true;
+            int SelectedColor;
+
+            SelectedColor = GenericFunctions.GetColorFromColorPicker();
+            if (SelectedColor != -1)
+            {
+                TreeView_File.SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
+                ProjectInfo.FileHasBeenModified = true;
+            }
         }
 
         private void ContextMenuAudio_Usage_Click(object sender, System.EventArgs e)
@@ -290,7 +316,7 @@ namespace EuroSound_Application
                 EuroSound_ItemUsage ShowDependencies = new EuroSound_ItemUsage(Dependencies)
                 {
                     Text = "Audio Usage",
-                    Owner = this.Owner,
+                    Owner = Owner,
                     ShowInTaskbar = false
                 };
                 ShowDependencies.ShowDialog();

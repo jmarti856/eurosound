@@ -47,7 +47,7 @@ namespace EuroSound_Application
             // 
             this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_OK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_OK.Location = new System.Drawing.Point(172, 162);
+            this.Button_OK.Location = new System.Drawing.Point(172, 185);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
             this.Button_OK.TabIndex = 4;
@@ -59,7 +59,7 @@ namespace EuroSound_Application
             // 
             this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_Cancel.Location = new System.Drawing.Point(253, 162);
+            this.Button_Cancel.Location = new System.Drawing.Point(253, 185);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.Button_Cancel.TabIndex = 5;
@@ -127,6 +127,7 @@ namespace EuroSound_Application
             this.Button_MarkersEditor.TabIndex = 1;
             this.Button_MarkersEditor.Text = "Open Markers Editor";
             this.Button_MarkersEditor.UseVisualStyleBackColor = true;
+            this.Button_MarkersEditor.Click += new System.EventHandler(this.Button_MarkersEditor_Click);
             // 
             // CheckBox_OutputThisSound
             // 
@@ -134,7 +135,7 @@ namespace EuroSound_Application
             this.CheckBox_OutputThisSound.AutoSize = true;
             this.CheckBox_OutputThisSound.Checked = true;
             this.CheckBox_OutputThisSound.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.CheckBox_OutputThisSound.Location = new System.Drawing.Point(12, 168);
+            this.CheckBox_OutputThisSound.Location = new System.Drawing.Point(12, 191);
             this.CheckBox_OutputThisSound.Name = "CheckBox_OutputThisSound";
             this.CheckBox_OutputThisSound.Size = new System.Drawing.Size(109, 17);
             this.CheckBox_OutputThisSound.TabIndex = 3;
@@ -150,6 +151,7 @@ namespace EuroSound_Application
             this.Button_AudioData.TabIndex = 2;
             this.Button_AudioData.Text = "Audio Data";
             this.Button_AudioData.UseVisualStyleBackColor = true;
+            this.Button_AudioData.Click += new System.EventHandler(this.Button_AudioData_Click);
             // 
             // Frm_StreamSounds_Properties
             // 
@@ -157,7 +159,7 @@ namespace EuroSound_Application
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Button_Cancel;
-            this.ClientSize = new System.Drawing.Size(340, 197);
+            this.ClientSize = new System.Drawing.Size(340, 220);
             this.Controls.Add(this.Button_AudioData);
             this.Controls.Add(this.Button_MarkersEditor);
             this.Controls.Add(this.CheckBox_OutputThisSound);

@@ -5,27 +5,49 @@ using System.Text;
 
 namespace EuroSound_Application
 {
+
     internal class GenerateSFXDataFiles
     {
-        internal void GenerateSFXDataBinaryFile(string OutputPath)
+        internal List<string> GenerateSFXDataBinaryFile()
         {
-            BinaryWriter BWriter = new BinaryWriter(File.Open(OutputPath + "\\SFX_Data.bin", FileMode.Create, FileAccess.Write), Encoding.ASCII);
+            List<string> ErrorsList = new List<string>();
 
-            foreach (KeyValuePair<uint, float[]> Item in Hashcodes.SFX_Data)
+            if (Directory.Exists(GlobalPreferences.MusicOutputPath))
             {
-                float[] Values = Item.Value;
-                BWriter.Write(Convert.ToUInt32(((int)Values[0]).ToString("X8"), 16));
-                BWriter.Write(Convert.ToUInt32(FloatToHex(Values[1]), 16));
-                BWriter.Write(Convert.ToUInt32(FloatToHex(Values[2]), 16));
-                BWriter.Write(Convert.ToUInt32(FloatToHex(Values[3]), 16));
-                BWriter.Write(Convert.ToUInt32(FloatToHex(Values[4]), 16));
-                BWriter.Write(Convert.ToSByte((int)Values[5]));
-                BWriter.Write(Convert.ToSByte((int)Values[6]));
-                BWriter.Write(Convert.ToSByte((int)Values[7]));
-                BWriter.Write(Convert.ToSByte(0));
+                BinaryWriter BWriter = new BinaryWriter(File.Open(GlobalPreferences.MusicOutputPath + "\\SFX_Data.bin", FileMode.Create, FileAccess.Write), Encoding.ASCII);
+
+                foreach (KeyValuePair<uint, float[]> Item in Hashcodes.SFX_Data)
+                {
+                    float[] Values = Item.Value;
+
+                    //Hashcode
+                    BWriter.Write(Convert.ToUInt32(((int)Values[0])));
+                    //Inner Radius
+                    BWriter.Write(Convert.ToUInt32(FloatToHex(Values[1]), 16));
+                    //Outer Radius
+                    BWriter.Write(Convert.ToUInt32(FloatToHex(Values[2]), 16));
+                    //Alertness
+                    BWriter.Write(Convert.ToUInt32(FloatToHex(Values[3]), 16));
+                    //Duration
+                    BWriter.Write(Convert.ToUInt32(FloatToHex(Values[4]), 16));
+                    //Looping
+                    BWriter.Write(Convert.ToSByte((int)Values[5]));
+                    //Tracking 3D
+                    BWriter.Write(Convert.ToSByte((int)Values[6]));
+                    //SampleStreamed
+                    BWriter.Write(Convert.ToSByte((int)Values[7]));
+                    //Padding
+                    BWriter.Write(Convert.ToSByte(0));
+                }
+
+                BWriter.Close();
+            }
+            else
+            {
+                ErrorsList.Add("0Unable to open: " + GlobalPreferences.MusicOutputPath + "\\SFX_Data.bin");
             }
 
-            BWriter.Close();
+            return ErrorsList;
         }
 
         private string FloatToHex(float Number)

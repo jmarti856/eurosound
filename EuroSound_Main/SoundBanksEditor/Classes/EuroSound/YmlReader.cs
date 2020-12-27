@@ -80,7 +80,7 @@ namespace EuroSound_Application
             Dictionary<int, int[]> SamplesProperties;
 
             /*Update Status Bar*/
-            GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_ReadingYamlFile") + ": " + SoundName);
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_ReadingYamlFile") + ": " + SoundName);
 
             if (Reports == null)
             {
@@ -215,7 +215,7 @@ namespace EuroSound_Application
             reader.Dispose();
 
             /*Update Status Bar*/
-            GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         private string GetAudioFilePath(string EffectPropertiesPath, int SampleName, int type)

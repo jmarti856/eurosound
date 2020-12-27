@@ -7,15 +7,12 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
-        string SoundKey;
         private EXSoundStream SelectedSound;
 
-        public Frm_StreamSounds_Properties(EXSoundStream SoundToCheck, string SoundKeyDictionary)
+        public Frm_StreamSounds_Properties(EXSoundStream SoundToCheck)
         {
             InitializeComponent();
-
             SelectedSound = SoundToCheck;
-            SoundKey = SoundKeyDictionary;
         }
 
         //*===============================================================================================
@@ -35,10 +32,40 @@ namespace EuroSound_Application
             Numeric_BaseVolume.Value = SelectedSound.BaseVolume;
         }
 
+        private void Button_MarkersEditor_Click(object sender, System.EventArgs e)
+        {
+            Frm_StreamSounds_MarkersEditor MarkersEditr = new Frm_StreamSounds_MarkersEditor(SelectedSound)
+            {
+                Text = "Streamed Sound Markers Editor",
+                Tag = Tag,
+                Owner = this,
+                ShowInTaskbar = false
+            };
+            MarkersEditr.ShowDialog();
+            MarkersEditr.Dispose();
+        }
+
+        private void Button_AudioData_Click(object sender, System.EventArgs e)
+        {
+            Frm_StreamSounds_AudioData AudioEditor = new Frm_StreamSounds_AudioData(SelectedSound)
+            {
+                Text = "Streamed Sound Audio Data",
+                Tag = Tag,
+                Owner = this,
+                ShowInTaskbar = false
+            };
+            AudioEditor.ShowDialog();
+            AudioEditor.Dispose();
+        }
+
         private void Button_OK_Click(object sender, System.EventArgs e)
         {
-            SelectedSound.Hashcode = (uint)Combobox_Hashcode.SelectedValue;
+            if (Combobox_Hashcode.SelectedValue != null)
+            {
+                SelectedSound.Hashcode = (uint)Combobox_Hashcode.SelectedValue;
+            }
             SelectedSound.BaseVolume = (uint)Numeric_BaseVolume.Value;
+            SelectedSound.OutputThisSound = CheckBox_OutputThisSound.Checked;
 
             /*--Close this form--*/
             this.Close();

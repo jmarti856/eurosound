@@ -268,7 +268,6 @@ namespace EuroSound_Application
             this.euroSound_WaveViewer1.CurrentWaveImage = null;
             this.euroSound_WaveViewer1.Location = new System.Drawing.Point(6, 126);
             this.euroSound_WaveViewer1.Name = "euroSound_WaveViewer1";
-            this.euroSound_WaveViewer1.PenColor = System.Drawing.Color.Blue;
             this.euroSound_WaveViewer1.PenWidth = 1F;
             this.euroSound_WaveViewer1.SamplesPerPixel = 128;
             this.euroSound_WaveViewer1.Size = new System.Drawing.Size(472, 127);

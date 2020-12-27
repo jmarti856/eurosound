@@ -16,7 +16,7 @@ namespace EuroSound_Application
 
         private void Button_Cancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void Button_OK_Click(object sender, EventArgs e)

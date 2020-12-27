@@ -30,9 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EuroSound_InputBox));
             this.Label_Text = new System.Windows.Forms.Label();
-            this.TextBox_InputText = new System.Windows.Forms.TextBox();
             this.Button_Ok = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
+            this.TextBox_InputText = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // Label_Text
@@ -44,14 +44,6 @@
             this.Label_Text.Size = new System.Drawing.Size(461, 39);
             this.Label_Text.TabIndex = 0;
             this.Label_Text.Text = resources.GetString("Label_Text.Text");
-            // 
-            // TextBox_InputText
-            // 
-            this.TextBox_InputText.Location = new System.Drawing.Point(15, 51);
-            this.TextBox_InputText.MaxLength = 300;
-            this.TextBox_InputText.Name = "TextBox_InputText";
-            this.TextBox_InputText.Size = new System.Drawing.Size(458, 20);
-            this.TextBox_InputText.TabIndex = 1;
             // 
             // Button_Ok
             // 
@@ -73,6 +65,14 @@
             this.Button_Cancel.Text = "Cancel";
             this.Button_Cancel.UseVisualStyleBackColor = true;
             this.Button_Cancel.Click += new System.EventHandler(this.Button_Cancel_Click);
+            // 
+            // TextBox_InputText
+            // 
+            this.TextBox_InputText.Location = new System.Drawing.Point(15, 51);
+            this.TextBox_InputText.MaxLength = 300;
+            this.TextBox_InputText.Name = "TextBox_InputText";
+            this.TextBox_InputText.Size = new System.Drawing.Size(458, 20);
+            this.TextBox_InputText.TabIndex = 1;
             // 
             // EuroSound_InputBox
             // 
@@ -99,8 +99,8 @@
         #endregion
 
         private System.Windows.Forms.Label Label_Text;
-        private System.Windows.Forms.TextBox TextBox_InputText;
         private System.Windows.Forms.Button Button_Ok;
         private System.Windows.Forms.Button Button_Cancel;
+        private System.Windows.Forms.TextBox TextBox_InputText;
     }
 }

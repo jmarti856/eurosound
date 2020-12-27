@@ -29,59 +29,67 @@ namespace EuroSound_Application
         /// </summary>
         private void InitializeComponent()
         {
-            this.TreeView_Markers = new System.Windows.Forms.TreeView();
             this.GroupBox_MarkerData = new System.Windows.Forms.GroupBox();
+            this.Button_AddMarker = new System.Windows.Forms.Button();
             this.Numeric_MarkerLoopStart = new System.Windows.Forms.NumericUpDown();
             this.Label_LoopStart = new System.Windows.Forms.Label();
             this.Textbox_Extra = new System.Windows.Forms.TextBox();
             this.Label_Extra = new System.Windows.Forms.Label();
             this.Textbox_Flags = new System.Windows.Forms.TextBox();
             this.Label_Flags = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.ComboBox_MarkerType = new System.Windows.Forms.ComboBox();
             this.Label_Type = new System.Windows.Forms.Label();
             this.Numeric_MarkerPosition = new System.Windows.Forms.NumericUpDown();
             this.Label_MarkerPosition = new System.Windows.Forms.Label();
-            this.GroupBox_StartData = new System.Windows.Forms.GroupBox();
-            this.Textbox_InstantBuffer = new System.Windows.Forms.TextBox();
-            this.Textbox_IsInstant = new System.Windows.Forms.TextBox();
-            this.Label_InstantBuffer = new System.Windows.Forms.Label();
-            this.Label_IsInstant = new System.Windows.Forms.Label();
+            this.Button_OK = new System.Windows.Forms.Button();
+            this.Button_Cancel = new System.Windows.Forms.Button();
+            this.Label_Markers = new System.Windows.Forms.Label();
+            this.ListView_Markers = new System.Windows.Forms.ListView();
+            this.Col_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_Position = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_Type = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_MarkerCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_LoopMarker = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_LoopStart = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_Flags = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_Extra = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_MarkerPos = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.GroupBox_MarkerData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_MarkerLoopStart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_MarkerPosition)).BeginInit();
-            this.GroupBox_StartData.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // TreeView_Markers
-            // 
-            this.TreeView_Markers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TreeView_Markers.Location = new System.Drawing.Point(144, 262);
-            this.TreeView_Markers.Name = "TreeView_Markers";
-            this.TreeView_Markers.Size = new System.Drawing.Size(512, 176);
-            this.TreeView_Markers.TabIndex = 7;
             // 
             // GroupBox_MarkerData
             // 
             this.GroupBox_MarkerData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox_MarkerData.Controls.Add(this.Button_AddMarker);
             this.GroupBox_MarkerData.Controls.Add(this.Numeric_MarkerLoopStart);
             this.GroupBox_MarkerData.Controls.Add(this.Label_LoopStart);
             this.GroupBox_MarkerData.Controls.Add(this.Textbox_Extra);
             this.GroupBox_MarkerData.Controls.Add(this.Label_Extra);
             this.GroupBox_MarkerData.Controls.Add(this.Textbox_Flags);
             this.GroupBox_MarkerData.Controls.Add(this.Label_Flags);
-            this.GroupBox_MarkerData.Controls.Add(this.comboBox1);
+            this.GroupBox_MarkerData.Controls.Add(this.ComboBox_MarkerType);
             this.GroupBox_MarkerData.Controls.Add(this.Label_Type);
             this.GroupBox_MarkerData.Controls.Add(this.Numeric_MarkerPosition);
             this.GroupBox_MarkerData.Controls.Add(this.Label_MarkerPosition);
-            this.GroupBox_MarkerData.Location = new System.Drawing.Point(144, 77);
+            this.GroupBox_MarkerData.Location = new System.Drawing.Point(12, 12);
             this.GroupBox_MarkerData.Name = "GroupBox_MarkerData";
-            this.GroupBox_MarkerData.Size = new System.Drawing.Size(512, 92);
-            this.GroupBox_MarkerData.TabIndex = 6;
+            this.GroupBox_MarkerData.Size = new System.Drawing.Size(514, 92);
+            this.GroupBox_MarkerData.TabIndex = 1;
             this.GroupBox_MarkerData.TabStop = false;
             this.GroupBox_MarkerData.Text = "Marker Data";
+            // 
+            // Button_AddMarker
+            // 
+            this.Button_AddMarker.Location = new System.Drawing.Point(403, 53);
+            this.Button_AddMarker.Name = "Button_AddMarker";
+            this.Button_AddMarker.Size = new System.Drawing.Size(36, 21);
+            this.Button_AddMarker.TabIndex = 11;
+            this.Button_AddMarker.Text = "Add";
+            this.Button_AddMarker.UseVisualStyleBackColor = true;
+            this.Button_AddMarker.Click += new System.EventHandler(this.Button_AddMarker_Click);
             // 
             // Numeric_MarkerLoopStart
             // 
@@ -142,14 +150,14 @@ namespace EuroSound_Application
             this.Label_Flags.TabIndex = 4;
             this.Label_Flags.Text = "Flags:";
             // 
-            // comboBox1
+            // ComboBox_MarkerType
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(59, 53);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(181, 21);
-            this.comboBox1.TabIndex = 3;
+            this.ComboBox_MarkerType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBox_MarkerType.FormattingEnabled = true;
+            this.ComboBox_MarkerType.Location = new System.Drawing.Point(59, 53);
+            this.ComboBox_MarkerType.Name = "ComboBox_MarkerType";
+            this.ComboBox_MarkerType.Size = new System.Drawing.Size(181, 21);
+            this.ComboBox_MarkerType.TabIndex = 3;
             // 
             // Label_Type
             // 
@@ -181,81 +189,127 @@ namespace EuroSound_Application
             this.Label_MarkerPosition.TabIndex = 0;
             this.Label_MarkerPosition.Text = "Position:";
             // 
-            // GroupBox_StartData
+            // Button_OK
             // 
-            this.GroupBox_StartData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.GroupBox_StartData.Controls.Add(this.Textbox_InstantBuffer);
-            this.GroupBox_StartData.Controls.Add(this.Textbox_IsInstant);
-            this.GroupBox_StartData.Controls.Add(this.Label_InstantBuffer);
-            this.GroupBox_StartData.Controls.Add(this.Label_IsInstant);
-            this.GroupBox_StartData.Location = new System.Drawing.Point(144, 13);
-            this.GroupBox_StartData.Name = "GroupBox_StartData";
-            this.GroupBox_StartData.Size = new System.Drawing.Size(512, 58);
-            this.GroupBox_StartData.TabIndex = 5;
-            this.GroupBox_StartData.TabStop = false;
-            this.GroupBox_StartData.Text = "Marker Start Data";
+            this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_OK.Location = new System.Drawing.Point(370, 469);
+            this.Button_OK.Name = "Button_OK";
+            this.Button_OK.Size = new System.Drawing.Size(75, 23);
+            this.Button_OK.TabIndex = 6;
+            this.Button_OK.Text = "OK";
+            this.Button_OK.UseVisualStyleBackColor = true;
             // 
-            // Textbox_InstantBuffer
+            // Button_Cancel
             // 
-            this.Textbox_InstantBuffer.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Textbox_InstantBuffer.Location = new System.Drawing.Point(264, 19);
-            this.Textbox_InstantBuffer.Name = "Textbox_InstantBuffer";
-            this.Textbox_InstantBuffer.Size = new System.Drawing.Size(123, 20);
-            this.Textbox_InstantBuffer.TabIndex = 3;
-            this.Textbox_InstantBuffer.Text = "0";
+            this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Button_Cancel.Location = new System.Drawing.Point(451, 469);
+            this.Button_Cancel.Name = "Button_Cancel";
+            this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
+            this.Button_Cancel.TabIndex = 7;
+            this.Button_Cancel.Text = "Cancel";
+            this.Button_Cancel.UseVisualStyleBackColor = true;
             // 
-            // Textbox_IsInstant
+            // Label_Markers
             // 
-            this.Textbox_IsInstant.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Textbox_IsInstant.Location = new System.Drawing.Point(65, 19);
-            this.Textbox_IsInstant.Name = "Textbox_IsInstant";
-            this.Textbox_IsInstant.Size = new System.Drawing.Size(114, 20);
-            this.Textbox_IsInstant.TabIndex = 2;
-            this.Textbox_IsInstant.Text = "0";
+            this.Label_Markers.AutoSize = true;
+            this.Label_Markers.Location = new System.Drawing.Point(9, 107);
+            this.Label_Markers.Name = "Label_Markers";
+            this.Label_Markers.Size = new System.Drawing.Size(48, 13);
+            this.Label_Markers.TabIndex = 4;
+            this.Label_Markers.Text = "Markers:";
             // 
-            // Label_InstantBuffer
+            // ListView_Markers
             // 
-            this.Label_InstantBuffer.AutoSize = true;
-            this.Label_InstantBuffer.Location = new System.Drawing.Point(185, 22);
-            this.Label_InstantBuffer.Name = "Label_InstantBuffer";
-            this.Label_InstantBuffer.Size = new System.Drawing.Size(73, 13);
-            this.Label_InstantBuffer.TabIndex = 1;
-            this.Label_InstantBuffer.Text = "Instant Buffer:";
+            this.ListView_Markers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Col_Name,
+            this.Col_Position,
+            this.Col_Type,
+            this.Col_Flags,
+            this.Col_Extra,
+            this.Col_LoopStart,
+            this.Col_MarkerCount,
+            this.Col_LoopMarker,
+            this.Col_MarkerPos});
+            this.ListView_Markers.GridLines = true;
+            this.ListView_Markers.HideSelection = false;
+            this.ListView_Markers.Location = new System.Drawing.Point(12, 123);
+            this.ListView_Markers.Name = "ListView_Markers";
+            this.ListView_Markers.Size = new System.Drawing.Size(514, 340);
+            this.ListView_Markers.TabIndex = 8;
+            this.ListView_Markers.UseCompatibleStateImageBehavior = false;
+            this.ListView_Markers.View = System.Windows.Forms.View.Details;
             // 
-            // Label_IsInstant
+            // Col_Name
             // 
-            this.Label_IsInstant.AutoSize = true;
-            this.Label_IsInstant.Location = new System.Drawing.Point(6, 22);
-            this.Label_IsInstant.Name = "Label_IsInstant";
-            this.Label_IsInstant.Size = new System.Drawing.Size(53, 13);
-            this.Label_IsInstant.TabIndex = 0;
-            this.Label_IsInstant.Text = "Is Instant:";
+            this.Col_Name.Text = "Name";
+            // 
+            // Col_Position
+            // 
+            this.Col_Position.Text = "Position";
+            this.Col_Position.Width = 72;
+            // 
+            // Col_Type
+            // 
+            this.Col_Type.Text = "Type";
+            this.Col_Type.Width = 66;
+            // 
+            // Col_MarkerCount
+            // 
+            this.Col_MarkerCount.Text = "Marker Count";
+            this.Col_MarkerCount.Width = 96;
+            // 
+            // Col_LoopMarker
+            // 
+            this.Col_LoopMarker.Text = "Loop Marker Count";
+            this.Col_LoopMarker.Width = 108;
+            // 
+            // Col_LoopStart
+            // 
+            this.Col_LoopStart.Text = "Loop Start";
+            this.Col_LoopStart.Width = 87;
+            // 
+            // Col_Flags
+            // 
+            this.Col_Flags.Text = "Flags";
+            // 
+            // Col_Extra
+            // 
+            this.Col_Extra.Text = "Extra";
+            // 
+            // Col_MarkerPos
+            // 
+            this.Col_MarkerPos.Text = "Marker Pos";
             // 
             // Frm_StreamSounds_MarkersEditor
             // 
+            this.AcceptButton = this.Button_OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.TreeView_Markers);
+            this.CancelButton = this.Button_Cancel;
+            this.ClientSize = new System.Drawing.Size(538, 504);
+            this.Controls.Add(this.ListView_Markers);
+            this.Controls.Add(this.Label_Markers);
+            this.Controls.Add(this.Button_Cancel);
+            this.Controls.Add(this.Button_OK);
             this.Controls.Add(this.GroupBox_MarkerData);
-            this.Controls.Add(this.GroupBox_StartData);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Frm_StreamSounds_MarkersEditor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Frm_StreamSounds_MarkersEditor";
+            this.Load += new System.EventHandler(this.Frm_StreamSounds_MarkersEditor_Load);
             this.GroupBox_MarkerData.ResumeLayout(false);
             this.GroupBox_MarkerData.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_MarkerLoopStart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_MarkerPosition)).EndInit();
-            this.GroupBox_StartData.ResumeLayout(false);
-            this.GroupBox_StartData.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TreeView TreeView_Markers;
         private System.Windows.Forms.GroupBox GroupBox_MarkerData;
         private System.Windows.Forms.NumericUpDown Numeric_MarkerLoopStart;
         private System.Windows.Forms.Label Label_LoopStart;
@@ -263,14 +317,23 @@ namespace EuroSound_Application
         private System.Windows.Forms.Label Label_Extra;
         private System.Windows.Forms.TextBox Textbox_Flags;
         private System.Windows.Forms.Label Label_Flags;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox ComboBox_MarkerType;
         private System.Windows.Forms.Label Label_Type;
         private System.Windows.Forms.NumericUpDown Numeric_MarkerPosition;
         private System.Windows.Forms.Label Label_MarkerPosition;
-        private System.Windows.Forms.GroupBox GroupBox_StartData;
-        private System.Windows.Forms.TextBox Textbox_InstantBuffer;
-        private System.Windows.Forms.TextBox Textbox_IsInstant;
-        private System.Windows.Forms.Label Label_InstantBuffer;
-        private System.Windows.Forms.Label Label_IsInstant;
+        private System.Windows.Forms.Button Button_OK;
+        private System.Windows.Forms.Button Button_Cancel;
+        private System.Windows.Forms.Label Label_Markers;
+        private System.Windows.Forms.Button Button_AddMarker;
+        private System.Windows.Forms.ListView ListView_Markers;
+        private System.Windows.Forms.ColumnHeader Col_Name;
+        private System.Windows.Forms.ColumnHeader Col_Position;
+        private System.Windows.Forms.ColumnHeader Col_Type;
+        private System.Windows.Forms.ColumnHeader Col_MarkerCount;
+        private System.Windows.Forms.ColumnHeader Col_LoopMarker;
+        private System.Windows.Forms.ColumnHeader Col_LoopStart;
+        private System.Windows.Forms.ColumnHeader Col_Flags;
+        private System.Windows.Forms.ColumnHeader Col_Extra;
+        private System.Windows.Forms.ColumnHeader Col_MarkerPos;
     }
 }

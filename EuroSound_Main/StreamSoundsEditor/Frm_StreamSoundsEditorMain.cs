@@ -14,7 +14,6 @@ namespace EuroSound_Application
         public ProjectFile ProjectInfo = new ProjectFile();
         private string FileToLoadArg, ProjectName;
 
-
         public Frm_StreamSoundsEditorMain(string FilePath, string Name)
         {
             InitializeComponent();
@@ -33,7 +32,7 @@ namespace EuroSound_Application
             if (Hashcodes.SFX_Defines.Keys.Count == 0 || Hashcodes.SFX_Data.Keys.Count == 0)
             {
                 /*Update Status Bar*/
-                GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
 
                 /*Load Data*/
                 Thread LoadHashcodeData = new Thread(() => Hashcodes.LoadSoundDataFile())
@@ -68,7 +67,7 @@ namespace EuroSound_Application
             TreeView_StreamData.ShowRootLines = GlobalPreferences.ShowRootLines;
 
             /*Update Status Bar*/
-            GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         private void Frm_StreamSoundsEditorMain_Shown(object sender, System.EventArgs e)
@@ -77,7 +76,7 @@ namespace EuroSound_Application
             TreeView_StreamData.Nodes["Sounds"].Expand();
 
             /*Set Program status*/
-            GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         //*===============================================================================================
@@ -132,32 +131,46 @@ namespace EuroSound_Application
 
         private void TreeView_StreamData_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
         {
-
+            /*Change node images depending of the type*/
+            if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
+            {
+                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 0, 0);
+            }
+            else if (e.Node.Tag.Equals("Sound"))
+            {
+                if (EXStreamSoundsFunctions.SoundWillBeOutputed(StreamSoundsList, e.Node.Name))
+                {
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 2, 2);
+                }
+                else
+                {
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 5, 5);
+                }
+            }
         }
 
         private void TreeView_StreamData_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-
-        }
-
-        private void TreeView_StreamData_DragDrop(object sender, DragEventArgs e)
-        {
-
-        }
-
-        private void TreeView_StreamData_DragEnter(object sender, DragEventArgs e)
-        {
-
-        }
-
-        private void TreeView_StreamData_DragOver(object sender, DragEventArgs e)
-        {
-
-        }
-
-        private void TreeView_StreamData_ItemDrag(object sender, ItemDragEventArgs e)
-        {
-
+            /*Change node images depending of the type*/
+            if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
+            {
+                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 1, 1);
+            }
+            else if (e.Node.Tag.Equals("Sound"))
+            {
+                if (EXStreamSoundsFunctions.SoundWillBeOutputed(StreamSoundsList, e.Node.Name))
+                {
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 3, 3);
+                }
+                else
+                {
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 6, 6);
+                }
+            }
+            else if (e.Node.Tag.Equals("Sample"))
+            {
+                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 4, 4);
+            }
         }
 
         private void TreeView_StreamData_KeyDown(object sender, KeyEventArgs e)

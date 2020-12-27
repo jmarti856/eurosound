@@ -13,7 +13,7 @@ namespace EuroSound_Application
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void Frm_AboutEuroSound_Load(object sender, EventArgs e)

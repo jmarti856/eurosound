@@ -30,21 +30,68 @@ namespace EuroSound_Application
             ProjectName = v_ProjectName;
 
             /*Menu Item: File*/
-            MenuItem_File_Save.MouseHover += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.StatusBarShowToolTip(GenericFunctions.ResourcesManager.GetString("MenuItem_File_Save")); };
-            MenuItem_File_SaveAs.MouseHover += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.StatusBarShowToolTip(GenericFunctions.ResourcesManager.GetString("MenuItem_File_SaveAs")); };
-            MenuItem_File_Export.MouseHover += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.StatusBarShowToolTip(GenericFunctions.ResourcesManager.GetString("MenuItem_File_Export")); };
+            MenuItem_File_Save.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_Save")); };
+            MenuItem_File_SaveAs.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_SaveAs")); };
+            MenuItem_File_Export.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_Export")); };
+            MenuItemFile_ReadSound.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_ReadSound")); };
+            MenuItemFile_ReadYml.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_ReadYml")); };
 
-            MenuItem_File_Save.MouseLeave += (se, ev) => GenericFunctions.StatusBarToolTipMode(GlobalPreferences.StatusBar_ToolTipMode);
-            MenuItem_File_SaveAs.MouseLeave += (se, ev) => GenericFunctions.StatusBarToolTipMode(GlobalPreferences.StatusBar_ToolTipMode);
-            MenuItem_File_Export.MouseLeave += (se, ev) => GenericFunctions.StatusBarToolTipMode(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItem_File_Save.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItem_File_SaveAs.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItem_File_Export.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItemFile_ReadSound.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItemFile_ReadYml.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
 
             /*Menu Item: Edit*/
-            MenuItem_Edit.DropDownOpened += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.StatusBarToolTipMode(GlobalPreferences.StatusBar_ToolTipMode); };
-            MenuItem_Edit.DropDownClosed += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.StatusBarToolTipMode(GlobalPreferences.StatusBar_ToolTipMode); };
+            MenuItem_Edit.DropDownOpened += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
+            MenuItem_Edit.DropDownClosed += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
 
-            MenuItem_Edit_FileProps.MouseHover += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.StatusBarShowToolTip(GenericFunctions.ResourcesManager.GetString("MenuItem_Edit_FileProps")); };
+            MenuItem_Edit_FileProps.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_Edit_FileProps")); };
 
-            MenuItem_Edit_FileProps.MouseLeave += (se, ev) => GenericFunctions.StatusBarToolTipMode(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItem_Edit_FileProps.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+
+            /*Buttons*/
+            Button_GenerateList.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ButtonGenerateSoundsList")); };
+            Button_GenerateList.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+
+            Button_Search.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ButtonSoundsBankSearch")); };
+            Button_Search.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+
+            Button_UpdateList_Hashcodes.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ButtonSoundsBankCheckHashcodes")); };
+            Button_UpdateList_Hashcodes.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+
+            Button_UpdateList_WavData.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ButtonSoundsBankCheckAudios")); };
+            Button_UpdateList_WavData.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+
+            /*Context Menu Folders*/
+            ContextMenuFolders_Folder.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(""); };
+            ContextMenuFolders_New.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolders_New")); };
+            ContextMenuFolder_ExpandAll.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_ExpandAll")); };
+            ContextMenuFolder_CollapseAll.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_CollapseAll")); };
+            ContextMenuFolder_Delete.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_Delete")); };
+            ContextMenuFolder_Sort.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_Sort")); };
+            ContextMenuFolder_Move.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_Move")); };
+            ContextMenuFolder_AddSound.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_AddSound")); };
+            ContextMenuFolder_Rename.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_Rename")); };
+            ContextMenuFolder_AddAudio.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_AddAudio")); };
+            ContextMenuFolder_Purge.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_Purge")); };
+            ContextMenuFolder_TextColor.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_TextColor")); };
+            ContextMenu_Folders.Closing += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+
+            /*ContextMenu_Sound*/
+            ContextMenuSound_AddSample.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuSound_AddSample")); };
+            ContextMenuSound_Remove.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuSound_Remove")); };
+            ContextMenuSound_Rename.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuSound_Rename")); };
+            ContextMenuSound_Properties.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuSound_Properties")); };
+            ContextMenuSound_TextColor.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_TextColor")); };
+            ContextMenu_Sound.Closing += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+
+            /*Context Menu Samples*/
+            ContextMenuSample_Remove.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuSample_Remove")); };
+            ContextMenuSample_Rename.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuSample_Rename")); };
+            ContextMenuSample_Properties.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuSample_Properties")); };
+            ContextMenuSample_TextColor.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_TextColor")); };
+            ContextMenu_Sample.Closing += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
         }
 
         [DllImport("user32.dll")]
@@ -52,6 +99,8 @@ namespace EuroSound_Application
 
         private void Button_GenerateList_Click(object sender, EventArgs e)
         {
+            GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false);
+
             string SavePath = GenericFunctions.SaveFileBrowser("YML Files (*.yml)|*.yml", 1, true, ProjectName);
             if (!string.IsNullOrEmpty(SavePath))
             {
@@ -69,6 +118,8 @@ namespace EuroSound_Application
 
         private void Button_Search_Click(object sender, EventArgs e)
         {
+            GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false);
+
             string searchFor = Textbox_SearchHint.Text.Trim();
             if (searchFor != "")
             {
@@ -89,21 +140,25 @@ namespace EuroSound_Application
             }
         }
 
+        //*===============================================================================================
+        //* LIST VIEWS DATA
+        //*===============================================================================================
         private void Button_UpdateList_Hashcodes_Click(object sender, EventArgs e)
         {
+            GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false);
+
             /*Check New data*/
             UpdateHashcodesValidList();
         }
 
         private void Button_UpdateList_StreamData_Click(object sender, EventArgs e)
         {
+            GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false);
+
             /*Check Stream Data*/
             UpdateStreamedDataList();
         }
 
-        //*===============================================================================================
-        //* LIST VIEWS DATA
-        //*===============================================================================================
         private void Button_UpdateList_WavData_Click(object sender, EventArgs e)
         {
             /*Check Audio properties*/
@@ -120,7 +175,7 @@ namespace EuroSound_Application
             if (Hashcodes.SFX_Defines.Keys.Count == 0 || Hashcodes.SFX_Data.Keys.Count == 0)
             {
                 /*Update Status Bar*/
-                GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
 
                 /*Load Data*/
                 Thread LoadHashcodeData = new Thread(() => Hashcodes.LoadSoundDataFile())
@@ -161,7 +216,7 @@ namespace EuroSound_Application
             TreeView_File.Nodes["Sounds"].Expand();
 
             /*Set Program status*/
-            GenericFunctions.SetStatusToStatusBar(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         private void Frm_Soundbanks_Main_Enter(object sender, EventArgs e)
@@ -171,7 +226,6 @@ namespace EuroSound_Application
 
         private void Frm_Soundbanks_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            GenericFunctions.SetCurrentFileLabel("");
             if (ProjectInfo.FileHasBeenModified)
             {
                 DialogResult dialogResult = MessageBox.Show("Save changes to " + ProjectInfo.FileName + "?", "EuroSound", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
@@ -181,11 +235,13 @@ namespace EuroSound_Application
                     LoadedFile = SaveDocument(LoadedFile, TreeView_File, SoundsList, AudioDataDict, ProjectInfo);
                     ProjectInfo.FileHasBeenModified = false;
                     e.Cancel = false;
+                    GenericFunctions.SetCurrentFileLabel("");
                 }
                 else if (dialogResult == DialogResult.No)
                 {
                     GlobalPreferences.CancelApplicationClose = false;
                     e.Cancel = false;
+                    GenericFunctions.SetCurrentFileLabel("");
                 }
                 else if (dialogResult == DialogResult.Cancel)
                 {
@@ -206,7 +262,7 @@ namespace EuroSound_Application
             {
                 Owner = this,
                 ShowInTaskbar = false,
-                Tag = this.Tag
+                Tag = Tag
             };
             Props.ShowDialog();
             ProjectInfo.FileHasBeenModified = true;
@@ -234,8 +290,8 @@ namespace EuroSound_Application
                 string FileName = "HC" + ProjectInfo.Hashcode.ToString("X8").Substring(2);
                 Frm_BuildSFXFile BuildFile = new Frm_BuildSFXFile(ProjectInfo, FileName)
                 {
-                    Tag = this.Tag,
-                    Owner = this.Owner,
+                    Tag = Tag,
+                    Owner = Owner,
                     ShowInTaskbar = false
                 };
                 BuildFile.ShowDialog();

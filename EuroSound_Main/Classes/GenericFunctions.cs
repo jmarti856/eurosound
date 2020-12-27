@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using CustomStatusBar;
+using System.Collections.Generic;
 using System.IO;
 using System.Resources;
 using System.Security.Cryptography;
@@ -10,9 +10,18 @@ namespace EuroSound_Application
 {
     internal static class GenericFunctions
     {
-        internal static string CurrentStatus;
         internal static ResourceManager ResourcesManager;
-        internal static StatusBar ParentFormStatusBar;
+        internal static StatusBarToolTips ParentFormStatusBar;
+
+        internal static string TruncateLongString(string str, int maxLenght)
+        {
+            if (str.Length > maxLenght)
+            {
+                str = str.Substring(0, maxLenght) + "...";
+            }
+
+            return str;
+        }
 
         internal static void SetCurrentFileLabel(string text)
         {
@@ -24,57 +33,6 @@ namespace EuroSound_Application
                 });
             }
             text = null;
-        }
-
-        internal static void SetStatusToStatusBar(string NewStatus)
-        {
-            CurrentStatus = NewStatus;
-            if (ParentFormStatusBar.Visible)
-            {
-                if (!GlobalPreferences.StatusBar_ToolTipMode)
-                {
-                    StatusBarSetText(CurrentStatus);
-                }
-            }
-        }
-
-        internal static void StatusBarToolTipMode(bool MenuStripOpened)
-        {
-            if (ParentFormStatusBar.Visible)
-            {
-                GlobalPreferences.StatusBar_ToolTipMode = MenuStripOpened;
-                if (GlobalPreferences.StatusBar_ToolTipMode)
-                {
-                    StatusBarSetText("");
-                }
-                else
-                {
-                    StatusBarSetText(CurrentStatus);
-                }
-            }
-        }
-
-        internal static void StatusBarShowToolTip(string TextToDisplay)
-        {
-            if (ParentFormStatusBar.Visible)
-            {
-                if (GlobalPreferences.StatusBar_ToolTipMode)
-                {
-                    StatusBarSetText(TextToDisplay);
-                }
-            }
-        }
-
-        internal static void StatusBarSetText(string TextToDisplay)
-        {
-            if (ParentFormStatusBar.Visible && ParentFormStatusBar != null)
-            {
-                ParentFormStatusBar.Invoke((MethodInvoker)delegate
-                {
-                    ParentFormStatusBar.Panels["Status"].Text = TextToDisplay;
-                });
-            }
-            TextToDisplay = null;
         }
 
         internal static string CalculateMD5(string filename)
@@ -118,21 +76,24 @@ namespace EuroSound_Application
             return Modified;
         }
 
-        internal static Color GetColorFromColorPicker()
+        internal static int GetColorFromColorPicker()
         {
+            int SelectedColor = -1;
+
             WindowsRegistryFunctions WRegistryFunctions = new WindowsRegistryFunctions();
-
-            Color PickedColor = Color.Black;
-            ColorDialog ColorDiag = new ColorDialog() { AllowFullOpen = true, FullOpen = true };
-            ColorDiag.CustomColors = WRegistryFunctions.SetCustomColors();
-            if (ColorDiag.ShowDialog() == DialogResult.OK)
+            using (ColorDialog ColorDiag = new ColorDialog())
             {
-                PickedColor = ColorDiag.Color;
-                WRegistryFunctions.SaveCustomColors(ColorDiag.CustomColors);
+                ColorDiag.AllowFullOpen = true;
+                ColorDiag.FullOpen = true;
+                ColorDiag.CustomColors = WRegistryFunctions.SetCustomColors();
+                if (ColorDiag.ShowDialog() == DialogResult.OK)
+                {
+                    SelectedColor = ColorDiag.Color.ToArgb();
+                    WRegistryFunctions.SaveCustomColors(ColorDiag.CustomColors);
+                }
             }
-            ColorDiag.Dispose();
 
-            return PickedColor;
+            return SelectedColor;
         }
 
         internal static Form GetFormByName(string FormName, string tag)

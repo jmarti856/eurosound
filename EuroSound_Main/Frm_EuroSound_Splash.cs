@@ -58,7 +58,11 @@ namespace EuroSound_Application
             GlobalPreferences.TreeViewIndent = int.Parse(TreeViewPreferences[3]);
 
             await Task.Delay(rnd.Next(1, 5));
-            GlobalPreferences.SFXOutputPath = WRegistryFunctions.LoadGeneralPreferences();
+            string[] OutputPaths = WRegistryFunctions.LoadGeneralPreferences();
+            GlobalPreferences.SFXOutputPath = OutputPaths[0];
+            GlobalPreferences.MusicOutputPath = OutputPaths[1];
+            GlobalPreferences.ColorWavesControl = int.Parse(OutputPaths[2]);
+            GlobalPreferences.BackColorWavesControl = int.Parse(OutputPaths[3]);
 
             //* --Load Sound Data Hashcodes--
             Label_Status.Text = "Loading sounds data hashtable, please wait...";
@@ -77,9 +81,9 @@ namespace EuroSound_Application
             {
                 Owner = this
             };
-            this.Hide();
+            Hide();
             EuroSoundMain.ShowDialog();
-            this.Close();
+            Close();
         }
 
         //*===============================================================================================

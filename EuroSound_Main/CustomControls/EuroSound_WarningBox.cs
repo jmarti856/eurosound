@@ -8,8 +8,8 @@ namespace EuroSound_Application
         {
             InitializeComponent();
             Label_Text.Text = LabelText;
-            this.ShowInTaskbar = false;
-            this.Text = Title;
+            ShowInTaskbar = false;
+            Text = Title;
             Checkbox_ShowAgain.Visible = ShowWarningAgainCheckbox;
         }
 
@@ -17,17 +17,17 @@ namespace EuroSound_Application
         private void Button_Cancel_Click(object sender, System.EventArgs e)
         {
             ShowWarningAgain = (Checkbox_ShowAgain.Checked = !Checkbox_ShowAgain.Checked);
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
-            this.Dispose();
+            DialogResult = DialogResult.Cancel;
+            Close();
+            Dispose();
         }
 
         private void Button_OK_Click(object sender, System.EventArgs e)
         {
             ShowWarningAgain = (Checkbox_ShowAgain.Checked = !Checkbox_ShowAgain.Checked);
-            this.DialogResult = DialogResult.OK;
-            this.Close();
-            this.Dispose();
+            DialogResult = DialogResult.OK;
+            Close();
+            Dispose();
         }
     }
 }

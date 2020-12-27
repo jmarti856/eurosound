@@ -95,155 +95,6 @@ namespace EuroSound_Application
             }
         }
 
-        internal void WriteFinalOffsets(BinaryWriter BWriter, ProgressBar Bar, Label LabelInfo)
-        {
-            //*===============================================================================================
-            //* WRITE FINAL HEADER INFO
-            //*===============================================================================================
-            try
-            {
-                ProgressBarReset(Bar);
-                ProgressBarMaximum(Bar, (HashcodeOffsets.Count() + SampleDataOffsets.Count() + 5));
-
-                /*--Size of the whole file--*/
-                BWriter.BaseStream.Seek(0xC, SeekOrigin.Begin);
-                BWriter.Write(Convert.ToUInt32(WholeFileSize));
-                ProgressBarUpdate(Bar, 1);
-
-                /*--SFX Length--*/
-                BWriter.BaseStream.Seek(0x14, SeekOrigin.Begin);
-                BWriter.Write(Convert.ToUInt32(SFXlength));
-                ProgressBarUpdate(Bar, 1);
-
-                /*--Sample info start--*/
-                BWriter.BaseStream.Seek(0x18, SeekOrigin.Begin);
-                BWriter.Write(Convert.ToUInt32(SampleInfoStartOffset));
-                BWriter.Write(Convert.ToUInt32(SampleInfoLength));
-                ProgressBarUpdate(Bar, 1);
-
-                /*--Special sample info start--*/
-                BWriter.BaseStream.Seek(0x20, SeekOrigin.Begin);
-                BWriter.Write(Convert.ToUInt32(SampleDataStartOffset));
-                BWriter.Write(Convert.ToUInt32(00000000));
-                ProgressBarUpdate(Bar, 1);
-
-                /*--Sample Data Start--*/
-                BWriter.BaseStream.Seek(0x28, SeekOrigin.Begin);
-                BWriter.Write(Convert.ToUInt32(SampleDataStartOffset));
-                BWriter.Write(Convert.ToUInt32(SampleDataLength));
-                ProgressBarUpdate(Bar, 1);
-
-                //*===============================================================================================
-                //* WRITE HASHCODE REAL OFFSETS
-                //*===============================================================================================
-                BWriter.Seek(0x804, SeekOrigin.Begin);
-                foreach (long offset in HashcodeOffsets)
-                {
-                    BWriter.Seek(4, SeekOrigin.Current);
-                    BWriter.Write(Convert.ToUInt32(offset));
-
-                    ProgressBarUpdate(Bar, 1);
-                    SetLabelText(LabelInfo, "WrittingFinalOffsets: " + offset);
-                }
-
-                //*===============================================================================================
-                //* WRITE FINAL OFFSETS TO SAMPLE DATA
-                //*===============================================================================================
-                BWriter.BaseStream.Seek(SampleInfoStartOffset + 4, SeekOrigin.Begin);
-                foreach (long item in SampleDataOffsets)
-                {
-                    /*--Skip numsamples and flags--*/
-                    BWriter.BaseStream.Seek(BWriter.BaseStream.Position + 4, SeekOrigin.Begin);
-
-                    /*--Calculate Relative Offset--*/
-                    BWriter.Write(Convert.ToUInt32(item));
-
-                    /*--Skip other properties--*/
-                    BWriter.BaseStream.Seek(BWriter.BaseStream.Position + 32, SeekOrigin.Begin);
-
-                    ProgressBarUpdate(Bar, 1);
-                    SetLabelText(LabelInfo, "WrittingFinalOffsets: " + item);
-                }
-            }
-            catch
-            {
-
-            }
-        }
-
-        internal void WriteSampleDataSection(BinaryWriter BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
-        {
-            try
-            {
-                ProgressBarReset(Bar);
-                ProgressBarMaximum(Bar, FinalAudioDataDict.Count());
-
-                /*--[Start section offset]--*/
-                SampleDataStartOffset = (BWriter.BaseStream.Position);
-                foreach (KeyValuePair<string, EXAudio> entry in FinalAudioDataDict)
-                {
-                    /*--Add Sample data offset to the list--*/
-                    SampleDataOffsets.Add(BWriter.BaseStream.Position - SampleDataStartOffset);
-
-                    /*--Write PCM Data--*/
-                    BWriter.Write(entry.Value.PCMdata);
-
-                    ProgressBarUpdate(Bar, 1);
-                    SetLabelText(LabelInfo, "WrittingSampleData: " + entry.Key);
-                }
-
-                /*--Section length, current position - start position--*/
-                SampleDataLength = BWriter.BaseStream.Position - SampleDataStartOffset;
-
-                /*Get total file size*/
-                WholeFileSize = BWriter.BaseStream.Position;
-            }
-            catch
-            {
-
-            }
-        }
-
-        internal void WriteSampleInfoSection(BinaryWriter BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
-        {
-            try
-            {
-                ProgressBarReset(Bar);
-                ProgressBarMaximum(Bar, FinalAudioDataDict.Count());
-
-                /*--[Start section offset]--*/
-                SampleInfoStartOffset = (BWriter.BaseStream.Position);
-
-                /*--[Write total number of samples]--*/
-                BWriter.Write(Convert.ToUInt32(FinalAudioDataDict.Keys.Count));
-
-                foreach (KeyValuePair<string, EXAudio> entry in FinalAudioDataDict)
-                {
-                    /*--[Write data]--*/
-                    BWriter.Write(Convert.ToUInt32(entry.Value.Flags));
-                    BWriter.Write(Convert.ToUInt32(00000000));
-                    BWriter.Write(Convert.ToUInt32(entry.Value.DataSize));
-                    BWriter.Write(Convert.ToUInt32(entry.Value.Frequency));
-                    BWriter.Write(Convert.ToUInt32(entry.Value.RealSize));
-                    BWriter.Write(Convert.ToUInt32(entry.Value.Channels));
-                    BWriter.Write(Convert.ToUInt32(entry.Value.Bits));
-                    BWriter.Write(Convert.ToUInt32(entry.Value.PSIsample));
-                    BWriter.Write(Convert.ToUInt32(entry.Value.LoopOffset));
-                    BWriter.Write(Convert.ToUInt32(entry.Value.Duration));
-
-                    ProgressBarUpdate(Bar, 1);
-                    SetLabelText(LabelInfo, "WritingSampleInfo: " + entry.Key);
-                }
-
-                /*--[Section length, current position - start position]--*/
-                SampleInfoLength = BWriter.BaseStream.Position - SampleInfoStartOffset;
-            }
-            catch
-            {
-
-            }
-        }
-
         internal void WriteSFXSection(BinaryWriter BWriter, Dictionary<uint, EXSound> FinalSoundsDict, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
         {
             try
@@ -317,6 +168,155 @@ namespace EuroSound_Application
                 }
                 /*--[Section length, current position - start position]--*/
                 SFXlength = BWriter.BaseStream.Position - 2048;
+            }
+            catch
+            {
+
+            }
+        }
+
+        internal void WriteSampleInfoSection(BinaryWriter BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
+        {
+            try
+            {
+                ProgressBarReset(Bar);
+                ProgressBarMaximum(Bar, FinalAudioDataDict.Count());
+
+                /*--[Start section offset]--*/
+                SampleInfoStartOffset = (BWriter.BaseStream.Position);
+
+                /*--[Write total number of samples]--*/
+                BWriter.Write(Convert.ToUInt32(FinalAudioDataDict.Keys.Count));
+
+                foreach (KeyValuePair<string, EXAudio> entry in FinalAudioDataDict)
+                {
+                    /*--[Write data]--*/
+                    BWriter.Write(Convert.ToUInt32(entry.Value.Flags));
+                    BWriter.Write(Convert.ToUInt32(00000000));
+                    BWriter.Write(Convert.ToUInt32(entry.Value.DataSize));
+                    BWriter.Write(Convert.ToUInt32(entry.Value.Frequency));
+                    BWriter.Write(Convert.ToUInt32(entry.Value.RealSize));
+                    BWriter.Write(Convert.ToUInt32(entry.Value.Channels));
+                    BWriter.Write(Convert.ToUInt32(entry.Value.Bits));
+                    BWriter.Write(Convert.ToUInt32(entry.Value.PSIsample));
+                    BWriter.Write(Convert.ToUInt32(entry.Value.LoopOffset));
+                    BWriter.Write(Convert.ToUInt32(entry.Value.Duration));
+
+                    ProgressBarUpdate(Bar, 1);
+                    SetLabelText(LabelInfo, "WritingSampleInfo: " + entry.Key);
+                }
+
+                /*--[Section length, current position - start position]--*/
+                SampleInfoLength = BWriter.BaseStream.Position - SampleInfoStartOffset;
+            }
+            catch
+            {
+
+            }
+        }
+
+        internal void WriteSampleDataSection(BinaryWriter BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
+        {
+            try
+            {
+                ProgressBarReset(Bar);
+                ProgressBarMaximum(Bar, FinalAudioDataDict.Count());
+
+                /*--[Start section offset]--*/
+                SampleDataStartOffset = (BWriter.BaseStream.Position);
+                foreach (KeyValuePair<string, EXAudio> entry in FinalAudioDataDict)
+                {
+                    /*--Add Sample data offset to the list--*/
+                    SampleDataOffsets.Add(BWriter.BaseStream.Position - SampleDataStartOffset);
+
+                    /*--Write PCM Data--*/
+                    BWriter.Write(entry.Value.PCMdata);
+
+                    ProgressBarUpdate(Bar, 1);
+                    SetLabelText(LabelInfo, "WrittingSampleData: " + entry.Key);
+                }
+
+                /*--Section length, current position - start position--*/
+                SampleDataLength = BWriter.BaseStream.Position - SampleDataStartOffset;
+
+                /*Get total file size*/
+                WholeFileSize = BWriter.BaseStream.Position;
+            }
+            catch
+            {
+
+            }
+        }
+
+        internal void WriteFinalOffsets(BinaryWriter BWriter, ProgressBar Bar, Label LabelInfo)
+        {
+            //*===============================================================================================
+            //* WRITE FINAL HEADER INFO
+            //*===============================================================================================
+            try
+            {
+                ProgressBarReset(Bar);
+                ProgressBarMaximum(Bar, (HashcodeOffsets.Count() + SampleDataOffsets.Count() + 5));
+
+                /*--Size of the whole file--*/
+                BWriter.BaseStream.Seek(0xC, SeekOrigin.Begin);
+                BWriter.Write(Convert.ToUInt32(WholeFileSize));
+                ProgressBarUpdate(Bar, 1);
+
+                /*--SFX Length--*/
+                BWriter.BaseStream.Seek(0x14, SeekOrigin.Begin);
+                BWriter.Write(Convert.ToUInt32(SFXlength));
+                ProgressBarUpdate(Bar, 1);
+
+                /*--Sample info start--*/
+                BWriter.BaseStream.Seek(0x18, SeekOrigin.Begin);
+                BWriter.Write(Convert.ToUInt32(SampleInfoStartOffset));
+                BWriter.Write(Convert.ToUInt32(SampleInfoLength));
+                ProgressBarUpdate(Bar, 1);
+
+                /*--Special sample info start--*/
+                BWriter.BaseStream.Seek(0x20, SeekOrigin.Begin);
+                BWriter.Write(Convert.ToUInt32(SampleDataStartOffset));
+                BWriter.Write(Convert.ToUInt32(00000000));
+                ProgressBarUpdate(Bar, 1);
+
+                /*--Sample Data Start--*/
+                BWriter.BaseStream.Seek(0x28, SeekOrigin.Begin);
+                BWriter.Write(Convert.ToUInt32(SampleDataStartOffset));
+                BWriter.Write(Convert.ToUInt32(SampleDataLength));
+                ProgressBarUpdate(Bar, 1);
+
+                //*===============================================================================================
+                //* WRITE HASHCODE REAL OFFSETS
+                //*===============================================================================================
+                BWriter.Seek(0x804, SeekOrigin.Begin);
+                foreach (long offset in HashcodeOffsets)
+                {
+                    BWriter.Seek(4, SeekOrigin.Current);
+                    BWriter.Write(Convert.ToUInt32(offset));
+
+                    ProgressBarUpdate(Bar, 1);
+                    SetLabelText(LabelInfo, "WrittingFinalOffsets: " + offset);
+                }
+
+                //*===============================================================================================
+                //* WRITE FINAL OFFSETS TO SAMPLE DATA
+                //*===============================================================================================
+                BWriter.BaseStream.Seek(SampleInfoStartOffset + 4, SeekOrigin.Begin);
+                foreach (long item in SampleDataOffsets)
+                {
+                    /*--Skip numsamples and flags--*/
+                    BWriter.BaseStream.Seek(BWriter.BaseStream.Position + 4, SeekOrigin.Begin);
+
+                    /*--Calculate Relative Offset--*/
+                    BWriter.Write(Convert.ToUInt32(item));
+
+                    /*--Skip other properties--*/
+                    BWriter.BaseStream.Seek(BWriter.BaseStream.Position + 32, SeekOrigin.Begin);
+
+                    ProgressBarUpdate(Bar, 1);
+                    SetLabelText(LabelInfo, "WrittingFinalOffsets: " + item);
+                }
             }
             catch
             {

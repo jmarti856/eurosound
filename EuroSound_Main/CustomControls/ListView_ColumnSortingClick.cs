@@ -15,7 +15,7 @@ namespace ListViewExtendedMethods
         private void ListView_Extended_ColumnSorting_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             // Get the new sorting column.
-            ColumnHeader new_sorting_column = this.Columns[e.Column];
+            ColumnHeader new_sorting_column = Columns[e.Column];
 
             // Figure out the new sorting order.
             SortOrder sort_order;
@@ -61,10 +61,10 @@ namespace ListViewExtendedMethods
             }
 
             // Create a comparer.
-            this.ListViewItemSorter = new ListView_ColumnSorting(e.Column, sort_order);
+            ListViewItemSorter = new ListView_ColumnSorting(e.Column, sort_order);
 
             // Sort.
-            this.Sort();
+            Sort();
         }
     }
 

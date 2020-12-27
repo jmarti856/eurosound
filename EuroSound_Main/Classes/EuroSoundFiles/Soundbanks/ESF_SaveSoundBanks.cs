@@ -135,6 +135,14 @@ namespace EuroSound_Application
             }
         }
 
+        private void SaveTreeViewData(TreeView TreeViewControl, BinaryWriter BWriter)
+        {
+            BWriter.Write((TreeViewControl.GetNodeCount(true) - 3));
+            SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[0], BWriter);
+            SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[1], BWriter);
+            SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[2], BWriter);
+        }
+
         private void SaveTreeNodes(TreeView TreeViewControl, TreeNode Selected, BinaryWriter BWriter)
         {
             if (!Selected.Tag.Equals("Root"))
@@ -161,14 +169,6 @@ namespace EuroSound_Application
             {
                 SaveTreeNodes(TreeViewControl, Node, BWriter);
             }
-        }
-
-        private void SaveTreeViewData(TreeView TreeViewControl, BinaryWriter BWriter)
-        {
-            BWriter.Write((TreeViewControl.GetNodeCount(true) - 3));
-            SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[0], BWriter);
-            SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[1], BWriter);
-            SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[2], BWriter);
         }
     }
 }

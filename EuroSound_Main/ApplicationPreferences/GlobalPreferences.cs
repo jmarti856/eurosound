@@ -21,6 +21,9 @@
 
         //Frm_GeneralPreferences
         internal static string SFXOutputPath;
+        internal static string MusicOutputPath;
+        internal static int ColorWavesControl;
+        internal static int BackColorWavesControl;
 
         //*===============================================================================================
         //* TEMPORAL PROPERTIES
@@ -38,6 +41,9 @@
 
         //Frm_GeneralPreferences
         internal static string SFXOutputPathTEMPORAL;
+        internal static string MusicOutputPathTEMPORAL;
+        internal static int ColorWavesControlTEMPORAL;
+        internal static int BackColorWavesControlTEMPORAL;
 
         //*===============================================================================================
         //* OTHER TEMPORAL VARIABLES

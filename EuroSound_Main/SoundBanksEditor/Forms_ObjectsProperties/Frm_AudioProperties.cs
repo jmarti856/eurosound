@@ -1,7 +1,6 @@
 ﻿using NAudio.Wave;
 using System;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -30,6 +29,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void Frm_AudioProperties_Load(object sender, EventArgs e)
         {
+            euroSound_WaveViewer1.BackColor = Color.FromArgb(GlobalPreferences.BackColorWavesControl);
             AudioFunctionsLibrary = new AudioFunctions();
 
             TemporalAudio = new EXAudio();
@@ -43,9 +43,7 @@ namespace EuroSound_Application
 
             if (TemporalAudio.PCMdata != null)
             {
-                euroSound_WaveViewer1.RenderDelay = 0;
-                euroSound_WaveViewer1.WaveStream = new RawSourceWaveStream(new MemoryStream(TemporalAudio.PCMdata), new WaveFormat((int)TemporalAudio.Frequency, (int)TemporalAudio.Bits, (int)TemporalAudio.Channels));
-                euroSound_WaveViewer1.InitControl();
+                AudioFunctionsLibrary.DrawAudioWaves(euroSound_WaveViewer1, TemporalAudio, 0);
             }
             else
             {
@@ -67,7 +65,7 @@ namespace EuroSound_Application
             if (!string.IsNullOrEmpty(AudioPath))
             {
                 TemporalAudioHash = GenericFunctions.CalculateMD5(AudioPath);
-                TemporalAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);
+                TemporalAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath, true);
 
                 if (TemporalAudio.PCMdata != null)
                 {
@@ -79,8 +77,7 @@ namespace EuroSound_Application
                     numeric_loopOffset.Value = TemporalAudio.LoopOffset;
                     Textbox_MD5Hash.Text = TemporalAudioHash;
 
-                    euroSound_WaveViewer1.WaveStream = new RawSourceWaveStream(new MemoryStream(TemporalAudio.PCMdata), new WaveFormat((int)TemporalAudio.Frequency, (int)TemporalAudio.Bits, (int)TemporalAudio.Channels));
-                    euroSound_WaveViewer1.InitControl();
+                    AudioFunctionsLibrary.DrawAudioWaves(euroSound_WaveViewer1, TemporalAudio, 0);
                 }
                 else
                 {
@@ -98,7 +95,7 @@ namespace EuroSound_Application
             EuroSound_FlagsForm FormFlags = new EuroSound_FlagsForm(int.Parse(Textbox_Flags.Text), FlagsLabels, 1)
             {
                 Text = "Audio Data Flags",
-                Tag = this.Tag,
+                Tag = Tag,
                 Owner = this,
                 ShowInTaskbar = false
             };
@@ -148,7 +145,7 @@ namespace EuroSound_Application
             {
                 using (Graphics gr = euroSound_WaveViewer1.CreateGraphics())
                 {
-                    using (Pen linePen = new Pen(Color.DarkBlue, 1))
+                    using (Pen linePen = new Pen(Color.FromArgb(GlobalPreferences.ColorWavesControl), 1))
                     {
                         gr.DrawLine(linePen, point1, point2);
                     }
@@ -209,7 +206,7 @@ namespace EuroSound_Application
         private void Button_Cancel_Click(object sender, EventArgs e)
         {
             AudioFunctionsLibrary.StopAudio(_waveOut);
-            this.Close();
+            Close();
         }
 
         //*===============================================================================================

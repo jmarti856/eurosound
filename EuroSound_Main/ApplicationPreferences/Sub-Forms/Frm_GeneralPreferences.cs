@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -9,6 +10,7 @@ namespace EuroSound_Application
     {
         [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
+
         public Frm_General()
         {
             InitializeComponent();
@@ -16,20 +18,52 @@ namespace EuroSound_Application
 
         private void Frm_TreeViewPrefs_Load(object sender, EventArgs e)
         {
-            Textbox_OutputSelectedPath.Text = GlobalPreferences.SFXOutputPath;
+            Textbox_SFX_OutputPath.Text = GlobalPreferences.SFXOutputPath;
+            Textbox_MusicOutputPath.Text = GlobalPreferences.MusicOutputPath;
+            Button_WavesColorControl.BackColor = Color.FromArgb(GlobalPreferences.ColorWavesControl);
+            Button_WavesBackColor.BackColor = Color.FromArgb(GlobalPreferences.BackColorWavesControl);
         }
 
-        private void Button_Choose_Click(object sender, EventArgs e)
+        private void Button_ChooseSFX_OutputPath_Click(object sender, EventArgs e)
         {
             if (FolderBrowser_OutputPath.ShowDialog() == DialogResult.OK)
             {
-                Textbox_OutputSelectedPath.Text = FolderBrowser_OutputPath.SelectedPath;
+                Textbox_SFX_OutputPath.Text = FolderBrowser_OutputPath.SelectedPath;
+            }
+        }
+
+        private void Button_MusicOutputPath_Click(object sender, EventArgs e)
+        {
+            if (FolderBrowser_OutputPath.ShowDialog() == DialogResult.OK)
+            {
+                Textbox_MusicOutputPath.Text = FolderBrowser_OutputPath.SelectedPath;
+            }
+        }
+
+        private void Button_WavesColorControl_Click(object sender, EventArgs e)
+        {
+            int SelectedColor = GenericFunctions.GetColorFromColorPicker();
+            if (SelectedColor != -1)
+            {
+                Button_WavesColorControl.BackColor = Color.FromArgb(SelectedColor);
+            }
+        }
+
+        private void Button_WavesBackColor_Click(object sender, EventArgs e)
+        {
+            int SelectedColor = GenericFunctions.GetColorFromColorPicker();
+            if (SelectedColor != -1)
+            {
+                Button_WavesBackColor.BackColor = Color.FromArgb(SelectedColor);
             }
         }
 
         private void Frm_TreeViewPrefs_FormClosing(object sender, FormClosingEventArgs e)
         {
-            GlobalPreferences.SFXOutputPathTEMPORAL = Textbox_OutputSelectedPath.Text;
+            GlobalPreferences.SFXOutputPathTEMPORAL = Textbox_SFX_OutputPath.Text;
+            GlobalPreferences.MusicOutputPathTEMPORAL = Textbox_MusicOutputPath.Text;
+            GlobalPreferences.ColorWavesControlTEMPORAL = Button_WavesColorControl.BackColor.ToArgb();
+            GlobalPreferences.BackColorWavesControlTEMPORAL = Button_WavesBackColor.BackColor.ToArgb();
         }
 
         private void ButtonRegister_FileTypes_Click(object sender, EventArgs e)

@@ -41,12 +41,12 @@ namespace EuroSound_Application
             //* Audio Data
             //*===============================================================================================
             BReader.BaseStream.Position = (AudioDataOffset);
-            ReadAudiosDictionary(BReader, AudiosList);
+            ReadAudioDataDictionary(BReader, AudiosList);
 
             GenericFunctions.SetCurrentFileLabel(FileProperties.FileName);
         }
 
-        internal void ReadAudiosDictionary(BinaryReader BReader, Dictionary<string, EXAudio> AudiosList)
+        internal void ReadAudioDataDictionary(BinaryReader BReader, Dictionary<string, EXAudio> AudiosList)
         {
             int TotalEntries, PCMDataLength;
             string HashMD5;

@@ -122,34 +122,7 @@ namespace EuroSound_Application
             return DictionaryToShow;
         }
 
-        internal static byte[] GetRawPCMData(string AudioFilePath)
-        {
-            int dataSize;
-            byte[] byteArray;
 
-            try
-            {
-                BinaryReader Reader = new BinaryReader(File.Open(AudioFilePath, FileMode.Open, FileAccess.Read));
-
-                /*Go to RAW PCM data*/
-                Reader.BaseStream.Seek(0x28, SeekOrigin.Begin);
-
-                /*Read size*/
-                dataSize = Reader.ReadInt32();
-
-                /*Get data*/
-                byteArray = Reader.ReadBytes(dataSize);
-
-                Reader.Close();
-                Reader.Dispose();
-            }
-            catch
-            {
-                byteArray = null;
-            }
-
-            return byteArray;
-        }
 
         internal static EXSound GetSoundByName(uint NameToSearch, Dictionary<uint, EXSound> SoundsList)
         {
@@ -211,7 +184,7 @@ namespace EuroSound_Application
 
             if (!AudioDataDict.ContainsKey(FileMD5Hash))
             {
-                EXAudio NewAudio = LoadAudioData(AudioFilePath);
+                EXAudio NewAudio = LoadAudioData(AudioFilePath, true);
                 NewAudio.DisplayName = DisplayName;
                 NewAudio.Flags = Convert.ToUInt16(Props[0]);
                 NewAudio.PSIsample = Convert.ToUInt32(Props[1]);
@@ -228,51 +201,75 @@ namespace EuroSound_Application
             return FileMD5Hash;
         }
 
-        internal static bool LoadAudioAndAddToList(string AudioFilePath, string DisplayName, Dictionary<string, EXAudio> AudioDataDict, string FileMD5Hash)
+        internal static int LoadAudioAndAddToList(string AudioFilePath, string DisplayName, Dictionary<string, EXAudio> AudioDataDict, string FileMD5Hash)
         {
-            bool AddedCorrectly = true;
+            int ResultState = 0;
 
             if (!AudioDataDict.ContainsKey(FileMD5Hash))
             {
-                EXAudio NewAudio = LoadAudioData(AudioFilePath);
-                NewAudio.DisplayName = DisplayName;
-                AddAudioToList(NewAudio, FileMD5Hash, AudioDataDict);
+                EXAudio NewAudio = LoadAudioData(AudioFilePath, true);
+                if (NewAudio != null)
+                {
+                    NewAudio.DisplayName = DisplayName;
+                    AddAudioToList(NewAudio, FileMD5Hash, AudioDataDict);
+                }
+                else
+                {
+                    //File incorrect
+                    ResultState = -1;
+                }
             }
             else
             {
-                AddedCorrectly = false;
+                //Audio exists
+                ResultState = -2;
             }
 
-            return AddedCorrectly;
+            return ResultState;
         }
 
-        internal static EXAudio LoadAudioData(string FilePath)
+        internal static EXAudio LoadAudioData(string FilePath, bool ForceMono)
         {
+            int NumberOfChannels, Bits;
+
             WaveFileReader AudioReader = new WaveFileReader(FilePath);
             if (AudioReader.WaveFormat.Encoding == WaveFormatEncoding.Pcm)
             {
-                EXAudio Audio = new EXAudio
+                NumberOfChannels = AudioReader.WaveFormat.Channels;
+                Bits = AudioReader.WaveFormat.BitsPerSample;
+
+                if (Bits == 16)
                 {
-                    Name = Path.GetFileName(FilePath),
-                    DataSize = Convert.ToUInt32(AudioReader.Length),
-                    Frequency = Convert.ToUInt32(AudioReader.WaveFormat.SampleRate),
-                    RealSize = Convert.ToUInt32(new FileInfo(FilePath).Length),
-                    Channels = Convert.ToUInt32(AudioReader.WaveFormat.Channels),
-                    Bits = Convert.ToUInt32(AudioReader.WaveFormat.BitsPerSample),
-                    Duration = Convert.ToUInt32(Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1)),
-                    Encoding = AudioReader.WaveFormat.Encoding.ToString(),
-                    Flags = 0,
-                    LoopOffset = 0,
-                    PSIsample = 0
-                };
-                AudioReader.Close();
-                AudioReader.Dispose();
-                AudioReader.Flush();
+                    AudioFunctions AudioLibrary = new AudioFunctions();
+                    EXAudio Audio = new EXAudio
+                    {
+                        Name = Path.GetFileName(FilePath),
+                        DataSize = (uint)AudioReader.Length,
+                        Frequency = (uint)AudioReader.WaveFormat.SampleRate,
+                        RealSize = (uint)new FileInfo(FilePath).Length,
+                        Channels = (uint)NumberOfChannels,
+                        Bits = (uint)Bits,
+                        Duration = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1),
+                        Encoding = AudioReader.WaveFormat.Encoding.ToString(),
+                        Flags = 0,
+                        LoopOffset = 0,
+                        PSIsample = 0
+                    };
 
-                /*Get PCM data*/
-                Audio.PCMdata = GetRawPCMData(FilePath);
+                    if (ForceMono)
+                    {
+                        Audio.Channels = 1;
+                    }
+                    AudioReader.Close();
+                    AudioReader.Dispose();
+                    AudioReader.Flush();
 
-                return Audio;
+                    /*Get PCM data*/
+                    Audio.PCMdata = AudioLibrary.GetWavPCMData(FilePath, NumberOfChannels, true);
+                    Audio.DataSize = Convert.ToUInt32(Audio.PCMdata.Length);
+
+                    return Audio;
+                }
             }
 
             return null;

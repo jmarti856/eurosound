@@ -14,7 +14,7 @@ namespace EuroSound_Application
             uint Version;
             sbyte TypeOfStoredData;
             /*Update Status Bar*/
-            GenericFunctions.SetStatusToStatusBar(ResxM.GetString("StatusBar_ReadingESFFile"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_ReadingESFFile"));
 
             //Disable temporaly the treeview
             TreeViewControl.Enabled = false;
@@ -72,7 +72,7 @@ namespace EuroSound_Application
             TreeViewControl.Enabled = true;
 
             /*Update Status Bar*/
-            GenericFunctions.SetStatusToStatusBar(ResxM.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_Status_Ready"));
         }
 
         internal string SaveSoundBanksDocument(TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)

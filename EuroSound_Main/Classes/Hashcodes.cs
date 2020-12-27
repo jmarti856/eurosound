@@ -94,51 +94,49 @@ namespace EuroSound_Application
             //Regex FindHexNumber = new Regex(@"(0[xX][A-Fa-f0-9]+;?)+$");
             Regex FindHashcodeLabel = new Regex(@"\s+(\w+)");
 
-            FileStream fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read);
-            BufferedStream bs = new BufferedStream(fs);
-            StreamReader reader = new StreamReader(bs);
-            while ((line = reader.ReadLine()) != null)
+            using (FileStream fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read))
             {
-                if (line.StartsWith("/"))
+                using (BufferedStream bs = new BufferedStream(fs))
                 {
-                    continue;
-                }
-                else
-                {
-                    MatchCollection matches = FindHashcodeLabel.Matches(line);
-                    if (matches.Count >= 2)
+                    using (StreamReader reader = new StreamReader(bs))
                     {
-                        HexLabel = matches[0].Value.Trim();
-                        HexNum = Convert.ToUInt32(matches[1].Value.Trim(), 16);
-
-                        if (HexNum >= 436207616)
+                        while ((line = reader.ReadLine()) != null)
                         {
-                            if (HexLabel.StartsWith("SF", StringComparison.OrdinalIgnoreCase))
+                            if (line.StartsWith("/"))
                             {
-                                if (!SFX_Defines.ContainsKey(HexNum))
-                                {
-                                    SFX_Defines.Add(HexNum, HexLabel);
-                                }
+                                continue;
                             }
-                        }
-                        else if (HexLabel.StartsWith("SB_", StringComparison.OrdinalIgnoreCase))
-                        {
-                            if (!SB_Defines.ContainsKey(HexNum))
+                            else
                             {
-                                SB_Defines.Add(HexNum, HexLabel);
+                                MatchCollection matches = FindHashcodeLabel.Matches(line);
+                                if (matches.Count >= 2)
+                                {
+                                    HexLabel = matches[0].Value.Trim();
+                                    HexNum = Convert.ToUInt32(matches[1].Value.Trim(), 16);
+
+                                    if (HexNum >= 436207616)
+                                    {
+                                        if (HexLabel.StartsWith("SF", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            if (!SFX_Defines.ContainsKey(HexNum))
+                                            {
+                                                SFX_Defines.Add(HexNum, HexLabel);
+                                            }
+                                        }
+                                    }
+                                    else if (HexLabel.StartsWith("SB_", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        if (!SB_Defines.ContainsKey(HexNum))
+                                        {
+                                            SB_Defines.Add(HexNum, HexLabel);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-            reader.Close();
-            reader.Dispose();
-
-            bs.Close();
-            bs.Dispose();
-
-            fs.Close();
-            fs.Dispose();
         }
 
         #endregion SFX Defines && SB Defines dictionary
@@ -148,49 +146,47 @@ namespace EuroSound_Application
         internal static void ReadSFXData()
         {
             string[] SplitedLine;
-            string line, hashcode;
+            string line;
+            uint Hashcode;
 
             SFX_Data.Clear();
-
-            FileStream fs = new FileStream(GlobalPreferences.HT_SoundsDataPath, FileMode.Open, FileAccess.Read);
-            BufferedStream bs = new BufferedStream(fs);
-            StreamReader reader = new StreamReader(bs);
-            while ((line = reader.ReadLine()) != null)
+            using (FileStream fs = new FileStream(GlobalPreferences.HT_SoundsDataPath, FileMode.Open, FileAccess.Read))
             {
-                if (line.StartsWith("/", StringComparison.OrdinalIgnoreCase) || line.StartsWith("SFX", StringComparison.OrdinalIgnoreCase))
+                using (BufferedStream bs = new BufferedStream(fs))
                 {
-                    continue;
-                }
-                else
-                {
-                    SplitedLine = line.Split(new char[] { '{', ',', '}' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (SplitedLine.Length >= 9)
+                    using (StreamReader reader = new StreamReader(bs))
                     {
-                        float[] ArrayOfValues = new float[8];
-                        ArrayOfValues[0] = StringFloatToDouble(SplitedLine[0]);
-                        ArrayOfValues[1] = StringFloatToDouble(SplitedLine[1]);
-                        ArrayOfValues[2] = StringFloatToDouble(SplitedLine[2]);
-                        ArrayOfValues[3] = StringFloatToDouble(SplitedLine[3]);
-                        ArrayOfValues[4] = StringFloatToDouble(SplitedLine[4]);
-                        ArrayOfValues[5] = StringFloatToDouble(SplitedLine[5]);
-                        ArrayOfValues[6] = StringFloatToDouble(SplitedLine[6]);
-                        ArrayOfValues[7] = StringFloatToDouble(SplitedLine[7]);
-                        hashcode = "0x1A" + (int.Parse(ArrayOfValues[0].ToString()).ToString("X8").Substring(2));
-                        if (!SFX_Data.ContainsKey(Convert.ToUInt32(hashcode, 16)))
+                        while ((line = reader.ReadLine()) != null)
                         {
-                            SFX_Data.Add(Convert.ToUInt32(hashcode, 16), ArrayOfValues);
+                            if (line.StartsWith("/", StringComparison.OrdinalIgnoreCase) || line.StartsWith("SF", StringComparison.OrdinalIgnoreCase))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                SplitedLine = line.Split(new char[] { '{', ',', '}' }, StringSplitOptions.RemoveEmptyEntries);
+                                if (SplitedLine.Length >= 9)
+                                {
+                                    float[] ArrayOfValues = new float[8];
+                                    ArrayOfValues[0] = StringFloatToDouble(SplitedLine[0]);
+                                    ArrayOfValues[1] = StringFloatToDouble(SplitedLine[1]);
+                                    ArrayOfValues[2] = StringFloatToDouble(SplitedLine[2]);
+                                    ArrayOfValues[3] = StringFloatToDouble(SplitedLine[3]);
+                                    ArrayOfValues[4] = StringFloatToDouble(SplitedLine[4]);
+                                    ArrayOfValues[5] = StringFloatToDouble(SplitedLine[5]);
+                                    ArrayOfValues[6] = StringFloatToDouble(SplitedLine[6]);
+                                    ArrayOfValues[7] = StringFloatToDouble(SplitedLine[7]);
+                                    Hashcode = 436207616 + uint.Parse(ArrayOfValues[0].ToString());
+                                    if (!SFX_Data.ContainsKey(Hashcode))
+                                    {
+                                        SFX_Data.Add(Hashcode, ArrayOfValues);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
-            reader.Close();
-            reader.Dispose();
-
-            bs.Close();
-            bs.Dispose();
-
-            fs.Close();
-            fs.Dispose();
         }
 
         private static float StringFloatToDouble(string Number)

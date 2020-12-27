@@ -9,25 +9,25 @@ namespace EuroSound_Application
         {
             InitializeComponent();
             Label_Text.Text = LabelText;
-            this.ShowInTaskbar = false;
-            this.Text = Title;
+            ShowInTaskbar = false;
+            Text = Title;
         }
 
         public string Result { get; set; }
         private void Button_Cancel_Click(object sender, EventArgs e)
         {
             Result = string.Empty;
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
-            this.Dispose();
+            DialogResult = DialogResult.Cancel;
+            Close();
+            Dispose();
         }
 
         private void Button_Ok_Click(object sender, EventArgs e)
         {
             Result = TextBox_InputText.Text;
-            this.DialogResult = DialogResult.OK;
-            this.Close();
-            this.Dispose();
+            DialogResult = DialogResult.OK;
+            Close();
+            Dispose();
         }
     }
 }

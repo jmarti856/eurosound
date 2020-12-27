@@ -21,6 +21,7 @@ namespace EuroSound_Application
                     EuroSoundFiles FileReader = new EuroSoundFiles();
                     ESF_LoadSoundBanks SectionsReader = new ESF_LoadSoundBanks();
                     GenerateSFXSoundBank SFXGenerator = new GenerateSFXSoundBank();
+
                     Dictionary<uint, EXSound> SoundsList = new Dictionary<uint, EXSound>();
                     Dictionary<string, EXAudio> AudiosList = new Dictionary<string, EXAudio>();
 
@@ -65,13 +66,13 @@ namespace EuroSound_Application
 
                                 /*--------------------------[AUDIO DATA]--------------------------*/
                                 BReader.BaseStream.Position = (AudioDataOffset);
-                                SectionsReader.ReadAudiosDictionary(BReader, AudiosList);
+                                SectionsReader.ReadAudioDataDictionary(BReader, AudiosList);
 
                                 //*===============================================================================================
                                 //* CREATE SFX FILE
                                 //*===============================================================================================
                                 WindowsRegistryFunctions WRegistryFunctions = new WindowsRegistryFunctions();
-                                GlobalPreferences.SFXOutputPath = WRegistryFunctions.LoadGeneralPreferences();
+                                GlobalPreferences.SFXOutputPath = WRegistryFunctions.LoadGeneralPreferences()[0];
 
                                 string FileName = "HC" + File_Hashcode.ToString("X8").Substring(2);
 

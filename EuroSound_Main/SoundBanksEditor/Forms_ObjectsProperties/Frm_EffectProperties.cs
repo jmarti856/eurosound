@@ -69,7 +69,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void Button_cancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void Button_ok_Click(object sender, EventArgs e)
@@ -107,7 +107,7 @@ namespace EuroSound_Application
                 }
             }
 
-            this.Close();
+            Close();
         }
 
         private void Cbx_hashcode_Click(object sender, EventArgs e)
@@ -163,7 +163,7 @@ namespace EuroSound_Application
             EuroSound_FlagsForm FormFlags = new EuroSound_FlagsForm(int.Parse(textbox_flags.Text), FlagsLabels, 13)
             {
                 Text = "Sound Flags",
-                Tag = this.Tag,
+                Tag = Tag,
                 Owner = this,
                 ShowInTaskbar = false
             };

@@ -25,5 +25,21 @@ namespace EuroSound_Application
 
             return SearchedSound;
         }
+
+        internal static bool SoundWillBeOutputed(Dictionary<uint, EXSoundStream> SoundsList, string SoundName)
+        {
+            bool Output = false;
+
+            EXSoundStream Test = GetSoundByName(uint.Parse(SoundName), SoundsList);
+            if (Test != null)
+            {
+                if (Test.OutputThisSound)
+                {
+                    Output = true;
+                }
+            }
+
+            return Output;
+        }
     }
 }

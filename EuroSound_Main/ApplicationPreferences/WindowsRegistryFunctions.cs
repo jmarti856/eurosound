@@ -155,22 +155,28 @@ namespace EuroSound_Application
         #endregion TreeView Preferences
 
         #region General Preferences
-        internal string LoadGeneralPreferences()
+        internal string[] LoadGeneralPreferences()
         {
-            string TreeViewPreferences;
+            string[] GlobalPreferences = new string[4];
 
             OpenEuroSoundKeys();
             RegistryKey GeneralConfigs = EuroSoundKey.OpenSubKey("General", true);
             if (GeneralConfigs != null)
             {
-                TreeViewPreferences = GeneralConfigs.GetValue("SFXOutputPath", @"X:\Sphinx\Binary\_bin_PC\_Eng").ToString();
+                GlobalPreferences[0] = GeneralConfigs.GetValue("SFXOutputPath", @"X:\Sphinx\Binary\_bin_PC\_Eng").ToString();
+                GlobalPreferences[1] = GeneralConfigs.GetValue("MusicOutputPath", @"X:\Sphinx\Binary\_bin_PC\music").ToString();
+                GlobalPreferences[2] = GeneralConfigs.GetValue("ControlWavesColor", "-16777077").ToString();
+                GlobalPreferences[3] = GeneralConfigs.GetValue("ControlWavesBackColor", "-8355712").ToString();
             }
             else
             {
-                TreeViewPreferences = @"X:\Sphinx\Binary\_bin_PC\_Eng";
+                GlobalPreferences[0] = @"X:\Sphinx\Binary\_bin_PC\_Eng";
+                GlobalPreferences[1] = @"X:\Sphinx\Binary\_bin_PC\music";
+                GlobalPreferences[2] = "-16777077";
+                GlobalPreferences[3] = "-8355712";
             }
 
-            return TreeViewPreferences;
+            return GlobalPreferences;
         }
 
         internal void SaveGeneralPreferences()
@@ -180,6 +186,9 @@ namespace EuroSound_Application
             RegistryKey SoundBankTreeViewPrefs = EuroSoundKey.OpenSubKey("General", true);
 
             SoundBankTreeViewPrefs.SetValue("SFXOutputPath", GlobalPreferences.SFXOutputPath, RegistryValueKind.String);
+            SoundBankTreeViewPrefs.SetValue("MusicOutputPath", GlobalPreferences.MusicOutputPath, RegistryValueKind.String);
+            SoundBankTreeViewPrefs.SetValue("ControlWavesColor", GlobalPreferences.ColorWavesControl, RegistryValueKind.DWord);
+            SoundBankTreeViewPrefs.SetValue("ControlWavesBackColor", GlobalPreferences.BackColorWavesControl, RegistryValueKind.DWord);
         }
         #endregion General Preferences
     }

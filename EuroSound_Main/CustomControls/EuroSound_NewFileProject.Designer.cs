@@ -57,6 +57,7 @@ namespace CustomControls
             this.Textbox_ProjectName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Textbox_ProjectName.Location = new System.Drawing.Point(50, 29);
+            this.Textbox_ProjectName.MaxLength = 300;
             this.Textbox_ProjectName.Name = "Textbox_ProjectName";
             this.Textbox_ProjectName.Size = new System.Drawing.Size(260, 20);
             this.Textbox_ProjectName.TabIndex = 1;

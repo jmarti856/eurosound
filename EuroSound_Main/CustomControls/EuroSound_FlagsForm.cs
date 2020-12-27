@@ -19,10 +19,12 @@ namespace EuroSound_Application
             Labels = FlagsLabel;
             FlagsToEnable = EnabledFlags;
 
-            AllCheckboxes = new CheckBox[] {
-            Checkbox_Flag01, Checkbox_Flag02, Checkbox_Flag03, Checkbox_Flag04, Checkbox_Flag05, Checkbox_Flag06,
-            Checkbox_Flag07, Checkbox_Flag08, Checkbox_Flag09, Checkbox_Flag10, Checkbox_Flag11, Checkbox_Flag12,
-            Checkbox_Flag13, Checkbox_Flag14, Checkbox_Flag15, Checkbox_Flag16};
+            AllCheckboxes = new CheckBox[]
+            {
+                Checkbox_Flag01, Checkbox_Flag02, Checkbox_Flag03, Checkbox_Flag04, Checkbox_Flag05, Checkbox_Flag06,
+                Checkbox_Flag07, Checkbox_Flag08, Checkbox_Flag09, Checkbox_Flag10, Checkbox_Flag11, Checkbox_Flag12,
+                Checkbox_Flag13, Checkbox_Flag14, Checkbox_Flag15, Checkbox_Flag16
+            };
 
             AllTextboxes = new TextBox[]
             {
@@ -52,17 +54,17 @@ namespace EuroSound_Application
         private void Button_Cancel_Click(object sender, EventArgs e)
         {
             CheckedFlags = GetFlags();
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
-            this.Dispose();
+            DialogResult = DialogResult.Cancel;
+            Close();
+            Dispose();
         }
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
             CheckedFlags = GetFlags();
-            this.DialogResult = DialogResult.OK;
-            this.Close();
-            this.Dispose();
+            DialogResult = DialogResult.OK;
+            Close();
+            Dispose();
         }
 
         private void EuroSound_FlagsForm_Load(object sender, EventArgs e)
@@ -85,6 +87,8 @@ namespace EuroSound_Application
             {
                 AllCheckboxes[i].Enabled = true;
             }
+
+            AllTextboxes = null;
         }
     }
 }

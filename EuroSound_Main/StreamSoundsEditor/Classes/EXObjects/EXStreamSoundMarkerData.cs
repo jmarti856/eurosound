@@ -2,13 +2,13 @@
 {
     public class EXStreamSoundMarkerData
     {
-        public int Name;
-        public int Position;
-        public int MusicMakerType;
-        public int Flags;
-        public int Extra;
-        public int LoopStart;
-        public int MakerCount;
-        public int LoopMarkerCount;
+        public uint Name;
+        public uint Position;
+        public uint MusicMakerType;
+        public uint Flags;
+        public uint Extra;
+        public uint LoopStart;
+        public uint MakerCount;
+        public uint LoopMarkerCount;
     }
 }

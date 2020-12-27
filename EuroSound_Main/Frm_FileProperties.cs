@@ -43,7 +43,7 @@ namespace EuroSound_Application
         private void Button_Cancel_Click(object sender, EventArgs e)
         {
             /*Close current form*/
-            this.Close();
+            Close();
         }
 
         private void Button_OK_Click(object sender, EventArgs e)
@@ -58,7 +58,7 @@ namespace EuroSound_Application
             GenericFunctions.SetCurrentFileLabel(CurrentFileProperties.FileName);
 
             /*Close current form*/
-            this.Close();
+            Close();
         }
 
         private void Combobox_FileHashcode_Click(object sender, EventArgs e)

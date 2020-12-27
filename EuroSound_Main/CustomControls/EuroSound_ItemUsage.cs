@@ -16,7 +16,7 @@ namespace EuroSound_Application
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void EuroSound_ItemUsage_Shown(object sender, EventArgs e)

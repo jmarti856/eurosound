@@ -201,8 +201,8 @@ namespace EuroSound_Application
             }
 
             //Close Form
-            this.Close();
-            this.Dispose();
+            Close();
+            Dispose();
         }
 
         private void Button_Abort_Click(object sender, EventArgs e)

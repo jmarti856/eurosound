@@ -25,13 +25,12 @@ namespace EuroSound_Application
             TreeViewPreferences.ExpandAll();
         }
 
-
         //*===============================================================================================
         //* FORM CONTROLS EVENTS
         //*===============================================================================================
         private void Button_Cancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void Button_OK_Click(object sender, EventArgs e)
@@ -68,12 +67,15 @@ namespace EuroSound_Application
             if (!string.IsNullOrEmpty(GlobalPreferences.SFXOutputPathTEMPORAL))
             {
                 GlobalPreferences.SFXOutputPath = GlobalPreferences.SFXOutputPathTEMPORAL;
+                GlobalPreferences.MusicOutputPath = GlobalPreferences.MusicOutputPathTEMPORAL;
+                GlobalPreferences.ColorWavesControl = GlobalPreferences.ColorWavesControlTEMPORAL;
+                GlobalPreferences.BackColorWavesControl = GlobalPreferences.BackColorWavesControlTEMPORAL;
 
                 //SaveConfig in Registry
                 WRegistryFunctions.SaveGeneralPreferences();
             }
 
-            this.Close();
+            Close();
         }
 
         private void TreeViewPreferences_AfterSelect(object sender, TreeViewEventArgs e)

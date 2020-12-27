@@ -90,6 +90,7 @@ namespace EuroSound_Application
             this.Button_SearchIMA.TabIndex = 5;
             this.Button_SearchIMA.Text = "...";
             this.Button_SearchIMA.UseVisualStyleBackColor = true;
+            this.Button_SearchIMA.Click += new System.EventHandler(this.Button_SearchIMA_Click);
             // 
             // Textbox_IMA_ADPCM
             // 
@@ -120,6 +121,7 @@ namespace EuroSound_Application
             this.Button_SearchPCM.TabIndex = 2;
             this.Button_SearchPCM.Text = "...";
             this.Button_SearchPCM.UseVisualStyleBackColor = true;
+            this.Button_SearchPCM.Click += new System.EventHandler(this.Button_SearchPCM_Click);
             // 
             // Textbox_PCM_Data
             // 
@@ -167,7 +169,7 @@ namespace EuroSound_Application
             this.Groupbox_AudioProperties.Size = new System.Drawing.Size(483, 264);
             this.Groupbox_AudioProperties.TabIndex = 1;
             this.Groupbox_AudioProperties.TabStop = false;
-            this.Groupbox_AudioProperties.Text = "Audio Properties:";
+            this.Groupbox_AudioProperties.Text = "PCM Data Properties:";
             // 
             // euroSound_WaveViewer1
             // 
@@ -180,7 +182,6 @@ namespace EuroSound_Application
             this.euroSound_WaveViewer1.CurrentWaveImage = null;
             this.euroSound_WaveViewer1.Location = new System.Drawing.Point(6, 103);
             this.euroSound_WaveViewer1.Name = "euroSound_WaveViewer1";
-            this.euroSound_WaveViewer1.PenColor = System.Drawing.Color.Blue;
             this.euroSound_WaveViewer1.PenWidth = 1F;
             this.euroSound_WaveViewer1.SamplesPerPixel = 128;
             this.euroSound_WaveViewer1.Size = new System.Drawing.Size(471, 150);
@@ -215,6 +216,7 @@ namespace EuroSound_Application
             this.Button_StopAudio.TabIndex = 16;
             this.Button_StopAudio.Text = "Stop Audio";
             this.Button_StopAudio.UseVisualStyleBackColor = true;
+            this.Button_StopAudio.Click += new System.EventHandler(this.Button_StopAudio_Click);
             // 
             // Button_PlayAudio
             // 
@@ -225,6 +227,7 @@ namespace EuroSound_Application
             this.Button_PlayAudio.TabIndex = 15;
             this.Button_PlayAudio.Text = "Play Audio";
             this.Button_PlayAudio.UseVisualStyleBackColor = true;
+            this.Button_PlayAudio.Click += new System.EventHandler(this.Button_PlayAudio_Click);
             // 
             // Textbox_Duration
             // 
@@ -345,7 +348,7 @@ namespace EuroSound_Application
             this.Groupbox_FileProperties.Size = new System.Drawing.Size(483, 60);
             this.Groupbox_FileProperties.TabIndex = 2;
             this.Groupbox_FileProperties.TabStop = false;
-            this.Groupbox_FileProperties.Text = "File Properties";
+            this.Groupbox_FileProperties.Text = "PCM File Properties";
             // 
             // Textbox_MD5Hash
             // 
@@ -376,6 +379,7 @@ namespace EuroSound_Application
             this.Button_Ok.TabIndex = 3;
             this.Button_Ok.Text = "OK";
             this.Button_Ok.UseVisualStyleBackColor = true;
+            this.Button_Ok.Click += new System.EventHandler(this.Button_Ok_Click);
             // 
             // Button_Cancel
             // 
@@ -387,6 +391,7 @@ namespace EuroSound_Application
             this.Button_Cancel.TabIndex = 4;
             this.Button_Cancel.Text = "Cancel";
             this.Button_Cancel.UseVisualStyleBackColor = true;
+            this.Button_Cancel.Click += new System.EventHandler(this.Button_Cancel_Click);
             // 
             // Frm_StreamSounds_AudioData
             // 
@@ -400,8 +405,14 @@ namespace EuroSound_Application
             this.Controls.Add(this.Groupbox_FileProperties);
             this.Controls.Add(this.Groupbox_AudioProperties);
             this.Controls.Add(this.GroupBox_AudioData);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Frm_StreamSounds_AudioData";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Frm_StreamSounds_AudioData";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_StreamSounds_AudioData_FormClosing);
+            this.Load += new System.EventHandler(this.Frm_StreamSounds_AudioData_Load);
             this.GroupBox_AudioData.ResumeLayout(false);
             this.GroupBox_AudioData.PerformLayout();
             this.Groupbox_AudioProperties.ResumeLayout(false);

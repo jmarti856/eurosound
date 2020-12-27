@@ -107,13 +107,12 @@ namespace EuroSound_Application
                 SelectedSample.HashcodeSubSFX = (uint)Combobox_Hashcode.SelectedValue;
             }
 
-
-            this.Close();
+            Close();
         }
 
         private void Button_cancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         //*===============================================================================================
@@ -161,7 +160,7 @@ namespace EuroSound_Application
                     Frm_AudioProperties FormAudioProps = new Frm_AudioProperties(SelectedSound, AudioKey)
                     {
                         Text = "Audio Properties",
-                        Tag = this.Tag,
+                        Tag = Tag,
                         Owner = this,
                         ShowInTaskbar = false
                     };

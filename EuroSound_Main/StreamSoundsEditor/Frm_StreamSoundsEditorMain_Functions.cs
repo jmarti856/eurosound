@@ -36,10 +36,10 @@ namespace EuroSound_Application
             EXSoundStream SelectedSound = EXStreamSoundsFunctions.GetSoundByName(Convert.ToUInt32(SoundKeyInDictionary), StreamSoundsList);
             if (SelectedSound != null)
             {
-                Frm_StreamSounds_Properties FormAudioProps = new Frm_StreamSounds_Properties(SelectedSound, SoundKeyInDictionary)
+                Frm_StreamSounds_Properties FormAudioProps = new Frm_StreamSounds_Properties(SelectedSound)
                 {
                     Text = "Streamed Sound Properties",
-                    Tag = this.Tag,
+                    Tag = Tag,
                     Owner = this,
                     ShowInTaskbar = false
                 };

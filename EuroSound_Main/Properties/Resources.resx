@@ -126,6 +126,75 @@
   <data name="AudioProperties_FileCorrupt" xml:space="preserve">
     <value>This audio seems to be corrupt, please load it again</value>
   </data>
+  <data name="ButtonGenerateSoundsList" xml:space="preserve">
+    <value>Generates an YML file with the hashcodes that this soundbanks uses</value>
+  </data>
+  <data name="ButtonSoundsBankCheckAudios" xml:space="preserve">
+    <value>Shows the audio data stores in this project properties (channels, frequency, encoding etc..) in a single list</value>
+  </data>
+  <data name="ButtonSoundsBankCheckHashcodes" xml:space="preserve">
+    <value>Check that all hashcodes used in this project are OK and exists in the hashtable</value>
+  </data>
+  <data name="ButtonSoundsBankSearch" xml:space="preserve">
+    <value>Search for the specified text</value>
+  </data>
+  <data name="ContextMenuFolders_New" xml:space="preserve">
+    <value>Creates a new folder</value>
+  </data>
+  <data name="ContextMenuFolder_AddAudio" xml:space="preserve">
+    <value>Adds a new audio</value>
+  </data>
+  <data name="ContextMenuFolder_AddSound" xml:space="preserve">
+    <value>Adds a new sound</value>
+  </data>
+  <data name="ContextMenuFolder_CollapseAll" xml:space="preserve">
+    <value>Collapse all child nodes</value>
+  </data>
+  <data name="ContextMenuFolder_Delete" xml:space="preserve">
+    <value>Delete the selected folder</value>
+  </data>
+  <data name="ContextMenuFolder_ExpandAll" xml:space="preserve">
+    <value>Expand all child nodes</value>
+  </data>
+  <data name="ContextMenuFolder_Move" xml:space="preserve">
+    <value>Opens a sub-form that allows you to move multiples items to a folder</value>
+  </data>
+  <data name="ContextMenuFolder_Purge" xml:space="preserve">
+    <value>Delete the unused stored audio data</value>
+  </data>
+  <data name="ContextMenuFolder_Rename" xml:space="preserve">
+    <value>Rename folder, not allowed to rename root folders (Audio Data, Sounds, Streamed Sounds)</value>
+  </data>
+  <data name="ContextMenuFolder_Sort" xml:space="preserve">
+    <value>Sort items A-&gt;Z</value>
+  </data>
+  <data name="ContextMenuFolder_TextColor" xml:space="preserve">
+    <value>Change the node label color for a custom one</value>
+  </data>
+  <data name="ContextMenuSample_Properties" xml:space="preserve">
+    <value>Open properties form for the selected sample</value>
+  </data>
+  <data name="ContextMenuSample_Remove" xml:space="preserve">
+    <value>Delete selected sample</value>
+  </data>
+  <data name="ContextMenuSample_Rename" xml:space="preserve">
+    <value>Rename the selected sample</value>
+  </data>
+  <data name="ContextMenuSound_AddSample" xml:space="preserve">
+    <value>Add a sample to the selected sound</value>
+  </data>
+  <data name="ContextMenuSound_Properties" xml:space="preserve">
+    <value>Open properties form for the selected sound</value>
+  </data>
+  <data name="ContextMenuSound_Remove" xml:space="preserve">
+    <value>Delete the selected sound</value>
+  </data>
+  <data name="ContextMenuSound_Rename" xml:space="preserve">
+    <value>Rename the selected sound</value>
+  </data>
+  <data name="ErrorWavFileIncorrect" xml:space="preserve">
+    <value>Error, the audio file is not correct, the frequency must be 22050hz and 16 bits per sample</value>
+  </data>
   <data name="Error_Adding_AlreadyExists" xml:space="preserve">
     <value>Sorry, cannot add an item with this name, an item with this name already exists</value>
   </data>
@@ -174,6 +243,12 @@
   <data name="MenuItemFile_OpenESF" xml:space="preserve">
     <value>Open an existing document</value>
   </data>
+  <data name="MenuItemFile_ReadSound" xml:space="preserve">
+    <value>Read YML file with a single sound properties and data</value>
+  </data>
+  <data name="MenuItemFile_ReadYml" xml:space="preserve">
+    <value>Read YML file list with multiples sounds</value>
+  </data>
   <data name="MenuItemHelp_About" xml:space="preserve">
     <value>Display program information, version number and copyright</value>
   </data>
@@ -211,13 +286,13 @@
     <value>Save the active document with a new name</value>
   </data>
   <data name="MenuItem_View_GlobalPreferences" xml:space="preserve">
-    <value>Set Global Preferences</value>
+    <value>Set global preferences</value>
   </data>
   <data name="MenuItem_View_StatusBar" xml:space="preserve">
     <value>Show or hide the status bar</value>
   </data>
   <data name="MenuTools_SFXDataGenerator" xml:space="preserve">
-    <value>Generate again SFX Data Binary file</value>
+    <value>Generate SFX data binary file</value>
   </data>
   <data name="OutputSFXSoundbankCancelled" xml:space="preserve">
     <value>Output cancelled by user</value>
@@ -229,10 +304,10 @@
     <value>Reading ESF File</value>
   </data>
   <data name="StatusBar_Status_RadingDataHashcodes" xml:space="preserve">
-    <value>Reading Hashcodes Data File</value>
+    <value>Reading hashcodes data file</value>
   </data>
   <data name="StatusBar_Status_RadingSoundHashcodes" xml:space="preserve">
-    <value>Reading Hashcodes Sound File</value>
+    <value>Reading hashcodes sound file</value>
   </data>
   <data name="StatusBar_Status_ReadingYamlFile" xml:space="preserve">
     <value>Reading YML File</value>

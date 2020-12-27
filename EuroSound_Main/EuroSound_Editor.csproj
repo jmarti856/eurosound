@@ -13,7 +13,8 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
@@ -55,7 +56,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>EuroSoundFinalIconYellow.ico</ApplicationIcon>
+    <ApplicationIcon>EuroSoundIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>EuroSound_Application.Program</StartupObject>
@@ -111,9 +112,10 @@
     </Compile>
     <Compile Include="Classes\AudioFunctions.cs" />
     <Compile Include="Classes\EuroSoundBashMode.cs" />
-    <Compile Include="Classes\EuroSoundFiles\ESF_SaveSoundBanks.cs" />
-    <Compile Include="Classes\EuroSoundFiles\ESF_LoadSoundBanks.cs" />
-    <Compile Include="Classes\EuroSoundFiles\OldVersions\LoadEuroSoundFileV10.cs" />
+    <Compile Include="Classes\EuroSoundFiles\Soundbanks\ESF_SaveSoundBanks.cs" />
+    <Compile Include="Classes\EuroSoundFiles\Soundbanks\ESF_LoadSoundBanks.cs" />
+    <Compile Include="Classes\EuroSoundFiles\Soundbanks\OldVersions\LoadEuroSoundFileV10.cs" />
+    <Compile Include="Classes\EuroSoundFiles\StreamSounds\ESF_SaveStreamedSounds.cs" />
     <Compile Include="Classes\LoopStream.cs" />
     <Compile Include="Classes\GenericFunctions.cs" />
     <Compile Include="Classes\Hashcodes.cs" />
@@ -196,9 +198,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SoundBanksEditor\Classes\EuroSound\NodeSorter.cs" />
+    <Compile Include="Classes\NodeSorter.cs" />
     <Compile Include="Classes\EuroSoundFiles\EuroSoundFiles.cs" />
-    <Compile Include="SoundBanksEditor\Classes\EuroSound\TreeNodeFunctions.cs" />
+    <Compile Include="Classes\TreeNodeFunctions.cs" />
     <Compile Include="SoundBanksEditor\Classes\EuroSound\YmlReader.cs" />
     <Compile Include="SoundBanksEditor\Classes\EXSoundbanksFunctions.cs" />
     <Compile Include="SoundBanksEditor\Classes\EXObjects\EXAudio.cs" />
@@ -249,6 +251,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="StreamSoundsEditor\Classes\EXObjects\EXSoundStream.cs" />
+    <Compile Include="StreamSoundsEditor\Classes\EXObjects\EXStreamSoundMarker.cs" />
     <Compile Include="StreamSoundsEditor\Classes\EXObjects\EXStreamSoundMarkerData.cs" />
     <Compile Include="StreamSoundsEditor\Classes\EXStreamSoundsFunctions.cs" />
     <Compile Include="StreamSoundsEditor\Forms_ObjectsProperties\Frm_StreamSounds_AudioData.cs">
@@ -383,14 +386,20 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EuroSoundFinalIconYellow.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CustomStatusBar\StatusBarWithToolTips.csproj">
+      <Project>{e938cbed-777a-425e-a238-bf90f4e1ec89}</Project>
+      <Name>StatusBarWithToolTips</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EuroSoundIcon.ico" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -49,12 +49,9 @@ namespace EuroSound_Application
             using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full\\"))
             {
                 int releaseKey = Convert.ToInt32(ndpKey.GetValue("Release"));
-                if (true)
+                if (!CheckFor45DotVersion(releaseKey).Equals("No 4.5 or later version detected"))
                 {
-                    if (!CheckFor45DotVersion(releaseKey).Equals("No 4.5 or later version detected"))
-                    {
-                        versionOK = true;
-                    }
+                    versionOK = true;
                 }
             }
 

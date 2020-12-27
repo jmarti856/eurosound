@@ -175,7 +175,7 @@ namespace EuroSound_Application
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Generate SFX Data Binary File";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_SFX_DataGenerator_FormClosing);
-            this.Load += new System.EventHandler(this.Frm_FilelistBinGenerator_Load);
+            this.Shown += new System.EventHandler(this.Frm_SFX_DataGenerator_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

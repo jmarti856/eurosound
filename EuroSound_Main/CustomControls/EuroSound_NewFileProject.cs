@@ -8,15 +8,15 @@ namespace CustomControls
         public EuroSound_NewFileProject(string FormTitle)
         {
             InitializeComponent();
-            this.Text = FormTitle;
+            Text = FormTitle;
         }
 
         public string[] FileProps { get; set; }
         private void Button_Cancel_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
-            this.Dispose();
+            DialogResult = DialogResult.Cancel;
+            Close();
+            Dispose();
         }
 
         private void Button_OK_Click(object sender, EventArgs e)
@@ -28,9 +28,9 @@ namespace CustomControls
 
             FileProps = Properties;
 
-            this.DialogResult = DialogResult.OK;
-            this.Close();
-            this.Dispose();
+            DialogResult = DialogResult.OK;
+            Close();
+            Dispose();
         }
 
         private void EuroSound_NewFileProject_Load(object sender, EventArgs e)

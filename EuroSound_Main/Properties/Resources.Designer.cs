@@ -88,6 +88,204 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Generates an YML file with the hashcodes that this soundbanks uses.
+        /// </summary>
+        internal static string ButtonGenerateSoundsList {
+            get {
+                return ResourceManager.GetString("ButtonGenerateSoundsList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Shows the audio data stores in this project properties (channels, frequency, encoding etc..) in a single list.
+        /// </summary>
+        internal static string ButtonSoundsBankCheckAudios {
+            get {
+                return ResourceManager.GetString("ButtonSoundsBankCheckAudios", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Check that all hashcodes used in this project are OK and exists in the hashtable.
+        /// </summary>
+        internal static string ButtonSoundsBankCheckHashcodes {
+            get {
+                return ResourceManager.GetString("ButtonSoundsBankCheckHashcodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Search for the specified text.
+        /// </summary>
+        internal static string ButtonSoundsBankSearch {
+            get {
+                return ResourceManager.GetString("ButtonSoundsBankSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Adds a new audio.
+        /// </summary>
+        internal static string ContextMenuFolder_AddAudio {
+            get {
+                return ResourceManager.GetString("ContextMenuFolder_AddAudio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Adds a new sound.
+        /// </summary>
+        internal static string ContextMenuFolder_AddSound {
+            get {
+                return ResourceManager.GetString("ContextMenuFolder_AddSound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Collapse all child nodes.
+        /// </summary>
+        internal static string ContextMenuFolder_CollapseAll {
+            get {
+                return ResourceManager.GetString("ContextMenuFolder_CollapseAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Delete the selected folder.
+        /// </summary>
+        internal static string ContextMenuFolder_Delete {
+            get {
+                return ResourceManager.GetString("ContextMenuFolder_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Expand all child nodes.
+        /// </summary>
+        internal static string ContextMenuFolder_ExpandAll {
+            get {
+                return ResourceManager.GetString("ContextMenuFolder_ExpandAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Opens a sub-form that allows you to move multiples items to a folder.
+        /// </summary>
+        internal static string ContextMenuFolder_Move {
+            get {
+                return ResourceManager.GetString("ContextMenuFolder_Move", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Delete the unused stored audio data.
+        /// </summary>
+        internal static string ContextMenuFolder_Purge {
+            get {
+                return ResourceManager.GetString("ContextMenuFolder_Purge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Rename folder, not allowed to rename root folders (Audio Data, Sounds, Streamed Sounds).
+        /// </summary>
+        internal static string ContextMenuFolder_Rename {
+            get {
+                return ResourceManager.GetString("ContextMenuFolder_Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Sort items A-&gt;Z.
+        /// </summary>
+        internal static string ContextMenuFolder_Sort {
+            get {
+                return ResourceManager.GetString("ContextMenuFolder_Sort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Change the node label color for a custom one.
+        /// </summary>
+        internal static string ContextMenuFolder_TextColor {
+            get {
+                return ResourceManager.GetString("ContextMenuFolder_TextColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Creates a new folder.
+        /// </summary>
+        internal static string ContextMenuFolders_New {
+            get {
+                return ResourceManager.GetString("ContextMenuFolders_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Open properties form for the selected sample.
+        /// </summary>
+        internal static string ContextMenuSample_Properties {
+            get {
+                return ResourceManager.GetString("ContextMenuSample_Properties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Delete selected sample.
+        /// </summary>
+        internal static string ContextMenuSample_Remove {
+            get {
+                return ResourceManager.GetString("ContextMenuSample_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Rename the selected sample.
+        /// </summary>
+        internal static string ContextMenuSample_Rename {
+            get {
+                return ResourceManager.GetString("ContextMenuSample_Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Add a sample to the selected sound.
+        /// </summary>
+        internal static string ContextMenuSound_AddSample {
+            get {
+                return ResourceManager.GetString("ContextMenuSound_AddSample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Open properties form for the selected sound.
+        /// </summary>
+        internal static string ContextMenuSound_Properties {
+            get {
+                return ResourceManager.GetString("ContextMenuSound_Properties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Delete the selected sound.
+        /// </summary>
+        internal static string ContextMenuSound_Remove {
+            get {
+                return ResourceManager.GetString("ContextMenuSound_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Rename the selected sound.
+        /// </summary>
+        internal static string ContextMenuSound_Rename {
+            get {
+                return ResourceManager.GetString("ContextMenuSound_Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Sorry, cannot add an item with this name, an item with this name already exists.
         /// </summary>
         internal static string Error_Adding_AlreadyExists {
@@ -120,6 +318,15 @@ namespace EuroSound_Application.Properties {
         internal static string Error_Rename_AlreadyExists {
             get {
                 return ResourceManager.GetString("Error_Rename_AlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Error, the audio file is not correct, the frequency must be 22050hz and 16 bits per sample.
+        /// </summary>
+        internal static string ErrorWavFileIncorrect {
+            get {
+                return ResourceManager.GetString("ErrorWavFileIncorrect", resourceCulture);
             }
         }
         
@@ -268,7 +475,7 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Set Global Preferences.
+        ///   Busca una cadena traducida similar a Set global preferences.
         /// </summary>
         internal static string MenuItem_View_GlobalPreferences {
             get {
@@ -300,6 +507,24 @@ namespace EuroSound_Application.Properties {
         internal static string MenuItemFile_OpenESF {
             get {
                 return ResourceManager.GetString("MenuItemFile_OpenESF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Read YML file with a single sound properties and data.
+        /// </summary>
+        internal static string MenuItemFile_ReadSound {
+            get {
+                return ResourceManager.GetString("MenuItemFile_ReadSound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Read YML file list with multiples sounds.
+        /// </summary>
+        internal static string MenuItemFile_ReadYml {
+            get {
+                return ResourceManager.GetString("MenuItemFile_ReadYml", resourceCulture);
             }
         }
         
@@ -358,7 +583,7 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Generate again SFX Data Binary file.
+        ///   Busca una cadena traducida similar a Generate SFX data binary file.
         /// </summary>
         internal static string MenuTools_SFXDataGenerator {
             get {
@@ -394,7 +619,7 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Reading Hashcodes Data File.
+        ///   Busca una cadena traducida similar a Reading hashcodes data file.
         /// </summary>
         internal static string StatusBar_Status_RadingDataHashcodes {
             get {
@@ -403,7 +628,7 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Reading Hashcodes Sound File.
+        ///   Busca una cadena traducida similar a Reading hashcodes sound file.
         /// </summary>
         internal static string StatusBar_Status_RadingSoundHashcodes {
             get {

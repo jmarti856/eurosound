@@ -10,8 +10,6 @@ namespace EuroSound_Application
     public class EuroSound_WaveViewer : UserControl
     {
         #region declarations
-
-        public Color PenColor { get; set; }
         public float PenWidth { get; set; }
         public Bitmap currentWaveImage = null;
 
@@ -50,10 +48,8 @@ namespace EuroSound_Application
             InitializeComponent();
 
             //use double buffer to avoid flickering
-            this.DoubleBuffered = true;
-
-            this.PenColor = Color.DarkBlue;
-            this.PenWidth = 1;
+            DoubleBuffered = true;
+            PenWidth = 1;
         }
 
         /// <summary>
@@ -61,7 +57,10 @@ namespace EuroSound_Application
         /// </summary>
         public void InitControl()
         {
-            if (waveStream == null) return;
+            if (waveStream == null)
+            {
+                return;
+            }
 
             int samples = (int)(waveStream.Length / bytesPerSample);
             startPosition = 0;
@@ -90,7 +89,7 @@ namespace EuroSound_Application
                 {
                     bytesPerSample = (waveStream.WaveFormat.BitsPerSample / 8) * waveStream.WaveFormat.Channels;
                 }
-                this.Invalidate();
+                Invalidate();
             }
         }
 
@@ -106,8 +105,7 @@ namespace EuroSound_Application
             set
             {
                 samplesPerPixel = Math.Max(1, value);
-
-                this.Invalidate();
+                Invalidate();
             }
         }
 
@@ -136,12 +134,12 @@ namespace EuroSound_Application
 
             for (int y = 0; y < numOfCells; ++y)
             {
-                gfx.DrawLine(new Pen(Color.Gray, 1), 0, y * cellSize, numOfCells * cellSize, y * cellSize);
+                gfx.DrawLine(new Pen(Color.FromArgb(GlobalPreferences.BackColorWavesControl), 1), 0, y * cellSize, numOfCells * cellSize, y * cellSize);
             }
 
             for (int x = 0; x < numOfCells; ++x)
             {
-                gfx.DrawLine(new Pen(Color.Gray, 1), x * cellSize, 0, x * cellSize, numOfCells * cellSize);
+                gfx.DrawLine(new Pen(Color.FromArgb(GlobalPreferences.BackColorWavesControl), 1), x * cellSize, 0, x * cellSize, numOfCells * cellSize);
             }
         }
 
@@ -163,7 +161,7 @@ namespace EuroSound_Application
                     waveStream.Position = startPosition + (e.ClipRectangle.Left * bytesPerSample * samplesPerPixel);
                     ControlPoints.Clear();// clear points
 
-                    using (Pen linePen = new Pen(PenColor, PenWidth))
+                    using (Pen linePen = new Pen(Color.DarkBlue, PenWidth))
                     {
                         for (int x = e.ClipRectangle.X; x < e.ClipRectangle.Right; x += 1)
                         {
@@ -269,16 +267,15 @@ namespace EuroSound_Application
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
+            SuspendLayout();
             //
             // CustomWaveViewer
             //
-            this.BackColor = Color.Gray;
-            this.Name = "CustomWaveViewer";
-            this.Size = new Size(569, 183);
-            this.ResumeLayout(false);
+            BackColor = Color.FromArgb(GlobalPreferences.BackColorWavesControl);
+            Name = "CustomWaveViewer";
+            Size = new Size(569, 183);
+            ResumeLayout(false);
         }
-
         #endregion Component Designer generated code
     }
 }
