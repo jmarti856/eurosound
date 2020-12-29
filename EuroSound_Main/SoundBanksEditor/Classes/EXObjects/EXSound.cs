@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace EuroSound_Application
 {
@@ -7,15 +6,15 @@ namespace EuroSound_Application
     {
         public string DisplayName = string.Empty;
         public sbyte Ducker;
-        public Int16 DuckerLenght;
-        public UInt16 Flags;
+        public short DuckerLenght;
+        public ushort Flags;
         public uint Hashcode;
-        public Int16 InnerRadiusReal;
+        public short InnerRadiusReal;
         public sbyte MasterVolume;
-        public Int16 MaxDelay;
+        public short MaxDelay;
         public sbyte MaxVoices;
-        public Int16 MinDelay;
-        public Int16 OuterRadiusReal;
+        public short MinDelay;
+        public short OuterRadiusReal;
         public bool OutputThisSound = true;
         public sbyte Priority;
         public sbyte ReverbSend;

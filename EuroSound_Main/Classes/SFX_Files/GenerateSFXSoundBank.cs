@@ -19,6 +19,7 @@ namespace EuroSound_Application
 
         private long WholeFileSize;
         /*--[Data lists]--*/
+
         internal void WriteFileHeader(BinaryWriter BWriter, uint FileHashcode, ProgressBar Bar)
         {
             //*===============================================================================================

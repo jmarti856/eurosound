@@ -1,5 +1,9 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -9,6 +13,21 @@ namespace EuroSound_Application
         /// <summary>
         /// Punto de entrada principal para la aplicación.
         /// </summary>
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr FindWindow(string className, string windowTitle);
+
+        [DllImport("user32.dll")]
+        private static extern int SetForegroundWindow(IntPtr hwnd);
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        private const int SW_SHOWMAXIMIZED = 3;
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool IsIconic(IntPtr hWnd);
+
         [STAThread]
         static void Main(string[] args)
         {
@@ -27,12 +46,13 @@ namespace EuroSound_Application
                     }
                     else
                     {
-                        Application.Run(new Frm_EuroSound_Splash(args[0]));
+                        StartApplicationMDI(args);
                     }
                 }
                 else
                 {
-                    Application.Run(new Frm_EuroSound_Splash(string.Empty));
+                    args = new string[] { string.Empty };
+                    StartApplicationMDI(args);
                 }
             }
             else
@@ -103,6 +123,52 @@ namespace EuroSound_Application
             // This line should never execute. A non-null release key should mean 
             // that 4.5 or later is installed. 
             return "No 4.5 or later version detected";
+        }
+
+        static void StartApplicationMDI(string[] Arguments)
+        {
+            Process[] EuroSoundInstances = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location));
+            //We have more instances
+            if (EuroSoundInstances.Length > 1)
+            {
+                using (EuroSound_Instances CheckInstances = new EuroSound_Instances())
+                {
+                    CheckInstances.ShowDialog();
+
+                    //Dont' start another instance
+                    if (CheckInstances.DialogResult == DialogResult.No)
+                    {
+                        Application.Exit();
+                    }
+                    //Show other instance
+                    else if (CheckInstances.DialogResult == DialogResult.Yes)
+                    {
+                        int InstanceID = EuroSoundInstances.Length - 2;
+
+                        IntPtr InstanceToShow = FindWindow(null, EuroSoundInstances[InstanceID].ProcessName);
+                        if (InstanceToShow != null)
+                        {
+                            if (IsIconic(InstanceToShow))
+                            {
+                                ShowWindow(InstanceToShow, SW_SHOWMAXIMIZED);
+                            }
+                            SetForegroundWindow(InstanceToShow);
+                        }
+                    }
+                    //Start another instance anyway
+                    else if (CheckInstances.DialogResult == DialogResult.OK)
+                    {
+                        Application.Run(new Frm_EuroSound_Splash(Arguments[0]));
+                    }
+
+                    CheckInstances.Close();
+                }
+            }
+            //We not have more instances
+            else
+            {
+                Application.Run(new Frm_EuroSound_Splash(Arguments[0]));
+            }
         }
     }
 }

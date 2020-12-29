@@ -32,7 +32,7 @@ namespace EuroSound_Application
                 GenerateSFXSoundBank SFXCreator = new GenerateSFXSoundBank();
                 BinaryWriter BWriter = new BinaryWriter(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), Encoding.ASCII);
 
-                Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", this.Tag.ToString());
+                Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
                 int TotalProgress = 1;
 
                 //Check For Cancelation;

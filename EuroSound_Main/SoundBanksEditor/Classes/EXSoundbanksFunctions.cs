@@ -232,44 +232,51 @@ namespace EuroSound_Application
         {
             int NumberOfChannels, Bits;
 
-            WaveFileReader AudioReader = new WaveFileReader(FilePath);
-            if (AudioReader.WaveFormat.Encoding == WaveFormatEncoding.Pcm)
+            try
             {
-                NumberOfChannels = AudioReader.WaveFormat.Channels;
-                Bits = AudioReader.WaveFormat.BitsPerSample;
-
-                if (Bits == 16)
+                using (WaveFileReader AudioReader = new WaveFileReader(FilePath))
                 {
-                    AudioFunctions AudioLibrary = new AudioFunctions();
-                    EXAudio Audio = new EXAudio
+                    if (AudioReader.WaveFormat.Encoding == WaveFormatEncoding.Pcm)
                     {
-                        Name = Path.GetFileName(FilePath),
-                        DataSize = (uint)AudioReader.Length,
-                        Frequency = (uint)AudioReader.WaveFormat.SampleRate,
-                        RealSize = (uint)new FileInfo(FilePath).Length,
-                        Channels = (uint)NumberOfChannels,
-                        Bits = (uint)Bits,
-                        Duration = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1),
-                        Encoding = AudioReader.WaveFormat.Encoding.ToString(),
-                        Flags = 0,
-                        LoopOffset = 0,
-                        PSIsample = 0
-                    };
+                        NumberOfChannels = AudioReader.WaveFormat.Channels;
+                        Bits = AudioReader.WaveFormat.BitsPerSample;
 
-                    if (ForceMono)
-                    {
-                        Audio.Channels = 1;
+                        if (Bits == 16)
+                        {
+                            AudioFunctions AudioLibrary = new AudioFunctions();
+                            EXAudio Audio = new EXAudio
+                            {
+                                Name = Path.GetFileName(FilePath),
+                                DataSize = (uint)AudioReader.Length,
+                                Frequency = (uint)AudioReader.WaveFormat.SampleRate,
+                                RealSize = (uint)new FileInfo(FilePath).Length,
+                                Channels = (uint)NumberOfChannels,
+                                Bits = (uint)Bits,
+                                Duration = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1),
+                                Encoding = AudioReader.WaveFormat.Encoding.ToString(),
+                                Flags = 0,
+                                LoopOffset = 0,
+                                PSIsample = 0
+                            };
+
+                            if (ForceMono)
+                            {
+                                Audio.Channels = 1;
+                            }
+                            AudioReader.Close();
+
+                            /*Get PCM data*/
+                            Audio.PCMdata = AudioLibrary.GetWavPCMData(FilePath, NumberOfChannels, true);
+                            Audio.DataSize = Convert.ToUInt32(Audio.PCMdata.Length);
+
+                            return Audio;
+                        }
                     }
-                    AudioReader.Close();
-                    AudioReader.Dispose();
-                    AudioReader.Flush();
-
-                    /*Get PCM data*/
-                    Audio.PCMdata = AudioLibrary.GetWavPCMData(FilePath, NumberOfChannels, true);
-                    Audio.DataSize = Convert.ToUInt32(Audio.PCMdata.Length);
-
-                    return Audio;
                 }
+            }
+            catch
+            {
+
             }
 
             return null;
@@ -289,7 +296,7 @@ namespace EuroSound_Application
             string NewString = string.Empty;
 
             /*Before remove whitespaces, first check that is not null*/
-            if (!(string.IsNullOrEmpty(TextToModify)))
+            if (!string.IsNullOrEmpty(TextToModify))
             {
                 NewString = Regex.Replace(TextToModify, @"\s", "");
             }

@@ -38,7 +38,13 @@ namespace EuroSound_Application
                         DisplayName = Name,
                         Hashcode = 0,
                     };
-                    StreamSoundsList.Add(SoundID, Sound);
+
+                    if (!StreamSoundsList.ContainsKey(SoundID))
+                    {
+                        StreamSoundsList.Add(SoundID, Sound);
+                    }
+
+                    ProjectInfo.StreamedSoundID += 1;
                     ProjectInfo.FileHasBeenModified = true;
                 }
             }

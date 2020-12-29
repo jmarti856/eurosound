@@ -6,7 +6,7 @@ namespace EuroSound_Application
     public class ProjectFile
     {
         public string FileName = "Unnamed";
-        public byte TypeOfData = 0;
+        public sbyte TypeOfData = 0;
         public uint Hashcode = 0x00000000;
         public uint SoundID = 0;
         public uint StreamedSoundID = 0;

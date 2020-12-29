@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace EuroSound_Application
 {
-    partial class Frm_AboutEuroSound : Form
+    internal partial class Frm_AboutEuroSound : Form
     {
         public Frm_AboutEuroSound()
         {

@@ -385,6 +385,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The selected hashcode is not defined in the &quot;SFX_Data&quot; hashtable, some properties values are picked from this file. Please add the hashcode to the hashtable before continue. This sound effect will not work correctly in the game without that properties..
+        /// </summary>
+        internal static string HashcodeNotFoundInSFXDataHashTable {
+            get {
+                return ResourceManager.GetString("HashcodeNotFoundInSFXDataHashTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Error: &quot;SFX_Data.h&quot; not found. Please fix the file path before creating or modifying a soundbank..
         /// </summary>
         internal static string Hashcodes_SFXData_NotFound {

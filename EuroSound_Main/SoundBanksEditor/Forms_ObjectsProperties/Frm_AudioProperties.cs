@@ -54,6 +54,7 @@ namespace EuroSound_Application
         private void Frm_AudioProperties_FormClosing(object sender, FormClosingEventArgs e)
         {
             AudioFunctionsLibrary.StopAudio(_waveOut);
+            _waveOut.Dispose();
         }
 
         //*===============================================================================================
@@ -111,7 +112,7 @@ namespace EuroSound_Application
             if (int.Parse(Textbox_Flags.Text) > 0)
             {
                 byte[] LoopSamples;
-                int SamplesToSkip = (int.Parse(numeric_loopOffset.Value.ToString()) * 2);
+                int SamplesToSkip = int.Parse(numeric_loopOffset.Value.ToString()) * 2;
 
                 LoopSamples = TemporalAudio.PCMdata.Skip(SamplesToSkip).ToArray();
                 AudioFunctionsLibrary.PlayAudioLoopOffset(_waveOut, LoopSamples, (int)TemporalAudio.Frequency, 0, (int)TemporalAudio.Bits, (int)TemporalAudio.Channels, 0);
@@ -158,7 +159,7 @@ namespace EuroSound_Application
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
-            Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", this.Tag.ToString());
+            Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
             /*--Add The Audio to the list if has been replaced--*/
             if (!SelectedAudioMD5Hash.Equals(TemporalAudioHash))
             {
@@ -200,7 +201,7 @@ namespace EuroSound_Application
             AudioFunctionsLibrary.StopAudio(_waveOut);
 
             /*--Close this form--*/
-            this.Close();
+            Close();
         }
 
         private void Button_Cancel_Click(object sender, EventArgs e)

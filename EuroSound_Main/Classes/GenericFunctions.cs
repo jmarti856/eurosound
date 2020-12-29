@@ -41,21 +41,18 @@ namespace EuroSound_Application
 
             if (File.Exists(filename))
             {
-                MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-                byte[] buffer = md5.ComputeHash(File.ReadAllBytes(filename));
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < buffer.Length; i++)
+                using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider())
                 {
-                    sb.Append(buffer[i].ToString("x2"));
+                    byte[] buffer = md5.ComputeHash(File.ReadAllBytes(filename));
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < buffer.Length; i++)
+                    {
+                        sb.Append(buffer[i].ToString("x2"));
+                    }
+                    MD5hash = sb.ToString();
+                    //Clear and dispose
+                    sb.Clear();
                 }
-                MD5hash = sb.ToString();
-
-                //Clear and dispose
-                md5.Clear();
-                md5.Dispose();
-
-                //Clear and dispose
-                sb.Clear();
             }
 
             return MD5hash;
@@ -121,17 +118,16 @@ namespace EuroSound_Application
         {
             string FilePath = string.Empty;
 
-            OpenFileDialog FileBrowser = new OpenFileDialog
+            using (OpenFileDialog FileBrowser = new OpenFileDialog())
             {
-                Filter = BrowserFilter + "|All files(*.*)|*.*",
-                FilterIndex = SelectedIndexFilter
-            };
+                FileBrowser.Filter = BrowserFilter + "|All files(*.*)|*.*";
+                FileBrowser.FilterIndex = SelectedIndexFilter;
 
-            if (FileBrowser.ShowDialog() == DialogResult.OK)
-            {
-                FilePath = FileBrowser.FileName;
+                if (FileBrowser.ShowDialog() == DialogResult.OK)
+                {
+                    FilePath = FileBrowser.FileName;
+                }
             }
-            FileBrowser.Dispose();
 
             return FilePath;
         }
@@ -141,12 +137,13 @@ namespace EuroSound_Application
             string SampleName = string.Empty;
 
             /*Ask user for a name*/
-            EuroSound_InputBox dlg = new EuroSound_InputBox(Text, Title);
-            if (dlg.ShowDialog() == DialogResult.OK)
+            using (EuroSound_InputBox dlg = new EuroSound_InputBox(Text, Title))
             {
-                SampleName = dlg.Result;
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    SampleName = dlg.Result;
+                }
             }
-            dlg.Dispose();
 
             return SampleName;
         }
@@ -155,19 +152,18 @@ namespace EuroSound_Application
         {
             string SelectedPath = string.Empty;
 
-            SaveFileDialog SaveFile = new SaveFileDialog
+            using (SaveFileDialog SaveFile = new SaveFileDialog())
             {
-                Filter = Filter + "|All files(*.*)|*.*",
-                FilterIndex = SelectedIndexFilter,
-                RestoreDirectory = RestoreDirectory,
-                FileName = Name
-            };
+                SaveFile.Filter = Filter + "|All files(*.*)|*.*";
+                SaveFile.FilterIndex = SelectedIndexFilter;
+                SaveFile.RestoreDirectory = RestoreDirectory;
+                SaveFile.FileName = Name;
 
-            if (SaveFile.ShowDialog() == DialogResult.OK)
-            {
-                SelectedPath = SaveFile.FileName;
+                if (SaveFile.ShowDialog() == DialogResult.OK)
+                {
+                    SelectedPath = SaveFile.FileName;
+                }
             }
-            SaveFile.Dispose();
 
             return SelectedPath;
         }
@@ -175,14 +171,14 @@ namespace EuroSound_Application
         internal static void ShowErrorsAndWarningsList(List<string> ListToPrint, string FormTitle)
         {
             //Show Import results
-            EuroSound_ErrorsAndWarningsList ImportResults = new EuroSound_ErrorsAndWarningsList(ListToPrint)
+            using (EuroSound_ErrorsAndWarningsList ImportResults = new EuroSound_ErrorsAndWarningsList(ListToPrint))
             {
-                Text = FormTitle,
-                ShowInTaskbar = false,
-                TopMost = true
-            };
-            ImportResults.ShowDialog();
-            ImportResults.Dispose();
+                ImportResults.Text = FormTitle;
+                ImportResults.ShowInTaskbar = false;
+                ImportResults.TopMost = true;
+
+                ImportResults.ShowDialog();
+            }
         }
 
 
@@ -217,6 +213,22 @@ namespace EuroSound_Application
                 }
             }
             return Counter;
+        }
+
+        internal static string UpdateProjectFormText(string LoadedFile, string ProjectName)
+        {
+            string Text;
+
+            if (string.IsNullOrEmpty(LoadedFile))
+            {
+                Text = ProjectName;
+            }
+            else
+            {
+                Text = Path.GetFileName(LoadedFile) + " - " + Path.GetDirectoryName(LoadedFile);
+            }
+
+            return Text;
         }
     }
 }

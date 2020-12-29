@@ -225,6 +225,9 @@
   <data name="Gen_Warning_StreamedSound" xml:space="preserve">
     <value>This sound should not be added here, is checked as a "Sample Streamed Sound" in the "SFX_Data.h" file. You should add it as a reference in "Streamed Sounds" section and add it to the common file.</value>
   </data>
+  <data name="HashcodeNotFoundInSFXDataHashTable" xml:space="preserve">
+    <value>The selected hashcode is not defined in the "SFX_Data" hashtable, some properties values are picked from this file. Please add the hashcode to the hashtable before continue. This sound effect will not work correctly in the game without that properties.</value>
+  </data>
   <data name="Hashcodes_SFXData_NotFound" xml:space="preserve">
     <value>Error: "SFX_Data.h" not found. Please fix the file path before creating or modifying a soundbank.</value>
   </data>

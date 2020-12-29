@@ -8,7 +8,7 @@
         public uint Flags;
         public uint Extra;
         public uint LoopStart;
-        public uint MakerCount;
+        public uint MarkerCount;
         public uint LoopMarkerCount;
     }
 }

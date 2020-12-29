@@ -232,6 +232,7 @@ namespace EuroSound_Application
             this.MenuItem_File_Save.Name = "MenuItem_File_Save";
             this.MenuItem_File_Save.Size = new System.Drawing.Size(207, 22);
             this.MenuItem_File_Save.Text = "Save";
+            this.MenuItem_File_Save.Click += new System.EventHandler(this.MenuItem_File_Save_Click);
             // 
             // MenuItem_File_SaveAs
             // 
@@ -240,6 +241,7 @@ namespace EuroSound_Application
             this.MenuItem_File_SaveAs.Name = "MenuItem_File_SaveAs";
             this.MenuItem_File_SaveAs.Size = new System.Drawing.Size(207, 22);
             this.MenuItem_File_SaveAs.Text = "Save As...";
+            this.MenuItem_File_SaveAs.Click += new System.EventHandler(this.MenuItem_File_SaveAs_Click);
             // 
             // toolStripSeparator2
             // 
@@ -444,8 +446,11 @@ namespace EuroSound_Application
             this.Name = "Frm_StreamSoundsEditorMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Frm_StreamSoundsEditorMain";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_StreamSoundsEditorMain_FormClosing);
             this.Load += new System.EventHandler(this.Frm_StreamSoundsEditorMain_Load);
             this.Shown += new System.EventHandler(this.Frm_StreamSoundsEditorMain_Shown);
+            this.SizeChanged += new System.EventHandler(this.Frm_StreamSoundsEditorMain_SizeChanged);
+            this.Enter += new System.EventHandler(this.Frm_StreamSoundsEditorMain_Enter);
             this.ContextMenu_Folders.ResumeLayout(false);
             this.MainMenu.ResumeLayout(false);
             this.MainMenu.PerformLayout();

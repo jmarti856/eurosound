@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EuroSound_Application
+﻿namespace EuroSound_Application
 {
     public class EXAudio
     {
@@ -11,7 +9,7 @@ namespace EuroSound_Application
         public string DisplayName { get; set; } = string.Empty;
         public uint Duration { get; set; }
         public string Encoding { get; set; } = "<Null>";
-        public UInt16 Flags { get; set; }
+        public ushort Flags { get; set; }
         public uint Frequency { get; set; }
         public uint LoopOffset { get; set; }
         public string Name { get; set; } = string.Empty;

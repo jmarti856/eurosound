@@ -33,21 +33,27 @@ namespace EuroSound_Application
             this.Button_Cancel = new System.Windows.Forms.Button();
             this.GroupBox_Properties = new System.Windows.Forms.GroupBox();
             this.Combobox_Hashcode = new System.Windows.Forms.ComboBox();
+            this.Button_MarkersEditor = new System.Windows.Forms.Button();
             this.Label_Hashcode = new System.Windows.Forms.Label();
             this.Numeric_BaseVolume = new System.Windows.Forms.NumericUpDown();
             this.Label_BaseVolume = new System.Windows.Forms.Label();
-            this.Button_MarkersEditor = new System.Windows.Forms.Button();
             this.CheckBox_OutputThisSound = new System.Windows.Forms.CheckBox();
-            this.Button_AudioData = new System.Windows.Forms.Button();
+            this.GroupBox_IMA_Data = new System.Windows.Forms.GroupBox();
+            this.Textbox_MD5_Hash = new System.Windows.Forms.TextBox();
+            this.Label_MD5_Hash = new System.Windows.Forms.Label();
+            this.Label_Data = new System.Windows.Forms.Label();
+            this.Button_SearchIMA = new System.Windows.Forms.Button();
+            this.Textbox_IMA_ADPCM = new System.Windows.Forms.TextBox();
             this.GroupBox_Properties.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_BaseVolume)).BeginInit();
+            this.GroupBox_IMA_Data.SuspendLayout();
             this.SuspendLayout();
             // 
             // Button_OK
             // 
             this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_OK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_OK.Location = new System.Drawing.Point(172, 185);
+            this.Button_OK.Location = new System.Drawing.Point(282, 285);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
             this.Button_OK.TabIndex = 4;
@@ -59,7 +65,7 @@ namespace EuroSound_Application
             // 
             this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_Cancel.Location = new System.Drawing.Point(253, 185);
+            this.Button_Cancel.Location = new System.Drawing.Point(363, 285);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.Button_Cancel.TabIndex = 5;
@@ -72,12 +78,13 @@ namespace EuroSound_Application
             this.GroupBox_Properties.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GroupBox_Properties.Controls.Add(this.Combobox_Hashcode);
+            this.GroupBox_Properties.Controls.Add(this.Button_MarkersEditor);
             this.GroupBox_Properties.Controls.Add(this.Label_Hashcode);
             this.GroupBox_Properties.Controls.Add(this.Numeric_BaseVolume);
             this.GroupBox_Properties.Controls.Add(this.Label_BaseVolume);
             this.GroupBox_Properties.Location = new System.Drawing.Point(12, 12);
             this.GroupBox_Properties.Name = "GroupBox_Properties";
-            this.GroupBox_Properties.Size = new System.Drawing.Size(316, 87);
+            this.GroupBox_Properties.Size = new System.Drawing.Size(426, 87);
             this.GroupBox_Properties.TabIndex = 0;
             this.GroupBox_Properties.TabStop = false;
             this.GroupBox_Properties.Text = "Sound Properties";
@@ -90,8 +97,19 @@ namespace EuroSound_Application
             this.Combobox_Hashcode.FormattingEnabled = true;
             this.Combobox_Hashcode.Location = new System.Drawing.Point(84, 19);
             this.Combobox_Hashcode.Name = "Combobox_Hashcode";
-            this.Combobox_Hashcode.Size = new System.Drawing.Size(226, 21);
+            this.Combobox_Hashcode.Size = new System.Drawing.Size(336, 21);
             this.Combobox_Hashcode.TabIndex = 1;
+            // 
+            // Button_MarkersEditor
+            // 
+            this.Button_MarkersEditor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_MarkersEditor.Location = new System.Drawing.Point(270, 43);
+            this.Button_MarkersEditor.Name = "Button_MarkersEditor";
+            this.Button_MarkersEditor.Size = new System.Drawing.Size(150, 23);
+            this.Button_MarkersEditor.TabIndex = 1;
+            this.Button_MarkersEditor.Text = "Open Markers Editor";
+            this.Button_MarkersEditor.UseVisualStyleBackColor = true;
+            this.Button_MarkersEditor.Click += new System.EventHandler(this.Button_MarkersEditor_Click);
             // 
             // Label_Hashcode
             // 
@@ -118,40 +136,83 @@ namespace EuroSound_Application
             this.Label_BaseVolume.TabIndex = 2;
             this.Label_BaseVolume.Text = "Base Volume:";
             // 
-            // Button_MarkersEditor
-            // 
-            this.Button_MarkersEditor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_MarkersEditor.Location = new System.Drawing.Point(12, 105);
-            this.Button_MarkersEditor.Name = "Button_MarkersEditor";
-            this.Button_MarkersEditor.Size = new System.Drawing.Size(146, 23);
-            this.Button_MarkersEditor.TabIndex = 1;
-            this.Button_MarkersEditor.Text = "Open Markers Editor";
-            this.Button_MarkersEditor.UseVisualStyleBackColor = true;
-            this.Button_MarkersEditor.Click += new System.EventHandler(this.Button_MarkersEditor_Click);
-            // 
             // CheckBox_OutputThisSound
             // 
             this.CheckBox_OutputThisSound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.CheckBox_OutputThisSound.AutoSize = true;
             this.CheckBox_OutputThisSound.Checked = true;
             this.CheckBox_OutputThisSound.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.CheckBox_OutputThisSound.Location = new System.Drawing.Point(12, 191);
+            this.CheckBox_OutputThisSound.Location = new System.Drawing.Point(12, 291);
             this.CheckBox_OutputThisSound.Name = "CheckBox_OutputThisSound";
             this.CheckBox_OutputThisSound.Size = new System.Drawing.Size(109, 17);
             this.CheckBox_OutputThisSound.TabIndex = 3;
             this.CheckBox_OutputThisSound.Text = "Output this sound";
             this.CheckBox_OutputThisSound.UseVisualStyleBackColor = true;
             // 
-            // Button_AudioData
+            // GroupBox_IMA_Data
             // 
-            this.Button_AudioData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_AudioData.Location = new System.Drawing.Point(164, 105);
-            this.Button_AudioData.Name = "Button_AudioData";
-            this.Button_AudioData.Size = new System.Drawing.Size(164, 23);
-            this.Button_AudioData.TabIndex = 2;
-            this.Button_AudioData.Text = "Audio Data";
-            this.Button_AudioData.UseVisualStyleBackColor = true;
-            this.Button_AudioData.Click += new System.EventHandler(this.Button_AudioData_Click);
+            this.GroupBox_IMA_Data.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox_IMA_Data.Controls.Add(this.Textbox_MD5_Hash);
+            this.GroupBox_IMA_Data.Controls.Add(this.Label_MD5_Hash);
+            this.GroupBox_IMA_Data.Controls.Add(this.Label_Data);
+            this.GroupBox_IMA_Data.Controls.Add(this.Button_SearchIMA);
+            this.GroupBox_IMA_Data.Controls.Add(this.Textbox_IMA_ADPCM);
+            this.GroupBox_IMA_Data.Location = new System.Drawing.Point(12, 105);
+            this.GroupBox_IMA_Data.Name = "GroupBox_IMA_Data";
+            this.GroupBox_IMA_Data.Size = new System.Drawing.Size(426, 97);
+            this.GroupBox_IMA_Data.TabIndex = 6;
+            this.GroupBox_IMA_Data.TabStop = false;
+            this.GroupBox_IMA_Data.Text = "IMA ADPCM";
+            // 
+            // Textbox_MD5_Hash
+            // 
+            this.Textbox_MD5_Hash.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_MD5_Hash.Location = new System.Drawing.Point(44, 45);
+            this.Textbox_MD5_Hash.Name = "Textbox_MD5_Hash";
+            this.Textbox_MD5_Hash.ReadOnly = true;
+            this.Textbox_MD5_Hash.Size = new System.Drawing.Size(376, 20);
+            this.Textbox_MD5_Hash.TabIndex = 11;
+            // 
+            // Label_MD5_Hash
+            // 
+            this.Label_MD5_Hash.AutoSize = true;
+            this.Label_MD5_Hash.Location = new System.Drawing.Point(6, 48);
+            this.Label_MD5_Hash.Name = "Label_MD5_Hash";
+            this.Label_MD5_Hash.Size = new System.Drawing.Size(35, 13);
+            this.Label_MD5_Hash.TabIndex = 10;
+            this.Label_MD5_Hash.Text = "Hash:";
+            // 
+            // Label_Data
+            // 
+            this.Label_Data.AutoSize = true;
+            this.Label_Data.Location = new System.Drawing.Point(6, 23);
+            this.Label_Data.Name = "Label_Data";
+            this.Label_Data.Size = new System.Drawing.Size(32, 13);
+            this.Label_Data.TabIndex = 9;
+            this.Label_Data.Text = "Path:";
+            // 
+            // Button_SearchIMA
+            // 
+            this.Button_SearchIMA.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_SearchIMA.Location = new System.Drawing.Point(396, 19);
+            this.Button_SearchIMA.Name = "Button_SearchIMA";
+            this.Button_SearchIMA.Size = new System.Drawing.Size(24, 20);
+            this.Button_SearchIMA.TabIndex = 8;
+            this.Button_SearchIMA.Text = "...";
+            this.Button_SearchIMA.UseVisualStyleBackColor = true;
+            this.Button_SearchIMA.Click += new System.EventHandler(this.Button_SearchIMA_Click);
+            // 
+            // Textbox_IMA_ADPCM
+            // 
+            this.Textbox_IMA_ADPCM.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Textbox_IMA_ADPCM.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_IMA_ADPCM.Location = new System.Drawing.Point(44, 19);
+            this.Textbox_IMA_ADPCM.Name = "Textbox_IMA_ADPCM";
+            this.Textbox_IMA_ADPCM.ReadOnly = true;
+            this.Textbox_IMA_ADPCM.Size = new System.Drawing.Size(347, 20);
+            this.Textbox_IMA_ADPCM.TabIndex = 7;
             // 
             // Frm_StreamSounds_Properties
             // 
@@ -159,9 +220,8 @@ namespace EuroSound_Application
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Button_Cancel;
-            this.ClientSize = new System.Drawing.Size(340, 220);
-            this.Controls.Add(this.Button_AudioData);
-            this.Controls.Add(this.Button_MarkersEditor);
+            this.ClientSize = new System.Drawing.Size(450, 320);
+            this.Controls.Add(this.GroupBox_IMA_Data);
             this.Controls.Add(this.CheckBox_OutputThisSound);
             this.Controls.Add(this.GroupBox_Properties);
             this.Controls.Add(this.Button_Cancel);
@@ -176,6 +236,8 @@ namespace EuroSound_Application
             this.GroupBox_Properties.ResumeLayout(false);
             this.GroupBox_Properties.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_BaseVolume)).EndInit();
+            this.GroupBox_IMA_Data.ResumeLayout(false);
+            this.GroupBox_IMA_Data.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -191,6 +253,11 @@ namespace EuroSound_Application
         private System.Windows.Forms.Label Label_Hashcode;
         private System.Windows.Forms.Button Button_MarkersEditor;
         private System.Windows.Forms.CheckBox CheckBox_OutputThisSound;
-        private System.Windows.Forms.Button Button_AudioData;
+        private System.Windows.Forms.GroupBox GroupBox_IMA_Data;
+        private System.Windows.Forms.Label Label_Data;
+        private System.Windows.Forms.Button Button_SearchIMA;
+        private System.Windows.Forms.TextBox Textbox_IMA_ADPCM;
+        private System.Windows.Forms.TextBox Textbox_MD5_Hash;
+        private System.Windows.Forms.Label Label_MD5_Hash;
     }
 }

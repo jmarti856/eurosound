@@ -1,7 +1,5 @@
 ﻿using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace EuroSound_Application
@@ -41,15 +39,17 @@ namespace EuroSound_Application
             if (AudioPlayer.PlaybackState == PlaybackState.Stopped)
             {
                 AudioSample = new MemoryStream(PCMData);
-                LoopStream loop = new LoopStream(new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency + Pitch, Bits, Channels)));
-                VolumeSampleProvider volumeProvider = new VolumeSampleProvider(loop.ToSampleProvider());
-                PanningSampleProvider panProvider = new PanningSampleProvider(volumeProvider)
+                using (LoopStream loop = new LoopStream(new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency + Pitch, Bits, Channels))))
                 {
-                    Pan = (Pan / 100)
-                };
-                AudioPlayer.Volume = 1;
-                AudioPlayer.Init(panProvider);
-                AudioPlayer.Play();
+                    VolumeSampleProvider volumeProvider = new VolumeSampleProvider(loop.ToSampleProvider());
+                    PanningSampleProvider panProvider = new PanningSampleProvider(volumeProvider)
+                    {
+                        Pan = (Pan / 100)
+                    };
+                    AudioPlayer.Volume = 1;
+                    AudioPlayer.Init(panProvider);
+                    AudioPlayer.Play();
+                }
             }
         }
 
@@ -117,7 +117,7 @@ namespace EuroSound_Application
             return byteArray;
         }
 
-        internal byte[] StereoToMono(byte[] input)
+        private byte[] StereoToMono(byte[] input)
         {
             byte[] output = new byte[input.Length / 2];
             int outputIndex = 0;

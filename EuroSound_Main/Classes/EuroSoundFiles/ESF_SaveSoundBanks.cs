@@ -10,9 +10,9 @@ namespace EuroSound_Application
         internal void SaveSoundBanks(BinaryWriter BWriter, TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, ProjectFile FileProperties)
         {
             /*File Hashcode*/
-            BWriter.Write(Convert.ToUInt32(FileProperties.Hashcode));
+            BWriter.Write(FileProperties.Hashcode);
             /*Latest SoundID value*/
-            BWriter.Write(Convert.ToUInt32(FileProperties.SoundID));
+            BWriter.Write(FileProperties.SoundID);
             /*TreeViewData Offset*/
             BWriter.Write(Convert.ToUInt32(00000000));
             /*SoundsListData Offset*/
@@ -58,7 +58,6 @@ namespace EuroSound_Application
 
             /*Write File Size*/
             BWriter.Write(Convert.ToUInt32(FileSize));
-
         }
 
         private void SaveAudiosData(Dictionary<string, EXAudio> AudiosList, BinaryWriter BWriter)
@@ -138,12 +137,12 @@ namespace EuroSound_Application
         private void SaveTreeViewData(TreeView TreeViewControl, BinaryWriter BWriter)
         {
             BWriter.Write((TreeViewControl.GetNodeCount(true) - 3));
-            SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[0], BWriter);
-            SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[1], BWriter);
-            SaveTreeNodes(TreeViewControl, TreeViewControl.Nodes[2], BWriter);
+            SaveTreeNodes(TreeViewControl.Nodes[0], BWriter);
+            SaveTreeNodes(TreeViewControl.Nodes[1], BWriter);
+            SaveTreeNodes(TreeViewControl.Nodes[2], BWriter);
         }
 
-        private void SaveTreeNodes(TreeView TreeViewControl, TreeNode Selected, BinaryWriter BWriter)
+        private void SaveTreeNodes(TreeNode Selected, BinaryWriter BWriter)
         {
             if (!Selected.Tag.Equals("Root"))
             {
@@ -167,7 +166,7 @@ namespace EuroSound_Application
             }
             foreach (TreeNode Node in Selected.Nodes)
             {
-                SaveTreeNodes(TreeViewControl, Node, BWriter);
+                SaveTreeNodes(Node, BWriter);
             }
         }
     }

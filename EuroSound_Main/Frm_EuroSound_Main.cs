@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -11,15 +12,14 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* GLOBAL VARS
         //*===============================================================================================
-        private string DraggedFile;
         private int FormID = 0;
-        private int FormSFXDataGenerator = 0;
+        private string ArgumentFromSplash;
 
-        public Frm_EuroSound_Main(string LoadedFileByArgument)
+        public Frm_EuroSound_Main(string ArgumentToLoad)
         {
             InitializeComponent();
 
-            DraggedFile = LoadedFileByArgument;
+            ArgumentFromSplash = ArgumentToLoad;
 
             /*Menu Item: File*/
             MainMenu_File.DropDownOpened += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
@@ -57,10 +57,10 @@ namespace EuroSound_Application
             MenuItemWindow_TileV.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItemWindow_Arrange.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
 
-            MenuItemWindow_Arrange.Click += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); this.LayoutMdi(MdiLayout.ArrangeIcons); };
-            MenuItemWindow_Cascade.Click += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); this.LayoutMdi(MdiLayout.Cascade); };
-            MenuItemWindow_TileH.Click += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); this.LayoutMdi(MdiLayout.TileHorizontal); };
-            MenuItemWindow_TileV.Click += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); this.LayoutMdi(MdiLayout.TileVertical); };
+            MenuItemWindow_Arrange.Click += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); LayoutMdi(MdiLayout.ArrangeIcons); };
+            MenuItemWindow_Cascade.Click += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); LayoutMdi(MdiLayout.Cascade); };
+            MenuItemWindow_TileH.Click += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); LayoutMdi(MdiLayout.TileHorizontal); };
+            MenuItemWindow_TileV.Click += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); LayoutMdi(MdiLayout.TileVertical); };
 
             /*Menu Item: Tools*/
             MainMenu_Tools.DropDownOpened += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
@@ -92,10 +92,10 @@ namespace EuroSound_Application
             /*Update Status Bar*/
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
-            /*Check that we are not reading nulls*/
-            if (!string.IsNullOrEmpty(DraggedFile))
+            /*This means we loaded a soundbank file*/
+            if (!string.IsNullOrEmpty(ArgumentFromSplash))
             {
-                LoadSoundBank(DraggedFile);
+                OpenFormsWithFileToLoad(ArgumentFromSplash);
             }
         }
 
@@ -105,10 +105,7 @@ namespace EuroSound_Application
             string[] FileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
             for (int i = 0; i < FileList.Length; i++)
             {
-                if (Path.GetExtension(FileList[i]).Equals(".ESF", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    LoadSoundBank(FileList[i]);
-                }
+                OpenFormsWithFileToLoad(FileList[i]);
             }
         }
 
@@ -160,10 +157,10 @@ namespace EuroSound_Application
             {
                 Owner = this,
                 MdiParent = this,
-                Tag = "frm" + FormSFXDataGenerator.ToString()
+                Tag = FormID.ToString()
             };
             BinaryFileGenerator.Show();
-            FormSFXDataGenerator++;
+            FormID++;
         }
 
         //*===============================================================================================
@@ -186,19 +183,9 @@ namespace EuroSound_Application
 
                 if (CreateNewFile.DialogResult == DialogResult.OK)
                 {
-                    /*--[COMBOBOX SELECTED VALUES]--
-                    0 = Soundbanks; 1 = Streamed sounds; 2 = Music tracks*/
+                    //Position 0 = Project Name, Position 1= Type of data
                     string[] NewFileProperties = CreateNewFile.FileProps;
-
-                    /*--THE NEW FILE WILL BE A SOUNDBANK--*/
-                    if (NewFileProperties[1].Equals("0"))
-                    {
-                        OpenSoundBanksForm(string.Empty, NewFileProperties[0]);
-                    }
-                    else if (NewFileProperties[1].Equals("1"))
-                    {
-                        OpenStreamedSoundsForm(string.Empty, NewFileProperties[0]);
-                    }
+                    OpenEmptyForms(NewFileProperties[0], int.Parse(NewFileProperties[1]));
                 }
             }
         }
@@ -206,10 +193,10 @@ namespace EuroSound_Application
         private void MenuItemFile_OpenESF_Click(object sender, EventArgs e)
         {
             GlobalPreferences.StatusBar_ToolTipMode = false;
-            string FilePath = GenericFunctions.OpenFileBrowser("EuroSound Files (*.esf)|*.esf", 0);
-            if (!string.IsNullOrEmpty(FilePath))
+            ArgumentFromSplash = GenericFunctions.OpenFileBrowser("EuroSound Files (*.esf)|*.esf", 0);
+            if (!string.IsNullOrEmpty(ArgumentFromSplash))
             {
-                LoadSoundBank(FilePath);
+                OpenFormsWithFileToLoad(ArgumentFromSplash);
             }
         }
 
@@ -251,71 +238,92 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* FUNCTIONS
         //*===============================================================================================
-        private void LoadSoundBank(string FilePathToLoad)
+        private void OpenFormsWithFileToLoad(string FileToLoad)
         {
-            OpenSoundBanksForm(FilePathToLoad, "");
-        }
+            int TypeOfFileToLoad;
 
-        private void OpenSoundBanksForm(string FilePath, string ProjectName)
-        {
-            string FormTitle;
-            if (System.IO.File.Exists(GlobalPreferences.HT_SoundsPath) && System.IO.File.Exists(GlobalPreferences.HT_SoundsDataPath))
+            TypeOfFileToLoad = TypeOfEuroSoundFile(FileToLoad);
+            if (TypeOfFileToLoad == 0)
             {
-                if (string.IsNullOrEmpty(FilePath))
+                Frm_Soundbanks_Main SoundBanksForms = new Frm_Soundbanks_Main(string.Empty, FileToLoad)
                 {
-                    FormTitle = ProjectName;
-                }
-                else
-                {
-                    FormTitle = string.Format("{0} - {1}", Path.GetFileName(FilePath), Path.GetDirectoryName(FilePath));
-                }
-
-                /*Show Form*/
-                Frm_Soundbanks_Main NewSoundBankForm = new Frm_Soundbanks_Main(FilePath, ProjectName)
-                {
-                    Text = FormTitle,
                     Owner = this,
                     MdiParent = this,
-                    Tag = "frm" + FormID.ToString()
+                    Tag = FormID.ToString()
                 };
-                NewSoundBankForm.Show();
+                SoundBanksForms.Show();
                 FormID++;
             }
-            else
+            else if (TypeOfFileToLoad == 1)
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("GenericHashtablesNotCorrect"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Frm_StreamSoundsEditorMain SoundBanksForms = new Frm_StreamSoundsEditorMain(string.Empty, ArgumentFromSplash)
+                {
+                    Owner = this,
+                    MdiParent = this,
+                    Tag = FormID.ToString()
+
+                };
+
+                SoundBanksForms.Show();
+                FormID++;
             }
         }
 
-        private void OpenStreamedSoundsForm(string FilePath, string ProjectName)
+        private void OpenEmptyForms(string ProjectName, int TypeOfdata)
         {
-            string FormTitle;
-            if (System.IO.File.Exists(GlobalPreferences.HT_SoundsPath) && System.IO.File.Exists(GlobalPreferences.HT_SoundsDataPath))
-            {
-                if (string.IsNullOrEmpty(FilePath))
-                {
-                    FormTitle = ProjectName;
-                }
-                else
-                {
-                    FormTitle = string.Format("{0} - {1}", Path.GetFileName(FilePath), Path.GetDirectoryName(FilePath));
-                }
+            /*--[COMBOBOX FILE PROJECT SELECTED VALUES]--
+            0 = Soundbanks; 1 = Streamed sounds; 2 = Music tracks*/
 
-                /*Show Form*/
-                Frm_StreamSoundsEditorMain StreamSounds = new Frm_StreamSoundsEditorMain(FilePath, ProjectName)
+            if (TypeOfdata == 0)
+            {
+                Frm_Soundbanks_Main SoundBanksForms = new Frm_Soundbanks_Main(ProjectName, string.Empty)
                 {
-                    Text = FormTitle,
                     Owner = this,
                     MdiParent = this,
-                    Tag = "frm" + FormID.ToString()
+                    Tag = FormID.ToString()
                 };
-                StreamSounds.Show();
+                SoundBanksForms.Show();
                 FormID++;
             }
-            else
+            else if (TypeOfdata == 1)
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("GenericHashtablesNotCorrect"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Frm_StreamSoundsEditorMain SoundBanksForms = new Frm_StreamSoundsEditorMain(ProjectName, string.Empty)
+                {
+                    Owner = this,
+                    MdiParent = this,
+                    Tag = FormID.ToString()
+                };
+                SoundBanksForms.Show();
+                FormID++;
             }
+        }
+
+        private int TypeOfEuroSoundFile(string FileToLoad)
+        {
+            int Type = -1;
+
+            /* TYPE VALUES
+            Type -1 = bad format
+            Type 0  = Soundbank
+            Type 1  = Stream Soundbank
+            Type 2  = Musics --NOT IMPLEMENTED YET--
+            */
+
+            if (System.IO.File.Exists(FileToLoad))
+            {
+                EuroSoundFiles ESFFiles = new EuroSoundFiles();
+                using (BinaryReader BReader = new BinaryReader(System.IO.File.Open(FileToLoad, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
+                {
+                    if (ESFFiles.FileIsCorrect(BReader))
+                    {
+                        Type = BReader.ReadSByte();
+                    }
+
+                    BReader.Close();
+                }
+            }
+
+            return Type;
         }
     }
 }

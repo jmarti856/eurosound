@@ -922,6 +922,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_Soundbanks_Main_FormClosing);
             this.Load += new System.EventHandler(this.Frm_Soundbanks_Main_Load);
             this.Shown += new System.EventHandler(this.Frm_Soundbanks_Main_Shown);
+            this.SizeChanged += new System.EventHandler(this.Frm_Soundbanks_Main_SizeChanged);
             this.Enter += new System.EventHandler(this.Frm_Soundbanks_Main_Enter);
             this.ContextMenu_Folders.ResumeLayout(false);
             this.ContextMenu_Sound.ResumeLayout(false);

@@ -109,18 +109,18 @@ namespace EuroSound_Application
                     {
                         DisplayName = SoundName,
                         Hashcode = SoundHashcode,
-                        DuckerLenght = (Int16)CurrentSoundParams[0],
-                        MinDelay = (Int16)CurrentSoundParams[1],
-                        MaxDelay = (Int16)CurrentSoundParams[2],
-                        InnerRadiusReal = (Int16)CurrentSoundParams[3],
-                        OuterRadiusReal = (Int16)CurrentSoundParams[4],
+                        DuckerLenght = (short)CurrentSoundParams[0],
+                        MinDelay = (short)CurrentSoundParams[1],
+                        MaxDelay = (short)CurrentSoundParams[2],
+                        InnerRadiusReal = (short)CurrentSoundParams[3],
+                        OuterRadiusReal = (short)CurrentSoundParams[4],
                         ReverbSend = (sbyte)CurrentSoundParams[5],
                         TrackingType = (sbyte)CurrentSoundParams[6],
                         MaxVoices = (sbyte)CurrentSoundParams[7],
                         Priority = (sbyte)CurrentSoundParams[8],
                         Ducker = (sbyte)CurrentSoundParams[9],
                         MasterVolume = (sbyte)CurrentSoundParams[10],
-                        Flags = (UInt16)CurrentSoundParams[11]
+                        Flags = (ushort)CurrentSoundParams[11]
                     };
 
                     SoundsList.Add(SoundID, NewSound);
@@ -133,9 +133,9 @@ namespace EuroSound_Application
                         {
                             Name = SampleName,
                             DisplayName = SampleName,
-                            FileRef = (Int16)Entry.Value[0],
-                            PitchOffset = (Int16)Entry.Value[1],
-                            RandomPitchOffset = (Int16)Entry.Value[2],
+                            FileRef = (short)Entry.Value[0],
+                            PitchOffset = (short)Entry.Value[1],
+                            RandomPitchOffset = (short)Entry.Value[2],
                             BaseVolume = (sbyte)Entry.Value[3],
                             RandomVolumeOffset = (sbyte)Entry.Value[4],
                             Pan = (sbyte)Entry.Value[5],
@@ -317,7 +317,7 @@ namespace EuroSound_Application
 
         private uint GetSoundHashcode(uint Hashcode)
         {
-            uint FinalHashcode = (0x1A000000 | Hashcode);
+            uint FinalHashcode = 0x1A000000 | Hashcode;
             return FinalHashcode;
         }
 

@@ -64,7 +64,7 @@ namespace EuroSound_Application
 
             int samples = (int)(waveStream.Length / bytesPerSample);
             startPosition = 0;
-            SamplesPerPixel = samples / this.Width;
+            SamplesPerPixel = samples / Width;
         }
 
         protected override void OnResize(EventArgs e)
@@ -183,8 +183,8 @@ namespace EuroSound_Application
                             float lowPercent = (((float)low) - short.MinValue) / ushort.MaxValue;
                             float highPercent = (((float)high) - short.MinValue) / ushort.MaxValue;
 
-                            Point point1 = new Point(x, (int)(this.Height * lowPercent));
-                            Point point2 = new Point(x, (int)(this.Height * highPercent));
+                            Point point1 = new Point(x, (int)(Height * lowPercent));
+                            Point point2 = new Point(x, (int)(Height * highPercent));
 
                             //if event is not hoocked in, then render wave instantly
                             if (OnLineDrawEvent == null)

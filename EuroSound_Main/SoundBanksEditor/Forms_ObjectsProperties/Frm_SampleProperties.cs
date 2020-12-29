@@ -29,7 +29,7 @@ namespace EuroSound_Application
         {
             AudioFunctionsLibrary = new AudioFunctions();
 
-            Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", this.Tag.ToString());
+            Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
             numeric_pitchoffset.Value = SelectedSample.PitchOffset;
             numeric_randomPitchOffset.Value = SelectedSample.RandomPitchOffset;
             Numeric_BaseVolume.Value = SelectedSample.BaseVolume;
@@ -64,6 +64,7 @@ namespace EuroSound_Application
         private void Frm_SampleProperties_FormClosing(object sender, FormClosingEventArgs e)
         {
             AudioFunctionsLibrary.StopAudio(_waveOut);
+            _waveOut.Dispose();
         }
 
         //*===============================================================================================
@@ -71,7 +72,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void Button_PlayAudio_Click(object sender, EventArgs e)
         {
-            Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", this.Tag.ToString());
+            Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
             if (Combobox_SelectedAudio.SelectedValue != null)
             {
                 EXAudio AudioSelected = TreeNodeFunctions.GetSelectedAudio(Combobox_SelectedAudio.SelectedValue.ToString(), ((Frm_Soundbanks_Main)ParentForm).AudioDataDict);
@@ -89,8 +90,8 @@ namespace EuroSound_Application
 
         private void Button_ok_Click(object sender, EventArgs e)
         {
-            SelectedSample.PitchOffset = (Int16)numeric_pitchoffset.Value;
-            SelectedSample.RandomPitchOffset = (Int16)numeric_randomPitchOffset.Value;
+            SelectedSample.PitchOffset = (short)numeric_pitchoffset.Value;
+            SelectedSample.RandomPitchOffset = (short)numeric_randomPitchOffset.Value;
             SelectedSample.BaseVolume = (sbyte)Numeric_BaseVolume.Value;
             SelectedSample.RandomVolumeOffset = (sbyte)numeric_randomvolumeoffset.Value;
             SelectedSample.Pan = (sbyte)numeric_pan.Value;
@@ -151,7 +152,7 @@ namespace EuroSound_Application
         private void Button_Edit_Click(object sender, EventArgs e)
         {
             string AudioKey = Combobox_SelectedAudio.SelectedValue.ToString();
-            Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", this.Tag.ToString());
+            Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
             if (((Frm_Soundbanks_Main)ParentForm).AudioDataDict.ContainsKey(AudioKey))
             {
                 EXAudio SelectedSound = ((Frm_Soundbanks_Main)ParentForm).AudioDataDict[AudioKey];

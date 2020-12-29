@@ -44,9 +44,7 @@
             this.label_trackingtype = new System.Windows.Forms.Label();
             this.numeric_reverbsend = new System.Windows.Forms.NumericUpDown();
             this.label_reverbsend = new System.Windows.Forms.Label();
-            this.numeric_outerradiusreal = new System.Windows.Forms.NumericUpDown();
             this.label_outerradiusreal = new System.Windows.Forms.Label();
-            this.numeric_innerradiusreal = new System.Windows.Forms.NumericUpDown();
             this.label_innerradiusreal = new System.Windows.Forms.Label();
             this.numeric_maxdelay = new System.Windows.Forms.NumericUpDown();
             this.label_maxdelay = new System.Windows.Forms.Label();
@@ -62,14 +60,14 @@
             this.cbx_hashcode = new System.Windows.Forms.ComboBox();
             this.label_hashcode = new System.Windows.Forms.Label();
             this.Checkbox_OutputThisSound = new System.Windows.Forms.CheckBox();
+            this.Textbox_InnerRadius = new System.Windows.Forms.TextBox();
+            this.Textbox_OuterRadius = new System.Windows.Forms.TextBox();
             this.groupbox_params.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_mastervolume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_ducker)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_priority)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_maxvoices)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_reverbsend)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_outerradiusreal)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_innerradiusreal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_maxdelay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_mindelay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_duckerlength)).BeginInit();
@@ -81,6 +79,8 @@
             // 
             this.groupbox_params.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupbox_params.Controls.Add(this.Textbox_OuterRadius);
+            this.groupbox_params.Controls.Add(this.Textbox_InnerRadius);
             this.groupbox_params.Controls.Add(this.numeric_mastervolume);
             this.groupbox_params.Controls.Add(this.label_mastervolume);
             this.groupbox_params.Controls.Add(this.textbox_flags);
@@ -95,9 +95,7 @@
             this.groupbox_params.Controls.Add(this.label_trackingtype);
             this.groupbox_params.Controls.Add(this.numeric_reverbsend);
             this.groupbox_params.Controls.Add(this.label_reverbsend);
-            this.groupbox_params.Controls.Add(this.numeric_outerradiusreal);
             this.groupbox_params.Controls.Add(this.label_outerradiusreal);
-            this.groupbox_params.Controls.Add(this.numeric_innerradiusreal);
             this.groupbox_params.Controls.Add(this.label_innerradiusreal);
             this.groupbox_params.Controls.Add(this.numeric_maxdelay);
             this.groupbox_params.Controls.Add(this.label_maxdelay);
@@ -285,23 +283,6 @@
             this.label_reverbsend.TabIndex = 10;
             this.label_reverbsend.Text = "Reverb Send:";
             // 
-            // numeric_outerradiusreal
-            // 
-            this.numeric_outerradiusreal.Location = new System.Drawing.Point(107, 121);
-            this.numeric_outerradiusreal.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numeric_outerradiusreal.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numeric_outerradiusreal.Name = "numeric_outerradiusreal";
-            this.numeric_outerradiusreal.Size = new System.Drawing.Size(134, 20);
-            this.numeric_outerradiusreal.TabIndex = 9;
-            // 
             // label_outerradiusreal
             // 
             this.label_outerradiusreal.AutoSize = true;
@@ -310,23 +291,6 @@
             this.label_outerradiusreal.Size = new System.Drawing.Size(97, 13);
             this.label_outerradiusreal.TabIndex = 8;
             this.label_outerradiusreal.Text = "Outer Radius Real:";
-            // 
-            // numeric_innerradiusreal
-            // 
-            this.numeric_innerradiusreal.Location = new System.Drawing.Point(107, 95);
-            this.numeric_innerradiusreal.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numeric_innerradiusreal.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numeric_innerradiusreal.Name = "numeric_innerradiusreal";
-            this.numeric_innerradiusreal.Size = new System.Drawing.Size(134, 20);
-            this.numeric_innerradiusreal.TabIndex = 7;
             // 
             // label_innerradiusreal
             // 
@@ -504,6 +468,24 @@
             this.Checkbox_OutputThisSound.Text = "Output This Sound";
             this.Checkbox_OutputThisSound.UseVisualStyleBackColor = true;
             // 
+            // Textbox_InnerRadius
+            // 
+            this.Textbox_InnerRadius.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_InnerRadius.Location = new System.Drawing.Point(107, 94);
+            this.Textbox_InnerRadius.Name = "Textbox_InnerRadius";
+            this.Textbox_InnerRadius.ReadOnly = true;
+            this.Textbox_InnerRadius.Size = new System.Drawing.Size(134, 20);
+            this.Textbox_InnerRadius.TabIndex = 24;
+            // 
+            // Textbox_OuterRadius
+            // 
+            this.Textbox_OuterRadius.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_OuterRadius.Location = new System.Drawing.Point(107, 120);
+            this.Textbox_OuterRadius.Name = "Textbox_OuterRadius";
+            this.Textbox_OuterRadius.ReadOnly = true;
+            this.Textbox_OuterRadius.Size = new System.Drawing.Size(134, 20);
+            this.Textbox_OuterRadius.TabIndex = 25;
+            // 
             // Frm_EffectProperties
             // 
             this.AcceptButton = this.button_ok;
@@ -533,8 +515,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numeric_priority)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_maxvoices)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_reverbsend)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_outerradiusreal)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_innerradiusreal)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_maxdelay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_mindelay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_duckerlength)).EndInit();
@@ -551,9 +531,7 @@
         private System.Windows.Forms.GroupBox groupbox_params;
         private System.Windows.Forms.NumericUpDown numeric_reverbsend;
         private System.Windows.Forms.Label label_reverbsend;
-        private System.Windows.Forms.NumericUpDown numeric_outerradiusreal;
         private System.Windows.Forms.Label label_outerradiusreal;
-        private System.Windows.Forms.NumericUpDown numeric_innerradiusreal;
         private System.Windows.Forms.Label label_innerradiusreal;
         private System.Windows.Forms.NumericUpDown numeric_maxdelay;
         private System.Windows.Forms.Label label_maxdelay;
@@ -581,5 +559,7 @@
         private System.Windows.Forms.NumericUpDown numeric_mastervolume;
         private System.Windows.Forms.Label label_mastervolume;
         private System.Windows.Forms.CheckBox Checkbox_OutputThisSound;
+        private System.Windows.Forms.TextBox Textbox_OuterRadius;
+        private System.Windows.Forms.TextBox Textbox_InnerRadius;
     }
 }

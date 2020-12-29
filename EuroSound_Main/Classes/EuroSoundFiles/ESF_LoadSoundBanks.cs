@@ -7,7 +7,7 @@ namespace EuroSound_Application
 {
     internal class ESF_LoadSoundBanks
     {
-        internal void ReadEuroSoundFile11(ProjectFile FileProperties, BinaryReader BReader, TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList)
+        internal void ReadEuroSoundFile11(ProjectFile FileProperties, BinaryReader BReader, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
         {
             uint TreeViewDataOffset, SoundsListDataOffset, AudioDataOffset;
             /*File Hashcode*/
@@ -28,22 +28,23 @@ namespace EuroSound_Application
             //*===============================================================================================
             //* TreeView
             //*===============================================================================================
-            BReader.BaseStream.Position = (TreeViewDataOffset);
+            BReader.BaseStream.Position = TreeViewDataOffset;
             ReadTreeViewData(BReader, TreeViewControl);
 
             //*===============================================================================================
             //* Sounds List Data
             //*===============================================================================================
-            BReader.BaseStream.Position = (SoundsListDataOffset);
+            BReader.BaseStream.Position = SoundsListDataOffset;
             ReadSoundsListData(BReader, SoundsList);
 
             //*===============================================================================================
             //* Audio Data
             //*===============================================================================================
-            BReader.BaseStream.Position = (AudioDataOffset);
+            BReader.BaseStream.Position = AudioDataOffset;
             ReadAudioDataDictionary(BReader, AudiosList);
 
-            GenericFunctions.SetCurrentFileLabel(FileProperties.FileName);
+            //Close Reader
+            BReader.Close();
         }
 
         internal void ReadAudioDataDictionary(BinaryReader BReader, Dictionary<string, EXAudio> AudiosList)

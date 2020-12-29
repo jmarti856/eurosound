@@ -25,14 +25,14 @@ namespace EuroSound_Application
         //*===============================================================================================
         private async void Frm_EuroSound_Splash_Shown(object sender, EventArgs e)
         {
-            //* Variables Declaration
+            //-----------------------------------------[Variables Declaration]----------------------------------------
             WRegistryFunctions = new WindowsRegistryFunctions();
             Random rnd = new Random();
             GenericFunctions.ResourcesManager = new ResourceManager(typeof(Properties.Resources));
             string[] HashTable_Sounds, HashTable_SoundsData, HashTable_Musics, TreeViewPreferences;
             Label_EuroSoundVersion.Text = AssemblyDescription + " Version " + AssemblyVersion[0];
 
-            //* --Load Preferences--
+            //-----------------------------------------[Load Preferences]----------------------------------------
             Label_Status.Text = "Loading preferences, please wait...";
             HashTable_Sounds = WRegistryFunctions.LoadHashTablePathAndMD5("Sounds");
             GlobalPreferences.HT_SoundsPath = HashTable_Sounds[0];
@@ -64,25 +64,25 @@ namespace EuroSound_Application
             GlobalPreferences.ColorWavesControl = int.Parse(OutputPaths[2]);
             GlobalPreferences.BackColorWavesControl = int.Parse(OutputPaths[3]);
 
-            //* --Load Sound Data Hashcodes--
+            //-----------------------------------------[Sound Data]----------------------------------------
             Label_Status.Text = "Loading sounds data hashtable, please wait...";
             Hashcodes.LoadSoundDataFile();
 
             await Task.Delay(rnd.Next(200, 340));
 
-            //* --Load Sound Hashcodes--
+            //-----------------------------------------[Sound Defines]----------------------------------------
             Label_Status.Text = "Loading sounds hashtable, please wait...";
             Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
 
             await Task.Delay(rnd.Next(400, 500));
 
-            //* --Start Form--
-            Frm_EuroSound_Main EuroSoundMain = new Frm_EuroSound_Main(ArgumentFileToLoad)
+            //-----------------------------------------[Open Form]----------------------------------------
+            using (Frm_EuroSound_Main EuroSoundMain = new Frm_EuroSound_Main(ArgumentFileToLoad))
             {
-                Owner = this
+                EuroSoundMain.Owner = this;
+                Hide();
+                EuroSoundMain.ShowDialog();
             };
-            Hide();
-            EuroSoundMain.ShowDialog();
             Close();
         }
 
@@ -102,12 +102,6 @@ namespace EuroSound_Application
             }
         }
 
-        public string AssemblyVersion
-        {
-            get
-            {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            }
-        }
+        public string AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
     }
 }

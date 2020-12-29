@@ -43,8 +43,8 @@ namespace EuroSound_Application
             numeric_duckerlength.Value = SelectedSound.DuckerLenght;
             numeric_mindelay.Value = SelectedSound.MinDelay;
             numeric_maxdelay.Value = SelectedSound.MaxDelay;
-            numeric_innerradiusreal.Value = SelectedSound.InnerRadiusReal;
-            numeric_outerradiusreal.Value = SelectedSound.OuterRadiusReal;
+            Textbox_InnerRadius.Text = SelectedSound.InnerRadiusReal.ToString();
+            Textbox_OuterRadius.Text = SelectedSound.OuterRadiusReal.ToString();
             numeric_reverbsend.Value = SelectedSound.ReverbSend;
             cbx_trackingtype.SelectedIndex = SelectedSound.TrackingType;
             numeric_maxvoices.Value = SelectedSound.MaxVoices;
@@ -76,13 +76,13 @@ namespace EuroSound_Application
         {
             if (cbx_hashcode.SelectedValue != null)
             {
-                SelectedSound.Hashcode = (UInt32)cbx_hashcode.SelectedValue;
+                SelectedSound.Hashcode = (uint)cbx_hashcode.SelectedValue;
             }
-            SelectedSound.DuckerLenght = (Int16)numeric_duckerlength.Value;
-            SelectedSound.MinDelay = (Int16)numeric_mindelay.Value;
-            SelectedSound.MaxDelay = (Int16)numeric_maxdelay.Value;
-            SelectedSound.InnerRadiusReal = (Int16)numeric_innerradiusreal.Value;
-            SelectedSound.OuterRadiusReal = (Int16)numeric_outerradiusreal.Value;
+            SelectedSound.DuckerLenght = (short)numeric_duckerlength.Value;
+            SelectedSound.MinDelay = (short)numeric_mindelay.Value;
+            SelectedSound.MaxDelay = (short)numeric_maxdelay.Value;
+            SelectedSound.InnerRadiusReal = Convert.ToInt16(Textbox_InnerRadius.Text);
+            SelectedSound.OuterRadiusReal = Convert.ToInt16(Textbox_OuterRadius.Text);
             SelectedSound.ReverbSend = (sbyte)numeric_reverbsend.Value;
             SelectedSound.TrackingType = (sbyte)cbx_trackingtype.SelectedIndex;
             SelectedSound.MaxVoices = (sbyte)numeric_maxvoices.Value;
@@ -93,7 +93,7 @@ namespace EuroSound_Application
             SelectedSound.OutputThisSound = Checkbox_OutputThisSound.Checked;
 
             /*--Change icon in the parent form--*/
-            Form OpenForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", this.Tag.ToString());
+            Form OpenForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
             TreeNode[] Results = ((Frm_Soundbanks_Main)OpenForm).TreeView_File.Nodes.Find(TreeNodeSoundName, true);
             if (Results.Length > 0)
             {
@@ -128,27 +128,27 @@ namespace EuroSound_Application
 
         private void Cbx_hashcode_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            float[] items = Hashcodes.SFX_Data[Convert.ToUInt32(cbx_hashcode.SelectedValue)];
-            /*
-            [0] HashCode;    --USED--
-            [1] InnerRadius; --USED--
-            [2] OuterRadius; --USED--
-            [3] Altertness;
-            [4] Duration;
-            [5] Looping;
-            [6] Tracking3d; --USED--
-            [7] SampleStreamed; --ONLY Informs user if there're no samples added to the sound.
-            */
-            numeric_innerradiusreal.Value = int.Parse(items[1].ToString());
-            numeric_outerradiusreal.Value = int.Parse(items[2].ToString());
-            cbx_trackingtype.SelectedIndex = int.Parse(items[6].ToString());
-
-            if (int.Parse(items[6].ToString()) > 0)
+            uint KeyToCheck = Convert.ToUInt32(cbx_hashcode.SelectedValue);
+            if (Hashcodes.SFX_Data.ContainsKey(KeyToCheck))
             {
-                if (SelectedSound.Samples.Count < 1)
-                {
-                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_Warning_StreamedSound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                float[] items = Hashcodes.SFX_Data[KeyToCheck];
+                /*
+                [0] HashCode;    --USED--
+                [1] InnerRadius; --USED--
+                [2] OuterRadius; --USED--
+                [3] Altertness;
+                [4] Duration;
+                [5] Looping;
+                [6] Tracking3d; --USED--
+                [7] SampleStreamed;
+                */
+                Textbox_InnerRadius.Text = items[1].ToString();
+                Textbox_OuterRadius.Text = items[2].ToString();
+                cbx_trackingtype.SelectedIndex = int.Parse(items[6].ToString());
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("HashcodeNotFoundInSFXDataHashTable"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -160,19 +160,18 @@ namespace EuroSound_Application
                 "Polyphonic","UnderWater","PauseInstant","HasSubSFX","StealOnLouder","TreatLikeMusic",
                 "KillMeOwnGroup","GroupStealReject","OneInstancePerFrame"
             };
-            EuroSound_FlagsForm FormFlags = new EuroSound_FlagsForm(int.Parse(textbox_flags.Text), FlagsLabels, 13)
+            using (EuroSound_FlagsForm FormFlags = new EuroSound_FlagsForm(int.Parse(textbox_flags.Text), FlagsLabels, FlagsLabels.Length))
             {
-                Text = "Sound Flags",
-                Tag = Tag,
-                Owner = this,
-                ShowInTaskbar = false
-            };
+                FormFlags.Text = "Sound Flags";
+                FormFlags.Tag = Tag;
+                FormFlags.Owner = this;
+                ShowInTaskbar = false;
 
-            if (FormFlags.ShowDialog() == DialogResult.OK)
-            {
-                textbox_flags.Text = FormFlags.CheckedFlags.ToString();
+                if (FormFlags.ShowDialog() == DialogResult.OK)
+                {
+                    textbox_flags.Text = FormFlags.CheckedFlags.ToString();
+                }
             }
-            FormFlags.Dispose();
         }
     }
 }

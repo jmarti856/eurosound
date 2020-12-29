@@ -48,12 +48,13 @@ namespace EuroSound_Application
             this.Col_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Position = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Type = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_MarkerCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_LoopMarker = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_LoopStart = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Flags = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Extra = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_LoopStart = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_MarkerCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_LoopMarker = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_MarkerPos = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Button_Clear = new System.Windows.Forms.Button();
             this.GroupBox_MarkerData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_MarkerLoopStart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_MarkerPosition)).BeginInit();
@@ -63,6 +64,7 @@ namespace EuroSound_Application
             // 
             this.GroupBox_MarkerData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox_MarkerData.Controls.Add(this.Button_Clear);
             this.GroupBox_MarkerData.Controls.Add(this.Button_AddMarker);
             this.GroupBox_MarkerData.Controls.Add(this.Numeric_MarkerLoopStart);
             this.GroupBox_MarkerData.Controls.Add(this.Label_LoopStart);
@@ -83,7 +85,7 @@ namespace EuroSound_Application
             // 
             // Button_AddMarker
             // 
-            this.Button_AddMarker.Location = new System.Drawing.Point(403, 53);
+            this.Button_AddMarker.Location = new System.Drawing.Point(413, 53);
             this.Button_AddMarker.Name = "Button_AddMarker";
             this.Button_AddMarker.Size = new System.Drawing.Size(36, 21);
             this.Button_AddMarker.TabIndex = 11;
@@ -198,6 +200,7 @@ namespace EuroSound_Application
             this.Button_OK.TabIndex = 6;
             this.Button_OK.Text = "OK";
             this.Button_OK.UseVisualStyleBackColor = true;
+            this.Button_OK.Click += new System.EventHandler(this.Button_OK_Click);
             // 
             // Button_Cancel
             // 
@@ -209,6 +212,7 @@ namespace EuroSound_Application
             this.Button_Cancel.TabIndex = 7;
             this.Button_Cancel.Text = "Cancel";
             this.Button_Cancel.UseVisualStyleBackColor = true;
+            this.Button_Cancel.Click += new System.EventHandler(this.Button_Cancel_Click);
             // 
             // Label_Markers
             // 
@@ -254,6 +258,19 @@ namespace EuroSound_Application
             this.Col_Type.Text = "Type";
             this.Col_Type.Width = 66;
             // 
+            // Col_Flags
+            // 
+            this.Col_Flags.Text = "Flags";
+            // 
+            // Col_Extra
+            // 
+            this.Col_Extra.Text = "Extra";
+            // 
+            // Col_LoopStart
+            // 
+            this.Col_LoopStart.Text = "Loop Start";
+            this.Col_LoopStart.Width = 87;
+            // 
             // Col_MarkerCount
             // 
             this.Col_MarkerCount.Text = "Marker Count";
@@ -264,22 +281,19 @@ namespace EuroSound_Application
             this.Col_LoopMarker.Text = "Loop Marker Count";
             this.Col_LoopMarker.Width = 108;
             // 
-            // Col_LoopStart
-            // 
-            this.Col_LoopStart.Text = "Loop Start";
-            this.Col_LoopStart.Width = 87;
-            // 
-            // Col_Flags
-            // 
-            this.Col_Flags.Text = "Flags";
-            // 
-            // Col_Extra
-            // 
-            this.Col_Extra.Text = "Extra";
-            // 
             // Col_MarkerPos
             // 
             this.Col_MarkerPos.Text = "Marker Pos";
+            // 
+            // Button_Clear
+            // 
+            this.Button_Clear.Location = new System.Drawing.Point(455, 53);
+            this.Button_Clear.Name = "Button_Clear";
+            this.Button_Clear.Size = new System.Drawing.Size(53, 21);
+            this.Button_Clear.TabIndex = 12;
+            this.Button_Clear.Text = "Clear All";
+            this.Button_Clear.UseVisualStyleBackColor = true;
+            this.Button_Clear.Click += new System.EventHandler(this.Button_Clear_Click);
             // 
             // Frm_StreamSounds_MarkersEditor
             // 
@@ -335,5 +349,6 @@ namespace EuroSound_Application
         private System.Windows.Forms.ColumnHeader Col_Flags;
         private System.Windows.Forms.ColumnHeader Col_Extra;
         private System.Windows.Forms.ColumnHeader Col_MarkerPos;
+        private System.Windows.Forms.Button Button_Clear;
     }
 }

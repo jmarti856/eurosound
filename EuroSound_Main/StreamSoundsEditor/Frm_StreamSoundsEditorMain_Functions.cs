@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
 {
-    partial class Frm_StreamSoundsEditorMain
+    public partial class Frm_StreamSoundsEditorMain
     {
         internal void RemoveStreamSoundSelectedNode()
         {
@@ -36,7 +38,7 @@ namespace EuroSound_Application
             EXSoundStream SelectedSound = EXStreamSoundsFunctions.GetSoundByName(Convert.ToUInt32(SoundKeyInDictionary), StreamSoundsList);
             if (SelectedSound != null)
             {
-                Frm_StreamSounds_Properties FormAudioProps = new Frm_StreamSounds_Properties(SelectedSound)
+                Frm_StreamSounds_Properties FormAudioProps = new Frm_StreamSounds_Properties(SelectedSound, SoundKeyInDictionary)
                 {
                     Text = "Streamed Sound Properties",
                     Tag = Tag,
@@ -46,6 +48,34 @@ namespace EuroSound_Application
                 FormAudioProps.ShowDialog();
                 FormAudioProps.Dispose();
             }
+        }
+        public string SaveDocument(string LoadedFile, TreeView TreeView_File, Dictionary<uint, EXSoundStream> StreamSoundsList, ProjectFile ProjectProperties)
+        {
+            string NewFilePath;
+
+            if (!string.IsNullOrEmpty(LoadedFile))
+            {
+                NewFilePath = SerializeInfo.SaveStreamedSoundsBank(TreeView_File, StreamSoundsList, LoadedFile, ProjectProperties);
+            }
+            else
+            {
+                NewFilePath = OpenSaveAsDialog(TreeView_File, StreamSoundsList, ProjectProperties);
+            }
+
+            return NewFilePath;
+        }
+
+        internal string OpenSaveAsDialog(TreeView TreeView_File, Dictionary<uint, EXSoundStream> StreamSoundsList, ProjectFile FileProperties)
+        {
+            string SavePath = GenericFunctions.SaveFileBrowser("EuroSound Files (*.esf)|*.esf|All files (*.*)|*.*", 1, true, Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, FileProperties.Hashcode));
+            if (!string.IsNullOrEmpty(SavePath))
+            {
+                if (Directory.Exists(Path.GetDirectoryName(SavePath)))
+                {
+                    SerializeInfo.SaveStreamedSoundsBank(TreeView_File, StreamSoundsList, SavePath, FileProperties);
+                }
+            }
+            return SavePath;
         }
     }
 }

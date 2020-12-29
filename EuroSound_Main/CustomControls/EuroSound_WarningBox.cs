@@ -16,7 +16,7 @@ namespace EuroSound_Application
         public bool ShowWarningAgain { get; set; }
         private void Button_Cancel_Click(object sender, System.EventArgs e)
         {
-            ShowWarningAgain = (Checkbox_ShowAgain.Checked = !Checkbox_ShowAgain.Checked);
+            ShowWarningAgain = Checkbox_ShowAgain.Checked = !Checkbox_ShowAgain.Checked;
             DialogResult = DialogResult.Cancel;
             Close();
             Dispose();
@@ -24,7 +24,7 @@ namespace EuroSound_Application
 
         private void Button_OK_Click(object sender, System.EventArgs e)
         {
-            ShowWarningAgain = (Checkbox_ShowAgain.Checked = !Checkbox_ShowAgain.Checked);
+            ShowWarningAgain = Checkbox_ShowAgain.Checked = !Checkbox_ShowAgain.Checked;
             DialogResult = DialogResult.OK;
             Close();
             Dispose();
