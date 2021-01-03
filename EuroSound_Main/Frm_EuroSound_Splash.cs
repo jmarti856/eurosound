@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationRegistryFunctions;
+using System;
 using System.Reflection;
 using System.Resources;
 using System.Threading.Tasks;
@@ -12,7 +14,6 @@ namespace EuroSound_Application
         //* GLOBAL VARS
         //*===============================================================================================
         private string ArgumentFileToLoad;
-        private WindowsRegistryFunctions WRegistryFunctions;
 
         public Frm_EuroSound_Splash(string FileToLoad)
         {
@@ -26,7 +27,7 @@ namespace EuroSound_Application
         private async void Frm_EuroSound_Splash_Shown(object sender, EventArgs e)
         {
             //-----------------------------------------[Variables Declaration]----------------------------------------
-            WRegistryFunctions = new WindowsRegistryFunctions();
+            WindowsRegistryFunctions WRegistryFunctions = new WindowsRegistryFunctions();
             Random rnd = new Random();
             GenericFunctions.ResourcesManager = new ResourceManager(typeof(Properties.Resources));
             string[] HashTable_Sounds, HashTable_SoundsData, HashTable_Musics, TreeViewPreferences;
@@ -84,6 +85,7 @@ namespace EuroSound_Application
                 EuroSoundMain.ShowDialog();
             };
             Close();
+            Dispose();
         }
 
         //*===============================================================================================

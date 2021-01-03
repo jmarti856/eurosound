@@ -1,5 +1,5 @@
 ﻿
-namespace EuroSound_Application
+namespace EuroSound_Application.StreamSounds
 {
     partial class Frm_StreamSoundsEditorMain
     {
@@ -257,6 +257,7 @@ namespace EuroSound_Application
             this.MenuItem_File_Export.Name = "MenuItem_File_Export";
             this.MenuItem_File_Export.Size = new System.Drawing.Size(207, 22);
             this.MenuItem_File_Export.Text = "Export";
+            this.MenuItem_File_Export.Click += new System.EventHandler(this.MenuItem_File_Export_Click);
             // 
             // toolStripSeparator1
             // 
@@ -272,6 +273,7 @@ namespace EuroSound_Application
             this.MenuItemFile_ReadYml.Name = "MenuItemFile_ReadYml";
             this.MenuItemFile_ReadYml.Size = new System.Drawing.Size(207, 22);
             this.MenuItemFile_ReadYml.Text = "Import Sounds List (.yml)";
+            this.MenuItemFile_ReadYml.Click += new System.EventHandler(this.MenuItemFile_ReadYml_Click);
             // 
             // MenuItemFile_ReadSound
             // 
@@ -280,6 +282,7 @@ namespace EuroSound_Application
             this.MenuItemFile_ReadSound.Name = "MenuItemFile_ReadSound";
             this.MenuItemFile_ReadSound.Size = new System.Drawing.Size(207, 22);
             this.MenuItemFile_ReadSound.Text = "Read Sound (.yml)";
+            this.MenuItemFile_ReadSound.Click += new System.EventHandler(this.MenuItemFile_ReadSound_Click);
             // 
             // MenuItem_Edit
             // 
@@ -296,6 +299,7 @@ namespace EuroSound_Application
             this.MenuItem_Edit_FileProps.Name = "MenuItem_Edit_FileProps";
             this.MenuItem_Edit_FileProps.Size = new System.Drawing.Size(148, 22);
             this.MenuItem_Edit_FileProps.Text = "File Properties";
+            this.MenuItem_Edit_FileProps.Click += new System.EventHandler(this.MenuItem_Edit_FileProps_Click);
             // 
             // GroupBox_StreamData
             // 

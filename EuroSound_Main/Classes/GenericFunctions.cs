@@ -1,4 +1,6 @@
 ﻿using CustomStatusBar;
+using EuroSound_Application.ApplicationRegistryFunctions;
+using EuroSound_Application.SoundBanksEditor;
 using System.Collections.Generic;
 using System.IO;
 using System.Resources;
@@ -102,10 +104,13 @@ namespace EuroSound_Application
             {
                 if (FormsToCheck[i].Name.Equals(FormName))
                 {
-                    if (FormsToCheck[i].Tag.Equals(tag))
+                    if (FormsToCheck[i].Tag != null)
                     {
-                        Results = FormsToCheck[i];
-                        break;
+                        if (FormsToCheck[i].Tag.Equals(tag))
+                        {
+                            Results = FormsToCheck[i];
+                            break;
+                        }
                     }
                 }
             }
@@ -157,7 +162,10 @@ namespace EuroSound_Application
                 SaveFile.Filter = Filter + "|All files(*.*)|*.*";
                 SaveFile.FilterIndex = SelectedIndexFilter;
                 SaveFile.RestoreDirectory = RestoreDirectory;
-                SaveFile.FileName = Name;
+                if (!string.IsNullOrEmpty(Name))
+                {
+                    SaveFile.FileName = Name;
+                }
 
                 if (SaveFile.ShowDialog() == DialogResult.OK)
                 {
@@ -191,14 +199,6 @@ namespace EuroSound_Application
             return index;
         }
 
-        internal static uint GetStreamedSoundID(ProjectFile FileProperties)
-        {
-            uint index;
-
-            index = (FileProperties.StreamedSoundID += 1);
-
-            return index;
-        }
         internal static int CountNumberOfSamples(Dictionary<uint, EXSound> SoundsList)
         {
             int Counter = 0;

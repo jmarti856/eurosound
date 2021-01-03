@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EuroSound_Application.ApplicationPreferences;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -10,11 +11,11 @@ namespace EuroSound_Application
 {
     internal static class Hashcodes
     {
-        internal static Dictionary<uint, string> SB_Defines = new Dictionary<uint, string>();
-        internal static Dictionary<uint, float[]> SFX_Data = new Dictionary<uint, float[]>();
-        internal static Dictionary<uint, string> SFX_Defines = new Dictionary<uint, string>();
+        internal static SortedList<uint, string> SB_Defines = new SortedList<uint, string>();
+        internal static SortedList<uint, float[]> SFX_Data = new SortedList<uint, float[]>();
+        internal static SortedList<uint, string> SFX_Defines = new SortedList<uint, string>();
 
-        internal static void AddHashcodesToCombobox(ComboBox ControlToAddData, Dictionary<uint, string> HashcodesDict)
+        internal static void AddHashcodesToCombobox(ComboBox ControlToAddData, SortedList<uint, string> HashcodesDict)
         {
             /*Datasource Combobox*/
             ControlToAddData.DataSource = HashcodesDict.ToList();
@@ -22,7 +23,7 @@ namespace EuroSound_Application
             ControlToAddData.DisplayMember = "Value";
         }
 
-        internal static uint GetHashcodeByLabel(Dictionary<uint, string> DataDict, string Hashcode)
+        internal static uint GetHashcodeByLabel(SortedList<uint, string> DataDict, string Hashcode)
         {
             uint HashcodeHex = 0x00000000;
             foreach (KeyValuePair<uint, string> Entry in DataDict)
@@ -37,7 +38,7 @@ namespace EuroSound_Application
             return HashcodeHex;
         }
 
-        internal static string GetHashcodeLabel(Dictionary<uint, string> DataDict, uint Hashcode)
+        internal static string GetHashcodeLabel(SortedList<uint, string> DataDict, uint Hashcode)
         {
             string HashcodeHex = string.Empty;
             foreach (KeyValuePair<uint, string> Entry in DataDict)
@@ -79,8 +80,8 @@ namespace EuroSound_Application
                 MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Hashcodes_SFXDefines_NotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        #region SFX Defines && SB Defines dictionary
 
+        #region SFX Defines && SB Defines dictionary
         internal static void ReadHashcodes(string FilePath)
         {
             string line;
@@ -138,11 +139,9 @@ namespace EuroSound_Application
                 }
             }
         }
-
         #endregion SFX Defines && SB Defines dictionary
 
         #region SFX DATA DICTIONARY
-
         internal static void ReadSFXData()
         {
             string[] SplitedLine;
@@ -206,7 +205,6 @@ namespace EuroSound_Application
 
             return FinalNumber;
         }
-
         #endregion SFX DATA DICTIONARY
     }
 }

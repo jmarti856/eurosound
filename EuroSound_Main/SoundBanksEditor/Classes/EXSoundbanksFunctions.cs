@@ -1,20 +1,20 @@
-﻿using NAudio.Wave;
+﻿using EuroSound_Application.AudioFunctionsLibrary;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.SoundBanksEditor
 {
     internal static class EXSoundbanksFunctions
     {
-        internal static bool SoundWillBeOutputed(Dictionary<uint, EXSound> SoundsList, string SoundName)
+        internal static bool SoundWillBeOutputed(Dictionary<uint, EXSound> SoundsList, uint SoundKey)
         {
             bool Output = false;
 
-            EXSound Test = GetSoundByName(uint.Parse(SoundName), SoundsList);
+            EXSound Test = GetSoundByName(SoundKey, SoundsList);
             if (Test != null)
             {
                 if (Test.OutputThisSound)
@@ -24,14 +24,6 @@ namespace EuroSound_Application
             }
 
             return Output;
-        }
-
-        internal static void AddAudioToList(EXAudio AudioToAdd, string Hash, Dictionary<string, EXAudio> AudioDataDict)
-        {
-            if (AudioToAdd != null)
-            {
-                AudioDataDict.Add(Hash, AudioToAdd);
-            }
         }
 
         internal static bool AddSampleToSound(EXSound Sound, string SampleName, bool StreamedSample)
@@ -50,19 +42,6 @@ namespace EuroSound_Application
             return AddedCorrectly;
         }
 
-        internal static bool DeleteAudio(Dictionary<string, EXAudio> AudiosDictionary, string AudioKeyToRemove)
-        {
-            bool DeletedSuccessfully = false;
-
-            if (AudiosDictionary.ContainsKey(AudioKeyToRemove))
-            {
-                DeletedSuccessfully = true;
-                AudiosDictionary.Remove(AudioKeyToRemove);
-            }
-
-            return DeletedSuccessfully;
-        }
-
         internal static List<string> GetAudioDependencies(string AudioKey, string AudioName, Dictionary<uint, EXSound> SoundsList, bool ItemUsage)
         {
             List<string> Dependencies = new List<string>();
@@ -75,7 +54,7 @@ namespace EuroSound_Application
                     {
                         if (ItemUsage)
                         {
-                            Dependencies.Add(AudioName + "," + Sound.Value.DisplayName);
+                            Dependencies.Add(AudioName + "," + Sound.Key);
                         }
                         else
                         {
@@ -122,8 +101,6 @@ namespace EuroSound_Application
             return DictionaryToShow;
         }
 
-
-
         internal static EXSound GetSoundByName(uint NameToSearch, Dictionary<uint, EXSound> SoundsList)
         {
             EXSound SearchedSound = null;
@@ -135,6 +112,22 @@ namespace EuroSound_Application
             }
 
             return SearchedSound;
+        }
+
+        internal static EXSample GetSampleByName(string SampleName, EXSound SelectedSound)
+        {
+            EXSample SelectedSample = null;
+
+            for (int i = 0; i < SelectedSound.Samples.Count; i++)
+            {
+                if (SelectedSound.Samples[i].Name.Equals(SampleName, StringComparison.OrdinalIgnoreCase))
+                {
+                    SelectedSample = SelectedSound.Samples[i];
+                    break;
+                }
+            }
+
+            return SelectedSample;
         }
 
         internal static List<string> GetUsedAudios(Dictionary<uint, EXSound> SoundsList, bool OnlyOutputAudios)
@@ -176,42 +169,20 @@ namespace EuroSound_Application
             return UsedAudios;
         }
 
-        internal static string LoadAudioAddToListAndTreeNode(string AudioFilePath, string DisplayName, Dictionary<string, EXAudio> AudioDataDict, TreeView TreeViewControl, int[] Props, List<string> Reports)
-        {
-            string FileMD5Hash;
-
-            FileMD5Hash = GenericFunctions.CalculateMD5(AudioFilePath);
-
-            if (!AudioDataDict.ContainsKey(FileMD5Hash))
-            {
-                EXAudio NewAudio = LoadAudioData(AudioFilePath, true);
-                NewAudio.DisplayName = DisplayName;
-                NewAudio.Flags = Convert.ToUInt16(Props[0]);
-                NewAudio.PSIsample = Convert.ToUInt32(Props[1]);
-                NewAudio.LoopOffset = Convert.ToUInt32(Props[2]);
-                AddAudioToList(NewAudio, FileMD5Hash, AudioDataDict);
-                TreeNodeFunctions.TreeNodeAddNewNode("AudioData", FileMD5Hash, "AD_" + DisplayName, 7, 7, "Audio", Color.Black, TreeViewControl);
-
-                if (NewAudio.PCMdata == null)
-                {
-                    Reports.Add("0The file: " + AudioFilePath + " can't be readed, seems that is being used by another process.");
-                }
-            }
-
-            return FileMD5Hash;
-        }
-
         internal static int LoadAudioAndAddToList(string AudioFilePath, string DisplayName, Dictionary<string, EXAudio> AudioDataDict, string FileMD5Hash)
         {
             int ResultState = 0;
 
             if (!AudioDataDict.ContainsKey(FileMD5Hash))
             {
-                EXAudio NewAudio = LoadAudioData(AudioFilePath, true);
-                if (NewAudio != null)
+                if (AudioIsValid(AudioFilePath))
                 {
-                    NewAudio.DisplayName = DisplayName;
-                    AddAudioToList(NewAudio, FileMD5Hash, AudioDataDict);
+                    EXAudio NewAudio = LoadAudioData(AudioFilePath, true);
+                    if (NewAudio != null)
+                    {
+                        NewAudio.DisplayName = DisplayName;
+                        AudioDataDict.Add(FileMD5Hash, NewAudio);
+                    }
                 }
                 else
                 {
@@ -228,50 +199,66 @@ namespace EuroSound_Application
             return ResultState;
         }
 
+        internal static bool AudioIsValid(string FilePath)
+        {
+            bool AudioIsCorrect = false;
+            using (WaveFileReader AudioReader = new WaveFileReader(FilePath))
+            {
+                int Rate, Bits;
+                string Encoding;
+
+                Rate = AudioReader.WaveFormat.SampleRate;
+                Bits = AudioReader.WaveFormat.BitsPerSample;
+                Encoding = AudioReader.WaveFormat.Encoding.ToString();
+
+                if (Encoding.Equals("Pcm") && Bits == 16 && Rate == 22050)
+                {
+                    AudioIsCorrect = true;
+                }
+
+                AudioReader.Close();
+            }
+
+            return AudioIsCorrect;
+        }
+
         internal static EXAudio LoadAudioData(string FilePath, bool ForceMono)
         {
-            int NumberOfChannels, Bits;
+            int NumberOfChannels;
 
             try
             {
                 using (WaveFileReader AudioReader = new WaveFileReader(FilePath))
                 {
-                    if (AudioReader.WaveFormat.Encoding == WaveFormatEncoding.Pcm)
+                    NumberOfChannels = AudioReader.WaveFormat.Channels;
+
+                    AudioFunctions AudioLibrary = new AudioFunctions();
+                    EXAudio Audio = new EXAudio
                     {
-                        NumberOfChannels = AudioReader.WaveFormat.Channels;
-                        Bits = AudioReader.WaveFormat.BitsPerSample;
+                        Name = Path.GetFileName(FilePath),
+                        DataSize = (uint)AudioReader.Length,
+                        Frequency = (uint)AudioReader.WaveFormat.SampleRate,
+                        RealSize = (uint)new FileInfo(FilePath).Length,
+                        Channels = (uint)NumberOfChannels,
+                        Bits = (uint)AudioReader.WaveFormat.BitsPerSample,
+                        Duration = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1),
+                        Encoding = AudioReader.WaveFormat.Encoding.ToString(),
+                        Flags = 0,
+                        LoopOffset = 0,
+                        PSIsample = 0
+                    };
 
-                        if (Bits == 16)
-                        {
-                            AudioFunctions AudioLibrary = new AudioFunctions();
-                            EXAudio Audio = new EXAudio
-                            {
-                                Name = Path.GetFileName(FilePath),
-                                DataSize = (uint)AudioReader.Length,
-                                Frequency = (uint)AudioReader.WaveFormat.SampleRate,
-                                RealSize = (uint)new FileInfo(FilePath).Length,
-                                Channels = (uint)NumberOfChannels,
-                                Bits = (uint)Bits,
-                                Duration = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1),
-                                Encoding = AudioReader.WaveFormat.Encoding.ToString(),
-                                Flags = 0,
-                                LoopOffset = 0,
-                                PSIsample = 0
-                            };
-
-                            if (ForceMono)
-                            {
-                                Audio.Channels = 1;
-                            }
-                            AudioReader.Close();
-
-                            /*Get PCM data*/
-                            Audio.PCMdata = AudioLibrary.GetWavPCMData(FilePath, NumberOfChannels, true);
-                            Audio.DataSize = Convert.ToUInt32(Audio.PCMdata.Length);
-
-                            return Audio;
-                        }
+                    if (ForceMono)
+                    {
+                        Audio.Channels = 1;
                     }
+                    AudioReader.Close();
+
+                    /*Get PCM data*/
+                    Audio.PCMdata = AudioLibrary.GetWavPCMData(FilePath, NumberOfChannels, true);
+                    Audio.DataSize = Convert.ToUInt32(Audio.PCMdata.Length);
+
+                    return Audio;
                 }
             }
             catch
@@ -280,6 +267,19 @@ namespace EuroSound_Application
             }
 
             return null;
+        }
+
+        internal static bool DeleteAudio(Dictionary<string, EXAudio> AudiosDictionary, string AudioKeyToRemove)
+        {
+            bool DeletedSuccessfully = false;
+
+            if (AudiosDictionary.ContainsKey(AudioKeyToRemove))
+            {
+                DeletedSuccessfully = true;
+                AudiosDictionary.Remove(AudioKeyToRemove);
+            }
+
+            return DeletedSuccessfully;
         }
 
         internal static void RemoveSound(string Name, Dictionary<uint, EXSound> SoundsList)

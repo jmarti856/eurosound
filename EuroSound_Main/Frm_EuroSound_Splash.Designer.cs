@@ -74,7 +74,6 @@ namespace EuroSound_Application
             this.PictureBox_SplashImage.Location = new System.Drawing.Point(1, 1);
             this.PictureBox_SplashImage.Name = "PictureBox_SplashImage";
             this.PictureBox_SplashImage.Size = new System.Drawing.Size(625, 375);
-            this.PictureBox_SplashImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.PictureBox_SplashImage.TabIndex = 2;
             this.PictureBox_SplashImage.TabStop = false;
             // 
@@ -88,13 +87,14 @@ namespace EuroSound_Application
             this.Controls.Add(this.PanelStatusBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(627, 405);
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(627, 405);
             this.Name = "Frm_EuroSound_Splash";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Frm_Splash";
-            this.TopMost = true;
             this.Shown += new System.EventHandler(this.Frm_EuroSound_Splash_Shown);
             this.PanelStatusBar.ResumeLayout(false);
             this.PanelStatusBar.PerformLayout();

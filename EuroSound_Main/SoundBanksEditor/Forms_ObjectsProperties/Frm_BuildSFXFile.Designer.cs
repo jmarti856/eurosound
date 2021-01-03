@@ -1,5 +1,5 @@
 ﻿
-namespace EuroSound_Application
+namespace EuroSound_Application.SoundBanksEditor
 {
     partial class Frm_BuildSFXFile
     {
@@ -74,6 +74,7 @@ namespace EuroSound_Application
             // Button_Abort
             // 
             this.Button_Abort.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.Button_Abort.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Button_Abort.Location = new System.Drawing.Point(131, 134);
             this.Button_Abort.Name = "Button_Abort";
             this.Button_Abort.Size = new System.Drawing.Size(75, 23);
@@ -112,6 +113,7 @@ namespace EuroSound_Application
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.Button_Abort;
             this.ClientSize = new System.Drawing.Size(350, 171);
             this.Controls.Add(this.Panel_Container);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

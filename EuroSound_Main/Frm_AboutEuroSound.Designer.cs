@@ -50,7 +50,7 @@
             // Button_OK
             // 
             this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Button_OK.Location = new System.Drawing.Point(138, 203);
+            this.Button_OK.Location = new System.Drawing.Point(141, 203);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
             this.Button_OK.TabIndex = 1;
@@ -61,7 +61,7 @@
             // PictureBox_IconLeft
             // 
             this.PictureBox_IconLeft.Image = ((System.Drawing.Image)(resources.GetObject("PictureBox_IconLeft.Image")));
-            this.PictureBox_IconLeft.Location = new System.Drawing.Point(12, 17);
+            this.PictureBox_IconLeft.Location = new System.Drawing.Point(12, 12);
             this.PictureBox_IconLeft.Name = "PictureBox_IconLeft";
             this.PictureBox_IconLeft.Size = new System.Drawing.Size(32, 32);
             this.PictureBox_IconLeft.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -72,7 +72,7 @@
             // 
             this.PictureBox_IconRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PictureBox_IconRight.Image = ((System.Drawing.Image)(resources.GetObject("PictureBox_IconRight.Image")));
-            this.PictureBox_IconRight.Location = new System.Drawing.Point(307, 17);
+            this.PictureBox_IconRight.Location = new System.Drawing.Point(307, 12);
             this.PictureBox_IconRight.Name = "PictureBox_IconRight";
             this.PictureBox_IconRight.Size = new System.Drawing.Size(32, 32);
             this.PictureBox_IconRight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -97,7 +97,7 @@
             this.GroupBox_InvolvedPeople.Controls.Add(this.label3);
             this.GroupBox_InvolvedPeople.Controls.Add(this.label2);
             this.GroupBox_InvolvedPeople.Controls.Add(this.Label_Credits);
-            this.GroupBox_InvolvedPeople.Location = new System.Drawing.Point(12, 55);
+            this.GroupBox_InvolvedPeople.Location = new System.Drawing.Point(12, 47);
             this.GroupBox_InvolvedPeople.Name = "GroupBox_InvolvedPeople";
             this.GroupBox_InvolvedPeople.Size = new System.Drawing.Size(327, 78);
             this.GroupBox_InvolvedPeople.TabIndex = 5;
@@ -129,10 +129,10 @@
             // Label_Title
             // 
             this.Label_Title.AutoSize = true;
-            this.Label_Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_Title.Location = new System.Drawing.Point(85, 20);
+            this.Label_Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Title.Location = new System.Drawing.Point(76, 12);
             this.Label_Title.Name = "Label_Title";
-            this.Label_Title.Size = new System.Drawing.Size(181, 25);
+            this.Label_Title.Size = new System.Drawing.Size(204, 29);
             this.Label_Title.TabIndex = 6;
             this.Label_Title.Text = "EuroSound Editor";
             // 
@@ -145,7 +145,7 @@
             this.Groupbox_EuroSoundVersion.Controls.Add(this.Label_Version);
             this.Groupbox_EuroSoundVersion.Controls.Add(this.label1);
             this.Groupbox_EuroSoundVersion.Controls.Add(this.Label_Release);
-            this.Groupbox_EuroSoundVersion.Location = new System.Drawing.Point(12, 139);
+            this.Groupbox_EuroSoundVersion.Location = new System.Drawing.Point(12, 131);
             this.Groupbox_EuroSoundVersion.Name = "Groupbox_EuroSoundVersion";
             this.Groupbox_EuroSoundVersion.Size = new System.Drawing.Size(327, 58);
             this.Groupbox_EuroSoundVersion.TabIndex = 7;

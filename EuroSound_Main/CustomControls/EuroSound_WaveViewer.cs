@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using EuroSound_Application.ApplicationPreferences;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

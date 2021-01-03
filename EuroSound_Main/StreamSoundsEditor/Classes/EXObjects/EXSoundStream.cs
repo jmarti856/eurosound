@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.StreamSounds
 {
     public class EXSoundStream
     {
         public string DisplayName = string.Empty;
-        public uint BaseVolume;
-        public uint Hashcode;
+        public uint BaseVolume = 100;
         public byte[] IMA_ADPCM_DATA = new byte[2];
-        public List<EXStreamSoundMarker> Markers = new List<EXStreamSoundMarker>();
+        public List<EXStreamStartMarker> StartMarkers = new List<EXStreamStartMarker>();
+        public List<EXStreamMarker> Markers = new List<EXStreamMarker>();
 
         //Extra info (Not required for the output)
         public string IMA_Data_MD5 = string.Empty;
@@ -16,7 +16,7 @@ namespace EuroSound_Application
         public bool OutputThisSound = true;
 
         //IDs
-        public uint IDMarkerName = 0;
-        public uint IDMarkerPos = 0;
+        public uint MarkerDataCounterID { get; set; } = 0;
+        public uint MarkerID { get; set; } = 0;
     }
 }

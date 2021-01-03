@@ -1,14 +1,16 @@
-﻿using System;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.GenerateDataBinaryFile;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.SFXData
 {
     public partial class Frm_SFX_DataGenerator : Form
     {
         private GenerateSFXDataFiles SFXDataBin_Generator = new GenerateSFXDataFiles();
+        private Thread LoadSfxDataTable;
 
         public Frm_SFX_DataGenerator()
         {
@@ -18,82 +20,128 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* FORM EVENTS
         //*===============================================================================================
+        private void Frm_SFX_DataGenerator_Load(object sender, EventArgs e)
+        {
+            //Add Hashcodes to combobox
+            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsMD5, GlobalPreferences.HT_SoundsPath))
+            {
+                Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
+            }
+            Hashcodes.AddHashcodesToCombobox(Combobox_LabelHashcodes, Hashcodes.SFX_Defines);
+        }
+
         private void Frm_SFX_DataGenerator_Shown(object sender, EventArgs e)
         {
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
-            if (!BackgroundWorker_LoadData.IsBusy)
+
+            LoadSfxDataTable = new Thread(LoadDataFromHashtable)
             {
-                ListView_HashTableData.Enabled = false;
-                Button_Reload.Enabled = false;
-                button_generateFile.Enabled = false;
-                BackgroundWorker_LoadData.RunWorkerAsync();
-            }
+                IsBackground = true
+            };
+            LoadSfxDataTable.Start();
         }
 
         private void Frm_SFX_DataGenerator_FormClosing(object sender, FormClosingEventArgs e)
         {
-            BackgroundWorker_LoadData.CancelAsync();
+            /*Stop thread*/
+            LoadSfxDataTable.Abort();
+
+            /*Dispose buttons*/
+            button_generateFile.Dispose();
+            Button_Reload.Dispose();
+            ListView_HashTableData.Dispose();
+            Combobox_LabelHashcodes.Dispose();
+
+            /*Clear array*/
+            SFXDataBin_Generator = null;
+
+            /*Update Status Bar*/
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
-        //*===============================================================================================
-        //* BACKGROUND WORKER EVENTS
-        //*===============================================================================================
-        private void BackgroundWorker_LoadData_DoWork(object sender, DoWorkEventArgs e)
+        private void LoadDataFromHashtable()
         {
             ListViewItem ItemToAdd;
             float[] ItemValue;
 
             ListView_HashTableData.Invoke((MethodInvoker)delegate
             {
+                ListView_HashTableData.Enabled = false;
                 ListView_HashTableData.Items.Clear();
+            });
+
+            Button_Reload.Invoke((MethodInvoker)delegate
+            {
+                Button_Reload.Enabled = false;
+            });
+
+            button_generateFile.Invoke((MethodInvoker)delegate
+            {
+                button_generateFile.Enabled = false;
+            });
+
+            Combobox_LabelHashcodes.Invoke((MethodInvoker)delegate
+            {
+                Combobox_LabelHashcodes.Enabled = false;
+            });
+
+            Button_Search.Invoke((MethodInvoker)delegate
+            {
+                Button_Search.Enabled = false;
             });
 
             foreach (KeyValuePair<uint, float[]> Item in Hashcodes.SFX_Data)
             {
-                if (BackgroundWorker_LoadData.CancellationPending)
+                if (Item.Key != 436207616)
                 {
-                    e.Cancel = true;
-                    break;
-                }
-                else
-                {
-                    if (Item.Key != 436207616)
+                    ItemValue = Item.Value;
+                    ItemToAdd = new ListViewItem(new[] { ItemValue[0].ToString(), ItemValue[1].ToString("n1"), ItemValue[2].ToString("n1"), ItemValue[3].ToString("n1"), ItemValue[4].ToString("n6"), ItemValue[5].ToString(), ItemValue[6].ToString(), ItemValue[7].ToString() })
                     {
-                        ItemValue = Item.Value;
-                        ItemToAdd = new ListViewItem(new[] { ItemValue[0].ToString(), ItemValue[1].ToString("n1"), ItemValue[2].ToString("n1"), ItemValue[3].ToString("n1"), ItemValue[4].ToString("n6"), ItemValue[5].ToString(), ItemValue[6].ToString(), ItemValue[7].ToString() });
+                        Tag = Item.Key
+                    };
 
-                        //Save check in case the object is disposed. 
-                        try
+                    //Save check in case the object is disposed. 
+                    try
+                    {
+                        ListView_HashTableData.Invoke((MethodInvoker)delegate
                         {
-                            ListView_HashTableData.Invoke((MethodInvoker)delegate
-                            {
-                                ListView_HashTableData.Items.Add(ItemToAdd);
-                            });
-                        }
-                        catch
-                        {
-
-                        }
-                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking Hashcode: " + Item.Key);
+                            ListView_HashTableData.Items.Add(ItemToAdd);
+                        });
                     }
+                    catch
+                    {
+
+                    }
+                    GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking Hashcode: " + Item.Key);
                 }
                 Thread.Sleep(14);
             }
-        }
 
-        private void BackgroundWorker_LoadData_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (e.Cancelled)
-            {
-                ListView_HashTableData.Dispose();
-                BackgroundWorker_LoadData.Dispose();
-            }
-            else
+            ListView_HashTableData.Invoke((MethodInvoker)delegate
             {
                 ListView_HashTableData.Enabled = true;
+            });
+
+
+            Button_Reload.Invoke((MethodInvoker)delegate
+            {
                 Button_Reload.Enabled = true;
+            });
+
+            button_generateFile.Invoke((MethodInvoker)delegate
+            {
                 button_generateFile.Enabled = true;
-            }
+            });
+
+            Combobox_LabelHashcodes.Invoke((MethodInvoker)delegate
+            {
+                Combobox_LabelHashcodes.Enabled = true;
+            });
+
+            Button_Search.Invoke((MethodInvoker)delegate
+            {
+                Button_Search.Enabled = true;
+            });
 
             /*Set Program status*/
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
@@ -102,6 +150,49 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* FORM CONTROL EVENTS
         //*===============================================================================================
+        private void Combobox_LabelHashcodes_Click(object sender, EventArgs e)
+        {
+            //Add Hashcodes to combobox
+            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsMD5, GlobalPreferences.HT_SoundsPath))
+            {
+                Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
+                Hashcodes.AddHashcodesToCombobox(Combobox_LabelHashcodes, Hashcodes.SFX_Defines);
+            }
+        }
+
+        private void Button_Search_Click(object sender, EventArgs e)
+        {
+            uint Hashcode, ItemTag;
+
+            /*Deselect all items*/
+            ListView_HashTableData.SelectedIndices.Clear();
+
+            /*Get hashcode form combobox*/
+            Hashcode = Convert.ToUInt32(Combobox_LabelHashcodes.SelectedValue);
+
+            /*Focus control*/
+            ListView_HashTableData.Focus();
+
+            /*Select Item*/
+            foreach (ListViewItem Item in ListView_HashTableData.Items)
+            {
+                ItemTag = Convert.ToUInt32(Item.Tag);
+                if (ItemTag == Hashcode)
+                {
+                    Item.Selected = true;
+                    Item.Focused = true;
+                    Item.EnsureVisible();
+                    break;
+                }
+            }
+
+            //Inform User the hashcode does not exists.
+            if (ListView_HashTableData.SelectedItems.Count == 0)
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("SFXDataHashcodeNotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
         private void Button_generateFile_Click(object sender, EventArgs e)
         {
             List<string> ListToPrint = SFXDataBin_Generator.GenerateSFXDataBinaryFile();
@@ -129,13 +220,11 @@ namespace EuroSound_Application
             /*Update Status Bar*/
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
-            if (!BackgroundWorker_LoadData.IsBusy)
+            LoadSfxDataTable = new Thread(LoadDataFromHashtable)
             {
-                ListView_HashTableData.Enabled = false;
-                Button_Reload.Enabled = false;
-                button_generateFile.Enabled = false;
-                BackgroundWorker_LoadData.RunWorkerAsync();
-            }
+                IsBackground = true
+            };
+            LoadSfxDataTable.Start();
         }
 
         //*===============================================================================================

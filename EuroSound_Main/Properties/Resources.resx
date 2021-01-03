@@ -193,7 +193,7 @@
     <value>Rename the selected sound</value>
   </data>
   <data name="ErrorWavFileIncorrect" xml:space="preserve">
-    <value>Error, the audio file is not correct, the frequency must be 22050hz and 16 bits per sample</value>
+    <value>Error, the audio file is not correct, the frequency must be 22050hz, encoded in PCM and have 16 bits per sample</value>
   </data>
   <data name="Error_Adding_AlreadyExists" xml:space="preserve">
     <value>Sorry, cannot add an item with this name, an item with this name already exists</value>
@@ -302,6 +302,9 @@
   </data>
   <data name="OutputSFXSoundbankErrors" xml:space="preserve">
     <value>An error occurred in the output and the file might be corrupt</value>
+  </data>
+  <data name="SFXDataHashcodeNotFound" xml:space="preserve">
+    <value>The hashcode has not been found, please add it to the hashtable and click on "Reload Hashtable"</value>
   </data>
   <data name="StatusBar_ReadingESFFile" xml:space="preserve">
     <value>Reading ESF File</value>

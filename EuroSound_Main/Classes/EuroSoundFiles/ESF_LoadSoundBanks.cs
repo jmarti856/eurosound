@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using EuroSound_Application.SoundBanksEditor;
+using EuroSound_Application.TreeViewLibraryFunctions;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.EuroSoundFilesFunctions
 {
     internal class ESF_LoadSoundBanks
     {

@@ -1,4 +1,9 @@
-﻿using System;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationRegistryFunctions;
+using EuroSound_Application.EuroSoundFilesFunctions;
+using EuroSound_Application.GenerateSoundBankSFX;
+using EuroSound_Application.SoundBanksEditor;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;

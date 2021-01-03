@@ -1,10 +1,12 @@
-﻿using NAudio.Wave;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.AudioFunctionsLibrary;
+using NAudio.Wave;
 using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.SoundBanksEditor
 {
     public partial class Frm_AudioProperties : Form
     {
@@ -65,24 +67,31 @@ namespace EuroSound_Application
             string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0);
             if (!string.IsNullOrEmpty(AudioPath))
             {
-                TemporalAudioHash = GenericFunctions.CalculateMD5(AudioPath);
-                TemporalAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath, true);
-
-                if (TemporalAudio.PCMdata != null)
+                if (EXSoundbanksFunctions.AudioIsValid(AudioPath))
                 {
-                    UpdateControls();
+                    TemporalAudioHash = GenericFunctions.CalculateMD5(AudioPath);
+                    TemporalAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath, true);
 
-                    /*--Editable Data--*/
-                    Textbox_Flags.Text = TemporalAudio.Flags.ToString();
-                    numeric_psi.Value = TemporalAudio.PSIsample;
-                    numeric_loopOffset.Value = TemporalAudio.LoopOffset;
-                    Textbox_MD5Hash.Text = TemporalAudioHash;
+                    if (TemporalAudio != null && TemporalAudio.PCMdata != null)
+                    {
+                        UpdateControls();
 
-                    AudioFunctionsLibrary.DrawAudioWaves(euroSound_WaveViewer1, TemporalAudio, 0);
+                        /*--Editable Data--*/
+                        Textbox_Flags.Text = TemporalAudio.Flags.ToString();
+                        numeric_psi.Value = TemporalAudio.PSIsample;
+                        numeric_loopOffset.Value = TemporalAudio.LoopOffset;
+                        Textbox_MD5Hash.Text = TemporalAudioHash;
+
+                        AudioFunctionsLibrary.DrawAudioWaves(euroSound_WaveViewer1, TemporalAudio, 0);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error reading this file, seems that is being used by another process.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Error reading this file, seems that is being used by another process", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrect"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -167,7 +176,10 @@ namespace EuroSound_Application
                 {
                     /*--Update Dictionary--*/
                     ((Frm_Soundbanks_Main)ParentForm).AudioDataDict.Remove(SelectedAudioMD5Hash);
-                    EXSoundbanksFunctions.AddAudioToList(TemporalAudio, TemporalAudioHash, ((Frm_Soundbanks_Main)ParentForm).AudioDataDict);
+                    if (TemporalAudio != null)
+                    {
+                        ((Frm_Soundbanks_Main)ParentForm).AudioDataDict.Add(TemporalAudioHash, TemporalAudio);
+                    }
 
                     /*--Update Tree View--*/
                     TreeNode[] Node = ((Frm_Soundbanks_Main)ParentForm).TreeView_File.Nodes.Find(SelectedAudioMD5Hash, true);

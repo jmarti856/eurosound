@@ -1,5 +1,5 @@
 ﻿
-namespace EuroSound_Application
+namespace EuroSound_Application.SFXData
 {
     partial class Frm_SFX_DataGenerator
     {
@@ -32,10 +32,12 @@ namespace EuroSound_Application
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_SFX_DataGenerator));
             this.label_hashcode = new System.Windows.Forms.Label();
             this.button_generateFile = new System.Windows.Forms.Button();
-            this.BackgroundWorker_LoadData = new System.ComponentModel.BackgroundWorker();
             this.FolderSavePath = new System.Windows.Forms.FolderBrowserDialog();
             this.Textbox_SelectedHashcode = new System.Windows.Forms.TextBox();
             this.Button_Reload = new System.Windows.Forms.Button();
+            this.Label_Hashcodes = new System.Windows.Forms.Label();
+            this.Combobox_LabelHashcodes = new System.Windows.Forms.ComboBox();
+            this.Button_Search = new System.Windows.Forms.Button();
             this.ListView_HashTableData = new ListViewExtendedMethods.ListView_ColumnSortingClick();
             this.col_hashcode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.col_innerradius = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -50,16 +52,16 @@ namespace EuroSound_Application
             // label_hashcode
             // 
             this.label_hashcode.AutoSize = true;
-            this.label_hashcode.Location = new System.Drawing.Point(9, 15);
+            this.label_hashcode.Location = new System.Drawing.Point(12, 15);
             this.label_hashcode.Name = "label_hashcode";
             this.label_hashcode.Size = new System.Drawing.Size(59, 13);
-            this.label_hashcode.TabIndex = 1;
+            this.label_hashcode.TabIndex = 0;
             this.label_hashcode.Text = "Hashcode:";
             // 
             // button_generateFile
             // 
             this.button_generateFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_generateFile.Location = new System.Drawing.Point(473, 553);
+            this.button_generateFile.Location = new System.Drawing.Point(489, 553);
             this.button_generateFile.Name = "button_generateFile";
             this.button_generateFile.Size = new System.Drawing.Size(128, 23);
             this.button_generateFile.TabIndex = 6;
@@ -67,34 +69,59 @@ namespace EuroSound_Application
             this.button_generateFile.UseVisualStyleBackColor = true;
             this.button_generateFile.Click += new System.EventHandler(this.Button_generateFile_Click);
             // 
-            // BackgroundWorker_LoadData
-            // 
-            this.BackgroundWorker_LoadData.WorkerReportsProgress = true;
-            this.BackgroundWorker_LoadData.WorkerSupportsCancellation = true;
-            this.BackgroundWorker_LoadData.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker_LoadData_DoWork);
-            this.BackgroundWorker_LoadData.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker_LoadData_RunWorkerCompleted);
-            // 
             // Textbox_SelectedHashcode
             // 
             this.Textbox_SelectedHashcode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Textbox_SelectedHashcode.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Textbox_SelectedHashcode.Location = new System.Drawing.Point(74, 12);
+            this.Textbox_SelectedHashcode.Location = new System.Drawing.Point(77, 12);
             this.Textbox_SelectedHashcode.Name = "Textbox_SelectedHashcode";
             this.Textbox_SelectedHashcode.ReadOnly = true;
-            this.Textbox_SelectedHashcode.Size = new System.Drawing.Size(637, 20);
-            this.Textbox_SelectedHashcode.TabIndex = 8;
+            this.Textbox_SelectedHashcode.Size = new System.Drawing.Size(650, 20);
+            this.Textbox_SelectedHashcode.TabIndex = 1;
             // 
             // Button_Reload
             // 
             this.Button_Reload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Reload.Location = new System.Drawing.Point(607, 553);
+            this.Button_Reload.Location = new System.Drawing.Point(623, 553);
             this.Button_Reload.Name = "Button_Reload";
             this.Button_Reload.Size = new System.Drawing.Size(104, 23);
-            this.Button_Reload.TabIndex = 9;
-            this.Button_Reload.Text = "Reload HashTable";
+            this.Button_Reload.TabIndex = 7;
+            this.Button_Reload.Text = "Reload Hashtable";
             this.Button_Reload.UseVisualStyleBackColor = true;
             this.Button_Reload.Click += new System.EventHandler(this.Button_Reload_Click);
+            // 
+            // Label_Hashcodes
+            // 
+            this.Label_Hashcodes.AutoSize = true;
+            this.Label_Hashcodes.Location = new System.Drawing.Point(30, 41);
+            this.Label_Hashcodes.Name = "Label_Hashcodes";
+            this.Label_Hashcodes.Size = new System.Drawing.Size(41, 13);
+            this.Label_Hashcodes.TabIndex = 2;
+            this.Label_Hashcodes.Text = "Labels:";
+            // 
+            // Combobox_LabelHashcodes
+            // 
+            this.Combobox_LabelHashcodes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Combobox_LabelHashcodes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Combobox_LabelHashcodes.FormattingEnabled = true;
+            this.Combobox_LabelHashcodes.Location = new System.Drawing.Point(77, 38);
+            this.Combobox_LabelHashcodes.Name = "Combobox_LabelHashcodes";
+            this.Combobox_LabelHashcodes.Size = new System.Drawing.Size(569, 21);
+            this.Combobox_LabelHashcodes.TabIndex = 3;
+            this.Combobox_LabelHashcodes.Click += new System.EventHandler(this.Combobox_LabelHashcodes_Click);
+            // 
+            // Button_Search
+            // 
+            this.Button_Search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Search.Location = new System.Drawing.Point(652, 36);
+            this.Button_Search.Name = "Button_Search";
+            this.Button_Search.Size = new System.Drawing.Size(75, 23);
+            this.Button_Search.TabIndex = 4;
+            this.Button_Search.Text = "Search";
+            this.Button_Search.UseVisualStyleBackColor = true;
+            this.Button_Search.Click += new System.EventHandler(this.Button_Search_Click);
             // 
             // ListView_HashTableData
             // 
@@ -113,10 +140,10 @@ namespace EuroSound_Application
             this.ListView_HashTableData.FullRowSelect = true;
             this.ListView_HashTableData.GridLines = true;
             this.ListView_HashTableData.HideSelection = false;
-            this.ListView_HashTableData.Location = new System.Drawing.Point(12, 38);
+            this.ListView_HashTableData.Location = new System.Drawing.Point(12, 71);
             this.ListView_HashTableData.Name = "ListView_HashTableData";
-            this.ListView_HashTableData.Size = new System.Drawing.Size(699, 509);
-            this.ListView_HashTableData.TabIndex = 0;
+            this.ListView_HashTableData.Size = new System.Drawing.Size(715, 476);
+            this.ListView_HashTableData.TabIndex = 5;
             this.ListView_HashTableData.UseCompatibleStateImageBehavior = false;
             this.ListView_HashTableData.View = System.Windows.Forms.View.Details;
             this.ListView_HashTableData.SelectedIndexChanged += new System.EventHandler(this.ListView_HashTableData_SelectedIndexChanged);
@@ -164,7 +191,10 @@ namespace EuroSound_Application
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(723, 588);
+            this.ClientSize = new System.Drawing.Size(739, 588);
+            this.Controls.Add(this.Button_Search);
+            this.Controls.Add(this.Combobox_LabelHashcodes);
+            this.Controls.Add(this.Label_Hashcodes);
             this.Controls.Add(this.Button_Reload);
             this.Controls.Add(this.Textbox_SelectedHashcode);
             this.Controls.Add(this.button_generateFile);
@@ -175,6 +205,7 @@ namespace EuroSound_Application
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Generate SFX Data Binary File";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_SFX_DataGenerator_FormClosing);
+            this.Load += new System.EventHandler(this.Frm_SFX_DataGenerator_Load);
             this.Shown += new System.EventHandler(this.Frm_SFX_DataGenerator_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -194,9 +225,11 @@ namespace EuroSound_Application
         private System.Windows.Forms.ColumnHeader col_samplestreamed;
         private System.Windows.Forms.Label label_hashcode;
         private System.Windows.Forms.Button button_generateFile;
-        private System.ComponentModel.BackgroundWorker BackgroundWorker_LoadData;
         private System.Windows.Forms.FolderBrowserDialog FolderSavePath;
         private System.Windows.Forms.TextBox Textbox_SelectedHashcode;
         private System.Windows.Forms.Button Button_Reload;
+        private System.Windows.Forms.Label Label_Hashcodes;
+        private System.Windows.Forms.ComboBox Combobox_LabelHashcodes;
+        private System.Windows.Forms.Button Button_Search;
     }
 }

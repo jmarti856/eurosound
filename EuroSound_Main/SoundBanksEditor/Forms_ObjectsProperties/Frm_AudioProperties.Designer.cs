@@ -1,5 +1,5 @@
 ﻿
-namespace EuroSound_Application
+namespace EuroSound_Application.SoundBanksEditor
 {
     partial class Frm_AudioProperties
     {

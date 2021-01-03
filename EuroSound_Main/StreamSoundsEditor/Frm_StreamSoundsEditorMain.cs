@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.EuroSoundFilesFunctions;
+using EuroSound_Application.TreeViewLibraryFunctions;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.StreamSounds
 {
     public partial class Frm_StreamSoundsEditorMain : Form
     {
@@ -13,6 +17,7 @@ namespace EuroSound_Application
         public Dictionary<uint, EXSoundStream> StreamSoundsList = new Dictionary<uint, EXSoundStream>();
         private EuroSoundFiles SerializeInfo = new EuroSoundFiles();
         public ProjectFile ProjectInfo = new ProjectFile();
+        private StreamSoundsYMLReader LibYamlReader = new StreamSoundsYMLReader();
         private string FileToLoadArg, ProjectName;
         private string LoadedFile = string.Empty;
 
@@ -66,6 +71,8 @@ namespace EuroSound_Application
                 SerializeInfo.LoadStreamSoundsDocument(TreeView_StreamData, StreamSoundsList, FileToLoadArg, ProjectInfo, GenericFunctions.ResourcesManager);
                 TreeView_StreamData.ExpandAll();
             }
+
+            ProjectInfo.Hashcode = 65535;
         }
 
         private void Frm_StreamSoundsEditorMain_Shown(object sender, System.EventArgs e)
@@ -274,6 +281,18 @@ namespace EuroSound_Application
             }
         }
 
+        private void TreeView_StreamData_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (TreeView_StreamData.SelectedNode.Tag.Equals("Sound"))
+            {
+                OpenSoundPropertiesForm();
+                ProjectInfo.FileHasBeenModified = true;
+            }
+        }
+
+        //*===============================================================================================
+        //* MAIN MENU FILE
+        //*===============================================================================================
         private void MenuItem_File_Save_Click(object sender, System.EventArgs e)
         {
             LoadedFile = SaveDocument(LoadedFile, TreeView_StreamData, StreamSoundsList, ProjectInfo);
@@ -295,13 +314,77 @@ namespace EuroSound_Application
             ProjectInfo.FileHasBeenModified = false;
         }
 
-        private void TreeView_StreamData_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void MenuItem_File_Export_Click(object sender, System.EventArgs e)
         {
-            if (TreeView_StreamData.SelectedNode.Tag.Equals("Sound"))
+            if (ProjectInfo.Hashcode != 0x00000000)
             {
-                OpenSoundPropertiesForm();
+                string FileName = "HC00FFFF";
+                Frm_BuildSFXStreamFile BuildFile = new Frm_BuildSFXStreamFile(ProjectInfo, FileName)
+                {
+                    Tag = Tag,
+                    Owner = Owner,
+                    ShowInTaskbar = false
+                };
+                BuildFile.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_BuildSFX_NoHashcode"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void MenuItemFile_ReadSound_Click(object sender, System.EventArgs e)
+        {
+            string SoundName;
+
+            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0);
+            if (!string.IsNullOrEmpty(FilePath))
+            {
+                SoundName = Path.GetFileNameWithoutExtension(FilePath);
+                LibYamlReader.ReadYmlFile(StreamSoundsList, TreeView_StreamData, FilePath, SoundName, ProjectInfo);
                 ProjectInfo.FileHasBeenModified = true;
             }
+        }
+
+        private void MenuItemFile_ReadYml_Click(object sender, System.EventArgs e)
+        {
+            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0);
+            if (!string.IsNullOrEmpty(FilePath))
+            {
+                /*--Ask user for a fully reimport--*/
+                DialogResult ReimportQuestion = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("MenuItem_File_LoadListCleanData"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (ReimportQuestion == DialogResult.Yes)
+                {
+                    //Clear Data
+                    ProjectInfo.ClearStreamSoundStoredData(StreamSoundsList, TreeView_StreamData);
+                }
+
+                /*--Load New data--*/
+                Thread LoadYamlFile = new Thread(() => LibYamlReader.LoadDataFromSwyterUnpacker(StreamSoundsList, TreeView_StreamData, FilePath, ProjectInfo))
+                {
+                    IsBackground = true
+                };
+                LoadYamlFile.Start();
+
+                ProjectInfo.FileHasBeenModified = true;
+            }
+        }
+
+        //*===============================================================================================
+        //* MAIN MENU EDIT
+        //*===============================================================================================
+        private void MenuItem_Edit_FileProps_Click(object sender, System.EventArgs e)
+        {
+            GlobalPreferences.StatusBar_ToolTipMode = false;
+
+            Frm_FileProperties Props = new Frm_FileProperties(ProjectInfo)
+            {
+                Owner = this,
+                ShowInTaskbar = false,
+                Tag = Tag
+            };
+            Props.ShowDialog();
+            ProjectInfo.FileHasBeenModified = true;
         }
     }
 }

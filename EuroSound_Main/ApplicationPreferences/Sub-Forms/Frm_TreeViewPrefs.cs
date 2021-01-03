@@ -1,8 +1,9 @@
-﻿using System;
+﻿using EuroSound_Application.ApplicationPreferences;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.ApplicationPreferencesForms
 {
     public partial class Frm_TreeViewPrefs : Form
     {
@@ -32,10 +33,11 @@ namespace EuroSound_Application
 
         private void Frm_TreeViewPrefs_FormClosing(object sender, FormClosingEventArgs e)
         {
-            GlobalPreferences.SelectedFontTEMPORAL = Textbox_SelectedFont.Text;
-            GlobalPreferences.ShowLinesTEMPORAL = CheckBox_ShowLines.Checked;
-            GlobalPreferences.ShowRootLinesTEMPORAL = Checkbox_ShowRootLines.Checked;
-            GlobalPreferences.TreeViewIndentTEMPORAL = int.Parse(Numeric_TreeViewIndent.Value.ToString());
+            Form OpenForm = GenericFunctions.GetFormByName("Frm_MainPreferences", Tag.ToString());
+            ((Frm_MainPreferences)OpenForm).SelectedFontTEMPORAL = Textbox_SelectedFont.Text;
+            ((Frm_MainPreferences)OpenForm).ShowLinesTEMPORAL = CheckBox_ShowLines.Checked;
+            ((Frm_MainPreferences)OpenForm).ShowRootLinesTEMPORAL = Checkbox_ShowRootLines.Checked;
+            ((Frm_MainPreferences)OpenForm).TreeViewIndentTEMPORAL = int.Parse(Numeric_TreeViewIndent.Value.ToString());
         }
     }
 }

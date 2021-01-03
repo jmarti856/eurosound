@@ -1,4 +1,7 @@
-﻿using System;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.EuroSoundFilesFunctions;
+using EuroSound_Application.TreeViewLibraryFunctions;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -6,7 +9,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.SoundBanksEditor
 {
     public partial class Frm_Soundbanks_Main : Form
     {
@@ -18,7 +21,7 @@ namespace EuroSound_Application
         internal ProjectFile ProjectInfo = new ProjectFile();
         private EuroSoundFiles SerializeInfo = new EuroSoundFiles();
         private Thread UpdateList, UpdateWavList, UpdateStreamDataList;
-        private YamlReader LibYamlReader = new YamlReader();
+        private SoundBanksYMLReader LibYamlReader = new SoundBanksYMLReader();
         private string FileToLoadArg, ProjectName;
         private string LoadedFile = string.Empty;
 
@@ -352,7 +355,7 @@ namespace EuroSound_Application
             {
                 SoundName = new DirectoryInfo(Path.GetDirectoryName(FilePath)).Name;
                 SoundHashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SFX_Defines, SoundName);
-                LibYamlReader.ReadYamlFile(SoundsList, AudioDataDict, TreeView_File, FilePath, SoundName, SoundHashcode, true, ProjectInfo);
+                LibYamlReader.ReadYmlFile(SoundsList, AudioDataDict, TreeView_File, FilePath, SoundName, SoundHashcode, true, ProjectInfo);
                 ProjectInfo.FileHasBeenModified = true;
             }
         }
@@ -458,7 +461,7 @@ namespace EuroSound_Application
             }
             else if (e.Node.Tag.Equals("Sound"))
             {
-                if (EXSoundbanksFunctions.SoundWillBeOutputed(SoundsList, e.Node.Name))
+                if (EXSoundbanksFunctions.SoundWillBeOutputed(SoundsList, uint.Parse(e.Node.Name)))
                 {
                     TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 2, 2);
                 }
@@ -482,7 +485,7 @@ namespace EuroSound_Application
             }
             else if (e.Node.Tag.Equals("Sound"))
             {
-                if (EXSoundbanksFunctions.SoundWillBeOutputed(SoundsList, e.Node.Name))
+                if (EXSoundbanksFunctions.SoundWillBeOutputed(SoundsList, uint.Parse(e.Node.Name)))
                 {
                     TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 3, 3);
                 }

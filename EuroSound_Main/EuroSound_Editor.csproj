@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>EuroSound_Application</RootNamespace>
     <AssemblyName>EuroSound</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -43,7 +43,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>true</Prefer32Bit>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -54,7 +55,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>true</Prefer32Bit>
-    <CodeAnalysisRuleSet>EuroSound_Editor.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>EuroSoundIcon.ico</ApplicationIcon>
@@ -69,8 +71,23 @@
     <Reference Include="NAudio, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.10.0\lib\net35\NAudio.dll</HintPath>
     </Reference>
+    <Reference Include="Syroot.BinaryData, Version=5.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syroot.BinaryData.5.2.2\lib\net452\Syroot.BinaryData.dll</HintPath>
+    </Reference>
+    <Reference Include="Syroot.BinaryData.Core, Version=5.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syroot.BinaryData.Core.5.2.0\lib\net452\Syroot.BinaryData.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard1.1\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Memory, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.2\lib\netstandard1.1\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -87,6 +104,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationPreferences\BackupAndRestoreSettings\BackupReloadSettings.cs" />
+    <Compile Include="ApplicationPreferences\BackupAndRestoreSettings\BackupSettings.cs" />
+    <Compile Include="ApplicationPreferences\BackupAndRestoreSettings\RestoreSettings.cs" />
     <Compile Include="ApplicationPreferences\Sub-Forms\Frm_GeneralPreferences.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -211,7 +231,7 @@
     <Compile Include="Classes\NodeSorter.cs" />
     <Compile Include="Classes\EuroSoundFiles\EuroSoundFiles.cs" />
     <Compile Include="Classes\TreeNodeFunctions.cs" />
-    <Compile Include="SoundBanksEditor\Classes\EuroSound\YmlReader.cs" />
+    <Compile Include="SoundBanksEditor\Classes\SoundBanksYMLReader.cs" />
     <Compile Include="SoundBanksEditor\Classes\EXSoundbanksFunctions.cs" />
     <Compile Include="SoundBanksEditor\Classes\EXObjects\EXAudio.cs" />
     <Compile Include="Classes\SFX_Files\GenerateSFXSoundBank.cs" />
@@ -261,9 +281,16 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="StreamSoundsEditor\Classes\EXObjects\EXSoundStream.cs" />
-    <Compile Include="StreamSoundsEditor\Classes\EXObjects\EXStreamSoundMarker.cs" />
-    <Compile Include="StreamSoundsEditor\Classes\EXObjects\EXStreamSoundMarkerData.cs" />
+    <Compile Include="StreamSoundsEditor\Classes\EXObjects\EXStreamStartMarker.cs" />
+    <Compile Include="StreamSoundsEditor\Classes\EXObjects\EXStreamMarker.cs" />
     <Compile Include="StreamSoundsEditor\Classes\EXStreamSoundsFunctions.cs" />
+    <Compile Include="StreamSoundsEditor\Classes\StreamSoundsYMLReader.cs" />
+    <Compile Include="StreamSoundsEditor\Frm_BuildSFXStreamFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StreamSoundsEditor\Frm_BuildSFXStreamFile.Designer.cs">
+      <DependentUpon>Frm_BuildSFXStreamFile.cs</DependentUpon>
+    </Compile>
     <Compile Include="StreamSoundsEditor\Frm_StreamSoundsEditorMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -369,6 +396,9 @@
     <EmbeddedResource Include="SoundBanksEditor\Frm_Soundbanks_Main.resx">
       <DependentUpon>Frm_Soundbanks_Main.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="StreamSoundsEditor\Frm_BuildSFXStreamFile.resx">
+      <DependentUpon>Frm_BuildSFXStreamFile.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="StreamSoundsEditor\Frm_StreamSoundsEditorMain.resx">
       <DependentUpon>Frm_StreamSoundsEditorMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -378,7 +408,6 @@
     <EmbeddedResource Include="StreamSoundsEditor\Forms_ObjectsProperties\Frm_StreamSounds_Properties.resx">
       <DependentUpon>Frm_StreamSounds_Properties.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="EuroSound_Editor.ruleset" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

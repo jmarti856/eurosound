@@ -1,5 +1,5 @@
 ﻿
-namespace EuroSound_Application
+namespace EuroSound_Application.ApplicationPreferencesForms
 {
     partial class Frm_TreeViewPrefs
     {
@@ -131,6 +131,8 @@ namespace EuroSound_Application
             // 
             // GroupBox_Lines
             // 
+            this.GroupBox_Lines.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.GroupBox_Lines.Controls.Add(this.CheckBox_ShowLines);
             this.GroupBox_Lines.Controls.Add(this.Checkbox_ShowRootLines);
             this.GroupBox_Lines.Location = new System.Drawing.Point(12, 158);

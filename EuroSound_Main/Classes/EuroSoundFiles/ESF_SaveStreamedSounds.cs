@@ -1,9 +1,10 @@
-﻿using System;
+﻿using EuroSound_Application.StreamSounds;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.EuroSoundFilesFunctions
 {
     public class ESF_SaveStreamedSounds
     {
@@ -121,39 +122,50 @@ namespace EuroSound_Application
 
         private void SaveDictionaryData(Dictionary<uint, EXSoundStream> StreamSoundsList, BinaryWriter BWriter)
         {
+            uint NumberOfStartMarkers, NumberOfMarkers;
+
             BWriter.Write(StreamSoundsList.Count);
             foreach (KeyValuePair<uint, EXSoundStream> Sound in StreamSoundsList)
             {
                 BWriter.Write(Sound.Key);
                 BWriter.Write(Sound.Value.DisplayName);
                 BWriter.Write(Sound.Value.BaseVolume);
-                BWriter.Write(Sound.Value.Hashcode);
                 BWriter.Write(Sound.Value.IMA_ADPCM_DATA.Length);
                 BWriter.Write(Sound.Value.IMA_ADPCM_DATA);
 
-                /*Markers List*/
-                BWriter.Write(Sound.Value.Markers.Count);
-                foreach (var Marker in Sound.Value.Markers)
+                /*Start Markers List*/
+                NumberOfStartMarkers = (uint)Sound.Value.StartMarkers.Count;
+                BWriter.Write(NumberOfStartMarkers);
+                for (int i = 0; i < NumberOfStartMarkers; i++)
                 {
-                    BWriter.Write(Marker.Position);
-                    BWriter.Write(Marker.IsInstant);
-                    BWriter.Write(Marker.InstantBuffer);
-                    BWriter.Write(Marker.State.Length);
-                    BWriter.Write(Marker.State);
+                    BWriter.Write(Sound.Value.StartMarkers[i].Name);
+                    BWriter.Write(Sound.Value.StartMarkers[i].Position);
+                    BWriter.Write(Sound.Value.StartMarkers[i].MusicMakerType);
+                    BWriter.Write(Sound.Value.StartMarkers[i].Flags);
+                    BWriter.Write(Sound.Value.StartMarkers[i].Extra);
+                    BWriter.Write(Sound.Value.StartMarkers[i].LoopStart);
+                    BWriter.Write(Sound.Value.StartMarkers[i].MarkerCount);
+                    BWriter.Write(Sound.Value.StartMarkers[i].LoopMarkerCount);
+                    BWriter.Write(Sound.Value.StartMarkers[i].MarkerPos);
+                    BWriter.Write(Sound.Value.StartMarkers[i].IsInstant);
+                    BWriter.Write(Sound.Value.StartMarkers[i].InstantBuffer);
+                    BWriter.Write(Sound.Value.StartMarkers[i].StateA);
+                    BWriter.Write(Sound.Value.StartMarkers[i].StateB);
+                }
 
-                    //Markers Data List
-                    BWriter.Write(Marker.MarkersData.Count);
-                    foreach (var MarkerData in Marker.MarkersData)
-                    {
-                        BWriter.Write(MarkerData.Name);
-                        BWriter.Write(MarkerData.Position);
-                        BWriter.Write(MarkerData.MusicMakerType);
-                        BWriter.Write(MarkerData.Flags);
-                        BWriter.Write(MarkerData.Extra);
-                        BWriter.Write(MarkerData.LoopStart);
-                        BWriter.Write(MarkerData.MarkerCount);
-                        BWriter.Write(MarkerData.LoopMarkerCount);
-                    }
+                /*Markers List*/
+                NumberOfMarkers = (uint)Sound.Value.Markers.Count;
+                BWriter.Write(NumberOfMarkers);
+                for (int j = 0; j < NumberOfMarkers; j++)
+                {
+                    BWriter.Write(Sound.Value.Markers[j].Name);
+                    BWriter.Write(Sound.Value.Markers[j].Position);
+                    BWriter.Write(Sound.Value.Markers[j].MusicMakerType);
+                    BWriter.Write(Sound.Value.Markers[j].Flags);
+                    BWriter.Write(Sound.Value.Markers[j].Extra);
+                    BWriter.Write(Sound.Value.Markers[j].LoopStart);
+                    BWriter.Write(Sound.Value.Markers[j].MarkerCount);
+                    BWriter.Write(Sound.Value.Markers[j].LoopMarkerCount);
                 }
 
                 //Extra info
@@ -162,8 +174,8 @@ namespace EuroSound_Application
                 BWriter.Write(Sound.Value.OutputThisSound);
 
                 //IDS
-                BWriter.Write(Sound.Value.IDMarkerName);
-                BWriter.Write(Sound.Value.IDMarkerPos);
+                BWriter.Write(Sound.Value.MarkerDataCounterID);
+                BWriter.Write(Sound.Value.MarkerID);
             }
         }
     }

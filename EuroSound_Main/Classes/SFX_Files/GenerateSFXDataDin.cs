@@ -1,9 +1,10 @@
-﻿using System;
+﻿using EuroSound_Application.ApplicationPreferences;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.GenerateDataBinaryFile
 {
 
     internal class GenerateSFXDataFiles

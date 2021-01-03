@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using EuroSound_Application.StreamSounds;
+using EuroSound_Application.TreeViewLibraryFunctions;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.EuroSoundFilesFunctions
 {
     public class ESF_LoadStreamSounds
     {
@@ -44,9 +46,8 @@ namespace EuroSound_Application
 
         internal void ReadDictionaryData(BinaryReader BReader, Dictionary<uint, EXSoundStream> DictionaryData)
         {
-            int DictionaryItems, ADPCM_Lenght, MarkersCount, StateLength, MarkersDataLength;
-            uint SoundStreamKey;
-
+            int DictionaryItems, ADPCM_Lenght;
+            uint SoundStreamKey, StartMarkersCount, MarkersCount;
 
             DictionaryItems = BReader.ReadInt32();
             for (int i = 0; i < DictionaryItems; i++)
@@ -56,50 +57,57 @@ namespace EuroSound_Application
                 {
                     DisplayName = BReader.ReadString(),
                     BaseVolume = BReader.ReadUInt32(),
-                    Hashcode = BReader.ReadUInt32()
                 };
                 ADPCM_Lenght = BReader.ReadInt32();
                 StreamSound.IMA_ADPCM_DATA = BReader.ReadBytes(ADPCM_Lenght);
 
-                /*Markers Length*/
-                MarkersCount = BReader.ReadInt32();
-                for (int j = 0; j < MarkersCount; j++)
+                /*Read Start Markers List*/
+                StartMarkersCount = BReader.ReadUInt32();
+                for (int j = 0; j < StartMarkersCount; j++)
                 {
-                    EXStreamSoundMarker SoundMarker = new EXStreamSoundMarker
+                    EXStreamStartMarker StartMarker = new EXStreamStartMarker
                     {
+                        Name = BReader.ReadUInt32(),
                         Position = BReader.ReadUInt32(),
+                        MusicMakerType = BReader.ReadUInt32(),
+                        Flags = BReader.ReadUInt32(),
+                        Extra = BReader.ReadUInt32(),
+                        LoopStart = BReader.ReadUInt32(),
+                        MarkerCount = BReader.ReadUInt32(),
+                        LoopMarkerCount = BReader.ReadUInt32(),
+                        MarkerPos = BReader.ReadUInt32(),
                         IsInstant = BReader.ReadUInt32(),
-                        InstantBuffer = BReader.ReadUInt32()
+                        InstantBuffer = BReader.ReadUInt32(),
+                        StateA = BReader.ReadUInt32(),
+                        StateB = BReader.ReadUInt32()
                     };
-                    StateLength = BReader.ReadInt32();
-                    SoundMarker.State = BReader.ReadBytes(StateLength);
+                    StreamSound.StartMarkers.Add(StartMarker);
+                }
 
-                    MarkersDataLength = BReader.ReadInt32();
-                    for (int k = 0; k < MarkersDataLength; k++)
+                /*Read Markers*/
+                MarkersCount = BReader.ReadUInt32();
+                for (int k = 0; k < MarkersCount; k++)
+                {
+                    EXStreamMarker Marker = new EXStreamMarker
                     {
-                        EXStreamSoundMarkerData SoundMarkerData = new EXStreamSoundMarkerData
-                        {
-                            Name = BReader.ReadUInt32(),
-                            Position = BReader.ReadUInt32(),
-                            MusicMakerType = BReader.ReadUInt32(),
-                            Flags = BReader.ReadUInt32(),
-                            Extra = BReader.ReadUInt32(),
-                            LoopStart = BReader.ReadUInt32(),
-                            MarkerCount = BReader.ReadUInt32(),
-                            LoopMarkerCount = BReader.ReadUInt32()
-                        };
-
-                        SoundMarker.MarkersData.Add(SoundMarkerData);
-                    }
-                    StreamSound.Markers.Add(SoundMarker);
+                        Name = BReader.ReadInt32(),
+                        Position = BReader.ReadUInt32(),
+                        MusicMakerType = BReader.ReadUInt32(),
+                        Flags = BReader.ReadUInt32(),
+                        Extra = BReader.ReadUInt32(),
+                        LoopStart = BReader.ReadUInt32(),
+                        MarkerCount = BReader.ReadUInt32(),
+                        LoopMarkerCount = BReader.ReadUInt32()
+                    };
+                    StreamSound.Markers.Add(Marker);
                 }
 
                 StreamSound.IMA_Data_MD5 = BReader.ReadString();
                 StreamSound.IMA_Data_Name = BReader.ReadString();
                 StreamSound.OutputThisSound = BReader.ReadBoolean();
 
-                StreamSound.IDMarkerName = BReader.ReadUInt32();
-                StreamSound.IDMarkerPos = BReader.ReadUInt32();
+                StreamSound.MarkerDataCounterID = BReader.ReadUInt32();
+                StreamSound.MarkerID = BReader.ReadUInt32();
 
                 DictionaryData.Add(SoundStreamKey, StreamSound);
             }

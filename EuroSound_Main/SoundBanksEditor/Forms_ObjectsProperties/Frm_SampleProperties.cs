@@ -1,9 +1,12 @@
-﻿using NAudio.Wave;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.AudioFunctionsLibrary;
+using EuroSound_Application.TreeViewLibraryFunctions;
+using NAudio.Wave;
 using System;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.SoundBanksEditor
 {
     public partial class Frm_SampleProperties : Form
     {

@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using EuroSound_Application.TreeViewLibraryFunctions;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.SoundBanksEditor
 {
     public partial class Frm_Soundbanks_Main
     {
@@ -12,7 +13,6 @@ namespace EuroSound_Application
         #region ContextMenu_Folders_EVENTS
         private void ContextMenu_Folders_AddAudio_Click(object sender, System.EventArgs e)
         {
-            int Status;
             string Name = GenericFunctions.OpenInputBox("Enter a name for new a new audio.", "New Audio");
             if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, Name))
             {
@@ -26,17 +26,29 @@ namespace EuroSound_Application
                     if (!string.IsNullOrEmpty(AudioPath))
                     {
                         string MD5Hash = GenericFunctions.CalculateMD5(AudioPath);
-                        Status = EXSoundbanksFunctions.LoadAudioAndAddToList(AudioPath, Name, AudioDataDict, MD5Hash);
-                        if (Status == 0)
+                        if (!AudioDataDict.ContainsKey(MD5Hash))
                         {
-                            TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, MD5Hash, Name, 7, 7, "Audio", Color.Black, TreeView_File);
-                            ProjectInfo.FileHasBeenModified = true;
+                            if (EXSoundbanksFunctions.AudioIsValid(AudioPath))
+                            {
+                                EXAudio NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath, true);
+                                if (NewAudio != null)
+                                {
+                                    NewAudio.DisplayName = Name;
+
+                                    /*Add data to dictionary and create tree node*/
+                                    AudioDataDict.Add(MD5Hash, NewAudio);
+                                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, MD5Hash, Name, 7, 7, "Audio", Color.Black, TreeView_File);
+
+                                    ProjectInfo.FileHasBeenModified = true;
+                                }
+                            }
+                            else
+                            {
+                                //File incorrect
+                                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrect"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
-                        else if (Status == -1)
-                        {
-                            MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrect"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                        else if (Status == -2)
+                        else
                         {
                             MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AudioExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
@@ -313,7 +325,7 @@ namespace EuroSound_Application
             List<string> Dependencies = EXSoundbanksFunctions.GetAudioDependencies(TreeView_File.SelectedNode.Name, TreeView_File.SelectedNode.Text, SoundsList, true);
             if (Dependencies.Count > 0)
             {
-                EuroSound_ItemUsage ShowDependencies = new EuroSound_ItemUsage(Dependencies)
+                EuroSound_ItemUsage ShowDependencies = new EuroSound_ItemUsage(Dependencies, Tag.ToString(), "Frm_Soundbanks_Main")
                 {
                     Text = "Audio Usage",
                     Owner = Owner,

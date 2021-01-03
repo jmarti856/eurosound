@@ -1,9 +1,11 @@
-﻿using System;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.TreeViewLibraryFunctions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.StreamSounds
 {
     public partial class Frm_StreamSoundsEditorMain
     {
@@ -67,7 +69,7 @@ namespace EuroSound_Application
 
         internal string OpenSaveAsDialog(TreeView TreeView_File, Dictionary<uint, EXSoundStream> StreamSoundsList, ProjectFile FileProperties)
         {
-            string SavePath = GenericFunctions.SaveFileBrowser("EuroSound Files (*.esf)|*.esf|All files (*.*)|*.*", 1, true, Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, FileProperties.Hashcode));
+            string SavePath = GenericFunctions.SaveFileBrowser("EuroSound Files (*.esf)|*.esf|All files (*.*)|*.*", 1, true, "StreamFile");
             if (!string.IsNullOrEmpty(SavePath))
             {
                 if (Directory.Exists(Path.GetDirectoryName(SavePath)))

@@ -47,6 +47,9 @@ namespace EuroSound_Application
             this.MenuItemWindow_Separator = new System.Windows.Forms.ToolStripSeparator();
             this.MainMenu_Tools = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenuTools_SFXDataGen = new System.Windows.Forms.ToolStripMenuItem();
+            this.MainMenuTools_Separator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MainMenuTools_BackupSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.MainMenuTools_RestoreSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu_Help = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemHelp_About = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemHelp_OnlineHelp = new System.Windows.Forms.ToolStripMenuItem();
@@ -184,7 +187,10 @@ namespace EuroSound_Application
             // MainMenu_Tools
             // 
             this.MainMenu_Tools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MainMenuTools_SFXDataGen});
+            this.MainMenuTools_SFXDataGen,
+            this.MainMenuTools_Separator1,
+            this.MainMenuTools_BackupSettings,
+            this.MainMenuTools_RestoreSettings});
             this.MainMenu_Tools.Name = "MainMenu_Tools";
             this.MainMenu_Tools.Size = new System.Drawing.Size(46, 20);
             this.MainMenu_Tools.Text = "Tools";
@@ -192,9 +198,28 @@ namespace EuroSound_Application
             // MainMenuTools_SFXDataGen
             // 
             this.MainMenuTools_SFXDataGen.Name = "MainMenuTools_SFXDataGen";
-            this.MainMenuTools_SFXDataGen.Size = new System.Drawing.Size(177, 22);
+            this.MainMenuTools_SFXDataGen.Size = new System.Drawing.Size(180, 22);
             this.MainMenuTools_SFXDataGen.Text = "SFX Data Binary File";
             this.MainMenuTools_SFXDataGen.Click += new System.EventHandler(this.MainMenuTools_SFXDataGen_Click);
+            // 
+            // MainMenuTools_Separator1
+            // 
+            this.MainMenuTools_Separator1.Name = "MainMenuTools_Separator1";
+            this.MainMenuTools_Separator1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // MainMenuTools_BackupSettings
+            // 
+            this.MainMenuTools_BackupSettings.Name = "MainMenuTools_BackupSettings";
+            this.MainMenuTools_BackupSettings.Size = new System.Drawing.Size(180, 22);
+            this.MainMenuTools_BackupSettings.Text = "Backup Settings...";
+            this.MainMenuTools_BackupSettings.Click += new System.EventHandler(this.MainMenuTools_BackupSettings_Click);
+            // 
+            // MainMenuTools_RestoreSettings
+            // 
+            this.MainMenuTools_RestoreSettings.Name = "MainMenuTools_RestoreSettings";
+            this.MainMenuTools_RestoreSettings.Size = new System.Drawing.Size(180, 22);
+            this.MainMenuTools_RestoreSettings.Text = "Restore Settings...";
+            this.MainMenuTools_RestoreSettings.Click += new System.EventHandler(this.MainMenuTools_RestoreSettings_Click);
             // 
             // MainMenu_Help
             // 
@@ -226,8 +251,8 @@ namespace EuroSound_Application
             this.File});
             this.MainStatusBar.ShowPanels = true;
             this.MainStatusBar.Size = new System.Drawing.Size(1421, 22);
-            this.MainStatusBar.TabIndex = 3;
-            this.MainStatusBar.Text = "statusBarWithToolTips1";
+            this.MainStatusBar.TabIndex = 1;
+            this.MainStatusBar.Text = "EuroSound_StatusBar";
             // 
             // File
             // 
@@ -266,7 +291,6 @@ namespace EuroSound_Application
         private System.Windows.Forms.MenuStrip MenuStrip_MainMenu;
         private System.Windows.Forms.ToolStripMenuItem MainMenu_File;
         private System.Windows.Forms.ToolStripMenuItem MainMenu_View;
-        private System.Windows.Forms.ToolStripMenuItem MainMenu_Window;
         private System.Windows.Forms.ToolStripMenuItem MainMenu_Help;
         private System.Windows.Forms.ToolStripMenuItem MenuItemFile_OpenESF;
         private System.Windows.Forms.ToolStripMenuItem MenuItemView_StatusBar;
@@ -285,5 +309,9 @@ namespace EuroSound_Application
         private System.Windows.Forms.ToolStripMenuItem MainMenuTools_SFXDataGen;
         private CustomStatusBar.StatusBarToolTips MainStatusBar;
         private System.Windows.Forms.StatusBarPanel File;
+        private System.Windows.Forms.ToolStripMenuItem MainMenu_Window;
+        private System.Windows.Forms.ToolStripSeparator MainMenuTools_Separator1;
+        private System.Windows.Forms.ToolStripMenuItem MainMenuTools_BackupSettings;
+        private System.Windows.Forms.ToolStripMenuItem MainMenuTools_RestoreSettings;
     }
 }

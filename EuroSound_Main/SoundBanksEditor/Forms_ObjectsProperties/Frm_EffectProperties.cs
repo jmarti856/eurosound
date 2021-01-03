@@ -1,7 +1,9 @@
-﻿using System;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.TreeViewLibraryFunctions;
+using System;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.SoundBanksEditor
 {
     public partial class Frm_EffectProperties : Form
     {
@@ -173,5 +175,29 @@ namespace EuroSound_Application
                 }
             }
         }
+
+        private void List_Samples_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (List_Samples.SelectedItems.Count > 0)
+            {
+                string SampleName = List_Samples.SelectedItems[0].ToString();
+                EXSample SelectedSample = EXSoundbanksFunctions.GetSampleByName(SampleName, SelectedSound);
+
+                if (SelectedSample != null)
+                {
+                    Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(SelectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(SelectedSound.Flags))
+                    {
+                        Text = GenericFunctions.TruncateLongString(SampleName, 25) + " - Properties",
+                        Tag = Tag,
+                        Owner = this,
+                        ShowInTaskbar = false
+                    };
+                    FormSampleProps.ShowDialog();
+                    FormSampleProps.Dispose();
+                }
+            }
+        }
+
+
     }
 }

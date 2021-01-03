@@ -1,7 +1,8 @@
-﻿using System.IO;
+﻿using EuroSound_Application.TreeViewLibraryFunctions;
+using System.IO;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.StreamSounds
 {
     public partial class Frm_StreamSounds_Properties : Form
     {
@@ -24,15 +25,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void Frm_StreamSounds_Properties_Load(object sender, System.EventArgs e)
         {
-            /*Sound Defines*/
-            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsMD5, GlobalPreferences.HT_SoundsPath))
-            {
-                Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
-            }
-            Hashcodes.AddHashcodesToCombobox(Combobox_Hashcode, Hashcodes.SFX_Defines);
-
             /*Editable Data*/
-            Combobox_Hashcode.SelectedValue = SelectedSound.Hashcode;
             Numeric_BaseVolume.Value = SelectedSound.BaseVolume;
 
             /*ADPCM Data*/
@@ -47,7 +40,7 @@ namespace EuroSound_Application
             Frm_StreamSounds_MarkersEditor MarkersEditr = new Frm_StreamSounds_MarkersEditor(SelectedSound)
             {
                 Text = "Streamed Sound Markers Editor",
-                Tag = Tag,
+                Tag = Tag.ToString(),
                 Owner = this,
                 ShowInTaskbar = false
             };
@@ -78,10 +71,6 @@ namespace EuroSound_Application
 
         private void Button_OK_Click(object sender, System.EventArgs e)
         {
-            if (Combobox_Hashcode.SelectedValue != null)
-            {
-                SelectedSound.Hashcode = (uint)Combobox_Hashcode.SelectedValue;
-            }
             SelectedSound.BaseVolume = (uint)Numeric_BaseVolume.Value;
             SelectedSound.OutputThisSound = CheckBox_OutputThisSound.Checked;
 

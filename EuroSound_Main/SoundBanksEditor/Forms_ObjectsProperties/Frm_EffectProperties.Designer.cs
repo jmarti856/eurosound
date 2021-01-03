@@ -1,4 +1,4 @@
-﻿namespace EuroSound_Application
+﻿namespace EuroSound_Application.SoundBanksEditor
 {
     partial class Frm_EffectProperties
     {
@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_EffectProperties));
             this.groupbox_params = new System.Windows.Forms.GroupBox();
+            this.Textbox_OuterRadius = new System.Windows.Forms.TextBox();
+            this.Textbox_InnerRadius = new System.Windows.Forms.TextBox();
             this.numeric_mastervolume = new System.Windows.Forms.NumericUpDown();
             this.label_mastervolume = new System.Windows.Forms.Label();
             this.textbox_flags = new System.Windows.Forms.TextBox();
@@ -60,8 +62,6 @@
             this.cbx_hashcode = new System.Windows.Forms.ComboBox();
             this.label_hashcode = new System.Windows.Forms.Label();
             this.Checkbox_OutputThisSound = new System.Windows.Forms.CheckBox();
-            this.Textbox_InnerRadius = new System.Windows.Forms.TextBox();
-            this.Textbox_OuterRadius = new System.Windows.Forms.TextBox();
             this.groupbox_params.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_mastervolume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_ducker)).BeginInit();
@@ -109,6 +109,24 @@
             this.groupbox_params.TabIndex = 1;
             this.groupbox_params.TabStop = false;
             this.groupbox_params.Text = "Params:";
+            // 
+            // Textbox_OuterRadius
+            // 
+            this.Textbox_OuterRadius.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_OuterRadius.Location = new System.Drawing.Point(107, 120);
+            this.Textbox_OuterRadius.Name = "Textbox_OuterRadius";
+            this.Textbox_OuterRadius.ReadOnly = true;
+            this.Textbox_OuterRadius.Size = new System.Drawing.Size(134, 20);
+            this.Textbox_OuterRadius.TabIndex = 25;
+            // 
+            // Textbox_InnerRadius
+            // 
+            this.Textbox_InnerRadius.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_InnerRadius.Location = new System.Drawing.Point(107, 94);
+            this.Textbox_InnerRadius.Name = "Textbox_InnerRadius";
+            this.Textbox_InnerRadius.ReadOnly = true;
+            this.Textbox_InnerRadius.Size = new System.Drawing.Size(134, 20);
+            this.Textbox_InnerRadius.TabIndex = 24;
             // 
             // numeric_mastervolume
             // 
@@ -401,6 +419,7 @@
             this.List_Samples.ScrollAlwaysVisible = true;
             this.List_Samples.Size = new System.Drawing.Size(518, 274);
             this.List_Samples.TabIndex = 0;
+            this.List_Samples.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.List_Samples_MouseDoubleClick);
             // 
             // button_ok
             // 
@@ -467,24 +486,6 @@
             this.Checkbox_OutputThisSound.TabIndex = 5;
             this.Checkbox_OutputThisSound.Text = "Output This Sound";
             this.Checkbox_OutputThisSound.UseVisualStyleBackColor = true;
-            // 
-            // Textbox_InnerRadius
-            // 
-            this.Textbox_InnerRadius.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Textbox_InnerRadius.Location = new System.Drawing.Point(107, 94);
-            this.Textbox_InnerRadius.Name = "Textbox_InnerRadius";
-            this.Textbox_InnerRadius.ReadOnly = true;
-            this.Textbox_InnerRadius.Size = new System.Drawing.Size(134, 20);
-            this.Textbox_InnerRadius.TabIndex = 24;
-            // 
-            // Textbox_OuterRadius
-            // 
-            this.Textbox_OuterRadius.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Textbox_OuterRadius.Location = new System.Drawing.Point(107, 120);
-            this.Textbox_OuterRadius.Name = "Textbox_OuterRadius";
-            this.Textbox_OuterRadius.ReadOnly = true;
-            this.Textbox_OuterRadius.Size = new System.Drawing.Size(134, 20);
-            this.Textbox_OuterRadius.TabIndex = 25;
             // 
             // Frm_EffectProperties
             // 

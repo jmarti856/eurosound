@@ -1,6 +1,7 @@
-﻿using System.Windows.Forms;
+﻿using EuroSound_Application.ApplicationPreferences;
+using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.ApplicationPreferencesForms
 {
     public partial class Frm_HashTablesConfig : Form
     {
@@ -48,9 +49,10 @@ namespace EuroSound_Application
 
         private void Frm_HashTablesConfig_FormClosing(object sender, FormClosingEventArgs e)
         {
-            GlobalPreferences.HT_SoundsPathTEMPORAL = Textbox_HT_Sound.Text;
-            GlobalPreferences.HT_SoundsDataPathTEMPORAL = Textbox_HT_Sound_Data.Text;
-            GlobalPreferences.HT_MusicPathTEMPORAL = Textbox_HT_Music.Text;
+            Form OpenForm = GenericFunctions.GetFormByName("Frm_MainPreferences", Tag.ToString());
+            ((Frm_MainPreferences)OpenForm).HT_SoundsPathTEMPORAL = Textbox_HT_Sound.Text;
+            ((Frm_MainPreferences)OpenForm).HT_SoundsDataPathTEMPORAL = Textbox_HT_Sound_Data.Text;
+            ((Frm_MainPreferences)OpenForm).HT_MusicPathTEMPORAL = Textbox_HT_Music.Text;
         }
     }
 }

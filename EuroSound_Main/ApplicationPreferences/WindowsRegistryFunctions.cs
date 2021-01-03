@@ -1,6 +1,7 @@
-﻿using Microsoft.Win32;
+﻿using EuroSound_Application.ApplicationPreferences;
+using Microsoft.Win32;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.ApplicationRegistryFunctions
 {
     internal class WindowsRegistryFunctions
     {
@@ -17,7 +18,7 @@ namespace EuroSound_Application
         #region Create Keys and SubKeys
         internal void CreateEuroSoundKeyIfNotExists()
         {
-            if (EurocomKey.OpenSubKey("Eurocomm", true) == null)
+            if (EurocomKey.OpenSubKey("EuroSound", true) == null)
             {
                 EurocomKey.CreateSubKey("EuroSound");
             }

@@ -1,17 +1,18 @@
-﻿using System;
+﻿using EuroSound_Application.TreeViewLibraryFunctions;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using YamlDotNet.RepresentationModel;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.SoundBanksEditor
 {
-    public class YamlReader
+    public class SoundBanksYMLReader
     {
         internal List<string> Reports;
 
-        internal List<string> GetFilePaths(string LevelSoundBankPath, string FilePath)
+        internal List<string> GetFilePathsFromList(string LevelSoundBankPath, string FilePath)
         {
             List<string> Paths = new List<string>();
             Reports = new List<string>();
@@ -27,6 +28,8 @@ namespace EuroSound_Application
                         Paths.Add(Path.GetDirectoryName(FilePath) + "\\" + line[1] + "\\effectProperties.yml");
                     }
                 }
+                Array.Clear(lines, 0, lines.Length);
+                GC.Collect();
             }
             else
             {
@@ -43,7 +46,7 @@ namespace EuroSound_Application
             string SoundName;
 
             //Read sounds from the unpacker folder
-            SoundsPaths = GetFilePaths(FilePath, FilePath);
+            SoundsPaths = GetFilePathsFromList(FilePath, FilePath);
             foreach (string path in SoundsPaths)
             {
                 SoundName = new DirectoryInfo(Path.GetDirectoryName(path)).Name;
@@ -53,26 +56,21 @@ namespace EuroSound_Application
                 {
                     Reports.Add("0Hashcode not found for the sound ");
                 }
-                ReadYamlFile(SoundsList, AudioDict, TreeViewControl, path, SoundName, SoundHashcode, false, FileProperties);
+                ReadYmlFile(SoundsList, AudioDict, TreeViewControl, path, SoundName, SoundHashcode, false, FileProperties);
             }
 
-            //Expand only root nodes
+            //Collapse root nodes
             TreeViewControl.Invoke((MethodInvoker)delegate
             {
                 TreeViewControl.Nodes[0].Collapse();
-                TreeViewControl.Nodes[0].Expand();
-
                 TreeViewControl.Nodes[1].Collapse();
-                TreeViewControl.Nodes[1].Expand();
-
                 TreeViewControl.Nodes[2].Collapse();
-                TreeViewControl.Nodes[2].Expand();
             });
 
             ShowErrorsWarningsList(FilePath);
         }
 
-        internal void ReadYamlFile(Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDict, TreeView TreeViewControl, string FilePath, string SoundName, uint SoundHashcode, bool ShowResultsAtEnd, ProjectFile FileProperties)
+        internal void ReadYmlFile(Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDict, TreeView TreeViewControl, string FilePath, string SoundName, uint SoundHashcode, bool ShowResultsAtEnd, ProjectFile FileProperties)
         {
             uint SoundID;
             int[] CurrentSoundParams;
@@ -180,8 +178,33 @@ namespace EuroSound_Application
                                     {
                                         Reports.Add("1The file: " + AudioPropertiesPath + " can't be loaded because does not exists.");
                                     }
-                                    string MD5AudioFilehash = EXSoundbanksFunctions.LoadAudioAddToListAndTreeNode(AudioPath, SampleName, AudioDict, TreeViewControl, AudioProps, Reports);
-                                    NewSample.ComboboxSelectedAudio = MD5AudioFilehash;
+
+                                    if (EXSoundbanksFunctions.AudioIsValid(AudioPath))
+                                    {
+                                        string MD5AudioFilehash = GenericFunctions.CalculateMD5(AudioPath);
+                                        EXAudio NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath, true);
+                                        if (NewAudio.PCMdata != null)
+                                        {
+                                            NewAudio.DisplayName = SampleName;
+                                            NewAudio.Flags = Convert.ToUInt16(AudioProps[0]);
+                                            NewAudio.PSIsample = Convert.ToUInt32(AudioProps[1]);
+                                            NewAudio.LoopOffset = Convert.ToUInt32(AudioProps[2]);
+
+                                            //Add Audio to dictionary and tree node
+                                            AudioDict.Add(MD5AudioFilehash, NewAudio);
+                                            TreeNodeFunctions.TreeNodeAddNewNode("AudioData", MD5AudioFilehash, "AD_" + SampleName, 7, 7, "Audio", Color.Black, TreeViewControl);
+                                        }
+                                        else
+                                        {
+                                            Reports.Add("0The file: " + AudioPath + " can't be readed, seems that is being used by another process.");
+                                        }
+
+                                        NewSample.ComboboxSelectedAudio = MD5AudioFilehash;
+                                    }
+                                    else
+                                    {
+                                        Reports.Add("0The file: " + AudioPath + " has not a valid format.");
+                                    }
                                 }
                                 else
                                 {

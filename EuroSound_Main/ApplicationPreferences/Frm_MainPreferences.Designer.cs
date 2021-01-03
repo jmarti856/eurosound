@@ -1,5 +1,5 @@
 ﻿
-namespace EuroSound_Application
+namespace EuroSound_Application.ApplicationPreferencesForms
 {
     partial class Frm_MainPreferences
     {
@@ -110,6 +110,7 @@ namespace EuroSound_Application
             this.MinimizeBox = false;
             this.Name = "Frm_MainPreferences";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Tag = "Prefs";
             this.Text = "Preferences";
             this.Load += new System.EventHandler(this.Frm_MainPreferences_Load);
             this.ResumeLayout(false);

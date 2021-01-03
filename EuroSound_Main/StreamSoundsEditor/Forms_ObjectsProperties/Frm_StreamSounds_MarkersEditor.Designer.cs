@@ -1,5 +1,5 @@
 ﻿
-namespace EuroSound_Application
+namespace EuroSound_Application.StreamSounds
 {
     partial class Frm_StreamSounds_MarkersEditor
     {
@@ -30,6 +30,7 @@ namespace EuroSound_Application
         private void InitializeComponent()
         {
             this.GroupBox_MarkerData = new System.Windows.Forms.GroupBox();
+            this.Button_Clear = new System.Windows.Forms.Button();
             this.Button_AddMarker = new System.Windows.Forms.Button();
             this.Numeric_MarkerLoopStart = new System.Windows.Forms.NumericUpDown();
             this.Label_LoopStart = new System.Windows.Forms.Label();
@@ -43,18 +44,23 @@ namespace EuroSound_Application
             this.Label_MarkerPosition = new System.Windows.Forms.Label();
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
-            this.Label_Markers = new System.Windows.Forms.Label();
+            this.Label_StartMarkers = new System.Windows.Forms.Label();
             this.ListView_Markers = new System.Windows.Forms.ListView();
+            this.Col_MarkerPos = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_IsInstant = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_InstantBuffer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_StateA = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_StateB = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Label_MarkerData = new System.Windows.Forms.Label();
+            this.ListView_MarkerData = new System.Windows.Forms.ListView();
             this.Col_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Position = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_Type = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_MusicMarkerType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Flags = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Extra = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_LoopStart = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_MarkerCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_LoopMarker = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_MarkerPos = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Button_Clear = new System.Windows.Forms.Button();
+            this.Col_LoopMarkerCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.GroupBox_MarkerData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_MarkerLoopStart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_MarkerPosition)).BeginInit();
@@ -78,16 +84,28 @@ namespace EuroSound_Application
             this.GroupBox_MarkerData.Controls.Add(this.Label_MarkerPosition);
             this.GroupBox_MarkerData.Location = new System.Drawing.Point(12, 12);
             this.GroupBox_MarkerData.Name = "GroupBox_MarkerData";
-            this.GroupBox_MarkerData.Size = new System.Drawing.Size(514, 92);
+            this.GroupBox_MarkerData.Size = new System.Drawing.Size(512, 92);
             this.GroupBox_MarkerData.TabIndex = 1;
             this.GroupBox_MarkerData.TabStop = false;
             this.GroupBox_MarkerData.Text = "Marker Data";
             // 
+            // Button_Clear
+            // 
+            this.Button_Clear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Clear.Location = new System.Drawing.Point(363, 53);
+            this.Button_Clear.Name = "Button_Clear";
+            this.Button_Clear.Size = new System.Drawing.Size(78, 21);
+            this.Button_Clear.TabIndex = 12;
+            this.Button_Clear.Text = "Clear All";
+            this.Button_Clear.UseVisualStyleBackColor = true;
+            this.Button_Clear.Click += new System.EventHandler(this.Button_Clear_Click);
+            // 
             // Button_AddMarker
             // 
-            this.Button_AddMarker.Location = new System.Drawing.Point(413, 53);
+            this.Button_AddMarker.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_AddMarker.Location = new System.Drawing.Point(447, 53);
             this.Button_AddMarker.Name = "Button_AddMarker";
-            this.Button_AddMarker.Size = new System.Drawing.Size(36, 21);
+            this.Button_AddMarker.Size = new System.Drawing.Size(59, 21);
             this.Button_AddMarker.TabIndex = 11;
             this.Button_AddMarker.Text = "Add";
             this.Button_AddMarker.UseVisualStyleBackColor = true;
@@ -120,7 +138,7 @@ namespace EuroSound_Application
             this.Textbox_Extra.Location = new System.Drawing.Point(287, 53);
             this.Textbox_Extra.Name = "Textbox_Extra";
             this.Textbox_Extra.ReadOnly = true;
-            this.Textbox_Extra.Size = new System.Drawing.Size(110, 20);
+            this.Textbox_Extra.Size = new System.Drawing.Size(70, 20);
             this.Textbox_Extra.TabIndex = 7;
             this.Textbox_Extra.Text = "0";
             // 
@@ -194,7 +212,7 @@ namespace EuroSound_Application
             // Button_OK
             // 
             this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_OK.Location = new System.Drawing.Point(370, 469);
+            this.Button_OK.Location = new System.Drawing.Point(368, 480);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
             this.Button_OK.TabIndex = 6;
@@ -206,7 +224,7 @@ namespace EuroSound_Application
             // 
             this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_Cancel.Location = new System.Drawing.Point(451, 469);
+            this.Button_Cancel.Location = new System.Drawing.Point(449, 480);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.Button_Cancel.TabIndex = 7;
@@ -214,35 +232,90 @@ namespace EuroSound_Application
             this.Button_Cancel.UseVisualStyleBackColor = true;
             this.Button_Cancel.Click += new System.EventHandler(this.Button_Cancel_Click);
             // 
-            // Label_Markers
+            // Label_StartMarkers
             // 
-            this.Label_Markers.AutoSize = true;
-            this.Label_Markers.Location = new System.Drawing.Point(9, 107);
-            this.Label_Markers.Name = "Label_Markers";
-            this.Label_Markers.Size = new System.Drawing.Size(48, 13);
-            this.Label_Markers.TabIndex = 4;
-            this.Label_Markers.Text = "Markers:";
+            this.Label_StartMarkers.AutoSize = true;
+            this.Label_StartMarkers.Location = new System.Drawing.Point(9, 107);
+            this.Label_StartMarkers.Name = "Label_StartMarkers";
+            this.Label_StartMarkers.Size = new System.Drawing.Size(68, 13);
+            this.Label_StartMarkers.TabIndex = 4;
+            this.Label_StartMarkers.Text = "Start Marker:";
             // 
             // ListView_Markers
             // 
+            this.ListView_Markers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ListView_Markers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Col_Name,
-            this.Col_Position,
-            this.Col_Type,
-            this.Col_Flags,
-            this.Col_Extra,
-            this.Col_LoopStart,
-            this.Col_MarkerCount,
-            this.Col_LoopMarker,
-            this.Col_MarkerPos});
+            this.Col_MarkerPos,
+            this.Col_IsInstant,
+            this.Col_InstantBuffer,
+            this.Col_StateA,
+            this.Col_StateB});
             this.ListView_Markers.GridLines = true;
             this.ListView_Markers.HideSelection = false;
             this.ListView_Markers.Location = new System.Drawing.Point(12, 123);
             this.ListView_Markers.Name = "ListView_Markers";
-            this.ListView_Markers.Size = new System.Drawing.Size(514, 340);
+            this.ListView_Markers.Size = new System.Drawing.Size(512, 145);
             this.ListView_Markers.TabIndex = 8;
             this.ListView_Markers.UseCompatibleStateImageBehavior = false;
             this.ListView_Markers.View = System.Windows.Forms.View.Details;
+            // 
+            // Col_MarkerPos
+            // 
+            this.Col_MarkerPos.Text = "Marker Pos";
+            this.Col_MarkerPos.Width = 115;
+            // 
+            // Col_IsInstant
+            // 
+            this.Col_IsInstant.Text = "Is Instant";
+            this.Col_IsInstant.Width = 75;
+            // 
+            // Col_InstantBuffer
+            // 
+            this.Col_InstantBuffer.Text = "Instant Buffer";
+            this.Col_InstantBuffer.Width = 116;
+            // 
+            // Col_StateA
+            // 
+            this.Col_StateA.Text = "State A";
+            this.Col_StateA.Width = 88;
+            // 
+            // Col_StateB
+            // 
+            this.Col_StateB.Text = "State B";
+            this.Col_StateB.Width = 110;
+            // 
+            // Label_MarkerData
+            // 
+            this.Label_MarkerData.AutoSize = true;
+            this.Label_MarkerData.Location = new System.Drawing.Point(12, 271);
+            this.Label_MarkerData.Name = "Label_MarkerData";
+            this.Label_MarkerData.Size = new System.Drawing.Size(69, 13);
+            this.Label_MarkerData.TabIndex = 9;
+            this.Label_MarkerData.Text = "Marker Data:";
+            // 
+            // ListView_MarkerData
+            // 
+            this.ListView_MarkerData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ListView_MarkerData.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Col_Name,
+            this.Col_Position,
+            this.Col_MusicMarkerType,
+            this.Col_Flags,
+            this.Col_Extra,
+            this.Col_LoopStart,
+            this.Col_MarkerCount,
+            this.Col_LoopMarkerCount});
+            this.ListView_MarkerData.GridLines = true;
+            this.ListView_MarkerData.HideSelection = false;
+            this.ListView_MarkerData.Location = new System.Drawing.Point(12, 287);
+            this.ListView_MarkerData.Name = "ListView_MarkerData";
+            this.ListView_MarkerData.Size = new System.Drawing.Size(512, 187);
+            this.ListView_MarkerData.TabIndex = 10;
+            this.ListView_MarkerData.UseCompatibleStateImageBehavior = false;
+            this.ListView_MarkerData.View = System.Windows.Forms.View.Details;
             // 
             // Col_Name
             // 
@@ -251,49 +324,37 @@ namespace EuroSound_Application
             // Col_Position
             // 
             this.Col_Position.Text = "Position";
-            this.Col_Position.Width = 72;
+            this.Col_Position.Width = 56;
             // 
-            // Col_Type
+            // Col_MusicMarkerType
             // 
-            this.Col_Type.Text = "Type";
-            this.Col_Type.Width = 66;
+            this.Col_MusicMarkerType.Text = "Type";
+            this.Col_MusicMarkerType.Width = 51;
             // 
             // Col_Flags
             // 
             this.Col_Flags.Text = "Flags";
+            this.Col_Flags.Width = 50;
             // 
             // Col_Extra
             // 
             this.Col_Extra.Text = "Extra";
+            this.Col_Extra.Width = 52;
             // 
             // Col_LoopStart
             // 
             this.Col_LoopStart.Text = "Loop Start";
-            this.Col_LoopStart.Width = 87;
+            this.Col_LoopStart.Width = 69;
             // 
             // Col_MarkerCount
             // 
-            this.Col_MarkerCount.Text = "Marker Count";
-            this.Col_MarkerCount.Width = 96;
+            this.Col_MarkerCount.Text = "Count";
+            this.Col_MarkerCount.Width = 54;
             // 
-            // Col_LoopMarker
+            // Col_LoopMarkerCount
             // 
-            this.Col_LoopMarker.Text = "Loop Marker Count";
-            this.Col_LoopMarker.Width = 108;
-            // 
-            // Col_MarkerPos
-            // 
-            this.Col_MarkerPos.Text = "Marker Pos";
-            // 
-            // Button_Clear
-            // 
-            this.Button_Clear.Location = new System.Drawing.Point(455, 53);
-            this.Button_Clear.Name = "Button_Clear";
-            this.Button_Clear.Size = new System.Drawing.Size(53, 21);
-            this.Button_Clear.TabIndex = 12;
-            this.Button_Clear.Text = "Clear All";
-            this.Button_Clear.UseVisualStyleBackColor = true;
-            this.Button_Clear.Click += new System.EventHandler(this.Button_Clear_Click);
+            this.Col_LoopMarkerCount.Text = "Loop Marker Count";
+            this.Col_LoopMarkerCount.Width = 108;
             // 
             // Frm_StreamSounds_MarkersEditor
             // 
@@ -301,9 +362,11 @@ namespace EuroSound_Application
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Button_Cancel;
-            this.ClientSize = new System.Drawing.Size(538, 504);
+            this.ClientSize = new System.Drawing.Size(536, 515);
+            this.Controls.Add(this.ListView_MarkerData);
+            this.Controls.Add(this.Label_MarkerData);
             this.Controls.Add(this.ListView_Markers);
-            this.Controls.Add(this.Label_Markers);
+            this.Controls.Add(this.Label_StartMarkers);
             this.Controls.Add(this.Button_Cancel);
             this.Controls.Add(this.Button_OK);
             this.Controls.Add(this.GroupBox_MarkerData);
@@ -337,18 +400,24 @@ namespace EuroSound_Application
         private System.Windows.Forms.Label Label_MarkerPosition;
         private System.Windows.Forms.Button Button_OK;
         private System.Windows.Forms.Button Button_Cancel;
-        private System.Windows.Forms.Label Label_Markers;
+        private System.Windows.Forms.Label Label_StartMarkers;
         private System.Windows.Forms.Button Button_AddMarker;
         private System.Windows.Forms.ListView ListView_Markers;
+        private System.Windows.Forms.Button Button_Clear;
+        private System.Windows.Forms.ColumnHeader Col_MarkerPos;
+        private System.Windows.Forms.ColumnHeader Col_IsInstant;
+        private System.Windows.Forms.ColumnHeader Col_InstantBuffer;
+        private System.Windows.Forms.ColumnHeader Col_StateA;
+        private System.Windows.Forms.ColumnHeader Col_StateB;
+        private System.Windows.Forms.Label Label_MarkerData;
+        private System.Windows.Forms.ListView ListView_MarkerData;
         private System.Windows.Forms.ColumnHeader Col_Name;
         private System.Windows.Forms.ColumnHeader Col_Position;
-        private System.Windows.Forms.ColumnHeader Col_Type;
-        private System.Windows.Forms.ColumnHeader Col_MarkerCount;
-        private System.Windows.Forms.ColumnHeader Col_LoopMarker;
-        private System.Windows.Forms.ColumnHeader Col_LoopStart;
+        private System.Windows.Forms.ColumnHeader Col_MusicMarkerType;
         private System.Windows.Forms.ColumnHeader Col_Flags;
         private System.Windows.Forms.ColumnHeader Col_Extra;
-        private System.Windows.Forms.ColumnHeader Col_MarkerPos;
-        private System.Windows.Forms.Button Button_Clear;
+        private System.Windows.Forms.ColumnHeader Col_LoopStart;
+        private System.Windows.Forms.ColumnHeader Col_MarkerCount;
+        private System.Windows.Forms.ColumnHeader Col_LoopMarkerCount;
     }
 }

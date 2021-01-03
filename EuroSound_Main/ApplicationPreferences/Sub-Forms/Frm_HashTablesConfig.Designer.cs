@@ -1,5 +1,5 @@
 ﻿
-namespace EuroSound_Application
+namespace EuroSound_Application.ApplicationPreferencesForms
 {
     partial class Frm_HashTablesConfig
     {

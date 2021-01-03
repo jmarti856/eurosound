@@ -1,17 +1,20 @@
-﻿using System;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.GenerateSoundBankSFX;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.SoundBanksEditor
 {
     public partial class Frm_BuildSFXFile : Form
     {
         private ProjectFile CurrentFileProperties;
         private string FileName;
         private List<string> Reports = new List<string>();
+
         public Frm_BuildSFXFile(ProjectFile FileProperties, string SoundBankFinalName)
         {
             InitializeComponent();

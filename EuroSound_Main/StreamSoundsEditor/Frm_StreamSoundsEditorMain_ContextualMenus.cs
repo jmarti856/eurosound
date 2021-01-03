@@ -1,8 +1,9 @@
-﻿using System;
+﻿using EuroSound_Application.TreeViewLibraryFunctions;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.StreamSounds
 {
     public partial class Frm_StreamSoundsEditorMain
     {
@@ -35,8 +36,7 @@ namespace EuroSound_Application
                     //Add Empty Sound
                     EXSoundStream Sound = new EXSoundStream
                     {
-                        DisplayName = Name,
-                        Hashcode = 0,
+                        DisplayName = Name
                     };
 
                     if (!StreamSoundsList.ContainsKey(SoundID))

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EuroSound_Application.ApplicationPreferences;
+using System;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -35,6 +36,11 @@ namespace EuroSound_Application
             {
                 Combobox_FileHashcode.SelectedValue = CurrentFileProperties.Hashcode;
             }
+
+            if (CurrentFileProperties.Hashcode == 65535)
+            {
+                Combobox_FileHashcode.Enabled = false;
+            }
         }
 
         //*===============================================================================================
@@ -52,7 +58,10 @@ namespace EuroSound_Application
             CurrentFileProperties.FileName = Textbox_FileName.Text;
             //CurrentFileProperties.TypeOfData = Combobox_TypeOfData.SelectedIndex;
 
-            CurrentFileProperties.Hashcode = Convert.ToUInt32(Combobox_FileHashcode.SelectedValue.ToString());
+            if (Combobox_FileHashcode.SelectedValue != null)
+            {
+                CurrentFileProperties.Hashcode = Convert.ToUInt32(Combobox_FileHashcode.SelectedValue.ToString());
+            }
 
             /*Update Current File label*/
             GenericFunctions.SetCurrentFileLabel(CurrentFileProperties.FileName);

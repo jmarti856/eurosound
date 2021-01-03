@@ -1,4 +1,4 @@
-﻿namespace EuroSound_Application
+﻿namespace EuroSound_Application.ApplicationPreferences
 {
     internal static class GlobalPreferences
     {
@@ -24,26 +24,6 @@
         internal static string MusicOutputPath;
         internal static int ColorWavesControl;
         internal static int BackColorWavesControl;
-
-        //*===============================================================================================
-        //* TEMPORAL PROPERTIES
-        //*===============================================================================================
-        //Frm_HashTablesConfig
-        internal static string HT_SoundsPathTEMPORAL;
-        internal static string HT_SoundsDataPathTEMPORAL;
-        internal static string HT_MusicPathTEMPORAL;
-
-        //Frm_TreeViewPrefs
-        internal static string SelectedFontTEMPORAL;
-        internal static int TreeViewIndentTEMPORAL;
-        internal static bool ShowLinesTEMPORAL;
-        internal static bool ShowRootLinesTEMPORAL;
-
-        //Frm_GeneralPreferences
-        internal static string SFXOutputPathTEMPORAL;
-        internal static string MusicOutputPathTEMPORAL;
-        internal static int ColorWavesControlTEMPORAL;
-        internal static int BackColorWavesControlTEMPORAL;
 
         //*===============================================================================================
         //* OTHER TEMPORAL VARIABLES

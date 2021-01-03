@@ -1,8 +1,9 @@
-﻿using NAudio.Wave;
+﻿using EuroSound_Application.SoundBanksEditor;
+using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System.IO;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.AudioFunctionsLibrary
 {
     internal class AudioFunctions
     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EuroSound_Application.SoundBanksEditor;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.GenerateSoundBankSFX
 {
     internal class GenerateSFXSoundBank
     {

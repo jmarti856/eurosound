@@ -43,6 +43,7 @@ namespace EuroSound_Application
             this.ListView_ItemUsage.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Col_Item,
             this.Col_Usage});
+            this.ListView_ItemUsage.FullRowSelect = true;
             this.ListView_ItemUsage.GridLines = true;
             this.ListView_ItemUsage.HideSelection = false;
             this.ListView_ItemUsage.Location = new System.Drawing.Point(12, 12);
@@ -52,6 +53,7 @@ namespace EuroSound_Application
             this.ListView_ItemUsage.TabIndex = 0;
             this.ListView_ItemUsage.UseCompatibleStateImageBehavior = false;
             this.ListView_ItemUsage.View = System.Windows.Forms.View.Details;
+            this.ListView_ItemUsage.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListView_ItemUsage_MouseDoubleClick);
             // 
             // Col_Item
             // 

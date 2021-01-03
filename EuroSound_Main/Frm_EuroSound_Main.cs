@@ -1,4 +1,11 @@
 ﻿using CustomControls;
+using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationPreferencesForms;
+using EuroSound_Application.ApplicationRegistryFunctions;
+using EuroSound_Application.EuroSoundFilesFunctions;
+using EuroSound_Application.SFXData;
+using EuroSound_Application.SoundBanksEditor;
+using EuroSound_Application.StreamSounds;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -193,7 +200,7 @@ namespace EuroSound_Application
         private void MenuItemFile_OpenESF_Click(object sender, EventArgs e)
         {
             GlobalPreferences.StatusBar_ToolTipMode = false;
-            ArgumentFromSplash = GenericFunctions.OpenFileBrowser("EuroSound Files (*.esf)|*.esf", 0);
+            ArgumentFromSplash = GenericFunctions.OpenFileBrowser("Eurosound Files (*.esf)|*.esf", 0);
             if (!string.IsNullOrEmpty(ArgumentFromSplash))
             {
                 OpenFormsWithFileToLoad(ArgumentFromSplash);
@@ -261,7 +268,6 @@ namespace EuroSound_Application
                     Owner = this,
                     MdiParent = this,
                     Tag = FormID.ToString()
-
                 };
 
                 SoundBanksForms.Show();
@@ -324,6 +330,26 @@ namespace EuroSound_Application
             }
 
             return Type;
+        }
+
+        private void MainMenuTools_BackupSettings_Click(object sender, EventArgs e)
+        {
+            string SavePath = GenericFunctions.SaveFileBrowser("Eurosound Registry Files (*.esrf)|*.esrf", 1, true, null);
+            if (!string.IsNullOrEmpty(SavePath))
+            {
+                BackupReloadSettings SettingsFunctions = new BackupReloadSettings();
+                SettingsFunctions.BackupSettings(SavePath);
+            }
+        }
+
+        private void MainMenuTools_RestoreSettings_Click(object sender, EventArgs e)
+        {
+            string FileToLoad = GenericFunctions.OpenFileBrowser("Eurosound Registry Files (*.esrf)|*.esrf", 0);
+            if (!string.IsNullOrEmpty(FileToLoad))
+            {
+                BackupReloadSettings SettingsFunctions = new BackupReloadSettings();
+                SettingsFunctions.RestoreSettings(FileToLoad);
+            }
         }
     }
 }

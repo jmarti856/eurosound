@@ -1,10 +1,32 @@
-﻿using System;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationRegistryFunctions;
+using System;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.ApplicationPreferencesForms
 {
     public partial class Frm_MainPreferences : Form
     {
+        //*===============================================================================================
+        //* TEMPORAL PROPERTIES
+        //*===============================================================================================
+        //Frm_HashTablesConfig
+        internal string HT_SoundsPathTEMPORAL;
+        internal string HT_SoundsDataPathTEMPORAL;
+        internal string HT_MusicPathTEMPORAL;
+
+        //Frm_TreeViewPrefs
+        internal string SelectedFontTEMPORAL;
+        internal int TreeViewIndentTEMPORAL;
+        internal bool ShowLinesTEMPORAL;
+        internal bool ShowRootLinesTEMPORAL;
+
+        //Frm_GeneralPreferences
+        internal string SFXOutputPathTEMPORAL;
+        internal string MusicOutputPathTEMPORAL;
+        internal int ColorWavesControlTEMPORAL;
+        internal int BackColorWavesControlTEMPORAL;
+
         //*===============================================================================================
         //* GLOBAL VARS
         //*===============================================================================================
@@ -39,11 +61,11 @@ namespace EuroSound_Application
             RemoveAllFormsInsidePanel(Panel_SecondaryForms);
 
             /*-----------------[Frm_HashTablesConfig]-----------------*/
-            if (!string.IsNullOrEmpty(GlobalPreferences.HT_SoundsPathTEMPORAL))
+            if (!string.IsNullOrEmpty(HT_SoundsPathTEMPORAL))
             {
-                GlobalPreferences.HT_SoundsPath = GlobalPreferences.HT_SoundsPathTEMPORAL;
-                GlobalPreferences.HT_SoundsDataPath = GlobalPreferences.HT_SoundsDataPathTEMPORAL;
-                GlobalPreferences.HT_MusicPath = GlobalPreferences.HT_MusicPathTEMPORAL;
+                GlobalPreferences.HT_SoundsPath = HT_SoundsPathTEMPORAL;
+                GlobalPreferences.HT_SoundsDataPath = HT_SoundsDataPathTEMPORAL;
+                GlobalPreferences.HT_MusicPath = HT_MusicPathTEMPORAL;
 
                 //SaveConfigs in Registry
                 WRegistryFunctions.SaveHashTablePathAndMD5("Sounds", GlobalPreferences.HT_SoundsPath, GenericFunctions.CalculateMD5(GlobalPreferences.HT_SoundsPath));
@@ -52,24 +74,24 @@ namespace EuroSound_Application
             }
 
             /*-----------------[Frm_TreeViewPrefs]-----------------*/
-            if (!string.IsNullOrEmpty(GlobalPreferences.SelectedFontTEMPORAL))
+            if (!string.IsNullOrEmpty(SelectedFontTEMPORAL))
             {
-                GlobalPreferences.SelectedFont = GlobalPreferences.SelectedFontTEMPORAL;
-                GlobalPreferences.TreeViewIndent = GlobalPreferences.TreeViewIndentTEMPORAL;
-                GlobalPreferences.ShowLines = GlobalPreferences.ShowLinesTEMPORAL;
-                GlobalPreferences.ShowRootLines = GlobalPreferences.ShowRootLinesTEMPORAL;
+                GlobalPreferences.SelectedFont = SelectedFontTEMPORAL;
+                GlobalPreferences.TreeViewIndent = TreeViewIndentTEMPORAL;
+                GlobalPreferences.ShowLines = ShowLinesTEMPORAL;
+                GlobalPreferences.ShowRootLines = ShowRootLinesTEMPORAL;
 
                 //SaveConfig in Registry
                 WRegistryFunctions.SaveTreeViewPreferences();
             }
 
             /*-----------------[Frm_GeneralPreferences]-----------------*/
-            if (!string.IsNullOrEmpty(GlobalPreferences.SFXOutputPathTEMPORAL))
+            if (!string.IsNullOrEmpty(SFXOutputPathTEMPORAL))
             {
-                GlobalPreferences.SFXOutputPath = GlobalPreferences.SFXOutputPathTEMPORAL;
-                GlobalPreferences.MusicOutputPath = GlobalPreferences.MusicOutputPathTEMPORAL;
-                GlobalPreferences.ColorWavesControl = GlobalPreferences.ColorWavesControlTEMPORAL;
-                GlobalPreferences.BackColorWavesControl = GlobalPreferences.BackColorWavesControlTEMPORAL;
+                GlobalPreferences.SFXOutputPath = SFXOutputPathTEMPORAL;
+                GlobalPreferences.MusicOutputPath = MusicOutputPathTEMPORAL;
+                GlobalPreferences.ColorWavesControl = ColorWavesControlTEMPORAL;
+                GlobalPreferences.BackColorWavesControl = BackColorWavesControlTEMPORAL;
 
                 //SaveConfig in Registry
                 WRegistryFunctions.SaveGeneralPreferences();
@@ -90,7 +112,8 @@ namespace EuroSound_Application
                     GeneralHashTable = new Frm_HashTablesConfig
                     {
                         TopLevel = false,
-                        AutoScroll = true
+                        AutoScroll = true,
+                        Tag = Tag
                     };
                     Panel_SecondaryForms.Controls.Add(GeneralHashTable);
                     GeneralHashTable.Dock = DockStyle.Fill;
@@ -107,7 +130,8 @@ namespace EuroSound_Application
                     TreeViewPrefs = new Frm_TreeViewPrefs
                     {
                         TopLevel = false,
-                        AutoScroll = true
+                        AutoScroll = true,
+                        Tag = Tag
                     };
                     Panel_SecondaryForms.Controls.Add(TreeViewPrefs);
                     TreeViewPrefs.Dock = DockStyle.Fill;
@@ -124,7 +148,8 @@ namespace EuroSound_Application
                     GeneralPreferences = new Frm_General
                     {
                         TopLevel = false,
-                        AutoScroll = true
+                        AutoScroll = true,
+                        Tag = Tag
                     };
                     Panel_SecondaryForms.Controls.Add(GeneralPreferences);
                     GeneralPreferences.Dock = DockStyle.Fill;

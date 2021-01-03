@@ -1,10 +1,12 @@
-﻿using System;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.TreeViewLibraryFunctions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.SoundBanksEditor
 {
     public partial class Frm_Soundbanks_Main
     {
@@ -58,7 +60,7 @@ namespace EuroSound_Application
         internal void OpenSampleProperties(TreeNode SelectedNode)
         {
             EXSound ParentSound = EXSoundbanksFunctions.GetSoundByName(uint.Parse(SelectedNode.Parent.Name), SoundsList);
-            EXSample SelectedSample = TreeNodeFunctions.GetSelectedSample(ParentSound, SelectedNode.Name);
+            EXSample SelectedSample = EXSoundbanksFunctions.GetSampleByName(SelectedNode.Name, ParentSound);
 
             Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(SelectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(ParentSound.Flags))
             {
@@ -241,7 +243,7 @@ namespace EuroSound_Application
         private void RemoveSample()
         {
             EXSound ParentSound = EXSoundbanksFunctions.GetSoundByName(uint.Parse(TreeView_File.SelectedNode.Parent.Name), SoundsList);
-            EXSample SampleToRemove = TreeNodeFunctions.GetSelectedSample(ParentSound, TreeView_File.SelectedNode.Name);
+            EXSample SampleToRemove = EXSoundbanksFunctions.GetSampleByName(TreeView_File.SelectedNode.Name, ParentSound);
             if (SampleToRemove != null)
             {
                 ParentSound.Samples.Remove(SampleToRemove);

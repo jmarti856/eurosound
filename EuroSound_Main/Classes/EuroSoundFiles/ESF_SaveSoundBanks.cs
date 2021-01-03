@@ -1,9 +1,10 @@
-﻿using System;
+﻿using EuroSound_Application.SoundBanksEditor;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.EuroSoundFilesFunctions
 {
     internal class ESF_SaveSoundBanks
     {

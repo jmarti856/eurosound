@@ -1,5 +1,5 @@
 ﻿
-namespace EuroSound_Application
+namespace EuroSound_Application.ApplicationPreferencesForms
 {
     partial class Frm_General
     {
@@ -123,6 +123,8 @@ namespace EuroSound_Application
             // 
             // Groupbox_Shell
             // 
+            this.Groupbox_Shell.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Groupbox_Shell.Controls.Add(this.ButtonRegister_FileTypes);
             this.Groupbox_Shell.Controls.Add(this.Label_Expl);
             this.Groupbox_Shell.Location = new System.Drawing.Point(12, 217);
@@ -200,6 +202,8 @@ namespace EuroSound_Application
             // 
             // Groupbox_Waves
             // 
+            this.Groupbox_Waves.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Groupbox_Waves.Controls.Add(this.Button_WavesBackColor);
             this.Groupbox_Waves.Controls.Add(this.Label_ColorBackground);
             this.Groupbox_Waves.Controls.Add(this.Button_WavesColorControl);

@@ -1,11 +1,14 @@
-﻿using System;
+﻿using EuroSound_Application.SoundBanksEditor;
+using EuroSound_Application.StreamSounds;
+using EuroSound_Application.TreeViewLibraryFunctions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Resources;
 using System.Text;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.EuroSoundFilesFunctions
 {
     internal class EuroSoundFiles
     {

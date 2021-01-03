@@ -1,10 +1,10 @@
-﻿using System;
+﻿using EuroSound_Application.SoundBanksEditor;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.TreeViewLibraryFunctions
 {
     public static class TreeNodeFunctions
     {
@@ -18,19 +18,6 @@ namespace EuroSound_Application
             {
                 return null;
             }
-        }
-
-        public static EXSample GetSelectedSample(EXSound ParentSound, string SelectedNodeName)
-        {
-            for (int i = 0; i < ParentSound.Samples.Count; i++)
-            {
-                if (ParentSound.Samples[i].Name.Equals(SelectedNodeName, StringComparison.OrdinalIgnoreCase))
-                {
-                    return ParentSound.Samples[i];
-                }
-            }
-
-            return null;
         }
 
         internal static bool CheckIfNodeExistsByText(TreeView SearchControl, string Name)

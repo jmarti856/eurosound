@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.StreamSounds
 {
     public partial class Frm_StreamSounds_MarkersEditor : Form
     {
-        private readonly EXSoundStream SelectedSound;
-        private EXSoundStream TemporalSelectedSound;
-        private uint MarkerName, MarkerPos;
+        //*===============================================================================================
+        //* GLOBAL VARS
+        //*===============================================================================================
+        private EXSoundStream SelectedSound, TemporalSelectedSound;
+        Dictionary<uint, string> MarkerTypes;
+        private uint v_MarkerIndex, v_MarkerCounter;
+
+        //*===============================================================================================
+        //* FORM EVENTS
+        //*===============================================================================================
         public Frm_StreamSounds_MarkersEditor(EXSoundStream Sound)
         {
             InitializeComponent();
@@ -17,7 +24,8 @@ namespace EuroSound_Application
 
         private void Frm_StreamSounds_MarkersEditor_Load(object sender, EventArgs e)
         {
-            Dictionary<uint, string> MarkerTypes = new Dictionary<uint, string>
+            //Combobox Markers
+            MarkerTypes = new Dictionary<uint, string>
             {
                 { 10, "Start" },
                 { 9, "End" },
@@ -33,89 +41,99 @@ namespace EuroSound_Application
             //Temporal Sounds
             TemporalSelectedSound = new EXSoundStream
             {
-                IDMarkerName = SelectedSound.IDMarkerName,
-                IDMarkerPos = SelectedSound.IDMarkerPos,
-                Markers = SelectedSound.Markers
+                StartMarkers = new List<EXStreamStartMarker>(SelectedSound.StartMarkers),
+                Markers = new List<EXStreamMarker>(SelectedSound.Markers)
+
             };
+            Reflection.CopyProperties(SelectedSound, TemporalSelectedSound);
 
             //IDs
-            MarkerName = TemporalSelectedSound.IDMarkerName;
-            MarkerPos = TemporalSelectedSound.IDMarkerPos;
+            v_MarkerCounter = TemporalSelectedSound.MarkerDataCounterID;
+            v_MarkerIndex = TemporalSelectedSound.MarkerID;
 
-            //Print Markers
-            foreach (EXStreamSoundMarker Marker in TemporalSelectedSound.Markers)
+            //Print Start Markers
+            foreach (EXStreamStartMarker Marker in TemporalSelectedSound.StartMarkers)
             {
-                foreach (EXStreamSoundMarkerData MarkerData in Marker.MarkersData)
-                {
-                    ListViewItem IT_Marker = new ListViewItem(new[] { MarkerData.Name.ToString(), MarkerData.Position.ToString(), MarkerData.MusicMakerType.ToString(), MarkerData.Flags.ToString(), MarkerData.Extra.ToString(), MarkerData.LoopStart.ToString(), MarkerData.MarkerCount.ToString(), MarkerData.LoopMarkerCount.ToString(), Marker.Position.ToString() });
-                    ListView_Markers.Items.Add(IT_Marker);
-                }
+                AddMarkerStartToListView(Marker);
+            }
+            //Print Markers
+            foreach (EXStreamMarker MarkerData in TemporalSelectedSound.Markers)
+            {
+                AddMarkerDataToListView(MarkerData);
             }
         }
 
+        //*===============================================================================================
+        //* FORM CONTROLS EVENTS
+        //*===============================================================================================
         private void Button_AddMarker_Click(object sender, EventArgs e)
         {
-            uint MarkerType = 10;
+            uint MarkerType;
 
+            //Get type of the selected combobox value
             if (ComboBox_MarkerType.SelectedValue != null)
             {
                 MarkerType = (uint)ComboBox_MarkerType.SelectedValue;
+
+                //Create a new marker
+                EXStreamStartMarker NewMarker = new EXStreamStartMarker
+                {
+                    MarkerPos = v_MarkerCounter,
+                    IsInstant = 0,
+                    InstantBuffer = 0
+                };
+
+                NewMarker.StateA = 0;
+                NewMarker.StateB = 0;
+
+                //Create a new marker data
+                EXStreamMarker NewMarkerData = new EXStreamMarker
+                {
+                    Name = (int)v_MarkerIndex,
+                    Position = (uint)Numeric_MarkerPosition.Value,
+                    MusicMakerType = MarkerType,
+                    Flags = Convert.ToUInt32(Textbox_Flags.Text),
+                    Extra = Convert.ToUInt32(Textbox_Extra.Text),
+                    LoopStart = Convert.ToUInt32(Numeric_MarkerLoopStart.Value),
+                    MarkerCount = v_MarkerIndex,
+                    LoopMarkerCount = 0
+                };
+
+                //ADD ITEMS TO LIST
+                //NewMarker.MarkersData.Add(NewMarkerData);
+                //TemporalSelectedSound.Markers.Add(NewMarker);
+
+                AddMarkerStartToListView(NewMarker);
+                AddMarkerDataToListView(NewMarkerData);
+
+                //Add new value to IDs
+                v_MarkerIndex += 1;
+                if (MarkerType == 6)
+                {
+                    v_MarkerCounter += 2;
+                }
+                else
+                {
+                    v_MarkerCounter += 1;
+                }
+
+                //Update IDs in the parent sound
+                TemporalSelectedSound.MarkerID = v_MarkerIndex;
+                TemporalSelectedSound.MarkerDataCounterID = v_MarkerCounter;
             }
-
-            EXStreamSoundMarker NewMarker = new EXStreamSoundMarker
-            {
-                Position = MarkerPos,
-                IsInstant = 0,
-                InstantBuffer = 0
-            };
-            NewMarker.State[0] = 0;
-            NewMarker.State[1] = 0;
-
-            EXStreamSoundMarkerData NewMarkerData = new EXStreamSoundMarkerData
-            {
-                Name = MarkerName,
-                Position = (uint)Numeric_MarkerPosition.Value,
-                MusicMakerType = MarkerType,
-                Flags = Convert.ToUInt32(Textbox_Flags.Text),
-                Extra = Convert.ToUInt32(Textbox_Extra.Text),
-                LoopStart = Convert.ToUInt32(Numeric_MarkerLoopStart.Value)
-            };
-
-            NewMarkerData.MarkerCount = MarkerName;
-            NewMarkerData.LoopMarkerCount = 0;
-
-            //ADD ITEMS TO LIST
-            NewMarker.MarkersData.Add(NewMarkerData);
-            TemporalSelectedSound.Markers.Add(NewMarker);
-
-            MarkerName += 1;
-            if (MarkerType == 6)
-            {
-                MarkerPos += 2;
-            }
-            else
-            {
-                MarkerPos += 1;
-            }
-
-            ListViewItem Marker = new ListViewItem(new[] { NewMarkerData.Name.ToString(), NewMarkerData.Position.ToString(), NewMarkerData.MusicMakerType.ToString(), NewMarkerData.Flags.ToString(), NewMarkerData.Extra.ToString(), NewMarkerData.LoopStart.ToString(), NewMarkerData.MarkerCount.ToString(), NewMarkerData.LoopMarkerCount.ToString(), NewMarker.Position.ToString() });
-            ListView_Markers.Items.Add(Marker);
-
-            //Update IDs in the parent sound
-            TemporalSelectedSound.IDMarkerPos = MarkerPos;
-            TemporalSelectedSound.IDMarkerName = MarkerName;
         }
 
         private void Button_Clear_Click(object sender, EventArgs e)
         {
             TemporalSelectedSound.Markers.Clear();
             ListView_Markers.Items.Clear();
+            ListView_MarkerData.Items.Clear();
         }
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
-            SelectedSound.IDMarkerName = TemporalSelectedSound.IDMarkerName;
-            SelectedSound.IDMarkerPos = TemporalSelectedSound.IDMarkerPos;
+            SelectedSound.MarkerDataCounterID = TemporalSelectedSound.MarkerDataCounterID;
+            SelectedSound.MarkerID = TemporalSelectedSound.MarkerID;
             SelectedSound.Markers = TemporalSelectedSound.Markers;
 
             Close();
@@ -123,7 +141,48 @@ namespace EuroSound_Application
 
         private void Button_Cancel_Click(object sender, EventArgs e)
         {
+            TemporalSelectedSound = null;
             Close();
+        }
+
+        //*===============================================================================================
+        //* FUNCTIONS
+        //*===============================================================================================
+        private void AddMarkerDataToListView(EXStreamMarker MarkerItem)
+        {
+            ListViewItem Marker = new ListViewItem(new[]
+            { 
+                //Name
+                MarkerItem.Name.ToString(),
+                //Position
+                MarkerItem.Position.ToString(), 
+                //Type
+                MarkerTypes[MarkerItem.MusicMakerType],
+                //Flags
+                MarkerItem.Flags.ToString(),
+                //Extra
+                MarkerItem.Extra.ToString(), 
+                //Loop Start
+                MarkerItem.LoopStart.ToString(), 
+                //Marker Count
+                MarkerItem.MarkerCount.ToString(),
+                //Loop Marker COunt
+                MarkerItem.LoopMarkerCount.ToString(),
+            });
+            ListView_MarkerData.Items.Add(Marker);
+        }
+
+        private void AddMarkerStartToListView(EXStreamStartMarker MarkerItem)
+        {
+            ListViewItem Marker = new ListViewItem(new[]
+            {
+                MarkerItem.MarkerPos.ToString(),
+                MarkerItem.IsInstant.ToString(),
+                MarkerItem.InstantBuffer.ToString(),
+                MarkerItem.StateA.ToString(),
+                MarkerItem.StateB.ToString()
+            });
+            ListView_Markers.Items.Add(Marker);
         }
     }
 }

@@ -322,7 +322,7 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Error, the audio file is not correct, the frequency must be 22050hz and 16 bits per sample.
+        ///   Busca una cadena traducida similar a Error, the audio file is not correct, the frequency must be 22050hz, encoded in PCM and have 16 bits per sample.
         /// </summary>
         internal static string ErrorWavFileIncorrect {
             get {
@@ -615,6 +615,15 @@ namespace EuroSound_Application.Properties {
         internal static string OutputSFXSoundbankErrors {
             get {
                 return ResourceManager.GetString("OutputSFXSoundbankErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The hashcode has not been found, please add it to the hashtable and click on &quot;Reload Hashtable&quot;.
+        /// </summary>
+        internal static string SFXDataHashcodeNotFound {
+            get {
+                return ResourceManager.GetString("SFXDataHashcodeNotFound", resourceCulture);
             }
         }
         

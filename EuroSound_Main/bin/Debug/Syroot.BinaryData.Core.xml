@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Syroot.BinaryData.Core</name>
+    </assembly>
+    <members>
+        <member name="T:Syroot.BinaryData.Core.CTimeTools">
+            <summary>
+            Represents utilities for working with the time_t format of the C library.
+            </summary>
+        </member>
+        <member name="M:Syroot.BinaryData.Core.CTimeTools.GetDateTime(System.UInt64)">
+            <summary>
+            Gets the <see cref="T:System.DateTime"/> instance representing the given time_t <paramref name="seconds"/>.
+            </summary>
+            <param name="seconds">The number of seconds as counted by the time_t instance.</param>
+            <returns>The <see cref="T:System.DateTime"/> instance.</returns>
+        </member>
+        <member name="M:Syroot.BinaryData.Core.CTimeTools.GetSeconds(System.DateTime)">
+            <summary>
+            Calculates the seconds since 1970-01-01 for the given <paramref name="value"/>.
+            </summary>
+            <param name="value">The <see cref="T:System.DateTime"/> to calculate the seconds for.</param>
+            <returns>The seconds since 1970-01-01.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">The value lies in front of the base date.</exception>
+        </member>
+        <member name="T:Syroot.BinaryData.Core.Endian">
+            <summary>
+            Represents the possible byte order of binary data.
+            </summary>
+        </member>
+        <member name="F:Syroot.BinaryData.Core.Endian.None">
+            <summary>Indicates that the endianness will not be changed for this operation.</summary>
+        </member>
+        <member name="F:Syroot.BinaryData.Core.Endian.System">
+            <summary>Indicates the byte order of the system executing the assembly.</summary>
+        </member>
+        <member name="F:Syroot.BinaryData.Core.Endian.Big">
+            <summary>Indicates big endian byte order.</summary>
+        </member>
+        <member name="F:Syroot.BinaryData.Core.Endian.Little">
+            <summary>Indicates little endian byte order.</summary>
+        </member>
+        <member name="T:Syroot.BinaryData.Core.EndianExtensions">
+            <summary>
+            Represents extension methods for <see cref="T:Syroot.BinaryData.Core.Endian"/> instances.
+            </summary>
+        </member>
+        <member name="M:Syroot.BinaryData.Core.EndianExtensions.IsSystem(Syroot.BinaryData.Core.Endian)">
+            <summary>
+            Gets a value indicating whether the <see cref="T:Syroot.BinaryData.Core.Endian"/> equals the system's native endianness.
+            </summary>
+            <param name="self">The extended <see cref="T:Syroot.BinaryData.Core.Endian"/> instance.</param>
+            <returns><see langword="true"/> if this is the system endianness; otherwise, <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="T:Syroot.BinaryData.Core.EndianTools">
+            <summary>
+            Represents utilities for working with <see cref="T:Syroot.BinaryData.Core.Endian"/> instances.
+            </summary>
+        </member>
+        <member name="F:Syroot.BinaryData.Core.EndianTools.SystemEndian">
+            <summary>The <see cref="T:Syroot.BinaryData.Core.Endian"/> representing system endianness.</summary>
+        </member>
+        <member name="F:Syroot.BinaryData.Core.EndianTools.NonSystemEndian">
+            <summary>The <see cref="T:Syroot.BinaryData.Core.Endian"/> not representing system endianness.</summary>
+        </member>
+        <member name="T:Syroot.BinaryData.Core.EnumTools">
+            <summary>
+            Represents utilities for working with <see cref="T:System.Enum"/> instances.
+            </summary>
+        </member>
+        <member name="M:Syroot.BinaryData.Core.EnumTools.Validate(System.Type,System.Object)">
+            <summary>
+            Validates the given <paramref name="value"/> to be defined in the enum of the given type, allowing combined
+            flags for enums decorated with the <see cref="T:System.FlagsAttribute"/>.
+            </summary>
+            <param name="enumType">The type of the <see cref="T:System.Enum"/> to validate against.</param>
+            <param name="value">The value to validate.</param>
+            <returns><see langword="true"/> when the value is defined; otherwise, <see langword="false"/>.</returns>
+        </member>
+        <member name="T:Syroot.BinaryData.Core.MathTools">
+            <summary>
+            Represents utilities for mathematical operations.
+            </summary>
+        </member>
+        <member name="M:Syroot.BinaryData.Core.MathTools.GetAlignmentDelta(System.Int32,System.Int32)">
+            <summary>
+            Calculates the delta required to add to <paramref name="position"/> to reach the given
+            <paramref name="alignment"/>.
+            </summary>
+            <param name="position">The initial position.</param>
+            <param name="alignment">The multiple to align to. If negative, the delta is negative to reach the previous
+            multiple rather than the next one.</param>
+            <returns>The delta to add to the position.</returns>
+        </member>
+    </members>
+</doc>

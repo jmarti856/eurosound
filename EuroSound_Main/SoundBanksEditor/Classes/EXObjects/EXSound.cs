@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.SoundBanksEditor
 {
     public class EXSound
     {
