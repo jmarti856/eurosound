@@ -14,13 +14,13 @@ namespace EuroSound_Application.SoundBanksEditor
         private void ContextMenu_Folders_AddAudio_Click(object sender, System.EventArgs e)
         {
             string Name = GenericFunctions.OpenInputBox("Enter a name for new a new audio.", "New Audio");
-            if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, Name))
+            if (!string.IsNullOrEmpty(Name))
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(Name))
+                if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, Name))
+                {
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
                 {
                     string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0);
                     if (!string.IsNullOrEmpty(AudioPath))
@@ -33,8 +33,6 @@ namespace EuroSound_Application.SoundBanksEditor
                                 EXAudio NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath, true);
                                 if (NewAudio != null)
                                 {
-                                    NewAudio.DisplayName = Name;
-
                                     /*Add data to dictionary and create tree node*/
                                     AudioDataDict.Add(MD5Hash, NewAudio);
                                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, MD5Hash, Name, 7, 7, "Audio", Color.Black, TreeView_File);
@@ -62,16 +60,24 @@ namespace EuroSound_Application.SoundBanksEditor
             string Name = GenericFunctions.OpenInputBox("Enter a name for new a new sample.", "New Sample");
             if (!string.IsNullOrEmpty(Name))
             {
-                if (TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name.Equals("StreamedSounds"))
+                if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, Name))
                 {
-                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, EXSoundbanksFunctions.RemoveWhiteSpaces(Name), Name, 4, 4, "Sample", Color.Black, TreeView_File);
-                    EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.GetSoundByName(uint.Parse(TreeView_File.SelectedNode.Name), SoundsList), Name, true);
-                    ProjectInfo.FileHasBeenModified = true;
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
-                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, EXSoundbanksFunctions.RemoveWhiteSpaces(Name), Name, 4, 4, "Sample", Color.Black, TreeView_File);
-                    EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.GetSoundByName(uint.Parse(TreeView_File.SelectedNode.Name), SoundsList), Name, false);
+                    uint SampleID = GenericFunctions.GetNewObjectID(ProjectInfo);
+                    if (TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name.Equals("StreamedSounds"))
+                    {
+                        TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SampleID.ToString(), Name, 4, 4, "Sample", Color.Black, TreeView_File);
+                        EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.GetSoundByName(uint.Parse(TreeView_File.SelectedNode.Name), SoundsList), SampleID, true);
+                        ProjectInfo.FileHasBeenModified = true;
+                    }
+                    else
+                    {
+                        TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SampleID.ToString(), Name, 4, 4, "Sample", Color.Black, TreeView_File);
+                        EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.GetSoundByName(uint.Parse(TreeView_File.SelectedNode.Name), SoundsList), SampleID, true);
+                    }
                 }
             }
         }
@@ -79,22 +85,21 @@ namespace EuroSound_Application.SoundBanksEditor
         private void ContextMenu_Folders_AddSound_Click(object sender, System.EventArgs e)
         {
             string Name = GenericFunctions.OpenInputBox("Enter a name for new sound.", "New Sound");
-            if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, Name))
+            if (!string.IsNullOrEmpty(Name))
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(Name))
+                if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, Name))
                 {
-                    uint SoundID = GenericFunctions.GetSoundID(ProjectInfo);
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    uint SoundID = GenericFunctions.GetNewObjectID(ProjectInfo);
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SoundID.ToString(), Name, 2, 2, "Sound", Color.Black, TreeView_File);
 
                     //Add Empty Sound
                     EXSound Sound = new EXSound
                     {
-                        DisplayName = Name,
-                        Hashcode = 0x00000000,
+                        Hashcode = 0x00000000
                     };
                     SoundsList.Add(SoundID, Sound);
 
@@ -310,7 +315,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenuAudio_Usage_Click(object sender, System.EventArgs e)
         {
-            List<string> Dependencies = EXSoundbanksFunctions.GetAudioDependencies(TreeView_File.SelectedNode.Name, TreeView_File.SelectedNode.Text, SoundsList, true);
+            List<string> Dependencies = EXSoundbanksFunctions.GetAudioDependencies(TreeView_File.SelectedNode.Name, TreeView_File.SelectedNode.Text, SoundsList, TreeView_File, true);
             if (Dependencies.Count > 0)
             {
                 EuroSound_ItemUsage ShowDependencies = new EuroSound_ItemUsage(Dependencies, Tag.ToString())

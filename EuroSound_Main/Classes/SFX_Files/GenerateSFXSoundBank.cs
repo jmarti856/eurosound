@@ -137,18 +137,18 @@ namespace EuroSound_Application.GenerateSoundBankSFX
 
                     BWriter.WriteInt16((short)Sound.Value.Samples.Count);
 
-                    SetLabelText(LabelInfo, "WritingSFX: " + Sound.Value.DisplayName);
+                    SetLabelText(LabelInfo, "WritingSFX Data");
 
-                    foreach (EXSample Sample in Sound.Value.Samples)
+                    foreach (KeyValuePair<uint, EXSample> Sample in Sound.Value.Samples)
                     {
                         /*--[FILE REFERENCE]--*/
-                        if (Sample.FileRef < 0)
+                        if (Sample.Value.FileRef < 0)
                         {
-                            BWriter.WriteInt16(Sample.FileRef);
+                            BWriter.WriteInt16(Sample.Value.FileRef);
                         }
                         else
                         {
-                            ItemIndex = GetSteamIndexInSoundbank(Sample.ComboboxSelectedAudio, FinalAudioDataDict, Sample, Sound.Value.Flags);
+                            ItemIndex = GetSteamIndexInSoundbank(Sample.Value.ComboboxSelectedAudio, FinalAudioDataDict, Sample.Value, Sound.Value.Flags);
                             if (ItemIndex >= 0)
                             {
                                 BWriter.WriteInt16((short)ItemIndex);
@@ -156,12 +156,12 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                         }
 
                         /*--[Sample Data]--*/
-                        BWriter.WriteInt16(Sample.PitchOffset);
-                        BWriter.WriteInt16(Sample.RandomPitchOffset);
-                        BWriter.WriteSByte(Sample.BaseVolume);
-                        BWriter.WriteSByte(Sample.RandomVolumeOffset);
-                        BWriter.WriteSByte(Sample.Pan);
-                        BWriter.WriteSByte(Sample.RandomPan);
+                        BWriter.WriteInt16(Sample.Value.PitchOffset);
+                        BWriter.WriteInt16(Sample.Value.RandomPitchOffset);
+                        BWriter.WriteSByte(Sample.Value.BaseVolume);
+                        BWriter.WriteSByte(Sample.Value.RandomVolumeOffset);
+                        BWriter.WriteSByte(Sample.Value.Pan);
+                        BWriter.WriteSByte(Sample.Value.RandomPan);
 
                         /*--[Aligment Padding]--*/
                         AddPaddingBytes(2, BWriter);
@@ -340,7 +340,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                 {
                     FinalSoundsDict.Add(Sound.Key, Sound.Value);
                 }
-                SetLabelText(LabelInfo, "Checking SFX: " + Sound.Value.DisplayName);
+                SetLabelText(LabelInfo, "Checking SFX Data");
                 ProgressBarUpdate(Bar, 1);
             }
 

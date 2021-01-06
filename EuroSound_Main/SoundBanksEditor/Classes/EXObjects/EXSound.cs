@@ -4,7 +4,6 @@ namespace EuroSound_Application.SoundBanksEditor
 {
     public class EXSound
     {
-        public string DisplayName = string.Empty;
         public sbyte Ducker;
         public short DuckerLenght;
         public ushort Flags;
@@ -18,7 +17,8 @@ namespace EuroSound_Application.SoundBanksEditor
         public bool OutputThisSound = true;
         public sbyte Priority;
         public sbyte ReverbSend;
-        public List<EXSample> Samples { get; set; } = new List<EXSample>();
+        //public List<EXSample> Samples { get; set; } = new List<EXSample>();
+        public Dictionary<uint, EXSample> Samples { get; set; } = new Dictionary<uint, EXSample>();
 
         /*---Required for Engine X--*/
         public sbyte TrackingType;

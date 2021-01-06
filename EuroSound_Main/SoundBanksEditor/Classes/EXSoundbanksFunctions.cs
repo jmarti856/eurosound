@@ -26,30 +26,30 @@ namespace EuroSound_Application.SoundBanksEditor
             return Output;
         }
 
-        internal static bool AddSampleToSound(EXSound Sound, string SampleName, bool StreamedSample)
+        internal static bool AddSampleToSound(EXSound Sound, uint Index, bool StreamedSample)
         {
             bool AddedCorrectly = false;
 
             EXSample Sample = new EXSample
             {
-                DisplayName = SampleName,
                 IsStreamed = StreamedSample,
             };
 
-            Sound.Samples.Add(Sample);
+            Sound.Samples.Add(Index, Sample);
 
             return AddedCorrectly;
         }
 
-        internal static List<string> GetAudioDependencies(string AudioKey, string AudioName, Dictionary<uint, EXSound> SoundsList, bool ItemUsage)
+        internal static List<string> GetAudioDependencies(string AudioKey, string AudioName, Dictionary<uint, EXSound> SoundsList, TreeView ControlNodes, bool ItemUsage)
         {
             List<string> Dependencies = new List<string>();
+            string DisplayName;
 
             foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
             {
-                foreach (EXSample Sample in Sound.Value.Samples)
+                foreach (KeyValuePair<uint, EXSample> Sample in Sound.Value.Samples)
                 {
-                    if (Sample.ComboboxSelectedAudio.Equals(AudioKey))
+                    if (Sample.Value.ComboboxSelectedAudio.Equals(AudioKey))
                     {
                         if (ItemUsage)
                         {
@@ -57,7 +57,8 @@ namespace EuroSound_Application.SoundBanksEditor
                         }
                         else
                         {
-                            Dependencies.Add("0" + Sound.Value.DisplayName + " uses this audio");
+                            DisplayName = ControlNodes.Nodes.Find(Sample.Key.ToString(), true)[0].Text;
+                            Dependencies.Add("0" + DisplayName + " uses this audio");
                         }
                     }
                 }
@@ -100,31 +101,24 @@ namespace EuroSound_Application.SoundBanksEditor
             return DictionaryToShow;
         }
 
-        internal static EXSound GetSoundByName(uint NameToSearch, Dictionary<uint, EXSound> SoundsList)
+        internal static EXSound GetSoundByName(uint SoundID, Dictionary<uint, EXSound> SoundsList)
         {
             EXSound SearchedSound = null;
 
-            if (SoundsList.ContainsKey(NameToSearch))
+            if (SoundsList.ContainsKey(SoundID))
             {
-                SearchedSound = SoundsList[NameToSearch];
+                SearchedSound = SoundsList[SoundID];
                 return SearchedSound;
             }
 
             return SearchedSound;
         }
 
-        internal static EXSample GetSampleByName(string SampleName, EXSound SelectedSound)
+        internal static EXSample GetSoundSample(EXSound SelectedSound, uint SampleID)
         {
-            EXSample SelectedSample = null;
+            EXSample SelectedSample;
 
-            for (int i = 0; i < SelectedSound.Samples.Count; i++)
-            {
-                if (SelectedSound.Samples[i].DisplayName.Equals(SampleName, StringComparison.OrdinalIgnoreCase))
-                {
-                    SelectedSample = SelectedSound.Samples[i];
-                    break;
-                }
-            }
+            SelectedSample = SelectedSound.Samples[SampleID];
 
             return SelectedSample;
         }
@@ -140,11 +134,11 @@ namespace EuroSound_Application.SoundBanksEditor
                 {
                     if (SoundToCheck.Value.OutputThisSound)
                     {
-                        foreach (EXSample Sample in SoundToCheck.Value.Samples)
+                        foreach (KeyValuePair<uint, EXSample> Sample in SoundToCheck.Value.Samples)
                         {
-                            if (!UsedAudios.Contains(Sample.ComboboxSelectedAudio))
+                            if (!UsedAudios.Contains(Sample.Value.ComboboxSelectedAudio))
                             {
-                                UsedAudios.Add(Sample.ComboboxSelectedAudio);
+                                UsedAudios.Add(Sample.Value.ComboboxSelectedAudio);
                             }
                         }
                     }
@@ -155,47 +149,17 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
                 else
                 {
-                    foreach (EXSample Sample in SoundToCheck.Value.Samples)
+                    foreach (KeyValuePair<uint, EXSample> Sample in SoundToCheck.Value.Samples)
                     {
-                        if (!UsedAudios.Contains(Sample.ComboboxSelectedAudio))
+                        if (!UsedAudios.Contains(Sample.Value.ComboboxSelectedAudio))
                         {
-                            UsedAudios.Add(Sample.ComboboxSelectedAudio);
+                            UsedAudios.Add(Sample.Value.ComboboxSelectedAudio);
                         }
                     }
                 }
             }
 
             return UsedAudios;
-        }
-
-        internal static int LoadAudioAndAddToList(string AudioFilePath, string DisplayName, Dictionary<string, EXAudio> AudioDataDict, string FileMD5Hash)
-        {
-            int ResultState = 0;
-
-            if (!AudioDataDict.ContainsKey(FileMD5Hash))
-            {
-                if (AudioIsValid(AudioFilePath))
-                {
-                    EXAudio NewAudio = LoadAudioData(AudioFilePath, true);
-                    if (NewAudio != null)
-                    {
-                        NewAudio.DisplayName = DisplayName;
-                        AudioDataDict.Add(FileMD5Hash, NewAudio);
-                    }
-                }
-                else
-                {
-                    //File incorrect
-                    ResultState = -1;
-                }
-            }
-            else
-            {
-                //Audio exists
-                ResultState = -2;
-            }
-
-            return ResultState;
         }
 
         internal static bool AudioIsValid(string FilePath)

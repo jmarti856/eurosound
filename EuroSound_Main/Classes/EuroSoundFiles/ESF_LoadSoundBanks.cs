@@ -61,7 +61,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 HashMD5 = BReader.ReadString();
                 EXAudio AudioToAdd = new EXAudio
                 {
-                    DisplayName = BReader.ReadString(),
                     Dependencies = BReader.ReadString(),
                     LoadedFileName = BReader.ReadString(),
                     Encoding = BReader.ReadString(),
@@ -85,7 +84,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
         internal void ReadSoundsListData(BinaryReader BReader, Dictionary<uint, EXSound> SoundsList)
         {
             int NumberOfSounds, NumberOfSamples;
-            uint SoundID;
+            uint SoundID, SampleID;
 
             NumberOfSounds = BReader.ReadInt32();
 
@@ -95,7 +94,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 EXSound NewSound = new EXSound
                 {
                     Hashcode = BReader.ReadUInt32(),
-                    DisplayName = BReader.ReadString(),
                     OutputThisSound = BReader.ReadBoolean(),
 
                     /*---Required for EngineX---*/
@@ -116,10 +114,9 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 NumberOfSamples = BReader.ReadInt32();
                 for (int j = 0; j < NumberOfSamples; j++)
                 {
-                    BReader.ReadString(); //NAME Removed property
+                    SampleID = BReader.ReadUInt32();
                     EXSample NewSample = new EXSample
                     {
-                        DisplayName = BReader.ReadString(),
                         IsStreamed = BReader.ReadBoolean(),
                         FileRef = BReader.ReadInt16(),
                         ComboboxSelectedAudio = BReader.ReadString(),
@@ -133,9 +130,8 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                         Pan = BReader.ReadSByte(),
                         RandomPan = BReader.ReadSByte()
                     };
-                    NewSound.Samples.Add(NewSample);
+                    NewSound.Samples.Add(SampleID, NewSample);
                 }
-
                 SoundsList.Add(SoundID, NewSound);
             }
         }
@@ -153,10 +149,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 ParentNode = BReader.ReadString();
                 NodeName = BReader.ReadString();
                 DisplayName = BReader.ReadString();
-                //Index Unused for now
-                BReader.ReadInt32();
-                //ImageKey Unused for now
-                BReader.ReadString();
                 SelectedImageIndex = BReader.ReadInt32();
                 ImageIndex = BReader.ReadInt32();
                 Tag = BReader.ReadString();

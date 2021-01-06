@@ -140,22 +140,25 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void Button_Edit_Click(object sender, EventArgs e)
         {
-            string AudioKey = Combobox_SelectedAudio.SelectedValue.ToString();
-            Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
-            if (((Frm_Soundbanks_Main)ParentForm).AudioDataDict.ContainsKey(AudioKey))
+            if (Combobox_SelectedAudio.SelectedValue != null)
             {
-                EXAudio SelectedSound = ((Frm_Soundbanks_Main)ParentForm).AudioDataDict[AudioKey];
-                if (SelectedSound != null)
+                string AudioKey = Combobox_SelectedAudio.SelectedValue.ToString();
+                Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
+                if (((Frm_Soundbanks_Main)ParentForm).AudioDataDict.ContainsKey(AudioKey))
                 {
-                    Frm_AudioProperties FormAudioProps = new Frm_AudioProperties(SelectedSound, AudioKey)
+                    EXAudio SelectedSound = ((Frm_Soundbanks_Main)ParentForm).AudioDataDict[AudioKey];
+                    if (SelectedSound != null)
                     {
-                        Text = "Audio Properties",
-                        Tag = Tag,
-                        Owner = this,
-                        ShowInTaskbar = false
-                    };
-                    FormAudioProps.ShowDialog();
-                    FormAudioProps.Dispose();
+                        Frm_AudioProperties FormAudioProps = new Frm_AudioProperties(SelectedSound, AudioKey)
+                        {
+                            Text = "Audio Properties",
+                            Tag = Tag,
+                            Owner = this,
+                            ShowInTaskbar = false
+                        };
+                        FormAudioProps.ShowDialog();
+                        FormAudioProps.Dispose();
+                    }
                 }
             }
         }

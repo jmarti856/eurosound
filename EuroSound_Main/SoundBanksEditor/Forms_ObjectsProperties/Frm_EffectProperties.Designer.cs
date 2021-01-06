@@ -55,7 +55,7 @@
             this.numeric_duckerlength = new System.Windows.Forms.NumericUpDown();
             this.label_duckerlenght = new System.Windows.Forms.Label();
             this.groupbox_samples = new System.Windows.Forms.GroupBox();
-            this.List_Samples = new System.Windows.Forms.ListBox();
+            this.List_Samples = new System.Windows.Forms.ListView();
             this.button_ok = new System.Windows.Forms.Button();
             this.button_cancel = new System.Windows.Forms.Button();
             this.grbx_hashcode = new System.Windows.Forms.GroupBox();
@@ -413,12 +413,14 @@
             // List_Samples
             // 
             this.List_Samples.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.List_Samples.FormattingEnabled = true;
+            this.List_Samples.FullRowSelect = true;
+            this.List_Samples.HideSelection = false;
             this.List_Samples.Location = new System.Drawing.Point(3, 16);
             this.List_Samples.Name = "List_Samples";
-            this.List_Samples.ScrollAlwaysVisible = true;
             this.List_Samples.Size = new System.Drawing.Size(518, 274);
             this.List_Samples.TabIndex = 0;
+            this.List_Samples.UseCompatibleStateImageBehavior = false;
+            this.List_Samples.View = System.Windows.Forms.View.List;
             this.List_Samples.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.List_Samples_MouseDoubleClick);
             // 
             // button_ok
@@ -557,11 +559,11 @@
         private System.Windows.Forms.GroupBox grbx_hashcode;
         private System.Windows.Forms.ComboBox cbx_hashcode;
         private System.Windows.Forms.Label label_hashcode;
-        private System.Windows.Forms.ListBox List_Samples;
         private System.Windows.Forms.NumericUpDown numeric_mastervolume;
         private System.Windows.Forms.Label label_mastervolume;
         private System.Windows.Forms.CheckBox Checkbox_OutputThisSound;
         private System.Windows.Forms.TextBox Textbox_OuterRadius;
         private System.Windows.Forms.TextBox Textbox_InnerRadius;
+        private System.Windows.Forms.ListView List_Samples;
     }
 }

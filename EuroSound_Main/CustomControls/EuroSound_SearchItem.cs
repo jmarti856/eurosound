@@ -268,7 +268,7 @@ namespace EuroSound_Application
                 {
                     if (FormType == typeof(Frm_Soundbanks_Main))
                     {
-                        TreeNode NodeToOpen = Results[(ListViewResults.SelectedItems[0].Index + 1)];
+                        TreeNode NodeToOpen = Results[(ListViewResults.SelectedItems[0].Index)];
                         ObjectType = NodeToOpen.Tag.ToString();
                         if (ObjectType.Equals("Sound"))
                         {
@@ -299,29 +299,26 @@ namespace EuroSound_Application
                 }
                 else
                 {
-                    if (!(NodeToSearch.Tag.Equals("Folder") || NodeToSearch.Tag.Equals("Root")))
+                    ListViewItem ItemToAdd = new ListViewItem(new[] { NodeToSearch.Text, "", NodeToSearch.Tag.ToString(), NodeToSearch.Parent.Text });
+                    ItemToAdd.SubItems[1].BackColor = NodeToSearch.ForeColor;
+                    ItemToAdd.UseItemStyleForSubItems = false;
+
+                    try
                     {
-                        ListViewItem ItemToAdd = new ListViewItem(new[] { NodeToSearch.Text, "", NodeToSearch.Tag.ToString(), NodeToSearch.Parent.Text });
-                        ItemToAdd.SubItems[1].BackColor = NodeToSearch.ForeColor;
-                        ItemToAdd.UseItemStyleForSubItems = false;
-
-                        try
+                        ListViewResults.Invoke((MethodInvoker)delegate
                         {
-                            ListViewResults.Invoke((MethodInvoker)delegate
-                            {
-                                ListViewResults.Items.Add(ItemToAdd);
-                            });
+                            ListViewResults.Items.Add(ItemToAdd);
+                        });
 
-                            //Results Count
-                            ListViewResults.Invoke((MethodInvoker)delegate
-                            {
-                                Label_Results.Text = string.Format("{0} Items", ListViewResults.Items.Count);
-                            });
-                        }
-                        catch
+                        //Results Count
+                        ListViewResults.Invoke((MethodInvoker)delegate
                         {
-                            break;
-                        }
+                            Label_Results.Text = string.Format("{0} Items", ListViewResults.Items.Count);
+                        });
+                    }
+                    catch
+                    {
+                        break;
                     }
                 }
             }
@@ -350,16 +347,22 @@ namespace EuroSound_Application
                 {
                     if (MatchOnly)
                     {
-                        if (node.Text.ToLower().Contains(searchFor))
+                        if (!(node.Tag.Equals("Root") || node.Tag.Equals("Folder")))
                         {
-                            Matches.Add(node);
+                            if (node.Text.ToLower().Contains(searchFor))
+                            {
+                                Matches.Add(node);
+                            }
                         }
                     }
                     else
                     {
-                        if (node.Text.ToLower().Equals(searchFor))
+                        if (!(node.Tag.Equals("Root") || node.Tag.Equals("Folder")))
                         {
-                            Matches.Add(node);
+                            if (node.Text.Equals(searchFor, StringComparison.OrdinalIgnoreCase))
+                            {
+                                Matches.Add(node);
+                            }
                         }
                     }
                     if (node != null)

@@ -383,8 +383,6 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         private void TreeView_File_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            uint SoundID;
-
             /*Check that we have selected a node, and we have not selected the root folder*/
             if (e.Node.Parent != null && !e.Node.Tag.Equals("Root"))
             {
@@ -404,29 +402,6 @@ namespace EuroSound_Application.SoundBanksEditor
                     }
                     else
                     {
-                        /*Rename Sound item*/
-                        if (e.Node.Tag.Equals("Sound"))
-                        {
-                            SoundID = uint.Parse(e.Node.Name);
-                            if (SoundsList.ContainsKey(SoundID))
-                            {
-                                SoundsList[SoundID].DisplayName = e.Label;
-                            }
-                        }
-                        /*Rename sound sample*/
-                        else if (e.Node.Tag.Equals("Sample"))
-                        {
-                            EXSound ParentSound = EXSoundbanksFunctions.GetSoundByName(uint.Parse(e.Node.Parent.Name), SoundsList);
-                            for (int i = 0; i < ParentSound.Samples.Count; i++)
-                            {
-                                if (EXSoundbanksFunctions.RemoveWhiteSpaces(ParentSound.Samples[i].DisplayName).Equals(e.Node.Name))
-                                {
-                                    e.Node.Name = EXSoundbanksFunctions.RemoveWhiteSpaces(e.Label);
-                                    ParentSound.Samples[i].DisplayName = e.Label;
-                                    break;
-                                }
-                            }
-                        }
                         e.Node.Text = e.Label;
                     }
                 }
@@ -496,31 +471,35 @@ namespace EuroSound_Application.SoundBanksEditor
 
             // Retrieve the node at the drop location.
             TreeNode targetNode = TreeView_File.GetNodeAt(targetPoint);
-            DestSection = TreeNodeFunctions.FindRootNode(targetNode).Text;
-            DestNodeType = targetNode.Tag.ToString();
-
-            // Retrieve the node that was dragged.
-            TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
-            SourceSection = TreeNodeFunctions.FindRootNode(draggedNode).Text;
-
-            // Confirm that the node at the drop location is not
-            // the dragged node and that target node isn't null
-            // (for example if you drag outside the control)
-            if (!draggedNode.Equals(targetNode) && targetNode != null)
+            TreeNode FindTargetNode = TreeNodeFunctions.FindRootNode(targetNode);
+            if (FindTargetNode != null)
             {
-                /*
-                Confirm we are not outside the node section and that the destination place is a folder or the root
-                node section
-                */
-                if (SourceSection.Equals(DestSection) && (DestNodeType.Equals("Folder") || DestNodeType.Equals("Root")))
+                DestSection = FindTargetNode.Text;
+                DestNodeType = targetNode.Tag.ToString();
+
+                // Retrieve the node that was dragged.
+                TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
+                SourceSection = TreeNodeFunctions.FindRootNode(draggedNode).Text;
+
+                // Confirm that the node at the drop location is not
+                // the dragged node and that target node isn't null
+                // (for example if you drag outside the control)
+                if (!draggedNode.Equals(targetNode) && targetNode != null)
                 {
-                    // Remove the node from its current
-                    // location and add it to the node at the drop location.
-                    draggedNode.Remove();
-                    targetNode.Nodes.Add(draggedNode);
-                    targetNode.Expand();
-                    TreeView_File.SelectedNode = draggedNode;
-                    ProjectInfo.FileHasBeenModified = true;
+                    /*
+                    Confirm we are not outside the node section and that the destination place is a folder or the root
+                    node section
+                    */
+                    if (SourceSection.Equals(DestSection) && (DestNodeType.Equals("Folder") || DestNodeType.Equals("Root")))
+                    {
+                        // Remove the node from its current
+                        // location and add it to the node at the drop location.
+                        draggedNode.Remove();
+                        targetNode.Nodes.Add(draggedNode);
+                        targetNode.Expand();
+                        TreeView_File.SelectedNode = draggedNode;
+                        ProjectInfo.FileHasBeenModified = true;
+                    }
                 }
             }
         }

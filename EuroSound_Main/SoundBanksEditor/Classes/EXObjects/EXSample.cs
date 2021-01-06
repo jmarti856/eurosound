@@ -4,7 +4,6 @@
     {
         public sbyte BaseVolume;
         public string ComboboxSelectedAudio = string.Empty;
-        public string DisplayName = string.Empty;
         public short FileRef;
         public uint HashcodeSubSFX;
         public bool IsStreamed;

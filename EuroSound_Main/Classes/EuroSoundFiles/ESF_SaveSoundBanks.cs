@@ -69,7 +69,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             {
                 BWriter.Write(Entry.Key);
                 BWriter.Write(Entry.Value.Dependencies);
-                BWriter.Write(Entry.Value.DisplayName);
                 BWriter.Write(Entry.Value.LoadedFileName);
                 BWriter.Write(Entry.Value.Encoding);
                 BWriter.Write(Entry.Value.Flags);
@@ -95,7 +94,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 /*Display Info*/
                 BWriter.Write(SoundItem.Key);
                 BWriter.Write(SoundItem.Value.Hashcode);
-                BWriter.Write(SoundItem.Value.DisplayName);
                 BWriter.Write(SoundItem.Value.OutputThisSound);
 
                 /*---Required for EngineX---*/
@@ -114,23 +112,24 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 
                 /*Write Samples*/
                 BWriter.Write(SoundItem.Value.Samples.Count);
-                foreach (EXSample ItemSample in SoundItem.Value.Samples)
+                foreach (KeyValuePair<uint, EXSample> ItemSample in SoundItem.Value.Samples)
                 {
+                    /*Key*/
+                    BWriter.Write(ItemSample.Key);
+
                     /*Display Info*/
-                    BWriter.Write("empty"); //RemovedField
-                    BWriter.Write(ItemSample.DisplayName);
-                    BWriter.Write(ItemSample.IsStreamed);
-                    BWriter.Write(ItemSample.FileRef);
-                    BWriter.Write(ItemSample.ComboboxSelectedAudio);
-                    BWriter.Write(Convert.ToUInt32(ItemSample.HashcodeSubSFX));
+                    BWriter.Write(ItemSample.Value.IsStreamed);
+                    BWriter.Write(ItemSample.Value.FileRef);
+                    BWriter.Write(ItemSample.Value.ComboboxSelectedAudio);
+                    BWriter.Write(Convert.ToUInt32(ItemSample.Value.HashcodeSubSFX));
 
                     /*---Required for EngineX---*/
-                    BWriter.Write(ItemSample.PitchOffset);
-                    BWriter.Write(ItemSample.RandomPitchOffset);
-                    BWriter.Write(ItemSample.BaseVolume);
-                    BWriter.Write(ItemSample.RandomVolumeOffset);
-                    BWriter.Write(ItemSample.Pan);
-                    BWriter.Write(ItemSample.RandomPan);
+                    BWriter.Write(ItemSample.Value.PitchOffset);
+                    BWriter.Write(ItemSample.Value.RandomPitchOffset);
+                    BWriter.Write(ItemSample.Value.BaseVolume);
+                    BWriter.Write(ItemSample.Value.RandomVolumeOffset);
+                    BWriter.Write(ItemSample.Value.Pan);
+                    BWriter.Write(ItemSample.Value.RandomPan);
                 }
             }
         }
@@ -157,8 +156,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 }
                 BWriter.Write(Selected.Name);
                 BWriter.Write(Selected.Text);
-                BWriter.Write(Selected.Index);
-                BWriter.Write(Selected.ImageKey);
                 BWriter.Write(Selected.SelectedImageIndex);
                 BWriter.Write(Selected.ImageIndex);
                 BWriter.Write(Selected.Tag.ToString());

@@ -6,7 +6,6 @@
         public uint Channels { get; set; }
         public uint DataSize { get; set; }
         public string Dependencies { get; set; } = string.Empty;
-        public string DisplayName { get; set; } = string.Empty;
         public uint Duration { get; set; }
         public string Encoding { get; set; } = "<Null>";
         public ushort Flags { get; set; }

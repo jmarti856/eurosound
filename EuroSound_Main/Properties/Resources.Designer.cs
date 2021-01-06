@@ -367,6 +367,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a An unexcepted error ocurred while reading the file:.
+        /// </summary>
+        internal static string Gen_ErrorRedingFile {
+            get {
+                return ResourceManager.GetString("Gen_ErrorRedingFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a This sound should not be added here, is checked as a &quot;Sample Streamed Sound&quot; in the &quot;SFX_Data.h&quot; file. You should add it as a reference in &quot;Streamed Sounds&quot; section and add it to the common file..
         /// </summary>
         internal static string Gen_Warning_StreamedSound {

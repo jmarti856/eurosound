@@ -61,7 +61,7 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             string Section = TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name;
             EXSound ParentSound = EXSoundbanksFunctions.GetSoundByName(uint.Parse(SelectedNode.Parent.Name), SoundsList);
-            EXSample SelectedSample = EXSoundbanksFunctions.GetSampleByName(SelectedNode.Name, ParentSound);
+            EXSample SelectedSample = EXSoundbanksFunctions.GetSoundSample(ParentSound, uint.Parse(SelectedNode.Name));
 
             if (Section.Equals("StreamedSounds"))
             {
@@ -123,7 +123,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         internal void RemoveAudioAndWarningDependencies(TreeNode SelectedNode)
         {
-            List<string> Dependencies = EXSoundbanksFunctions.GetAudioDependencies(SelectedNode.Name, SelectedNode.Text, SoundsList, false);
+            List<string> Dependencies = EXSoundbanksFunctions.GetAudioDependencies(SelectedNode.Name, SelectedNode.Text, SoundsList, TreeView_File, false);
             if (Dependencies.Count > 0)
             {
                 EuroSound_ErrorsAndWarningsList ShowDependencies = new EuroSound_ErrorsAndWarningsList(Dependencies)
@@ -260,10 +260,9 @@ namespace EuroSound_Application.SoundBanksEditor
         private void RemoveSample()
         {
             EXSound ParentSound = EXSoundbanksFunctions.GetSoundByName(uint.Parse(TreeView_File.SelectedNode.Parent.Name), SoundsList);
-            EXSample SampleToRemove = EXSoundbanksFunctions.GetSampleByName(TreeView_File.SelectedNode.Name, ParentSound);
-            if (SampleToRemove != null)
+            if (ParentSound != null)
             {
-                ParentSound.Samples.Remove(SampleToRemove);
+                ParentSound.Samples.Remove(uint.Parse(TreeView_File.SelectedNode.Name));
             }
             TreeView_File.SelectedNode.Remove();
         }
@@ -303,9 +302,11 @@ namespace EuroSound_Application.SoundBanksEditor
                 /*Sounds Hashcodes*/
                 try
                 {
+                    string DisplayName;
                     foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
                     {
-                        ListViewItem Hashcode = new ListViewItem(new[] { "", Sound.Value.Hashcode.ToString(), "<Label Not Found>", Sound.Value.DisplayName });
+                        DisplayName = TreeView_File.Nodes.Find(Sound.Key.ToString(), true)[0].Text;
+                        ListViewItem Hashcode = new ListViewItem(new[] { "", Sound.Value.Hashcode.ToString(), "<Label Not Found>", DisplayName });
                         if (Hashcodes.SFX_Defines.ContainsKey(Convert.ToUInt32(Sound.Value.Hashcode)))
                         {
                             Hashcode.SubItems[0].Text = "OK";
@@ -348,6 +349,8 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 try
                 {
+                    string SampleDisplayName, SoundDisplayName;
+
                     /*Clear List*/
                     ListView_StreamData.Invoke((MethodInvoker)delegate
                     {
@@ -356,15 +359,17 @@ namespace EuroSound_Application.SoundBanksEditor
 
                     foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
                     {
-                        foreach (EXSample Sample in Sound.Value.Samples)
+                        SoundDisplayName = TreeView_File.Nodes.Find(Sound.Key.ToString(), true)[0].Text;
+                        foreach (KeyValuePair<uint, EXSample> Sample in Sound.Value.Samples)
                         {
-                            if (Sample.FileRef < 0)
+                            if (Sample.Value.FileRef < 0)
                             {
+                                SampleDisplayName = TreeView_File.Nodes.Find(Sample.Key.ToString(), true)[0].Text;
                                 ListViewItem ItemStreamed = new ListViewItem(new[]
                                 {
-                                    Sample.DisplayName,
-                                    Sample.FileRef.ToString(),
-                                    Sound.Value.DisplayName,
+                                    SampleDisplayName,
+                                    Sample.Value.FileRef.ToString(),
+                                    SoundDisplayName,
                                     "HC00FFFF"
                                 })
                                 {
@@ -372,7 +377,7 @@ namespace EuroSound_Application.SoundBanksEditor
                                 };
                                 AddItemToListView(ItemStreamed, ListView_StreamData);
 
-                                GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking Sample: " + Sample.DisplayName);
+                                GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking Sample: " + SampleDisplayName);
 
                                 Thread.Sleep(6);
                             }

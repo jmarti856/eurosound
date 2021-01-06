@@ -31,7 +31,7 @@ namespace EuroSound_Application.StreamSounds
             {
                 if (!string.IsNullOrEmpty(Name))
                 {
-                    uint SoundID = GenericFunctions.GetSoundID(ProjectInfo);
+                    uint SoundID = GenericFunctions.GetNewObjectID(ProjectInfo);
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_StreamData.SelectedNode.Name, SoundID.ToString(), Name, 2, 2, "Sound", Color.Black, TreeView_StreamData);
                     //Add Empty Sound
                     EXSoundStream Sound = new EXSoundStream

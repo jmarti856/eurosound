@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.SoundBanksEditor
@@ -10,6 +11,7 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
+        private Form OpenForm;
         private EXSound SelectedSound;
         private string TreeNodeSoundName, SoundSection;
 
@@ -38,6 +40,9 @@ namespace EuroSound_Application.SoundBanksEditor
                 Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
             }
             Hashcodes.AddHashcodesToCombobox(cbx_hashcode, Hashcodes.SFX_Defines);
+
+            //Get Parent FOrm
+            OpenForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
         }
 
         private void Frm_EffectProperties_Shown(object sender, EventArgs e)
@@ -63,9 +68,18 @@ namespace EuroSound_Application.SoundBanksEditor
             /*---Print Sample--*/
             if (SelectedSound.Samples != null)
             {
-                foreach (EXSample sample in SelectedSound.Samples)
+                string SampleName;
+
+                foreach (KeyValuePair<uint, EXSample> sample in SelectedSound.Samples)
                 {
-                    List_Samples.Items.Add(sample.DisplayName);
+                    SampleName = ((Frm_Soundbanks_Main)OpenForm).TreeView_File.Nodes.Find(sample.Key.ToString(), true)[0].Text;
+                    ListViewItem ItemToAdd = new ListViewItem
+                    {
+                        Text = SampleName,
+                        Tag = sample.Key
+                    };
+
+                    List_Samples.Items.Add(ItemToAdd);
                 }
             }
         }
@@ -99,7 +113,6 @@ namespace EuroSound_Application.SoundBanksEditor
             SelectedSound.OutputThisSound = Checkbox_OutputThisSound.Checked;
 
             /*--Change icon in the parent form--*/
-            Form OpenForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
             TreeNode[] Results = ((Frm_Soundbanks_Main)OpenForm).TreeView_File.Nodes.Find(TreeNodeSoundName, true);
             if (Results.Length > 0)
             {
@@ -184,8 +197,9 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             if (List_Samples.SelectedItems.Count > 0)
             {
-                string SampleName = List_Samples.SelectedItems[0].ToString();
-                EXSample SelectedSample = EXSoundbanksFunctions.GetSampleByName(SampleName, SelectedSound);
+                string SampleName = "Test";
+                uint SampleID = (uint)List_Samples.SelectedItems[0].Tag;
+                EXSample SelectedSample = EXSoundbanksFunctions.GetSoundSample(SelectedSound, SampleID);
 
                 if (SelectedSample != null)
                 {
@@ -216,7 +230,5 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
             }
         }
-
-
     }
 }

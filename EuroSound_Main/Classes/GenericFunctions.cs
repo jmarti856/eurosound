@@ -189,8 +189,7 @@ namespace EuroSound_Application
             }
         }
 
-
-        internal static uint GetSoundID(ProjectFile FileProperties)
+        internal static uint GetNewObjectID(ProjectFile FileProperties)
         {
             uint index;
 
@@ -204,9 +203,9 @@ namespace EuroSound_Application
             int Counter = 0;
             foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
             {
-                foreach (EXSample Sample in Sound.Value.Samples)
+                foreach (KeyValuePair<uint, EXSample> Sample in Sound.Value.Samples)
                 {
-                    if (!Sample.IsStreamed)
+                    if (!Sample.Value.IsStreamed)
                     {
                         Counter++;
                     }

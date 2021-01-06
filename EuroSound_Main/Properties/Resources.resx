@@ -219,6 +219,9 @@
   <data name="Gen_ErrorReading_FileIncorrect" xml:space="preserve">
     <value>Error reading the file, the file format is corrupt or incorrect</value>
   </data>
+  <data name="Gen_ErrorRedingFile" xml:space="preserve">
+    <value>An unexcepted error ocurred while reading the file:</value>
+  </data>
   <data name="Gen_Error_NameIsEmpty" xml:space="preserve">
     <value>The name can't be empty</value>
   </data>

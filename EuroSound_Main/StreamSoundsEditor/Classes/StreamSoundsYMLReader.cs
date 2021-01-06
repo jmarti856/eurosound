@@ -143,7 +143,7 @@ namespace EuroSound_Application.StreamSounds
                     SoundToAdd.Markers.Add(Marker);
                 }
 
-                SoundID = GenericFunctions.GetSoundID(FileProperties);
+                SoundID = GenericFunctions.GetNewObjectID(FileProperties);
                 SoundsList.Add(SoundID, SoundToAdd);
 
                 TreeNodeFunctions.TreeNodeAddNewNode("Sounds", SoundID.ToString(), SoundName, 2, 2, "Sound", Color.Black, TreeViewControl);

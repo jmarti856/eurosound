@@ -88,163 +88,168 @@ namespace EuroSound_Application.SoundBanksEditor
                 Reports = new List<string>();
             }
 
-            StreamReader reader = new StreamReader(FilePath);
-            string FileCheck = reader.ReadLine();
-            if (FileCheck.Equals("#ftype:2", StringComparison.OrdinalIgnoreCase))
+            try
             {
-                // Load the stream
-                YamlStream yaml = new YamlStream();
-                yaml.Load(reader);
-
-                // Examine the stream
-                YamlMappingNode mapping = (YamlMappingNode)yaml.Documents[0].RootNode;
-
-                CurrentSoundParams = GetSoundParams(mapping);
-                SamplesProperties = GetSamples(mapping);
-
-                if (!TreeNodeFunctions.CheckIfNodeExistsByText(TreeViewControl, SoundName))
+                StreamReader reader = new StreamReader(FilePath);
+                string FileCheck = reader.ReadLine();
+                if (FileCheck.Equals("#ftype:2", StringComparison.OrdinalIgnoreCase))
                 {
-                    /*--Add Sound--*/
-                    SoundID = GenericFunctions.GetSoundID(FileProperties);
-                    EXSound NewSound = new EXSound()
-                    {
-                        DisplayName = SoundName,
-                        Hashcode = SoundHashcode,
-                        DuckerLenght = (short)CurrentSoundParams[0],
-                        MinDelay = (short)CurrentSoundParams[1],
-                        MaxDelay = (short)CurrentSoundParams[2],
-                        InnerRadiusReal = (short)CurrentSoundParams[3],
-                        OuterRadiusReal = (short)CurrentSoundParams[4],
-                        ReverbSend = (sbyte)CurrentSoundParams[5],
-                        TrackingType = (sbyte)CurrentSoundParams[6],
-                        MaxVoices = (sbyte)CurrentSoundParams[7],
-                        Priority = (sbyte)CurrentSoundParams[8],
-                        Ducker = (sbyte)CurrentSoundParams[9],
-                        MasterVolume = (sbyte)CurrentSoundParams[10],
-                        Flags = (ushort)CurrentSoundParams[11]
-                    };
+                    // Load the stream
+                    YamlStream yaml = new YamlStream();
+                    yaml.Load(reader);
 
-                    SoundsList.Add(SoundID, NewSound);
+                    // Examine the stream
+                    YamlMappingNode mapping = (YamlMappingNode)yaml.Documents[0].RootNode;
 
-                    /*--Add Sample--*/
-                    foreach (KeyValuePair<int, int[]> Entry in SamplesProperties)
+                    CurrentSoundParams = GetSoundParams(mapping);
+                    SamplesProperties = GetSamples(mapping);
+
+                    if (!TreeNodeFunctions.CheckIfNodeExistsByText(TreeViewControl, SoundName))
                     {
-                        string SampleName = "SMP_" + NewSound.DisplayName + Entry.Key;
-                        EXSample NewSample = new EXSample
+                        /*--Add Sound--*/
+                        SoundID = GenericFunctions.GetNewObjectID(FileProperties);
+                        EXSound NewSound = new EXSound()
                         {
-                            DisplayName = SampleName,
-                            FileRef = (short)Entry.Value[0],
-                            PitchOffset = (short)Entry.Value[1],
-                            RandomPitchOffset = (short)Entry.Value[2],
-                            BaseVolume = (sbyte)Entry.Value[3],
-                            RandomVolumeOffset = (sbyte)Entry.Value[4],
-                            Pan = (sbyte)Entry.Value[5],
-                            RandomPan = (sbyte)Entry.Value[6]
+                            Hashcode = SoundHashcode,
+                            DuckerLenght = (short)CurrentSoundParams[0],
+                            MinDelay = (short)CurrentSoundParams[1],
+                            MaxDelay = (short)CurrentSoundParams[2],
+                            InnerRadiusReal = (short)CurrentSoundParams[3],
+                            OuterRadiusReal = (short)CurrentSoundParams[4],
+                            ReverbSend = (sbyte)CurrentSoundParams[5],
+                            TrackingType = (sbyte)CurrentSoundParams[6],
+                            MaxVoices = (sbyte)CurrentSoundParams[7],
+                            Priority = (sbyte)CurrentSoundParams[8],
+                            Ducker = (sbyte)CurrentSoundParams[9],
+                            MasterVolume = (sbyte)CurrentSoundParams[10],
+                            Flags = (ushort)CurrentSoundParams[11]
                         };
 
-                        if (Entry.Value[0] < 0)
-                        {
-                            if (!SoundNodeAdded)
-                            {
-                                TreeNodeFunctions.TreeNodeAddNewNode("StreamedSounds", SoundID.ToString(), SoundName, 2, 2, "Sound", Color.Black, TreeViewControl);
-                                NewSample.IsStreamed = true;
-                                SoundNodeAdded = true;
-                            }
-                        }
-                        else
-                        {
-                            if (!SoundNodeAdded)
-                            {
-                                TreeNodeFunctions.TreeNodeAddNewNode("Sounds", SoundID.ToString(), SoundName, 2, 2, "Sound", Color.Black, TreeViewControl);
-                                SoundNodeAdded = true;
-                            }
+                        SoundsList.Add(SoundID, NewSound);
 
-                            if (EXSoundbanksFunctions.SubSFXFlagChecked(CurrentSoundParams[11]))
+                        /*--Add Sample--*/
+                        foreach (KeyValuePair<int, int[]> Entry in SamplesProperties)
+                        {
+                            string SampleName = "SMP_" + SoundName + Entry.Key;
+                            uint SampleID = GenericFunctions.GetNewObjectID(FileProperties);
+                            EXSample NewSample = new EXSample
                             {
-                                uint GetHashcode = Convert.ToUInt32("0x" + Entry.Value[0].ToString("X8"), 16);
-                                NewSample.HashcodeSubSFX = GetSoundHashcode(GetHashcode);
-                                NewSample.ComboboxSelectedAudio = "<SUB SFX>";
+                                FileRef = (short)Entry.Value[0],
+                                PitchOffset = (short)Entry.Value[1],
+                                RandomPitchOffset = (short)Entry.Value[2],
+                                BaseVolume = (sbyte)Entry.Value[3],
+                                RandomVolumeOffset = (sbyte)Entry.Value[4],
+                                Pan = (sbyte)Entry.Value[5],
+                                RandomPan = (sbyte)Entry.Value[6]
+                            };
+
+                            if (Entry.Value[0] < 0)
+                            {
+                                if (!SoundNodeAdded)
+                                {
+                                    TreeNodeFunctions.TreeNodeAddNewNode("StreamedSounds", SoundID.ToString(), SoundName, 2, 2, "Sound", Color.Black, TreeViewControl);
+                                    NewSample.IsStreamed = true;
+                                    SoundNodeAdded = true;
+                                }
                             }
                             else
                             {
-                                int[] AudioProps = new int[3];
-                                string AudioPath = GetAudioFilePath(FilePath, Entry.Key, 0);
-                                if (File.Exists(AudioPath))
+                                if (!SoundNodeAdded)
                                 {
-                                    string AudioPropertiesPath = GetAudioFilePath(FilePath, Entry.Key, 1);
-                                    if (File.Exists(AudioPropertiesPath))
-                                    {
-                                        AudioProps = GetAudioProperties(AudioPropertiesPath);
-                                    }
-                                    else
-                                    {
-                                        Reports.Add("1The file: " + AudioPropertiesPath + " can't be loaded because does not exists.");
-                                    }
+                                    TreeNodeFunctions.TreeNodeAddNewNode("Sounds", SoundID.ToString(), SoundName, 2, 2, "Sound", Color.Black, TreeViewControl);
+                                    SoundNodeAdded = true;
+                                }
 
-                                    if (EXSoundbanksFunctions.AudioIsValid(AudioPath))
-                                    {
-                                        string MD5AudioFilehash = GenericFunctions.CalculateMD5(AudioPath);
-                                        EXAudio NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath, true);
-                                        if (NewAudio.PCMdata != null)
-                                        {
-                                            if (!AudioDict.ContainsKey(MD5AudioFilehash))
-                                            {
-                                                NewAudio.DisplayName = SampleName;
-                                                NewAudio.Flags = Convert.ToUInt16(AudioProps[0]);
-                                                NewAudio.PSIsample = Convert.ToUInt32(AudioProps[1]);
-                                                NewAudio.LoopOffset = Convert.ToUInt32(AudioProps[2]);
-
-                                                //Add Audio to dictionary and tree node
-                                                AudioDict.Add(MD5AudioFilehash, NewAudio);
-                                                TreeNodeFunctions.TreeNodeAddNewNode("AudioData", MD5AudioFilehash, "AD_" + SampleName, 7, 7, "Audio", Color.Black, TreeViewControl);
-                                            }
-                                            else
-                                            {
-                                                Reports.Add("1The file: " + AudioPath + " used by: " + SoundName + " has not been added because already exists.");
-                                            }
-                                        }
-                                        else
-                                        {
-                                            Reports.Add("0The file: " + AudioPath + " can't be readed, seems that is being used by another process.");
-                                        }
-
-                                        NewSample.ComboboxSelectedAudio = MD5AudioFilehash;
-                                    }
-                                    else
-                                    {
-                                        Reports.Add("0The file: " + AudioPath + " has not a valid format.");
-                                    }
+                                if (EXSoundbanksFunctions.SubSFXFlagChecked(CurrentSoundParams[11]))
+                                {
+                                    uint GetHashcode = Convert.ToUInt32("0x" + Entry.Value[0].ToString("X8"), 16);
+                                    NewSample.HashcodeSubSFX = GetSoundHashcode(GetHashcode);
+                                    NewSample.ComboboxSelectedAudio = "<SUB SFX>";
                                 }
                                 else
                                 {
-                                    Reports.Add("0The file: " + AudioPath + " can't be loaded because does not exists.");
+                                    int[] AudioProps = new int[3];
+                                    string AudioPath = GetAudioFilePath(FilePath, Entry.Key, 0);
+                                    if (File.Exists(AudioPath))
+                                    {
+                                        string AudioPropertiesPath = GetAudioFilePath(FilePath, Entry.Key, 1);
+                                        if (File.Exists(AudioPropertiesPath))
+                                        {
+                                            AudioProps = GetAudioProperties(AudioPropertiesPath);
+                                        }
+                                        else
+                                        {
+                                            Reports.Add("1The file: " + AudioPropertiesPath + " can't be loaded because does not exists.");
+                                        }
+
+                                        if (EXSoundbanksFunctions.AudioIsValid(AudioPath))
+                                        {
+                                            string MD5AudioFilehash = GenericFunctions.CalculateMD5(AudioPath);
+                                            EXAudio NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath, true);
+                                            if (NewAudio.PCMdata != null)
+                                            {
+                                                if (!AudioDict.ContainsKey(MD5AudioFilehash))
+                                                {
+                                                    NewAudio.Flags = Convert.ToUInt16(AudioProps[0]);
+                                                    NewAudio.PSIsample = Convert.ToUInt32(AudioProps[1]);
+                                                    NewAudio.LoopOffset = Convert.ToUInt32(AudioProps[2]);
+
+                                                    //Add Audio to dictionary and tree node
+                                                    AudioDict.Add(MD5AudioFilehash, NewAudio);
+                                                    TreeNodeFunctions.TreeNodeAddNewNode("AudioData", MD5AudioFilehash, "AD_" + SampleName, 7, 7, "Audio", Color.Black, TreeViewControl);
+                                                }
+                                                else
+                                                {
+                                                    Reports.Add("1The file: " + AudioPath + " used by: " + SoundName + " has not been added because already exists.");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Reports.Add("0The file: " + AudioPath + " can't be readed, seems that is being used by another process.");
+                                            }
+
+                                            NewSample.ComboboxSelectedAudio = MD5AudioFilehash;
+                                        }
+                                        else
+                                        {
+                                            Reports.Add("0The file: " + AudioPath + " has not a valid format.");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Reports.Add("0The file: " + AudioPath + " can't be loaded because does not exists.");
+                                    }
                                 }
                             }
-                        }
 
-                        /*--Add Sample To Dictionary--*/
-                        NewSound.Samples.Add(NewSample);
-                        TreeNodeFunctions.TreeNodeAddNewNode(SoundID.ToString(), SampleName, SampleName, 4, 4, "Sample", Color.Black, TreeViewControl);
+                            /*--Add Sample To Dictionary--*/
+                            NewSound.Samples.Add(SampleID, NewSample);
+                            TreeNodeFunctions.TreeNodeAddNewNode(SoundID.ToString(), SampleID.ToString(), SampleName, 4, 4, "Sample", Color.Black, TreeViewControl);
+                        }
+                    }
+                    else
+                    {
+                        Reports.Add("0The sound: " + SoundName + " can't be loaded because seems that exists (one item with the same name already exists).");
+                    }
+
+                    // Show results at end
+                    if (ShowResultsAtEnd)
+                    {
+                        ShowErrorsWarningsList(FilePath);
                     }
                 }
                 else
                 {
-                    Reports.Add("0The sound: " + SoundName + " can't be loaded because seems that exists (one item with the same name already exists).");
+                    Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect"));
                 }
 
-                // Show results at end
-                if (ShowResultsAtEnd)
-                {
-                    ShowErrorsWarningsList(FilePath);
-                }
+                reader.Close();
+                reader.Dispose();
             }
-            else
+            catch
             {
-                Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect"));
+                Reports.Add("0" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorRedingFile") + FilePath);
             }
-
-            reader.Close();
-            reader.Dispose();
 
             /*Update Status Bar*/
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
