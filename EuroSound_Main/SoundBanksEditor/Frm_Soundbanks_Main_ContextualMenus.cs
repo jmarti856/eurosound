@@ -211,18 +211,6 @@ namespace EuroSound_Application.SoundBanksEditor
         //* ContextMenu_Sound
         //*===============================================================================================
         #region ContextMenu_Sound_EVENTS
-        private void ContextMenu_Sound_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name.Equals("StreamedSounds"))
-            {
-                ContextMenuSound_AddSample.Visible = false;
-            }
-            else
-            {
-                ContextMenuSound_AddSample.Visible = true;
-            }
-        }
-
         private void ContextMenu_Sound_Properties_Click(object sender, System.EventArgs e)
         {
             OpenSelectedNodeSampleProperties(TreeView_File.SelectedNode);
@@ -325,7 +313,7 @@ namespace EuroSound_Application.SoundBanksEditor
             List<string> Dependencies = EXSoundbanksFunctions.GetAudioDependencies(TreeView_File.SelectedNode.Name, TreeView_File.SelectedNode.Text, SoundsList, true);
             if (Dependencies.Count > 0)
             {
-                EuroSound_ItemUsage ShowDependencies = new EuroSound_ItemUsage(Dependencies, Tag.ToString(), "Frm_Soundbanks_Main")
+                EuroSound_ItemUsage ShowDependencies = new EuroSound_ItemUsage(Dependencies, Tag.ToString())
                 {
                     Text = "Audio Usage",
                     Owner = Owner,

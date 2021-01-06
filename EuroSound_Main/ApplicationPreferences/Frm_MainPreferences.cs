@@ -27,12 +27,16 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         internal int ColorWavesControlTEMPORAL;
         internal int BackColorWavesControlTEMPORAL;
 
+        //Frm_StreamFile
+        internal string StreamFilePathTEMPORAL;
+
         //*===============================================================================================
         //* GLOBAL VARS
         //*===============================================================================================
         private Frm_HashTablesConfig GeneralHashTable;
         private Frm_General GeneralPreferences;
         private Frm_TreeViewPrefs TreeViewPrefs;
+        private Frm_StreamFile ExternalFile;
 
         public Frm_MainPreferences()
         {
@@ -97,6 +101,15 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 WRegistryFunctions.SaveGeneralPreferences();
             }
 
+            /*-----------------[Frm_StreamFile]-----------------*/
+            if (!string.IsNullOrEmpty(StreamFilePathTEMPORAL))
+            {
+                GlobalPreferences.StreamFilePath = StreamFilePathTEMPORAL;
+
+                //SaveConfig in Registry
+                WRegistryFunctions.SaveExternalFilePath(GlobalPreferences.StreamFilePath);
+            }
+
             Close();
         }
 
@@ -154,6 +167,23 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                     Panel_SecondaryForms.Controls.Add(GeneralPreferences);
                     GeneralPreferences.Dock = DockStyle.Fill;
                     GeneralPreferences.Show();
+                }
+            }
+            else if (string.Equals(e.Node.Name, "StreamFile"))
+            {
+                if (!Panel_SecondaryForms.Controls.Contains(ExternalFile))
+                {
+                    RemoveAllFormsInsidePanel(Panel_SecondaryForms);
+
+                    ExternalFile = new Frm_StreamFile
+                    {
+                        TopLevel = false,
+                        AutoScroll = true,
+                        Tag = Tag
+                    };
+                    Panel_SecondaryForms.Controls.Add(ExternalFile);
+                    ExternalFile.Dock = DockStyle.Fill;
+                    ExternalFile.Show();
                 }
             }
         }

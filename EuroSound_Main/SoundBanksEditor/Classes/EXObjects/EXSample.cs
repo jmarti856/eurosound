@@ -8,7 +8,6 @@
         public short FileRef;
         public uint HashcodeSubSFX;
         public bool IsStreamed;
-        public string Name;
         /*---ENGINE X Required---*/
         public sbyte Pan;
         public short PitchOffset;

@@ -18,7 +18,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             /*Sound ID*/
             FileProperties.StreamedSoundID = BReader.ReadUInt32();
             /*Sounds List Offset*/
-            BReader.ReadUInt32();//Only Used in the SoundBanks Form
+            BReader.ReadUInt32();//Only Used in the "Frm_NewStreamSound" Form
             /*TreeViewData Offset*/
             TreeViewDataOffset = BReader.ReadUInt32();
             /*Dictionary Data Offset*/

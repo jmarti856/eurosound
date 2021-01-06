@@ -7,16 +7,15 @@ namespace EuroSound_Application
 {
     public partial class EuroSound_ItemUsage : Form
     {
-        private string FormID, FormName;
+        private string FormID;
         private List<string> UsageItemsList;
-        private Form SoundbanksParentForm;
+        private Form FormToSearch;
 
-        public EuroSound_ItemUsage(List<string> ListToPrint, string _FormID, string _FormName)
+        public EuroSound_ItemUsage(List<string> ListToPrint, string _FormID)
         {
             InitializeComponent();
             UsageItemsList = ListToPrint;
             FormID = _FormID;
-            FormName = _FormName;
         }
 
         private void Button_OK_Click(object sender, EventArgs e)
@@ -27,13 +26,13 @@ namespace EuroSound_Application
         private void EuroSound_ItemUsage_Shown(object sender, EventArgs e)
         {
             string[] LineSplit;
-            if (FormName.Equals("Frm_Soundbanks_Main"))
+            FormToSearch = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", FormID);
+            if (FormToSearch.GetType() == typeof(Frm_Soundbanks_Main))
             {
-                SoundbanksParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", FormID);
                 foreach (string Item in UsageItemsList)
                 {
                     LineSplit = Item.Split(',');
-                    TreeNode NodeSound = ((Frm_Soundbanks_Main)SoundbanksParentForm).TreeView_File.Nodes.Find(LineSplit[1], true)[0];
+                    TreeNode NodeSound = ((Frm_Soundbanks_Main)FormToSearch).TreeView_File.Nodes.Find(LineSplit[1], true)[0];
                     ListViewItem ItemToAdd = new ListViewItem(new[] { LineSplit[0], NodeSound.Text })
                     {
                         ImageIndex = 0
@@ -49,11 +48,14 @@ namespace EuroSound_Application
         {
             if (ListView_ItemUsage.SelectedItems.Count > 0)
             {
-                if (FormName.Equals("Frm_Soundbanks_Main"))
+                if (FormToSearch.GetType() == typeof(Frm_Soundbanks_Main))
                 {
                     string NodeKey = ListView_ItemUsage.SelectedItems[0].Tag.ToString();
-                    TreeNode NodeSound = ((Frm_Soundbanks_Main)ParentForm).TreeView_File.Nodes.Find(NodeKey, true)[0];
-                    ((Frm_Soundbanks_Main)ParentForm).OpenSoundProperties(NodeSound);
+                    TreeNode[] NodeSound = ((Frm_Soundbanks_Main)FormToSearch).TreeView_File.Nodes.Find(NodeKey, true);
+                    if (NodeSound.Length > 0)
+                    {
+                        ((Frm_Soundbanks_Main)FormToSearch).OpenSoundProperties(NodeSound[0]);
+                    }
                 }
             }
         }

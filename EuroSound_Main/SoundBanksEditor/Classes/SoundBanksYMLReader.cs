@@ -25,7 +25,10 @@ namespace EuroSound_Application.SoundBanksEditor
                     if (!lines[i].StartsWith("#"))
                     {
                         string[] line = lines[i].Split(null);
-                        Paths.Add(Path.GetDirectoryName(FilePath) + "\\" + line[1] + "\\effectProperties.yml");
+                        if (line.Length > 1)
+                        {
+                            Paths.Add(Path.GetDirectoryName(FilePath) + "\\" + line[1] + "\\effectProperties.yml");
+                        }
                     }
                 }
                 Array.Clear(lines, 0, lines.Length);
@@ -129,7 +132,6 @@ namespace EuroSound_Application.SoundBanksEditor
                         string SampleName = "SMP_" + NewSound.DisplayName + Entry.Key;
                         EXSample NewSample = new EXSample
                         {
-                            Name = SampleName,
                             DisplayName = SampleName,
                             FileRef = (short)Entry.Value[0],
                             PitchOffset = (short)Entry.Value[1],
@@ -185,14 +187,21 @@ namespace EuroSound_Application.SoundBanksEditor
                                         EXAudio NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath, true);
                                         if (NewAudio.PCMdata != null)
                                         {
-                                            NewAudio.DisplayName = SampleName;
-                                            NewAudio.Flags = Convert.ToUInt16(AudioProps[0]);
-                                            NewAudio.PSIsample = Convert.ToUInt32(AudioProps[1]);
-                                            NewAudio.LoopOffset = Convert.ToUInt32(AudioProps[2]);
+                                            if (!AudioDict.ContainsKey(MD5AudioFilehash))
+                                            {
+                                                NewAudio.DisplayName = SampleName;
+                                                NewAudio.Flags = Convert.ToUInt16(AudioProps[0]);
+                                                NewAudio.PSIsample = Convert.ToUInt32(AudioProps[1]);
+                                                NewAudio.LoopOffset = Convert.ToUInt32(AudioProps[2]);
 
-                                            //Add Audio to dictionary and tree node
-                                            AudioDict.Add(MD5AudioFilehash, NewAudio);
-                                            TreeNodeFunctions.TreeNodeAddNewNode("AudioData", MD5AudioFilehash, "AD_" + SampleName, 7, 7, "Audio", Color.Black, TreeViewControl);
+                                                //Add Audio to dictionary and tree node
+                                                AudioDict.Add(MD5AudioFilehash, NewAudio);
+                                                TreeNodeFunctions.TreeNodeAddNewNode("AudioData", MD5AudioFilehash, "AD_" + SampleName, 7, 7, "Audio", Color.Black, TreeViewControl);
+                                            }
+                                            else
+                                            {
+                                                Reports.Add("1The file: " + AudioPath + " used by: " + SoundName + " has not been added because already exists.");
+                                            }
                                         }
                                         else
                                         {

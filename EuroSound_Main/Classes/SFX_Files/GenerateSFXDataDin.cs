@@ -1,4 +1,5 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
+using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,30 +16,30 @@ namespace EuroSound_Application.GenerateDataBinaryFile
 
             if (Directory.Exists(GlobalPreferences.MusicOutputPath))
             {
-                BinaryWriter BWriter = new BinaryWriter(File.Open(GlobalPreferences.MusicOutputPath + "\\SFX_Data.bin", FileMode.Create, FileAccess.Write), Encoding.ASCII);
+                BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.MusicOutputPath + "\\SFX_Data.bin", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
 
                 foreach (KeyValuePair<uint, float[]> Item in Hashcodes.SFX_Data)
                 {
                     float[] Values = Item.Value;
 
                     //Hashcode
-                    BWriter.Write(Convert.ToUInt32(((int)Values[0])));
+                    BWriter.WriteUInt32(Convert.ToUInt32(((int)Values[0])));
                     //Inner Radius
-                    BWriter.Write(Convert.ToUInt32(FloatToHex(Values[1]), 16));
+                    BWriter.WriteUInt32(Convert.ToUInt32(FloatToHex(Values[1]), 16));
                     //Outer Radius
-                    BWriter.Write(Convert.ToUInt32(FloatToHex(Values[2]), 16));
+                    BWriter.WriteUInt32(Convert.ToUInt32(FloatToHex(Values[2]), 16));
                     //Alertness
-                    BWriter.Write(Convert.ToUInt32(FloatToHex(Values[3]), 16));
+                    BWriter.WriteUInt32(Convert.ToUInt32(FloatToHex(Values[3]), 16));
                     //Duration
-                    BWriter.Write(Convert.ToUInt32(FloatToHex(Values[4]), 16));
+                    BWriter.WriteUInt32(Convert.ToUInt32(FloatToHex(Values[4]), 16));
                     //Looping
-                    BWriter.Write(Convert.ToSByte((int)Values[5]));
+                    BWriter.WriteSByte(Convert.ToSByte((int)Values[5]));
                     //Tracking 3D
-                    BWriter.Write(Convert.ToSByte((int)Values[6]));
+                    BWriter.WriteSByte(Convert.ToSByte((int)Values[6]));
                     //SampleStreamed
-                    BWriter.Write(Convert.ToSByte((int)Values[7]));
+                    BWriter.WriteSByte(Convert.ToSByte((int)Values[7]));
                     //Padding
-                    BWriter.Write(Convert.ToSByte(0));
+                    BWriter.WriteSByte(Convert.ToSByte(0));
                 }
 
                 BWriter.Close();

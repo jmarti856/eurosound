@@ -113,6 +113,12 @@
     <Compile Include="ApplicationPreferences\Sub-Forms\Frm_GeneralPreferences.Designer.cs">
       <DependentUpon>Frm_GeneralPreferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_StreamFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_StreamFile.Designer.cs">
+      <DependentUpon>Frm_StreamFile.cs</DependentUpon>
+    </Compile>
     <Compile Include="ApplicationPreferences\Sub-Forms\Frm_TreeViewPrefs.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -187,6 +193,12 @@
     <Compile Include="CustomControls\EuroSound_NodesToFolder.Designer.cs">
       <DependentUpon>EuroSound_NodesToFolder.cs</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\EuroSound_SearchItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomControls\EuroSound_SearchItem.Designer.cs">
+      <DependentUpon>EuroSound_SearchItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\EuroSound_WarningBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -249,6 +261,12 @@
     </Compile>
     <Compile Include="SoundBanksEditor\Forms_ObjectsProperties\Frm_EffectProperties.Designer.cs">
       <DependentUpon>Frm_EffectProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SoundBanksEditor\Forms_ObjectsProperties\Frm_NewStreamSound.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SoundBanksEditor\Forms_ObjectsProperties\Frm_NewStreamSound.Designer.cs">
+      <DependentUpon>Frm_NewStreamSound.cs</DependentUpon>
     </Compile>
     <Compile Include="SoundBanksEditor\Forms_ObjectsProperties\Frm_SampleProperties.cs">
       <SubType>Form</SubType>
@@ -325,6 +343,9 @@
     <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_GeneralPreferences.resx">
       <DependentUpon>Frm_GeneralPreferences.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_StreamFile.resx">
+      <DependentUpon>Frm_StreamFile.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_TreeViewPrefs.resx">
       <DependentUpon>Frm_TreeViewPrefs.cs</DependentUpon>
     </EmbeddedResource>
@@ -348,6 +369,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\EuroSound_NodesToFolder.resx">
       <DependentUpon>EuroSound_NodesToFolder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomControls\EuroSound_SearchItem.resx">
+      <DependentUpon>EuroSound_SearchItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\EuroSound_WarningBox.resx">
       <DependentUpon>EuroSound_WarningBox.cs</DependentUpon>
@@ -383,6 +407,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SoundBanksEditor\Forms_ObjectsProperties\Frm_EffectProperties.resx">
       <DependentUpon>Frm_EffectProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SoundBanksEditor\Forms_ObjectsProperties\Frm_NewStreamSound.resx">
+      <DependentUpon>Frm_NewStreamSound.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SoundBanksEditor\Forms_ObjectsProperties\Frm_SampleProperties.resx">
       <DependentUpon>Frm_SampleProperties.cs</DependentUpon>

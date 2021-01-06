@@ -39,7 +39,6 @@ namespace EuroSound_Application.SoundBanksEditor
             numeric_randomvolumeoffset.Value = SelectedSample.RandomVolumeOffset;
             numeric_pan.Value = SelectedSample.Pan;
             numeric_randompan.Value = SelectedSample.RandomPan;
-            Checkbox_IsStreamedSound.Checked = SelectedSample.IsStreamed;
 
             /*Datasource Combobox*/
             Combobox_SelectedAudio.DataSource = EXSoundbanksFunctions.GetListAudioData(((Frm_Soundbanks_Main)ParentForm).AudioDataDict, ((Frm_Soundbanks_Main)ParentForm).TreeView_File).ToList();
@@ -58,9 +57,6 @@ namespace EuroSound_Application.SoundBanksEditor
                 Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
             }
             Hashcodes.AddHashcodesToCombobox(Combobox_Hashcode, Hashcodes.SFX_Defines);
-
-            Combobox_Hashcode.SelectedValue = SelectedSample.HashcodeSubSFX;
-
             EnableOrDisableSubSFXSection(IsSubSFX);
         }
 
@@ -99,7 +95,6 @@ namespace EuroSound_Application.SoundBanksEditor
             SelectedSample.RandomVolumeOffset = (sbyte)numeric_randomvolumeoffset.Value;
             SelectedSample.Pan = (sbyte)numeric_pan.Value;
             SelectedSample.RandomPan = (sbyte)numeric_randompan.Value;
-            SelectedSample.IsStreamed = Checkbox_IsStreamedSound.Checked;
 
             if (Combobox_SelectedAudio.SelectedValue != null)
             {
@@ -122,33 +117,24 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         //* Functions
         //*===============================================================================================
-        private void Checkbox_IsStreamedSound_CheckedChanged(object sender, EventArgs e)
+        private void EnableOrDisableSubSFXSection(bool IsSubSFX)
         {
-            if (Checkbox_IsStreamedSound.Checked)
-            {
-                EnableOrDisableMediaSection(false);
-            }
-            else
-            {
-                EnableOrDisableMediaSection(true);
-            }
-        }
+            bool Invert;
 
-        private void EnableOrDisableMediaSection(bool Action)
-        {
-            Combobox_SelectedAudio.Enabled = Action;
-            Combobox_Hashcode.Enabled = Action;
-            Button_PlayAudio.Enabled = Action;
-            Button_Stop.Enabled = Action;
-            Button_Edit.Enabled = Action;
-        }
-
-        private void EnableOrDisableSubSFXSection(bool Action)
-        {
-            if (!Checkbox_IsStreamedSound.Checked)
+            if (IsSubSFX)
             {
-                Combobox_Hashcode.Enabled = Action;
-                Combobox_SelectedAudio.Enabled = _ = !Action;
+                //Invert boolean
+                Invert = !IsSubSFX;
+
+                //Activate and deactivate controls
+                Combobox_SelectedAudio.Enabled = Invert;
+                Combobox_Hashcode.Enabled = IsSubSFX;
+                Button_PlayAudio.Enabled = Invert;
+                Button_Stop.Enabled = Invert;
+                Button_Edit.Enabled = Invert;
+
+                //Set subsfx hashcode to the combobox
+                Combobox_Hashcode.SelectedValue = SelectedSample.HashcodeSubSFX;
             }
         }
 

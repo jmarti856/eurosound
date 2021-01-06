@@ -39,7 +39,7 @@ namespace EuroSound_Application.StreamSounds
         {
             Frm_StreamSounds_MarkersEditor MarkersEditr = new Frm_StreamSounds_MarkersEditor(SelectedSound)
             {
-                Text = "Streamed Sound Markers Editor",
+                Text = "Markers Editor",
                 Tag = Tag.ToString(),
                 Owner = this,
                 ShowInTaskbar = false

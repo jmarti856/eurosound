@@ -483,6 +483,7 @@
             this.MinimizeBox = false;
             this.Name = "EuroSound_FlagsForm";
             this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "EuroSound Flags Checker";
             this.Load += new System.EventHandler(this.EuroSound_FlagsForm_Load);

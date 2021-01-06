@@ -32,6 +32,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("General");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("ESF Tree");
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Hash Tables");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Stream File");
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
             this.Panel_SecondaryForms = new System.Windows.Forms.TableLayoutPanel();
@@ -86,10 +87,13 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             treeNode2.Text = "ESF Tree";
             treeNode3.Name = "HashTables";
             treeNode3.Text = "Hash Tables";
+            treeNode4.Name = "StreamFile";
+            treeNode4.Text = "Stream File";
             this.TreeViewPreferences.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,
-            treeNode3});
+            treeNode3,
+            treeNode4});
             this.TreeViewPreferences.Size = new System.Drawing.Size(177, 424);
             this.TreeViewPreferences.TabIndex = 0;
             this.TreeViewPreferences.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeViewPreferences_AfterSelect);

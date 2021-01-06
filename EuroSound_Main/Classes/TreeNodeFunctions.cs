@@ -83,14 +83,14 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
             {
                 if (MatchOnly)
                 {
-                    if (node.Text.ToLower().Contains(searchFor))
+                    if (node.Text.ToLower().Contains(searchFor)||node.Name.ToLower().Contains(searchFor))
                     {
                         return node;
                     }
                 }
                 else
                 {
-                    if (node.Text.ToLower().Equals(searchFor))
+                    if (node.Text.ToLower().Equals(searchFor)||node.Name.ToLower().Equals(searchFor))
                     {
                         return node;
                     }

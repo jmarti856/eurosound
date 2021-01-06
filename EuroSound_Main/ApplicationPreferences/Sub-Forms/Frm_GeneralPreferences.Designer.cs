@@ -70,7 +70,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             // 
             this.Label_Title.AutoSize = true;
             this.Label_Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_Title.Location = new System.Drawing.Point(174, 5);
+            this.Label_Title.Location = new System.Drawing.Point(177, 5);
             this.Label_Title.Name = "Label_Title";
             this.Label_Title.Size = new System.Drawing.Size(137, 16);
             this.Label_Title.TabIndex = 1;

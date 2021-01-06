@@ -1,10 +1,10 @@
 ﻿using EuroSound_Application.SoundBanksEditor;
+using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.GenerateSoundBankSFX
@@ -21,7 +21,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
         private long WholeFileSize;
         /*--[Data lists]--*/
 
-        internal void WriteFileHeader(BinaryWriter BWriter, uint FileHashcode, ProgressBar Bar)
+        internal void WriteFileHeader(BinaryStream BWriter, uint FileHashcode, ProgressBar Bar)
         {
             //*===============================================================================================
             //* HEADER
@@ -36,15 +36,15 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                 ProgressBarUpdate(Bar, 1);
 
                 /*--hashc[Hashcode for the current soundbank without the section prefix]--*/
-                BWriter.Write(Convert.ToUInt32(FileHashcode));
+                BWriter.WriteUInt32(FileHashcode);
                 ProgressBarUpdate(Bar, 1);
 
                 /*--offst[Constant offset to the next section,]--*/
-                BWriter.Write(Convert.ToUInt32(0xC9));
+                BWriter.WriteUInt32(0xC9);
                 ProgressBarUpdate(Bar, 1);
 
                 /*--fulls[Size of the whole file, in bytes. Unused. ]--*/
-                BWriter.Write(Convert.ToUInt32(00000000));
+                BWriter.WriteUInt32(00000000);
                 ProgressBarUpdate(Bar, 1);
             }
             catch
@@ -53,7 +53,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             }
         }
 
-        internal void WriteFileSections(BinaryWriter BWriter, int NumberOfSamples, ProgressBar Bar)
+        internal void WriteFileSections(BinaryStream BWriter, int NumberOfSamples, ProgressBar Bar)
         {
             try
             {
@@ -61,31 +61,31 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                 ProgressBarMaximum(Bar, 9);
 
                 /*--sfxstart[an offset that points to the section where soundbanks are stored, always 0x800]--*/
-                BWriter.Write(Convert.ToUInt32(0x800));
+                BWriter.WriteUInt32(0x800);
                 ProgressBarUpdate(Bar, 1);
                 /*--sfxlength[size of the first section, in bytes]--*/
-                BWriter.Write(Convert.ToUInt32(00000000));
+                BWriter.WriteUInt32(00000000);
                 ProgressBarUpdate(Bar, 1);
 
                 /*--sampleinfostart[offset to the second section where the sample properties are stored]--*/
-                BWriter.Write(Convert.ToUInt32(00000000));
+                BWriter.WriteUInt32(00000000);
                 ProgressBarUpdate(Bar, 1);
                 /*--sampleinfolen[size of the second section, in bytes]--*/
-                BWriter.Write(Convert.ToUInt32(NumberOfSamples));
+                BWriter.WriteUInt32((uint)NumberOfSamples);
                 ProgressBarUpdate(Bar, 1);
 
                 /*--specialsampleinfostart[unused and uses the same sample data offset as dummy for some reason]--*/
-                BWriter.Write(Convert.ToUInt32(00000000));
+                BWriter.WriteUInt32(00000000);
                 ProgressBarUpdate(Bar, 1);
                 /*--specialsampleinfolen[unused and set to zero]--*/
-                BWriter.Write(Convert.ToUInt32(00000000));
+                BWriter.WriteUInt32(00000000);
                 ProgressBarUpdate(Bar, 1);
 
                 /*--sampledatastart[Offset that points to the beginning of the PCM data, where sound is actually stored]--*/
-                BWriter.Write(Convert.ToUInt32(00000000));
+                BWriter.WriteUInt32(00000000);
                 ProgressBarUpdate(Bar, 1);
                 /*--sampledatalen[Size of the block, in bytes]--*/
-                BWriter.Write(Convert.ToUInt32(00000000));
+                BWriter.WriteUInt32(00000000);
                 ProgressBarUpdate(Bar, 1);
 
                 BWriter.Seek(0x800, SeekOrigin.Begin);
@@ -97,7 +97,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             }
         }
 
-        internal void WriteSFXSection(BinaryWriter BWriter, Dictionary<uint, EXSound> FinalSoundsDict, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
+        internal void WriteSFXSection(BinaryStream BWriter, Dictionary<uint, EXSound> FinalSoundsDict, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
         {
             try
             {
@@ -106,14 +106,14 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                 ProgressBarMaximum(Bar, FinalSoundsDict.Count());
 
                 /*--[SFX entry count in this soundbank]--*/
-                BWriter.Write(Convert.ToUInt32(FinalSoundsDict.Count));
+                BWriter.WriteUInt32((uint)FinalSoundsDict.Count);
 
                 /*--[SFX header]--*/
                 foreach (KeyValuePair<uint, EXSound> Sound in FinalSoundsDict)
                 {
                     Hashcode = Sound.Value.Hashcode.ToString("X8");
-                    BWriter.Write(Convert.ToUInt32("0x00" + Hashcode.Substring(2), 16));
-                    BWriter.Write(Convert.ToUInt32(BWriter.BaseStream.Position));
+                    BWriter.WriteUInt32(Convert.ToUInt32("0x00" + Hashcode.Substring(2), 16));
+                    BWriter.WriteUInt32((uint)BWriter.BaseStream.Position);
                 }
                 /*--[Linear array of sorted SFX headers laid out in this format]--*/
                 foreach (KeyValuePair<uint, EXSound> Sound in FinalSoundsDict)
@@ -122,20 +122,20 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                     HashcodeOffsets.Add(BWriter.BaseStream.Position - 2048);
 
                     /*--[Write data]--*/
-                    BWriter.Write(Convert.ToInt16(Sound.Value.DuckerLenght));
-                    BWriter.Write(Convert.ToInt16(Sound.Value.MinDelay));
-                    BWriter.Write(Convert.ToInt16(Sound.Value.MaxDelay));
-                    BWriter.Write(Convert.ToInt16(Sound.Value.InnerRadiusReal));
-                    BWriter.Write(Convert.ToInt16(Sound.Value.OuterRadiusReal));
-                    BWriter.Write(Convert.ToSByte(Sound.Value.ReverbSend));
-                    BWriter.Write(Convert.ToSByte(Sound.Value.TrackingType));
-                    BWriter.Write(Convert.ToSByte(Sound.Value.MaxVoices));
-                    BWriter.Write(Convert.ToSByte(Sound.Value.Priority));
-                    BWriter.Write(Convert.ToSByte(Sound.Value.Ducker));
-                    BWriter.Write(Convert.ToSByte(Sound.Value.MasterVolume));
-                    BWriter.Write(Convert.ToUInt16(Sound.Value.Flags));
+                    BWriter.WriteInt16(Sound.Value.DuckerLenght);
+                    BWriter.WriteInt16(Sound.Value.MinDelay);
+                    BWriter.WriteInt16(Sound.Value.MaxDelay);
+                    BWriter.WriteInt16(Sound.Value.InnerRadiusReal);
+                    BWriter.WriteInt16(Sound.Value.OuterRadiusReal);
+                    BWriter.WriteSByte(Sound.Value.ReverbSend);
+                    BWriter.WriteSByte(Sound.Value.TrackingType);
+                    BWriter.WriteSByte(Sound.Value.MaxVoices);
+                    BWriter.WriteSByte(Sound.Value.Priority);
+                    BWriter.WriteSByte(Sound.Value.Ducker);
+                    BWriter.WriteSByte(Sound.Value.MasterVolume);
+                    BWriter.WriteUInt16(Sound.Value.Flags);
 
-                    BWriter.Write(Convert.ToInt16(Sound.Value.Samples.Count));
+                    BWriter.WriteInt16((short)Sound.Value.Samples.Count);
 
                     SetLabelText(LabelInfo, "WritingSFX: " + Sound.Value.DisplayName);
 
@@ -144,24 +144,24 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                         /*--[FILE REFERENCE]--*/
                         if (Sample.FileRef < 0)
                         {
-                            BWriter.Write(Convert.ToInt16(Sample.FileRef));
+                            BWriter.WriteInt16(Sample.FileRef);
                         }
                         else
                         {
                             ItemIndex = GetSteamIndexInSoundbank(Sample.ComboboxSelectedAudio, FinalAudioDataDict, Sample, Sound.Value.Flags);
                             if (ItemIndex >= 0)
                             {
-                                BWriter.Write(Convert.ToInt16(ItemIndex));
+                                BWriter.WriteInt16((short)ItemIndex);
                             }
                         }
 
                         /*--[Sample Data]--*/
-                        BWriter.Write(Convert.ToInt16(Sample.PitchOffset));
-                        BWriter.Write(Convert.ToInt16(Sample.RandomPitchOffset));
-                        BWriter.Write(Convert.ToSByte(Sample.BaseVolume));
-                        BWriter.Write(Convert.ToSByte(Sample.RandomVolumeOffset));
-                        BWriter.Write(Convert.ToSByte(Sample.Pan));
-                        BWriter.Write(Convert.ToSByte(Sample.RandomPan));
+                        BWriter.WriteInt16(Sample.PitchOffset);
+                        BWriter.WriteInt16(Sample.RandomPitchOffset);
+                        BWriter.WriteSByte(Sample.BaseVolume);
+                        BWriter.WriteSByte(Sample.RandomVolumeOffset);
+                        BWriter.WriteSByte(Sample.Pan);
+                        BWriter.WriteSByte(Sample.RandomPan);
 
                         /*--[Aligment Padding]--*/
                         AddPaddingBytes(2, BWriter);
@@ -177,7 +177,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             }
         }
 
-        internal void WriteSampleInfoSection(BinaryWriter BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
+        internal void WriteSampleInfoSection(BinaryStream BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
         {
             try
             {
@@ -188,21 +188,21 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                 SampleInfoStartOffset = (BWriter.BaseStream.Position);
 
                 /*--[Write total number of samples]--*/
-                BWriter.Write(Convert.ToUInt32(FinalAudioDataDict.Keys.Count));
+                BWriter.WriteUInt32((uint)FinalAudioDataDict.Keys.Count);
 
                 foreach (KeyValuePair<string, EXAudio> entry in FinalAudioDataDict)
                 {
                     /*--[Write data]--*/
-                    BWriter.Write(Convert.ToUInt32(entry.Value.Flags));
-                    BWriter.Write(Convert.ToUInt32(00000000));
-                    BWriter.Write(Convert.ToUInt32(entry.Value.DataSize));
-                    BWriter.Write(Convert.ToUInt32(entry.Value.Frequency));
-                    BWriter.Write(Convert.ToUInt32(entry.Value.RealSize));
-                    BWriter.Write(Convert.ToUInt32(entry.Value.Channels));
-                    BWriter.Write(Convert.ToUInt32(entry.Value.Bits));
-                    BWriter.Write(Convert.ToUInt32(entry.Value.PSIsample));
-                    BWriter.Write(Convert.ToUInt32(entry.Value.LoopOffset));
-                    BWriter.Write(Convert.ToUInt32(entry.Value.Duration));
+                    BWriter.WriteUInt32(entry.Value.Flags);
+                    BWriter.WriteUInt32(00000000);
+                    BWriter.WriteUInt32(entry.Value.DataSize);
+                    BWriter.WriteUInt32(entry.Value.Frequency);
+                    BWriter.WriteUInt32(entry.Value.RealSize);
+                    BWriter.WriteUInt32(entry.Value.Channels);
+                    BWriter.WriteUInt32(entry.Value.Bits);
+                    BWriter.WriteUInt32(entry.Value.PSIsample);
+                    BWriter.WriteUInt32(entry.Value.LoopOffset);
+                    BWriter.WriteUInt32(entry.Value.Duration);
 
                     ProgressBarUpdate(Bar, 1);
                     SetLabelText(LabelInfo, "WritingSampleInfo: " + entry.Key);
@@ -217,7 +217,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             }
         }
 
-        internal void WriteSampleDataSection(BinaryWriter BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
+        internal void WriteSampleDataSection(BinaryStream BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
         {
             try
             {
@@ -250,7 +250,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             }
         }
 
-        internal void WriteFinalOffsets(BinaryWriter BWriter, ProgressBar Bar, Label LabelInfo)
+        internal void WriteFinalOffsets(BinaryStream BWriter, ProgressBar Bar, Label LabelInfo)
         {
             //*===============================================================================================
             //* WRITE FINAL HEADER INFO
@@ -262,30 +262,30 @@ namespace EuroSound_Application.GenerateSoundBankSFX
 
                 /*--Size of the whole file--*/
                 BWriter.BaseStream.Seek(0xC, SeekOrigin.Begin);
-                BWriter.Write(Convert.ToUInt32(WholeFileSize));
+                BWriter.WriteUInt32((uint)WholeFileSize);
                 ProgressBarUpdate(Bar, 1);
 
                 /*--SFX Length--*/
                 BWriter.BaseStream.Seek(0x14, SeekOrigin.Begin);
-                BWriter.Write(Convert.ToUInt32(SFXlength));
+                BWriter.WriteUInt32((uint)SFXlength);
                 ProgressBarUpdate(Bar, 1);
 
                 /*--Sample info start--*/
                 BWriter.BaseStream.Seek(0x18, SeekOrigin.Begin);
-                BWriter.Write(Convert.ToUInt32(SampleInfoStartOffset));
-                BWriter.Write(Convert.ToUInt32(SampleInfoLength));
+                BWriter.WriteUInt32((uint)SampleInfoStartOffset);
+                BWriter.WriteUInt32((uint)SampleInfoLength);
                 ProgressBarUpdate(Bar, 1);
 
                 /*--Special sample info start--*/
                 BWriter.BaseStream.Seek(0x20, SeekOrigin.Begin);
-                BWriter.Write(Convert.ToUInt32(SampleDataStartOffset));
-                BWriter.Write(Convert.ToUInt32(00000000));
+                BWriter.WriteUInt32((uint)SampleDataStartOffset);
+                BWriter.WriteUInt32(00000000);
                 ProgressBarUpdate(Bar, 1);
 
                 /*--Sample Data Start--*/
                 BWriter.BaseStream.Seek(0x28, SeekOrigin.Begin);
-                BWriter.Write(Convert.ToUInt32(SampleDataStartOffset));
-                BWriter.Write(Convert.ToUInt32(SampleDataLength));
+                BWriter.WriteUInt32((uint)SampleDataStartOffset);
+                BWriter.WriteUInt32((uint)SampleDataLength);
                 ProgressBarUpdate(Bar, 1);
 
                 //*===============================================================================================
@@ -295,7 +295,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                 foreach (long offset in HashcodeOffsets)
                 {
                     BWriter.Seek(4, SeekOrigin.Current);
-                    BWriter.Write(Convert.ToUInt32(offset));
+                    BWriter.WriteUInt32((uint)offset);
 
                     ProgressBarUpdate(Bar, 1);
                     SetLabelText(LabelInfo, "WrittingFinalOffsets: " + offset);
@@ -311,7 +311,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                     BWriter.BaseStream.Seek(BWriter.BaseStream.Position + 4, SeekOrigin.Begin);
 
                     /*--Calculate Relative Offset--*/
-                    BWriter.Write(Convert.ToUInt32(item));
+                    BWriter.WriteUInt32((uint)item);
 
                     /*--Skip other properties--*/
                     BWriter.BaseStream.Seek(BWriter.BaseStream.Position + 32, SeekOrigin.Begin);
@@ -369,11 +369,11 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             return FinalAudioDataDict;
         }
 
-        private void AddPaddingBytes(int NumberOfBytes, BinaryWriter BWriter)
+        private void AddPaddingBytes(int NumberOfBytes, BinaryStream BWriter)
         {
             for (int i = 0; i < NumberOfBytes; i++)
             {
-                BWriter.Write(Convert.ToSByte(0));
+                BWriter.WriteSByte(0);
             }
         }
 
@@ -420,7 +420,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                 {
                     BarToUpdate.Value += ValueToAdd;
                 });
-                Thread.Sleep(1);
+                //Thread.Sleep(1);
             }
         }
 

@@ -49,16 +49,17 @@ namespace EuroSound_Application.SoundBanksEditor
             MenuItem_Edit.DropDownOpened += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
             MenuItem_Edit.DropDownClosed += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
 
+            MenuItem_Edit_Search.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ButtonSoundsBankSearch")); };
             MenuItem_Edit_FileProps.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_Edit_FileProps")); };
 
             MenuItem_Edit_FileProps.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItem_Edit_Search.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
 
             /*Buttons*/
             Button_GenerateList.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ButtonGenerateSoundsList")); };
             Button_GenerateList.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
 
-            Button_Search.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ButtonSoundsBankSearch")); };
-            Button_Search.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+
 
             Button_UpdateList_Hashcodes.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ButtonSoundsBankCheckHashcodes")); };
             Button_UpdateList_Hashcodes.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
@@ -178,6 +179,23 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void Frm_Soundbanks_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //Stop Threads
+            if (UpdateList != null)
+            {
+                UpdateList.Abort();
+            }
+
+            if (UpdateWavList != null)
+            {
+                UpdateWavList.Abort();
+            }
+
+            if (UpdateStreamDataList != null)
+            {
+                UpdateStreamDataList.Abort();
+            }
+
+            //Ask user to save if file is modified
             if (ProjectInfo.FileHasBeenModified)
             {
                 DialogResult dialogResult = MessageBox.Show("Save changes to " + ProjectInfo.FileName + "?", "EuroSound", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
@@ -232,30 +250,6 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
                 file.Close();
                 file.Dispose();
-            }
-        }
-
-        private void Button_Search_Click(object sender, EventArgs e)
-        {
-            GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false);
-
-            string searchFor = Textbox_SearchHint.Text.Trim();
-            if (searchFor != "")
-            {
-                if (TreeView_File.Nodes.Count > 0)
-                {
-                    TreeNode search = TreeNodeFunctions.SearchNodeRecursiveByText(TreeView_File.Nodes, searchFor, TreeView_File, RadioButton_MatchText.Checked);
-                    if (search != null)
-                    {
-                        TreeView_File.SelectedNode = search;
-                        TreeView_File.SelectedNode.Expand();
-                        TreeView_File.Focus();
-                    }
-                    else
-                    {
-                        MessageBox.Show("No results found", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
             }
         }
 
@@ -425,22 +419,15 @@ namespace EuroSound_Application.SoundBanksEditor
                             EXSound ParentSound = EXSoundbanksFunctions.GetSoundByName(uint.Parse(e.Node.Parent.Name), SoundsList);
                             for (int i = 0; i < ParentSound.Samples.Count; i++)
                             {
-                                if (ParentSound.Samples[i].Name.Equals(e.Node.Name))
+                                if (EXSoundbanksFunctions.RemoveWhiteSpaces(ParentSound.Samples[i].DisplayName).Equals(e.Node.Name))
                                 {
+                                    e.Node.Name = EXSoundbanksFunctions.RemoveWhiteSpaces(e.Label);
                                     ParentSound.Samples[i].DisplayName = e.Label;
                                     break;
                                 }
                             }
                         }
-                        else if (e.Node.Tag.Equals("Audio"))
-                        {
-                            e.Node.Text = e.Label;
-                        }
-                        else
-                        {
-                            /*Update tree node props*/
-                            e.Node.Text = e.Label;
-                        }
+                        e.Node.Text = e.Label;
                     }
                 }
             }
@@ -583,6 +570,17 @@ namespace EuroSound_Application.SoundBanksEditor
         private void TreeView_File_ItemDrag(object sender, ItemDragEventArgs e)
         {
             DoDragDrop(e.Item, DragDropEffects.Move);
+        }
+
+        private void MenuItem_Edit_Search_Click(object sender, EventArgs e)
+        {
+            EuroSound_SearchItem Search = new EuroSound_SearchItem(Name)
+            {
+                Owner = this,
+                ShowInTaskbar = false,
+                Tag = Tag
+            };
+            Search.Show();
         }
 
         private void TreeView_File_MouseClick(object sender, MouseEventArgs e)

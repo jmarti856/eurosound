@@ -42,7 +42,7 @@ namespace EuroSound_Application.StreamSounds
             {
                 Frm_StreamSounds_Properties FormAudioProps = new Frm_StreamSounds_Properties(SelectedSound, SoundKeyInDictionary)
                 {
-                    Text = "Streamed Sound Properties",
+                    Text = GenericFunctions.TruncateLongString(TreeView_StreamData.SelectedNode.Text, 25) + " - Properties",
                     Tag = Tag,
                     Owner = this,
                     ShowInTaskbar = false

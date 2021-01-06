@@ -11,6 +11,8 @@ namespace EuroSound_Application
         public sbyte TypeOfData = 0;
         public uint Hashcode = 0x00000000;
         public uint SoundID = 0;
+        public uint SampleID = 0;
+        public uint AudioID = 0;
         public uint StreamedSoundID = 0;
         public bool FileHasBeenModified = false;
 

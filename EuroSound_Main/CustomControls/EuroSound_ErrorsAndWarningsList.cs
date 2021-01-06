@@ -57,27 +57,34 @@ namespace EuroSound_Application
 
         private void EuroSound_ImportResultsList_Load(object sender, EventArgs e)
         {
-            foreach (string item in ErrorsAndWarningsListToPrint)
+            try
             {
-                char MessageType = item[0];
-                ListViewItem Item = new ListViewItem(new[] { "", item.Substring(1) });
+                foreach (string item in ErrorsAndWarningsListToPrint)
+                {
+                    char MessageType = item[0];
+                    ListViewItem Item = new ListViewItem(new[] { "", item.Substring(1) });
 
-                if (MessageType == '0')
-                {
-                    Item.SubItems[0].Text = "Error";
-                    Item.ImageIndex = 0;
+                    if (MessageType == '0')
+                    {
+                        Item.SubItems[0].Text = "Error";
+                        Item.ImageIndex = 0;
+                    }
+                    else if (MessageType == '1')
+                    {
+                        Item.SubItems[0].Text = "Warning";
+                        Item.ImageIndex = 1;
+                    }
+                    else
+                    {
+                        Item.SubItems[0].Text = "Info";
+                        Item.ImageIndex = 2;
+                    }
+                    ListView_Reports.Items.Add(Item);
                 }
-                else if (MessageType == '1')
-                {
-                    Item.SubItems[0].Text = "Warning";
-                    Item.ImageIndex = 1;
-                }
-                else
-                {
-                    Item.SubItems[0].Text = "Info";
-                    Item.ImageIndex = 2;
-                }
-                ListView_Reports.Items.Add(Item);
+            }
+            catch
+            {
+
             }
             ErrorsAndWarningsListToPrint = null;
         }

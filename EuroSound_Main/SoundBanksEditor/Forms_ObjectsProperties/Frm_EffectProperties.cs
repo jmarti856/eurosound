@@ -11,13 +11,14 @@ namespace EuroSound_Application.SoundBanksEditor
         //* Global Variables
         //*===============================================================================================
         private EXSound SelectedSound;
-        private string TreeNodeSoundName;
+        private string TreeNodeSoundName, SoundSection;
 
-        public Frm_EffectProperties(EXSound SoundToCheck, string SoundName)
+        public Frm_EffectProperties(EXSound SoundToCheck, string SoundName, string Section)
         {
             InitializeComponent();
             SelectedSound = SoundToCheck;
             TreeNodeSoundName = SoundName;
+            SoundSection = Section;
         }
 
         //*===============================================================================================
@@ -37,7 +38,10 @@ namespace EuroSound_Application.SoundBanksEditor
                 Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
             }
             Hashcodes.AddHashcodesToCombobox(cbx_hashcode, Hashcodes.SFX_Defines);
+        }
 
+        private void Frm_EffectProperties_Shown(object sender, EventArgs e)
+        {
             /*---Put the selected hashcode in case is not null---*/
             cbx_hashcode.SelectedValue = SelectedSound.Hashcode;
 
@@ -185,15 +189,30 @@ namespace EuroSound_Application.SoundBanksEditor
 
                 if (SelectedSample != null)
                 {
-                    Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(SelectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(SelectedSound.Flags))
+                    if (SoundSection.Equals("Sounds"))
                     {
-                        Text = GenericFunctions.TruncateLongString(SampleName, 25) + " - Properties",
-                        Tag = Tag,
-                        Owner = this,
-                        ShowInTaskbar = false
-                    };
-                    FormSampleProps.ShowDialog();
-                    FormSampleProps.Dispose();
+                        Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(SelectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(SelectedSound.Flags))
+                        {
+                            Text = GenericFunctions.TruncateLongString(SampleName, 25) + " - Properties",
+                            Tag = Tag,
+                            Owner = this,
+                            ShowInTaskbar = false
+                        };
+                        FormSampleProps.ShowDialog();
+                        FormSampleProps.Dispose();
+                    }
+                    else
+                    {
+                        Frm_NewStreamSound AddStreamSound = new Frm_NewStreamSound(SelectedSample)
+                        {
+                            Text = GenericFunctions.TruncateLongString(SampleName, 25) + " - Properties",
+                            Tag = Tag,
+                            Owner = this,
+                            ShowInTaskbar = false
+                        };
+                        AddStreamSound.ShowDialog();
+                        AddStreamSound.Dispose();
+                    }
                 }
             }
         }

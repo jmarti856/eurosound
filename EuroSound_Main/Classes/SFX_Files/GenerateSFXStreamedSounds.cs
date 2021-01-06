@@ -30,15 +30,15 @@ namespace EuroSound_Application.StreamSounds
             ProgressBarUpdate(Bar, 1);
 
             /*--hashc[Hashcode for the current soundbank without the section prefix]--*/
-            BWriter.Write(FileHashcode);
+            BWriter.WriteUInt32(FileHashcode);
             ProgressBarUpdate(Bar, 1);
 
             /*--offst[Constant offset to the next section,]--*/
-            BWriter.Write(0xC9);
+            BWriter.WriteUInt32(0xC9);
             ProgressBarUpdate(Bar, 1);
 
             /*--fulls[Size of the whole file, in bytes. Unused. ]--*/
-            BWriter.Write(00000000);
+            BWriter.WriteUInt32(00000000);
             ProgressBarUpdate(Bar, 1);
         }
 
@@ -51,24 +51,24 @@ namespace EuroSound_Application.StreamSounds
             ProgressBarMaximum(Bar, 6);
 
             /*--File start 1[an offset that points to the stream look-up file details, always 0x800]--*/
-            BWriter.Write(FileStart1);
+            BWriter.WriteUInt32(FileStart1);
             ProgressBarUpdate(Bar, 1);
             /*--File length 1[size of the first section, in bytes]--*/
-            BWriter.Write(Convert.ToUInt32(00000000));
+            BWriter.WriteUInt32(00000000);
             ProgressBarUpdate(Bar, 1);
 
             /*--File start 2[offset to the second section with the sample data]--*/
-            BWriter.Write(FileStart2);
+            BWriter.WriteUInt32(FileStart2);
             ProgressBarUpdate(Bar, 1);
             /*--File length 2[size of the second section, in bytes]--*/
-            BWriter.Write(Convert.ToUInt32(00000000));
+            BWriter.WriteUInt32(00000000);
             ProgressBarUpdate(Bar, 1);
 
             /*--File start 3[unused and uses the same sample data offset as dummy for some reason]--*/
-            BWriter.Write(Convert.ToUInt32(00000000));
+            BWriter.WriteUInt32(00000000);
             ProgressBarUpdate(Bar, 1);
             /*--File length 3[unused and set to zero]--*/
-            BWriter.Write(Convert.ToUInt32(00000000));
+            BWriter.WriteUInt32(00000000);
             ProgressBarUpdate(Bar, 1);
         }
 
@@ -83,7 +83,7 @@ namespace EuroSound_Application.StreamSounds
             BWriter.Seek((int)FileStart1, SeekOrigin.Begin);
             for (int i = 0; i < StreamSoundsList.Count; i++)
             {
-                BWriter.Write(Convert.ToUInt32(00000000));
+                BWriter.WriteUInt32(Convert.ToUInt32(00000000));
                 ProgressBarUpdate(Bar, 1);
             }
 
@@ -110,61 +110,61 @@ namespace EuroSound_Application.StreamSounds
                 MarkersStartList.Add(SoundStartOffset - FileStart2);
 
                 /*Marker size*/
-                BWriter.Write((uint)00000000);
+                BWriter.WriteUInt32(00000000);
                 /*Audio Offset*/
-                BWriter.Write(SoundStartOffset);
+                BWriter.WriteUInt32(SoundStartOffset);
                 /*Audio size*/
-                BWriter.Write((uint)SoundToWrtie.Value.IMA_ADPCM_DATA.Length);
+                BWriter.WriteUInt32((uint)SoundToWrtie.Value.IMA_ADPCM_DATA.Length);
                 /*Start marker count*/
-                BWriter.Write((uint)SoundToWrtie.Value.StartMarkers.Count);
+                BWriter.WriteUInt32((uint)SoundToWrtie.Value.StartMarkers.Count);
                 /*Marker count*/
-                BWriter.Write((uint)SoundToWrtie.Value.Markers.Count);
+                BWriter.WriteUInt32((uint)SoundToWrtie.Value.Markers.Count);
                 /*Start marker offset.*/
                 StartMarkerOffset = BWriter.BaseStream.Position - SoundStartOffset;
-                BWriter.Write((uint)StartMarkerOffset);
+                BWriter.WriteUInt32((uint)StartMarkerOffset);
                 /*Marker offset.*/
-                BWriter.Write((uint)00000000);
+                BWriter.WriteUInt32((uint)00000000);
                 /*Base volume*/
-                BWriter.Write(SoundToWrtie.Value.BaseVolume);
+                BWriter.WriteUInt32(SoundToWrtie.Value.BaseVolume);
 
                 MarkerSizeStartOffset = BWriter.BaseStream.Position;
                 /*Start Markers Data*/
                 for (int i = 0; i < SoundToWrtie.Value.StartMarkers.Count; i++)
                 {
-                    BWriter.Write(SoundToWrtie.Value.StartMarkers[i].Name);
-                    BWriter.Write(SoundToWrtie.Value.StartMarkers[i].Position);
-                    BWriter.Write(SoundToWrtie.Value.StartMarkers[i].MusicMakerType);
-                    BWriter.Write(SoundToWrtie.Value.StartMarkers[i].Flags);
-                    BWriter.Write(SoundToWrtie.Value.StartMarkers[i].Extra);
-                    BWriter.Write(SoundToWrtie.Value.StartMarkers[i].LoopStart);
-                    BWriter.Write(SoundToWrtie.Value.StartMarkers[i].MarkerCount);
-                    BWriter.Write(SoundToWrtie.Value.StartMarkers[i].LoopMarkerCount);
-                    BWriter.Write(SoundToWrtie.Value.StartMarkers[i].MarkerPos);
-                    BWriter.Write(SoundToWrtie.Value.StartMarkers[i].IsInstant);
-                    BWriter.Write(SoundToWrtie.Value.StartMarkers[i].InstantBuffer);
-                    BWriter.Write(SoundToWrtie.Value.StartMarkers[i].StateA);
-                    BWriter.Write(SoundToWrtie.Value.StartMarkers[i].StateB);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.StartMarkers[i].Name);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.StartMarkers[i].Position);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.StartMarkers[i].MusicMakerType);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.StartMarkers[i].Flags);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.StartMarkers[i].Extra);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.StartMarkers[i].LoopStart);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.StartMarkers[i].MarkerCount);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.StartMarkers[i].LoopMarkerCount);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.StartMarkers[i].MarkerPos);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.StartMarkers[i].IsInstant);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.StartMarkers[i].InstantBuffer);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.StartMarkers[i].StateA);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.StartMarkers[i].StateB);
                 }
                 MarkerDataOffset = (uint)(BWriter.BaseStream.Position - MarkerSizeStartOffset);
                 /*Markers*/
                 for (int j = 0; j < SoundToWrtie.Value.Markers.Count; j++)
                 {
-                    BWriter.Write(SoundToWrtie.Value.Markers[j].Name);
-                    BWriter.Write(SoundToWrtie.Value.Markers[j].Position);
-                    BWriter.Write(SoundToWrtie.Value.Markers[j].MusicMakerType);
-                    BWriter.Write(SoundToWrtie.Value.Markers[j].Flags);
-                    BWriter.Write(SoundToWrtie.Value.Markers[j].Extra);
-                    BWriter.Write(SoundToWrtie.Value.Markers[j].LoopStart);
-                    BWriter.Write(SoundToWrtie.Value.Markers[j].MarkerCount);
-                    BWriter.Write(SoundToWrtie.Value.Markers[j].LoopMarkerCount);
+                    BWriter.WriteInt32(SoundToWrtie.Value.Markers[j].Name);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.Markers[j].Position);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.Markers[j].MusicMakerType);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.Markers[j].Flags);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.Markers[j].Extra);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.Markers[j].LoopStart);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.Markers[j].MarkerCount);
+                    BWriter.WriteUInt32(SoundToWrtie.Value.Markers[j].LoopMarkerCount);
                 }
                 MarkerSize = (uint)(BWriter.BaseStream.Position - MarkerSizeStartOffset);
 
                 /*Write Marker Size*/
                 BWriter.Seek((int)SoundStartOffset, SeekOrigin.Begin);
-                BWriter.Write((uint)(MarkerSize + StartMarkerOffset));
+                BWriter.WriteUInt32((uint)(MarkerSize + StartMarkerOffset));
                 BWriter.Seek(20, SeekOrigin.Current);
-                BWriter.Write((uint)(MarkerDataOffset + StartMarkerOffset));
+                BWriter.WriteUInt32((uint)(MarkerDataOffset + StartMarkerOffset));
 
                 /*Write ima data*/
                 AudioOffset = SoundStartOffset + 0x1000;
@@ -197,21 +197,21 @@ namespace EuroSound_Application.StreamSounds
 
             /*File Full Size*/
             BWriter.BaseStream.Seek(0xC, SeekOrigin.Begin);
-            BWriter.Write((uint)FullFileLength);
+            BWriter.WriteUInt32((uint)FullFileLength);
 
             /*File length 1*/
             BWriter.BaseStream.Seek(0x14, SeekOrigin.Begin);
-            BWriter.Write((uint)FileLength1);
+            BWriter.WriteUInt32((uint)FileLength1);
 
             /*File length 2*/
             BWriter.BaseStream.Seek(0x1C, SeekOrigin.Begin);
-            BWriter.Write((uint)FileLength2);
+            BWriter.WriteUInt32((uint)FileLength2);
 
             /*Stream look-up*/
             BWriter.Seek((int)FileStart1, SeekOrigin.Begin);
             foreach (long Offset in MarkersStartList)
             {
-                BWriter.Write((uint)Offset);
+                BWriter.WriteUInt32((uint)Offset);
                 ProgressBarUpdate(Bar, 1);
             }
         }

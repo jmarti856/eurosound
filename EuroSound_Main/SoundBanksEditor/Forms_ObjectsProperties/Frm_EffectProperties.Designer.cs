@@ -509,6 +509,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Frm_EffectProperties";
             this.Load += new System.EventHandler(this.Frm_EffectProperties_Load);
+            this.Shown += new System.EventHandler(this.Frm_EffectProperties_Shown);
             this.groupbox_params.ResumeLayout(false);
             this.groupbox_params.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_mastervolume)).EndInit();

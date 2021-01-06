@@ -47,17 +47,15 @@ namespace EuroSound_Application.StreamSounds
             this.Label_StartMarkers = new System.Windows.Forms.Label();
             this.ListView_Markers = new System.Windows.Forms.ListView();
             this.Col_MarkerPos = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_IsInstant = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_InstantBuffer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_StateA = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_StateB = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_StartMarkerCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Label_MarkerData = new System.Windows.Forms.Label();
             this.ListView_MarkerData = new System.Windows.Forms.ListView();
             this.Col_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Position = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_MusicMarkerType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Flags = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_Extra = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_LoopStart = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_MarkerCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_LoopMarkerCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -237,9 +235,9 @@ namespace EuroSound_Application.StreamSounds
             this.Label_StartMarkers.AutoSize = true;
             this.Label_StartMarkers.Location = new System.Drawing.Point(9, 107);
             this.Label_StartMarkers.Name = "Label_StartMarkers";
-            this.Label_StartMarkers.Size = new System.Drawing.Size(68, 13);
+            this.Label_StartMarkers.Size = new System.Drawing.Size(73, 13);
             this.Label_StartMarkers.TabIndex = 4;
-            this.Label_StartMarkers.Text = "Start Marker:";
+            this.Label_StartMarkers.Text = "Start Markers:";
             // 
             // ListView_Markers
             // 
@@ -247,10 +245,10 @@ namespace EuroSound_Application.StreamSounds
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ListView_Markers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Col_MarkerPos,
-            this.Col_IsInstant,
-            this.Col_InstantBuffer,
             this.Col_StateA,
-            this.Col_StateB});
+            this.Col_StateB,
+            this.Col_StartMarkerCount});
+            this.ListView_Markers.FullRowSelect = true;
             this.ListView_Markers.GridLines = true;
             this.ListView_Markers.HideSelection = false;
             this.ListView_Markers.Location = new System.Drawing.Point(12, 123);
@@ -265,34 +263,29 @@ namespace EuroSound_Application.StreamSounds
             this.Col_MarkerPos.Text = "Marker Pos";
             this.Col_MarkerPos.Width = 115;
             // 
-            // Col_IsInstant
-            // 
-            this.Col_IsInstant.Text = "Is Instant";
-            this.Col_IsInstant.Width = 75;
-            // 
-            // Col_InstantBuffer
-            // 
-            this.Col_InstantBuffer.Text = "Instant Buffer";
-            this.Col_InstantBuffer.Width = 116;
-            // 
             // Col_StateA
             // 
             this.Col_StateA.Text = "State A";
-            this.Col_StateA.Width = 88;
+            this.Col_StateA.Width = 80;
             // 
             // Col_StateB
             // 
             this.Col_StateB.Text = "State B";
-            this.Col_StateB.Width = 110;
+            this.Col_StateB.Width = 79;
+            // 
+            // Col_StartMarkerCount
+            // 
+            this.Col_StartMarkerCount.Text = "Marker Count";
+            this.Col_StartMarkerCount.Width = 118;
             // 
             // Label_MarkerData
             // 
             this.Label_MarkerData.AutoSize = true;
             this.Label_MarkerData.Location = new System.Drawing.Point(12, 271);
             this.Label_MarkerData.Name = "Label_MarkerData";
-            this.Label_MarkerData.Size = new System.Drawing.Size(69, 13);
+            this.Label_MarkerData.Size = new System.Drawing.Size(48, 13);
             this.Label_MarkerData.TabIndex = 9;
-            this.Label_MarkerData.Text = "Marker Data:";
+            this.Label_MarkerData.Text = "Markers:";
             // 
             // ListView_MarkerData
             // 
@@ -304,10 +297,10 @@ namespace EuroSound_Application.StreamSounds
             this.Col_Position,
             this.Col_MusicMarkerType,
             this.Col_Flags,
-            this.Col_Extra,
             this.Col_LoopStart,
             this.Col_MarkerCount,
             this.Col_LoopMarkerCount});
+            this.ListView_MarkerData.FullRowSelect = true;
             this.ListView_MarkerData.GridLines = true;
             this.ListView_MarkerData.HideSelection = false;
             this.ListView_MarkerData.Location = new System.Drawing.Point(12, 287);
@@ -335,11 +328,6 @@ namespace EuroSound_Application.StreamSounds
             // 
             this.Col_Flags.Text = "Flags";
             this.Col_Flags.Width = 50;
-            // 
-            // Col_Extra
-            // 
-            this.Col_Extra.Text = "Extra";
-            this.Col_Extra.Width = 52;
             // 
             // Col_LoopStart
             // 
@@ -405,8 +393,6 @@ namespace EuroSound_Application.StreamSounds
         private System.Windows.Forms.ListView ListView_Markers;
         private System.Windows.Forms.Button Button_Clear;
         private System.Windows.Forms.ColumnHeader Col_MarkerPos;
-        private System.Windows.Forms.ColumnHeader Col_IsInstant;
-        private System.Windows.Forms.ColumnHeader Col_InstantBuffer;
         private System.Windows.Forms.ColumnHeader Col_StateA;
         private System.Windows.Forms.ColumnHeader Col_StateB;
         private System.Windows.Forms.Label Label_MarkerData;
@@ -415,9 +401,9 @@ namespace EuroSound_Application.StreamSounds
         private System.Windows.Forms.ColumnHeader Col_Position;
         private System.Windows.Forms.ColumnHeader Col_MusicMarkerType;
         private System.Windows.Forms.ColumnHeader Col_Flags;
-        private System.Windows.Forms.ColumnHeader Col_Extra;
         private System.Windows.Forms.ColumnHeader Col_LoopStart;
         private System.Windows.Forms.ColumnHeader Col_MarkerCount;
         private System.Windows.Forms.ColumnHeader Col_LoopMarkerCount;
+        private System.Windows.Forms.ColumnHeader Col_StartMarkerCount;
     }
 }

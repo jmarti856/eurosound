@@ -3,6 +3,7 @@ using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.GenerateSoundBankSFX;
 using EuroSound_Application.SoundBanksEditor;
+using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -84,7 +85,7 @@ namespace EuroSound_Application
 
                                     if (Directory.Exists(GlobalPreferences.SFXOutputPath))
                                     {
-                                        BinaryWriter BWriter = new BinaryWriter(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), Encoding.ASCII);
+                                        BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
 
                                         //*===============================================================================================
                                         //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED (20%)

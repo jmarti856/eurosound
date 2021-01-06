@@ -77,6 +77,10 @@ namespace EuroSound_Application
 
             await Task.Delay(rnd.Next(400, 500));
 
+            //-----------------------------------------[External File]----------------------------------------
+            Label_Status.Text = "Loading External File Path";
+            GlobalPreferences.StreamFilePath = WRegistryFunctions.SetExternalFilePath();
+
             //-----------------------------------------[Open Form]----------------------------------------
             using (Frm_EuroSound_Main EuroSoundMain = new Frm_EuroSound_Main(ArgumentFileToLoad))
             {

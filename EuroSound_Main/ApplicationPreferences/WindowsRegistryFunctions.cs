@@ -192,5 +192,31 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             SoundBankTreeViewPrefs.SetValue("ControlWavesBackColor", GlobalPreferences.BackColorWavesControl, RegistryValueKind.DWord);
         }
         #endregion General Preferences
+
+        #region StreamFile
+        internal void SaveExternalFilePath(string StreamFile)
+        {
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("StreamFile", true);
+            RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("StreamFile", true);
+
+            StreamFilePath.SetValue("FilePath", GlobalPreferences.StreamFilePath, RegistryValueKind.String);
+        }
+
+        internal string SetExternalFilePath()
+        {
+            string StreamFile = string.Empty;
+
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("StreamFile", true);
+            RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("StreamFile", true);
+            if (StreamFile != null)
+            {
+                StreamFile = StreamFilePath.GetValue("FilePath", "").ToString();
+            }
+
+            return StreamFile;
+        }
+        #endregion
     }
 }

@@ -73,6 +73,8 @@
             this.MenuItemFile_ReadSound = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_Edit = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_Edit_FileProps = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_Edit_Separator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuItem_Edit_Search = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenu_Sample = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ContextMenuSample_Remove = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuSample_Rename = new System.Windows.Forms.ToolStripMenuItem();
@@ -114,12 +116,6 @@
             this.ContextMenuAudio_Properties = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuAudio_Separator2 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuAudio_TextColor = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.RadioButton_WholeWord = new System.Windows.Forms.RadioButton();
-            this.RadioButton_MatchText = new System.Windows.Forms.RadioButton();
-            this.Button_Search = new System.Windows.Forms.Button();
-            this.Textbox_SearchHint = new System.Windows.Forms.TextBox();
-            this.Label_NameItemToSearch = new System.Windows.Forms.Label();
             this.Button_GenerateList = new System.Windows.Forms.Button();
             this.ContextMenu_Folders.SuspendLayout();
             this.ContextMenu_Sound.SuspendLayout();
@@ -130,7 +126,6 @@
             this.TabPage_WavHeaderData.SuspendLayout();
             this.TabPage_StreamData.SuspendLayout();
             this.ContextMenu_Audio.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // TreeView_File
@@ -346,7 +341,6 @@
             this.ContextMenuSound_TextColor});
             this.ContextMenu_Sound.Name = "ContextMenu_Sound";
             this.ContextMenu_Sound.Size = new System.Drawing.Size(145, 120);
-            this.ContextMenu_Sound.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenu_Sound_Opening);
             // 
             // ContextMenuSound_AddSample
             // 
@@ -479,7 +473,9 @@
             // MenuItem_Edit
             // 
             this.MenuItem_Edit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItem_Edit_FileProps});
+            this.MenuItem_Edit_FileProps,
+            this.MenuItem_Edit_Separator1,
+            this.MenuItem_Edit_Search});
             this.MenuItem_Edit.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.MenuItem_Edit.MergeIndex = 1;
             this.MenuItem_Edit.Name = "MenuItem_Edit";
@@ -489,9 +485,22 @@
             // MenuItem_Edit_FileProps
             // 
             this.MenuItem_Edit_FileProps.Name = "MenuItem_Edit_FileProps";
-            this.MenuItem_Edit_FileProps.Size = new System.Drawing.Size(148, 22);
+            this.MenuItem_Edit_FileProps.Size = new System.Drawing.Size(158, 22);
             this.MenuItem_Edit_FileProps.Text = "File Properties";
             this.MenuItem_Edit_FileProps.Click += new System.EventHandler(this.MenuItem_Edit_FileProps_Click);
+            // 
+            // MenuItem_Edit_Separator1
+            // 
+            this.MenuItem_Edit_Separator1.Name = "MenuItem_Edit_Separator1";
+            this.MenuItem_Edit_Separator1.Size = new System.Drawing.Size(155, 6);
+            // 
+            // MenuItem_Edit_Search
+            // 
+            this.MenuItem_Edit_Search.Name = "MenuItem_Edit_Search";
+            this.MenuItem_Edit_Search.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.MenuItem_Edit_Search.Size = new System.Drawing.Size(158, 22);
+            this.MenuItem_Edit_Search.Text = "Search...";
+            this.MenuItem_Edit_Search.Click += new System.EventHandler(this.MenuItem_Edit_Search_Click);
             // 
             // ContextMenu_Sample
             // 
@@ -540,7 +549,7 @@
             // Button_UpdateList_WavData
             // 
             this.Button_UpdateList_WavData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateList_WavData.Location = new System.Drawing.Point(380, 225);
+            this.Button_UpdateList_WavData.Location = new System.Drawing.Point(380, 276);
             this.Button_UpdateList_WavData.Name = "Button_UpdateList_WavData";
             this.Button_UpdateList_WavData.Size = new System.Drawing.Size(75, 23);
             this.Button_UpdateList_WavData.TabIndex = 1;
@@ -554,9 +563,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GroupBox_Hashcodes.Controls.Add(this.Button_UpdateList_Hashcodes);
             this.GroupBox_Hashcodes.Controls.Add(this.ListView_Hashcodes);
-            this.GroupBox_Hashcodes.Location = new System.Drawing.Point(500, 381);
+            this.GroupBox_Hashcodes.Location = new System.Drawing.Point(500, 349);
             this.GroupBox_Hashcodes.Name = "GroupBox_Hashcodes";
-            this.GroupBox_Hashcodes.Size = new System.Drawing.Size(469, 318);
+            this.GroupBox_Hashcodes.Size = new System.Drawing.Size(469, 350);
             this.GroupBox_Hashcodes.TabIndex = 3;
             this.GroupBox_Hashcodes.TabStop = false;
             this.GroupBox_Hashcodes.Text = "Hashcodes";
@@ -564,7 +573,7 @@
             // Button_UpdateList_Hashcodes
             // 
             this.Button_UpdateList_Hashcodes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateList_Hashcodes.Location = new System.Drawing.Point(388, 289);
+            this.Button_UpdateList_Hashcodes.Location = new System.Drawing.Point(388, 321);
             this.Button_UpdateList_Hashcodes.Name = "Button_UpdateList_Hashcodes";
             this.Button_UpdateList_Hashcodes.Size = new System.Drawing.Size(75, 23);
             this.Button_UpdateList_Hashcodes.TabIndex = 1;
@@ -587,7 +596,7 @@
             this.ListView_Hashcodes.HideSelection = false;
             this.ListView_Hashcodes.Location = new System.Drawing.Point(6, 19);
             this.ListView_Hashcodes.Name = "ListView_Hashcodes";
-            this.ListView_Hashcodes.Size = new System.Drawing.Size(457, 264);
+            this.ListView_Hashcodes.Size = new System.Drawing.Size(457, 296);
             this.ListView_Hashcodes.SmallImageList = this.ImageList_ListView;
             this.ListView_Hashcodes.TabIndex = 0;
             this.ListView_Hashcodes.UseCompatibleStateImageBehavior = false;
@@ -626,10 +635,10 @@
             this.TabControlDataViewer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.TabControlDataViewer.Controls.Add(this.TabPage_WavHeaderData);
             this.TabControlDataViewer.Controls.Add(this.TabPage_StreamData);
-            this.TabControlDataViewer.Location = new System.Drawing.Point(500, 95);
+            this.TabControlDataViewer.Location = new System.Drawing.Point(500, 12);
             this.TabControlDataViewer.Name = "TabControlDataViewer";
             this.TabControlDataViewer.SelectedIndex = 0;
-            this.TabControlDataViewer.Size = new System.Drawing.Size(469, 280);
+            this.TabControlDataViewer.Size = new System.Drawing.Size(469, 331);
             this.TabControlDataViewer.TabIndex = 2;
             // 
             // TabPage_WavHeaderData
@@ -640,7 +649,7 @@
             this.TabPage_WavHeaderData.Location = new System.Drawing.Point(4, 22);
             this.TabPage_WavHeaderData.Name = "TabPage_WavHeaderData";
             this.TabPage_WavHeaderData.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_WavHeaderData.Size = new System.Drawing.Size(461, 254);
+            this.TabPage_WavHeaderData.Size = new System.Drawing.Size(461, 305);
             this.TabPage_WavHeaderData.TabIndex = 1;
             this.TabPage_WavHeaderData.Text = "Wav Header Data";
             // 
@@ -663,7 +672,7 @@
             this.ListView_WavHeaderData.HideSelection = false;
             this.ListView_WavHeaderData.Location = new System.Drawing.Point(6, 6);
             this.ListView_WavHeaderData.Name = "ListView_WavHeaderData";
-            this.ListView_WavHeaderData.Size = new System.Drawing.Size(449, 213);
+            this.ListView_WavHeaderData.Size = new System.Drawing.Size(449, 264);
             this.ListView_WavHeaderData.TabIndex = 2;
             this.ListView_WavHeaderData.UseCompatibleStateImageBehavior = false;
             this.ListView_WavHeaderData.View = System.Windows.Forms.View.Details;
@@ -825,72 +834,6 @@
             this.ContextMenuAudio_TextColor.Text = "Text Color...";
             this.ContextMenuAudio_TextColor.Click += new System.EventHandler(this.ContextMenuAudio_TextColor_Click);
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.RadioButton_WholeWord);
-            this.groupBox1.Controls.Add(this.RadioButton_MatchText);
-            this.groupBox1.Controls.Add(this.Button_Search);
-            this.groupBox1.Controls.Add(this.Textbox_SearchHint);
-            this.groupBox1.Controls.Add(this.Label_NameItemToSearch);
-            this.groupBox1.Location = new System.Drawing.Point(500, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(469, 77);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Search Item";
-            // 
-            // RadioButton_WholeWord
-            // 
-            this.RadioButton_WholeWord.AutoSize = true;
-            this.RadioButton_WholeWord.Location = new System.Drawing.Point(138, 48);
-            this.RadioButton_WholeWord.Name = "RadioButton_WholeWord";
-            this.RadioButton_WholeWord.Size = new System.Drawing.Size(85, 17);
-            this.RadioButton_WholeWord.TabIndex = 4;
-            this.RadioButton_WholeWord.Text = "Whole Word";
-            this.RadioButton_WholeWord.UseVisualStyleBackColor = true;
-            // 
-            // RadioButton_MatchText
-            // 
-            this.RadioButton_MatchText.AutoSize = true;
-            this.RadioButton_MatchText.Checked = true;
-            this.RadioButton_MatchText.Location = new System.Drawing.Point(50, 48);
-            this.RadioButton_MatchText.Name = "RadioButton_MatchText";
-            this.RadioButton_MatchText.Size = new System.Drawing.Size(82, 17);
-            this.RadioButton_MatchText.TabIndex = 3;
-            this.RadioButton_MatchText.TabStop = true;
-            this.RadioButton_MatchText.Text = "Match Case";
-            this.RadioButton_MatchText.UseVisualStyleBackColor = true;
-            // 
-            // Button_Search
-            // 
-            this.Button_Search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Search.Location = new System.Drawing.Point(388, 48);
-            this.Button_Search.Name = "Button_Search";
-            this.Button_Search.Size = new System.Drawing.Size(75, 23);
-            this.Button_Search.TabIndex = 2;
-            this.Button_Search.Text = "Search";
-            this.Button_Search.UseVisualStyleBackColor = true;
-            this.Button_Search.Click += new System.EventHandler(this.Button_Search_Click);
-            // 
-            // Textbox_SearchHint
-            // 
-            this.Textbox_SearchHint.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_SearchHint.Location = new System.Drawing.Point(50, 22);
-            this.Textbox_SearchHint.Name = "Textbox_SearchHint";
-            this.Textbox_SearchHint.Size = new System.Drawing.Size(413, 20);
-            this.Textbox_SearchHint.TabIndex = 1;
-            // 
-            // Label_NameItemToSearch
-            // 
-            this.Label_NameItemToSearch.AutoSize = true;
-            this.Label_NameItemToSearch.Location = new System.Drawing.Point(6, 25);
-            this.Label_NameItemToSearch.Name = "Label_NameItemToSearch";
-            this.Label_NameItemToSearch.Size = new System.Drawing.Size(38, 13);
-            this.Label_NameItemToSearch.TabIndex = 0;
-            this.Label_NameItemToSearch.Text = "Name:";
-            // 
             // Button_GenerateList
             // 
             this.Button_GenerateList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -908,7 +851,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(981, 740);
             this.Controls.Add(this.Button_GenerateList);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.TabControlDataViewer);
             this.Controls.Add(this.GroupBox_Hashcodes);
             this.Controls.Add(this.MainMenu);
@@ -934,8 +876,6 @@
             this.TabPage_WavHeaderData.ResumeLayout(false);
             this.TabPage_StreamData.ResumeLayout(false);
             this.ContextMenu_Audio.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1002,12 +942,6 @@
         private System.Windows.Forms.ToolStripMenuItem ContextMenuAudio_Properties;
         private System.Windows.Forms.ToolStripSeparator ContextMenuAudio_Separator2;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuAudio_TextColor;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox Textbox_SearchHint;
-        private System.Windows.Forms.Label Label_NameItemToSearch;
-        private System.Windows.Forms.Button Button_Search;
-        private System.Windows.Forms.RadioButton RadioButton_WholeWord;
-        private System.Windows.Forms.RadioButton RadioButton_MatchText;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_Rename;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuAudio_Usage;
         private System.Windows.Forms.ToolStripSeparator ContextMenuAudio_Separator1;
@@ -1030,5 +964,7 @@
         private System.Windows.Forms.ToolStripSeparator ContextMenuFolders_Separator2;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_Purge;
         private System.Windows.Forms.Button Button_GenerateList;
+        private System.Windows.Forms.ToolStripSeparator MenuItem_Edit_Separator1;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_Edit_Search;
     }
 }

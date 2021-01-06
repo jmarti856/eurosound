@@ -70,7 +70,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 BWriter.Write(Entry.Key);
                 BWriter.Write(Entry.Value.Dependencies);
                 BWriter.Write(Entry.Value.DisplayName);
-                BWriter.Write(Entry.Value.Name);
+                BWriter.Write(Entry.Value.LoadedFileName);
                 BWriter.Write(Entry.Value.Encoding);
                 BWriter.Write(Entry.Value.Flags);
                 BWriter.Write(Entry.Value.DataSize);
@@ -117,7 +117,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 foreach (EXSample ItemSample in SoundItem.Value.Samples)
                 {
                     /*Display Info*/
-                    BWriter.Write(ItemSample.Name);
+                    BWriter.Write("empty"); //RemovedField
                     BWriter.Write(ItemSample.DisplayName);
                     BWriter.Write(ItemSample.IsStreamed);
                     BWriter.Write(ItemSample.FileRef);

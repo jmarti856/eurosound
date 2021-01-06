@@ -57,7 +57,7 @@ namespace EuroSound_Application
             }
             else
             {
-                MessageBox.Show("This application requires at leat .NET Framework v4.5." + Environment.NewLine + "Please install it and try to run this application again.", "This application could not be started", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("This application requires at leat .NET Framework v4.5.2." + Environment.NewLine + "Please install it and try to run this application again.", "This application could not be started", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
         }
@@ -69,7 +69,7 @@ namespace EuroSound_Application
             using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full\\"))
             {
                 int releaseKey = Convert.ToInt32(ndpKey.GetValue("Release"));
-                if (!CheckFor45DotVersion(releaseKey).Equals("No 4.5 or later version detected"))
+                if (!CheckFor45DotVersion(releaseKey).StartsWith("No"))
                 {
                     versionOK = true;
                 }
@@ -112,6 +112,7 @@ namespace EuroSound_Application
             {
                 return "4.5.2 or later";
             }
+            /*
             if ((releaseKey >= 378675))
             {
                 return "4.5.1 or later";
@@ -119,7 +120,7 @@ namespace EuroSound_Application
             if ((releaseKey >= 378389))
             {
                 return "4.5 or later";
-            }
+            }*/
             // This line should never execute. A non-null release key should mean 
             // that 4.5 or later is installed. 
             return "No 4.5 or later version detected";

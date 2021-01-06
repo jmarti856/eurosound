@@ -62,7 +62,7 @@ namespace EuroSound_Application
             // 
             this.Label_EuroSoundVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_EuroSoundVersion.AutoSize = true;
-            this.Label_EuroSoundVersion.Location = new System.Drawing.Point(512, 384);
+            this.Label_EuroSoundVersion.Location = new System.Drawing.Point(512, 383);
             this.Label_EuroSoundVersion.Name = "Label_EuroSoundVersion";
             this.Label_EuroSoundVersion.Size = new System.Drawing.Size(107, 13);
             this.Label_EuroSoundVersion.TabIndex = 1;

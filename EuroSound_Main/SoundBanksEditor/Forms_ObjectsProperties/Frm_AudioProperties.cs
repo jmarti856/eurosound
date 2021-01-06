@@ -227,7 +227,7 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         private void UpdateControls()
         {
-            Textbox_MediaName.Text = TemporalAudio.Name;
+            Textbox_MediaName.Text = TemporalAudio.LoadedFileName;
             Textbox_Encoding.Text = TemporalAudio.Encoding;
             Textbox_DataSize.Text = TemporalAudio.DataSize.ToString();
             Textbox_Frequency.Text = TemporalAudio.Frequency.ToString();

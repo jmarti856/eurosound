@@ -32,7 +32,6 @@ namespace EuroSound_Application.SoundBanksEditor
 
             EXSample Sample = new EXSample
             {
-                Name = RemoveWhiteSpaces(SampleName),
                 DisplayName = SampleName,
                 IsStreamed = StreamedSample,
             };
@@ -120,7 +119,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
             for (int i = 0; i < SelectedSound.Samples.Count; i++)
             {
-                if (SelectedSound.Samples[i].Name.Equals(SampleName, StringComparison.OrdinalIgnoreCase))
+                if (SelectedSound.Samples[i].DisplayName.Equals(SampleName, StringComparison.OrdinalIgnoreCase))
                 {
                     SelectedSample = SelectedSound.Samples[i];
                     break;
@@ -235,7 +234,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     AudioFunctions AudioLibrary = new AudioFunctions();
                     EXAudio Audio = new EXAudio
                     {
-                        Name = Path.GetFileName(FilePath),
+                        LoadedFileName = Path.GetFileName(FilePath),
                         DataSize = (uint)AudioReader.Length,
                         Frequency = (uint)AudioReader.WaveFormat.SampleRate,
                         RealSize = (uint)new FileInfo(FilePath).Length,
@@ -256,8 +255,10 @@ namespace EuroSound_Application.SoundBanksEditor
 
                     /*Get PCM data*/
                     Audio.PCMdata = AudioLibrary.GetWavPCMData(FilePath, NumberOfChannels, true);
-                    Audio.DataSize = Convert.ToUInt32(Audio.PCMdata.Length);
-
+                    if (Audio.PCMdata != null)
+                    {
+                        Audio.DataSize = Convert.ToUInt32(Audio.PCMdata.Length);
+                    }
                     return Audio;
                 }
             }

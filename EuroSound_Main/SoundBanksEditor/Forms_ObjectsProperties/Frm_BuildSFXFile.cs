@@ -1,5 +1,6 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.GenerateSoundBankSFX;
+using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -33,7 +34,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 Dictionary<uint, EXSound> FinalSoundsDict;
                 Dictionary<string, EXAudio> FinalAudioDataDict;
                 GenerateSFXSoundBank SFXCreator = new GenerateSFXSoundBank();
-                BinaryWriter BWriter = new BinaryWriter(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), Encoding.ASCII);
+                BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
 
                 Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
                 int TotalProgress = 1;

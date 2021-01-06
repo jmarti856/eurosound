@@ -1,6 +1,7 @@
-﻿namespace EuroSound_Application.SoundBanksEditor
+﻿
+namespace EuroSound_Application.SoundBanksEditor
 {
-    partial class Frm_SampleProperties
+    partial class Frm_NewStreamSound
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +29,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_SampleProperties));
+            this.Label_ExternalFile = new System.Windows.Forms.Label();
+            this.Textbox_ExternalFile = new System.Windows.Forms.TextBox();
+            this.ListBox_StreamSounds = new System.Windows.Forms.ListBox();
+            this.Button_OK = new System.Windows.Forms.Button();
+            this.Button_Cancel = new System.Windows.Forms.Button();
+            this.Label_Text = new System.Windows.Forms.Label();
+            this.Button_RefreshList = new System.Windows.Forms.Button();
             this.groupbox_properties = new System.Windows.Forms.GroupBox();
             this.Numeric_BaseVolume = new System.Windows.Forms.NumericUpDown();
             this.Label_BaseVolume = new System.Windows.Forms.Label();
@@ -42,18 +49,6 @@
             this.label_randomvolumeoffset = new System.Windows.Forms.Label();
             this.numeric_pitchoffset = new System.Windows.Forms.NumericUpDown();
             this.label_pitchoffset = new System.Windows.Forms.Label();
-            this.button_ok = new System.Windows.Forms.Button();
-            this.button_cancel = new System.Windows.Forms.Button();
-            this.GroupBoxMedia = new System.Windows.Forms.GroupBox();
-            this.Button_Edit = new System.Windows.Forms.Button();
-            this.Button_Stop = new System.Windows.Forms.Button();
-            this.Button_PlayAudio = new System.Windows.Forms.Button();
-            this.Label_AudioSelected = new System.Windows.Forms.Label();
-            this.Combobox_SelectedAudio = new System.Windows.Forms.ComboBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.Combobox_Hashcode = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.Label_SubSFX = new System.Windows.Forms.Label();
             this.groupbox_properties.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_BaseVolume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_randomPitchOffset)).BeginInit();
@@ -61,9 +56,84 @@
             ((System.ComponentModel.ISupportInitialize)(this.numeric_pan)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_randomvolumeoffset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_pitchoffset)).BeginInit();
-            this.GroupBoxMedia.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // Label_ExternalFile
+            // 
+            this.Label_ExternalFile.AutoSize = true;
+            this.Label_ExternalFile.Location = new System.Drawing.Point(12, 15);
+            this.Label_ExternalFile.Name = "Label_ExternalFile";
+            this.Label_ExternalFile.Size = new System.Drawing.Size(67, 13);
+            this.Label_ExternalFile.TabIndex = 0;
+            this.Label_ExternalFile.Text = "External File:";
+            // 
+            // Textbox_ExternalFile
+            // 
+            this.Textbox_ExternalFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Textbox_ExternalFile.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_ExternalFile.Location = new System.Drawing.Point(85, 12);
+            this.Textbox_ExternalFile.Name = "Textbox_ExternalFile";
+            this.Textbox_ExternalFile.ReadOnly = true;
+            this.Textbox_ExternalFile.Size = new System.Drawing.Size(383, 20);
+            this.Textbox_ExternalFile.TabIndex = 1;
+            this.Textbox_ExternalFile.WordWrap = false;
+            // 
+            // ListBox_StreamSounds
+            // 
+            this.ListBox_StreamSounds.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ListBox_StreamSounds.FormattingEnabled = true;
+            this.ListBox_StreamSounds.Location = new System.Drawing.Point(12, 168);
+            this.ListBox_StreamSounds.Name = "ListBox_StreamSounds";
+            this.ListBox_StreamSounds.ScrollAlwaysVisible = true;
+            this.ListBox_StreamSounds.Size = new System.Drawing.Size(456, 316);
+            this.ListBox_StreamSounds.TabIndex = 3;
+            // 
+            // Button_OK
+            // 
+            this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_OK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Button_OK.Location = new System.Drawing.Point(312, 487);
+            this.Button_OK.Name = "Button_OK";
+            this.Button_OK.Size = new System.Drawing.Size(75, 23);
+            this.Button_OK.TabIndex = 5;
+            this.Button_OK.Text = "OK";
+            this.Button_OK.UseVisualStyleBackColor = true;
+            this.Button_OK.Click += new System.EventHandler(this.Button_OK_Click);
+            // 
+            // Button_Cancel
+            // 
+            this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Button_Cancel.Location = new System.Drawing.Point(393, 487);
+            this.Button_Cancel.Name = "Button_Cancel";
+            this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
+            this.Button_Cancel.TabIndex = 6;
+            this.Button_Cancel.Text = "Cancel";
+            this.Button_Cancel.UseVisualStyleBackColor = true;
+            this.Button_Cancel.Click += new System.EventHandler(this.Button_Cancel_Click);
+            // 
+            // Label_Text
+            // 
+            this.Label_Text.AutoSize = true;
+            this.Label_Text.Location = new System.Drawing.Point(12, 152);
+            this.Label_Text.Name = "Label_Text";
+            this.Label_Text.Size = new System.Drawing.Size(115, 13);
+            this.Label_Text.TabIndex = 2;
+            this.Label_Text.Text = "Select a stream sound:";
+            // 
+            // Button_RefreshList
+            // 
+            this.Button_RefreshList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_RefreshList.Location = new System.Drawing.Point(12, 487);
+            this.Button_RefreshList.Name = "Button_RefreshList";
+            this.Button_RefreshList.Size = new System.Drawing.Size(75, 23);
+            this.Button_RefreshList.TabIndex = 4;
+            this.Button_RefreshList.Text = "Refresh";
+            this.Button_RefreshList.UseVisualStyleBackColor = true;
+            this.Button_RefreshList.Click += new System.EventHandler(this.Button_RefreshList_Click);
             // 
             // groupbox_properties
             // 
@@ -81,10 +151,10 @@
             this.groupbox_properties.Controls.Add(this.label_randomvolumeoffset);
             this.groupbox_properties.Controls.Add(this.numeric_pitchoffset);
             this.groupbox_properties.Controls.Add(this.label_pitchoffset);
-            this.groupbox_properties.Location = new System.Drawing.Point(12, 12);
+            this.groupbox_properties.Location = new System.Drawing.Point(12, 38);
             this.groupbox_properties.Name = "groupbox_properties";
-            this.groupbox_properties.Size = new System.Drawing.Size(450, 108);
-            this.groupbox_properties.TabIndex = 0;
+            this.groupbox_properties.Size = new System.Drawing.Size(456, 108);
+            this.groupbox_properties.TabIndex = 7;
             this.groupbox_properties.TabStop = false;
             this.groupbox_properties.Text = "Properties:";
             // 
@@ -244,163 +314,28 @@
             this.label_pitchoffset.TabIndex = 3;
             this.label_pitchoffset.Text = "Pitch Offset:";
             // 
-            // button_ok
+            // Frm_NewStreamSound
             // 
-            this.button_ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_ok.Location = new System.Drawing.Point(306, 348);
-            this.button_ok.Name = "button_ok";
-            this.button_ok.Size = new System.Drawing.Size(75, 23);
-            this.button_ok.TabIndex = 1;
-            this.button_ok.Text = "OK";
-            this.button_ok.UseVisualStyleBackColor = true;
-            this.button_ok.Click += new System.EventHandler(this.Button_ok_Click);
-            // 
-            // button_cancel
-            // 
-            this.button_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button_cancel.Location = new System.Drawing.Point(387, 348);
-            this.button_cancel.Name = "button_cancel";
-            this.button_cancel.Size = new System.Drawing.Size(75, 23);
-            this.button_cancel.TabIndex = 2;
-            this.button_cancel.Text = "Cancel";
-            this.button_cancel.UseVisualStyleBackColor = true;
-            this.button_cancel.Click += new System.EventHandler(this.Button_cancel_Click);
-            // 
-            // GroupBoxMedia
-            // 
-            this.GroupBoxMedia.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.GroupBoxMedia.Controls.Add(this.Button_Edit);
-            this.GroupBoxMedia.Controls.Add(this.Button_Stop);
-            this.GroupBoxMedia.Controls.Add(this.Button_PlayAudio);
-            this.GroupBoxMedia.Controls.Add(this.Label_AudioSelected);
-            this.GroupBoxMedia.Controls.Add(this.Combobox_SelectedAudio);
-            this.GroupBoxMedia.Location = new System.Drawing.Point(12, 126);
-            this.GroupBoxMedia.Name = "GroupBoxMedia";
-            this.GroupBoxMedia.Size = new System.Drawing.Size(450, 109);
-            this.GroupBoxMedia.TabIndex = 3;
-            this.GroupBoxMedia.TabStop = false;
-            this.GroupBoxMedia.Text = "Media";
-            // 
-            // Button_Edit
-            // 
-            this.Button_Edit.Location = new System.Drawing.Point(190, 80);
-            this.Button_Edit.Name = "Button_Edit";
-            this.Button_Edit.Size = new System.Drawing.Size(92, 23);
-            this.Button_Edit.TabIndex = 3;
-            this.Button_Edit.Text = "Open Properties";
-            this.Button_Edit.UseVisualStyleBackColor = true;
-            this.Button_Edit.Click += new System.EventHandler(this.Button_Edit_Click);
-            // 
-            // Button_Stop
-            // 
-            this.Button_Stop.Location = new System.Drawing.Point(369, 80);
-            this.Button_Stop.Name = "Button_Stop";
-            this.Button_Stop.Size = new System.Drawing.Size(75, 23);
-            this.Button_Stop.TabIndex = 5;
-            this.Button_Stop.Text = "Stop";
-            this.Button_Stop.UseVisualStyleBackColor = true;
-            this.Button_Stop.Click += new System.EventHandler(this.Button_Stop_Click);
-            // 
-            // Button_PlayAudio
-            // 
-            this.Button_PlayAudio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_PlayAudio.Location = new System.Drawing.Point(288, 80);
-            this.Button_PlayAudio.Name = "Button_PlayAudio";
-            this.Button_PlayAudio.Size = new System.Drawing.Size(75, 23);
-            this.Button_PlayAudio.TabIndex = 4;
-            this.Button_PlayAudio.Text = "Play";
-            this.Button_PlayAudio.UseVisualStyleBackColor = true;
-            this.Button_PlayAudio.Click += new System.EventHandler(this.Button_PlayAudio_Click);
-            // 
-            // Label_AudioSelected
-            // 
-            this.Label_AudioSelected.AutoSize = true;
-            this.Label_AudioSelected.Location = new System.Drawing.Point(6, 45);
-            this.Label_AudioSelected.Name = "Label_AudioSelected";
-            this.Label_AudioSelected.Size = new System.Drawing.Size(37, 13);
-            this.Label_AudioSelected.TabIndex = 1;
-            this.Label_AudioSelected.Text = "Audio:";
-            // 
-            // Combobox_SelectedAudio
-            // 
-            this.Combobox_SelectedAudio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Combobox_SelectedAudio.FormattingEnabled = true;
-            this.Combobox_SelectedAudio.Location = new System.Drawing.Point(49, 42);
-            this.Combobox_SelectedAudio.Name = "Combobox_SelectedAudio";
-            this.Combobox_SelectedAudio.Size = new System.Drawing.Size(395, 21);
-            this.Combobox_SelectedAudio.TabIndex = 2;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.Combobox_Hashcode);
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.Label_SubSFX);
-            this.groupBox2.Location = new System.Drawing.Point(12, 241);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(450, 100);
-            this.groupBox2.TabIndex = 4;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Hashcode";
-            // 
-            // Combobox_Hashcode
-            // 
-            this.Combobox_Hashcode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Combobox_Hashcode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Combobox_Hashcode.Enabled = false;
-            this.Combobox_Hashcode.FormattingEnabled = true;
-            this.Combobox_Hashcode.Location = new System.Drawing.Point(71, 52);
-            this.Combobox_Hashcode.Name = "Combobox_Hashcode";
-            this.Combobox_Hashcode.Size = new System.Drawing.Size(373, 21);
-            this.Combobox_Hashcode.TabIndex = 2;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 55);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Hashcode:";
-            // 
-            // Label_SubSFX
-            // 
-            this.Label_SubSFX.AutoSize = true;
-            this.Label_SubSFX.Location = new System.Drawing.Point(6, 16);
-            this.Label_SubSFX.MaximumSize = new System.Drawing.Size(451, 0);
-            this.Label_SubSFX.Name = "Label_SubSFX";
-            this.Label_SubSFX.Size = new System.Drawing.Size(402, 26);
-            this.Label_SubSFX.TabIndex = 0;
-            this.Label_SubSFX.Text = "If the flag \"hasSubSfx\" is checked, the file reference of the first \"sample\" entr" +
-    "y gets interpreted as a SFX hashcode and played as a 3D sound at the current pos" +
-    "ition.";
-            // 
-            // Frm_SampleProperties
-            // 
-            this.AcceptButton = this.button_ok;
+            this.AcceptButton = this.Button_OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.button_cancel;
-            this.ClientSize = new System.Drawing.Size(474, 383);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.GroupBoxMedia);
-            this.Controls.Add(this.button_cancel);
-            this.Controls.Add(this.button_ok);
+            this.CancelButton = this.Button_Cancel;
+            this.ClientSize = new System.Drawing.Size(480, 522);
             this.Controls.Add(this.groupbox_properties);
+            this.Controls.Add(this.Button_RefreshList);
+            this.Controls.Add(this.Label_Text);
+            this.Controls.Add(this.Button_Cancel);
+            this.Controls.Add(this.Button_OK);
+            this.Controls.Add(this.ListBox_StreamSounds);
+            this.Controls.Add(this.Textbox_ExternalFile);
+            this.Controls.Add(this.Label_ExternalFile);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Frm_SampleProperties";
-            this.ShowIcon = false;
+            this.Name = "Frm_NewStreamSound";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Frm_SampleProperties";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_SampleProperties_FormClosing);
-            this.Load += new System.EventHandler(this.Frm_SampleProperties_Load);
+            this.Text = "Frm_NewStreamSound";
+            this.Load += new System.EventHandler(this.Frm_NewStreamSound_Load);
             this.groupbox_properties.ResumeLayout(false);
             this.groupbox_properties.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_BaseVolume)).EndInit();
@@ -409,40 +344,32 @@
             ((System.ComponentModel.ISupportInitialize)(this.numeric_pan)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_randomvolumeoffset)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_pitchoffset)).EndInit();
-            this.GroupBoxMedia.ResumeLayout(false);
-            this.GroupBoxMedia.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
+        private System.Windows.Forms.Label Label_ExternalFile;
+        private System.Windows.Forms.TextBox Textbox_ExternalFile;
+        private System.Windows.Forms.ListBox ListBox_StreamSounds;
+        private System.Windows.Forms.Button Button_OK;
+        private System.Windows.Forms.Button Button_Cancel;
+        private System.Windows.Forms.Label Label_Text;
+        private System.Windows.Forms.Button Button_RefreshList;
         private System.Windows.Forms.GroupBox groupbox_properties;
-        private System.Windows.Forms.Button button_ok;
-        private System.Windows.Forms.Button button_cancel;
-        private System.Windows.Forms.NumericUpDown numeric_pitchoffset;
-        private System.Windows.Forms.Label label_pitchoffset;
+        private System.Windows.Forms.NumericUpDown Numeric_BaseVolume;
+        private System.Windows.Forms.Label Label_BaseVolume;
+        private System.Windows.Forms.NumericUpDown numeric_randomPitchOffset;
+        private System.Windows.Forms.Label Label_RandomPitchOffset;
         private System.Windows.Forms.NumericUpDown numeric_randompan;
         private System.Windows.Forms.Label label_randompan;
         private System.Windows.Forms.NumericUpDown numeric_pan;
         private System.Windows.Forms.Label label_pan;
         private System.Windows.Forms.NumericUpDown numeric_randomvolumeoffset;
         private System.Windows.Forms.Label label_randomvolumeoffset;
-        private System.Windows.Forms.GroupBox GroupBoxMedia;
-        private System.Windows.Forms.NumericUpDown Numeric_BaseVolume;
-        private System.Windows.Forms.Label Label_BaseVolume;
-        private System.Windows.Forms.NumericUpDown numeric_randomPitchOffset;
-        private System.Windows.Forms.Label Label_RandomPitchOffset;
-        private System.Windows.Forms.Label Label_AudioSelected;
-        private System.Windows.Forms.ComboBox Combobox_SelectedAudio;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label Label_SubSFX;
-        private System.Windows.Forms.ComboBox Combobox_Hashcode;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button Button_PlayAudio;
-        private System.Windows.Forms.Button Button_Stop;
-        private System.Windows.Forms.Button Button_Edit;
+        private System.Windows.Forms.NumericUpDown numeric_pitchoffset;
+        private System.Windows.Forms.Label label_pitchoffset;
     }
 }

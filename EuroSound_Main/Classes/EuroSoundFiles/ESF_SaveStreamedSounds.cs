@@ -70,15 +70,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
         {
             if (!SelectedNode.Tag.Equals("Root"))
             {
-                if (SelectedNode.Parent == null)
-                {
-                    BWriter.Write("Root");
-                }
-                else
-                {
-                    BWriter.Write(SelectedNode.Parent.Name);
-                }
-                BWriter.Write(SelectedNode.Name);
+                BWriter.Write(SelectedNode.Text);
             }
             foreach (TreeNode Node in SelectedNode.Nodes)
             {

@@ -63,7 +63,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 {
                     DisplayName = BReader.ReadString(),
                     Dependencies = BReader.ReadString(),
-                    Name = BReader.ReadString(),
+                    LoadedFileName = BReader.ReadString(),
                     Encoding = BReader.ReadString(),
                     Flags = BReader.ReadUInt16(),
                     DataSize = BReader.ReadUInt32(),
@@ -116,9 +116,9 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 NumberOfSamples = BReader.ReadInt32();
                 for (int j = 0; j < NumberOfSamples; j++)
                 {
+                    BReader.ReadString(); //NAME Removed property
                     EXSample NewSample = new EXSample
                     {
-                        Name = BReader.ReadString(),
                         DisplayName = BReader.ReadString(),
                         IsStreamed = BReader.ReadBoolean(),
                         FileRef = BReader.ReadInt16(),

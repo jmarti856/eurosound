@@ -1,19 +1,22 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
+using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using Syroot.BinaryData;
 
 namespace EuroSound_Application.StreamSounds
 {
     public partial class Frm_BuildSFXStreamFile : Form
     {
+        //*===============================================================================================
+        //* GLOBAL VARS
+        //*===============================================================================================
         private ProjectFile CurrentFileProperties;
-        private string FileName;
         private List<string> Reports = new List<string>();
+        private string FileName;
 
         public Frm_BuildSFXStreamFile(ProjectFile FileProperties, string SoundBankFinalName)
         {
@@ -22,19 +25,31 @@ namespace EuroSound_Application.StreamSounds
             FileName = SoundBankFinalName;
         }
 
+        //*===============================================================================================
+        //* FORM EVENTS
+        //*===============================================================================================
+        private void Frm_BuildSFXStreamFile_Load(object sender, EventArgs e)
+        {
+            //Run Background Worker
+            if (!BackgroundWorker_BuildSFX.IsBusy)
+            {
+                BackgroundWorker_BuildSFX.RunWorkerAsync();
+            }
+        }
+
+        //*===============================================================================================
+        //* BACKGROUND WORKER
+        //*===============================================================================================
         private void BackgroundWorker_BuildSFX_DoWork(object sender, DoWorkEventArgs e)
         {
             Reports.Clear();
             if (Directory.Exists(GlobalPreferences.SFXOutputPath))
             {
-                //*===============================================================================================
-                //* GLOBAL VARS
-                //*===============================================================================================
                 Dictionary<uint, EXSoundStream> FinalSoundsDict;
                 GenerateSFXStreamedSounds SFXCreator = new GenerateSFXStreamedSounds();
                 //BinaryWriter BWriter = new BinaryWriter(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), Encoding.ASCII);
 
-                BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write),null,Encoding.ASCII);
+                BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
 
                 Form ParentForm = GenericFunctions.GetFormByName("Frm_StreamSoundsEditorMain", Tag.ToString());
                 int TotalProgress = 1;
@@ -192,18 +207,12 @@ namespace EuroSound_Application.StreamSounds
             Dispose();
         }
 
+        //*===============================================================================================
+        //* FORM CONTROLS EVENTS
+        //*===============================================================================================
         private void Button_Abort_Click(object sender, EventArgs e)
         {
             BackgroundWorker_BuildSFX.CancelAsync();
-        }
-
-        private void Frm_BuildSFXStreamFile_Load(object sender, EventArgs e)
-        {
-            //Run Background Worker
-            if (!BackgroundWorker_BuildSFX.IsBusy)
-            {
-                BackgroundWorker_BuildSFX.RunWorkerAsync();
-            }
         }
 
         //*===============================================================================================

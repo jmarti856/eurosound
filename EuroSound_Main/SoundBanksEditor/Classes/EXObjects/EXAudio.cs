@@ -12,7 +12,7 @@
         public ushort Flags { get; set; }
         public uint Frequency { get; set; }
         public uint LoopOffset { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string LoadedFileName { get; set; } = string.Empty;
         /*---ENGINE X Required---*/
         public byte[] PCMdata { get; set; } = new byte[] { 1, 0, 8 };
         public uint PSIsample { get; set; }

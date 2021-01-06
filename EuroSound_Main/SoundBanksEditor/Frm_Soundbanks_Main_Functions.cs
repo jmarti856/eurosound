@@ -59,18 +59,34 @@ namespace EuroSound_Application.SoundBanksEditor
 
         internal void OpenSampleProperties(TreeNode SelectedNode)
         {
+            string Section = TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name;
             EXSound ParentSound = EXSoundbanksFunctions.GetSoundByName(uint.Parse(SelectedNode.Parent.Name), SoundsList);
             EXSample SelectedSample = EXSoundbanksFunctions.GetSampleByName(SelectedNode.Name, ParentSound);
 
-            Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(SelectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(ParentSound.Flags))
+            if (Section.Equals("StreamedSounds"))
             {
-                Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
-                Tag = Tag,
-                Owner = this,
-                ShowInTaskbar = false
-            };
-            FormSampleProps.ShowDialog();
-            FormSampleProps.Dispose();
+                Frm_NewStreamSound AddStreamSound = new Frm_NewStreamSound(SelectedSample)
+                {
+                    Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
+                    Tag = Tag,
+                    Owner = this,
+                    ShowInTaskbar = false
+                };
+                AddStreamSound.ShowDialog();
+                AddStreamSound.Dispose();
+            }
+            else
+            {
+                Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(SelectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(ParentSound.Flags))
+                {
+                    Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
+                    Tag = Tag,
+                    Owner = this,
+                    ShowInTaskbar = false
+                };
+                FormSampleProps.ShowDialog();
+                FormSampleProps.Dispose();
+            }
             ProjectInfo.FileHasBeenModified = true;
         }
 
@@ -91,8 +107,9 @@ namespace EuroSound_Application.SoundBanksEditor
 
         internal void OpenSoundProperties(TreeNode SelectedNode)
         {
+            string SoundSection = TreeNodeFunctions.FindRootNode(SelectedNode).Name;
             EXSound SelectedSound = EXSoundbanksFunctions.GetSoundByName(uint.Parse(SelectedNode.Name), SoundsList);
-            Frm_EffectProperties FormSoundProps = new Frm_EffectProperties(SelectedSound, SelectedNode.Name)
+            Frm_EffectProperties FormSoundProps = new Frm_EffectProperties(SelectedSound, SelectedNode.Name, SoundSection)
             {
                 Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
                 Tag = Tag,
@@ -409,7 +426,7 @@ namespace EuroSound_Application.SoundBanksEditor
                         };
                         AddItemToListView(Hashcode, ListView_WavHeaderData);
 
-                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking audio: " + item.Value.Name.ToString());
+                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking audio: " + item.Value.LoadedFileName.ToString());
 
                         Thread.Sleep(6);
                     }

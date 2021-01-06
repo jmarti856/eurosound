@@ -25,6 +25,9 @@
         internal static int ColorWavesControl;
         internal static int BackColorWavesControl;
 
+        //Frm_StreamFile
+        internal static string StreamFilePath;
+
         //*===============================================================================================
         //* OTHER TEMPORAL VARIABLES
         //*===============================================================================================
