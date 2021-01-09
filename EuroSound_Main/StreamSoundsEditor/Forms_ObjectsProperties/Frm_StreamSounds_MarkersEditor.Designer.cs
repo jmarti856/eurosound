@@ -29,6 +29,7 @@ namespace EuroSound_Application.StreamSounds
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_StreamSounds_MarkersEditor));
             this.GroupBox_MarkerData = new System.Windows.Forms.GroupBox();
             this.Button_Clear = new System.Windows.Forms.Button();
             this.Button_AddMarker = new System.Windows.Forms.Button();
@@ -359,6 +360,7 @@ namespace EuroSound_Application.StreamSounds
             this.Controls.Add(this.Button_OK);
             this.Controls.Add(this.GroupBox_MarkerData);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Frm_StreamSounds_MarkersEditor";

@@ -1,7 +1,11 @@
-﻿using EuroSound_Application.SoundBanksEditor;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.SoundBanksEditor;
+using EuroSound_Application.StreamSounds;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
+using SoxSharp;
 using System.IO;
+using System.Windows.Forms;
 
 namespace EuroSound_Application.AudioFunctionsLibrary
 {
@@ -11,27 +15,30 @@ namespace EuroSound_Application.AudioFunctionsLibrary
 
         internal void PlayAudio(WaveOut AudioPlayer, byte[] PCMData, int Frequency, int Pitch, int Bits, int Channels, int Pan)
         {
-            if (AudioPlayer.PlaybackState == PlaybackState.Stopped)
+            if (Frequency != 0)
             {
-                AudioSample = new MemoryStream(PCMData);
-                IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency + Pitch, Bits, Channels));
-                VolumeSampleProvider volumeProvider = new VolumeSampleProvider(provider.ToSampleProvider());
-                AudioPlayer.Volume = 1;
+                if (AudioPlayer.PlaybackState == PlaybackState.Stopped)
+                {
+                    AudioSample = new MemoryStream(PCMData);
+                    IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency + Pitch, Bits, Channels));
+                    VolumeSampleProvider volumeProvider = new VolumeSampleProvider(provider.ToSampleProvider());
+                    AudioPlayer.Volume = 1;
 
-                //Pan is only for mono audio
-                if (Channels == 1)
-                {
-                    PanningSampleProvider panProvider = new PanningSampleProvider(volumeProvider)
+                    //Pan is only for mono audio
+                    if (Channels == 1)
                     {
-                        Pan = (Pan / 100)
-                    };
-                    AudioPlayer.Init(panProvider);
+                        PanningSampleProvider panProvider = new PanningSampleProvider(volumeProvider)
+                        {
+                            Pan = (Pan / 100)
+                        };
+                        AudioPlayer.Init(panProvider);
+                    }
+                    else
+                    {
+                        AudioPlayer.Init(provider);
+                    }
+                    AudioPlayer.Play();
                 }
-                else
-                {
-                    AudioPlayer.Init(provider);
-                }
-                AudioPlayer.Play();
             }
         }
 
@@ -75,7 +82,18 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             }
         }
 
-        internal byte[] GetWavPCMData(string AudioFilePath, int NumberOfChannels, bool ForceMonoConvert)
+        internal void DrawAudioWaves(EuroSound_WaveViewer ControlToDraw, EXSoundStream SelectedSound, int Delay)
+        {
+            /*Draw Waves*/
+            if (SelectedSound.PCM_Data != null && SelectedSound.Channels > 0)
+            {
+                ControlToDraw.RenderDelay = Delay;
+                ControlToDraw.WaveStream = new RawSourceWaveStream(new MemoryStream(SelectedSound.PCM_Data), new WaveFormat((int)SelectedSound.Frequency, (int)SelectedSound.Bits, (int)SelectedSound.Channels));
+                ControlToDraw.InitControl();
+            }
+        }
+
+        internal byte[] GetWavPCMData(string AudioFilePath)
         {
             int dataSize;
             byte[] byteArray;
@@ -91,21 +109,7 @@ namespace EuroSound_Application.AudioFunctionsLibrary
                 dataSize = Reader.ReadInt32();
 
                 /*Get data*/
-                if (ForceMonoConvert)
-                {
-                    if (NumberOfChannels >= 2)
-                    {
-                        byteArray = StereoToMono(Reader.ReadBytes(dataSize));
-                    }
-                    else
-                    {
-                        byteArray = Reader.ReadBytes(dataSize);
-                    }
-                }
-                else
-                {
-                    byteArray = Reader.ReadBytes(dataSize);
-                }
+                byteArray = Reader.ReadBytes(dataSize);
 
                 Reader.Close();
                 Reader.Dispose();
@@ -118,17 +122,88 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             return byteArray;
         }
 
-        private byte[] StereoToMono(byte[] input)
+        internal string ConvertWavToSoundBankValid(string SourcePath, string FileName)
         {
-            byte[] output = new byte[input.Length / 2];
-            int outputIndex = 0;
-            for (int n = 0; n < input.Length; n += 4)
+            string FinalFile = string.Empty;
+
+            //Create folder in %temp%
+            GenericFunctions.CreateTemporalFolder();
+
+            //Resample wav
+            if (File.Exists(GlobalPreferences.SoXPath))
             {
-                // copy in the first 16 bit sample
-                output[outputIndex++] = input[n];
-                output[outputIndex++] = input[n + 1];
+                FinalFile = string.Format("{0}{1}f.wav", Path.GetTempPath() + @"EuroSound\", FileName);
+                using (Sox sox = new Sox(GlobalPreferences.SoXPath))
+                {
+                    sox.Output.Type = FileType.WAV;
+                    sox.Output.SampleRate = 22050;
+                    sox.Output.Channels = 1;
+
+                    InputFile testInput = new InputFile(SourcePath);
+                    sox.Process(testInput, FinalFile);
+                }
             }
-            return output;
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("SoXInvalidPath"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return FinalFile;
+        }
+
+        public string ConvertWavToIMAADPCM(string SourcePath, string FileName)
+        {
+            string FinalFile = string.Empty;
+
+            //Create folder in %temp%
+            GenericFunctions.CreateTemporalFolder();
+
+            //Resample wav
+            if (File.Exists(GlobalPreferences.SoXPath))
+            {
+                FinalFile = string.Format("{0}{1}f.ima", Path.GetTempPath() + @"EuroSound\", FileName);
+                using (Sox sox = new Sox(GlobalPreferences.SoXPath))
+                {
+                    sox.Output.Type = FileType.IMA;
+                    sox.Output.SampleRate = 22050;
+                    sox.Output.Channels = 1;
+
+                    InputFile testInput = new InputFile(SourcePath);
+                    sox.Process(testInput, FinalFile);
+                }
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("SoXInvalidPath"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return FinalFile;
+        }
+
+        internal void CreateWavFile(int Frequency, int BitsPerChannel, int NumberOfChannels, byte[] SampleData, string FilePath)
+        {
+            MemoryStream AudioSample = new MemoryStream(SampleData);
+            IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency, BitsPerChannel, NumberOfChannels));
+
+            WriteWavFile(FilePath, provider);
+        }
+
+        private void WriteWavFile(string SavePath, IWaveProvider sourceProvider)
+        {
+            using (WaveFileWriter writer = new WaveFileWriter(SavePath, sourceProvider.WaveFormat))
+            {
+                byte[] buffer = new byte[sourceProvider.WaveFormat.AverageBytesPerSecond * 4];
+                while (true)
+                {
+                    int bytesRead = sourceProvider.Read(buffer, 0, buffer.Length);
+                    if (bytesRead == 0)
+                    {
+                        break;
+                    }
+
+                    writer.Write(buffer, 0, bytesRead);
+                }
+            }
         }
     }
 }

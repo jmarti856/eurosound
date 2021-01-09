@@ -86,6 +86,7 @@
             this.Controls.Add(this.TextBox_InputText);
             this.Controls.Add(this.Label_Text);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EuroSound_InputBox";

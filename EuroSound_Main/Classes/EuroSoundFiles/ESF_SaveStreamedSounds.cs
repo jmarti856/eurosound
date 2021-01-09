@@ -1,4 +1,5 @@
 ﻿using EuroSound_Application.StreamSounds;
+using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,8 +9,10 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 {
     public class ESF_SaveStreamedSounds
     {
-        public void SaveStreamedSounds(BinaryWriter BWriter, TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, ProjectFile FileProperties)
+        public void SaveStreamedSounds(BinaryStream BWriter, TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, ProjectFile FileProperties)
         {
+            long AlignOffset;
+
             /*File Hashcode*/
             BWriter.Write(FileProperties.Hashcode);
             /*Stream Sound ID*/
@@ -24,23 +27,41 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             BWriter.Write(Convert.ToUInt32(00000000));
             /*File Name*/
             BWriter.Write(FileProperties.FileName);
+            BWriter.Seek(2048, SeekOrigin.Current);
 
             //*===============================================================================================
             //* NamesList
             //*===============================================================================================
-            BWriter.Seek(1024, SeekOrigin.Current);
+            /*Align Bytes*/
+            AlignOffset = (BWriter.BaseStream.Position + 2048) & (2048 - 1);
+            BWriter.Seek(AlignOffset, SeekOrigin.Current);
+            BWriter.Align(16);
+
+            /*Write Data*/
             long SoundsNamesListOffset = BWriter.BaseStream.Position;
             SaveSoundsLisNames(TreeViewControl, BWriter);
 
             //*===============================================================================================
             //* TreeView
             //*===============================================================================================
+            /*Align Bytes*/
+            AlignOffset = (BWriter.BaseStream.Position + 2048) & (2048 - 1);
+            BWriter.Seek(AlignOffset, SeekOrigin.Current);
+            BWriter.Align(16);
+
+            /*Write Data*/
             long TreeViewDataOffset = BWriter.BaseStream.Position;
             SaveTreeViewData(TreeViewControl, BWriter);
 
             //*===============================================================================================
             //* Dictionary Info
             //*===============================================================================================
+            /*Align Bytes*/
+            AlignOffset = (BWriter.BaseStream.Position + 2048) & (2048 - 1);
+            BWriter.Seek(AlignOffset, SeekOrigin.Current);
+            BWriter.Align(16);
+
+            /*Write Data*/
             long DictionaryDataOffset = BWriter.BaseStream.Position;
             SaveDictionaryData(StreamSoundsList, BWriter);
             long FileSize = BWriter.BaseStream.Position;
@@ -60,13 +81,13 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             BWriter.Write(Convert.ToUInt32(FileSize));
         }
 
-        private void SaveSoundsLisNames(TreeView TreeViewControl, BinaryWriter BWriter)
+        private void SaveSoundsLisNames(TreeView TreeViewControl, BinaryStream BWriter)
         {
             BWriter.Write((TreeViewControl.GetNodeCount(true) - 1));
             SaveOnlyNodeName(TreeViewControl.Nodes[0], BWriter);
         }
 
-        private void SaveOnlyNodeName(TreeNode SelectedNode, BinaryWriter BWriter)
+        private void SaveOnlyNodeName(TreeNode SelectedNode, BinaryStream BWriter)
         {
             if (!SelectedNode.Tag.Equals("Root"))
             {
@@ -78,13 +99,13 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             }
         }
 
-        private void SaveTreeViewData(TreeView TreeViewControl, BinaryWriter BWriter)
+        private void SaveTreeViewData(TreeView TreeViewControl, BinaryStream BWriter)
         {
             BWriter.Write((TreeViewControl.GetNodeCount(true) - 1));
             SaveTreeNodes(TreeViewControl.Nodes[0], BWriter);
         }
 
-        private void SaveTreeNodes(TreeNode Selected, BinaryWriter BWriter)
+        private void SaveTreeNodes(TreeNode Selected, BinaryStream BWriter)
         {
             if (!Selected.Tag.Equals("Root"))
             {
@@ -105,6 +126,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 BWriter.Write(Selected.Tag.ToString());
                 BWriter.Write(Selected.ForeColor.ToArgb());
                 BWriter.Write(Selected.IsVisible);
+
             }
             foreach (TreeNode Node in Selected.Nodes)
             {
@@ -112,7 +134,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             }
         }
 
-        private void SaveDictionaryData(Dictionary<uint, EXSoundStream> StreamSoundsList, BinaryWriter BWriter)
+        private void SaveDictionaryData(Dictionary<uint, EXSoundStream> StreamSoundsList, BinaryStream BWriter)
         {
             uint NumberOfStartMarkers, NumberOfMarkers;
 
@@ -122,8 +144,20 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 BWriter.Write(Sound.Key);
                 BWriter.Write(Sound.Value.DisplayName);
                 BWriter.Write(Sound.Value.BaseVolume);
+
+                /*Save WAV*/
+                BWriter.Write(Sound.Value.PCM_Data.Length);
+                BWriter.Write(Sound.Value.PCM_Data);
                 BWriter.Write(Sound.Value.IMA_ADPCM_DATA.Length);
                 BWriter.Write(Sound.Value.IMA_ADPCM_DATA);
+                BWriter.Write(Sound.Value.Frequency);
+                BWriter.Write(Sound.Value.Channels);
+                BWriter.Write(Sound.Value.Bits);
+                BWriter.Write(Sound.Value.Duration);
+                BWriter.Write(Sound.Value.Encoding);
+                BWriter.Write(Sound.Value.WAVFileMD5);
+                BWriter.Write(Sound.Value.WAVFileName);
+                BWriter.Write(Sound.Value.RealSize);
 
                 /*Start Markers List*/
                 NumberOfStartMarkers = (uint)Sound.Value.StartMarkers.Count;
@@ -161,8 +195,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 }
 
                 //Extra info
-                BWriter.Write(Sound.Value.IMA_Data_MD5);
-                BWriter.Write(Sound.Value.IMA_Data_Name);
                 BWriter.Write(Sound.Value.OutputThisSound);
 
                 //IDS

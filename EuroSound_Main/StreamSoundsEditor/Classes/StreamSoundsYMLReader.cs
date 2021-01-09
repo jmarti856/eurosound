@@ -1,4 +1,6 @@
-﻿using EuroSound_Application.TreeViewLibraryFunctions;
+﻿using EuroSound_Application.AudioFunctionsLibrary;
+using EuroSound_Application.TreeViewLibraryFunctions;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,6 +12,7 @@ namespace EuroSound_Application.StreamSounds
 {
     class StreamSoundsYMLReader
     {
+        private AudioFunctions AudioLibrary = new AudioFunctions();
         internal List<string> Reports;
 
         internal List<string> GetFilePathsFromList(string LevelSoundBankPath, string FilePath)
@@ -68,7 +71,7 @@ namespace EuroSound_Application.StreamSounds
             uint[] CurrentSoundParams;
             List<uint[]> StartMarkers;
             List<int[]> Markers;
-            string IMADataFilePath;
+            string WavDataPath;
 
             /*Update Status Bar*/
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_ReadingYamlFile") + ": " + SoundName);
@@ -91,7 +94,7 @@ namespace EuroSound_Application.StreamSounds
                 CurrentSoundParams = GetSoundParams(mapping);
                 StartMarkers = GetStartMarkers(mapping);
                 Markers = GetMarkers(mapping);
-                IMADataFilePath = GetSoundFilePath(mapping, FilePath);
+                WavDataPath = GetSoundFilePath(mapping, FilePath);
 
                 EXSoundStream SoundToAdd = new EXSoundStream
                 {
@@ -99,10 +102,25 @@ namespace EuroSound_Application.StreamSounds
                     MarkerDataCounterID = CurrentSoundParams[1],
                     BaseVolume = CurrentSoundParams[4],
                     DisplayName = SoundName,
-                    IMA_Data_Name = Path.GetFileName(IMADataFilePath),
-                    IMA_ADPCM_DATA = File.ReadAllBytes(IMADataFilePath),
-                    IMA_Data_MD5 = GenericFunctions.CalculateMD5(IMADataFilePath)
                 };
+
+                ////////////////////READ WAV FILE
+                if (GenericFunctions.AudioIsValid(WavDataPath, 1, 22050))
+                {
+                    LoadAudio(WavDataPath, SoundToAdd);
+                }
+                else
+                {
+                    string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(WavDataPath, Path.GetFileNameWithoutExtension(WavDataPath));
+                    if (!string.IsNullOrEmpty(FileTempFile))
+                    {
+                        LoadAudio(WavDataPath, SoundToAdd);
+                    }
+                    else
+                    {
+                        Reports.Add("1Can't load: " + WavDataPath + " format not valid");
+                    }
+                }
 
                 foreach (uint[] StartMarkerData in StartMarkers)
                 {
@@ -280,6 +298,41 @@ namespace EuroSound_Application.StreamSounds
             {
                 GenericFunctions.ShowErrorsAndWarningsList(Reports, Path.GetFileName(FilePath) + " Import results");
                 Reports = null;
+            }
+        }
+
+        private void LoadAudio(string AudioPath, EXSoundStream SoundToLoad)
+        {
+            string ImaPath;
+
+            SoundToLoad.WAVFileMD5 = GenericFunctions.CalculateMD5(AudioPath);
+            SoundToLoad.WAVFileName = Path.GetFileName(AudioPath);
+
+            using (WaveFileReader AudioReader = new WaveFileReader(AudioPath))
+            {
+                SoundToLoad.Channels = (byte)AudioReader.WaveFormat.Channels;
+                SoundToLoad.Frequency = (uint)AudioReader.WaveFormat.SampleRate;
+                SoundToLoad.RealSize = (uint)new FileInfo(AudioPath).Length;
+                SoundToLoad.Bits = (uint)AudioReader.WaveFormat.BitsPerSample;
+                SoundToLoad.Encoding = AudioReader.WaveFormat.Encoding.ToString();
+                SoundToLoad.Duration = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1);
+
+                AudioReader.Close();
+
+                /*Get PCM Data*/
+                SoundToLoad.PCM_Data = AudioLibrary.GetWavPCMData(AudioPath);
+
+                /*Get IMA ADPCM Data*/
+                ImaPath = AudioLibrary.ConvertWavToIMAADPCM(AudioPath, Path.GetFileNameWithoutExtension(AudioPath));
+                if (!string.IsNullOrEmpty(ImaPath))
+                {
+                    SoundToLoad.IMA_ADPCM_DATA = File.ReadAllBytes(ImaPath);
+                }
+            }
+
+            if (SoundToLoad.PCM_Data == null)
+            {
+                Reports.Add("0Error reading wav file: " + AudioPath + ", seems that is being used by another process");
             }
         }
     }

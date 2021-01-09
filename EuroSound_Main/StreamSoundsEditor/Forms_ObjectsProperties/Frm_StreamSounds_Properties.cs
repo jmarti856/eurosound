@@ -1,4 +1,7 @@
-﻿using EuroSound_Application.TreeViewLibraryFunctions;
+﻿using EuroSound_Application.AudioFunctionsLibrary;
+using EuroSound_Application.TreeViewLibraryFunctions;
+using NAudio.Wave;
+using System;
 using System.IO;
 using System.Windows.Forms;
 
@@ -9,9 +12,10 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
-        private EXSoundStream SelectedSound;
-        private byte[] IMA_ADPCM_Data;
-        private string IMA_ADPCM_FileName, IMA_ADPCM_MD5, SelectedSoundKey;
+        private WaveOut _waveOut = new WaveOut();
+        private EXSoundStream SelectedSound, TemporalSound;
+        private string SelectedSoundKey;
+        private AudioFunctions AudioLibrary = new AudioFunctions();
 
         public Frm_StreamSounds_Properties(EXSoundStream SoundToCheck, string SoundKey)
         {
@@ -28,13 +32,23 @@ namespace EuroSound_Application.StreamSounds
             /*Editable Data*/
             Numeric_BaseVolume.Value = SelectedSound.BaseVolume;
 
-            /*ADPCM Data*/
-            Textbox_IMA_ADPCM.Text = SelectedSound.IMA_Data_Name;
-            Textbox_MD5_Hash.Text = SelectedSound.IMA_Data_MD5;
+            TemporalSound = new EXSoundStream();
+            Reflection.CopyProperties(SelectedSound, TemporalSound);
+
+            /*Show Info in Textboxes*/
+            ShowAudioInfo();
 
             CheckBox_OutputThisSound.Checked = SelectedSound.OutputThisSound;
         }
 
+        private void Frm_StreamSounds_Properties_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            AudioLibrary.StopAudio(_waveOut);
+        }
+
+        //*===============================================================================================
+        //* FORM CONTROLS EVENTS
+        //*===============================================================================================
         private void Button_MarkersEditor_Click(object sender, System.EventArgs e)
         {
             Frm_StreamSounds_MarkersEditor MarkersEditr = new Frm_StreamSounds_MarkersEditor(SelectedSound)
@@ -50,23 +64,43 @@ namespace EuroSound_Application.StreamSounds
 
         private void Button_SearchIMA_Click(object sender, System.EventArgs e)
         {
-            string AudioPath = GenericFunctions.OpenFileBrowser("IMA ADPCM Files (*.ima)|*.ima", 0);
+            string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0);
             if (!string.IsNullOrEmpty(AudioPath))
             {
-                IMA_ADPCM_MD5 = GenericFunctions.CalculateMD5(AudioPath);
-                IMA_ADPCM_Data = File.ReadAllBytes(AudioPath);
-                IMA_ADPCM_FileName = Path.GetFileName(AudioPath);
-
-                if (IMA_ADPCM_Data != null)
+                if (GenericFunctions.AudioIsValid(AudioPath, 1, 22050))
                 {
-                    Textbox_MD5_Hash.Text = IMA_ADPCM_MD5;
-                    Textbox_IMA_ADPCM.Text = IMA_ADPCM_FileName;
+                    LoadAudio(AudioPath);
                 }
                 else
                 {
-                    MessageBox.Show("Error reading this file, seems that is being used by another process", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    DialogResult TryToReload = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrect"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                    if (TryToReload == DialogResult.Yes)
+                    {
+                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath));
+                        if (!string.IsNullOrEmpty(FileTempFile))
+                        {
+                            LoadAudio(FileTempFile);
+                        }
+                    }
                 }
             }
+        }
+
+        private void Button_Play_Click(object sender, EventArgs e)
+        {
+            if (TemporalSound.PCM_Data != null)
+            {
+                AudioLibrary.PlayAudio(_waveOut, TemporalSound.PCM_Data, (int)TemporalSound.Frequency, 0, (int)TemporalSound.Bits, (int)TemporalSound.Channels, 0);
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("AudioProperties_FileCorrupt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Button_Stop_Click(object sender, EventArgs e)
+        {
+            AudioLibrary.StopAudio(_waveOut);
         }
 
         private void Button_OK_Click(object sender, System.EventArgs e)
@@ -74,11 +108,18 @@ namespace EuroSound_Application.StreamSounds
             SelectedSound.BaseVolume = (uint)Numeric_BaseVolume.Value;
             SelectedSound.OutputThisSound = CheckBox_OutputThisSound.Checked;
 
-            if (IMA_ADPCM_Data != null)
+            if (TemporalSound.PCM_Data != null)
             {
-                SelectedSound.IMA_Data_MD5 = IMA_ADPCM_MD5;
-                SelectedSound.IMA_Data_Name = IMA_ADPCM_FileName;
-                SelectedSound.IMA_ADPCM_DATA = IMA_ADPCM_Data;
+                SelectedSound.Frequency = TemporalSound.Frequency;
+                SelectedSound.Channels = TemporalSound.Channels;
+                SelectedSound.Bits = TemporalSound.Bits;
+                SelectedSound.Duration = TemporalSound.Duration;
+                SelectedSound.Encoding = TemporalSound.Encoding;
+                SelectedSound.WAVFileMD5 = TemporalSound.WAVFileMD5;
+                SelectedSound.WAVFileName = TemporalSound.WAVFileName;
+                SelectedSound.PCM_Data = TemporalSound.PCM_Data;
+                SelectedSound.IMA_ADPCM_DATA = TemporalSound.IMA_ADPCM_DATA;
+                SelectedSound.RealSize = TemporalSound.RealSize;
             }
 
             /*--Change icon in the parent form--*/
@@ -103,6 +144,64 @@ namespace EuroSound_Application.StreamSounds
         private void Button_Cancel_Click(object sender, System.EventArgs e)
         {
             Close();
+        }
+
+        //*===============================================================================================
+        //* FUNCTIONS EVENTS
+        //*===============================================================================================
+        private void ShowAudioInfo()
+        {
+            Textbox_Bits.Text = TemporalSound.Bits.ToString();
+            Textbox_Encoding.Text = TemporalSound.Encoding;
+            Textbox_Channels.Text = TemporalSound.Channels.ToString();
+            Textbox_Frequency.Text = TemporalSound.Frequency.ToString();
+            Textbox_RealSize.Text = TemporalSound.RealSize.ToString();
+            Textbox_IMA_ADPCM.Text = TemporalSound.WAVFileName;
+            Textbox_MD5_Hash.Text = TemporalSound.WAVFileMD5;
+
+            if (TemporalSound.PCM_Data != null)
+            {
+                AudioLibrary.DrawAudioWaves(euroSound_WaveViewer1, TemporalSound, 0);
+            }
+        }
+
+        private void LoadAudio(string AudioPath)
+        {
+            string ImaPath;
+
+            TemporalSound.WAVFileMD5 = GenericFunctions.CalculateMD5(AudioPath);
+            TemporalSound.WAVFileName = Path.GetFileName(AudioPath);
+
+            using (WaveFileReader AudioReader = new WaveFileReader(AudioPath))
+            {
+                TemporalSound.Channels = (byte)AudioReader.WaveFormat.Channels;
+                TemporalSound.Frequency = (uint)AudioReader.WaveFormat.SampleRate;
+                TemporalSound.RealSize = (uint)new FileInfo(AudioPath).Length;
+                TemporalSound.Bits = (uint)AudioReader.WaveFormat.BitsPerSample;
+                TemporalSound.Encoding = AudioReader.WaveFormat.Encoding.ToString();
+                TemporalSound.Duration = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1);
+
+                AudioReader.Close();
+
+                /*Get PCM Data*/
+                TemporalSound.PCM_Data = AudioLibrary.GetWavPCMData(AudioPath);
+
+                /*Get IMA ADPCM Data*/
+                ImaPath = AudioLibrary.ConvertWavToIMAADPCM(AudioPath, Path.GetFileNameWithoutExtension(AudioPath));
+                if (!string.IsNullOrEmpty(ImaPath))
+                {
+                    TemporalSound.IMA_ADPCM_DATA = File.ReadAllBytes(ImaPath);
+                }
+            }
+
+            if (TemporalSound != null && TemporalSound.PCM_Data != null)
+            {
+                ShowAudioInfo();
+            }
+            else
+            {
+                MessageBox.Show("Error reading this file, seems that is being used by another process", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

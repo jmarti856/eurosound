@@ -1,6 +1,7 @@
 ﻿using CustomStatusBar;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.SoundBanksEditor;
+using NAudio.Wave;
 using System.Collections.Generic;
 using System.IO;
 using System.Resources;
@@ -176,6 +177,21 @@ namespace EuroSound_Application
             return SelectedPath;
         }
 
+        internal static string OpenFolderBrowser()
+        {
+            string SelectedPath = string.Empty;
+
+            using (FolderBrowserDialog OpenFolder = new FolderBrowserDialog())
+            {
+                if (OpenFolder.ShowDialog() == DialogResult.OK)
+                {
+                    SelectedPath = OpenFolder.SelectedPath;
+                }
+            }
+
+            return SelectedPath;
+        }
+
         internal static void ShowErrorsAndWarningsList(List<string> ListToPrint, string FormTitle)
         {
             //Show Import results
@@ -228,6 +244,69 @@ namespace EuroSound_Application
             }
 
             return Text;
+        }
+
+        internal static bool AudioIsValid(string FilePath, int NumChannels, int frequency)
+        {
+            bool AudioIsCorrect = false;
+            using (WaveFileReader AudioReader = new WaveFileReader(FilePath))
+            {
+                int Rate, Bits, Channels;
+                string Encoding;
+
+                Rate = AudioReader.WaveFormat.SampleRate;
+                Bits = AudioReader.WaveFormat.BitsPerSample;
+                Encoding = AudioReader.WaveFormat.Encoding.ToString();
+                Channels = AudioReader.WaveFormat.Channels;
+
+                if (Encoding.Equals("Pcm") && Bits == 16 && Rate == frequency && Channels == NumChannels)
+                {
+                    AudioIsCorrect = true;
+                }
+
+                AudioReader.Close();
+            }
+
+            return AudioIsCorrect;
+        }
+
+        internal static void CreateTemporalFolder()
+        {
+            //Create folder in %temp%
+            if (!Directory.Exists(Path.GetTempPath() + "EuroSound"))
+            {
+                Directory.CreateDirectory(Path.GetTempPath() + "EuroSound");
+            }
+        }
+
+        internal static bool ClearTemporalFiles()
+        {
+            bool FilesRemoved = false;
+
+            //Delete Temp Files from session if exists
+            if (Directory.Exists(Path.GetTempPath() + @"EuroSound\"))
+            {
+                /*Update Status Bar*/
+                ParentFormStatusBar.ShowProgramStatus(ResourcesManager.GetString("StatusBar_RemovingTempFiles"));
+
+                //Get temporal files
+                DirectoryInfo di = new DirectoryInfo(Path.GetTempPath() + @"EuroSound\");
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    FilesRemoved = true;
+                    file.Delete();
+                }
+                foreach (DirectoryInfo dir in di.GetDirectories())
+                {
+                    FilesRemoved = true;
+                    dir.Delete(true);
+                }
+
+                //Update Status Bar
+                ParentFormStatusBar.ShowProgramStatus(ResourcesManager.GetString("StatusBar_Status_Ready"));
+            }
+
+            return FilesRemoved;
         }
     }
 }

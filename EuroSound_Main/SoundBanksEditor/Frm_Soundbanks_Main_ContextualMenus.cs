@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.TreeViewLibraryFunctions;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.SoundBanksEditor
@@ -13,10 +14,10 @@ namespace EuroSound_Application.SoundBanksEditor
         #region ContextMenu_Folders_EVENTS
         private void ContextMenu_Folders_AddAudio_Click(object sender, System.EventArgs e)
         {
-            string Name = GenericFunctions.OpenInputBox("Enter a name for new a new audio.", "New Audio");
-            if (!string.IsNullOrEmpty(Name))
+            string NodeName = GenericFunctions.OpenInputBox("Enter a name for new a new audio.", "New Audio");
+            if (!string.IsNullOrEmpty(NodeName))
             {
-                if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, Name))
+                if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, NodeName))
                 {
                     MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -25,33 +26,45 @@ namespace EuroSound_Application.SoundBanksEditor
                     string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0);
                     if (!string.IsNullOrEmpty(AudioPath))
                     {
-                        string MD5Hash = GenericFunctions.CalculateMD5(AudioPath);
-                        if (!AudioDataDict.ContainsKey(MD5Hash))
+                        if (GenericFunctions.AudioIsValid(AudioPath, 1, 22050))
                         {
-                            if (EXSoundbanksFunctions.AudioIsValid(AudioPath))
-                            {
-                                EXAudio NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath, true);
-                                if (NewAudio != null)
-                                {
-                                    /*Add data to dictionary and create tree node*/
-                                    AudioDataDict.Add(MD5Hash, NewAudio);
-                                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, MD5Hash, Name, 7, 7, "Audio", Color.Black, TreeView_File);
-
-                                    ProjectInfo.FileHasBeenModified = true;
-                                }
-                            }
-                            else
-                            {
-                                //File incorrect
-                                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrect"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
+                            LoadAudio(AudioPath, NodeName);
                         }
                         else
                         {
-                            MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AudioExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            DialogResult TryToReload = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrect"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                            if (TryToReload == DialogResult.Yes)
+                            {
+                                string FileTempFile = AudioFunctionsLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath));
+                                if (!string.IsNullOrEmpty(FileTempFile))
+                                {
+                                    LoadAudio(FileTempFile, NodeName);
+                                }
+                            }
                         }
                     }
                 }
+            }
+        }
+
+        private void LoadAudio(string AudioPath, string AudioName)
+        {
+            string MD5Hash = GenericFunctions.CalculateMD5(AudioPath);
+            if (!AudioDataDict.ContainsKey(MD5Hash))
+            {
+                EXAudio NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);
+                if (NewAudio != null)
+                {
+                    /*Add data to dictionary and create tree node*/
+                    AudioDataDict.Add(MD5Hash, NewAudio);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, MD5Hash, AudioName, 7, 7, "Audio", Color.Black, TreeView_File);
+
+                    ProjectInfo.FileHasBeenModified = true;
+                }
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AudioExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

@@ -74,7 +74,14 @@ namespace EuroSound_Application
             MainMenu_Tools.DropDownClosed += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
 
             MainMenuTools_SFXDataGen.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuTools_SFXDataGenerator")); };
+            MainMenuTools_BackupSettings.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemTools_BackupSettings")); };
+            MainMenuTools_RestoreSettings.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemTools_RestoreSettings")); };
+            MainMenuTools_ClearTempFiles.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemTools_ClearTemp")); };
+
             MainMenuTools_SFXDataGen.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MainMenuTools_BackupSettings.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MainMenuTools_RestoreSettings.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MainMenuTools_ClearTempFiles.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
 
             /*Menu Item: Help*/
             MainMenu_Help.DropDownOpened += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
@@ -148,6 +155,8 @@ namespace EuroSound_Application
             {
                 e.Cancel = false;
             }
+
+            GenericFunctions.ClearTemporalFiles();
 
             //Reset var
             GlobalPreferences.CancelApplicationClose = false;
@@ -349,6 +358,18 @@ namespace EuroSound_Application
             {
                 BackupReloadSettings SettingsFunctions = new BackupReloadSettings();
                 SettingsFunctions.RestoreSettings(FileToLoad);
+            }
+        }
+
+        private void MainMenuTools_ClearTempFiles_Click(object sender, EventArgs e)
+        {
+            if (GenericFunctions.ClearTemporalFiles())
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_TemporalFilesRemovedSuccess"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_NoTemporalFilesStored"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }

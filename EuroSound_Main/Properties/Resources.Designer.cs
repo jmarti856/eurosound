@@ -322,7 +322,16 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Error, the audio file is not correct, the frequency must be 22050hz, encoded in PCM and have 16 bits per sample.
+        ///   Busca una cadena traducida similar a This loop offset is not valid, should be get it from a hi-res source (44100Hz).
+        /// </summary>
+        internal static string ErrorLoopOffsetNoValid {
+            get {
+                return ResourceManager.GetString("ErrorLoopOffsetNoValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Error, the audio file is not correct, the frequency must be in mono, have 22050hz, encoded in PCM and have 16 bits per sample. Do you want that EuroSound tries to convert it with the correct config?.
         /// </summary>
         internal static string ErrorWavFileIncorrect {
             get {
@@ -372,6 +381,24 @@ namespace EuroSound_Application.Properties {
         internal static string Gen_ErrorRedingFile {
             get {
                 return ResourceManager.GetString("Gen_ErrorRedingFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a There are no temporal files to clear.
+        /// </summary>
+        internal static string Gen_NoTemporalFilesStored {
+            get {
+                return ResourceManager.GetString("Gen_NoTemporalFilesStored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Temporal files cleared successfully.
+        /// </summary>
+        internal static string Gen_TemporalFilesRemovedSuccess {
+            get {
+                return ResourceManager.GetString("Gen_TemporalFilesRemovedSuccess", resourceCulture);
             }
         }
         
@@ -565,6 +592,33 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Create a file with the current program preferences.
+        /// </summary>
+        internal static string MenuItemTools_BackupSettings {
+            get {
+                return ResourceManager.GetString("MenuItemTools_BackupSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Clears the temporal files folder.
+        /// </summary>
+        internal static string MenuItemTools_ClearTemp {
+            get {
+                return ResourceManager.GetString("MenuItemTools_ClearTemp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Restore settings from Eurosound Registry file.
+        /// </summary>
+        internal static string MenuItemTools_RestoreSettings {
+            get {
+                return ResourceManager.GetString("MenuItemTools_RestoreSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Arrange icons at the bottom of the window.
         /// </summary>
         internal static string MenuItemWindow_ArrangeIcons {
@@ -637,11 +691,38 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The path assigned to SoX (Sound eXchange) is invalid, can not find the executable file, please correct it before start or load a project..
+        /// </summary>
+        internal static string SoXInvalidPath {
+            get {
+                return ResourceManager.GetString("SoXInvalidPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a There&apos;s no path assigned to SoX (Sound eXchange), please set a path to the application before start or load a project..
+        /// </summary>
+        internal static string SoXNoPath {
+            get {
+                return ResourceManager.GetString("SoXNoPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Reading ESF File.
         /// </summary>
         internal static string StatusBar_ReadingESFFile {
             get {
                 return ResourceManager.GetString("StatusBar_ReadingESFFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Cleaning temporal folder.
+        /// </summary>
+        internal static string StatusBar_RemovingTempFiles {
+            get {
+                return ResourceManager.GetString("StatusBar_RemovingTempFiles", resourceCulture);
             }
         }
         
@@ -678,6 +759,24 @@ namespace EuroSound_Application.Properties {
         internal static string StatusBar_Status_Ready {
             get {
                 return ResourceManager.GetString("StatusBar_Status_Ready", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An error ocurred updating the sounds.
+        /// </summary>
+        internal static string StreamSoundsUpdatedError {
+            get {
+                return ResourceManager.GetString("StreamSoundsUpdatedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a All sounds has been updated successfully.
+        /// </summary>
+        internal static string StreamSoundsUpdatedSuccess {
+            get {
+                return ResourceManager.GetString("StreamSoundsUpdatedSuccess", resourceCulture);
             }
         }
         

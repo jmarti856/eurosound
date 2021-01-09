@@ -1,4 +1,5 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace EuroSound_Application.StreamSounds
         private EuroSoundFiles SerializeInfo = new EuroSoundFiles();
         public ProjectFile ProjectInfo = new ProjectFile();
         private StreamSoundsYMLReader LibYamlReader = new StreamSoundsYMLReader();
+        private AudioFunctions AudioLibrary = new AudioFunctions();
+        private Thread UpdateImaData;
         private string FileToLoadArg, ProjectName;
         private string LoadedFile = string.Empty;
 
@@ -118,6 +121,13 @@ namespace EuroSound_Application.StreamSounds
 
         private void Frm_StreamSoundsEditorMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //Stop thread if active
+            if (UpdateImaData != null)
+            {
+                UpdateImaData.Abort();
+            }
+
+            //Quit form
             if (ProjectInfo.FileHasBeenModified)
             {
                 DialogResult dialogResult = MessageBox.Show("Save changes to " + ProjectInfo.FileName + "?", "EuroSound", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
@@ -297,6 +307,12 @@ namespace EuroSound_Application.StreamSounds
         {
             LoadedFile = SaveDocument(LoadedFile, TreeView_StreamData, StreamSoundsList, ProjectInfo);
             ProjectInfo.FileHasBeenModified = false;
+
+            Text = GenericFunctions.UpdateProjectFormText(LoadedFile, ProjectInfo.FileName);
+            if (!(WindowState == FormWindowState.Maximized))
+            {
+                MdiParent.Text = "EuroSound - " + Text;
+            }
         }
 
         private void MenuItem_File_SaveAs_Click(object sender, System.EventArgs e)
@@ -368,6 +384,55 @@ namespace EuroSound_Application.StreamSounds
 
                 ProjectInfo.FileHasBeenModified = true;
             }
+        }
+
+        private void Button_UpdateIMAData_Click(object sender, System.EventArgs e)
+        {
+            string ImaPath;
+
+            //Update File Status
+            ProjectInfo.FileHasBeenModified = true;
+
+            //Create folder in %temp%
+            GenericFunctions.CreateTemporalFolder();
+
+            UpdateImaData = new Thread(() =>
+            {
+                try
+                {
+                    foreach (KeyValuePair<uint, EXSoundStream> SoundToUpdate in StreamSoundsList)
+                    {
+                        string AudioPath = Path.GetTempPath() + @"EuroSound\" + SoundToUpdate.Key + ".wav";
+                        AudioLibrary.CreateWavFile((int)SoundToUpdate.Value.Frequency, (int)SoundToUpdate.Value.Bits, (int)SoundToUpdate.Value.Channels, SoundToUpdate.Value.PCM_Data, AudioPath);
+
+                        /*Get IMA ADPCM Data*/
+                        ImaPath = AudioLibrary.ConvertWavToIMAADPCM(AudioPath, Path.GetFileNameWithoutExtension(AudioPath));
+                        if (!string.IsNullOrEmpty(ImaPath))
+                        {
+                            SoundToUpdate.Value.IMA_ADPCM_DATA = File.ReadAllBytes(ImaPath);
+                        }
+
+                        /*Update Status Bar*/
+                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Format("Checking: {0}.wav", SoundToUpdate.Key));
+                    }
+
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("StreamSoundsUpdatedSuccess"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch
+                {
+                    /*Update Status Bar*/
+                    GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("StreamSoundsUpdatedError"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                /*Update Status Bar*/
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+
+            })
+            {
+                IsBackground = true
+            };
+            UpdateImaData.Start();
         }
 
         //*===============================================================================================

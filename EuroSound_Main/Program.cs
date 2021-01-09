@@ -31,6 +31,10 @@ namespace EuroSound_Application
         [STAThread]
         static void Main(string[] args)
         {
+            //args = new string[2];
+            //args[0] = "/o";
+            //args[1] = "SB_Lev_Abydos_South.esf";
+
             /*--Check For .NET Framework v4.5--*/
             if (Get45or451FromRegistry())
             {

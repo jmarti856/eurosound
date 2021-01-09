@@ -29,6 +29,7 @@ namespace EuroSound_Application.SoundBanksEditor
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_NewStreamSound));
             this.Label_ExternalFile = new System.Windows.Forms.Label();
             this.Textbox_ExternalFile = new System.Windows.Forms.TextBox();
             this.ListBox_StreamSounds = new System.Windows.Forms.ListBox();
@@ -330,9 +331,11 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Controls.Add(this.Textbox_ExternalFile);
             this.Controls.Add(this.Label_ExternalFile);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Frm_NewStreamSound";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Frm_NewStreamSound";
             this.Load += new System.EventHandler(this.Frm_NewStreamSound_Load);

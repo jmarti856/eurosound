@@ -30,6 +30,9 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         //Frm_StreamFile
         internal string StreamFilePathTEMPORAL;
 
+        //Frm_SoxPrefs
+        internal string SoXPathTEMPORAL;
+
         //*===============================================================================================
         //* GLOBAL VARS
         //*===============================================================================================
@@ -37,6 +40,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         private Frm_General GeneralPreferences;
         private Frm_TreeViewPrefs TreeViewPrefs;
         private Frm_StreamFile ExternalFile;
+        private Frm_SoxPrefs SoXPreferences;
 
         public Frm_MainPreferences()
         {
@@ -107,9 +111,17 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 GlobalPreferences.StreamFilePath = StreamFilePathTEMPORAL;
 
                 //SaveConfig in Registry
-                WRegistryFunctions.SaveExternalFilePath(GlobalPreferences.StreamFilePath);
+                WRegistryFunctions.SaveExternalFilePath();
             }
 
+            /*-----------------[Frm_SoxPrefs]-----------------*/
+            if (!string.IsNullOrEmpty(SoXPathTEMPORAL))
+            {
+                GlobalPreferences.SoXPath = SoXPathTEMPORAL;
+
+                //SaveConfig in Registry
+                WRegistryFunctions.SaveSoxFilePath();
+            }
             Close();
         }
 
@@ -169,6 +181,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                     GeneralPreferences.Show();
                 }
             }
+            //Open Sub-Form "Frm_StreamFile"
             else if (string.Equals(e.Node.Name, "StreamFile"))
             {
                 if (!Panel_SecondaryForms.Controls.Contains(ExternalFile))
@@ -184,6 +197,24 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                     Panel_SecondaryForms.Controls.Add(ExternalFile);
                     ExternalFile.Dock = DockStyle.Fill;
                     ExternalFile.Show();
+                }
+            }
+            //Open Sub-Form "Frm_SoxPrefs"
+            else if (string.Equals(e.Node.Name, "SoX"))
+            {
+                if (!Panel_SecondaryForms.Controls.Contains(SoXPreferences))
+                {
+                    RemoveAllFormsInsidePanel(Panel_SecondaryForms);
+
+                    SoXPreferences = new Frm_SoxPrefs
+                    {
+                        TopLevel = false,
+                        AutoScroll = true,
+                        Tag = Tag
+                    };
+                    Panel_SecondaryForms.Controls.Add(SoXPreferences);
+                    SoXPreferences.Dock = DockStyle.Fill;
+                    SoXPreferences.Show();
                 }
             }
         }

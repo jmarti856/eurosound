@@ -50,11 +50,6 @@ namespace EuroSound_Application.StreamSounds
             }
         }
 
-        private void ContextMenuMain_DeleteSound_Click(object sender, EventArgs e)
-        {
-            RemoveStreamSoundSelectedNode();
-        }
-
         private void ContextMenuMain_Rename_Click(object sender, EventArgs e)
         {
             TreeNodeFunctions.EditNodeLabel(TreeView_StreamData, TreeView_StreamData.SelectedNode);
@@ -79,6 +74,12 @@ namespace EuroSound_Application.StreamSounds
         private void ContextMenuSounds_Rename_Click(object sender, EventArgs e)
         {
             TreeNodeFunctions.EditNodeLabel(TreeView_StreamData, TreeView_StreamData.SelectedNode);
+            ProjectInfo.FileHasBeenModified = true;
+        }
+
+        private void ContextMenuSounds_Delete_Click(object sender, System.EventArgs e)
+        {
+            RemoveStreamSoundSelectedNode();
             ProjectInfo.FileHasBeenModified = true;
         }
 

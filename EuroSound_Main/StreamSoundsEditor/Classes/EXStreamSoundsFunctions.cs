@@ -6,8 +6,7 @@ namespace EuroSound_Application.StreamSounds
     {
         internal static void RemoveStreamedSound(string Name, Dictionary<uint, EXSoundStream> SoundsList)
         {
-            EXSoundStream itemToRemove = GetSoundByName(uint.Parse(Name), SoundsList);
-            if (itemToRemove != null)
+            if (SoundsList.ContainsKey(uint.Parse(Name)))
             {
                 SoundsList.Remove(uint.Parse(Name));
             }

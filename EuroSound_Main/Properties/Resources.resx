@@ -192,8 +192,11 @@
   <data name="ContextMenuSound_Rename" xml:space="preserve">
     <value>Rename the selected sound</value>
   </data>
+  <data name="ErrorLoopOffsetNoValid" xml:space="preserve">
+    <value>This loop offset is not valid, should be get it from a hi-res source (44100Hz)</value>
+  </data>
   <data name="ErrorWavFileIncorrect" xml:space="preserve">
-    <value>Error, the audio file is not correct, the frequency must be 22050hz, encoded in PCM and have 16 bits per sample</value>
+    <value>Error, the audio file is not correct, the frequency must be in mono, have 22050hz, encoded in PCM and have 16 bits per sample. Do you want that EuroSound tries to convert it with the correct config?</value>
   </data>
   <data name="Error_Adding_AlreadyExists" xml:space="preserve">
     <value>Sorry, cannot add an item with this name, an item with this name already exists</value>
@@ -224,6 +227,12 @@
   </data>
   <data name="Gen_Error_NameIsEmpty" xml:space="preserve">
     <value>The name can't be empty</value>
+  </data>
+  <data name="Gen_NoTemporalFilesStored" xml:space="preserve">
+    <value>There are no temporal files to clear</value>
+  </data>
+  <data name="Gen_TemporalFilesRemovedSuccess" xml:space="preserve">
+    <value>Temporal files cleared successfully</value>
   </data>
   <data name="Gen_Warning_StreamedSound" xml:space="preserve">
     <value>This sound should not be added here, is checked as a "Sample Streamed Sound" in the "SFX_Data.h" file. You should add it as a reference in "Streamed Sounds" section and add it to the common file.</value>
@@ -260,6 +269,15 @@
   </data>
   <data name="MenuItemHelp_OnlineHelp" xml:space="preserve">
     <value>Show online help</value>
+  </data>
+  <data name="MenuItemTools_BackupSettings" xml:space="preserve">
+    <value>Create a file with the current program preferences</value>
+  </data>
+  <data name="MenuItemTools_ClearTemp" xml:space="preserve">
+    <value>Clears the temporal files folder</value>
+  </data>
+  <data name="MenuItemTools_RestoreSettings" xml:space="preserve">
+    <value>Restore settings from Eurosound Registry file</value>
   </data>
   <data name="MenuItemWindow_ArrangeIcons" xml:space="preserve">
     <value>Arrange icons at the bottom of the window</value>
@@ -309,8 +327,17 @@
   <data name="SFXDataHashcodeNotFound" xml:space="preserve">
     <value>The hashcode has not been found, please add it to the hashtable and click on "Reload Hashtable"</value>
   </data>
+  <data name="SoXInvalidPath" xml:space="preserve">
+    <value>The path assigned to SoX (Sound eXchange) is invalid, can not find the executable file, please correct it before start or load a project.</value>
+  </data>
+  <data name="SoXNoPath" xml:space="preserve">
+    <value>There's no path assigned to SoX (Sound eXchange), please set a path to the application before start or load a project.</value>
+  </data>
   <data name="StatusBar_ReadingESFFile" xml:space="preserve">
     <value>Reading ESF File</value>
+  </data>
+  <data name="StatusBar_RemovingTempFiles" xml:space="preserve">
+    <value>Cleaning temporal folder</value>
   </data>
   <data name="StatusBar_Status_RadingDataHashcodes" xml:space="preserve">
     <value>Reading hashcodes data file</value>
@@ -323,6 +350,12 @@
   </data>
   <data name="StatusBar_Status_Ready" xml:space="preserve">
     <value>Ready</value>
+  </data>
+  <data name="StreamSoundsUpdatedError" xml:space="preserve">
+    <value>An error ocurred updating the sounds</value>
+  </data>
+  <data name="StreamSoundsUpdatedSuccess" xml:space="preserve">
+    <value>All sounds has been updated successfully</value>
   </data>
   <data name="TreeView_Error_EditingRootNode" xml:space="preserve">
     <value>No tree node selected or selected node is a root node, editing root nodes is not allowed.</value>

@@ -9,6 +9,7 @@ namespace EuroSound_Application
     {
         private Dictionary<string, string> SoundsDictionary = new Dictionary<string, string>();
         private TreeView treeviewcontrol;
+
         public EuroSound_NodesToFolder(TreeView TreeViewControl)
         {
             InitializeComponent();
@@ -43,21 +44,34 @@ namespace EuroSound_Application
                 }
             }
         }
+
         //*===============================================================================================
         //* FUNCTIONS
         //*===============================================================================================
         private void Combobox_SoudsType_SelectedIndexChanged(object sender, EventArgs e)
         {
             string ParentName = Combobox_SoudsType.SelectedItem.ToString();
-
             SoundsDictionary.Clear();
 
             Combobox_AvailableFolders.DataSource = GetAvailableFolders(treeviewcontrol, ParentName);
-            foreach (TreeNode node in treeviewcontrol.Nodes)
+            if (Combobox_SoudsType.SelectedIndex > 0)
             {
-                if (node.Name.Equals(ParentName))
+                foreach (TreeNode node in treeviewcontrol.Nodes)
                 {
-                    GetSoundsName(node);
+                    if (node.Name.Equals(ParentName))
+                    {
+                        GetObjectsName(node, "Sound");
+                    }
+                }
+            }
+            else
+            {
+                foreach (TreeNode node in treeviewcontrol.Nodes)
+                {
+                    if (node.Name.Equals(ParentName))
+                    {
+                        GetObjectsName(node, "Audio");
+                    }
                 }
             }
             ShowDataInList();
@@ -89,15 +103,15 @@ namespace EuroSound_Application
             }
         }
 
-        private void GetSoundsName(TreeNode node)
+        private void GetObjectsName(TreeNode node, string TagName)
         {
-            if (node.Tag.Equals("Sound"))
+            if (node.Tag.Equals(TagName))
             {
                 SoundsDictionary.Add(node.Name, node.Text);
             }
             foreach (TreeNode tn in node.Nodes)
             {
-                GetSoundsName(tn);
+                GetObjectsName(tn, TagName);
             }
         }
 

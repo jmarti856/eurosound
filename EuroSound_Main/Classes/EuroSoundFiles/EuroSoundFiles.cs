@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
 using EuroSound_Application.TreeViewLibraryFunctions;
+using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -62,7 +63,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 
         internal string SaveSoundBanksDocument(TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
         {
-            BinaryWriter BWriter = new BinaryWriter(File.Open(FilePath, FileMode.Create, FileAccess.Write), Encoding.ASCII);
+            BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.Create, FileAccess.Write));
             //*===============================================================================================
             //* HEADER
             //*===============================================================================================
@@ -130,7 +131,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 
         internal string SaveStreamedSoundsBank(TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, string FilePath, ProjectFile FileProperties)
         {
-            BinaryWriter BWriter = new BinaryWriter(File.Open(FilePath, FileMode.Create, FileAccess.Write, FileShare.Read), Encoding.ASCII);
+            BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.Create, FileAccess.Write, FileShare.Read));
             //*===============================================================================================
             //* HEADER
             //*===============================================================================================

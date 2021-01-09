@@ -24,7 +24,7 @@ namespace EuroSound_Application
 
         private void Button_Ok_Click(object sender, EventArgs e)
         {
-            Result = TextBox_InputText.Text;
+            Result = TextBox_InputText.Text.Trim();
             DialogResult = DialogResult.OK;
             Close();
             Dispose();

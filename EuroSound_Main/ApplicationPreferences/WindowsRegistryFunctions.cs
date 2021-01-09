@@ -194,7 +194,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         #endregion General Preferences
 
         #region StreamFile
-        internal void SaveExternalFilePath(string StreamFile)
+        internal void SaveExternalFilePath()
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("StreamFile", true);
@@ -213,6 +213,32 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             if (StreamFile != null)
             {
                 StreamFile = StreamFilePath.GetValue("FilePath", "").ToString();
+            }
+
+            return StreamFile;
+        }
+        #endregion
+
+        #region SoX 
+        internal void SaveSoxFilePath()
+        {
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("SoXPath", true);
+            RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("SoXPath", true);
+
+            StreamFilePath.SetValue("ExePath", GlobalPreferences.SoXPath, RegistryValueKind.String);
+        }
+
+        internal string SetSoxFilePath()
+        {
+            string StreamFile = string.Empty;
+
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("SoXPath", true);
+            RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("SoXPath", true);
+            if (StreamFile != null)
+            {
+                StreamFile = StreamFilePath.GetValue("ExePath", "").ToString();
             }
 
             return StreamFile;

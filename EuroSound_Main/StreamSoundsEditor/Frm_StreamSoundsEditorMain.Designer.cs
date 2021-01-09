@@ -40,7 +40,6 @@ namespace EuroSound_Application.StreamSounds
             this.ContextMenuFolder_ExpandAll = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuMain_AddSound = new System.Windows.Forms.ToolStripMenuItem();
-            this.ContextMenuMain_DeleteSound = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuMain_Rename = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuMain_TextColor = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,6 +55,17 @@ namespace EuroSound_Application.StreamSounds
             this.MenuItem_Edit = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_Edit_FileProps = new System.Windows.Forms.ToolStripMenuItem();
             this.GroupBox_StreamData = new System.Windows.Forms.GroupBox();
+            this.Button_UpdateList_WavData = new System.Windows.Forms.Button();
+            this.ContextMenu_Sounds = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ContextMenuSounds_Rename = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuSounds_Delete = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuSounds_Properties = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextMenuSounds_MoveUp = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuSounds_MoveDown = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextMenuSounds_TextColor = new System.Windows.Forms.ToolStripMenuItem();
+            this.Button_UpdateIMAData = new System.Windows.Forms.Button();
             this.ListView_WavHeaderData = new ListViewExtendedMethods.ListView_ColumnSortingClick();
             this.Col_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Frequency = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -64,15 +74,6 @@ namespace EuroSound_Application.StreamSounds
             this.Col_Data = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Encoding = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Duration = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Button_UpdateList_WavData = new System.Windows.Forms.Button();
-            this.ContextMenu_Sounds = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.ContextMenuSounds_Rename = new System.Windows.Forms.ToolStripMenuItem();
-            this.ContextMenuSounds_Properties = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.ContextMenuSounds_MoveUp = new System.Windows.Forms.ToolStripMenuItem();
-            this.ContextMenuSounds_MoveDown = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.ContextMenuSounds_TextColor = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenu_Folders.SuspendLayout();
             this.MainMenu.SuspendLayout();
             this.GroupBox_StreamData.SuspendLayout();
@@ -120,6 +121,7 @@ namespace EuroSound_Application.StreamSounds
             this.ImageList_TreeNode.Images.SetKeyName(5, "cd_audio_cd-1 - no_output.png");
             this.ImageList_TreeNode.Images.SetKeyName(6, "cd_audio_cd-2 - no_output.png");
             this.ImageList_TreeNode.Images.SetKeyName(7, "amplify.png");
+            this.ImageList_TreeNode.Images.SetKeyName(8, "mmsys_118.ico");
             // 
             // ContextMenu_Folders
             // 
@@ -127,12 +129,11 @@ namespace EuroSound_Application.StreamSounds
             this.ContextMenuMain_Folder,
             this.toolStripSeparator4,
             this.ContextMenuMain_AddSound,
-            this.ContextMenuMain_DeleteSound,
             this.ContextMenuMain_Rename,
             this.toolStripSeparator3,
             this.ContextMenuMain_TextColor});
             this.ContextMenu_Folders.Name = "contextMenuStrip1";
-            this.ContextMenu_Folders.Size = new System.Drawing.Size(145, 126);
+            this.ContextMenu_Folders.Size = new System.Drawing.Size(137, 104);
             this.ContextMenu_Folders.Text = "ContextMenu Folders";
             // 
             // ContextMenuMain_Folder
@@ -141,7 +142,7 @@ namespace EuroSound_Application.StreamSounds
             this.ContextMenuFolder_CollapseAll,
             this.ContextMenuFolder_ExpandAll});
             this.ContextMenuMain_Folder.Name = "ContextMenuMain_Folder";
-            this.ContextMenuMain_Folder.Size = new System.Drawing.Size(144, 22);
+            this.ContextMenuMain_Folder.Size = new System.Drawing.Size(136, 22);
             this.ContextMenuMain_Folder.Text = "Folder";
             // 
             // ContextMenuFolder_CollapseAll
@@ -161,38 +162,31 @@ namespace EuroSound_Application.StreamSounds
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(141, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(133, 6);
             // 
             // ContextMenuMain_AddSound
             // 
             this.ContextMenuMain_AddSound.Name = "ContextMenuMain_AddSound";
-            this.ContextMenuMain_AddSound.Size = new System.Drawing.Size(144, 22);
+            this.ContextMenuMain_AddSound.Size = new System.Drawing.Size(136, 22);
             this.ContextMenuMain_AddSound.Text = "Add Sound";
             this.ContextMenuMain_AddSound.Click += new System.EventHandler(this.ContextMenuMain_AddSound_Click);
-            // 
-            // ContextMenuMain_DeleteSound
-            // 
-            this.ContextMenuMain_DeleteSound.Name = "ContextMenuMain_DeleteSound";
-            this.ContextMenuMain_DeleteSound.Size = new System.Drawing.Size(144, 22);
-            this.ContextMenuMain_DeleteSound.Text = "Delete Sound";
-            this.ContextMenuMain_DeleteSound.Click += new System.EventHandler(this.ContextMenuMain_DeleteSound_Click);
             // 
             // ContextMenuMain_Rename
             // 
             this.ContextMenuMain_Rename.Name = "ContextMenuMain_Rename";
-            this.ContextMenuMain_Rename.Size = new System.Drawing.Size(144, 22);
+            this.ContextMenuMain_Rename.Size = new System.Drawing.Size(136, 22);
             this.ContextMenuMain_Rename.Text = "Rename...";
             this.ContextMenuMain_Rename.Click += new System.EventHandler(this.ContextMenuMain_Rename_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(141, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(133, 6);
             // 
             // ContextMenuMain_TextColor
             // 
             this.ContextMenuMain_TextColor.Name = "ContextMenuMain_TextColor";
-            this.ContextMenuMain_TextColor.Size = new System.Drawing.Size(144, 22);
+            this.ContextMenuMain_TextColor.Size = new System.Drawing.Size(136, 22);
             this.ContextMenuMain_TextColor.Text = "Text Color...";
             this.ContextMenuMain_TextColor.Click += new System.EventHandler(this.ContextMenuMain_TextColor_Click);
             // 
@@ -313,6 +307,94 @@ namespace EuroSound_Application.StreamSounds
             this.GroupBox_StreamData.TabStop = false;
             this.GroupBox_StreamData.Text = "Stream Data";
             // 
+            // Button_UpdateList_WavData
+            // 
+            this.Button_UpdateList_WavData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_UpdateList_WavData.Location = new System.Drawing.Point(388, 287);
+            this.Button_UpdateList_WavData.Name = "Button_UpdateList_WavData";
+            this.Button_UpdateList_WavData.Size = new System.Drawing.Size(75, 23);
+            this.Button_UpdateList_WavData.TabIndex = 1;
+            this.Button_UpdateList_WavData.Text = "Update";
+            this.Button_UpdateList_WavData.UseVisualStyleBackColor = true;
+            // 
+            // ContextMenu_Sounds
+            // 
+            this.ContextMenu_Sounds.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ContextMenuSounds_Rename,
+            this.ContextMenuSounds_Delete,
+            this.ContextMenuSounds_Properties,
+            this.toolStripSeparator5,
+            this.ContextMenuSounds_MoveUp,
+            this.ContextMenuSounds_MoveDown,
+            this.toolStripSeparator6,
+            this.ContextMenuSounds_TextColor});
+            this.ContextMenu_Sounds.Name = "ContextMenu_Sounds";
+            this.ContextMenu_Sounds.Size = new System.Drawing.Size(139, 148);
+            this.ContextMenu_Sounds.Text = "ContextMenu_StreamSounds";
+            // 
+            // ContextMenuSounds_Rename
+            // 
+            this.ContextMenuSounds_Rename.Name = "ContextMenuSounds_Rename";
+            this.ContextMenuSounds_Rename.Size = new System.Drawing.Size(138, 22);
+            this.ContextMenuSounds_Rename.Text = "Rename";
+            this.ContextMenuSounds_Rename.Click += new System.EventHandler(this.ContextMenuSounds_Rename_Click);
+            // 
+            // ContextMenuSounds_Delete
+            // 
+            this.ContextMenuSounds_Delete.Name = "ContextMenuSounds_Delete";
+            this.ContextMenuSounds_Delete.Size = new System.Drawing.Size(138, 22);
+            this.ContextMenuSounds_Delete.Text = "Delete";
+            this.ContextMenuSounds_Delete.Click += new System.EventHandler(this.ContextMenuSounds_Delete_Click);
+            // 
+            // ContextMenuSounds_Properties
+            // 
+            this.ContextMenuSounds_Properties.Name = "ContextMenuSounds_Properties";
+            this.ContextMenuSounds_Properties.Size = new System.Drawing.Size(138, 22);
+            this.ContextMenuSounds_Properties.Text = "Properties...";
+            this.ContextMenuSounds_Properties.Click += new System.EventHandler(this.ContextMenuSounds_Properties_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(135, 6);
+            // 
+            // ContextMenuSounds_MoveUp
+            // 
+            this.ContextMenuSounds_MoveUp.Name = "ContextMenuSounds_MoveUp";
+            this.ContextMenuSounds_MoveUp.Size = new System.Drawing.Size(138, 22);
+            this.ContextMenuSounds_MoveUp.Text = "Move Up";
+            this.ContextMenuSounds_MoveUp.Click += new System.EventHandler(this.ContextMenuSounds_MoveUp_Click);
+            // 
+            // ContextMenuSounds_MoveDown
+            // 
+            this.ContextMenuSounds_MoveDown.Name = "ContextMenuSounds_MoveDown";
+            this.ContextMenuSounds_MoveDown.Size = new System.Drawing.Size(138, 22);
+            this.ContextMenuSounds_MoveDown.Text = "Move Down";
+            this.ContextMenuSounds_MoveDown.Click += new System.EventHandler(this.ContextMenuSounds_MoveDown_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(135, 6);
+            // 
+            // ContextMenuSounds_TextColor
+            // 
+            this.ContextMenuSounds_TextColor.Name = "ContextMenuSounds_TextColor";
+            this.ContextMenuSounds_TextColor.Size = new System.Drawing.Size(138, 22);
+            this.ContextMenuSounds_TextColor.Text = "Text Color...";
+            this.ContextMenuSounds_TextColor.Click += new System.EventHandler(this.ContextMenuSounds_TextColor_Click);
+            // 
+            // Button_UpdateIMAData
+            // 
+            this.Button_UpdateIMAData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_UpdateIMAData.Location = new System.Drawing.Point(500, 334);
+            this.Button_UpdateIMAData.Name = "Button_UpdateIMAData";
+            this.Button_UpdateIMAData.Size = new System.Drawing.Size(211, 23);
+            this.Button_UpdateIMAData.TabIndex = 3;
+            this.Button_UpdateIMAData.Text = "Update IMA ADPCM data from all sounds";
+            this.Button_UpdateIMAData.UseVisualStyleBackColor = true;
+            this.Button_UpdateIMAData.Click += new System.EventHandler(this.Button_UpdateIMAData_Click);
+            // 
             // ListView_WavHeaderData
             // 
             this.ListView_WavHeaderData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -368,80 +450,12 @@ namespace EuroSound_Application.StreamSounds
             // 
             this.Col_Duration.Text = "Duration";
             // 
-            // Button_UpdateList_WavData
-            // 
-            this.Button_UpdateList_WavData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateList_WavData.Location = new System.Drawing.Point(388, 287);
-            this.Button_UpdateList_WavData.Name = "Button_UpdateList_WavData";
-            this.Button_UpdateList_WavData.Size = new System.Drawing.Size(75, 23);
-            this.Button_UpdateList_WavData.TabIndex = 1;
-            this.Button_UpdateList_WavData.Text = "Update";
-            this.Button_UpdateList_WavData.UseVisualStyleBackColor = true;
-            // 
-            // ContextMenu_Sounds
-            // 
-            this.ContextMenu_Sounds.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ContextMenuSounds_Rename,
-            this.ContextMenuSounds_Properties,
-            this.toolStripSeparator5,
-            this.ContextMenuSounds_MoveUp,
-            this.ContextMenuSounds_MoveDown,
-            this.toolStripSeparator6,
-            this.ContextMenuSounds_TextColor});
-            this.ContextMenu_Sounds.Name = "ContextMenu_Sounds";
-            this.ContextMenu_Sounds.Size = new System.Drawing.Size(139, 126);
-            this.ContextMenu_Sounds.Text = "ContextMenu_StreamSounds";
-            // 
-            // ContextMenuSounds_Rename
-            // 
-            this.ContextMenuSounds_Rename.Name = "ContextMenuSounds_Rename";
-            this.ContextMenuSounds_Rename.Size = new System.Drawing.Size(138, 22);
-            this.ContextMenuSounds_Rename.Text = "Rename";
-            this.ContextMenuSounds_Rename.Click += new System.EventHandler(this.ContextMenuSounds_Rename_Click);
-            // 
-            // ContextMenuSounds_Properties
-            // 
-            this.ContextMenuSounds_Properties.Name = "ContextMenuSounds_Properties";
-            this.ContextMenuSounds_Properties.Size = new System.Drawing.Size(138, 22);
-            this.ContextMenuSounds_Properties.Text = "Properties...";
-            this.ContextMenuSounds_Properties.Click += new System.EventHandler(this.ContextMenuSounds_Properties_Click);
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(135, 6);
-            // 
-            // ContextMenuSounds_MoveUp
-            // 
-            this.ContextMenuSounds_MoveUp.Name = "ContextMenuSounds_MoveUp";
-            this.ContextMenuSounds_MoveUp.Size = new System.Drawing.Size(138, 22);
-            this.ContextMenuSounds_MoveUp.Text = "Move Up";
-            this.ContextMenuSounds_MoveUp.Click += new System.EventHandler(this.ContextMenuSounds_MoveUp_Click);
-            // 
-            // ContextMenuSounds_MoveDown
-            // 
-            this.ContextMenuSounds_MoveDown.Name = "ContextMenuSounds_MoveDown";
-            this.ContextMenuSounds_MoveDown.Size = new System.Drawing.Size(138, 22);
-            this.ContextMenuSounds_MoveDown.Text = "Move Down";
-            this.ContextMenuSounds_MoveDown.Click += new System.EventHandler(this.ContextMenuSounds_MoveDown_Click);
-            // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(135, 6);
-            // 
-            // ContextMenuSounds_TextColor
-            // 
-            this.ContextMenuSounds_TextColor.Name = "ContextMenuSounds_TextColor";
-            this.ContextMenuSounds_TextColor.Size = new System.Drawing.Size(138, 22);
-            this.ContextMenuSounds_TextColor.Text = "Text Color...";
-            this.ContextMenuSounds_TextColor.Click += new System.EventHandler(this.ContextMenuSounds_TextColor_Click);
-            // 
             // Frm_StreamSoundsEditorMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(981, 740);
+            this.Controls.Add(this.Button_UpdateIMAData);
             this.Controls.Add(this.GroupBox_StreamData);
             this.Controls.Add(this.MainMenu);
             this.Controls.Add(this.TreeView_StreamData);
@@ -492,7 +506,6 @@ namespace EuroSound_Application.StreamSounds
         private System.Windows.Forms.Button Button_UpdateList_WavData;
         private System.Windows.Forms.ContextMenuStrip ContextMenu_Folders;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuMain_AddSound;
-        private System.Windows.Forms.ToolStripMenuItem ContextMenuMain_DeleteSound;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuMain_Rename;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuMain_TextColor;
@@ -508,5 +521,7 @@ namespace EuroSound_Application.StreamSounds
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuSounds_MoveUp;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuSounds_MoveDown;
+        private System.Windows.Forms.ToolStripMenuItem ContextMenuSounds_Delete;
+        private System.Windows.Forms.Button Button_UpdateIMAData;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using EuroSound_Application.SoundBanksEditor;
+using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,8 +9,10 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 {
     internal class ESF_SaveSoundBanks
     {
-        internal void SaveSoundBanks(BinaryWriter BWriter, TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, ProjectFile FileProperties)
+        internal void SaveSoundBanks(BinaryStream BWriter, TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, ProjectFile FileProperties)
         {
+            long AlignOffset;
+
             /*File Hashcode*/
             BWriter.Write(FileProperties.Hashcode);
             /*Latest SoundID value*/
@@ -24,24 +27,41 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             BWriter.Write(Convert.ToUInt32(00000000));
             /*File Name*/
             BWriter.Write(FileProperties.FileName);
+            BWriter.Seek(2048, SeekOrigin.Current);
 
             //*===============================================================================================
             //* TreeView
             //*===============================================================================================
-            BWriter.Seek(1024, SeekOrigin.Current);
+            /*Align Bytes*/
+            AlignOffset = (BWriter.BaseStream.Position + 2048) & (2048 - 1);
+            BWriter.Seek(AlignOffset, SeekOrigin.Current);
+            BWriter.Align(16);
+
+            /*Write Data*/
             long TreeViewDataOffset = BWriter.BaseStream.Position;
             SaveTreeViewData(TreeViewControl, BWriter);
 
             //*===============================================================================================
             //* Sounds List Data
             //*===============================================================================================
-            BWriter.Seek(100, SeekOrigin.Current);
+            /*Align Bytes*/
+            AlignOffset = (BWriter.BaseStream.Position + 2048) & (2048 - 1);
+            BWriter.Seek(AlignOffset, SeekOrigin.Current);
+            BWriter.Align(16);
+
+            /*Write Data*/
             long SoundsListDataOffset = BWriter.BaseStream.Position;
             SaveSoundsListData(SoundsList, BWriter);
 
             //*===============================================================================================
             //* Audio Data
             //*===============================================================================================
+            /*Align Bytes*/
+            AlignOffset = (BWriter.BaseStream.Position + 2048) & (2048 - 1);
+            BWriter.Seek(AlignOffset, SeekOrigin.Current);
+            BWriter.Align(16);
+
+            /*Write Data*/
             long AudioDataOffset = BWriter.BaseStream.Position;
             SaveAudiosData(AudiosList, BWriter);
             long FileSize = BWriter.BaseStream.Position;
@@ -61,7 +81,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             BWriter.Write(Convert.ToUInt32(FileSize));
         }
 
-        private void SaveAudiosData(Dictionary<string, EXAudio> AudiosList, BinaryWriter BWriter)
+        private void SaveAudiosData(Dictionary<string, EXAudio> AudiosList, BinaryStream BWriter)
         {
             BWriter.Write(AudiosList.Count);
 
@@ -85,7 +105,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             }
         }
 
-        private void SaveSoundsListData(Dictionary<uint, EXSound> SoundsList, BinaryWriter BWriter)
+        private void SaveSoundsListData(Dictionary<uint, EXSound> SoundsList, BinaryStream BWriter)
         {
             BWriter.Write(SoundsList.Count);
 
@@ -134,7 +154,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             }
         }
 
-        private void SaveTreeViewData(TreeView TreeViewControl, BinaryWriter BWriter)
+        private void SaveTreeViewData(TreeView TreeViewControl, BinaryStream BWriter)
         {
             BWriter.Write((TreeViewControl.GetNodeCount(true) - 3));
             SaveTreeNodes(TreeViewControl.Nodes[0], BWriter);
@@ -142,7 +162,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             SaveTreeNodes(TreeViewControl.Nodes[2], BWriter);
         }
 
-        private void SaveTreeNodes(TreeNode Selected, BinaryWriter BWriter)
+        private void SaveTreeNodes(TreeNode Selected, BinaryStream BWriter)
         {
             if (!Selected.Tag.Equals("Root"))
             {

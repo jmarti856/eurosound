@@ -59,21 +59,25 @@ namespace EuroSound_Application.SoundBanksEditor
 
         internal void OpenSampleProperties(TreeNode SelectedNode)
         {
-            string Section = TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name;
+            string Section = TreeNodeFunctions.FindRootNode(SelectedNode).Name;
             EXSound ParentSound = EXSoundbanksFunctions.GetSoundByName(uint.Parse(SelectedNode.Parent.Name), SoundsList);
             EXSample SelectedSample = EXSoundbanksFunctions.GetSoundSample(ParentSound, uint.Parse(SelectedNode.Name));
 
             if (Section.Equals("StreamedSounds"))
             {
-                Frm_NewStreamSound AddStreamSound = new Frm_NewStreamSound(SelectedSample)
+                using (Frm_NewStreamSound AddStreamSound = new Frm_NewStreamSound(SelectedSample))
                 {
-                    Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
-                    Tag = Tag,
-                    Owner = this,
-                    ShowInTaskbar = false
+                    AddStreamSound.Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties";
+                    AddStreamSound.Tag = Tag;
+                    AddStreamSound.Owner = this;
+                    AddStreamSound.ShowInTaskbar = false;
+                    AddStreamSound.ShowDialog();
+
+                    if (AddStreamSound.DialogResult == DialogResult.OK)
+                    {
+                        SelectedSample.FileRef = (short)AddStreamSound.SelectedSound;
+                    }
                 };
-                AddStreamSound.ShowDialog();
-                AddStreamSound.Dispose();
             }
             else
             {
@@ -349,12 +353,14 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 try
                 {
-                    string SampleDisplayName, SoundDisplayName;
+                    string SoundDisplayName;
+                    TreeNode NodeToCheck;
 
                     /*Clear List*/
                     ListView_StreamData.Invoke((MethodInvoker)delegate
                     {
                         ListView_StreamData.Items.Clear();
+                        ListView_StreamData.Enabled = false;
                     });
 
                     foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
@@ -364,10 +370,10 @@ namespace EuroSound_Application.SoundBanksEditor
                         {
                             if (Sample.Value.FileRef < 0)
                             {
-                                SampleDisplayName = TreeView_File.Nodes.Find(Sample.Key.ToString(), true)[0].Text;
+                                NodeToCheck = TreeView_File.Nodes.Find(Sample.Key.ToString(), true)[0];
                                 ListViewItem ItemStreamed = new ListViewItem(new[]
                                 {
-                                    SampleDisplayName,
+                                    NodeToCheck.Text,
                                     Sample.Value.FileRef.ToString(),
                                     SoundDisplayName,
                                     "HC00FFFF"
@@ -375,14 +381,21 @@ namespace EuroSound_Application.SoundBanksEditor
                                 {
                                     UseItemStyleForSubItems = false
                                 };
+                                ItemStreamed.Tag = NodeToCheck.Name;
                                 AddItemToListView(ItemStreamed, ListView_StreamData);
 
-                                GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking Sample: " + SampleDisplayName);
+                                GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking Sample: " + NodeToCheck.Text);
 
                                 Thread.Sleep(6);
                             }
                         }
                     }
+
+                    /*Enable List*/
+                    ListView_StreamData.Invoke((MethodInvoker)delegate
+                    {
+                        ListView_StreamData.Enabled = true;
+                    });
                 }
                 catch
                 {
@@ -406,18 +419,22 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 try
                 {
+                    TreeNode NodeToCheck;
+
                     /*Clear List*/
                     ListView_WavHeaderData.Invoke((MethodInvoker)delegate
                     {
                         ListView_WavHeaderData.Items.Clear();
+                        ListView_WavHeaderData.Enabled = false;
                     });
 
+                    /*Add data to list*/
                     foreach (KeyValuePair<string, EXAudio> item in AudioDataDict)
                     {
-                        string DisplayName = TreeView_File.Nodes.Find(item.Key, true)[0].Text;
+                        NodeToCheck = TreeView_File.Nodes.Find(item.Key, true)[0];
                         ListViewItem Hashcode = new ListViewItem(new[]
                         {
-                            DisplayName.ToString(),
+                            NodeToCheck.Text.ToString(),
                             item.Value.LoopOffset.ToString(),
                             item.Value.Frequency.ToString(),
                             item.Value.Channels.ToString(),
@@ -429,12 +446,19 @@ namespace EuroSound_Application.SoundBanksEditor
                         {
                             UseItemStyleForSubItems = false
                         };
+                        Hashcode.Tag = NodeToCheck.Name;
                         AddItemToListView(Hashcode, ListView_WavHeaderData);
 
                         GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking audio: " + item.Value.LoadedFileName.ToString());
 
                         Thread.Sleep(6);
                     }
+
+                    /*Enable List*/
+                    ListView_WavHeaderData.Invoke((MethodInvoker)delegate
+                    {
+                        ListView_WavHeaderData.Enabled = true;
+                    });
                 }
                 catch
                 {

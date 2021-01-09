@@ -37,7 +37,7 @@
             // 
             // Label_Text
             // 
-            this.Label_Text.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.Label_Text.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_Text.AutoSize = true;
             this.Label_Text.Location = new System.Drawing.Point(9, 9);
@@ -94,6 +94,7 @@
             this.Controls.Add(this.Checkbox_ShowAgain);
             this.Controls.Add(this.Label_Text);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EuroSound_WarningBox";

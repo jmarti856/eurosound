@@ -46,7 +46,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 
         internal void ReadDictionaryData(BinaryReader BReader, Dictionary<uint, EXSoundStream> DictionaryData)
         {
-            int DictionaryItems, ADPCM_Lenght;
+            int DictionaryItems, PCM_DataLength, ADPCM_DataLength;
             uint SoundStreamKey, StartMarkersCount, MarkersCount;
 
             DictionaryItems = BReader.ReadInt32();
@@ -58,8 +58,20 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                     DisplayName = BReader.ReadString(),
                     BaseVolume = BReader.ReadUInt32(),
                 };
-                ADPCM_Lenght = BReader.ReadInt32();
-                StreamSound.IMA_ADPCM_DATA = BReader.ReadBytes(ADPCM_Lenght);
+
+                /*Read Wav*/
+                PCM_DataLength = BReader.ReadInt32();
+                StreamSound.PCM_Data = BReader.ReadBytes(PCM_DataLength);
+                ADPCM_DataLength = BReader.ReadInt32();
+                StreamSound.IMA_ADPCM_DATA = BReader.ReadBytes(ADPCM_DataLength);
+                StreamSound.Frequency = BReader.ReadUInt32();
+                StreamSound.Channels = BReader.ReadByte();
+                StreamSound.Bits = BReader.ReadUInt32();
+                StreamSound.Duration = BReader.ReadUInt32();
+                StreamSound.Encoding = BReader.ReadString();
+                StreamSound.WAVFileMD5 = BReader.ReadString();
+                StreamSound.WAVFileName = BReader.ReadString();
+                StreamSound.RealSize = BReader.ReadUInt32();
 
                 /*Read Start Markers List*/
                 StartMarkersCount = BReader.ReadUInt32();
@@ -102,8 +114,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                     StreamSound.Markers.Add(Marker);
                 }
 
-                StreamSound.IMA_Data_MD5 = BReader.ReadString();
-                StreamSound.IMA_Data_Name = BReader.ReadString();
                 StreamSound.OutputThisSound = BReader.ReadBoolean();
 
                 StreamSound.MarkerDataCounterID = BReader.ReadUInt32();

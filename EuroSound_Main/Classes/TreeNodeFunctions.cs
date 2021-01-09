@@ -150,8 +150,15 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
 
         internal static void TreeNodeSetNodeImage(TreeNode Node, int SelectedImageIndex, int ImageIndex)
         {
-            Node.SelectedImageIndex = SelectedImageIndex;
-            Node.ImageIndex = ImageIndex;
+            try
+            {
+                Node.SelectedImageIndex = SelectedImageIndex;
+                Node.ImageIndex = ImageIndex;
+            }
+            catch
+            {
+                MessageBox.Show("Can not set an index image for: " + Node.Text);
+            }
         }
 
         internal static void MoveDown(TreeNode node)

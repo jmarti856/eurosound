@@ -3,6 +3,7 @@ using EuroSound_Application.AudioFunctionsLibrary;
 using NAudio.Wave;
 using System;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -67,31 +68,21 @@ namespace EuroSound_Application.SoundBanksEditor
             string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0);
             if (!string.IsNullOrEmpty(AudioPath))
             {
-                if (EXSoundbanksFunctions.AudioIsValid(AudioPath))
+                if (GenericFunctions.AudioIsValid(AudioPath, 1, 22050))
                 {
-                    TemporalAudioHash = GenericFunctions.CalculateMD5(AudioPath);
-                    TemporalAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath, true);
-
-                    if (TemporalAudio != null && TemporalAudio.PCMdata != null)
-                    {
-                        UpdateControls();
-
-                        /*--Editable Data--*/
-                        Textbox_Flags.Text = TemporalAudio.Flags.ToString();
-                        numeric_psi.Value = TemporalAudio.PSIsample;
-                        numeric_loopOffset.Value = TemporalAudio.LoopOffset;
-                        Textbox_MD5Hash.Text = TemporalAudioHash;
-
-                        AudioFunctionsLibrary.DrawAudioWaves(euroSound_WaveViewer1, TemporalAudio, 0);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Error reading this file, seems that is being used by another process.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    LoadAudio(AudioPath);
                 }
                 else
                 {
-                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrect"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    DialogResult TryToReload = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrect"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                    if (TryToReload == DialogResult.Yes)
+                    {
+                        string FileTempFile = AudioFunctionsLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath));
+                        if (!string.IsNullOrEmpty(FileTempFile))
+                        {
+                            LoadAudio(FileTempFile);
+                        }
+                    }
                 }
             }
         }
@@ -118,13 +109,21 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void Button_TestLoopOffset_Click(object sender, EventArgs e)
         {
-            if (int.Parse(Textbox_Flags.Text) > 0)
+            if (byte.Parse(Textbox_Flags.Text) == 1)
             {
                 byte[] LoopSamples;
-                int SamplesToSkip = int.Parse(numeric_loopOffset.Value.ToString()) * 2;
 
-                LoopSamples = TemporalAudio.PCMdata.Skip(SamplesToSkip).ToArray();
-                AudioFunctionsLibrary.PlayAudioLoopOffset(_waveOut, LoopSamples, (int)TemporalAudio.Frequency, 0, (int)TemporalAudio.Bits, (int)TemporalAudio.Channels, 0);
+                try
+                {
+                    int SamplesToSkip = (int.Parse(numeric_loopOffset.Value.ToString()) / 2) * 2;
+
+                    LoopSamples = TemporalAudio.PCMdata.Skip(SamplesToSkip).ToArray();
+                    AudioFunctionsLibrary.PlayAudioLoopOffset(_waveOut, LoopSamples, (int)TemporalAudio.Frequency, 0, (int)TemporalAudio.Bits, (int)TemporalAudio.Channels, 0);
+                }
+                catch
+                {
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorLoopOffsetNoValid"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {
@@ -225,16 +224,43 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         //* FUNCTIONS
         //*===============================================================================================
+        private void LoadAudio(string AudioPath)
+        {
+            TemporalAudioHash = GenericFunctions.CalculateMD5(AudioPath);
+            TemporalAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);
+
+            if (TemporalAudio != null && TemporalAudio.PCMdata != null)
+            {
+                UpdateControls();
+                numeric_psi.Value = TemporalAudio.PSIsample;
+                Textbox_MD5Hash.Text = TemporalAudioHash;
+                AudioFunctionsLibrary.DrawAudioWaves(euroSound_WaveViewer1, TemporalAudio, 0);
+
+                /*Ask user if wants to maintain config*/
+                DialogResult MaintainConfig = MessageBox.Show("Do you want to maintain the flags and loop offset values?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (MaintainConfig == DialogResult.No)
+                {
+                    /*--Editable Data--*/
+                    Textbox_Flags.Text = TemporalAudio.Flags.ToString();
+                    numeric_loopOffset.Value = TemporalAudio.LoopOffset;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Error reading this file, seems that is being used by another process.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void UpdateControls()
         {
             Textbox_MediaName.Text = TemporalAudio.LoadedFileName;
             Textbox_Encoding.Text = TemporalAudio.Encoding;
-            Textbox_DataSize.Text = TemporalAudio.DataSize.ToString();
-            Textbox_Frequency.Text = TemporalAudio.Frequency.ToString();
-            Textbox_RealSize.Text = TemporalAudio.RealSize.ToString();
+            Textbox_DataSize.Text = string.Format("{0} bytes", TemporalAudio.DataSize);
+            Textbox_Frequency.Text = string.Format("{0} Hz", TemporalAudio.Frequency);
+            Textbox_RealSize.Text = string.Format("{0} bytes", TemporalAudio.RealSize);
             Textbox_Channels.Text = TemporalAudio.Channels.ToString();
             Textbox_Bits.Text = TemporalAudio.Bits.ToString();
-            Textbox_Duration.Text = TemporalAudio.Duration.ToString();
+            Textbox_Duration.Text = string.Format("{0} ms", TemporalAudio.Duration);
             Textbox_MD5Hash.Text = SelectedAudioMD5Hash;
         }
     }

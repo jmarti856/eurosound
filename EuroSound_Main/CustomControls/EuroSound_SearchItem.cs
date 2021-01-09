@@ -204,7 +204,7 @@ namespace EuroSound_Application
                 if (FormToSearch != null)
                 {
                     Color NewColor = Color.FromArgb(GenericFunctions.GetColorFromColorPicker());
-                    Results[(ListViewResults.SelectedItems[0].Index + 1)].ForeColor = NewColor;
+                    Results[(ListViewResults.SelectedItems[0].Index)].ForeColor = NewColor;
 
                     /*Update cell color from the list view item*/
                     ListViewResults.SelectedItems[0].SubItems[1].BackColor = NewColor;
@@ -241,6 +241,7 @@ namespace EuroSound_Application
                 }
             }
 
+            /*Print list*/
             if (Results.Count > 0)
             {
                 PrintList(Results, e);

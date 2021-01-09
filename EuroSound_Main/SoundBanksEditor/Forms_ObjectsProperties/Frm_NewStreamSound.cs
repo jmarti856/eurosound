@@ -9,6 +9,7 @@ namespace EuroSound_Application.SoundBanksEditor
 {
     public partial class Frm_NewStreamSound : Form
     {
+        public int SelectedSound { get; set; } = 0;
         private EXSample SelectedSample;
 
         public Frm_NewStreamSound(EXSample Sample)
@@ -37,6 +38,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.OK;
             SelectedSample.PitchOffset = (short)numeric_pitchoffset.Value;
             SelectedSample.RandomPitchOffset = (short)numeric_randomPitchOffset.Value;
             SelectedSample.BaseVolume = (sbyte)Numeric_BaseVolume.Value;
@@ -44,6 +46,7 @@ namespace EuroSound_Application.SoundBanksEditor
             SelectedSample.Pan = (sbyte)numeric_pan.Value;
             SelectedSample.RandomPan = (sbyte)numeric_randompan.Value;
 
+            SelectedSound = (ListBox_StreamSounds.SelectedIndex + 1) * -1;
             Close();
         }
 

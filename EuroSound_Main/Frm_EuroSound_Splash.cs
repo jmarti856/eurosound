@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using System;
+using System.IO;
 using System.Reflection;
 using System.Resources;
 using System.Threading.Tasks;
@@ -31,7 +32,7 @@ namespace EuroSound_Application
             Random rnd = new Random();
             GenericFunctions.ResourcesManager = new ResourceManager(typeof(Properties.Resources));
             string[] HashTable_Sounds, HashTable_SoundsData, HashTable_Musics, TreeViewPreferences;
-            Label_EuroSoundVersion.Text = AssemblyDescription + " Version " + AssemblyVersion[0];
+            Label_EuroSoundVersion.Text = AssemblyDescription + " Version " + GetAssemblyVersion()[0];
 
             //-----------------------------------------[Load Preferences]----------------------------------------
             Label_Status.Text = "Loading preferences, please wait...";
@@ -81,6 +82,27 @@ namespace EuroSound_Application
             Label_Status.Text = "Loading External File Path";
             GlobalPreferences.StreamFilePath = WRegistryFunctions.SetExternalFilePath();
 
+            //-----------------------------------------[SoX Executable]----------------------------------------
+            string SoXExePath;
+            Label_Status.Text = "Loading SoX Executable Path";
+            SoXExePath = WRegistryFunctions.SetSoxFilePath();
+
+            if (string.IsNullOrEmpty(SoXExePath))
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("SoXNoPath"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                if (File.Exists(SoXExePath))
+                {
+                    GlobalPreferences.SoXPath = SoXExePath;
+                }
+                else
+                {
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("SoXInvalidPath"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
             //-----------------------------------------[Open Form]----------------------------------------
             using (Frm_EuroSound_Main EuroSoundMain = new Frm_EuroSound_Main(ArgumentFileToLoad))
             {
@@ -108,6 +130,9 @@ namespace EuroSound_Application
             }
         }
 
-        public string AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public string GetAssemblyVersion()
+        {
+            return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        }
     }
 }

@@ -29,6 +29,7 @@ namespace EuroSound_Application.SoundBanksEditor
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_AudioProperties));
             this.numeric_psi = new System.Windows.Forms.NumericUpDown();
             this.Label_PSI = new System.Windows.Forms.Label();
             this.Button_StopAudio = new System.Windows.Forms.Button();
@@ -457,9 +458,11 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Controls.Add(this.Button_Cancel);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Frm_AudioProperties";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Frm_AudioProperties";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_AudioProperties_FormClosing);

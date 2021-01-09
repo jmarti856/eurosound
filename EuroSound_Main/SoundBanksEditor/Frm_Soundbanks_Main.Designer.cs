@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Audio Data", 0, 0);
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Sounds", 0, 0);
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Streamed Sounds", 0, 0);
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Audio Data", 0, 0);
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Sounds", 0, 0);
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Streamed Sounds", 0, 0);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Soundbanks_Main));
             this.TreeView_File = new System.Windows.Forms.TreeView();
             this.ImageList_TreeNode = new System.Windows.Forms.ImageList(this.components);
@@ -140,25 +140,25 @@
             this.TreeView_File.Location = new System.Drawing.Point(0, 0);
             this.TreeView_File.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.TreeView_File.Name = "TreeView_File";
-            treeNode1.ImageIndex = 0;
-            treeNode1.Name = "AudioData";
-            treeNode1.SelectedImageIndex = 0;
-            treeNode1.Tag = "Root";
-            treeNode1.Text = "Audio Data";
-            treeNode2.ImageIndex = 0;
-            treeNode2.Name = "Sounds";
-            treeNode2.SelectedImageIndex = 0;
-            treeNode2.Tag = "Root";
-            treeNode2.Text = "Sounds";
-            treeNode3.ImageIndex = 0;
-            treeNode3.Name = "StreamedSounds";
-            treeNode3.SelectedImageIndex = 0;
-            treeNode3.Tag = "Root";
-            treeNode3.Text = "Streamed Sounds";
+            treeNode4.ImageIndex = 0;
+            treeNode4.Name = "AudioData";
+            treeNode4.SelectedImageIndex = 0;
+            treeNode4.Tag = "Root";
+            treeNode4.Text = "Audio Data";
+            treeNode5.ImageIndex = 0;
+            treeNode5.Name = "Sounds";
+            treeNode5.SelectedImageIndex = 0;
+            treeNode5.Tag = "Root";
+            treeNode5.Text = "Sounds";
+            treeNode6.ImageIndex = 0;
+            treeNode6.Name = "StreamedSounds";
+            treeNode6.SelectedImageIndex = 0;
+            treeNode6.Tag = "Root";
+            treeNode6.Text = "Streamed Sounds";
             this.TreeView_File.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2,
-            treeNode3});
+            treeNode4,
+            treeNode5,
+            treeNode6});
             this.TreeView_File.SelectedImageIndex = 0;
             this.TreeView_File.Size = new System.Drawing.Size(494, 740);
             this.TreeView_File.TabIndex = 1;
@@ -676,6 +676,7 @@
             this.ListView_WavHeaderData.TabIndex = 2;
             this.ListView_WavHeaderData.UseCompatibleStateImageBehavior = false;
             this.ListView_WavHeaderData.View = System.Windows.Forms.View.Details;
+            this.ListView_WavHeaderData.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListView_WavHeaderData_MouseDoubleClick);
             // 
             // Col_Name
             // 
@@ -722,14 +723,14 @@
             this.TabPage_StreamData.Location = new System.Drawing.Point(4, 22);
             this.TabPage_StreamData.Name = "TabPage_StreamData";
             this.TabPage_StreamData.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_StreamData.Size = new System.Drawing.Size(461, 254);
+            this.TabPage_StreamData.Size = new System.Drawing.Size(461, 305);
             this.TabPage_StreamData.TabIndex = 0;
             this.TabPage_StreamData.Text = "Stream Data";
             // 
             // Button_UpdateList_StreamData
             // 
             this.Button_UpdateList_StreamData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateList_StreamData.Location = new System.Drawing.Point(380, 225);
+            this.Button_UpdateList_StreamData.Location = new System.Drawing.Point(380, 276);
             this.Button_UpdateList_StreamData.Name = "Button_UpdateList_StreamData";
             this.Button_UpdateList_StreamData.Size = new System.Drawing.Size(75, 23);
             this.Button_UpdateList_StreamData.TabIndex = 1;
@@ -747,14 +748,16 @@
             this.Col_FileRef,
             this.Col_Sound,
             this.Col_StoredIn});
+            this.ListView_StreamData.FullRowSelect = true;
             this.ListView_StreamData.GridLines = true;
             this.ListView_StreamData.HideSelection = false;
             this.ListView_StreamData.Location = new System.Drawing.Point(6, 6);
             this.ListView_StreamData.Name = "ListView_StreamData";
-            this.ListView_StreamData.Size = new System.Drawing.Size(449, 213);
+            this.ListView_StreamData.Size = new System.Drawing.Size(449, 264);
             this.ListView_StreamData.TabIndex = 0;
             this.ListView_StreamData.UseCompatibleStateImageBehavior = false;
             this.ListView_StreamData.View = System.Windows.Forms.View.Details;
+            this.ListView_StreamData.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListView_StreamData_MouseDoubleClick);
             // 
             // Col_StreamName
             // 

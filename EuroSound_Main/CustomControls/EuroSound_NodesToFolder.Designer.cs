@@ -29,6 +29,7 @@ namespace EuroSound_Application
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EuroSound_NodesToFolder));
             this.label_TypeOfSounds = new System.Windows.Forms.Label();
             this.Combobox_SoudsType = new System.Windows.Forms.ComboBox();
             this.ListBox_Items = new System.Windows.Forms.ListBox();
@@ -52,6 +53,7 @@ namespace EuroSound_Application
             this.Combobox_SoudsType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Combobox_SoudsType.FormattingEnabled = true;
             this.Combobox_SoudsType.Items.AddRange(new object[] {
+            "AudioData",
             "Sounds",
             "StreamedSounds"});
             this.Combobox_SoudsType.Location = new System.Drawing.Point(103, 12);
@@ -130,6 +132,7 @@ namespace EuroSound_Application
             this.Controls.Add(this.Combobox_SoudsType);
             this.Controls.Add(this.label_TypeOfSounds);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EuroSound_NodesToFolder";

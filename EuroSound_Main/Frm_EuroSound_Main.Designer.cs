@@ -55,6 +55,8 @@ namespace EuroSound_Application
             this.MenuItemHelp_OnlineHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.MainStatusBar = new CustomStatusBar.StatusBarToolTips();
             this.File = new System.Windows.Forms.StatusBarPanel();
+            this.MainMenuTools_Separator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.MainMenuTools_ClearTempFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip_MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.File)).BeginInit();
             this.SuspendLayout();
@@ -158,31 +160,31 @@ namespace EuroSound_Application
             // MenuItemWindow_Cascade
             // 
             this.MenuItemWindow_Cascade.Name = "MenuItemWindow_Cascade";
-            this.MenuItemWindow_Cascade.Size = new System.Drawing.Size(150, 22);
+            this.MenuItemWindow_Cascade.Size = new System.Drawing.Size(180, 22);
             this.MenuItemWindow_Cascade.Text = "Cascade";
             // 
             // MenuItemWindow_TileH
             // 
             this.MenuItemWindow_TileH.Name = "MenuItemWindow_TileH";
-            this.MenuItemWindow_TileH.Size = new System.Drawing.Size(150, 22);
+            this.MenuItemWindow_TileH.Size = new System.Drawing.Size(180, 22);
             this.MenuItemWindow_TileH.Text = "Tile Horizontal";
             // 
             // MenuItemWindow_TileV
             // 
             this.MenuItemWindow_TileV.Name = "MenuItemWindow_TileV";
-            this.MenuItemWindow_TileV.Size = new System.Drawing.Size(150, 22);
+            this.MenuItemWindow_TileV.Size = new System.Drawing.Size(180, 22);
             this.MenuItemWindow_TileV.Text = "Tile Vertical";
             // 
             // MenuItemWindow_Arrange
             // 
             this.MenuItemWindow_Arrange.Name = "MenuItemWindow_Arrange";
-            this.MenuItemWindow_Arrange.Size = new System.Drawing.Size(150, 22);
+            this.MenuItemWindow_Arrange.Size = new System.Drawing.Size(180, 22);
             this.MenuItemWindow_Arrange.Text = "Arrange Icons";
             // 
             // MenuItemWindow_Separator
             // 
             this.MenuItemWindow_Separator.Name = "MenuItemWindow_Separator";
-            this.MenuItemWindow_Separator.Size = new System.Drawing.Size(147, 6);
+            this.MenuItemWindow_Separator.Size = new System.Drawing.Size(177, 6);
             // 
             // MainMenu_Tools
             // 
@@ -190,7 +192,9 @@ namespace EuroSound_Application
             this.MainMenuTools_SFXDataGen,
             this.MainMenuTools_Separator1,
             this.MainMenuTools_BackupSettings,
-            this.MainMenuTools_RestoreSettings});
+            this.MainMenuTools_RestoreSettings,
+            this.MainMenuTools_Separator2,
+            this.MainMenuTools_ClearTempFiles});
             this.MainMenu_Tools.Name = "MainMenu_Tools";
             this.MainMenu_Tools.Size = new System.Drawing.Size(46, 20);
             this.MainMenu_Tools.Text = "Tools";
@@ -198,26 +202,26 @@ namespace EuroSound_Application
             // MainMenuTools_SFXDataGen
             // 
             this.MainMenuTools_SFXDataGen.Name = "MainMenuTools_SFXDataGen";
-            this.MainMenuTools_SFXDataGen.Size = new System.Drawing.Size(180, 22);
+            this.MainMenuTools_SFXDataGen.Size = new System.Drawing.Size(194, 22);
             this.MainMenuTools_SFXDataGen.Text = "SFX Data Binary File";
             this.MainMenuTools_SFXDataGen.Click += new System.EventHandler(this.MainMenuTools_SFXDataGen_Click);
             // 
             // MainMenuTools_Separator1
             // 
             this.MainMenuTools_Separator1.Name = "MainMenuTools_Separator1";
-            this.MainMenuTools_Separator1.Size = new System.Drawing.Size(177, 6);
+            this.MainMenuTools_Separator1.Size = new System.Drawing.Size(191, 6);
             // 
             // MainMenuTools_BackupSettings
             // 
             this.MainMenuTools_BackupSettings.Name = "MainMenuTools_BackupSettings";
-            this.MainMenuTools_BackupSettings.Size = new System.Drawing.Size(180, 22);
+            this.MainMenuTools_BackupSettings.Size = new System.Drawing.Size(194, 22);
             this.MainMenuTools_BackupSettings.Text = "Backup Settings...";
             this.MainMenuTools_BackupSettings.Click += new System.EventHandler(this.MainMenuTools_BackupSettings_Click);
             // 
             // MainMenuTools_RestoreSettings
             // 
             this.MainMenuTools_RestoreSettings.Name = "MainMenuTools_RestoreSettings";
-            this.MainMenuTools_RestoreSettings.Size = new System.Drawing.Size(180, 22);
+            this.MainMenuTools_RestoreSettings.Size = new System.Drawing.Size(194, 22);
             this.MainMenuTools_RestoreSettings.Text = "Restore Settings...";
             this.MainMenuTools_RestoreSettings.Click += new System.EventHandler(this.MainMenuTools_RestoreSettings_Click);
             // 
@@ -260,6 +264,18 @@ namespace EuroSound_Application
             this.File.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Spring;
             this.File.Name = "File";
             this.File.Width = 702;
+            // 
+            // MainMenuTools_Separator2
+            // 
+            this.MainMenuTools_Separator2.Name = "MainMenuTools_Separator2";
+            this.MainMenuTools_Separator2.Size = new System.Drawing.Size(191, 6);
+            // 
+            // MainMenuTools_ClearTempFiles
+            // 
+            this.MainMenuTools_ClearTempFiles.Name = "MainMenuTools_ClearTempFiles";
+            this.MainMenuTools_ClearTempFiles.Size = new System.Drawing.Size(194, 22);
+            this.MainMenuTools_ClearTempFiles.Text = "Delete Temporal Files...";
+            this.MainMenuTools_ClearTempFiles.Click += new System.EventHandler(this.MainMenuTools_ClearTempFiles_Click);
             // 
             // Frm_EuroSound_Main
             // 
@@ -313,5 +329,7 @@ namespace EuroSound_Application
         private System.Windows.Forms.ToolStripSeparator MainMenuTools_Separator1;
         private System.Windows.Forms.ToolStripMenuItem MainMenuTools_BackupSettings;
         private System.Windows.Forms.ToolStripMenuItem MainMenuTools_RestoreSettings;
+        private System.Windows.Forms.ToolStripSeparator MainMenuTools_Separator2;
+        private System.Windows.Forms.ToolStripMenuItem MainMenuTools_ClearTempFiles;
     }
 }

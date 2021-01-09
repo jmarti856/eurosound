@@ -27,18 +27,12 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
         private void Button_ChooseSFX_OutputPath_Click(object sender, EventArgs e)
         {
-            if (FolderBrowser_OutputPath.ShowDialog() == DialogResult.OK)
-            {
-                Textbox_SFX_OutputPath.Text = FolderBrowser_OutputPath.SelectedPath;
-            }
+            Textbox_SFX_OutputPath.Text = GenericFunctions.OpenFolderBrowser();
         }
 
         private void Button_MusicOutputPath_Click(object sender, EventArgs e)
         {
-            if (FolderBrowser_OutputPath.ShowDialog() == DialogResult.OK)
-            {
-                Textbox_MusicOutputPath.Text = FolderBrowser_OutputPath.SelectedPath;
-            }
+            Textbox_MusicOutputPath.Text = GenericFunctions.OpenFolderBrowser();
         }
 
         private void Button_WavesColorControl_Click(object sender, EventArgs e)

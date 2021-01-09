@@ -1,4 +1,5 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -22,6 +24,8 @@ namespace EuroSound_Application.SoundBanksEditor
         private EuroSoundFiles SerializeInfo = new EuroSoundFiles();
         private Thread UpdateList, UpdateWavList, UpdateStreamDataList;
         private SoundBanksYMLReader LibYamlReader = new SoundBanksYMLReader();
+        private AudioFunctions AudioFunctionsLibrary = new AudioFunctions();
+        private readonly Regex sWhitespace = new Regex(@"\s+");
         private string FileToLoadArg, ProjectName;
         private string LoadedFile = string.Empty;
 
@@ -58,8 +62,6 @@ namespace EuroSound_Application.SoundBanksEditor
             /*Buttons*/
             Button_GenerateList.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ButtonGenerateSoundsList")); };
             Button_GenerateList.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
-
-
 
             Button_UpdateList_Hashcodes.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ButtonSoundsBankCheckHashcodes")); };
             Button_UpdateList_Hashcodes.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
@@ -264,6 +266,7 @@ namespace EuroSound_Application.SoundBanksEditor
             UpdateHashcodesValidList();
         }
 
+        /*-----------------------------[STREAM DATA]-----------------------------*/
         private void Button_UpdateList_StreamData_Click(object sender, EventArgs e)
         {
             GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false);
@@ -272,10 +275,35 @@ namespace EuroSound_Application.SoundBanksEditor
             UpdateStreamedDataList();
         }
 
+        private void ListView_StreamData_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (ListView_StreamData.SelectedItems.Count > 0)
+            {
+                TreeNode[] SelectedNode = TreeView_File.Nodes.Find(ListView_StreamData.SelectedItems[0].Tag.ToString(), true);
+                if (SelectedNode.Length > 0)
+                {
+                    OpenSampleProperties(SelectedNode[0]);
+                }
+            }
+        }
+
+        /*-----------------------------[WAV DATA]-----------------------------*/
         private void Button_UpdateList_WavData_Click(object sender, EventArgs e)
         {
             /*Check Audio properties*/
             UpdateWavDataList();
+        }
+
+        private void ListView_WavHeaderData_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (ListView_WavHeaderData.SelectedItems.Count > 0 )
+            {
+                TreeNode[] SelectedNode = TreeView_File.Nodes.Find(ListView_WavHeaderData.SelectedItems[0].Tag.ToString(), true);
+                if (SelectedNode.Length > 0)
+                {
+                    OpenAudioProperties(SelectedNode[0]);
+                }
+            }
         }
 
         //*===============================================================================================
@@ -302,6 +330,12 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             LoadedFile = SaveDocument(LoadedFile, TreeView_File, SoundsList, AudioDataDict, ProjectInfo);
             ProjectInfo.FileHasBeenModified = false;
+
+            Text = GenericFunctions.UpdateProjectFormText(LoadedFile, ProjectInfo.FileName);
+            if (!(WindowState == FormWindowState.Maximized))
+            {
+                MdiParent.Text = "EuroSound - " + Text;
+            }
         }
 
         private void MenuItem_File_SaveAs_Click(object sender, EventArgs e)
@@ -383,11 +417,16 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         private void TreeView_File_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
+            string LabelText;
+
             /*Check that we have selected a node, and we have not selected the root folder*/
             if (e.Node.Parent != null && !e.Node.Tag.Equals("Root"))
             {
+                /*Get text label*/
+                LabelText = e.Label.Trim();
+
                 /*Check we are not renaming with an empty string*/
-                if (string.IsNullOrEmpty(e.Label))
+                if (string.IsNullOrEmpty(LabelText))
                 {
                     /*Cancel edit*/
                     e.CancelEdit = true;
@@ -395,14 +434,18 @@ namespace EuroSound_Application.SoundBanksEditor
                 else
                 {
                     /*Check that not exists an item with the same name*/
-                    if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, e.Label))
+                    if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, LabelText))
                     {
                         MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Rename_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         e.CancelEdit = true;
                     }
                     else
                     {
-                        e.Node.Text = e.Label;
+                        if (e.Node.Tag.Equals("Folder"))
+                        {
+                            e.Node.Name = sWhitespace.Replace(LabelText, "_");
+                        }
+                        e.Node.Text = LabelText;
                     }
                 }
             }

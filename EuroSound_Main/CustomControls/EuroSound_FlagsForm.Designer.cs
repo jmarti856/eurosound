@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EuroSound_FlagsForm));
             this.Checkbox_Flag01 = new System.Windows.Forms.CheckBox();
             this.Textbox_Flag16 = new System.Windows.Forms.TextBox();
             this.Textbox_Flag01 = new System.Windows.Forms.TextBox();
@@ -479,10 +480,10 @@
             this.Controls.Add(this.Textbox_Flag12);
             this.Controls.Add(this.Textbox_Flag05);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EuroSound_FlagsForm";
-            this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "EuroSound Flags Checker";

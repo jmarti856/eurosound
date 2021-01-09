@@ -33,6 +33,8 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("ESF Tree");
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Hash Tables");
             System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Stream File");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("SoX (Sound eXchange)");
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_MainPreferences));
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
             this.Panel_SecondaryForms = new System.Windows.Forms.TableLayoutPanel();
@@ -89,11 +91,14 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             treeNode3.Text = "Hash Tables";
             treeNode4.Name = "StreamFile";
             treeNode4.Text = "Stream File";
+            treeNode5.Name = "SoX";
+            treeNode5.Text = "SoX (Sound eXchange)";
             this.TreeViewPreferences.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,
             treeNode3,
-            treeNode4});
+            treeNode4,
+            treeNode5});
             this.TreeViewPreferences.Size = new System.Drawing.Size(177, 424);
             this.TreeViewPreferences.TabIndex = 0;
             this.TreeViewPreferences.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeViewPreferences_AfterSelect);
@@ -110,6 +115,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Controls.Add(this.Panel_SecondaryForms);
             this.Controls.Add(this.TreeViewPreferences);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Frm_MainPreferences";

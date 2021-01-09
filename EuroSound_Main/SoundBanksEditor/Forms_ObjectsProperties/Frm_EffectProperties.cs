@@ -197,7 +197,7 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             if (List_Samples.SelectedItems.Count > 0)
             {
-                string SampleName = "Test";
+                string SampleName = List_Samples.SelectedItems[0].Text;
                 uint SampleID = (uint)List_Samples.SelectedItems[0].Tag;
                 EXSample SelectedSample = EXSoundbanksFunctions.GetSoundSample(SelectedSound, SampleID);
 
@@ -217,15 +217,19 @@ namespace EuroSound_Application.SoundBanksEditor
                     }
                     else
                     {
-                        Frm_NewStreamSound AddStreamSound = new Frm_NewStreamSound(SelectedSample)
+                        using (Frm_NewStreamSound AddStreamSound = new Frm_NewStreamSound(SelectedSample))
                         {
-                            Text = GenericFunctions.TruncateLongString(SampleName, 25) + " - Properties",
-                            Tag = Tag,
-                            Owner = this,
-                            ShowInTaskbar = false
+                            AddStreamSound.Text = GenericFunctions.TruncateLongString(SampleName, 25) + " - Properties";
+                            AddStreamSound.Tag = Tag;
+                            AddStreamSound.Owner = this;
+                            AddStreamSound.ShowInTaskbar = false;
+                            AddStreamSound.ShowDialog();
+
+                            if (AddStreamSound.DialogResult == DialogResult.OK)
+                            {
+                                SelectedSample.FileRef = (short)AddStreamSound.SelectedSound;
+                            }
                         };
-                        AddStreamSound.ShowDialog();
-                        AddStreamSound.Dispose();
                     }
                 }
             }

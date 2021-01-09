@@ -181,6 +181,14 @@ namespace EuroSound_Application.GenerateSoundBankSFX
         {
             try
             {
+                long AlignOffset;
+
+                /*Align Bytes*/
+                AlignOffset = (BWriter.BaseStream.Position + 2048) & (2048 - 1);
+                BWriter.Seek(AlignOffset, SeekOrigin.Current);
+                BWriter.Align(16);
+
+
                 ProgressBarReset(Bar);
                 ProgressBarMaximum(Bar, FinalAudioDataDict.Count());
 
@@ -221,6 +229,14 @@ namespace EuroSound_Application.GenerateSoundBankSFX
         {
             try
             {
+                long AlignOffset;
+
+                /*Align Bytes*/
+                AlignOffset = (BWriter.BaseStream.Position + 3048) & (3048 - 1);
+                BWriter.Seek(AlignOffset, SeekOrigin.Current);
+                BWriter.Align(16);
+
+                /*Update UI*/
                 ProgressBarReset(Bar);
                 ProgressBarMaximum(Bar, FinalAudioDataDict.Count());
 

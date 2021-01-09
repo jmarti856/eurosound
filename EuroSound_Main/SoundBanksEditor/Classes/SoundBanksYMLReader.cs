@@ -170,50 +170,11 @@ namespace EuroSound_Application.SoundBanksEditor
                                 {
                                     int[] AudioProps = new int[3];
                                     string AudioPath = GetAudioFilePath(FilePath, Entry.Key, 0);
+
                                     if (File.Exists(AudioPath))
                                     {
-                                        string AudioPropertiesPath = GetAudioFilePath(FilePath, Entry.Key, 1);
-                                        if (File.Exists(AudioPropertiesPath))
-                                        {
-                                            AudioProps = GetAudioProperties(AudioPropertiesPath);
-                                        }
-                                        else
-                                        {
-                                            Reports.Add("1The file: " + AudioPropertiesPath + " can't be loaded because does not exists.");
-                                        }
-
-                                        if (EXSoundbanksFunctions.AudioIsValid(AudioPath))
-                                        {
-                                            string MD5AudioFilehash = GenericFunctions.CalculateMD5(AudioPath);
-                                            EXAudio NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath, true);
-                                            if (NewAudio.PCMdata != null)
-                                            {
-                                                if (!AudioDict.ContainsKey(MD5AudioFilehash))
-                                                {
-                                                    NewAudio.Flags = Convert.ToUInt16(AudioProps[0]);
-                                                    NewAudio.PSIsample = Convert.ToUInt32(AudioProps[1]);
-                                                    NewAudio.LoopOffset = Convert.ToUInt32(AudioProps[2]);
-
-                                                    //Add Audio to dictionary and tree node
-                                                    AudioDict.Add(MD5AudioFilehash, NewAudio);
-                                                    TreeNodeFunctions.TreeNodeAddNewNode("AudioData", MD5AudioFilehash, "AD_" + SampleName, 7, 7, "Audio", Color.Black, TreeViewControl);
-                                                }
-                                                else
-                                                {
-                                                    Reports.Add("1The file: " + AudioPath + " used by: " + SoundName + " has not been added because already exists.");
-                                                }
-                                            }
-                                            else
-                                            {
-                                                Reports.Add("0The file: " + AudioPath + " can't be readed, seems that is being used by another process.");
-                                            }
-
-                                            NewSample.ComboboxSelectedAudio = MD5AudioFilehash;
-                                        }
-                                        else
-                                        {
-                                            Reports.Add("0The file: " + AudioPath + " has not a valid format.");
-                                        }
+                                        string MD5AudioFilehash = GenericFunctions.CalculateMD5(AudioPath);
+                                        LoadAudio(AudioPath, AudioProps, SoundName, SampleName, TreeViewControl, AudioDict, NewSample, FilePath, Entry.Key, MD5AudioFilehash);
                                     }
                                     else
                                     {
@@ -428,6 +389,51 @@ namespace EuroSound_Application.SoundBanksEditor
             SndParams[11] = GetFlagsFromBoolArray(SndFlags);
 
             return SndParams;
+        }
+
+        private void LoadAudio(string AudioPath, int[] AudioProps, string SoundName, string SampleName, TreeView TreeViewControl, Dictionary<string, EXAudio> AudioDict, EXSample NewSample, string FilePath, int SampleKey, string MD5Hash)
+        {
+            if (GenericFunctions.AudioIsValid(AudioPath, 1, 22050))
+            {
+                string AudioPropertiesPath = GetAudioFilePath(FilePath, SampleKey, 1);
+                if (File.Exists(AudioPropertiesPath))
+                {
+                    AudioProps = GetAudioProperties(AudioPropertiesPath);
+                }
+                else
+                {
+                    Reports.Add("1The file: " + AudioPropertiesPath + " can't be loaded because does not exists.");
+                }
+
+                EXAudio NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);
+                if (NewAudio.PCMdata != null)
+                {
+                    if (!AudioDict.ContainsKey(MD5Hash))
+                    {
+                        NewAudio.Flags = Convert.ToUInt16(AudioProps[0]);
+                        NewAudio.PSIsample = Convert.ToUInt32(AudioProps[1]);
+                        NewAudio.LoopOffset = Convert.ToUInt32(AudioProps[2]);
+
+                        //Add Audio to dictionary and tree node
+                        AudioDict.Add(MD5Hash, NewAudio);
+                        TreeNodeFunctions.TreeNodeAddNewNode("AudioData", MD5Hash, "AD_" + SampleName, 7, 7, "Audio", Color.Black, TreeViewControl);
+                    }
+                    else
+                    {
+                        Reports.Add("1The file: " + AudioPath + " used by: " + SoundName + " has not been added because already exists.");
+                    }
+                }
+                else
+                {
+                    Reports.Add("0The file: " + AudioPath + " can't be readed, seems that is being used by another process or has a bad format.");
+                }
+
+                NewSample.ComboboxSelectedAudio = MD5Hash;
+            }
+            else
+            {
+                Reports.Add("0The file: " + AudioPath + " has not a valid format.");
+            }
         }
 
         private void ShowErrorsWarningsList(string FilePath)

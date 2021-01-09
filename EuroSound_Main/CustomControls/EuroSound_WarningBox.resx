@@ -120,4 +120,22 @@
   <data name="Label_Text.Text" xml:space="preserve">
     <value>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAICAQAAEABADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAwMDAAICAgAAAAP8AAP8AAAD//wD/AAAA/wD/AP//
+        AAD///8AAAAIiIiIiIiIiIiIiIiIAAAAiIiIiIiIiIiIiIiIiIAAMAAAAAAAAAAAAAAACIiIA7u7u7u7
+        u7u7u7u7u3CIiDu7u7u7u7u7u7u7u7u3CIg7u7u7u7u7u7u7u7u7uwiIO7u7u7u7twB7u7u7u7sIgDu7
+        u7u7u7AAC7u7u7u3CIADu7u7u7uwAAu7u7u7sIgAA7u7u7u7twB7u7u7u3CIAAA7u7u7u7u7u7u7u7sI
+        gAAAO7u7u7u7C7u7u7u3CIAAAAO7u7u7twe7u7u7sIgAAAADu7u7u7MDu7u7u3CIAAAAADu7u7uwALu7
+        u7sIgAAAAAA7u7u7cAB7u7u3CIAAAAAAA7u7uzAAO7u7sIgAAAAAAAO7u7sAAAu7u3CIAAAAAAAAO7u7
+        AAALu7sIgAAAAAAAADu7uwAAC7u3CIAAAAAAAAADu7sAAAu7sIgAAAAAAAAAA7u7AAALu3CIAAAAAAAA
+        AAA7u3AAe7sIgAAAAAAAAAAAO7u7u7u3CIAAAAAAAAAAAAO7u7u7sIgAAAAAAAAAAAADu7u7u3CIAAAA
+        AAAAAAAAADu7u7sIgAAAAAAAAAAAAAA7u7u3CIAAAAAAAAAAAAAAA7u7sIgAAAAAAAAAAAAAAAO7u3CA
+        AAAAAAAAAAAAAAAAO7cAAAAAAAAAAAAAAAAAAAMzAAAAAAAAAAD4AAAD8AAAAcAAAACAAAAAAAAAAAAA
+        AAAAAAABAAAAAYAAAAOAAAADwAAAB8AAAAfgAAAP4AAAD/AAAB/wAAAf+AAAP/gAAD/8AAB//AAAf/4A
+        AP/+AAD//wAB//8AAf//gAP//4AD///AB///wAf//+AP///gH///8H////j//w==
+</value>
+  </data>
 </root>

@@ -38,103 +38,99 @@ namespace EuroSound_Application
                     {
                         if (FileReader.FileIsCorrect(BReader))
                         {
-                            uint Version, SoundsListDataOffset, AudioDataOffset, File_Hashcode;
+                            uint SoundsListDataOffset, AudioDataOffset, File_Hashcode;
                             sbyte TypeOfStoredData;
 
-                            /*FileVersion*/
-                            Version = BReader.ReadUInt32();
-                            if (Version == 11)
+                            /*Type of stored data*/
+                            TypeOfStoredData = BReader.ReadSByte();
+                            if (TypeOfStoredData == 0)
                             {
-                                /*Type of stored data*/
-                                TypeOfStoredData = BReader.ReadSByte();
-                                if (TypeOfStoredData == 0)
+                                //*===============================================================================================
+                                //* ESF FILE
+                                //*===============================================================================================
+                                /*File Hashcode*/
+                                File_Hashcode = BReader.ReadUInt32();
+                                /*Latest SoundID value*/
+                                BReader.ReadUInt32();
+                                /*TreeView Data*/
+                                BReader.ReadUInt32();
+                                /*SoundsListData Offset -- Not used for now*/
+                                SoundsListDataOffset = BReader.ReadUInt32();
+                                /*AudioData Offset -- Not used for now*/
+                                AudioDataOffset = BReader.ReadUInt32();
+                                /*FullSize*/
+                                BReader.ReadUInt32();
+                                /*File Name*/
+                                BReader.ReadString();
+
+                                /*--------------------------[SOUNDS LIST DATA]--------------------------*/
+                                BReader.BaseStream.Position = (SoundsListDataOffset);
+                                SectionsReader.ReadSoundsListData(BReader, SoundsList);
+
+                                /*--------------------------[AUDIO DATA]--------------------------*/
+                                BReader.BaseStream.Position = (AudioDataOffset);
+                                SectionsReader.ReadAudioDataDictionary(BReader, AudiosList);
+
+                                //*===============================================================================================
+                                //* CREATE SFX FILE
+                                //*===============================================================================================
+                                WindowsRegistryFunctions WRegistryFunctions = new WindowsRegistryFunctions();
+                                GlobalPreferences.SFXOutputPath = WRegistryFunctions.LoadGeneralPreferences()[0];
+
+                                string FileName = "HC" + File_Hashcode.ToString("X8").Substring(2);
+
+                                if (Directory.Exists(GlobalPreferences.SFXOutputPath))
                                 {
-                                    //*===============================================================================================
-                                    //* ESF FILE
-                                    //*===============================================================================================
-                                    /*File Hashcode*/
-                                    File_Hashcode = BReader.ReadUInt32();
-                                    /*Latest SoundID value*/
-                                    BReader.ReadUInt32();
-                                    /*TreeView Data*/
-                                    BReader.ReadUInt32();
-                                    /*SoundsListData Offset -- Not used for now*/
-                                    SoundsListDataOffset = BReader.ReadUInt32();
-                                    /*AudioData Offset -- Not used for now*/
-                                    AudioDataOffset = BReader.ReadUInt32();
-                                    /*FullSize*/
-                                    BReader.ReadUInt32();
-                                    /*File Name*/
-                                    BReader.ReadString();
-
-                                    /*--------------------------[SOUNDS LIST DATA]--------------------------*/
-                                    BReader.BaseStream.Position = (SoundsListDataOffset);
-                                    SectionsReader.ReadSoundsListData(BReader, SoundsList);
-
-                                    /*--------------------------[AUDIO DATA]--------------------------*/
-                                    BReader.BaseStream.Position = (AudioDataOffset);
-                                    SectionsReader.ReadAudioDataDictionary(BReader, AudiosList);
+                                    BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
 
                                     //*===============================================================================================
-                                    //* CREATE SFX FILE
+                                    //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED (20%)
                                     //*===============================================================================================
-                                    WindowsRegistryFunctions WRegistryFunctions = new WindowsRegistryFunctions();
-                                    GlobalPreferences.SFXOutputPath = WRegistryFunctions.LoadGeneralPreferences()[0];
+                                    //Discard SFXs that has checked as "no output"
+                                    FinalSoundsDict = SFXGenerator.GetFinalSoundsDictionary(SoundsList, null, null);
 
-                                    string FileName = "HC" + File_Hashcode.ToString("X8").Substring(2);
+                                    //*===============================================================================================
+                                    //* STEP 2: DISCARD AUDIO DATA THAT SHOULD HAVE BEEN PURGED (40%)
+                                    //*===============================================================================================
+                                    List<string> UsedAudios = EXSoundbanksFunctions.GetUsedAudios(FinalSoundsDict, true);
 
-                                    if (Directory.Exists(GlobalPreferences.SFXOutputPath))
-                                    {
-                                        BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
+                                    //Add data
+                                    FinalAudioDataDict = SFXGenerator.GetFinalAudioDictionary(UsedAudios, AudiosList, null);
 
-                                        //*===============================================================================================
-                                        //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED (20%)
-                                        //*===============================================================================================
-                                        //Discard SFXs that has checked as "no output"
-                                        FinalSoundsDict = SFXGenerator.GetFinalSoundsDictionary(SoundsList, null, null);
+                                    //*===============================================================================================
+                                    //* STEP 3: START WRITTING (80%)
+                                    //*===============================================================================================
+                                    //--------------------------------------[WRITE FILE HEADER]--------------------------------------
+                                    /*Write Data*/
+                                    SFXGenerator.WriteFileHeader(BWriter, File_Hashcode, null);
 
-                                        //*===============================================================================================
-                                        //* STEP 2: DISCARD AUDIO DATA THAT SHOULD HAVE BEEN PURGED (40%)
-                                        //*===============================================================================================
-                                        List<string> UsedAudios = EXSoundbanksFunctions.GetUsedAudios(FinalSoundsDict, true);
+                                    //--------------------------------------[Write SECTIONS]--------------------------------------
+                                    /*Write Data*/
+                                    SFXGenerator.WriteFileSections(BWriter, GenericFunctions.CountNumberOfSamples(FinalSoundsDict), null);
 
-                                        //Add data
-                                        FinalAudioDataDict = SFXGenerator.GetFinalAudioDictionary(UsedAudios, AudiosList, null);
+                                    //--------------------------------------[SECTION SFX elements]--------------------------------------
+                                    /*Write Data*/
+                                    SFXGenerator.WriteSFXSection(BWriter, FinalSoundsDict, FinalAudioDataDict, null, null);
 
-                                        //*===============================================================================================
-                                        //* STEP 3: START WRITTING (80%)
-                                        //*===============================================================================================
-                                        //--------------------------------------[WRITE FILE HEADER]--------------------------------------
-                                        /*Write Data*/
-                                        SFXGenerator.WriteFileHeader(BWriter, File_Hashcode, null);
+                                    //--------------------------------------[SECTION Sample info elements]--------------------------------------
+                                    /*Write Data*/
+                                    SFXGenerator.WriteSampleInfoSection(BWriter, FinalAudioDataDict, null, null);
 
-                                        //--------------------------------------[Write SECTIONS]--------------------------------------
-                                        /*Write Data*/
-                                        SFXGenerator.WriteFileSections(BWriter, GenericFunctions.CountNumberOfSamples(FinalSoundsDict), null);
+                                    //--------------------------------------[SECTION Sample data]--------------------------------------
+                                    /*Write Data*/
+                                    SFXGenerator.WriteSampleDataSection(BWriter, FinalAudioDataDict, null, null);
 
-                                        //--------------------------------------[SECTION SFX elements]--------------------------------------
-                                        /*Write Data*/
-                                        SFXGenerator.WriteSFXSection(BWriter, FinalSoundsDict, FinalAudioDataDict, null, null);
+                                    //*===============================================================================================
+                                    //* STEP 4: WRITE FINAL DATA (80%)
+                                    //*===============================================================================================
+                                    /*Write Data*/
+                                    SFXGenerator.WriteFinalOffsets(BWriter, null, null);
 
-                                        //--------------------------------------[SECTION Sample info elements]--------------------------------------
-                                        /*Write Data*/
-                                        SFXGenerator.WriteSampleInfoSection(BWriter, FinalAudioDataDict, null, null);
-
-                                        //--------------------------------------[SECTION Sample data]--------------------------------------
-                                        /*Write Data*/
-                                        SFXGenerator.WriteSampleDataSection(BWriter, FinalAudioDataDict, null, null);
-
-                                        //*===============================================================================================
-                                        //* STEP 4: WRITE FINAL DATA (80%)
-                                        //*===============================================================================================
-                                        /*Write Data*/
-                                        SFXGenerator.WriteFinalOffsets(BWriter, null, null);
-
-                                        /*Close file*/
-                                        BWriter.Close();
-                                    }
+                                    /*Close file*/
+                                    BWriter.Close();
                                 }
                             }
+
                         }
                     }
                 }

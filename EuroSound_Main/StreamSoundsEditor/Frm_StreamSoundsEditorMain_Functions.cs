@@ -30,8 +30,11 @@ namespace EuroSound_Application.StreamSounds
 
         private void RemoveSound()
         {
-            EXStreamSoundsFunctions.RemoveStreamedSound(TreeView_StreamData.SelectedNode.Name, StreamSoundsList);
-            TreeNodeFunctions.TreeNodeDeleteNode(TreeView_StreamData, TreeView_StreamData.SelectedNode, TreeView_StreamData.SelectedNode.Tag.ToString());
+            if (TreeView_StreamData.SelectedNode != null)
+            {
+                EXStreamSoundsFunctions.RemoveStreamedSound(TreeView_StreamData.SelectedNode.Name, StreamSoundsList);
+                TreeNodeFunctions.TreeNodeDeleteNode(TreeView_StreamData, TreeView_StreamData.SelectedNode, TreeView_StreamData.SelectedNode.Tag.ToString());
+            }
         }
 
         private void OpenSoundPropertiesForm()

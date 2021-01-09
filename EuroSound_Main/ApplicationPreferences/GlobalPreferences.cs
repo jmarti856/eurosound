@@ -28,6 +28,9 @@
         //Frm_StreamFile
         internal static string StreamFilePath;
 
+        //Frm_SoxPrefs
+        internal static string SoXPath;
+
         //*===============================================================================================
         //* OTHER TEMPORAL VARIABLES
         //*===============================================================================================

@@ -39,7 +39,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Groupbox_Shell = new System.Windows.Forms.GroupBox();
             this.ButtonRegister_FileTypes = new System.Windows.Forms.Button();
             this.Label_Expl = new System.Windows.Forms.Label();
-            this.FolderBrowser_OutputPath = new System.Windows.Forms.FolderBrowserDialog();
             this.GroupBox_MusicOutputPath = new System.Windows.Forms.GroupBox();
             this.Button_MusicOutputPath = new System.Windows.Forms.Button();
             this.Textbox_MusicOutputPath = new System.Windows.Forms.TextBox();
@@ -298,7 +297,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         private System.Windows.Forms.GroupBox Groupbox_Shell;
         private System.Windows.Forms.Label Label_Expl;
         private System.Windows.Forms.Button ButtonRegister_FileTypes;
-        private System.Windows.Forms.FolderBrowserDialog FolderBrowser_OutputPath;
         private System.Windows.Forms.GroupBox GroupBox_MusicOutputPath;
         private System.Windows.Forms.Button Button_MusicOutputPath;
         private System.Windows.Forms.TextBox Textbox_MusicOutputPath;

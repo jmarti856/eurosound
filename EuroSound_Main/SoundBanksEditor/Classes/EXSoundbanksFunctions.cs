@@ -162,30 +162,7 @@ namespace EuroSound_Application.SoundBanksEditor
             return UsedAudios;
         }
 
-        internal static bool AudioIsValid(string FilePath)
-        {
-            bool AudioIsCorrect = false;
-            using (WaveFileReader AudioReader = new WaveFileReader(FilePath))
-            {
-                int Rate, Bits;
-                string Encoding;
-
-                Rate = AudioReader.WaveFormat.SampleRate;
-                Bits = AudioReader.WaveFormat.BitsPerSample;
-                Encoding = AudioReader.WaveFormat.Encoding.ToString();
-
-                if (Encoding.Equals("Pcm") && Bits == 16 && Rate == 22050)
-                {
-                    AudioIsCorrect = true;
-                }
-
-                AudioReader.Close();
-            }
-
-            return AudioIsCorrect;
-        }
-
-        internal static EXAudio LoadAudioData(string FilePath, bool ForceMono)
+        internal static EXAudio LoadAudioData(string FilePath)
         {
             int NumberOfChannels;
 
@@ -210,15 +187,10 @@ namespace EuroSound_Application.SoundBanksEditor
                         LoopOffset = 0,
                         PSIsample = 0
                     };
-
-                    if (ForceMono)
-                    {
-                        Audio.Channels = 1;
-                    }
                     AudioReader.Close();
 
                     /*Get PCM data*/
-                    Audio.PCMdata = AudioLibrary.GetWavPCMData(FilePath, NumberOfChannels, true);
+                    Audio.PCMdata = AudioLibrary.GetWavPCMData(FilePath);
                     if (Audio.PCMdata != null)
                     {
                         Audio.DataSize = Convert.ToUInt32(Audio.PCMdata.Length);

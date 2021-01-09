@@ -29,6 +29,7 @@ namespace CustomControls
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EuroSound_NewFileProject));
             this.GroupBox_Properties = new System.Windows.Forms.GroupBox();
             this.Textbox_ProjectName = new System.Windows.Forms.TextBox();
             this.Label_ProjectName = new System.Windows.Forms.Label();
@@ -133,6 +134,7 @@ namespace CustomControls
             this.Controls.Add(this.Label_Combobox);
             this.Controls.Add(this.GroupBox_Properties);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EuroSound_NewFileProject";

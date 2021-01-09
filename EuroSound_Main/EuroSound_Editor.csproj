@@ -71,6 +71,9 @@
     <Reference Include="NAudio, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.10.0\lib\net35\NAudio.dll</HintPath>
     </Reference>
+    <Reference Include="SoxSharp, Version=1.3.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SoxSharp.1.3.5\lib\net45\SoxSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Syroot.BinaryData, Version=5.2.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syroot.BinaryData.5.2.2\lib\net452\Syroot.BinaryData.dll</HintPath>
     </Reference>
@@ -78,15 +81,15 @@
       <HintPath>..\packages\Syroot.BinaryData.Core.5.2.0\lib\net452\Syroot.BinaryData.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard1.1\System.Buffers.dll</HintPath>
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\netstandard1.1\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="System.Memory, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.2\lib\netstandard1.1\System.Memory.dll</HintPath>
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\netstandard1.1\System.Memory.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -100,7 +103,7 @@
     <Reference Include="UIAutomationClient" />
     <Reference Include="UIAutomationTypes" />
     <Reference Include="YamlDotNet, Version=9.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
-      <HintPath>..\packages\YamlDotNet.9.1.0\lib\net45\YamlDotNet.dll</HintPath>
+      <HintPath>..\packages\YamlDotNet.9.1.1\lib\net45\YamlDotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +115,12 @@
     </Compile>
     <Compile Include="ApplicationPreferences\Sub-Forms\Frm_GeneralPreferences.Designer.cs">
       <DependentUpon>Frm_GeneralPreferences.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_SoxPrefs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_SoxPrefs.Designer.cs">
+      <DependentUpon>Frm_SoxPrefs.cs</DependentUpon>
     </Compile>
     <Compile Include="ApplicationPreferences\Sub-Forms\Frm_StreamFile.cs">
       <SubType>Form</SubType>
@@ -343,6 +352,9 @@
     <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_GeneralPreferences.resx">
       <DependentUpon>Frm_GeneralPreferences.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_SoxPrefs.resx">
+      <DependentUpon>Frm_SoxPrefs.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_StreamFile.resx">
       <DependentUpon>Frm_StreamFile.cs</DependentUpon>
     </EmbeddedResource>
@@ -401,7 +413,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="app.config" />
     <EmbeddedResource Include="SoundBanksEditor\Forms_ObjectsProperties\Frm_AudioProperties.resx">
       <DependentUpon>Frm_AudioProperties.cs</DependentUpon>
     </EmbeddedResource>
