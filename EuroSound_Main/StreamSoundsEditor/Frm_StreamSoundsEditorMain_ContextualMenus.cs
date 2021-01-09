@@ -44,7 +44,6 @@ namespace EuroSound_Application.StreamSounds
                         StreamSoundsList.Add(SoundID, Sound);
                     }
 
-                    ProjectInfo.StreamedSoundID += 1;
                     ProjectInfo.FileHasBeenModified = true;
                 }
             }

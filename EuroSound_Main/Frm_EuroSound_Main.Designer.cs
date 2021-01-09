@@ -29,6 +29,7 @@ namespace EuroSound_Application
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_EuroSound_Main));
             this.MenuStrip_MainMenu = new System.Windows.Forms.MenuStrip();
             this.MainMenu_File = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,15 +51,21 @@ namespace EuroSound_Application
             this.MainMenuTools_Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.MainMenuTools_BackupSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenuTools_RestoreSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.MainMenuTools_Separator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.MainMenuTools_ClearTempFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu_Help = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemHelp_About = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemHelp_OnlineHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.MainStatusBar = new CustomStatusBar.StatusBarToolTips();
             this.File = new System.Windows.Forms.StatusBarPanel();
-            this.MainMenuTools_Separator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.MainMenuTools_ClearTempFiles = new System.Windows.Forms.ToolStripMenuItem();
+            this.EuroSoundTrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.EuroSoundTrayIconMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.EuroSoundTrayIcon_Restore = new System.Windows.Forms.ToolStripMenuItem();
+            this.EuroSoundTrayIcon_Separator = new System.Windows.Forms.ToolStripSeparator();
+            this.EuroSoundTrayIcon_Close = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip_MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.File)).BeginInit();
+            this.EuroSoundTrayIconMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuStrip_MainMenu
@@ -160,31 +167,31 @@ namespace EuroSound_Application
             // MenuItemWindow_Cascade
             // 
             this.MenuItemWindow_Cascade.Name = "MenuItemWindow_Cascade";
-            this.MenuItemWindow_Cascade.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemWindow_Cascade.Size = new System.Drawing.Size(150, 22);
             this.MenuItemWindow_Cascade.Text = "Cascade";
             // 
             // MenuItemWindow_TileH
             // 
             this.MenuItemWindow_TileH.Name = "MenuItemWindow_TileH";
-            this.MenuItemWindow_TileH.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemWindow_TileH.Size = new System.Drawing.Size(150, 22);
             this.MenuItemWindow_TileH.Text = "Tile Horizontal";
             // 
             // MenuItemWindow_TileV
             // 
             this.MenuItemWindow_TileV.Name = "MenuItemWindow_TileV";
-            this.MenuItemWindow_TileV.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemWindow_TileV.Size = new System.Drawing.Size(150, 22);
             this.MenuItemWindow_TileV.Text = "Tile Vertical";
             // 
             // MenuItemWindow_Arrange
             // 
             this.MenuItemWindow_Arrange.Name = "MenuItemWindow_Arrange";
-            this.MenuItemWindow_Arrange.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemWindow_Arrange.Size = new System.Drawing.Size(150, 22);
             this.MenuItemWindow_Arrange.Text = "Arrange Icons";
             // 
             // MenuItemWindow_Separator
             // 
             this.MenuItemWindow_Separator.Name = "MenuItemWindow_Separator";
-            this.MenuItemWindow_Separator.Size = new System.Drawing.Size(177, 6);
+            this.MenuItemWindow_Separator.Size = new System.Drawing.Size(147, 6);
             // 
             // MainMenu_Tools
             // 
@@ -224,6 +231,18 @@ namespace EuroSound_Application
             this.MainMenuTools_RestoreSettings.Size = new System.Drawing.Size(194, 22);
             this.MainMenuTools_RestoreSettings.Text = "Restore Settings...";
             this.MainMenuTools_RestoreSettings.Click += new System.EventHandler(this.MainMenuTools_RestoreSettings_Click);
+            // 
+            // MainMenuTools_Separator2
+            // 
+            this.MainMenuTools_Separator2.Name = "MainMenuTools_Separator2";
+            this.MainMenuTools_Separator2.Size = new System.Drawing.Size(191, 6);
+            // 
+            // MainMenuTools_ClearTempFiles
+            // 
+            this.MainMenuTools_ClearTempFiles.Name = "MainMenuTools_ClearTempFiles";
+            this.MainMenuTools_ClearTempFiles.Size = new System.Drawing.Size(194, 22);
+            this.MainMenuTools_ClearTempFiles.Text = "Delete Temporal Files...";
+            this.MainMenuTools_ClearTempFiles.Click += new System.EventHandler(this.MainMenuTools_ClearTempFiles_Click);
             // 
             // MainMenu_Help
             // 
@@ -265,17 +284,43 @@ namespace EuroSound_Application
             this.File.Name = "File";
             this.File.Width = 702;
             // 
-            // MainMenuTools_Separator2
+            // EuroSoundTrayIcon
             // 
-            this.MainMenuTools_Separator2.Name = "MainMenuTools_Separator2";
-            this.MainMenuTools_Separator2.Size = new System.Drawing.Size(191, 6);
+            this.EuroSoundTrayIcon.BalloonTipText = "Double click to restore";
+            this.EuroSoundTrayIcon.BalloonTipTitle = "EuroSound";
+            this.EuroSoundTrayIcon.ContextMenuStrip = this.EuroSoundTrayIconMenu;
+            this.EuroSoundTrayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("EuroSoundTrayIcon.Icon")));
+            this.EuroSoundTrayIcon.Text = "EuroSound";
+            this.EuroSoundTrayIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EuroSoundTrayIcon_MouseClick);
             // 
-            // MainMenuTools_ClearTempFiles
+            // EuroSoundTrayIconMenu
             // 
-            this.MainMenuTools_ClearTempFiles.Name = "MainMenuTools_ClearTempFiles";
-            this.MainMenuTools_ClearTempFiles.Size = new System.Drawing.Size(194, 22);
-            this.MainMenuTools_ClearTempFiles.Text = "Delete Temporal Files...";
-            this.MainMenuTools_ClearTempFiles.Click += new System.EventHandler(this.MainMenuTools_ClearTempFiles_Click);
+            this.EuroSoundTrayIconMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.EuroSoundTrayIcon_Restore,
+            this.EuroSoundTrayIcon_Separator,
+            this.EuroSoundTrayIcon_Close});
+            this.EuroSoundTrayIconMenu.Name = "EuroSoundTrayIconMenu";
+            this.EuroSoundTrayIconMenu.Size = new System.Drawing.Size(135, 54);
+            // 
+            // EuroSoundTrayIcon_Restore
+            // 
+            this.EuroSoundTrayIcon_Restore.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EuroSoundTrayIcon_Restore.Name = "EuroSoundTrayIcon_Restore";
+            this.EuroSoundTrayIcon_Restore.Size = new System.Drawing.Size(134, 22);
+            this.EuroSoundTrayIcon_Restore.Text = "EuroSound";
+            this.EuroSoundTrayIcon_Restore.Click += new System.EventHandler(this.EuroSoundTrayIcon_Restore_Click);
+            // 
+            // EuroSoundTrayIcon_Separator
+            // 
+            this.EuroSoundTrayIcon_Separator.Name = "EuroSoundTrayIcon_Separator";
+            this.EuroSoundTrayIcon_Separator.Size = new System.Drawing.Size(131, 6);
+            // 
+            // EuroSoundTrayIcon_Close
+            // 
+            this.EuroSoundTrayIcon_Close.Name = "EuroSoundTrayIcon_Close";
+            this.EuroSoundTrayIcon_Close.Size = new System.Drawing.Size(134, 22);
+            this.EuroSoundTrayIcon_Close.Text = "Close";
+            this.EuroSoundTrayIcon_Close.Click += new System.EventHandler(this.EuroSoundTrayIcon_Close_Click);
             // 
             // Frm_EuroSound_Main
             // 
@@ -291,13 +336,15 @@ namespace EuroSound_Application
             this.Name = "Frm_EuroSound_Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "EuroSound";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_EuroSound_Main_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Frm_EuroSound_Main_FormClosed);
             this.Load += new System.EventHandler(this.Frm_EuroSound_Main_Load);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Frm_EuroSound_Main_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Frm_EuroSound_Main_DragEnter);
+            this.Resize += new System.EventHandler(this.Frm_EuroSound_Main_Resize);
             this.MenuStrip_MainMenu.ResumeLayout(false);
             this.MenuStrip_MainMenu.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.File)).EndInit();
+            this.EuroSoundTrayIconMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -331,5 +378,10 @@ namespace EuroSound_Application
         private System.Windows.Forms.ToolStripMenuItem MainMenuTools_RestoreSettings;
         private System.Windows.Forms.ToolStripSeparator MainMenuTools_Separator2;
         private System.Windows.Forms.ToolStripMenuItem MainMenuTools_ClearTempFiles;
+        private System.Windows.Forms.NotifyIcon EuroSoundTrayIcon;
+        private System.Windows.Forms.ContextMenuStrip EuroSoundTrayIconMenu;
+        private System.Windows.Forms.ToolStripMenuItem EuroSoundTrayIcon_Restore;
+        private System.Windows.Forms.ToolStripSeparator EuroSoundTrayIcon_Separator;
+        private System.Windows.Forms.ToolStripMenuItem EuroSoundTrayIcon_Close;
     }
 }

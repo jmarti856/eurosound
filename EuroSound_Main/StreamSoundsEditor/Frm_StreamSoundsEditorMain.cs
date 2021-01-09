@@ -121,42 +121,43 @@ namespace EuroSound_Application.StreamSounds
 
         private void Frm_StreamSoundsEditorMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //Stop thread if active
-            if (UpdateImaData != null)
+            if (e.CloseReason == CloseReason.MdiFormClosing || e.CloseReason == CloseReason.UserClosing)
             {
-                UpdateImaData.Abort();
-            }
+                //Stop thread if active
+                if (UpdateImaData != null)
+                {
+                    UpdateImaData.Abort();
+                }
 
-            //Quit form
-            if (ProjectInfo.FileHasBeenModified)
-            {
-                DialogResult dialogResult = MessageBox.Show("Save changes to " + ProjectInfo.FileName + "?", "EuroSound", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
-                if (dialogResult == DialogResult.Yes)
+                //Ask user to save if file is modified
+                if (ProjectInfo.FileHasBeenModified)
                 {
-                    e.Cancel = true;
-                    LoadedFile = SaveDocument(LoadedFile, TreeView_StreamData, StreamSoundsList, ProjectInfo);
-                    ProjectInfo.FileHasBeenModified = false;
-                    e.Cancel = false;
+                    DialogResult dialogResult = MessageBox.Show("Save changes to " + ProjectInfo.FileName + "?", "EuroSound", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        LoadedFile = SaveDocument(LoadedFile, TreeView_StreamData, StreamSoundsList, ProjectInfo);
+                        ProjectInfo.FileHasBeenModified = false;
+                        GenericFunctions.SetCurrentFileLabel("");
+                        MdiParent.Text = "EuroSound";
+                        Close();
+                    }
+                    else if (dialogResult == DialogResult.No)
+                    {
+                        ProjectInfo.FileHasBeenModified = false;
+                        GenericFunctions.SetCurrentFileLabel("");
+                        MdiParent.Text = "EuroSound";
+                        Close();
+                    }
+                    else if (dialogResult == DialogResult.Cancel)
+                    {
+                        e.Cancel = true;
+                    }
+                }
+                else
+                {
                     GenericFunctions.SetCurrentFileLabel("");
                     MdiParent.Text = "EuroSound";
                 }
-                else if (dialogResult == DialogResult.No)
-                {
-                    GlobalPreferences.CancelApplicationClose = false;
-                    e.Cancel = false;
-                    GenericFunctions.SetCurrentFileLabel("");
-                    MdiParent.Text = "EuroSound";
-                }
-                else if (dialogResult == DialogResult.Cancel)
-                {
-                    GlobalPreferences.CancelApplicationClose = true;
-                    e.Cancel = true;
-                }
-            }
-            else
-            {
-                GenericFunctions.SetCurrentFileLabel("");
-                MdiParent.Text = "EuroSound";
             }
         }
 

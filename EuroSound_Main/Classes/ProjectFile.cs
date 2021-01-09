@@ -13,7 +13,6 @@ namespace EuroSound_Application
         public uint SoundID = 0;
         public uint SampleID = 0;
         public uint AudioID = 0;
-        public uint StreamedSoundID = 0;
         public bool FileHasBeenModified = false;
 
         public void ClearSoundBankStoredData(Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, TreeView TreeViewControl)

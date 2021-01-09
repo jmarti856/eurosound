@@ -167,6 +167,9 @@ namespace EuroSound_Application.SoundBanksEditor
             }
             else
             {
+                Textbox_InnerRadius.Text = "0";
+                Textbox_OuterRadius.Text = "0";
+                cbx_trackingtype.SelectedIndex = 0;
                 MessageBox.Show(GenericFunctions.ResourcesManager.GetString("HashcodeNotFoundInSFXDataHashTable"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }

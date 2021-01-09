@@ -14,12 +14,9 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* GLOBAL VARS
         //*===============================================================================================
-        private string ArgumentFileToLoad;
-
-        public Frm_EuroSound_Splash(string FileToLoad)
+        public Frm_EuroSound_Splash()
         {
             InitializeComponent();
-            ArgumentFileToLoad = FileToLoad;
         }
 
         //*===============================================================================================
@@ -104,14 +101,7 @@ namespace EuroSound_Application
             }
 
             //-----------------------------------------[Open Form]----------------------------------------
-            using (Frm_EuroSound_Main EuroSoundMain = new Frm_EuroSound_Main(ArgumentFileToLoad))
-            {
-                EuroSoundMain.Owner = this;
-                Hide();
-                EuroSoundMain.ShowDialog();
-            };
-            Close();
-            Dispose();
+            DialogResult = DialogResult.OK;
         }
 
         //*===============================================================================================

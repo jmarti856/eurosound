@@ -34,7 +34,6 @@
         //*===============================================================================================
         //* OTHER TEMPORAL VARIABLES
         //*===============================================================================================
-        internal static bool CancelApplicationClose = false;
         internal static bool ShowWarningMessagesBox = true;
         internal static bool StatusBar_ToolTipMode;
     }

@@ -35,10 +35,6 @@ namespace EuroSound_Application.StreamSounds
             this.Button_AddMarker = new System.Windows.Forms.Button();
             this.Numeric_MarkerLoopStart = new System.Windows.Forms.NumericUpDown();
             this.Label_LoopStart = new System.Windows.Forms.Label();
-            this.Textbox_Extra = new System.Windows.Forms.TextBox();
-            this.Label_Extra = new System.Windows.Forms.Label();
-            this.Textbox_Flags = new System.Windows.Forms.TextBox();
-            this.Label_Flags = new System.Windows.Forms.Label();
             this.ComboBox_MarkerType = new System.Windows.Forms.ComboBox();
             this.Label_Type = new System.Windows.Forms.Label();
             this.Numeric_MarkerPosition = new System.Windows.Forms.NumericUpDown();
@@ -48,6 +44,7 @@ namespace EuroSound_Application.StreamSounds
             this.Label_StartMarkers = new System.Windows.Forms.Label();
             this.ListView_Markers = new System.Windows.Forms.ListView();
             this.Col_MarkerPos = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_IsInstant = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_StateA = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_StateB = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_StartMarkerCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -57,6 +54,7 @@ namespace EuroSound_Application.StreamSounds
             this.Col_Position = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_MusicMarkerType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Flags = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_Extra = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_LoopStart = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_MarkerCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_LoopMarkerCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -73,10 +71,6 @@ namespace EuroSound_Application.StreamSounds
             this.GroupBox_MarkerData.Controls.Add(this.Button_AddMarker);
             this.GroupBox_MarkerData.Controls.Add(this.Numeric_MarkerLoopStart);
             this.GroupBox_MarkerData.Controls.Add(this.Label_LoopStart);
-            this.GroupBox_MarkerData.Controls.Add(this.Textbox_Extra);
-            this.GroupBox_MarkerData.Controls.Add(this.Label_Extra);
-            this.GroupBox_MarkerData.Controls.Add(this.Textbox_Flags);
-            this.GroupBox_MarkerData.Controls.Add(this.Label_Flags);
             this.GroupBox_MarkerData.Controls.Add(this.ComboBox_MarkerType);
             this.GroupBox_MarkerData.Controls.Add(this.Label_Type);
             this.GroupBox_MarkerData.Controls.Add(this.Numeric_MarkerPosition);
@@ -131,57 +125,19 @@ namespace EuroSound_Application.StreamSounds
             this.Label_LoopStart.TabIndex = 8;
             this.Label_LoopStart.Text = "Loop Start:";
             // 
-            // Textbox_Extra
-            // 
-            this.Textbox_Extra.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Textbox_Extra.Location = new System.Drawing.Point(287, 53);
-            this.Textbox_Extra.Name = "Textbox_Extra";
-            this.Textbox_Extra.ReadOnly = true;
-            this.Textbox_Extra.Size = new System.Drawing.Size(70, 20);
-            this.Textbox_Extra.TabIndex = 7;
-            this.Textbox_Extra.Text = "0";
-            // 
-            // Label_Extra
-            // 
-            this.Label_Extra.AutoSize = true;
-            this.Label_Extra.Location = new System.Drawing.Point(246, 56);
-            this.Label_Extra.Name = "Label_Extra";
-            this.Label_Extra.Size = new System.Drawing.Size(34, 13);
-            this.Label_Extra.TabIndex = 6;
-            this.Label_Extra.Text = "Extra:";
-            // 
-            // Textbox_Flags
-            // 
-            this.Textbox_Flags.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Textbox_Flags.Location = new System.Drawing.Point(226, 26);
-            this.Textbox_Flags.Name = "Textbox_Flags";
-            this.Textbox_Flags.ReadOnly = true;
-            this.Textbox_Flags.Size = new System.Drawing.Size(100, 20);
-            this.Textbox_Flags.TabIndex = 5;
-            this.Textbox_Flags.Text = "2";
-            // 
-            // Label_Flags
-            // 
-            this.Label_Flags.AutoSize = true;
-            this.Label_Flags.Location = new System.Drawing.Point(185, 29);
-            this.Label_Flags.Name = "Label_Flags";
-            this.Label_Flags.Size = new System.Drawing.Size(35, 13);
-            this.Label_Flags.TabIndex = 4;
-            this.Label_Flags.Text = "Flags:";
-            // 
             // ComboBox_MarkerType
             // 
             this.ComboBox_MarkerType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ComboBox_MarkerType.FormattingEnabled = true;
-            this.ComboBox_MarkerType.Location = new System.Drawing.Point(59, 53);
+            this.ComboBox_MarkerType.Location = new System.Drawing.Point(46, 25);
             this.ComboBox_MarkerType.Name = "ComboBox_MarkerType";
-            this.ComboBox_MarkerType.Size = new System.Drawing.Size(181, 21);
+            this.ComboBox_MarkerType.Size = new System.Drawing.Size(101, 21);
             this.ComboBox_MarkerType.TabIndex = 3;
             // 
             // Label_Type
             // 
             this.Label_Type.AutoSize = true;
-            this.Label_Type.Location = new System.Drawing.Point(19, 56);
+            this.Label_Type.Location = new System.Drawing.Point(6, 29);
             this.Label_Type.Name = "Label_Type";
             this.Label_Type.Size = new System.Drawing.Size(34, 13);
             this.Label_Type.TabIndex = 2;
@@ -189,7 +145,7 @@ namespace EuroSound_Application.StreamSounds
             // 
             // Numeric_MarkerPosition
             // 
-            this.Numeric_MarkerPosition.Location = new System.Drawing.Point(59, 27);
+            this.Numeric_MarkerPosition.Location = new System.Drawing.Point(206, 26);
             this.Numeric_MarkerPosition.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -202,7 +158,7 @@ namespace EuroSound_Application.StreamSounds
             // Label_MarkerPosition
             // 
             this.Label_MarkerPosition.AutoSize = true;
-            this.Label_MarkerPosition.Location = new System.Drawing.Point(6, 29);
+            this.Label_MarkerPosition.Location = new System.Drawing.Point(153, 28);
             this.Label_MarkerPosition.Name = "Label_MarkerPosition";
             this.Label_MarkerPosition.Size = new System.Drawing.Size(47, 13);
             this.Label_MarkerPosition.TabIndex = 0;
@@ -246,6 +202,7 @@ namespace EuroSound_Application.StreamSounds
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ListView_Markers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Col_MarkerPos,
+            this.Col_IsInstant,
             this.Col_StateA,
             this.Col_StateB,
             this.Col_StartMarkerCount});
@@ -263,6 +220,10 @@ namespace EuroSound_Application.StreamSounds
             // 
             this.Col_MarkerPos.Text = "Marker Pos";
             this.Col_MarkerPos.Width = 115;
+            // 
+            // Col_IsInstant
+            // 
+            this.Col_IsInstant.Text = "Is Instant";
             // 
             // Col_StateA
             // 
@@ -298,6 +259,7 @@ namespace EuroSound_Application.StreamSounds
             this.Col_Position,
             this.Col_MusicMarkerType,
             this.Col_Flags,
+            this.Col_Extra,
             this.Col_LoopStart,
             this.Col_MarkerCount,
             this.Col_LoopMarkerCount});
@@ -329,6 +291,10 @@ namespace EuroSound_Application.StreamSounds
             // 
             this.Col_Flags.Text = "Flags";
             this.Col_Flags.Width = 50;
+            // 
+            // Col_Extra
+            // 
+            this.Col_Extra.Text = "Extra";
             // 
             // Col_LoopStart
             // 
@@ -380,10 +346,6 @@ namespace EuroSound_Application.StreamSounds
         private System.Windows.Forms.GroupBox GroupBox_MarkerData;
         private System.Windows.Forms.NumericUpDown Numeric_MarkerLoopStart;
         private System.Windows.Forms.Label Label_LoopStart;
-        private System.Windows.Forms.TextBox Textbox_Extra;
-        private System.Windows.Forms.Label Label_Extra;
-        private System.Windows.Forms.TextBox Textbox_Flags;
-        private System.Windows.Forms.Label Label_Flags;
         private System.Windows.Forms.ComboBox ComboBox_MarkerType;
         private System.Windows.Forms.Label Label_Type;
         private System.Windows.Forms.NumericUpDown Numeric_MarkerPosition;
@@ -407,5 +369,7 @@ namespace EuroSound_Application.StreamSounds
         private System.Windows.Forms.ColumnHeader Col_MarkerCount;
         private System.Windows.Forms.ColumnHeader Col_LoopMarkerCount;
         private System.Windows.Forms.ColumnHeader Col_StartMarkerCount;
+        private System.Windows.Forms.ColumnHeader Col_IsInstant;
+        private System.Windows.Forms.ColumnHeader Col_Extra;
     }
 }

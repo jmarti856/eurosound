@@ -5,7 +5,7 @@
         public int Name;
         public uint Position;
         public uint MusicMakerType;
-        public uint Flags;
+        public uint Flags = 2;
         public uint Extra;
         public uint LoopStart;
         public uint MarkerCount;

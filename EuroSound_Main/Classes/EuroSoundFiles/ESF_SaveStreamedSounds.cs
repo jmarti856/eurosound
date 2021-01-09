@@ -16,7 +16,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             /*File Hashcode*/
             BWriter.Write(FileProperties.Hashcode);
             /*Stream Sound ID*/
-            BWriter.Write(FileProperties.StreamedSoundID);
+            BWriter.Write(FileProperties.SoundID);
             /*Sounds List Offset*/
             BWriter.Write(Convert.ToUInt32(00000000));
             /*TreeViewData Offset*/

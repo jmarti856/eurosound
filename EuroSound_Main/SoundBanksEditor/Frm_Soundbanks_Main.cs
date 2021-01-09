@@ -181,52 +181,53 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void Frm_Soundbanks_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //Stop Threads
-            if (UpdateList != null)
+            if (e.CloseReason == CloseReason.MdiFormClosing || e.CloseReason == CloseReason.UserClosing)
             {
-                UpdateList.Abort();
-            }
-
-            if (UpdateWavList != null)
-            {
-                UpdateWavList.Abort();
-            }
-
-            if (UpdateStreamDataList != null)
-            {
-                UpdateStreamDataList.Abort();
-            }
-
-            //Ask user to save if file is modified
-            if (ProjectInfo.FileHasBeenModified)
-            {
-                DialogResult dialogResult = MessageBox.Show("Save changes to " + ProjectInfo.FileName + "?", "EuroSound", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
-                if (dialogResult == DialogResult.Yes)
+                //Stop Threads
+                if (UpdateList != null)
                 {
-                    e.Cancel = true;
-                    LoadedFile = SaveDocument(LoadedFile, TreeView_File, SoundsList, AudioDataDict, ProjectInfo);
-                    ProjectInfo.FileHasBeenModified = false;
-                    e.Cancel = false;
+                    UpdateList.Abort();
+                }
+
+                if (UpdateWavList != null)
+                {
+                    UpdateWavList.Abort();
+                }
+
+                if (UpdateStreamDataList != null)
+                {
+                    UpdateStreamDataList.Abort();
+                }
+
+                //Ask user to save if file is modified
+                if (ProjectInfo.FileHasBeenModified)
+                {
+                    DialogResult dialogResult = MessageBox.Show("Save changes to " + ProjectInfo.FileName + "?", "EuroSound", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        LoadedFile = SaveDocument(LoadedFile, TreeView_File, SoundsList, AudioDataDict, ProjectInfo);
+                        ProjectInfo.FileHasBeenModified = false;
+                        GenericFunctions.SetCurrentFileLabel("");
+                        MdiParent.Text = "EuroSound";
+                        Close();
+                    }
+                    else if (dialogResult == DialogResult.No)
+                    {
+                        ProjectInfo.FileHasBeenModified = false;
+                        GenericFunctions.SetCurrentFileLabel("");
+                        MdiParent.Text = "EuroSound";
+                        Close();
+                    }
+                    else if (dialogResult == DialogResult.Cancel)
+                    {
+                        e.Cancel = true;
+                    }
+                }
+                else
+                {
                     GenericFunctions.SetCurrentFileLabel("");
                     MdiParent.Text = "EuroSound";
                 }
-                else if (dialogResult == DialogResult.No)
-                {
-                    GlobalPreferences.CancelApplicationClose = false;
-                    e.Cancel = false;
-                    GenericFunctions.SetCurrentFileLabel("");
-                    MdiParent.Text = "EuroSound";
-                }
-                else if (dialogResult == DialogResult.Cancel)
-                {
-                    GlobalPreferences.CancelApplicationClose = true;
-                    e.Cancel = true;
-                }
-            }
-            else
-            {
-                GenericFunctions.SetCurrentFileLabel("");
-                MdiParent.Text = "EuroSound";
             }
         }
 

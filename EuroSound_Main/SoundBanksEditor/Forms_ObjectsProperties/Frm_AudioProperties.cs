@@ -87,6 +87,11 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
+        private void Button_SaveAudio_Click(object sender, EventArgs e)
+        {
+            SaveAudio();
+        }
+
         private void Textbox_Flags_MouseClick(object sender, MouseEventArgs e)
         {
             string[] FlagsLabels = new string[]
@@ -222,8 +227,27 @@ namespace EuroSound_Application.SoundBanksEditor
         }
 
         //*===============================================================================================
+        //* CONTEXT MENU
+        //*===============================================================================================
+        private void ContextMenuAudioSave_Click(object sender, EventArgs e)
+        {
+            SaveAudio();
+        }
+
+        //*===============================================================================================
         //* FUNCTIONS
         //*===============================================================================================
+        private void SaveAudio()
+        {
+            string SavePath;
+
+            SavePath = GenericFunctions.SaveFileBrowser("WAV Files (*.wav)|*.wav", 0, true, TemporalAudio.LoadedFileName);
+            if (!string.IsNullOrEmpty(SavePath))
+            {
+                AudioFunctionsLibrary.CreateWavFile((int)TemporalAudio.Frequency, (int)TemporalAudio.Bits, (int)TemporalAudio.Channels, TemporalAudio.PCMdata, SavePath);
+            }
+        }
+
         private void LoadAudio(string AudioPath)
         {
             TemporalAudioHash = GenericFunctions.CalculateMD5(AudioPath);

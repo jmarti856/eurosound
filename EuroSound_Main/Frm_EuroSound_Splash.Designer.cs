@@ -44,9 +44,9 @@ namespace EuroSound_Application
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelStatusBar.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.PanelStatusBar.Controls.Add(this.Label_Status);
-            this.PanelStatusBar.Location = new System.Drawing.Point(2, 379);
+            this.PanelStatusBar.Location = new System.Drawing.Point(1, 378);
             this.PanelStatusBar.Name = "PanelStatusBar";
-            this.PanelStatusBar.Size = new System.Drawing.Size(502, 25);
+            this.PanelStatusBar.Size = new System.Drawing.Size(518, 25);
             this.PanelStatusBar.TabIndex = 0;
             // 
             // Label_Status
@@ -62,7 +62,7 @@ namespace EuroSound_Application
             // 
             this.Label_EuroSoundVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_EuroSoundVersion.AutoSize = true;
-            this.Label_EuroSoundVersion.Location = new System.Drawing.Point(512, 383);
+            this.Label_EuroSoundVersion.Location = new System.Drawing.Point(519, 383);
             this.Label_EuroSoundVersion.Name = "Label_EuroSoundVersion";
             this.Label_EuroSoundVersion.Size = new System.Drawing.Size(107, 13);
             this.Label_EuroSoundVersion.TabIndex = 1;
@@ -94,6 +94,7 @@ namespace EuroSound_Application
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Tag = "Splash";
             this.Text = "Frm_Splash";
             this.Shown += new System.EventHandler(this.Frm_EuroSound_Splash_Shown);
             this.PanelStatusBar.ResumeLayout(false);

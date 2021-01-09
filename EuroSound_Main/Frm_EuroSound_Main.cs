@@ -113,6 +113,15 @@ namespace EuroSound_Application
             }
         }
 
+        private void Frm_EuroSound_Main_Resize(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                EuroSoundTrayIcon.Visible = true;
+                ShowInTaskbar = false;
+            }
+        }
+
         private void Frm_EuroSound_Main_DragDrop(object sender, DragEventArgs e)
         {
             //Get an array of the droped files
@@ -135,31 +144,9 @@ namespace EuroSound_Application
             }
         }
 
-        private void Frm_EuroSound_Main_FormClosing(object sender, FormClosingEventArgs e)
+        private void Frm_EuroSound_Main_FormClosed(object sender, FormClosedEventArgs e)
         {
-            e.Cancel = true;
-            foreach (Form FormToClose in MdiChildren)
-            {
-                if (FormToClose != this)
-                {
-                    //Check that the user has not click the button cancel on the exit question
-                    if (!GlobalPreferences.CancelApplicationClose)
-                    {
-                        FormToClose.Close();
-                    }
-                }
-            }
-
-            //If the user has not click the button cancel close application
-            if (!GlobalPreferences.CancelApplicationClose)
-            {
-                e.Cancel = false;
-            }
-
             GenericFunctions.ClearTemporalFiles();
-
-            //Reset var
-            GlobalPreferences.CancelApplicationClose = false;
         }
 
         //*===============================================================================================
@@ -185,7 +172,7 @@ namespace EuroSound_Application
         private void MenuItemFile_Exit_Click(object sender, EventArgs e)
         {
             GlobalPreferences.StatusBar_ToolTipMode = false;
-            Application.Exit();
+            Close();
         }
 
         private void MenuItemFile_New_Click(object sender, EventArgs e)
@@ -249,6 +236,63 @@ namespace EuroSound_Application
         private void MenuItemView_StatusBar_CheckStateChanged(object sender, EventArgs e)
         {
             MainStatusBar.Visible = MenuItemView_StatusBar.Checked;
+        }
+
+        //*===============================================================================================
+        //* MAIN MENU -- TOOLS
+        //*===============================================================================================
+        private void MainMenuTools_BackupSettings_Click(object sender, EventArgs e)
+        {
+            string SavePath = GenericFunctions.SaveFileBrowser("Eurosound Registry Files (*.esrf)|*.esrf", 1, true, null);
+            if (!string.IsNullOrEmpty(SavePath))
+            {
+                BackupReloadSettings SettingsFunctions = new BackupReloadSettings();
+                SettingsFunctions.BackupSettings(SavePath);
+            }
+        }
+
+        private void MainMenuTools_RestoreSettings_Click(object sender, EventArgs e)
+        {
+            string FileToLoad = GenericFunctions.OpenFileBrowser("Eurosound Registry Files (*.esrf)|*.esrf", 0);
+            if (!string.IsNullOrEmpty(FileToLoad))
+            {
+                BackupReloadSettings SettingsFunctions = new BackupReloadSettings();
+                SettingsFunctions.RestoreSettings(FileToLoad);
+            }
+        }
+
+        private void MainMenuTools_ClearTempFiles_Click(object sender, EventArgs e)
+        {
+            if (GenericFunctions.ClearTemporalFiles())
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_TemporalFilesRemovedSuccess"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_NoTemporalFilesStored"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        //*===============================================================================================
+        //* SYSTEM TRAY MODE
+        //*===============================================================================================
+        private void EuroSoundTrayIcon_Restore_Click(object sender, EventArgs e)
+        {
+            RestoreApplication();
+        }
+
+        private void EuroSoundTrayIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                RestoreApplication();
+            }
+        }
+
+        private void EuroSoundTrayIcon_Close_Click(object sender, EventArgs e)
+        {
+            RestoreApplication();
+            Close();
         }
 
         //*===============================================================================================
@@ -341,35 +385,13 @@ namespace EuroSound_Application
             return Type;
         }
 
-        private void MainMenuTools_BackupSettings_Click(object sender, EventArgs e)
+        private void RestoreApplication()
         {
-            string SavePath = GenericFunctions.SaveFileBrowser("Eurosound Registry Files (*.esrf)|*.esrf", 1, true, null);
-            if (!string.IsNullOrEmpty(SavePath))
+            if (WindowState == FormWindowState.Minimized)
             {
-                BackupReloadSettings SettingsFunctions = new BackupReloadSettings();
-                SettingsFunctions.BackupSettings(SavePath);
-            }
-        }
-
-        private void MainMenuTools_RestoreSettings_Click(object sender, EventArgs e)
-        {
-            string FileToLoad = GenericFunctions.OpenFileBrowser("Eurosound Registry Files (*.esrf)|*.esrf", 0);
-            if (!string.IsNullOrEmpty(FileToLoad))
-            {
-                BackupReloadSettings SettingsFunctions = new BackupReloadSettings();
-                SettingsFunctions.RestoreSettings(FileToLoad);
-            }
-        }
-
-        private void MainMenuTools_ClearTempFiles_Click(object sender, EventArgs e)
-        {
-            if (GenericFunctions.ClearTemporalFiles())
-            {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_TemporalFilesRemovedSuccess"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_NoTemporalFilesStored"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                WindowState = FormWindowState.Maximized;
+                EuroSoundTrayIcon.Visible = false;
+                ShowInTaskbar = true;
             }
         }
     }

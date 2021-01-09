@@ -16,7 +16,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             /*File Hashcode*/
             FileProperties.Hashcode = BReader.ReadUInt32();
             /*Sound ID*/
-            FileProperties.StreamedSoundID = BReader.ReadUInt32();
+            FileProperties.SoundID = BReader.ReadUInt32();
             /*Sounds List Offset*/
             BReader.ReadUInt32();//Only Used in the "Frm_NewStreamSound" Form
             /*TreeViewData Offset*/

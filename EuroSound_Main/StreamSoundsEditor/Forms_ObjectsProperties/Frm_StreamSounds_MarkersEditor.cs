@@ -73,15 +73,15 @@ namespace EuroSound_Application.StreamSounds
             //Get type of the selected combobox value
             MarkerType = (uint)ComboBox_MarkerType.SelectedValue;
 
-            //---------------------------------ADD Start Marker-------------------------------*/
+            //---------------------------------[Add Start Marker]-------------------------------*/
             if (MarkerType != 9)
             {
                 EXStreamStartMarker NewStartMarker = new EXStreamStartMarker
                 {
                     Position = (uint)Numeric_MarkerPosition.Value,
                     MusicMakerType = 10,
-                    Flags = uint.Parse(Textbox_Flags.Text),
-                    Extra = uint.Parse(Textbox_Extra.Text),
+                    Flags = 2,
+                    Extra = 0,
                     MarkerCount = v_MarkerCount,
                     MarkerPos = v_MarkerPos
                 };
@@ -90,20 +90,15 @@ namespace EuroSound_Application.StreamSounds
                 AddMarkerStartToListView(NewStartMarker);
             }
 
-            //---------------------------------Add Marker-------------------------------*/
-            if (MarkerType == 6)
+            //---------------------------------[Add Marker]-------------------------------*/
+            if (MarkerType == 6) //Loop
             {
                 v_MarkerPos += 2;
                 EXStreamMarker NewStartLoopMarker = new EXStreamMarker
                 {
                     Name = (int)v_MarkerCount,
-                    Position = 0,
-                    MusicMakerType = (uint)ComboBox_MarkerType.SelectedValue,
-                    Flags = uint.Parse(Textbox_Flags.Text),
-                    Extra = uint.Parse(Textbox_Extra.Text),
-                    LoopStart = 0,
+                    MusicMakerType = 10,
                     MarkerCount = v_MarkerCount,
-                    LoopMarkerCount = 0
                 };
 
                 EXStreamMarker NewLoopMarker = new EXStreamMarker
@@ -111,9 +106,6 @@ namespace EuroSound_Application.StreamSounds
                     Name = (int)v_MarkerCount,
                     Position = (uint)Numeric_MarkerPosition.Value,
                     MusicMakerType = (uint)ComboBox_MarkerType.SelectedValue,
-                    Flags = uint.Parse(Textbox_Flags.Text),
-                    Extra = uint.Parse(Textbox_Extra.Text),
-                    LoopStart = 0,
                     MarkerCount = (v_MarkerCount + 1),
                     LoopMarkerCount = 1
                 };
@@ -124,7 +116,7 @@ namespace EuroSound_Application.StreamSounds
                 AddMarkerDataToListView(NewStartLoopMarker);
                 AddMarkerDataToListView(NewLoopMarker);
             }
-            else if (MarkerType == 9)
+            else if (MarkerType == 9) //End
             {
                 v_MarkerPos += 1;
                 EXStreamMarker NewMarker = new EXStreamMarker
@@ -132,11 +124,7 @@ namespace EuroSound_Application.StreamSounds
                     Name = (int)-1,
                     Position = (uint)Numeric_MarkerPosition.Value,
                     MusicMakerType = (uint)ComboBox_MarkerType.SelectedValue,
-                    Flags = uint.Parse(Textbox_Flags.Text),
-                    Extra = uint.Parse(Textbox_Extra.Text),
-                    LoopStart = 0,
                     MarkerCount = v_MarkerCount,
-                    LoopMarkerCount = 0
                 };
 
                 TemporalSelectedSound.Markers.Add(NewMarker);
@@ -150,11 +138,7 @@ namespace EuroSound_Application.StreamSounds
                     Name = (int)v_MarkerCount,
                     Position = (uint)Numeric_MarkerPosition.Value,
                     MusicMakerType = (uint)ComboBox_MarkerType.SelectedValue,
-                    Flags = uint.Parse(Textbox_Flags.Text),
-                    Extra = uint.Parse(Textbox_Extra.Text),
-                    LoopStart = 0,
                     MarkerCount = v_MarkerCount,
-                    LoopMarkerCount = 0
                 };
 
                 TemporalSelectedSound.Markers.Add(NewMarker);
@@ -170,6 +154,8 @@ namespace EuroSound_Application.StreamSounds
             TemporalSelectedSound.Markers.Clear();
             ListView_Markers.Items.Clear();
             ListView_MarkerData.Items.Clear();
+            v_MarkerCount = 0;
+            v_MarkerPos = 0;
         }
 
         private void Button_OK_Click(object sender, EventArgs e)
@@ -197,19 +183,13 @@ namespace EuroSound_Application.StreamSounds
         {
             ListViewItem Marker = new ListViewItem(new[]
             { 
-                //Name
                 MarkerItem.Name.ToString(),
-                //Position
                 MarkerItem.Position.ToString(), 
-                //Type
                 MarkerTypes[MarkerItem.MusicMakerType],
-                //Flags
                 MarkerItem.Flags.ToString(),
-                //Loop Start
+                MarkerItem.Extra.ToString(),
                 MarkerItem.LoopStart.ToString(), 
-                //Marker Count
                 MarkerItem.MarkerCount.ToString(),
-                //Loop Marker COunt
                 MarkerItem.LoopMarkerCount.ToString(),
             });
             ListView_MarkerData.Items.Add(Marker);
@@ -220,6 +200,7 @@ namespace EuroSound_Application.StreamSounds
             ListViewItem Marker = new ListViewItem(new[]
             {
                 MarkerItem.MarkerPos.ToString(),
+                MarkerItem.IsInstant.ToString(),
                 MarkerItem.StateA.ToString(),
                 MarkerItem.StateB.ToString(),
                 MarkerItem.MarkerCount.ToString()
