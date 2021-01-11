@@ -73,6 +73,7 @@ namespace EuroSound_Application
             this.ListBox_Items.Name = "ListBox_Items";
             this.ListBox_Items.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.ListBox_Items.Size = new System.Drawing.Size(343, 316);
+            this.ListBox_Items.Sorted = true;
             this.ListBox_Items.TabIndex = 2;
             // 
             // Label_Folder

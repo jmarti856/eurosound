@@ -106,11 +106,20 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Check that all hashcodes used in this project are OK and exists in the hashtable.
+        ///   Busca una cadena traducida similar a Check that all hashcodes used in this project are correct and exists in the hashtable.
         /// </summary>
         internal static string ButtonSoundsBankCheckHashcodes {
             get {
                 return ResourceManager.GetString("ButtonSoundsBankCheckHashcodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Shows information about the linked stream data in this project.
+        /// </summary>
+        internal static string ButtonSoundsBankCheckStreamData {
+            get {
+                return ResourceManager.GetString("ButtonSoundsBankCheckStreamData", resourceCulture);
             }
         }
         
@@ -331,6 +340,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Error reading this file, seems that is being used by another process..
+        /// </summary>
+        internal static string ErrorReadingFileIsUsedByAnotherProcess {
+            get {
+                return ResourceManager.GetString("ErrorReadingFileIsUsedByAnotherProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Error, the audio file is not correct, the frequency must be in mono, have 22050hz, encoded in PCM and have 16 bits per sample. Do you want that EuroSound tries to convert it with the correct config?.
         /// </summary>
         internal static string ErrorWavFileIncorrect {
@@ -538,6 +556,24 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Undo the last item deletion.
+        /// </summary>
+        internal static string MenuItemEdit_Undo {
+            get {
+                return ResourceManager.GetString("MenuItemEdit_Undo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Undo the last item deletion (not works with samples and folders).
+        /// </summary>
+        internal static string MenuItemEdit_UndoSoundbanks {
+            get {
+                return ResourceManager.GetString("MenuItemEdit_UndoSoundbanks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Quit the application; prompts to save documents.
         /// </summary>
         internal static string MenuItemFile_Exit {
@@ -619,6 +655,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Collapses all folders in the tree control.
+        /// </summary>
+        internal static string MenuItemView_CollapseTree {
+            get {
+                return ResourceManager.GetString("MenuItemView_CollapseTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Arrange icons at the bottom of the window.
         /// </summary>
         internal static string MenuItemWindow_ArrangeIcons {
@@ -678,6 +723,15 @@ namespace EuroSound_Application.Properties {
         internal static string OutputSFXSoundbankErrors {
             get {
                 return ResourceManager.GetString("OutputSFXSoundbankErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a This will clear your current search.
+        /// </summary>
+        internal static string SearcherInfoClearButton {
+            get {
+                return ResourceManager.GetString("SearcherInfoClearButton", resourceCulture);
             }
         }
         
@@ -759,6 +813,24 @@ namespace EuroSound_Application.Properties {
         internal static string StatusBar_Status_Ready {
             get {
                 return ResourceManager.GetString("StatusBar_Status_Ready", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Stopping Threads.
+        /// </summary>
+        internal static string StatusBar_Status_StoppingThreads {
+            get {
+                return ResourceManager.GetString("StatusBar_Status_StoppingThreads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The stream sounds file has not been found. Please ensure that the path is correct in the application preferences (view -&gt; preferences).
+        /// </summary>
+        internal static string StreamFileNotFound {
+            get {
+                return ResourceManager.GetString("StreamFileNotFound", resourceCulture);
             }
         }
         

@@ -4,7 +4,6 @@ using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.GenerateSoundBankSFX;
 using EuroSound_Application.SoundBanksEditor;
 using Syroot.BinaryData;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -18,7 +17,7 @@ namespace EuroSound_Application
         {
             if (Commands[0].Equals("/?"))
             {
-                MessageBox.Show("Usage: EuroSound.exe [opts] [filename] where options are:" + Environment.NewLine + "/o            -Outputs the .ESF file" + Environment.NewLine + "/?            -Help", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(string.Format("Usage: EuroSound.exe [opts] [filename] where options are:\n /o            -Outputs the .ESF file\n/?            -Help"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else if (Commands[0].Equals("/o"))
             {
@@ -41,33 +40,33 @@ namespace EuroSound_Application
                             uint SoundsListDataOffset, AudioDataOffset, File_Hashcode;
                             sbyte TypeOfStoredData;
 
-                            /*Type of stored data*/
+                            //Type of stored data
                             TypeOfStoredData = BReader.ReadSByte();
                             if (TypeOfStoredData == 0)
                             {
                                 //*===============================================================================================
                                 //* ESF FILE
                                 //*===============================================================================================
-                                /*File Hashcode*/
+                                //File Hashcode
                                 File_Hashcode = BReader.ReadUInt32();
-                                /*Latest SoundID value*/
+                                //Latest SoundID value
                                 BReader.ReadUInt32();
-                                /*TreeView Data*/
+                                //TreeView Data
                                 BReader.ReadUInt32();
-                                /*SoundsListData Offset -- Not used for now*/
+                                //SoundsListData Offset -- Not used for now
                                 SoundsListDataOffset = BReader.ReadUInt32();
-                                /*AudioData Offset -- Not used for now*/
+                                //AudioData Offset -- Not used for now
                                 AudioDataOffset = BReader.ReadUInt32();
-                                /*FullSize*/
+                                //FullSize
                                 BReader.ReadUInt32();
-                                /*File Name*/
+                                //File Name
                                 BReader.ReadString();
 
-                                /*--------------------------[SOUNDS LIST DATA]--------------------------*/
+                                //--------------------------[SOUNDS LIST DATA]--------------------------
                                 BReader.BaseStream.Position = (SoundsListDataOffset);
                                 SectionsReader.ReadSoundsListData(BReader, SoundsList);
 
-                                /*--------------------------[AUDIO DATA]--------------------------*/
+                                //--------------------------[AUDIO DATA]--------------------------
                                 BReader.BaseStream.Position = (AudioDataOffset);
                                 SectionsReader.ReadAudioDataDictionary(BReader, AudiosList);
 
@@ -101,32 +100,32 @@ namespace EuroSound_Application
                                     //* STEP 3: START WRITTING (80%)
                                     //*===============================================================================================
                                     //--------------------------------------[WRITE FILE HEADER]--------------------------------------
-                                    /*Write Data*/
+                                    //Write Data
                                     SFXGenerator.WriteFileHeader(BWriter, File_Hashcode, null);
 
                                     //--------------------------------------[Write SECTIONS]--------------------------------------
-                                    /*Write Data*/
+                                    //Write Data
                                     SFXGenerator.WriteFileSections(BWriter, GenericFunctions.CountNumberOfSamples(FinalSoundsDict), null);
 
                                     //--------------------------------------[SECTION SFX elements]--------------------------------------
-                                    /*Write Data*/
+                                    //Write Data
                                     SFXGenerator.WriteSFXSection(BWriter, FinalSoundsDict, FinalAudioDataDict, null, null);
 
                                     //--------------------------------------[SECTION Sample info elements]--------------------------------------
-                                    /*Write Data*/
+                                    //Write Data
                                     SFXGenerator.WriteSampleInfoSection(BWriter, FinalAudioDataDict, null, null);
 
                                     //--------------------------------------[SECTION Sample data]--------------------------------------
-                                    /*Write Data*/
+                                    //Write Data
                                     SFXGenerator.WriteSampleDataSection(BWriter, FinalAudioDataDict, null, null);
 
                                     //*===============================================================================================
                                     //* STEP 4: WRITE FINAL DATA (80%)
                                     //*===============================================================================================
-                                    /*Write Data*/
+                                    //Write Data
                                     SFXGenerator.WriteFinalOffsets(BWriter, null, null);
 
-                                    /*Close file*/
+                                    //Close file
                                     BWriter.Close();
                                 }
                             }

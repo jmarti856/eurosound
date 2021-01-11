@@ -112,7 +112,7 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
 
             if (ParentNode.Length > 0)
             {
-                /*--Add new properties--*/
+                //--Add new properties--
                 TreeNode NewNode = new TreeNode
                 {
                     Name = n_Name,
@@ -121,7 +121,7 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
                     Tag = Tag
                 };
 
-                /*--Add element to the tree node--*/
+                //--Add element to the tree node--
                 if (!TreeViewToEdit.IsDisposed)
                 {
                     TreeViewToEdit.Invoke((MethodInvoker)delegate
@@ -129,7 +129,7 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
                         ParentNode[0].Nodes.Add(NewNode);
                         ParentNode[0].Expand();
 
-                        /*--Set image--*/
+                        //--Set image--
                         TreeNodeSetNodeImage(NewNode, SelectedImageIndex, ImageIndex);
                     });
                 }
@@ -138,7 +138,7 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
 
         internal static void TreeNodeDeleteNode(TreeView TreeViewFile, TreeNode Name, string NodeTag)
         {
-            /*--Root node can't be deleted--*/
+            //--Root node can't be deleted--
             if (!NodeTag.Equals("Root"))
             {
                 if (Name != null)
@@ -150,62 +150,10 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
 
         internal static void TreeNodeSetNodeImage(TreeNode Node, int SelectedImageIndex, int ImageIndex)
         {
-            try
+            if (Node != null)
             {
                 Node.SelectedImageIndex = SelectedImageIndex;
                 Node.ImageIndex = ImageIndex;
-            }
-            catch
-            {
-                MessageBox.Show("Can not set an index image for: " + Node.Text);
-            }
-        }
-
-        internal static void MoveDown(TreeNode node)
-        {
-            TreeNode parent = node.Parent;
-            TreeView view = node.TreeView;
-            if (parent != null)
-            {
-                int index = parent.Nodes.IndexOf(node);
-                if (index < parent.Nodes.Count - 1)
-                {
-                    parent.Nodes.RemoveAt(index);
-                    parent.Nodes.Insert(index + 1, node);
-                }
-            }
-            else if (view != null && view.Nodes.Contains(node)) //root node
-            {
-                int index = view.Nodes.IndexOf(node);
-                if (index < view.Nodes.Count - 1)
-                {
-                    view.Nodes.RemoveAt(index);
-                    view.Nodes.Insert(index + 1, node);
-                }
-            }
-        }
-
-        public static void MoveUp(TreeNode node)
-        {
-            TreeNode parent = node.Parent;
-            TreeView view = node.TreeView;
-            if (parent != null)
-            {
-                int index = parent.Nodes.IndexOf(node);
-                if (index > 0)
-                {
-                    parent.Nodes.RemoveAt(index);
-                    parent.Nodes.Insert(index - 1, node);
-                }
-            }
-            else if (node.TreeView.Nodes.Contains(node)) //root node
-            {
-                int index = view.Nodes.IndexOf(node);
-                if (index > 0)
-                {
-                    view.Nodes.RemoveAt(index);
-                    view.Nodes.Insert(index - 1, node);
-                }
             }
         }
     }

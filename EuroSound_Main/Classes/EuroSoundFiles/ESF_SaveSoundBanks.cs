@@ -13,55 +13,55 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
         {
             long AlignOffset;
 
-            /*File Hashcode*/
+            //File Hashcode
             BWriter.Write(FileProperties.Hashcode);
-            /*Latest SoundID value*/
+            //Latest SoundID value
             BWriter.Write(FileProperties.SoundID);
-            /*TreeViewData Offset*/
+            //TreeViewData Offset
             BWriter.Write(Convert.ToUInt32(00000000));
-            /*SoundsListData Offset*/
+            //SoundsListData Offset
             BWriter.Write(Convert.ToUInt32(00000000));
-            /*AudioData Offset*/
+            //AudioData Offset
             BWriter.Write(Convert.ToUInt32(00000000));
-            /*FileSize*/
+            //FileSize
             BWriter.Write(Convert.ToUInt32(00000000));
-            /*File Name*/
+            //File Name
             BWriter.Write(FileProperties.FileName);
             BWriter.Seek(2048, SeekOrigin.Current);
 
             //*===============================================================================================
             //* TreeView
             //*===============================================================================================
-            /*Align Bytes*/
+            //Align Bytes
             AlignOffset = (BWriter.BaseStream.Position + 2048) & (2048 - 1);
             BWriter.Seek(AlignOffset, SeekOrigin.Current);
             BWriter.Align(16);
 
-            /*Write Data*/
+            //Write Data
             long TreeViewDataOffset = BWriter.BaseStream.Position;
             SaveTreeViewData(TreeViewControl, BWriter);
 
             //*===============================================================================================
             //* Sounds List Data
             //*===============================================================================================
-            /*Align Bytes*/
+            //Align Bytes
             AlignOffset = (BWriter.BaseStream.Position + 2048) & (2048 - 1);
             BWriter.Seek(AlignOffset, SeekOrigin.Current);
             BWriter.Align(16);
 
-            /*Write Data*/
+            //Write Data
             long SoundsListDataOffset = BWriter.BaseStream.Position;
             SaveSoundsListData(SoundsList, BWriter);
 
             //*===============================================================================================
             //* Audio Data
             //*===============================================================================================
-            /*Align Bytes*/
+            //Align Bytes
             AlignOffset = (BWriter.BaseStream.Position + 2048) & (2048 - 1);
             BWriter.Seek(AlignOffset, SeekOrigin.Current);
             BWriter.Align(16);
 
-            /*Write Data*/
+            //Write Data
             long AudioDataOffset = BWriter.BaseStream.Position;
             SaveAudiosData(AudiosList, BWriter);
             long FileSize = BWriter.BaseStream.Position;
@@ -69,15 +69,15 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             //*===============================================================================================
             //* FINAL OFFSETS
             //*===============================================================================================
-            /*Go to section offsets position*/
+            //Go to section offsets position
             BWriter.Seek(0x10, SeekOrigin.Begin);
 
-            /*Write section offsets*/
+            //Write section offsets
             BWriter.Write(Convert.ToUInt32(TreeViewDataOffset));
             BWriter.Write(Convert.ToUInt32(SoundsListDataOffset));
             BWriter.Write(Convert.ToUInt32(AudioDataOffset));
 
-            /*Write File Size*/
+            //Write File Size
             BWriter.Write(Convert.ToUInt32(FileSize));
         }
 
@@ -111,12 +111,12 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 
             foreach (KeyValuePair<uint, EXSound> SoundItem in SoundsList)
             {
-                /*Display Info*/
+                //Display Info
                 BWriter.Write(SoundItem.Key);
                 BWriter.Write(SoundItem.Value.Hashcode);
                 BWriter.Write(SoundItem.Value.OutputThisSound);
 
-                /*---Required for EngineX---*/
+                //---Required for EngineX---
                 BWriter.Write(SoundItem.Value.DuckerLenght);
                 BWriter.Write(SoundItem.Value.MinDelay);
                 BWriter.Write(SoundItem.Value.MaxDelay);
@@ -130,20 +130,20 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 BWriter.Write(SoundItem.Value.MasterVolume);
                 BWriter.Write(SoundItem.Value.Flags);
 
-                /*Write Samples*/
+                //Write Samples
                 BWriter.Write(SoundItem.Value.Samples.Count);
                 foreach (KeyValuePair<uint, EXSample> ItemSample in SoundItem.Value.Samples)
                 {
-                    /*Key*/
+                    //Key
                     BWriter.Write(ItemSample.Key);
 
-                    /*Display Info*/
+                    //Display Info
                     BWriter.Write(ItemSample.Value.IsStreamed);
                     BWriter.Write(ItemSample.Value.FileRef);
                     BWriter.Write(ItemSample.Value.ComboboxSelectedAudio);
                     BWriter.Write(Convert.ToUInt32(ItemSample.Value.HashcodeSubSFX));
 
-                    /*---Required for EngineX---*/
+                    //---Required for EngineX---
                     BWriter.Write(ItemSample.Value.PitchOffset);
                     BWriter.Write(ItemSample.Value.RandomPitchOffset);
                     BWriter.Write(ItemSample.Value.BaseVolume);

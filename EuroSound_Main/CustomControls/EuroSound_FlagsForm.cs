@@ -5,13 +5,13 @@ namespace EuroSound_Application
 {
     public partial class EuroSound_FlagsForm : Form
     {
-        /*--Global Flags--*/
+        //--Global Flags--
         private CheckBox[] AllCheckboxes;
         private TextBox[] AllTextboxes;
         private int Flags, FlagsToEnable;
         private string[] Labels;
 
-        /*--Properties--*/
+        //--Properties--
         public EuroSound_FlagsForm(int CheckedFlags, string[] FlagsLabel, int EnabledFlags)
         {
             InitializeComponent();

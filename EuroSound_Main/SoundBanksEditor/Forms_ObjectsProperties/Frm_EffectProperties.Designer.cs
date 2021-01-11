@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_EffectProperties));
             this.groupbox_params = new System.Windows.Forms.GroupBox();
             this.Textbox_OuterRadius = new System.Windows.Forms.TextBox();
@@ -56,6 +57,7 @@
             this.label_duckerlenght = new System.Windows.Forms.Label();
             this.groupbox_samples = new System.Windows.Forms.GroupBox();
             this.List_Samples = new System.Windows.Forms.ListView();
+            this.SamplesImageList = new System.Windows.Forms.ImageList(this.components);
             this.button_ok = new System.Windows.Forms.Button();
             this.button_cancel = new System.Windows.Forms.Button();
             this.grbx_hashcode = new System.Windows.Forms.GroupBox();
@@ -414,14 +416,23 @@
             // 
             this.List_Samples.Dock = System.Windows.Forms.DockStyle.Fill;
             this.List_Samples.FullRowSelect = true;
+            this.List_Samples.GridLines = true;
             this.List_Samples.HideSelection = false;
             this.List_Samples.Location = new System.Drawing.Point(3, 16);
             this.List_Samples.Name = "List_Samples";
             this.List_Samples.Size = new System.Drawing.Size(518, 274);
+            this.List_Samples.SmallImageList = this.SamplesImageList;
+            this.List_Samples.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.List_Samples.TabIndex = 0;
             this.List_Samples.UseCompatibleStateImageBehavior = false;
             this.List_Samples.View = System.Windows.Forms.View.List;
             this.List_Samples.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.List_Samples_MouseDoubleClick);
+            // 
+            // SamplesImageList
+            // 
+            this.SamplesImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("SamplesImageList.ImageStream")));
+            this.SamplesImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.SamplesImageList.Images.SetKeyName(0, "audio_compression-1.png");
             // 
             // button_ok
             // 
@@ -565,5 +576,6 @@
         private System.Windows.Forms.TextBox Textbox_OuterRadius;
         private System.Windows.Forms.TextBox Textbox_InnerRadius;
         private System.Windows.Forms.ListView List_Samples;
+        private System.Windows.Forms.ImageList SamplesImageList;
     }
 }

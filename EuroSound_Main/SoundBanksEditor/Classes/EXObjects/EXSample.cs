@@ -7,7 +7,7 @@
         public short FileRef;
         public uint HashcodeSubSFX;
         public bool IsStreamed;
-        /*---ENGINE X Required---*/
+        //---ENGINE X Required---
         public sbyte Pan;
         public short PitchOffset;
         public sbyte RandomPan;

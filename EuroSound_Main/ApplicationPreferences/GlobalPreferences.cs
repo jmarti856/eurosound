@@ -31,6 +31,9 @@
         //Frm_SoxPrefs
         internal static string SoXPath;
 
+        //Frm_System
+        internal static bool UseSystemTray;
+
         //*===============================================================================================
         //* OTHER TEMPORAL VARIABLES
         //*===============================================================================================

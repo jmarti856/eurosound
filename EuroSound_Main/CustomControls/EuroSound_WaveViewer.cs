@@ -45,7 +45,7 @@ namespace EuroSound_Application
 
         public EuroSound_WaveViewer()
         {
-            // This call is required by the Windows.Forms Form Designer.
+            //This call is required by the Windows.Forms Form Designer.
             InitializeComponent();
 
             //use double buffer to avoid flickering

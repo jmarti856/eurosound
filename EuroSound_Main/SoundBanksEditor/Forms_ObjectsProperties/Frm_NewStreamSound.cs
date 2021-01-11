@@ -20,6 +20,8 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void Frm_NewStreamSound_Load(object sender, EventArgs e)
         {
+            int StreamIndex;
+
             Textbox_ExternalFile.Text = GlobalPreferences.StreamFilePath;
             ReadSoundsList();
 
@@ -32,7 +34,11 @@ namespace EuroSound_Application.SoundBanksEditor
 
             if (SelectedSample.FileRef != 0)
             {
-                ListBox_StreamSounds.SelectedIndex = (Math.Abs(SelectedSample.FileRef) - 1);
+                StreamIndex = (Math.Abs(SelectedSample.FileRef) - 1);
+                if (StreamIndex <= ListBox_StreamSounds.Items.Count && ListBox_StreamSounds.Items.Count > 0)
+                {
+                    ListBox_StreamSounds.SelectedIndex = StreamIndex;
+                }
             }
         }
 
@@ -65,38 +71,45 @@ namespace EuroSound_Application.SoundBanksEditor
             sbyte TypeOfStoredData;
             uint ListOffset, NumberOfItems;
 
-            EuroSoundFiles ESFReader = new EuroSoundFiles();
-            using (BinaryReader BReader = new BinaryReader(File.Open(GlobalPreferences.StreamFilePath, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
+            if (File.Exists(GlobalPreferences.StreamFilePath))
             {
-                if (ESFReader.FileIsCorrect(BReader))
+                EuroSoundFiles ESFReader = new EuroSoundFiles();
+                using (BinaryReader BReader = new BinaryReader(File.Open(GlobalPreferences.StreamFilePath, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
                 {
-                    /*Type of stored data*/
-                    TypeOfStoredData = BReader.ReadSByte();
-                    if (TypeOfStoredData == 1)
+                    if (ESFReader.FileIsCorrect(BReader))
                     {
-                        /*File Hashcode*/
-                        BReader.ReadUInt32();
-                        /*Sound ID*/
-                        BReader.ReadUInt32();
-                        /*Sounds List Offset*/
-                        ListOffset = BReader.ReadUInt32();
-
-                        /*Go to list offset*/
-                        BReader.BaseStream.Seek(ListOffset, SeekOrigin.Begin);
-                        NumberOfItems = BReader.ReadUInt32();
-
-                        /*Clear List*/
-                        ListBox_StreamSounds.Items.Clear();
-
-                        /*Add Items To List*/
-                        for (int i = 0; i < NumberOfItems; i++)
+                        //Type of stored data
+                        TypeOfStoredData = BReader.ReadSByte();
+                        if (TypeOfStoredData == 1)
                         {
-                            ListBox_StreamSounds.Items.Add(BReader.ReadString());
+                            //File Hashcode
+                            BReader.ReadUInt32();
+                            //Sound ID
+                            BReader.ReadUInt32();
+                            //Sounds List Offset
+                            ListOffset = BReader.ReadUInt32();
+
+                            //Go to list offset
+                            BReader.BaseStream.Seek(ListOffset, SeekOrigin.Begin);
+                            NumberOfItems = BReader.ReadUInt32();
+
+                            //Clear List
+                            ListBox_StreamSounds.Items.Clear();
+
+                            //Add Items To List
+                            for (int i = 0; i < NumberOfItems; i++)
+                            {
+                                ListBox_StreamSounds.Items.Add(BReader.ReadString());
+                            }
                         }
                     }
-                }
 
-                BReader.Close();
+                    BReader.Close();
+                }
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("StreamFileNotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

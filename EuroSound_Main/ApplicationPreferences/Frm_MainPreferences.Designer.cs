@@ -34,6 +34,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Hash Tables");
             System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Stream File");
             System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("SoX (Sound eXchange)");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("System");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_MainPreferences));
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
@@ -93,12 +94,15 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             treeNode4.Text = "Stream File";
             treeNode5.Name = "SoX";
             treeNode5.Text = "SoX (Sound eXchange)";
+            treeNode6.Name = "System";
+            treeNode6.Text = "System";
             this.TreeViewPreferences.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,
             treeNode3,
             treeNode4,
-            treeNode5});
+            treeNode5,
+            treeNode6});
             this.TreeViewPreferences.Size = new System.Drawing.Size(177, 424);
             this.TreeViewPreferences.TabIndex = 0;
             this.TreeViewPreferences.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeViewPreferences_AfterSelect);

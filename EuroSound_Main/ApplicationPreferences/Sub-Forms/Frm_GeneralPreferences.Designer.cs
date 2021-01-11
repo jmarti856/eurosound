@@ -36,9 +36,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Button_ChooseSFX_OutputPath = new System.Windows.Forms.Button();
             this.Textbox_SFX_OutputPath = new System.Windows.Forms.TextBox();
             this.Label_SFXOutputPath = new System.Windows.Forms.Label();
-            this.Groupbox_Shell = new System.Windows.Forms.GroupBox();
-            this.ButtonRegister_FileTypes = new System.Windows.Forms.Button();
-            this.Label_Expl = new System.Windows.Forms.Label();
             this.GroupBox_MusicOutputPath = new System.Windows.Forms.GroupBox();
             this.Button_MusicOutputPath = new System.Windows.Forms.Button();
             this.Textbox_MusicOutputPath = new System.Windows.Forms.TextBox();
@@ -50,7 +47,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Label_ColorWaves = new System.Windows.Forms.Label();
             this.Panel_Title.SuspendLayout();
             this.GroupBox_Output.SuspendLayout();
-            this.Groupbox_Shell.SuspendLayout();
             this.GroupBox_MusicOutputPath.SuspendLayout();
             this.Groupbox_Waves.SuspendLayout();
             this.SuspendLayout();
@@ -82,7 +78,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.GroupBox_Output.Controls.Add(this.Button_ChooseSFX_OutputPath);
             this.GroupBox_Output.Controls.Add(this.Textbox_SFX_OutputPath);
             this.GroupBox_Output.Controls.Add(this.Label_SFXOutputPath);
-            this.GroupBox_Output.Location = new System.Drawing.Point(12, 99);
+            this.GroupBox_Output.Location = new System.Drawing.Point(12, 123);
             this.GroupBox_Output.Name = "GroupBox_Output";
             this.GroupBox_Output.Size = new System.Drawing.Size(467, 52);
             this.GroupBox_Output.TabIndex = 1;
@@ -120,40 +116,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Label_SFXOutputPath.TabIndex = 0;
             this.Label_SFXOutputPath.Text = "Output Path:";
             // 
-            // Groupbox_Shell
-            // 
-            this.Groupbox_Shell.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Groupbox_Shell.Controls.Add(this.ButtonRegister_FileTypes);
-            this.Groupbox_Shell.Controls.Add(this.Label_Expl);
-            this.Groupbox_Shell.Location = new System.Drawing.Point(12, 217);
-            this.Groupbox_Shell.Name = "Groupbox_Shell";
-            this.Groupbox_Shell.Size = new System.Drawing.Size(467, 92);
-            this.Groupbox_Shell.TabIndex = 2;
-            this.Groupbox_Shell.TabStop = false;
-            this.Groupbox_Shell.Text = "Shell";
-            // 
-            // ButtonRegister_FileTypes
-            // 
-            this.ButtonRegister_FileTypes.Location = new System.Drawing.Point(142, 63);
-            this.ButtonRegister_FileTypes.Name = "ButtonRegister_FileTypes";
-            this.ButtonRegister_FileTypes.Size = new System.Drawing.Size(207, 23);
-            this.ButtonRegister_FileTypes.TabIndex = 1;
-            this.ButtonRegister_FileTypes.Text = "Register Shell File-Types";
-            this.ButtonRegister_FileTypes.UseVisualStyleBackColor = true;
-            this.ButtonRegister_FileTypes.Click += new System.EventHandler(this.ButtonRegister_FileTypes_Click);
-            // 
-            // Label_Expl
-            // 
-            this.Label_Expl.AutoSize = true;
-            this.Label_Expl.Location = new System.Drawing.Point(6, 16);
-            this.Label_Expl.Name = "Label_Expl";
-            this.Label_Expl.Size = new System.Drawing.Size(452, 26);
-            this.Label_Expl.TabIndex = 0;
-            this.Label_Expl.Text = "ESFs can be loaded into a running EuroSound by double-clicking on them. If this d" +
-    "oesn\'t work,\r\nclick on the button below to register the files that EuroSound use" +
-    "s with the system.";
-            // 
             // GroupBox_MusicOutputPath
             // 
             this.GroupBox_MusicOutputPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -161,7 +123,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.GroupBox_MusicOutputPath.Controls.Add(this.Button_MusicOutputPath);
             this.GroupBox_MusicOutputPath.Controls.Add(this.Textbox_MusicOutputPath);
             this.GroupBox_MusicOutputPath.Controls.Add(this.Label_MusicOutputPath);
-            this.GroupBox_MusicOutputPath.Location = new System.Drawing.Point(12, 41);
+            this.GroupBox_MusicOutputPath.Location = new System.Drawing.Point(12, 65);
             this.GroupBox_MusicOutputPath.Name = "GroupBox_MusicOutputPath";
             this.GroupBox_MusicOutputPath.Size = new System.Drawing.Size(467, 52);
             this.GroupBox_MusicOutputPath.TabIndex = 0;
@@ -207,9 +169,9 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Groupbox_Waves.Controls.Add(this.Label_ColorBackground);
             this.Groupbox_Waves.Controls.Add(this.Button_WavesColorControl);
             this.Groupbox_Waves.Controls.Add(this.Label_ColorWaves);
-            this.Groupbox_Waves.Location = new System.Drawing.Point(12, 157);
+            this.Groupbox_Waves.Location = new System.Drawing.Point(12, 181);
             this.Groupbox_Waves.Name = "Groupbox_Waves";
-            this.Groupbox_Waves.Size = new System.Drawing.Size(467, 54);
+            this.Groupbox_Waves.Size = new System.Drawing.Size(467, 98);
             this.Groupbox_Waves.TabIndex = 3;
             this.Groupbox_Waves.TabStop = false;
             this.Groupbox_Waves.Text = "Audio Waves Viewer";
@@ -263,7 +225,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.ClientSize = new System.Drawing.Size(491, 339);
             this.Controls.Add(this.Groupbox_Waves);
             this.Controls.Add(this.GroupBox_MusicOutputPath);
-            this.Controls.Add(this.Groupbox_Shell);
             this.Controls.Add(this.GroupBox_Output);
             this.Controls.Add(this.Panel_Title);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -275,8 +236,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Panel_Title.PerformLayout();
             this.GroupBox_Output.ResumeLayout(false);
             this.GroupBox_Output.PerformLayout();
-            this.Groupbox_Shell.ResumeLayout(false);
-            this.Groupbox_Shell.PerformLayout();
             this.GroupBox_MusicOutputPath.ResumeLayout(false);
             this.GroupBox_MusicOutputPath.PerformLayout();
             this.Groupbox_Waves.ResumeLayout(false);
@@ -294,9 +253,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         private System.Windows.Forms.Button Button_ChooseSFX_OutputPath;
         private System.Windows.Forms.TextBox Textbox_SFX_OutputPath;
         private System.Windows.Forms.Label Label_SFXOutputPath;
-        private System.Windows.Forms.GroupBox Groupbox_Shell;
-        private System.Windows.Forms.Label Label_Expl;
-        private System.Windows.Forms.Button ButtonRegister_FileTypes;
         private System.Windows.Forms.GroupBox GroupBox_MusicOutputPath;
         private System.Windows.Forms.Button Button_MusicOutputPath;
         private System.Windows.Forms.TextBox Textbox_MusicOutputPath;

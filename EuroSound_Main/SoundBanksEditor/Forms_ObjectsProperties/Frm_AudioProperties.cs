@@ -39,7 +39,7 @@ namespace EuroSound_Application.SoundBanksEditor
             Reflection.CopyProperties(SelectedAudio, TemporalAudio);
             UpdateControls();
 
-            /*--Editable Data--*/
+            //--Editable Data--
             Textbox_Flags.Text = TemporalAudio.Flags.ToString();
             numeric_psi.Value = TemporalAudio.PSIsample;
             numeric_loopOffset.Value = TemporalAudio.LoopOffset;
@@ -173,19 +173,19 @@ namespace EuroSound_Application.SoundBanksEditor
         private void Button_OK_Click(object sender, EventArgs e)
         {
             Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
-            /*--Add The Audio to the list if has been replaced--*/
+            //--Add The Audio to the list if has been replaced--
             if (!SelectedAudioMD5Hash.Equals(TemporalAudioHash))
             {
                 if (!((Frm_Soundbanks_Main)ParentForm).AudioDataDict.ContainsKey(TemporalAudioHash))
                 {
-                    /*--Update Dictionary--*/
+                    //--Update Dictionary--
                     ((Frm_Soundbanks_Main)ParentForm).AudioDataDict.Remove(SelectedAudioMD5Hash);
                     if (TemporalAudio != null)
                     {
                         ((Frm_Soundbanks_Main)ParentForm).AudioDataDict.Add(TemporalAudioHash, TemporalAudio);
                     }
 
-                    /*--Update Tree View--*/
+                    //--Update Tree View--
                     TreeNode[] Node = ((Frm_Soundbanks_Main)ParentForm).TreeView_File.Nodes.Find(SelectedAudioMD5Hash, true);
                     Node[0].Name = TemporalAudioHash;
                 }
@@ -196,27 +196,27 @@ namespace EuroSound_Application.SoundBanksEditor
             }
             else
             {
-                /*--Add PCM data if the stored one is null--*/
+                //--Add PCM data if the stored one is null--
                 if (SelectedAudio.PCMdata == null)
                 {
                     SelectedAudio.PCMdata = TemporalAudio.PCMdata;
                 }
 
-                /*--Modify Temporal Audio Values--*/
+                //--Modify Temporal Audio Values--
                 TemporalAudio.Flags = Convert.ToUInt16(Textbox_Flags.Text);
                 TemporalAudio.PSIsample = (uint)numeric_psi.Value;
                 TemporalAudio.LoopOffset = (uint)numeric_loopOffset.Value;
 
-                /*--Update Selected Audio-*/
+                //--Update Selected Audio-
                 SelectedAudio.Flags = TemporalAudio.Flags;
                 SelectedAudio.PSIsample = TemporalAudio.PSIsample;
                 SelectedAudio.LoopOffset = TemporalAudio.LoopOffset;
             }
 
-            /*--Stop Audio and liberate Memmory*/
+            //--Stop Audio and liberate Memmory
             AudioFunctionsLibrary.StopAudio(_waveOut);
 
-            /*--Close this form--*/
+            //--Close this form--
             Close();
         }
 
@@ -260,31 +260,31 @@ namespace EuroSound_Application.SoundBanksEditor
                 Textbox_MD5Hash.Text = TemporalAudioHash;
                 AudioFunctionsLibrary.DrawAudioWaves(euroSound_WaveViewer1, TemporalAudio, 0);
 
-                /*Ask user if wants to maintain config*/
+                //Ask user if wants to maintain config
                 DialogResult MaintainConfig = MessageBox.Show("Do you want to maintain the flags and loop offset values?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (MaintainConfig == DialogResult.No)
                 {
-                    /*--Editable Data--*/
+                    //--Editable Data--
                     Textbox_Flags.Text = TemporalAudio.Flags.ToString();
                     numeric_loopOffset.Value = TemporalAudio.LoopOffset;
                 }
             }
             else
             {
-                MessageBox.Show("Error reading this file, seems that is being used by another process.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorReadingFileIsUsedByAnotherProcess"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void UpdateControls()
         {
             Textbox_MediaName.Text = TemporalAudio.LoadedFileName;
-            Textbox_Encoding.Text = TemporalAudio.Encoding;
-            Textbox_DataSize.Text = string.Format("{0} bytes", TemporalAudio.DataSize);
-            Textbox_Frequency.Text = string.Format("{0} Hz", TemporalAudio.Frequency);
-            Textbox_RealSize.Text = string.Format("{0} bytes", TemporalAudio.RealSize);
+            Textbox_Encoding.Text = TemporalAudio.Encoding.ToUpper();
+            Textbox_DataSize.Text = string.Join(" ", new string[] { TemporalAudio.DataSize.ToString(), "bytes" });
+            Textbox_Frequency.Text = string.Join(" ", new string[] { TemporalAudio.Frequency.ToString(), "Hz" });
+            Textbox_RealSize.Text = string.Join(" ", new string[] { TemporalAudio.RealSize.ToString(), "bytes" });
             Textbox_Channels.Text = TemporalAudio.Channels.ToString();
             Textbox_Bits.Text = TemporalAudio.Bits.ToString();
-            Textbox_Duration.Text = string.Format("{0} ms", TemporalAudio.Duration);
+            Textbox_Duration.Text = string.Join(" ", new string[] { TemporalAudio.Duration.ToString(), "ms" });
             Textbox_MD5Hash.Text = SelectedAudioMD5Hash;
         }
     }

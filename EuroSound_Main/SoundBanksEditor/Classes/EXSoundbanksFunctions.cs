@@ -71,7 +71,7 @@ namespace EuroSound_Application.SoundBanksEditor
             List<string> AudiosToPurge = new List<string>();
             List<string> UsedAudios = GetUsedAudios(SoundsList, false);
 
-            /*Now compare*/
+            //Now compare
             foreach (string key in AudioDataDict.Keys)
             {
                 if (!UsedAudios.Contains(key))
@@ -127,7 +127,7 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             List<string> UsedAudios = new List<string>();
 
-            /*First we need to know which audios are used*/
+            //First we need to know which audios are used
             foreach (KeyValuePair<uint, EXSound> SoundToCheck in SoundsList)
             {
                 if (OnlyOutputAudios)
@@ -189,7 +189,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     };
                     AudioReader.Close();
 
-                    /*Get PCM data*/
+                    //Get PCM data
                     Audio.PCMdata = AudioLibrary.GetWavPCMData(FilePath);
                     if (Audio.PCMdata != null)
                     {
@@ -232,7 +232,7 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             string NewString = string.Empty;
 
-            /*Before remove whitespaces, first check that is not null*/
+            //Before remove whitespaces, first check that is not null
             if (!string.IsNullOrEmpty(TextToModify))
             {
                 NewString = Regex.Replace(TextToModify, @"\s", "");

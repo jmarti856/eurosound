@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Audio Data", 0, 0);
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Sounds", 0, 0);
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Streamed Sounds", 0, 0);
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Audio Data", 0, 0);
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Sounds", 0, 0);
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Streamed Sounds", 0, 0);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Soundbanks_Main));
             this.TreeView_File = new System.Windows.Forms.TreeView();
             this.ImageList_TreeNode = new System.Windows.Forms.ImageList(this.components);
@@ -74,7 +74,12 @@
             this.MenuItem_Edit = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_Edit_FileProps = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_Edit_Separator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuItem_Edit_Undo = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_Edit_Separator2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItem_Edit_Search = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_View = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemView_Separator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuItemView_CollapseTree = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenu_Sample = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ContextMenuSample_Remove = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuSample_Rename = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,15 +88,22 @@
             this.ContextMenuSample_TextColor = new System.Windows.Forms.ToolStripMenuItem();
             this.Button_UpdateList_WavData = new System.Windows.Forms.Button();
             this.GroupBox_Hashcodes = new System.Windows.Forms.GroupBox();
+            this.Textbox_HashcodesCount = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.Button_UpdateList_Hashcodes = new System.Windows.Forms.Button();
             this.ListView_Hashcodes = new System.Windows.Forms.ListView();
             this.Col_Hashcode_OK = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Hashcode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Hashcode_Label = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_UsedIn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ContextMenu_HashcodesList = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.MenuItem_CopyHashcode = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_CopyLabel = new System.Windows.Forms.ToolStripMenuItem();
             this.ImageList_ListView = new System.Windows.Forms.ImageList(this.components);
             this.TabControlDataViewer = new System.Windows.Forms.TabControl();
             this.TabPage_WavHeaderData = new System.Windows.Forms.TabPage();
+            this.Textbox_DataCount = new System.Windows.Forms.TextBox();
+            this.Label_ItemsCountWav = new System.Windows.Forms.Label();
             this.ListView_WavHeaderData = new ListViewExtendedMethods.ListView_ColumnSortingClick();
             this.Col_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_LoopOffset = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -102,6 +114,8 @@
             this.Col_Encoding = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Duration = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TabPage_StreamData = new System.Windows.Forms.TabPage();
+            this.Textbox_StreamFilesCount = new System.Windows.Forms.TextBox();
+            this.Label_StreamFilesCount = new System.Windows.Forms.Label();
             this.Button_UpdateList_StreamData = new System.Windows.Forms.Button();
             this.ListView_StreamData = new ListViewExtendedMethods.ListView_ColumnSortingClick();
             this.Col_StreamName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -122,6 +136,7 @@
             this.MainMenu.SuspendLayout();
             this.ContextMenu_Sample.SuspendLayout();
             this.GroupBox_Hashcodes.SuspendLayout();
+            this.ContextMenu_HashcodesList.SuspendLayout();
             this.TabControlDataViewer.SuspendLayout();
             this.TabPage_WavHeaderData.SuspendLayout();
             this.TabPage_StreamData.SuspendLayout();
@@ -140,27 +155,27 @@
             this.TreeView_File.Location = new System.Drawing.Point(0, 0);
             this.TreeView_File.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.TreeView_File.Name = "TreeView_File";
-            treeNode4.ImageIndex = 0;
-            treeNode4.Name = "AudioData";
-            treeNode4.SelectedImageIndex = 0;
-            treeNode4.Tag = "Root";
-            treeNode4.Text = "Audio Data";
-            treeNode5.ImageIndex = 0;
-            treeNode5.Name = "Sounds";
-            treeNode5.SelectedImageIndex = 0;
-            treeNode5.Tag = "Root";
-            treeNode5.Text = "Sounds";
-            treeNode6.ImageIndex = 0;
-            treeNode6.Name = "StreamedSounds";
-            treeNode6.SelectedImageIndex = 0;
-            treeNode6.Tag = "Root";
-            treeNode6.Text = "Streamed Sounds";
+            treeNode1.ImageIndex = 0;
+            treeNode1.Name = "AudioData";
+            treeNode1.SelectedImageIndex = 0;
+            treeNode1.Tag = "Root";
+            treeNode1.Text = "Audio Data";
+            treeNode2.ImageIndex = 0;
+            treeNode2.Name = "Sounds";
+            treeNode2.SelectedImageIndex = 0;
+            treeNode2.Tag = "Root";
+            treeNode2.Text = "Sounds";
+            treeNode3.ImageIndex = 0;
+            treeNode3.Name = "StreamedSounds";
+            treeNode3.SelectedImageIndex = 0;
+            treeNode3.Tag = "Root";
+            treeNode3.Text = "Streamed Sounds";
             this.TreeView_File.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode4,
-            treeNode5,
-            treeNode6});
+            treeNode1,
+            treeNode2,
+            treeNode3});
             this.TreeView_File.SelectedImageIndex = 0;
-            this.TreeView_File.Size = new System.Drawing.Size(494, 740);
+            this.TreeView_File.Size = new System.Drawing.Size(448, 740);
             this.TreeView_File.TabIndex = 1;
             this.TreeView_File.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.TreeView_File_AfterLabelEdit);
             this.TreeView_File.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.TreeView_File_BeforeCollapse);
@@ -386,7 +401,8 @@
             // 
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuItem_File,
-            this.MenuItem_Edit});
+            this.MenuItem_Edit,
+            this.MenuItem_View});
             this.MainMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
@@ -475,6 +491,8 @@
             this.MenuItem_Edit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuItem_Edit_FileProps,
             this.MenuItem_Edit_Separator1,
+            this.MenuItem_Edit_Undo,
+            this.MenuItem_Edit_Separator2,
             this.MenuItem_Edit_Search});
             this.MenuItem_Edit.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.MenuItem_Edit.MergeIndex = 1;
@@ -485,22 +503,63 @@
             // MenuItem_Edit_FileProps
             // 
             this.MenuItem_Edit_FileProps.Name = "MenuItem_Edit_FileProps";
-            this.MenuItem_Edit_FileProps.Size = new System.Drawing.Size(158, 22);
+            this.MenuItem_Edit_FileProps.Size = new System.Drawing.Size(180, 22);
             this.MenuItem_Edit_FileProps.Text = "File Properties";
             this.MenuItem_Edit_FileProps.Click += new System.EventHandler(this.MenuItem_Edit_FileProps_Click);
             // 
             // MenuItem_Edit_Separator1
             // 
             this.MenuItem_Edit_Separator1.Name = "MenuItem_Edit_Separator1";
-            this.MenuItem_Edit_Separator1.Size = new System.Drawing.Size(155, 6);
+            this.MenuItem_Edit_Separator1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // MenuItem_Edit_Undo
+            // 
+            this.MenuItem_Edit_Undo.Enabled = false;
+            this.MenuItem_Edit_Undo.Name = "MenuItem_Edit_Undo";
+            this.MenuItem_Edit_Undo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.MenuItem_Edit_Undo.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_Edit_Undo.Text = "Undo";
+            this.MenuItem_Edit_Undo.Click += new System.EventHandler(this.MenuItem_Edit_Undo_Click);
+            // 
+            // MenuItem_Edit_Separator2
+            // 
+            this.MenuItem_Edit_Separator2.Name = "MenuItem_Edit_Separator2";
+            this.MenuItem_Edit_Separator2.Size = new System.Drawing.Size(177, 6);
             // 
             // MenuItem_Edit_Search
             // 
             this.MenuItem_Edit_Search.Name = "MenuItem_Edit_Search";
             this.MenuItem_Edit_Search.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.MenuItem_Edit_Search.Size = new System.Drawing.Size(158, 22);
+            this.MenuItem_Edit_Search.Size = new System.Drawing.Size(180, 22);
             this.MenuItem_Edit_Search.Text = "Search...";
             this.MenuItem_Edit_Search.Click += new System.EventHandler(this.MenuItem_Edit_Search_Click);
+            // 
+            // MenuItem_View
+            // 
+            this.MenuItem_View.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItemView_Separator1,
+            this.MenuItemView_CollapseTree});
+            this.MenuItem_View.MergeAction = System.Windows.Forms.MergeAction.MatchOnly;
+            this.MenuItem_View.MergeIndex = 2;
+            this.MenuItem_View.Name = "MenuItem_View";
+            this.MenuItem_View.Size = new System.Drawing.Size(44, 20);
+            this.MenuItem_View.Text = "View";
+            // 
+            // MenuItemView_Separator1
+            // 
+            this.MenuItemView_Separator1.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.MenuItemView_Separator1.MergeIndex = 2;
+            this.MenuItemView_Separator1.Name = "MenuItemView_Separator1";
+            this.MenuItemView_Separator1.Size = new System.Drawing.Size(140, 6);
+            // 
+            // MenuItemView_CollapseTree
+            // 
+            this.MenuItemView_CollapseTree.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.MenuItemView_CollapseTree.MergeIndex = 3;
+            this.MenuItemView_CollapseTree.Name = "MenuItemView_CollapseTree";
+            this.MenuItemView_CollapseTree.Size = new System.Drawing.Size(143, 22);
+            this.MenuItemView_CollapseTree.Text = "Collapse Tree";
+            this.MenuItemView_CollapseTree.Click += new System.EventHandler(this.MenuItemView_CollapseTree_Click);
             // 
             // ContextMenu_Sample
             // 
@@ -549,10 +608,10 @@
             // Button_UpdateList_WavData
             // 
             this.Button_UpdateList_WavData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateList_WavData.Location = new System.Drawing.Point(380, 276);
+            this.Button_UpdateList_WavData.Location = new System.Drawing.Point(426, 276);
             this.Button_UpdateList_WavData.Name = "Button_UpdateList_WavData";
             this.Button_UpdateList_WavData.Size = new System.Drawing.Size(75, 23);
-            this.Button_UpdateList_WavData.TabIndex = 1;
+            this.Button_UpdateList_WavData.TabIndex = 3;
             this.Button_UpdateList_WavData.Text = "Update";
             this.Button_UpdateList_WavData.UseVisualStyleBackColor = true;
             this.Button_UpdateList_WavData.Click += new System.EventHandler(this.Button_UpdateList_WavData_Click);
@@ -561,22 +620,46 @@
             // 
             this.GroupBox_Hashcodes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox_Hashcodes.Controls.Add(this.Textbox_HashcodesCount);
+            this.GroupBox_Hashcodes.Controls.Add(this.label1);
             this.GroupBox_Hashcodes.Controls.Add(this.Button_UpdateList_Hashcodes);
             this.GroupBox_Hashcodes.Controls.Add(this.ListView_Hashcodes);
-            this.GroupBox_Hashcodes.Location = new System.Drawing.Point(500, 349);
+            this.GroupBox_Hashcodes.Location = new System.Drawing.Point(454, 349);
             this.GroupBox_Hashcodes.Name = "GroupBox_Hashcodes";
-            this.GroupBox_Hashcodes.Size = new System.Drawing.Size(469, 350);
+            this.GroupBox_Hashcodes.Size = new System.Drawing.Size(515, 350);
             this.GroupBox_Hashcodes.TabIndex = 3;
             this.GroupBox_Hashcodes.TabStop = false;
             this.GroupBox_Hashcodes.Text = "Hashcodes";
             // 
+            // Textbox_HashcodesCount
+            // 
+            this.Textbox_HashcodesCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Textbox_HashcodesCount.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_HashcodesCount.Location = new System.Drawing.Point(107, 323);
+            this.Textbox_HashcodesCount.Name = "Textbox_HashcodesCount";
+            this.Textbox_HashcodesCount.ReadOnly = true;
+            this.Textbox_HashcodesCount.Size = new System.Drawing.Size(100, 20);
+            this.Textbox_HashcodesCount.TabIndex = 2;
+            this.Textbox_HashcodesCount.Text = "0";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.ForestGreen;
+            this.label1.Location = new System.Drawing.Point(6, 326);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(95, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Hashcodes Count:";
+            // 
             // Button_UpdateList_Hashcodes
             // 
             this.Button_UpdateList_Hashcodes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateList_Hashcodes.Location = new System.Drawing.Point(388, 321);
+            this.Button_UpdateList_Hashcodes.Location = new System.Drawing.Point(434, 321);
             this.Button_UpdateList_Hashcodes.Name = "Button_UpdateList_Hashcodes";
             this.Button_UpdateList_Hashcodes.Size = new System.Drawing.Size(75, 23);
-            this.Button_UpdateList_Hashcodes.TabIndex = 1;
+            this.Button_UpdateList_Hashcodes.TabIndex = 3;
             this.Button_UpdateList_Hashcodes.Text = "Update";
             this.Button_UpdateList_Hashcodes.UseVisualStyleBackColor = true;
             this.Button_UpdateList_Hashcodes.Click += new System.EventHandler(this.Button_UpdateList_Hashcodes_Click);
@@ -591,16 +674,18 @@
             this.Col_Hashcode,
             this.Col_Hashcode_Label,
             this.Col_UsedIn});
+            this.ListView_Hashcodes.ContextMenuStrip = this.ContextMenu_HashcodesList;
             this.ListView_Hashcodes.FullRowSelect = true;
             this.ListView_Hashcodes.GridLines = true;
             this.ListView_Hashcodes.HideSelection = false;
             this.ListView_Hashcodes.Location = new System.Drawing.Point(6, 19);
             this.ListView_Hashcodes.Name = "ListView_Hashcodes";
-            this.ListView_Hashcodes.Size = new System.Drawing.Size(457, 296);
+            this.ListView_Hashcodes.Size = new System.Drawing.Size(503, 296);
             this.ListView_Hashcodes.SmallImageList = this.ImageList_ListView;
             this.ListView_Hashcodes.TabIndex = 0;
             this.ListView_Hashcodes.UseCompatibleStateImageBehavior = false;
             this.ListView_Hashcodes.View = System.Windows.Forms.View.Details;
+            this.ListView_Hashcodes.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListView_Hashcodes_MouseDoubleClick);
             // 
             // Col_Hashcode_OK
             // 
@@ -622,6 +707,28 @@
             this.Col_UsedIn.Text = "Used By";
             this.Col_UsedIn.Width = 160;
             // 
+            // ContextMenu_HashcodesList
+            // 
+            this.ContextMenu_HashcodesList.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItem_CopyHashcode,
+            this.MenuItem_CopyLabel});
+            this.ContextMenu_HashcodesList.Name = "ContextMenu_HashcodesList";
+            this.ContextMenu_HashcodesList.Size = new System.Drawing.Size(159, 48);
+            // 
+            // MenuItem_CopyHashcode
+            // 
+            this.MenuItem_CopyHashcode.Name = "MenuItem_CopyHashcode";
+            this.MenuItem_CopyHashcode.Size = new System.Drawing.Size(158, 22);
+            this.MenuItem_CopyHashcode.Text = "Copy Hashcode";
+            this.MenuItem_CopyHashcode.Click += new System.EventHandler(this.MenuItem_CopyHashcode_Click);
+            // 
+            // MenuItem_CopyLabel
+            // 
+            this.MenuItem_CopyLabel.Name = "MenuItem_CopyLabel";
+            this.MenuItem_CopyLabel.Size = new System.Drawing.Size(158, 22);
+            this.MenuItem_CopyLabel.Text = "Copy Label";
+            this.MenuItem_CopyLabel.Click += new System.EventHandler(this.MenuItem_CopyLabel_Click);
+            // 
             // ImageList_ListView
             // 
             this.ImageList_ListView.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ImageList_ListView.ImageStream")));
@@ -635,23 +742,47 @@
             this.TabControlDataViewer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.TabControlDataViewer.Controls.Add(this.TabPage_WavHeaderData);
             this.TabControlDataViewer.Controls.Add(this.TabPage_StreamData);
-            this.TabControlDataViewer.Location = new System.Drawing.Point(500, 12);
+            this.TabControlDataViewer.Location = new System.Drawing.Point(454, 12);
             this.TabControlDataViewer.Name = "TabControlDataViewer";
             this.TabControlDataViewer.SelectedIndex = 0;
-            this.TabControlDataViewer.Size = new System.Drawing.Size(469, 331);
+            this.TabControlDataViewer.Size = new System.Drawing.Size(515, 331);
             this.TabControlDataViewer.TabIndex = 2;
             // 
             // TabPage_WavHeaderData
             // 
             this.TabPage_WavHeaderData.BackColor = System.Drawing.SystemColors.Control;
+            this.TabPage_WavHeaderData.Controls.Add(this.Textbox_DataCount);
+            this.TabPage_WavHeaderData.Controls.Add(this.Label_ItemsCountWav);
             this.TabPage_WavHeaderData.Controls.Add(this.ListView_WavHeaderData);
             this.TabPage_WavHeaderData.Controls.Add(this.Button_UpdateList_WavData);
             this.TabPage_WavHeaderData.Location = new System.Drawing.Point(4, 22);
             this.TabPage_WavHeaderData.Name = "TabPage_WavHeaderData";
             this.TabPage_WavHeaderData.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_WavHeaderData.Size = new System.Drawing.Size(461, 305);
+            this.TabPage_WavHeaderData.Size = new System.Drawing.Size(507, 305);
             this.TabPage_WavHeaderData.TabIndex = 1;
             this.TabPage_WavHeaderData.Text = "Wav Header Data";
+            // 
+            // Textbox_DataCount
+            // 
+            this.Textbox_DataCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Textbox_DataCount.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_DataCount.Location = new System.Drawing.Point(74, 278);
+            this.Textbox_DataCount.Name = "Textbox_DataCount";
+            this.Textbox_DataCount.ReadOnly = true;
+            this.Textbox_DataCount.Size = new System.Drawing.Size(100, 20);
+            this.Textbox_DataCount.TabIndex = 2;
+            this.Textbox_DataCount.Text = "0";
+            // 
+            // Label_ItemsCountWav
+            // 
+            this.Label_ItemsCountWav.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Label_ItemsCountWav.AutoSize = true;
+            this.Label_ItemsCountWav.ForeColor = System.Drawing.Color.ForestGreen;
+            this.Label_ItemsCountWav.Location = new System.Drawing.Point(6, 281);
+            this.Label_ItemsCountWav.Name = "Label_ItemsCountWav";
+            this.Label_ItemsCountWav.Size = new System.Drawing.Size(62, 13);
+            this.Label_ItemsCountWav.TabIndex = 1;
+            this.Label_ItemsCountWav.Text = "Files Count:";
             // 
             // ListView_WavHeaderData
             // 
@@ -672,7 +803,7 @@
             this.ListView_WavHeaderData.HideSelection = false;
             this.ListView_WavHeaderData.Location = new System.Drawing.Point(6, 6);
             this.ListView_WavHeaderData.Name = "ListView_WavHeaderData";
-            this.ListView_WavHeaderData.Size = new System.Drawing.Size(449, 264);
+            this.ListView_WavHeaderData.Size = new System.Drawing.Size(495, 264);
             this.ListView_WavHeaderData.TabIndex = 2;
             this.ListView_WavHeaderData.UseCompatibleStateImageBehavior = false;
             this.ListView_WavHeaderData.View = System.Windows.Forms.View.Details;
@@ -718,22 +849,44 @@
             // TabPage_StreamData
             // 
             this.TabPage_StreamData.BackColor = System.Drawing.SystemColors.Control;
+            this.TabPage_StreamData.Controls.Add(this.Textbox_StreamFilesCount);
+            this.TabPage_StreamData.Controls.Add(this.Label_StreamFilesCount);
             this.TabPage_StreamData.Controls.Add(this.Button_UpdateList_StreamData);
             this.TabPage_StreamData.Controls.Add(this.ListView_StreamData);
             this.TabPage_StreamData.Location = new System.Drawing.Point(4, 22);
             this.TabPage_StreamData.Name = "TabPage_StreamData";
             this.TabPage_StreamData.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_StreamData.Size = new System.Drawing.Size(461, 305);
+            this.TabPage_StreamData.Size = new System.Drawing.Size(507, 305);
             this.TabPage_StreamData.TabIndex = 0;
             this.TabPage_StreamData.Text = "Stream Data";
+            // 
+            // Textbox_StreamFilesCount
+            // 
+            this.Textbox_StreamFilesCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Textbox_StreamFilesCount.Location = new System.Drawing.Point(124, 278);
+            this.Textbox_StreamFilesCount.Name = "Textbox_StreamFilesCount";
+            this.Textbox_StreamFilesCount.Size = new System.Drawing.Size(100, 20);
+            this.Textbox_StreamFilesCount.TabIndex = 2;
+            this.Textbox_StreamFilesCount.Text = "0";
+            // 
+            // Label_StreamFilesCount
+            // 
+            this.Label_StreamFilesCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Label_StreamFilesCount.AutoSize = true;
+            this.Label_StreamFilesCount.ForeColor = System.Drawing.Color.ForestGreen;
+            this.Label_StreamFilesCount.Location = new System.Drawing.Point(6, 281);
+            this.Label_StreamFilesCount.Name = "Label_StreamFilesCount";
+            this.Label_StreamFilesCount.Size = new System.Drawing.Size(112, 13);
+            this.Label_StreamFilesCount.TabIndex = 1;
+            this.Label_StreamFilesCount.Text = "Linked Sounds Count:";
             // 
             // Button_UpdateList_StreamData
             // 
             this.Button_UpdateList_StreamData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateList_StreamData.Location = new System.Drawing.Point(380, 276);
+            this.Button_UpdateList_StreamData.Location = new System.Drawing.Point(426, 276);
             this.Button_UpdateList_StreamData.Name = "Button_UpdateList_StreamData";
             this.Button_UpdateList_StreamData.Size = new System.Drawing.Size(75, 23);
-            this.Button_UpdateList_StreamData.TabIndex = 1;
+            this.Button_UpdateList_StreamData.TabIndex = 3;
             this.Button_UpdateList_StreamData.Text = "Update";
             this.Button_UpdateList_StreamData.UseVisualStyleBackColor = true;
             this.Button_UpdateList_StreamData.Click += new System.EventHandler(this.Button_UpdateList_StreamData_Click);
@@ -753,7 +906,7 @@
             this.ListView_StreamData.HideSelection = false;
             this.ListView_StreamData.Location = new System.Drawing.Point(6, 6);
             this.ListView_StreamData.Name = "ListView_StreamData";
-            this.ListView_StreamData.Size = new System.Drawing.Size(449, 264);
+            this.ListView_StreamData.Size = new System.Drawing.Size(495, 264);
             this.ListView_StreamData.TabIndex = 0;
             this.ListView_StreamData.UseCompatibleStateImageBehavior = false;
             this.ListView_StreamData.View = System.Windows.Forms.View.Details;
@@ -875,9 +1028,13 @@
             this.MainMenu.PerformLayout();
             this.ContextMenu_Sample.ResumeLayout(false);
             this.GroupBox_Hashcodes.ResumeLayout(false);
+            this.GroupBox_Hashcodes.PerformLayout();
+            this.ContextMenu_HashcodesList.ResumeLayout(false);
             this.TabControlDataViewer.ResumeLayout(false);
             this.TabPage_WavHeaderData.ResumeLayout(false);
+            this.TabPage_WavHeaderData.PerformLayout();
             this.TabPage_StreamData.ResumeLayout(false);
+            this.TabPage_StreamData.PerformLayout();
             this.ContextMenu_Audio.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -969,5 +1126,19 @@
         private System.Windows.Forms.Button Button_GenerateList;
         private System.Windows.Forms.ToolStripSeparator MenuItem_Edit_Separator1;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Edit_Search;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_Edit_Undo;
+        private System.Windows.Forms.ToolStripSeparator MenuItem_Edit_Separator2;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_View;
+        private System.Windows.Forms.ToolStripSeparator MenuItemView_Separator1;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemView_CollapseTree;
+        private System.Windows.Forms.TextBox Textbox_DataCount;
+        private System.Windows.Forms.Label Label_ItemsCountWav;
+        private System.Windows.Forms.TextBox Textbox_HashcodesCount;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox Textbox_StreamFilesCount;
+        private System.Windows.Forms.Label Label_StreamFilesCount;
+        private System.Windows.Forms.ContextMenuStrip ContextMenu_HashcodesList;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_CopyHashcode;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_CopyLabel;
     }
 }

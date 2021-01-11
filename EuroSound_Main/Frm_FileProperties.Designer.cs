@@ -279,6 +279,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Project Options";
             this.Load += new System.EventHandler(this.Frm_FileProperties_Load);
+            this.Shown += new System.EventHandler(this.Frm_FileProperties_Shown);
             this.GroupBox_HashTable.ResumeLayout(false);
             this.GroupBox_HashTable.PerformLayout();
             this.groupBox1.ResumeLayout(false);

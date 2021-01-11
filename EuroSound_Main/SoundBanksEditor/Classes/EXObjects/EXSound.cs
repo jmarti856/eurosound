@@ -20,7 +20,7 @@ namespace EuroSound_Application.SoundBanksEditor
         //public List<EXSample> Samples { get; set; } = new List<EXSample>();
         public Dictionary<uint, EXSample> Samples { get; set; } = new Dictionary<uint, EXSample>();
 
-        /*---Required for Engine X--*/
+        //---Required for Engine X--
         public sbyte TrackingType;
     }
 }

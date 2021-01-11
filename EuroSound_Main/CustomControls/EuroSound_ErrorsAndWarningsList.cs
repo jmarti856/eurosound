@@ -21,11 +21,11 @@ namespace EuroSound_Application
         {
             string Text = string.Empty;
 
-            Thread CopyDataToClipboard = new Thread(delegate ()
+            Thread CopyDataToClipboard = new Thread(() =>
             {
                 Clipboard.Clear();
 
-                ListView_Reports.Invoke((MethodInvoker)delegate
+                ListView_Reports.BeginInvoke((MethodInvoker)delegate
                 {
                     foreach (ListViewItem lvItem in ListView_Reports.Items)
                     {
@@ -37,7 +37,7 @@ namespace EuroSound_Application
                         {
                             Text += "Warning:    ";
                         }
-                        Text += lvItem.SubItems[1].Text + Environment.NewLine;
+                        Text += string.Format("{0}\n", lvItem.SubItems[1].Text);
                     }
                 });
 
@@ -57,34 +57,27 @@ namespace EuroSound_Application
 
         private void EuroSound_ImportResultsList_Load(object sender, EventArgs e)
         {
-            try
+            foreach (string item in ErrorsAndWarningsListToPrint)
             {
-                foreach (string item in ErrorsAndWarningsListToPrint)
+                char MessageType = item[0];
+                ListViewItem Item = new ListViewItem(new[] { "", item.Substring(1) });
+
+                if (MessageType == '0')
                 {
-                    char MessageType = item[0];
-                    ListViewItem Item = new ListViewItem(new[] { "", item.Substring(1) });
-
-                    if (MessageType == '0')
-                    {
-                        Item.SubItems[0].Text = "Error";
-                        Item.ImageIndex = 0;
-                    }
-                    else if (MessageType == '1')
-                    {
-                        Item.SubItems[0].Text = "Warning";
-                        Item.ImageIndex = 1;
-                    }
-                    else
-                    {
-                        Item.SubItems[0].Text = "Info";
-                        Item.ImageIndex = 2;
-                    }
-                    ListView_Reports.Items.Add(Item);
+                    Item.SubItems[0].Text = "Error";
+                    Item.ImageIndex = 0;
                 }
-            }
-            catch
-            {
-
+                else if (MessageType == '1')
+                {
+                    Item.SubItems[0].Text = "Warning";
+                    Item.ImageIndex = 1;
+                }
+                else
+                {
+                    Item.SubItems[0].Text = "Info";
+                    Item.ImageIndex = 2;
+                }
+                ListView_Reports.Items.Add(Item);
             }
             ErrorsAndWarningsListToPrint = null;
         }

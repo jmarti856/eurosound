@@ -137,6 +137,7 @@ namespace EuroSound_Application
             // 
             // MenuItemView_Preferences
             // 
+            this.MenuItemView_Preferences.MergeIndex = 0;
             this.MenuItemView_Preferences.Name = "MenuItemView_Preferences";
             this.MenuItemView_Preferences.Size = new System.Drawing.Size(135, 22);
             this.MenuItemView_Preferences.Text = "Preferences";
@@ -147,6 +148,7 @@ namespace EuroSound_Application
             this.MenuItemView_StatusBar.Checked = true;
             this.MenuItemView_StatusBar.CheckOnClick = true;
             this.MenuItemView_StatusBar.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.MenuItemView_StatusBar.MergeIndex = 1;
             this.MenuItemView_StatusBar.Name = "MenuItemView_StatusBar";
             this.MenuItemView_StatusBar.Size = new System.Drawing.Size(135, 22);
             this.MenuItemView_StatusBar.Text = "Status Bar";

@@ -2,6 +2,9 @@
 using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.SoundBanksEditor
@@ -14,6 +17,7 @@ namespace EuroSound_Application.SoundBanksEditor
         private Form OpenForm;
         private EXSound SelectedSound;
         private string TreeNodeSoundName, SoundSection;
+        private Thread DataToCombobox;
 
         public Frm_EffectProperties(EXSound SoundToCheck, string SoundName, string Section)
         {
@@ -39,18 +43,17 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
             }
-            Hashcodes.AddHashcodesToCombobox(cbx_hashcode, Hashcodes.SFX_Defines);
 
-            //Get Parent FOrm
+            //Get Parent Form
             OpenForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
+
+            //---Add data to combobox--
+            AddDataToCombobox();
         }
 
         private void Frm_EffectProperties_Shown(object sender, EventArgs e)
         {
-            /*---Put the selected hashcode in case is not null---*/
-            cbx_hashcode.SelectedValue = SelectedSound.Hashcode;
-
-            /*---Required for Engine X---*/
+            //---Required for Engine X---
             numeric_duckerlength.Value = SelectedSound.DuckerLenght;
             numeric_mindelay.Value = SelectedSound.MinDelay;
             numeric_maxdelay.Value = SelectedSound.MaxDelay;
@@ -64,24 +67,40 @@ namespace EuroSound_Application.SoundBanksEditor
             numeric_mastervolume.Value = SelectedSound.MasterVolume;
             textbox_flags.Text = SelectedSound.Flags.ToString();
             Checkbox_OutputThisSound.Checked = SelectedSound.OutputThisSound;
-
-            /*---Print Sample--*/
-            if (SelectedSound.Samples != null)
+            
+            //---Print Samples--
+            Thread PrintSampleList = new Thread(() =>
             {
-                string SampleName;
-
-                foreach (KeyValuePair<uint, EXSample> sample in SelectedSound.Samples)
+                if (SelectedSound.Samples != null)
                 {
-                    SampleName = ((Frm_Soundbanks_Main)OpenForm).TreeView_File.Nodes.Find(sample.Key.ToString(), true)[0].Text;
-                    ListViewItem ItemToAdd = new ListViewItem
-                    {
-                        Text = SampleName,
-                        Tag = sample.Key
-                    };
+                    string SampleName;
 
-                    List_Samples.Items.Add(ItemToAdd);
+                    foreach (KeyValuePair<uint, EXSample> sample in SelectedSound.Samples)
+                    {
+                        SampleName = ((Frm_Soundbanks_Main)OpenForm).TreeView_File.Nodes.Find(sample.Key.ToString(), true)[0].Text;
+                        //Crate item
+                        ListViewItem ItemToAdd = new ListViewItem
+                        {
+                            Text = SampleName,
+                            Tag = sample.Key,
+                            ImageIndex = 0,
+                            StateImageIndex = 0
+                        };
+
+                        //Insert item
+                        List_Samples.BeginInvoke((MethodInvoker)delegate
+                        {
+                            List_Samples.Items.Add(ItemToAdd);
+                        });
+
+                        Thread.Sleep(40);
+                    }
                 }
-            }
+            })
+            {
+                IsBackground = true
+            };
+            PrintSampleList.Start();
         }
 
         //*===============================================================================================
@@ -112,7 +131,7 @@ namespace EuroSound_Application.SoundBanksEditor
             SelectedSound.Flags = Convert.ToUInt16(textbox_flags.Text);
             SelectedSound.OutputThisSound = Checkbox_OutputThisSound.Checked;
 
-            /*--Change icon in the parent form--*/
+            //--Change icon in the parent form--
             TreeNode[] Results = ((Frm_Soundbanks_Main)OpenForm).TreeView_File.Nodes.Find(TreeNodeSoundName, true);
             if (Results.Length > 0)
             {
@@ -135,7 +154,11 @@ namespace EuroSound_Application.SoundBanksEditor
             if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsMD5, GlobalPreferences.HT_SoundsPath))
             {
                 Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
-                Hashcodes.AddHashcodesToCombobox(cbx_hashcode, Hashcodes.SFX_Defines);
+                if (DataToCombobox != null)
+                {
+                    DataToCombobox.Abort();
+                }
+                AddDataToCombobox();
             }
 
             //Sound Data defines
@@ -236,6 +259,37 @@ namespace EuroSound_Application.SoundBanksEditor
                     }
                 }
             }
+        }
+
+        //*===============================================================================================
+        //* FUNCTIONS
+        //*===============================================================================================
+        private void AddDataToCombobox()
+        {
+            //---AddDataToCombobox
+            DataToCombobox = new Thread(() =>
+            {
+                cbx_hashcode.BeginInvoke((MethodInvoker)delegate
+                {
+                    cbx_hashcode.Enabled = false;
+                    cbx_hashcode.DataSource = null;
+                    cbx_hashcode.Items.Clear();
+                    cbx_hashcode.DataSource = Hashcodes.SFX_Defines.OrderBy(o => o.Value).ToList();
+                });
+                cbx_hashcode.BeginInvoke((MethodInvoker)async delegate
+                {
+                    await Task.Delay(50);
+                    cbx_hashcode.ValueMember = "Key";
+                    cbx_hashcode.DisplayMember = "Value";
+                    cbx_hashcode.Update();
+                    cbx_hashcode.SelectedValue = SelectedSound.Hashcode;
+                    cbx_hashcode.Enabled = true;
+                });
+            })
+            {
+                IsBackground = true
+            };
+            DataToCombobox.Start();
         }
     }
 }

@@ -285,6 +285,7 @@
             // 
             // Button_Edit
             // 
+            this.Button_Edit.Enabled = false;
             this.Button_Edit.Location = new System.Drawing.Point(190, 80);
             this.Button_Edit.Name = "Button_Edit";
             this.Button_Edit.Size = new System.Drawing.Size(92, 23);
@@ -295,6 +296,7 @@
             // 
             // Button_Stop
             // 
+            this.Button_Stop.Enabled = false;
             this.Button_Stop.Location = new System.Drawing.Point(369, 80);
             this.Button_Stop.Name = "Button_Stop";
             this.Button_Stop.Size = new System.Drawing.Size(75, 23);
@@ -306,6 +308,7 @@
             // Button_PlayAudio
             // 
             this.Button_PlayAudio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_PlayAudio.Enabled = false;
             this.Button_PlayAudio.Location = new System.Drawing.Point(288, 80);
             this.Button_PlayAudio.Name = "Button_PlayAudio";
             this.Button_PlayAudio.Size = new System.Drawing.Size(75, 23);
@@ -330,6 +333,7 @@
             this.Combobox_SelectedAudio.Location = new System.Drawing.Point(49, 42);
             this.Combobox_SelectedAudio.Name = "Combobox_SelectedAudio";
             this.Combobox_SelectedAudio.Size = new System.Drawing.Size(395, 21);
+            this.Combobox_SelectedAudio.Sorted = true;
             this.Combobox_SelectedAudio.TabIndex = 2;
             // 
             // groupBox2
@@ -401,6 +405,7 @@
             this.Text = "Frm_SampleProperties";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_SampleProperties_FormClosing);
             this.Load += new System.EventHandler(this.Frm_SampleProperties_Load);
+            this.Shown += new System.EventHandler(this.Frm_SampleProperties_Shown);
             this.groupbox_properties.ResumeLayout(false);
             this.groupbox_properties.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_BaseVolume)).EndInit();

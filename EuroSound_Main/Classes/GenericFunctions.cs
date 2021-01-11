@@ -2,6 +2,7 @@
 using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.SoundBanksEditor;
 using NAudio.Wave;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Resources;
@@ -142,7 +143,7 @@ namespace EuroSound_Application
         {
             string SampleName = string.Empty;
 
-            /*Ask user for a name*/
+            //Ask user for a name
             using (EuroSound_InputBox dlg = new EuroSound_InputBox(Text, Title))
             {
                 if (dlg.ShowDialog() == DialogResult.OK)
@@ -171,21 +172,6 @@ namespace EuroSound_Application
                 if (SaveFile.ShowDialog() == DialogResult.OK)
                 {
                     SelectedPath = SaveFile.FileName;
-                }
-            }
-
-            return SelectedPath;
-        }
-
-        internal static string OpenFolderBrowser()
-        {
-            string SelectedPath = string.Empty;
-
-            using (FolderBrowserDialog OpenFolder = new FolderBrowserDialog())
-            {
-                if (OpenFolder.ShowDialog() == DialogResult.OK)
-                {
-                    SelectedPath = OpenFolder.SelectedPath;
                 }
             }
 
@@ -240,7 +226,7 @@ namespace EuroSound_Application
             }
             else
             {
-                Text = Path.GetFileName(LoadedFile) + " - " + Path.GetDirectoryName(LoadedFile);
+                Text = string.Join(" - ", new string[] { Path.GetFileName(LoadedFile), Path.GetDirectoryName(LoadedFile) });
             }
 
             return Text;
@@ -272,41 +258,31 @@ namespace EuroSound_Application
 
         internal static void CreateTemporalFolder()
         {
+            string TemporalFolderPath = Path.Combine(new string[] { Path.GetTempPath(), "EuroSound" });
+
             //Create folder in %temp%
-            if (!Directory.Exists(Path.GetTempPath() + "EuroSound"))
+            if (!Directory.Exists(TemporalFolderPath))
             {
-                Directory.CreateDirectory(Path.GetTempPath() + "EuroSound");
+                Directory.CreateDirectory(TemporalFolderPath);
             }
         }
 
-        internal static bool ClearTemporalFiles()
+        internal static void AddItemToListView(ListViewItem ItemToAdd, ListView ListToAddItem)
         {
-            bool FilesRemoved = false;
-
-            //Delete Temp Files from session if exists
-            if (Directory.Exists(Path.GetTempPath() + @"EuroSound\"))
+            try
             {
-                /*Update Status Bar*/
-                ParentFormStatusBar.ShowProgramStatus(ResourcesManager.GetString("StatusBar_RemovingTempFiles"));
-
-                //Get temporal files
-                DirectoryInfo di = new DirectoryInfo(Path.GetTempPath() + @"EuroSound\");
-                foreach (FileInfo file in di.GetFiles())
+                ListToAddItem.Invoke((MethodInvoker)delegate
                 {
-                    FilesRemoved = true;
-                    file.Delete();
-                }
-                foreach (DirectoryInfo dir in di.GetDirectories())
-                {
-                    FilesRemoved = true;
-                    dir.Delete(true);
-                }
-
-                //Update Status Bar
-                ParentFormStatusBar.ShowProgramStatus(ResourcesManager.GetString("StatusBar_Status_Ready"));
+                    if (!ListToAddItem.IsDisposed)
+                    {
+                        ListToAddItem.Items.Add(ItemToAdd);
+                    }
+                });
             }
-
-            return FilesRemoved;
+            catch (ObjectDisposedException)
+            {
+                // Ignore.  Control is disposed cannot update the UI.
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ namespace CustomStatusBar
             {
                 if (InvokeRequired)
                 {
-                    Invoke((MethodInvoker)delegate
+                    BeginInvoke((MethodInvoker)delegate
                     {
                         StatusPanel.Text = "";
                     });
@@ -41,7 +41,7 @@ namespace CustomStatusBar
             {
                 if (InvokeRequired)
                 {
-                    Invoke((MethodInvoker)delegate
+                    BeginInvoke((MethodInvoker)delegate
                     {
                         StatusPanel.Text = TextToShow;
                     });
@@ -60,7 +60,7 @@ namespace CustomStatusBar
             {
                 if (InvokeRequired)
                 {
-                    Invoke((MethodInvoker)delegate
+                    BeginInvoke((MethodInvoker)delegate
                     {
                         StatusPanel.Text = ProgramStatus;
                     });
@@ -78,7 +78,7 @@ namespace CustomStatusBar
             {
                 if (InvokeRequired)
                 {
-                    Invoke((MethodInvoker)delegate
+                    BeginInvoke((MethodInvoker)delegate
                     {
                         StatusPanel.Text = ProgramStatus;
                     });

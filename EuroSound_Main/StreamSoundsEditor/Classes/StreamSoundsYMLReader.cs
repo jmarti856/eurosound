@@ -35,7 +35,6 @@ namespace EuroSound_Application.StreamSounds
                     }
                 }
                 Array.Clear(lines, 0, lines.Length);
-                GC.Collect();
             }
             else
             {
@@ -73,7 +72,7 @@ namespace EuroSound_Application.StreamSounds
             List<int[]> Markers;
             string WavDataPath;
 
-            /*Update Status Bar*/
+            //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_ReadingYamlFile") + ": " + SoundName);
             if (Reports == null)
             {
@@ -84,11 +83,11 @@ namespace EuroSound_Application.StreamSounds
             string FileCheck = reader.ReadLine();
             if (FileCheck.Equals("#ftype:4", StringComparison.OrdinalIgnoreCase))
             {
-                // Load the stream
+                //Load the stream
                 YamlStream yaml = new YamlStream();
                 yaml.Load(reader);
 
-                // Examine the stream
+                //Examine the stream
                 YamlMappingNode mapping = (YamlMappingNode)yaml.Documents[0].RootNode;
 
                 CurrentSoundParams = GetSoundParams(mapping);
@@ -104,7 +103,7 @@ namespace EuroSound_Application.StreamSounds
                     DisplayName = SoundName,
                 };
 
-                ////////////////////READ WAV FILE
+                //------------------READ WAV FILE----------------------
                 if (GenericFunctions.AudioIsValid(WavDataPath, 1, 22050))
                 {
                     LoadAudio(WavDataPath, SoundToAdd);
@@ -174,7 +173,7 @@ namespace EuroSound_Application.StreamSounds
             reader.Close();
             reader.Dispose();
 
-            /*Update Status Bar*/
+            //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
@@ -319,10 +318,10 @@ namespace EuroSound_Application.StreamSounds
 
                 AudioReader.Close();
 
-                /*Get PCM Data*/
+                //Get PCM Data
                 SoundToLoad.PCM_Data = AudioLibrary.GetWavPCMData(AudioPath);
 
-                /*Get IMA ADPCM Data*/
+                //Get IMA ADPCM Data
                 ImaPath = AudioLibrary.ConvertWavToIMAADPCM(AudioPath, Path.GetFileNameWithoutExtension(AudioPath));
                 if (!string.IsNullOrEmpty(ImaPath))
                 {

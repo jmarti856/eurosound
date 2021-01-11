@@ -27,12 +27,12 @@ namespace EuroSound_Application.SFXData
             {
                 Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
             }
-            Hashcodes.AddHashcodesToCombobox(Combobox_LabelHashcodes, Hashcodes.SFX_Defines);
         }
 
         private void Frm_SFX_DataGenerator_Shown(object sender, EventArgs e)
         {
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            Hashcodes.AddDataToCombobox(Combobox_LabelHashcodes, Hashcodes.SFX_Defines);
 
             LoadSfxDataTable = new Thread(LoadDataFromHashtable)
             {
@@ -43,19 +43,19 @@ namespace EuroSound_Application.SFXData
 
         private void Frm_SFX_DataGenerator_FormClosing(object sender, FormClosingEventArgs e)
         {
-            /*Stop thread*/
+            //Stop thread
             LoadSfxDataTable.Abort();
 
-            /*Dispose buttons*/
+            //Dispose buttons
             button_generateFile.Dispose();
             Button_Reload.Dispose();
             ListView_HashTableData.Dispose();
             Combobox_LabelHashcodes.Dispose();
 
-            /*Clear array*/
+            //Clear array
             SFXDataBin_Generator = null;
 
-            /*Update Status Bar*/
+            //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
@@ -64,28 +64,28 @@ namespace EuroSound_Application.SFXData
             ListViewItem ItemToAdd;
             float[] ItemValue;
 
-            ListView_HashTableData.Invoke((MethodInvoker)delegate
+            ListView_HashTableData.BeginInvoke((MethodInvoker)delegate
             {
                 ListView_HashTableData.Enabled = false;
                 ListView_HashTableData.Items.Clear();
             });
 
-            Button_Reload.Invoke((MethodInvoker)delegate
+            Button_Reload.BeginInvoke((MethodInvoker)delegate
             {
                 Button_Reload.Enabled = false;
             });
 
-            button_generateFile.Invoke((MethodInvoker)delegate
+            button_generateFile.BeginInvoke((MethodInvoker)delegate
             {
                 button_generateFile.Enabled = false;
             });
 
-            Combobox_LabelHashcodes.Invoke((MethodInvoker)delegate
+            Combobox_LabelHashcodes.BeginInvoke((MethodInvoker)delegate
             {
                 Combobox_LabelHashcodes.Enabled = false;
             });
 
-            Button_Search.Invoke((MethodInvoker)delegate
+            Button_Search.BeginInvoke((MethodInvoker)delegate
             {
                 Button_Search.Enabled = false;
             });
@@ -103,7 +103,7 @@ namespace EuroSound_Application.SFXData
                     //Save check in case the object is disposed. 
                     try
                     {
-                        ListView_HashTableData.Invoke((MethodInvoker)delegate
+                        ListView_HashTableData.BeginInvoke((MethodInvoker)delegate
                         {
                             ListView_HashTableData.Items.Add(ItemToAdd);
                         });
@@ -117,28 +117,28 @@ namespace EuroSound_Application.SFXData
                 Thread.Sleep(14);
             }
 
-            ListView_HashTableData.Invoke((MethodInvoker)delegate
+            ListView_HashTableData.BeginInvoke((MethodInvoker)delegate
             {
                 ListView_HashTableData.Enabled = true;
             });
 
 
-            Button_Reload.Invoke((MethodInvoker)delegate
+            Button_Reload.BeginInvoke((MethodInvoker)delegate
             {
                 Button_Reload.Enabled = true;
             });
 
-            button_generateFile.Invoke((MethodInvoker)delegate
+            button_generateFile.BeginInvoke((MethodInvoker)delegate
             {
                 button_generateFile.Enabled = true;
             });
 
-            Combobox_LabelHashcodes.Invoke((MethodInvoker)delegate
+            Combobox_LabelHashcodes.BeginInvoke((MethodInvoker)delegate
             {
                 Combobox_LabelHashcodes.Enabled = true;
             });
 
-            Button_Search.Invoke((MethodInvoker)delegate
+            Button_Search.BeginInvoke((MethodInvoker)delegate
             {
                 Button_Search.Enabled = true;
             });
@@ -156,7 +156,7 @@ namespace EuroSound_Application.SFXData
             if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsMD5, GlobalPreferences.HT_SoundsPath))
             {
                 Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
-                Hashcodes.AddHashcodesToCombobox(Combobox_LabelHashcodes, Hashcodes.SFX_Defines);
+                Hashcodes.AddDataToCombobox(Combobox_LabelHashcodes, Hashcodes.SFX_Defines);
             }
         }
 
@@ -164,16 +164,16 @@ namespace EuroSound_Application.SFXData
         {
             uint Hashcode, ItemTag;
 
-            /*Deselect all items*/
+            //Deselect all items
             ListView_HashTableData.SelectedIndices.Clear();
 
-            /*Get hashcode form combobox*/
+            //Get hashcode form combobox
             Hashcode = Convert.ToUInt32(Combobox_LabelHashcodes.SelectedValue);
 
-            /*Focus control*/
+            //Focus control
             ListView_HashTableData.Focus();
 
-            /*Select Item*/
+            //Select Item
             foreach (ListViewItem Item in ListView_HashTableData.Items)
             {
                 ItemTag = Convert.ToUInt32(Item.Tag);
@@ -186,7 +186,7 @@ namespace EuroSound_Application.SFXData
                 }
             }
 
-            //Inform User the hashcode does not exists.
+            //Inform User the hashcode does not exists
             if (ListView_HashTableData.SelectedItems.Count == 0)
             {
                 MessageBox.Show(GenericFunctions.ResourcesManager.GetString("SFXDataHashcodeNotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -212,12 +212,12 @@ namespace EuroSound_Application.SFXData
 
         private void Button_Reload_Click(object sender, EventArgs e)
         {
-            /*--Load Sound Data Hashcodes--*/
+            //--Load Sound Data Hashcodes--
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Loading Hashcodes Sounds Data");
 
             Hashcodes.LoadSoundDataFile();
 
-            /*Update Status Bar*/
+            //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
             LoadSfxDataTable = new Thread(LoadDataFromHashtable)

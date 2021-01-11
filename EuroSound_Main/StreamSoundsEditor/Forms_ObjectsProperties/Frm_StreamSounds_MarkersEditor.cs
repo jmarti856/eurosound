@@ -73,7 +73,7 @@ namespace EuroSound_Application.StreamSounds
             //Get type of the selected combobox value
             MarkerType = (uint)ComboBox_MarkerType.SelectedValue;
 
-            //---------------------------------[Add Start Marker]-------------------------------*/
+            //---------------------------------[Add Start Marker]-------------------------------
             if (MarkerType != 9)
             {
                 EXStreamStartMarker NewStartMarker = new EXStreamStartMarker
@@ -90,7 +90,7 @@ namespace EuroSound_Application.StreamSounds
                 AddMarkerStartToListView(NewStartMarker);
             }
 
-            //---------------------------------[Add Marker]-------------------------------*/
+            //---------------------------------[Add Marker]---------------------------------
             if (MarkerType == 6) //Loop
             {
                 v_MarkerPos += 2;
@@ -182,13 +182,13 @@ namespace EuroSound_Application.StreamSounds
         private void AddMarkerDataToListView(EXStreamMarker MarkerItem)
         {
             ListViewItem Marker = new ListViewItem(new[]
-            { 
+            {
                 MarkerItem.Name.ToString(),
-                MarkerItem.Position.ToString(), 
+                MarkerItem.Position.ToString(),
                 MarkerTypes[MarkerItem.MusicMakerType],
                 MarkerItem.Flags.ToString(),
                 MarkerItem.Extra.ToString(),
-                MarkerItem.LoopStart.ToString(), 
+                MarkerItem.LoopStart.ToString(),
                 MarkerItem.MarkerCount.ToString(),
                 MarkerItem.LoopMarkerCount.ToString(),
             });

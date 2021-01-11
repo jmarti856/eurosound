@@ -61,7 +61,7 @@ namespace EuroSound_Application
             }
             else
             {
-                MessageBox.Show("This application requires at leat .NET Framework v4.5.2." + Environment.NewLine + "Please install it and try to run this application again.", "This application could not be started", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(string.Format("This application requires at leat .NET Framework v4.5.2.\nPlease install it and try to run this application again."), "This application could not be started", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
         }

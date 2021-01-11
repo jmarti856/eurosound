@@ -128,6 +128,12 @@
     <Compile Include="ApplicationPreferences\Sub-Forms\Frm_StreamFile.Designer.cs">
       <DependentUpon>Frm_StreamFile.cs</DependentUpon>
     </Compile>
+    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_System.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_System.Designer.cs">
+      <DependentUpon>Frm_System.cs</DependentUpon>
+    </Compile>
     <Compile Include="ApplicationPreferences\Sub-Forms\Frm_TreeViewPrefs.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -358,6 +364,9 @@
     <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_StreamFile.resx">
       <DependentUpon>Frm_StreamFile.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_System.resx">
+      <DependentUpon>Frm_System.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_TreeViewPrefs.resx">
       <DependentUpon>Frm_TreeViewPrefs.cs</DependentUpon>
     </EmbeddedResource>
@@ -446,6 +455,7 @@
     <EmbeddedResource Include="StreamSoundsEditor\Forms_ObjectsProperties\Frm_StreamSounds_Properties.resx">
       <DependentUpon>Frm_StreamSounds_Properties.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

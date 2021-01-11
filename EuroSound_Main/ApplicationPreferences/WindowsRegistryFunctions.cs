@@ -127,15 +127,15 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             if (TreeViewConfig != null)
             {
                 TreeViewPreferences[0] = TreeViewConfig.GetValue("SelectedFont", "Microsoft Sans Serif; 8,25pt").ToString();
-                TreeViewPreferences[1] = TreeViewConfig.GetValue("ShowLines", "true").ToString();
-                TreeViewPreferences[2] = TreeViewConfig.GetValue("ShowRootLines", "true").ToString();
+                TreeViewPreferences[1] = TreeViewConfig.GetValue("ShowTreeLines", "1").ToString();
+                TreeViewPreferences[2] = TreeViewConfig.GetValue("ShowTreeRootLines", "1").ToString();
                 TreeViewPreferences[3] = TreeViewConfig.GetValue("TreeViewIndent", "19").ToString();
             }
             else
             {
                 TreeViewPreferences[0] = "Microsoft Sans Serif; 8,25pt";
-                TreeViewPreferences[1] = "true";
-                TreeViewPreferences[2] = "true";
+                TreeViewPreferences[1] = "1";
+                TreeViewPreferences[2] = "1";
                 TreeViewPreferences[3] = "19";
             }
 
@@ -150,8 +150,8 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
             SoundBankTreeViewPrefs.SetValue("SelectedFont", GlobalPreferences.SelectedFont, RegistryValueKind.String);
             SoundBankTreeViewPrefs.SetValue("TreeViewIndent", GlobalPreferences.TreeViewIndent, RegistryValueKind.DWord);
-            SoundBankTreeViewPrefs.SetValue("ShowLines", GlobalPreferences.ShowLines, RegistryValueKind.String);
-            SoundBankTreeViewPrefs.SetValue("ShowRootLines", GlobalPreferences.ShowRootLines, RegistryValueKind.String);
+            SoundBankTreeViewPrefs.SetValue("ShowTreeLines", GlobalPreferences.ShowLines, RegistryValueKind.DWord);
+            SoundBankTreeViewPrefs.SetValue("ShowTreeRootLines", GlobalPreferences.ShowRootLines, RegistryValueKind.DWord);
         }
         #endregion TreeView Preferences
 
@@ -243,6 +243,30 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
             return StreamFile;
         }
+        #endregion
+
+        #region System
+        internal void SaveSystemConfig()
+        {
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("SystemConfig", true);
+            RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("SystemConfig", true);
+
+            StreamFilePath.SetValue("UseSysTray", GlobalPreferences.UseSystemTray, RegistryValueKind.DWord);
+        }
+
+        internal int SetSystemConfig()
+        {
+            int StreamFile;
+
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("SystemConfig", true);
+            RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("SystemConfig", true);
+            StreamFile = (int)StreamFilePath.GetValue("UseSysTray", 0);
+
+            return StreamFile;
+        }
+
         #endregion
     }
 }

@@ -17,7 +17,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
         {
             sbyte TypeOfStoredData;
 
-            /*Update Status Bar*/
+            //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
 
             //Disable temporaly the treeview
@@ -30,7 +30,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                     //Init reader
                     if (FileIsCorrect(BReader))
                     {
-                        /*Type of stored data*/
+                        //Type of stored data
                         TypeOfStoredData = BReader.ReadSByte();
                         if (TypeOfStoredData == 0)
                         {
@@ -46,7 +46,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             //Sort nodes
             TreeViewControl.TreeViewNodeSorter = new NodeSorter();
 
-            /*Update images*/
+            //Update images
             foreach (TreeNode Node in TreeViewControl.Nodes)
             {
                 UpdateNodeImagesSoundBank(Node, SoundsList);
@@ -55,7 +55,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             //Enable again the treeview
             TreeViewControl.Enabled = true;
 
-            /*Update Status Bar*/
+            //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
 
@@ -63,15 +63,15 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 
         internal string SaveSoundBanksDocument(TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
         {
-            BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.Create, FileAccess.Write));
+            BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
             //*===============================================================================================
             //* HEADER
             //*===============================================================================================
-            /*MAGIC*/
+            //MAGIC
             BWriter.Write(Encoding.ASCII.GetBytes("ESF"));
-            /*FileVersion*/
+            //FileVersion
             BWriter.Write(Convert.ToUInt32(11));
-            /*Type of stored data*/
+            //Type of stored data
             BWriter.Write(Convert.ToSByte(FileProperties.TypeOfData));
 
             ESF_SaveSoundBanks SaveSoundBank = new ESF_SaveSoundBanks();
@@ -86,7 +86,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
         internal void LoadStreamSoundsDocument(TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, string FilePath, ProjectFile FileProperties, ResourceManager ResxM)
         {
             sbyte TypeOfStoredData;
-            /*Update Status Bar*/
+            //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_ReadingESFFile"));
 
             //Disable temporaly the treeview
@@ -99,7 +99,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 {
                     if (FileIsCorrect(BReader))
                     {
-                        /*Type of stored data*/
+                        //Type of stored data
                         TypeOfStoredData = BReader.ReadSByte();
                         if (TypeOfStoredData == 1)
                         {
@@ -112,11 +112,11 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 bs.Close();
             }
 
-            /*Expand root nodes only*/
+            //Expand root nodes only
             TreeViewControl.Nodes[0].Collapse();
             TreeViewControl.Nodes[0].Expand();
 
-            /*Update images*/
+            //Update images
             foreach (TreeNode Node in TreeViewControl.Nodes)
             {
                 UpdateNodeImagesStreamSoundBank(Node, StreamSoundsList);
@@ -125,21 +125,21 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             //Enable again the treeview
             TreeViewControl.Enabled = true;
 
-            /*Update Status Bar*/
+            //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_Status_Ready"));
         }
 
         internal string SaveStreamedSoundsBank(TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, string FilePath, ProjectFile FileProperties)
         {
-            BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.Create, FileAccess.Write, FileShare.Read));
+            BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.Create, FileAccess.Write, FileShare.Read), null, Encoding.ASCII);
             //*===============================================================================================
             //* HEADER
             //*===============================================================================================
-            /*MAGIC*/
+            //MAGIC
             BWriter.Write(Encoding.ASCII.GetBytes("ESF"));
-            /*FileVersion*/
+            //FileVersion
             BWriter.Write(Convert.ToUInt32(11));
-            /*Type of stored data*/
+            //Type of stored data
             BWriter.Write(Convert.ToSByte(FileProperties.TypeOfData));
 
             ESF_SaveStreamedSounds SaveSoundBank = new ESF_SaveStreamedSounds();
@@ -161,7 +161,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             Magic = Encoding.ASCII.GetString(BReader.ReadBytes(3));
             if (Magic.Equals("ESF"))
             {
-                /*FileVersion*/
+                //FileVersion
                 Version = BReader.ReadUInt32();
                 if (Version == 11)
                 {

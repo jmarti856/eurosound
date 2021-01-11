@@ -13,19 +13,19 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
         {
             uint TreeViewDataOffset, StreamSoundsDictionaryOffset;
 
-            /*File Hashcode*/
+            //File Hashcode
             FileProperties.Hashcode = BReader.ReadUInt32();
-            /*Sound ID*/
+            //Sound ID
             FileProperties.SoundID = BReader.ReadUInt32();
-            /*Sounds List Offset*/
+            //Sounds List Offset
             BReader.ReadUInt32();//Only Used in the "Frm_NewStreamSound" Form
-            /*TreeViewData Offset*/
+            //TreeViewData Offset
             TreeViewDataOffset = BReader.ReadUInt32();
-            /*Dictionary Data Offset*/
+            //Dictionary Data Offset
             StreamSoundsDictionaryOffset = BReader.ReadUInt32();
-            /*FileSize*/
+            //FileSize
             BReader.ReadUInt32();
-            /*File Name*/
+            //File Name
             FileProperties.FileName = BReader.ReadString();
 
             //*===============================================================================================
@@ -59,7 +59,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                     BaseVolume = BReader.ReadUInt32(),
                 };
 
-                /*Read Wav*/
+                //Read Wav
                 PCM_DataLength = BReader.ReadInt32();
                 StreamSound.PCM_Data = BReader.ReadBytes(PCM_DataLength);
                 ADPCM_DataLength = BReader.ReadInt32();
@@ -73,7 +73,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 StreamSound.WAVFileName = BReader.ReadString();
                 StreamSound.RealSize = BReader.ReadUInt32();
 
-                /*Read Start Markers List*/
+                //Read Start Markers List
                 StartMarkersCount = BReader.ReadUInt32();
                 for (int j = 0; j < StartMarkersCount; j++)
                 {
@@ -96,7 +96,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                     StreamSound.StartMarkers.Add(StartMarker);
                 }
 
-                /*Read Markers*/
+                //Read Markers
                 MarkersCount = BReader.ReadUInt32();
                 for (int k = 0; k < MarkersCount; k++)
                 {

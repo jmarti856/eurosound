@@ -33,6 +33,9 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         //Frm_SoxPrefs
         internal string SoXPathTEMPORAL;
 
+        //Frm_System
+        internal bool UseSystemTrayTEMPORAL;
+
         //*===============================================================================================
         //* GLOBAL VARS
         //*===============================================================================================
@@ -41,6 +44,8 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         private Frm_TreeViewPrefs TreeViewPrefs;
         private Frm_StreamFile ExternalFile;
         private Frm_SoxPrefs SoXPreferences;
+        private Frm_System SystemPreferences;
+        private bool SystemFormOpened = false;
 
         public Frm_MainPreferences()
         {
@@ -52,6 +57,21 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         //*===============================================================================================
         private void Frm_MainPreferences_Load(object sender, EventArgs e)
         {
+            BackColorWavesControlTEMPORAL = GlobalPreferences.BackColorWavesControl;
+            ColorWavesControlTEMPORAL = GlobalPreferences.ColorWavesControl;
+            HT_MusicPathTEMPORAL = GlobalPreferences.HT_MusicPath;
+            HT_SoundsDataPathTEMPORAL = GlobalPreferences.HT_SoundsDataPath;
+            HT_SoundsPathTEMPORAL = GlobalPreferences.HT_SoundsPath;
+            MusicOutputPathTEMPORAL = GlobalPreferences.MusicOutputPath;
+            SelectedFontTEMPORAL = GlobalPreferences.SelectedFont;
+            SFXOutputPathTEMPORAL = GlobalPreferences.SFXOutputPath;
+            ShowLinesTEMPORAL = GlobalPreferences.ShowLines;
+            ShowRootLinesTEMPORAL = GlobalPreferences.ShowRootLines;
+            SoXPathTEMPORAL = GlobalPreferences.SoXPath;
+            StreamFilePathTEMPORAL = GlobalPreferences.StreamFilePath;
+            TreeViewIndentTEMPORAL = GlobalPreferences.TreeViewIndent;
+            UseSystemTrayTEMPORAL = GlobalPreferences.UseSystemTray;
+
             TreeViewPreferences.ExpandAll();
         }
 
@@ -68,7 +88,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             WindowsRegistryFunctions WRegistryFunctions = new WindowsRegistryFunctions();
             RemoveAllFormsInsidePanel(Panel_SecondaryForms);
 
-            /*-----------------[Frm_HashTablesConfig]-----------------*/
+            //-----------------[Frm_HashTablesConfig]-----------------
             if (!string.IsNullOrEmpty(HT_SoundsPathTEMPORAL))
             {
                 GlobalPreferences.HT_SoundsPath = HT_SoundsPathTEMPORAL;
@@ -81,7 +101,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 WRegistryFunctions.SaveHashTablePathAndMD5("Musics", GlobalPreferences.HT_MusicPath, GenericFunctions.CalculateMD5(GlobalPreferences.HT_MusicPath));
             }
 
-            /*-----------------[Frm_TreeViewPrefs]-----------------*/
+            //-----------------[Frm_TreeViewPrefs]-----------------
             if (!string.IsNullOrEmpty(SelectedFontTEMPORAL))
             {
                 GlobalPreferences.SelectedFont = SelectedFontTEMPORAL;
@@ -93,7 +113,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 WRegistryFunctions.SaveTreeViewPreferences();
             }
 
-            /*-----------------[Frm_GeneralPreferences]-----------------*/
+            //-----------------[Frm_GeneralPreferences]-----------------
             if (!string.IsNullOrEmpty(SFXOutputPathTEMPORAL))
             {
                 GlobalPreferences.SFXOutputPath = SFXOutputPathTEMPORAL;
@@ -105,7 +125,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 WRegistryFunctions.SaveGeneralPreferences();
             }
 
-            /*-----------------[Frm_StreamFile]-----------------*/
+            //-----------------[Frm_StreamFile]-----------------
             if (!string.IsNullOrEmpty(StreamFilePathTEMPORAL))
             {
                 GlobalPreferences.StreamFilePath = StreamFilePathTEMPORAL;
@@ -114,13 +134,22 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 WRegistryFunctions.SaveExternalFilePath();
             }
 
-            /*-----------------[Frm_SoxPrefs]-----------------*/
+            //-----------------[Frm_SoxPrefs]-----------------
             if (!string.IsNullOrEmpty(SoXPathTEMPORAL))
             {
                 GlobalPreferences.SoXPath = SoXPathTEMPORAL;
 
                 //SaveConfig in Registry
                 WRegistryFunctions.SaveSoxFilePath();
+            }
+
+            //-----------------[Frm_System]-----------------
+            if (SystemFormOpened)
+            {
+                GlobalPreferences.UseSystemTray = UseSystemTrayTEMPORAL;
+
+                //SaveConfig in Registry
+                WRegistryFunctions.SaveSystemConfig();
             }
             Close();
         }
@@ -215,6 +244,25 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                     Panel_SecondaryForms.Controls.Add(SoXPreferences);
                     SoXPreferences.Dock = DockStyle.Fill;
                     SoXPreferences.Show();
+                }
+            }
+            //Open Sub-Form "Frm_System"
+            else if (string.Equals(e.Node.Name, "System"))
+            {
+                if (!Panel_SecondaryForms.Controls.Contains(SystemPreferences))
+                {
+                    RemoveAllFormsInsidePanel(Panel_SecondaryForms);
+
+                    SystemPreferences = new Frm_System
+                    {
+                        TopLevel = false,
+                        AutoScroll = true,
+                        Tag = Tag
+                    };
+                    Panel_SecondaryForms.Controls.Add(SystemPreferences);
+                    SystemPreferences.Dock = DockStyle.Fill;
+                    SystemPreferences.Show();
+                    SystemFormOpened = true;
                 }
             }
         }

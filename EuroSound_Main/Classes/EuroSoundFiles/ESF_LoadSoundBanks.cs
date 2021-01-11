@@ -12,19 +12,19 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
         internal void ReadEuroSoundFile11(ProjectFile FileProperties, BinaryReader BReader, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
         {
             uint TreeViewDataOffset, SoundsListDataOffset, AudioDataOffset;
-            /*File Hashcode*/
+            //File Hashcode
             FileProperties.Hashcode = BReader.ReadUInt32();
-            /*Latest SoundID value*/
+            //Latest SoundID value
             FileProperties.SoundID = BReader.ReadUInt32();
-            /*TreeView Data*/
+            //TreeView Data
             TreeViewDataOffset = BReader.ReadUInt32();
-            /*SoundsListData Offset -- Not used for now*/
+            //SoundsListData Offset -- Not used for now
             SoundsListDataOffset = BReader.ReadUInt32();
-            /*AudioData Offset -- Not used for now*/
+            //AudioData Offset -- Not used for now
             AudioDataOffset = BReader.ReadUInt32();
-            /*FullSize*/
+            //FullSize
             BReader.ReadUInt32();
-            /*File Name*/
+            //File Name
             FileProperties.FileName = BReader.ReadString();
 
             //*===============================================================================================
@@ -96,7 +96,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                     Hashcode = BReader.ReadUInt32(),
                     OutputThisSound = BReader.ReadBoolean(),
 
-                    /*---Required for EngineX---*/
+                    //---Required for EngineX---
                     DuckerLenght = BReader.ReadInt16(),
                     MinDelay = BReader.ReadInt16(),
                     MaxDelay = BReader.ReadInt16(),
@@ -122,7 +122,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                         ComboboxSelectedAudio = BReader.ReadString(),
                         HashcodeSubSFX = BReader.ReadUInt32(),
 
-                        /*---Required For EngineX---*/
+                        //---Required For EngineX---
                         PitchOffset = BReader.ReadInt16(),
                         RandomPitchOffset = BReader.ReadInt16(),
                         BaseVolume = BReader.ReadSByte(),

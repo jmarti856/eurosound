@@ -32,7 +32,6 @@ namespace EuroSound_Application.SoundBanksEditor
                     }
                 }
                 Array.Clear(lines, 0, lines.Length);
-                GC.Collect();
             }
             else
             {
@@ -80,7 +79,7 @@ namespace EuroSound_Application.SoundBanksEditor
             bool SoundNodeAdded = false;
             Dictionary<int, int[]> SamplesProperties;
 
-            /*Update Status Bar*/
+            //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_ReadingYamlFile") + ": " + SoundName);
 
             if (Reports == null)
@@ -94,11 +93,11 @@ namespace EuroSound_Application.SoundBanksEditor
                 string FileCheck = reader.ReadLine();
                 if (FileCheck.Equals("#ftype:2", StringComparison.OrdinalIgnoreCase))
                 {
-                    // Load the stream
+                    //Load the stream
                     YamlStream yaml = new YamlStream();
                     yaml.Load(reader);
 
-                    // Examine the stream
+                    //Examine the stream
                     YamlMappingNode mapping = (YamlMappingNode)yaml.Documents[0].RootNode;
 
                     CurrentSoundParams = GetSoundParams(mapping);
@@ -106,7 +105,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
                     if (!TreeNodeFunctions.CheckIfNodeExistsByText(TreeViewControl, SoundName))
                     {
-                        /*--Add Sound--*/
+                        //--Add Sound--
                         SoundID = GenericFunctions.GetNewObjectID(FileProperties);
                         EXSound NewSound = new EXSound()
                         {
@@ -127,7 +126,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
                         SoundsList.Add(SoundID, NewSound);
 
-                        /*--Add Sample--*/
+                        //--Add Sample--
                         foreach (KeyValuePair<int, int[]> Entry in SamplesProperties)
                         {
                             string SampleName = "SMP_" + SoundName + Entry.Key;
@@ -183,7 +182,7 @@ namespace EuroSound_Application.SoundBanksEditor
                                 }
                             }
 
-                            /*--Add Sample To Dictionary--*/
+                            //--Add Sample To Dictionary--
                             NewSound.Samples.Add(SampleID, NewSample);
                             TreeNodeFunctions.TreeNodeAddNewNode(SoundID.ToString(), SampleID.ToString(), SampleName, 4, 4, "Sample", Color.Black, TreeViewControl);
                         }
@@ -193,7 +192,7 @@ namespace EuroSound_Application.SoundBanksEditor
                         Reports.Add("0The sound: " + SoundName + " can't be loaded because seems that exists (one item with the same name already exists).");
                     }
 
-                    // Show results at end
+                    //Show results at end
                     if (ShowResultsAtEnd)
                     {
                         ShowErrorsWarningsList(FilePath);
@@ -212,7 +211,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 Reports.Add("0" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorRedingFile") + FilePath);
             }
 
-            /*Update Status Bar*/
+            //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 

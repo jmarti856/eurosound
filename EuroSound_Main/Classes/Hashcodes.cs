@@ -15,12 +15,23 @@ namespace EuroSound_Application
         internal static SortedList<uint, float[]> SFX_Data = new SortedList<uint, float[]>();
         internal static SortedList<uint, string> SFX_Defines = new SortedList<uint, string>();
 
-        internal static void AddHashcodesToCombobox(ComboBox ControlToAddData, SortedList<uint, string> HashcodesDict)
+        internal static void AddDataToCombobox(ComboBox ControlToAddData, SortedList<uint, string> HashcodesDict)
         {
-            /*Datasource Combobox*/
+            //Datasource Combobox
             ControlToAddData.DataSource = HashcodesDict.ToList();
-            ControlToAddData.ValueMember = "Key";
-            ControlToAddData.DisplayMember = "Value";
+            if (ControlToAddData.InvokeRequired)
+            {
+                ControlToAddData.Invoke((MethodInvoker)delegate
+                {
+                    ControlToAddData.ValueMember = "Key";
+                    ControlToAddData.DisplayMember = "Value";
+                });
+            }
+            else
+            {
+                ControlToAddData.ValueMember = "Key";
+                ControlToAddData.DisplayMember = "Value";
+            }
         }
 
         internal static uint GetHashcodeByLabel(SortedList<uint, string> DataDict, string Hashcode)
@@ -57,7 +68,7 @@ namespace EuroSound_Application
         {
             if (File.Exists(GlobalPreferences.HT_SoundsDataPath))
             {
-                /*Read Data*/
+                //Read Data
                 ReadSFXData();
                 GlobalPreferences.HT_SoundsDataMD5 = GenericFunctions.CalculateMD5(GlobalPreferences.HT_SoundsDataPath);
             }
@@ -71,7 +82,7 @@ namespace EuroSound_Application
         {
             if (File.Exists(SoundHashcodesPath))
             {
-                /*Read Data*/
+                //Read Data
                 ReadHashcodes(SoundHashcodesPath);
                 GlobalPreferences.HT_SoundsMD5 = GenericFunctions.CalculateMD5(SoundHashcodesPath);
             }
@@ -113,24 +124,31 @@ namespace EuroSound_Application
                                 if (matches.Count >= 2)
                                 {
                                     HexLabel = matches[0].Value.Trim();
-                                    HexNum = Convert.ToUInt32(matches[1].Value.Trim(), 16);
-
-                                    if (HexNum >= 436207616)
+                                    try
                                     {
-                                        if (HexLabel.StartsWith("SF", StringComparison.OrdinalIgnoreCase))
+                                        HexNum = Convert.ToUInt32(matches[1].Value.Trim(), 16);
+
+                                        if (HexNum >= 436207616)
                                         {
-                                            if (!SFX_Defines.ContainsKey(HexNum))
+                                            if (HexLabel.StartsWith("SF", StringComparison.OrdinalIgnoreCase))
                                             {
-                                                SFX_Defines.Add(HexNum, HexLabel);
+                                                if (!SFX_Defines.ContainsKey(HexNum))
+                                                {
+                                                    SFX_Defines.Add(HexNum, HexLabel);
+                                                }
+                                            }
+                                        }
+                                        else if (HexLabel.StartsWith("SB_", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            if (!SB_Defines.ContainsKey(HexNum))
+                                            {
+                                                SB_Defines.Add(HexNum, HexLabel);
                                             }
                                         }
                                     }
-                                    else if (HexLabel.StartsWith("SB_", StringComparison.OrdinalIgnoreCase))
+                                    catch(FormatException)
                                     {
-                                        if (!SB_Defines.ContainsKey(HexNum))
-                                        {
-                                            SB_Defines.Add(HexNum, HexLabel);
-                                        }
+                                        MessageBox.Show(string.Join(" ", new string[] { "A hashcode with an invalid hex format has been found, the label is:", HexLabel }), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     }
                                 }
                             }

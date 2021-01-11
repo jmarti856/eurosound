@@ -25,19 +25,19 @@ namespace EuroSound_Application.StreamSounds
             ProgressBarReset(Bar);
             ProgressBarMaximum(Bar, 4);
 
-            /*--magic[magic value]--*/
+            //--magic[magic value]--
             BWriter.Write(Encoding.ASCII.GetBytes("MUSX"));
             ProgressBarUpdate(Bar, 1);
 
-            /*--hashc[Hashcode for the current soundbank without the section prefix]--*/
+            //--hashc[Hashcode for the current soundbank without the section prefix]--
             BWriter.WriteUInt32(FileHashcode);
             ProgressBarUpdate(Bar, 1);
 
-            /*--offst[Constant offset to the next section,]--*/
+            //--offst[Constant offset to the next section,]--
             BWriter.WriteUInt32(0xC9);
             ProgressBarUpdate(Bar, 1);
 
-            /*--fulls[Size of the whole file, in bytes. Unused. ]--*/
+            //--fulls[Size of the whole file, in bytes. Unused. ]--
             BWriter.WriteUInt32(00000000);
             ProgressBarUpdate(Bar, 1);
         }
@@ -50,24 +50,24 @@ namespace EuroSound_Application.StreamSounds
             ProgressBarReset(Bar);
             ProgressBarMaximum(Bar, 6);
 
-            /*--File start 1[an offset that points to the stream look-up file details, always 0x800]--*/
+            //--File start 1[an offset that points to the stream look-up file details, always 0x800]--
             BWriter.WriteUInt32(FileStart1);
             ProgressBarUpdate(Bar, 1);
-            /*--File length 1[size of the first section, in bytes]--*/
+            //--File length 1[size of the first section, in bytes]--
             BWriter.WriteUInt32(00000000);
             ProgressBarUpdate(Bar, 1);
 
-            /*--File start 2[offset to the second section with the sample data]--*/
+            //--File start 2[offset to the second section with the sample data]--
             BWriter.WriteUInt32(FileStart2);
             ProgressBarUpdate(Bar, 1);
-            /*--File length 2[size of the second section, in bytes]--*/
+            //--File length 2[size of the second section, in bytes]--
             BWriter.WriteUInt32(00000000);
             ProgressBarUpdate(Bar, 1);
 
-            /*--File start 3[unused and uses the same sample data offset as dummy for some reason]--*/
+            //--File start 3[unused and uses the same sample data offset as dummy for some reason]--
             BWriter.WriteUInt32(00000000);
             ProgressBarUpdate(Bar, 1);
-            /*--File length 3[unused and set to zero]--*/
+            //--File length 3[unused and set to zero]--
             BWriter.WriteUInt32(00000000);
             ProgressBarUpdate(Bar, 1);
         }
@@ -99,7 +99,7 @@ namespace EuroSound_Application.StreamSounds
             long AlignOffset;
             uint SoundStartOffset, MarkerDataOffset, MarkerSize;
 
-            /*Update GUI*/
+            //Update GUI
             ProgressBarReset(Bar);
             ProgressBarMaximum(Bar, StreamSoundsList.Keys.Count);
 
@@ -109,26 +109,26 @@ namespace EuroSound_Application.StreamSounds
                 SoundStartOffset = (uint)BWriter.BaseStream.Position;
                 MarkersStartList.Add(SoundStartOffset - FileStart2);
 
-                /*Marker size*/
+                //Marker size
                 BWriter.WriteUInt32(00000000);
-                /*Audio Offset*/
+                //Audio Offset
                 BWriter.WriteUInt32(SoundStartOffset);
-                /*Audio size*/
+                //Audio size
                 BWriter.WriteUInt32((uint)SoundToWrtie.Value.IMA_ADPCM_DATA.Length);
-                /*Start marker count*/
+                //Start marker count
                 BWriter.WriteUInt32((uint)SoundToWrtie.Value.StartMarkers.Count);
-                /*Marker count*/
+                //Marker count
                 BWriter.WriteUInt32((uint)SoundToWrtie.Value.Markers.Count);
-                /*Start marker offset.*/
+                //Start marker offset
                 StartMarkerOffset = BWriter.BaseStream.Position - SoundStartOffset;
                 BWriter.WriteUInt32((uint)StartMarkerOffset);
-                /*Marker offset.*/
+                //Marker offset
                 BWriter.WriteUInt32((uint)00000000);
-                /*Base volume*/
+                //Base volume
                 BWriter.WriteUInt32(SoundToWrtie.Value.BaseVolume);
 
                 MarkerSizeStartOffset = BWriter.BaseStream.Position;
-                /*Start Markers Data*/
+                //Start Markers Data
                 for (int i = 0; i < SoundToWrtie.Value.StartMarkers.Count; i++)
                 {
                     BWriter.WriteUInt32(SoundToWrtie.Value.StartMarkers[i].Name);
@@ -146,7 +146,7 @@ namespace EuroSound_Application.StreamSounds
                     BWriter.WriteUInt32(SoundToWrtie.Value.StartMarkers[i].StateB);
                 }
                 MarkerDataOffset = (uint)(BWriter.BaseStream.Position - MarkerSizeStartOffset);
-                /*Markers*/
+                //Markers
                 for (int j = 0; j < SoundToWrtie.Value.Markers.Count; j++)
                 {
                     BWriter.WriteInt32(SoundToWrtie.Value.Markers[j].Name);
@@ -160,25 +160,25 @@ namespace EuroSound_Application.StreamSounds
                 }
                 MarkerSize = (uint)(BWriter.BaseStream.Position - MarkerSizeStartOffset);
 
-                /*Write Marker Size*/
+                //Write Marker Size
                 BWriter.Seek((int)SoundStartOffset, SeekOrigin.Begin);
                 BWriter.WriteUInt32((uint)(MarkerSize + StartMarkerOffset));
                 BWriter.Seek(20, SeekOrigin.Current);
                 BWriter.WriteUInt32((uint)(MarkerDataOffset + StartMarkerOffset));
 
-                /*Write ima data*/
+                //Write ima data
                 AudioOffset = SoundStartOffset + 0x1000;
                 BWriter.Seek((int)AudioOffset, SeekOrigin.Begin);
                 BWriter.Write(SoundToWrtie.Value.IMA_ADPCM_DATA);
                 BWriter.Seek(516, SeekOrigin.Current);
 
-                /*Align Bytes*/
+                //Align Bytes
                 AlignOffset = (BWriter.BaseStream.Position + 4096) & (4096 - 1);
                 BWriter.Seek(AlignOffset, SeekOrigin.Current);
 
                 BWriter.Align(16);
 
-                /*Update GUI*/
+                //Update GUI
                 ProgressBarUpdate(Bar, 1);
             }
             FileLength2 = BWriter.BaseStream.Position - FileStart2;
@@ -191,23 +191,23 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         public void WriteFinalOffsets(BinaryStream BWriter, ProgressBar Bar)
         {
-            /*Update GUI*/
+            //Update GUI
             ProgressBarReset(Bar);
             ProgressBarMaximum(Bar, MarkersStartList.Count);
 
-            /*File Full Size*/
+            //File Full Size
             BWriter.BaseStream.Seek(0xC, SeekOrigin.Begin);
             BWriter.WriteUInt32((uint)FullFileLength);
 
-            /*File length 1*/
+            //File length 1
             BWriter.BaseStream.Seek(0x14, SeekOrigin.Begin);
             BWriter.WriteUInt32((uint)FileLength1);
 
-            /*File length 2*/
+            //File length 2
             BWriter.BaseStream.Seek(0x1C, SeekOrigin.Begin);
             BWriter.WriteUInt32((uint)FileLength2);
 
-            /*Stream look-up*/
+            //Stream look-up
             BWriter.Seek((int)FileStart1, SeekOrigin.Begin);
             foreach (long Offset in MarkersStartList)
             {
@@ -251,7 +251,7 @@ namespace EuroSound_Application.StreamSounds
         {
             if (BarToReset != null)
             {
-                /*Update Progress Bar*/
+                //Update Progress Bar
                 BarToReset.Invoke((MethodInvoker)delegate
                 {
                     BarToReset.Value = 0;
@@ -261,7 +261,7 @@ namespace EuroSound_Application.StreamSounds
 
         private void ProgressBarUpdate(ProgressBar BarToUpdate, int ValueToAdd)
         {
-            /*Update Progress Bar*/
+            //Update Progress Bar
             if (BarToUpdate != null)
             {
                 BarToUpdate.Invoke((MethodInvoker)delegate
@@ -276,7 +276,7 @@ namespace EuroSound_Application.StreamSounds
         {
             if (BarToChange != null)
             {
-                /*Update Progress Bar*/
+                //Update Progress Bar
                 BarToChange.Invoke((MethodInvoker)delegate
                 {
                     BarToChange.Maximum = Maximum;

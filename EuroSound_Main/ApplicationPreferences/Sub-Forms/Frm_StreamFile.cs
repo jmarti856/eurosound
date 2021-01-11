@@ -1,11 +1,11 @@
-﻿using EuroSound_Application.ApplicationPreferences;
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.ApplicationPreferencesForms
 {
     public partial class Frm_StreamFile : Form
     {
+        private Form OpenForm;
         public Frm_StreamFile()
         {
             InitializeComponent();
@@ -13,7 +13,8 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
         private void Frm_StreamFile_Load(object sender, EventArgs e)
         {
-            Textbox_ExternalFilePath.Text = GlobalPreferences.StreamFilePath;
+            OpenForm = GenericFunctions.GetFormByName("Frm_MainPreferences", Tag.ToString());
+            Textbox_ExternalFilePath.Text = ((Frm_MainPreferences)OpenForm).StreamFilePathTEMPORAL;
         }
 
         private void Button_Search_Click(object sender, EventArgs e)
@@ -27,7 +28,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
         private void Frm_StreamFile_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Form OpenForm = GenericFunctions.GetFormByName("Frm_MainPreferences", Tag.ToString());
             ((Frm_MainPreferences)OpenForm).StreamFilePathTEMPORAL = Textbox_ExternalFilePath.Text;
         }
     }

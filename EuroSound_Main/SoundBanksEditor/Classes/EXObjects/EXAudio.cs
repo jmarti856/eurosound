@@ -12,7 +12,7 @@
         public uint Frequency { get; set; }
         public uint LoopOffset { get; set; }
         public string LoadedFileName { get; set; } = string.Empty;
-        /*---ENGINE X Required---*/
+        //---ENGINE X Required---
         public byte[] PCMdata { get; set; } = new byte[] { 1, 0, 8 };
         public uint PSIsample { get; set; }
         public uint RealSize { get; set; }

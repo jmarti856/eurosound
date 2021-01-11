@@ -20,9 +20,13 @@ namespace EuroSound_Application.StreamSounds
         public ProjectFile ProjectInfo = new ProjectFile();
         private StreamSoundsYMLReader LibYamlReader = new StreamSoundsYMLReader();
         private AudioFunctions AudioLibrary = new AudioFunctions();
-        private Thread UpdateImaData;
+        private Thread UpdateImaData, UpdateWavList;
         private string FileToLoadArg, ProjectName;
         private string LoadedFile = string.Empty;
+
+        // The undo and redo history lists.
+        private Stack<object> UndoListSounds = new Stack<object>();
+        private Stack<TreeNode> UndoListNodes = new Stack<TreeNode>();
 
         public Frm_StreamSoundsEditorMain(string Name, string FilePath)
         {
@@ -30,6 +34,41 @@ namespace EuroSound_Application.StreamSounds
 
             FileToLoadArg = FilePath;
             ProjectName = Name;
+
+            //Menu Item: File
+            MenuItem_File_Save.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_Save")); };
+            MenuItem_File_SaveAs.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_SaveAs")); };
+            MenuItem_File_Export.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_Export")); };
+            MenuItemFile_ReadSound.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_ReadSound")); };
+            MenuItemFile_ReadYml.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_ReadYml")); };
+
+            MenuItem_File_Save.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItem_File_SaveAs.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItem_File_Export.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItemFile_ReadSound.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItemFile_ReadYml.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+
+            //Menu Item: Edit
+            MenuItem_Edit.DropDownOpened += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
+            MenuItem_Edit.DropDownClosed += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
+
+            MenuItem_Edit_FileProps.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_Edit_FileProps")); };
+            MenuItem_Edit_Undo.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemEdit_Undo")); };
+            MenuItem_Edit_Search.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ButtonSoundsBankSearch")); };
+
+            MenuItem_Edit_FileProps.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItem_Edit_Undo.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItem_Edit_Search.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+
+            //Buttons
+            Button_UpdateList_WavData.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ButtonSoundsBankCheckAudios")); };
+            Button_UpdateList_WavData.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+
+            //Context Menu Folders
+            ContextMenuFolder_ExpandAll.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_ExpandAll")); };
+            ContextMenuFolder_CollapseAll.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_CollapseAll")); };
+            ContextMenu_Folders.Closing += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+
         }
 
         //*===============================================================================================
@@ -39,14 +78,14 @@ namespace EuroSound_Application.StreamSounds
         {
             ProjectInfo.TypeOfData = 1;
 
-            /*Check Hashcodes are not null*/
-            /*Load Hashcodes*/
+            //Check Hashcodes are not null
+            //Load Hashcodes
             if (Hashcodes.SFX_Defines.Keys.Count == 0 || Hashcodes.SFX_Data.Keys.Count == 0)
             {
-                /*Update Status Bar*/
+                //Update Status Bar
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
 
-                /*Load Data*/
+                //Load Data
                 Thread LoadHashcodeData = new Thread(() => Hashcodes.LoadSoundDataFile())
                 {
                     IsBackground = true
@@ -60,14 +99,14 @@ namespace EuroSound_Application.StreamSounds
                 LoadHashcodeData.Start();
             }
 
-            /*Load file in argument 0*/
+            //Load file in argument 0
             if (string.IsNullOrEmpty(FileToLoadArg))
             {
                 ProjectInfo.FileName = ProjectName;
             }
             else
             {
-                /*Update Status Bar*/
+                //Update Status Bar
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
 
                 LoadedFile = FileToLoadArg;
@@ -80,17 +119,17 @@ namespace EuroSound_Application.StreamSounds
 
         private void Frm_StreamSoundsEditorMain_Shown(object sender, System.EventArgs e)
         {
-            /*Update from title*/
+            //Update from title
             Text = GenericFunctions.UpdateProjectFormText(LoadedFile, ProjectInfo.FileName);
             MdiParent.Text = "EuroSound - " + Text;
 
-            /*Set Program status*/
+            //Set Program status
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
-            /*Update File name label*/
+            //Update File name label
             GenericFunctions.SetCurrentFileLabel(ProjectInfo.FileName);
 
-            /*Apply User Preferences*/
+            //Apply User Preferences
             FontConverter cvt = new FontConverter();
             TreeView_StreamData.Indent = GlobalPreferences.TreeViewIndent;
             TreeView_StreamData.Font = cvt.ConvertFromString(GlobalPreferences.SelectedFont) as Font;
@@ -121,14 +160,20 @@ namespace EuroSound_Application.StreamSounds
 
         private void Frm_StreamSoundsEditorMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //Stop thread if active
+            if (UpdateImaData != null)
+            {
+                UpdateImaData.Abort();
+            }
+
+            //Stop thread if active
+            if (UpdateWavList != null)
+            {
+                UpdateWavList.Abort();
+            }
+
             if (e.CloseReason == CloseReason.MdiFormClosing || e.CloseReason == CloseReason.UserClosing)
             {
-                //Stop thread if active
-                if (UpdateImaData != null)
-                {
-                    UpdateImaData.Abort();
-                }
-
                 //Ask user to save if file is modified
                 if (ProjectInfo.FileHasBeenModified)
                 {
@@ -162,24 +207,56 @@ namespace EuroSound_Application.StreamSounds
         }
 
         //*===============================================================================================
+        //* FORM CONTROLS EVENTS
+        //*===============================================================================================
+        private void Button_UpdateIMAData_Click(object sender, System.EventArgs e)
+        {
+            //Update File Status
+            ProjectInfo.FileHasBeenModified = true;
+
+            //Create folder in %temp%
+            GenericFunctions.CreateTemporalFolder();
+
+            UpdateIMAData();
+        }
+
+        private void Button_UpdateList_WavData_Click(object sender, System.EventArgs e)
+        {
+            //Check Audio properties
+            UpdateWavDataList();
+        }
+
+        private void ListView_WavHeaderData_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (ListView_WavHeaderData.SelectedItems.Count > 0)
+            {
+                TreeNode[] SelectedNode = TreeView_StreamData.Nodes.Find(ListView_WavHeaderData.SelectedItems[0].Tag.ToString(), true);
+                if (SelectedNode.Length > 0)
+                {
+                    OpenSoundPropertiesForm(SelectedNode[0]);
+                }
+            }
+        }
+
+        //*===============================================================================================
         //* Tree View Controls
         //*===============================================================================================
         private void TreeView_StreamData_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
             uint SoundID;
 
-            /*Check that we have selected a node, and we have not selected the root folder*/
+            //Check that we have selected a node, and we have not selected the root folder
             if (e.Node.Parent != null && !e.Node.Tag.Equals("Root"))
             {
-                /*Check we are not renaming with an empty string*/
+                //Check we are not renaming with an empty string
                 if (string.IsNullOrEmpty(e.Label))
                 {
-                    /*Cancel edit*/
+                    //Cancel edit
                     e.CancelEdit = true;
                 }
                 else
                 {
-                    /*Check that not exists an item with the same name*/
+                    //Check that not exists an item with the same name
                     if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_StreamData, e.Label))
                     {
                         MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Rename_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -187,7 +264,7 @@ namespace EuroSound_Application.StreamSounds
                     }
                     else
                     {
-                        /*Rename Sound item*/
+                        //Rename Sound item
                         if (e.Node.Tag.Equals("Sound"))
                         {
                             SoundID = uint.Parse(e.Node.Name);
@@ -198,7 +275,7 @@ namespace EuroSound_Application.StreamSounds
                         }
                         else
                         {
-                            /*Update tree node props*/
+                            //Update tree node props
                             e.Node.Text = e.Label;
                         }
                     }
@@ -206,14 +283,14 @@ namespace EuroSound_Application.StreamSounds
             }
             else
             {
-                /*Cancel edit*/
+                //Cancel edit
                 e.CancelEdit = true;
             }
         }
 
         private void TreeView_StreamData_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
         {
-            /*Change node images depending of the type*/
+            //Change node images depending of the type
             if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
             {
                 TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 0, 0);
@@ -233,7 +310,7 @@ namespace EuroSound_Application.StreamSounds
 
         private void TreeView_StreamData_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            /*Change node images depending of the type*/
+            //Change node images depending of the type
             if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
             {
                 TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 1, 1);
@@ -255,18 +332,18 @@ namespace EuroSound_Application.StreamSounds
         {
             TreeNode SelectedNode = TreeView_StreamData.SelectedNode;
 
-            /*Rename selected Node*/
+            //Rename selected Node
             if (e.KeyCode == Keys.F2)
             {
                 TreeNodeFunctions.EditNodeLabel(TreeView_StreamData, SelectedNode);
                 ProjectInfo.FileHasBeenModified = true;
             }
-            /*Delete selected Node*/
+            //Delete selected Node
             if (e.KeyCode == Keys.Delete)
             {
                 if (SelectedNode.Tag.Equals("Sound"))
                 {
-                    RemoveStreamSoundSelectedNode();
+                    RemoveStreamSoundSelectedNode(TreeView_StreamData.SelectedNode);
                     ProjectInfo.FileHasBeenModified = true;
                 }
             }
@@ -274,11 +351,11 @@ namespace EuroSound_Application.StreamSounds
 
         private void TreeView_StreamData_MouseClick(object sender, MouseEventArgs e)
         {
-            /*Select node*/
+            //Select node
             TreeNode SelectedNode = TreeView_StreamData.GetNodeAt(e.X, e.Y);
             TreeView_StreamData.SelectedNode = SelectedNode;
 
-            /*Open context menu depending of the selected node*/
+            //Open context menu depending of the selected node
             if (e.Button == MouseButtons.Right)
             {
                 if (SelectedNode.Tag.Equals("Folder") || SelectedNode.Tag.Equals("Root"))
@@ -294,10 +371,13 @@ namespace EuroSound_Application.StreamSounds
 
         private void TreeView_StreamData_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (TreeView_StreamData.SelectedNode.Tag.Equals("Sound"))
+            if (TreeView_StreamData.SelectedNode != null)
             {
-                OpenSoundPropertiesForm();
-                ProjectInfo.FileHasBeenModified = true;
+                if (TreeView_StreamData.SelectedNode.Tag.Equals("Sound"))
+                {
+                    OpenSoundPropertiesForm(TreeView_StreamData.SelectedNode);
+                    ProjectInfo.FileHasBeenModified = true;
+                }
             }
         }
 
@@ -320,14 +400,14 @@ namespace EuroSound_Application.StreamSounds
         {
             LoadedFile = OpenSaveAsDialog(TreeView_StreamData, StreamSoundsList, ProjectInfo);
 
-            /*Update text*/
+            //Update text
             Text = GenericFunctions.UpdateProjectFormText(LoadedFile, ProjectInfo.FileName);
             if (!(WindowState == FormWindowState.Maximized))
             {
                 MdiParent.Text = "EuroSound - " + Text;
             }
 
-            /*Update var*/
+            //Update var
             ProjectInfo.FileHasBeenModified = false;
         }
 
@@ -368,7 +448,7 @@ namespace EuroSound_Application.StreamSounds
             string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0);
             if (!string.IsNullOrEmpty(FilePath))
             {
-                /*--Ask user for a fully reimport--*/
+                //--Ask user for a fully reimport--
                 DialogResult ReimportQuestion = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("MenuItem_File_LoadListCleanData"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (ReimportQuestion == DialogResult.Yes)
                 {
@@ -376,7 +456,7 @@ namespace EuroSound_Application.StreamSounds
                     ProjectInfo.ClearStreamSoundStoredData(StreamSoundsList, TreeView_StreamData);
                 }
 
-                /*--Load New data--*/
+                //--Load New data--
                 Thread LoadYamlFile = new Thread(() => LibYamlReader.LoadDataFromSwyterUnpacker(StreamSoundsList, TreeView_StreamData, FilePath, ProjectInfo))
                 {
                     IsBackground = true
@@ -385,55 +465,6 @@ namespace EuroSound_Application.StreamSounds
 
                 ProjectInfo.FileHasBeenModified = true;
             }
-        }
-
-        private void Button_UpdateIMAData_Click(object sender, System.EventArgs e)
-        {
-            string ImaPath;
-
-            //Update File Status
-            ProjectInfo.FileHasBeenModified = true;
-
-            //Create folder in %temp%
-            GenericFunctions.CreateTemporalFolder();
-
-            UpdateImaData = new Thread(() =>
-            {
-                try
-                {
-                    foreach (KeyValuePair<uint, EXSoundStream> SoundToUpdate in StreamSoundsList)
-                    {
-                        string AudioPath = Path.GetTempPath() + @"EuroSound\" + SoundToUpdate.Key + ".wav";
-                        AudioLibrary.CreateWavFile((int)SoundToUpdate.Value.Frequency, (int)SoundToUpdate.Value.Bits, (int)SoundToUpdate.Value.Channels, SoundToUpdate.Value.PCM_Data, AudioPath);
-
-                        /*Get IMA ADPCM Data*/
-                        ImaPath = AudioLibrary.ConvertWavToIMAADPCM(AudioPath, Path.GetFileNameWithoutExtension(AudioPath));
-                        if (!string.IsNullOrEmpty(ImaPath))
-                        {
-                            SoundToUpdate.Value.IMA_ADPCM_DATA = File.ReadAllBytes(ImaPath);
-                        }
-
-                        /*Update Status Bar*/
-                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Format("Checking: {0}.wav", SoundToUpdate.Key));
-                    }
-
-                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("StreamSoundsUpdatedSuccess"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch
-                {
-                    /*Update Status Bar*/
-                    GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
-                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("StreamSoundsUpdatedError"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-
-                /*Update Status Bar*/
-                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
-
-            })
-            {
-                IsBackground = true
-            };
-            UpdateImaData.Start();
         }
 
         //*===============================================================================================
@@ -451,6 +482,49 @@ namespace EuroSound_Application.StreamSounds
             };
             Props.ShowDialog();
             ProjectInfo.FileHasBeenModified = true;
+        }
+
+        private void MenuItem_Edit_Undo_Click(object sender, System.EventArgs e)
+        {
+            //Restore the first serialization from the undo list.
+            if (UndoListSounds.Count > 0)
+            {
+                if (UndoListSounds.Peek().GetType() == typeof(KeyValuePair<uint, EXSoundStream>))
+                {
+                    //Get Objects
+                    TreeNode NodeToAdd = UndoListNodes.Pop();
+                    KeyValuePair<uint, EXSoundStream> ItemToRestore = (KeyValuePair<uint, EXSoundStream>)UndoListSounds.Pop();
+
+                    //Check that object does not exists
+                    bool NodeToAddExists = TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_StreamData, NodeToAdd.Text);
+                    if (StreamSoundsList.ContainsKey(ItemToRestore.Key) || NodeToAddExists == true)
+                    {
+                        MessageBox.Show(string.Format("The object \"{0}\" could not be recovered because another item with the same name exists", NodeToAdd.Text), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                    else
+                    {
+                        //Get Node
+                        StreamSoundsList.Add(ItemToRestore.Key, ItemToRestore.Value);
+
+                        //AddNode
+                        TreeView_StreamData.Nodes[0].Nodes.Insert(NodeToAdd.Index, NodeToAdd);
+                    }
+
+                    //Enable or disable button
+                    EnableUndo();
+                }
+            }
+        }
+
+        private void MenuItem_Edit_Search_Click(object sender, System.EventArgs e)
+        {
+            EuroSound_SearchItem Search = new EuroSound_SearchItem(Name)
+            {
+                Owner = this,
+                ShowInTaskbar = false,
+                Tag = Tag
+            };
+            Search.Show();
         }
     }
 }

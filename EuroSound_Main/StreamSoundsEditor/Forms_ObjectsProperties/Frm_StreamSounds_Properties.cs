@@ -29,13 +29,13 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         private void Frm_StreamSounds_Properties_Load(object sender, System.EventArgs e)
         {
-            /*Editable Data*/
+            //Editable Data
             Numeric_BaseVolume.Value = SelectedSound.BaseVolume;
 
             TemporalSound = new EXSoundStream();
             Reflection.CopyProperties(SelectedSound, TemporalSound);
 
-            /*Show Info in Textboxes*/
+            //Show Info in Textboxes
             ShowAudioInfo();
 
             CheckBox_OutputThisSound.Checked = SelectedSound.OutputThisSound;
@@ -51,6 +51,7 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         private void Button_MarkersEditor_Click(object sender, System.EventArgs e)
         {
+            AudioLibrary.StopAudio(_waveOut);
             Frm_StreamSounds_MarkersEditor MarkersEditr = new Frm_StreamSounds_MarkersEditor(SelectedSound)
             {
                 Text = "Markers Editor",
@@ -122,7 +123,7 @@ namespace EuroSound_Application.StreamSounds
                 SelectedSound.RealSize = TemporalSound.RealSize;
             }
 
-            /*--Change icon in the parent form--*/
+            //--Change icon in the parent form--
             Form OpenForm = GenericFunctions.GetFormByName("Frm_StreamSoundsEditorMain", Tag.ToString());
             TreeNode[] Results = ((Frm_StreamSoundsEditorMain)OpenForm).TreeView_StreamData.Nodes.Find(SelectedSoundKey, true);
             if (Results.Length > 0)
@@ -137,7 +138,7 @@ namespace EuroSound_Application.StreamSounds
                 }
             }
 
-            /*--Close this form--*/
+            //--Close this form--
             Close();
         }
 
@@ -152,10 +153,10 @@ namespace EuroSound_Application.StreamSounds
         private void ShowAudioInfo()
         {
             Textbox_Bits.Text = TemporalSound.Bits.ToString();
-            Textbox_Encoding.Text = TemporalSound.Encoding;
+            Textbox_Encoding.Text = TemporalSound.Encoding.ToUpper();
             Textbox_Channels.Text = TemporalSound.Channels.ToString();
-            Textbox_Frequency.Text = TemporalSound.Frequency.ToString();
-            Textbox_RealSize.Text = TemporalSound.RealSize.ToString();
+            Textbox_Frequency.Text = string.Join(" ", new string[] { TemporalSound.Frequency.ToString(), "Hz" });
+            Textbox_RealSize.Text = string.Join(" ", new string[] { TemporalSound.RealSize.ToString(), "bytes" });
             Textbox_IMA_ADPCM.Text = TemporalSound.WAVFileName;
             Textbox_MD5_Hash.Text = TemporalSound.WAVFileMD5;
 
@@ -183,10 +184,10 @@ namespace EuroSound_Application.StreamSounds
 
                 AudioReader.Close();
 
-                /*Get PCM Data*/
+                //Get PCM Data
                 TemporalSound.PCM_Data = AudioLibrary.GetWavPCMData(AudioPath);
 
-                /*Get IMA ADPCM Data*/
+                //Get IMA ADPCM Data
                 ImaPath = AudioLibrary.ConvertWavToIMAADPCM(AudioPath, Path.GetFileNameWithoutExtension(AudioPath));
                 if (!string.IsNullOrEmpty(ImaPath))
                 {

@@ -133,7 +133,10 @@
     <value>Shows the audio data stores in this project properties (channels, frequency, encoding etc..) in a single list</value>
   </data>
   <data name="ButtonSoundsBankCheckHashcodes" xml:space="preserve">
-    <value>Check that all hashcodes used in this project are OK and exists in the hashtable</value>
+    <value>Check that all hashcodes used in this project are correct and exists in the hashtable</value>
+  </data>
+  <data name="ButtonSoundsBankCheckStreamData" xml:space="preserve">
+    <value>Shows information about the linked stream data in this project</value>
   </data>
   <data name="ButtonSoundsBankSearch" xml:space="preserve">
     <value>Search for the specified text</value>
@@ -195,6 +198,9 @@
   <data name="ErrorLoopOffsetNoValid" xml:space="preserve">
     <value>This loop offset is not valid, should be get it from a hi-res source (44100Hz)</value>
   </data>
+  <data name="ErrorReadingFileIsUsedByAnotherProcess" xml:space="preserve">
+    <value>Error reading this file, seems that is being used by another process.</value>
+  </data>
   <data name="ErrorWavFileIncorrect" xml:space="preserve">
     <value>Error, the audio file is not correct, the frequency must be in mono, have 22050hz, encoded in PCM and have 16 bits per sample. Do you want that EuroSound tries to convert it with the correct config?</value>
   </data>
@@ -252,6 +258,12 @@
   <data name="ItemHasNoDependencies" xml:space="preserve">
     <value>This item is not used by any other item.</value>
   </data>
+  <data name="MenuItemEdit_Undo" xml:space="preserve">
+    <value>Undo the last item deletion</value>
+  </data>
+  <data name="MenuItemEdit_UndoSoundbanks" xml:space="preserve">
+    <value>Undo the last item deletion (not works with samples and folders)</value>
+  </data>
   <data name="MenuItemFile_Exit" xml:space="preserve">
     <value>Quit the application; prompts to save documents</value>
   </data>
@@ -278,6 +290,9 @@
   </data>
   <data name="MenuItemTools_RestoreSettings" xml:space="preserve">
     <value>Restore settings from Eurosound Registry file</value>
+  </data>
+  <data name="MenuItemView_CollapseTree" xml:space="preserve">
+    <value>Collapses all folders in the tree control</value>
   </data>
   <data name="MenuItemWindow_ArrangeIcons" xml:space="preserve">
     <value>Arrange icons at the bottom of the window</value>
@@ -324,6 +339,9 @@
   <data name="OutputSFXSoundbankErrors" xml:space="preserve">
     <value>An error occurred in the output and the file might be corrupt</value>
   </data>
+  <data name="SearcherInfoClearButton" xml:space="preserve">
+    <value>This will clear your current search</value>
+  </data>
   <data name="SFXDataHashcodeNotFound" xml:space="preserve">
     <value>The hashcode has not been found, please add it to the hashtable and click on "Reload Hashtable"</value>
   </data>
@@ -350,6 +368,12 @@
   </data>
   <data name="StatusBar_Status_Ready" xml:space="preserve">
     <value>Ready</value>
+  </data>
+  <data name="StatusBar_Status_StoppingThreads" xml:space="preserve">
+    <value>Stopping Threads</value>
+  </data>
+  <data name="StreamFileNotFound" xml:space="preserve">
+    <value>The stream sounds file has not been found. Please ensure that the path is correct in the application preferences (view -&gt; preferences)</value>
   </data>
   <data name="StreamSoundsUpdatedError" xml:space="preserve">
     <value>An error ocurred updating the sounds</value>

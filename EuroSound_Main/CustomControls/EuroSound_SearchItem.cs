@@ -1,4 +1,5 @@
 ﻿using EuroSound_Application.SoundBanksEditor;
+using EuroSound_Application.StreamSounds;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -43,6 +44,10 @@ namespace EuroSound_Application
                 Combobox_LookIn.Items.Add(new { Text = "Sounds", Value = 1 });
                 Combobox_LookIn.Items.Add(new { Text = "Stream Sounds", Value = 2 });
             }
+            else if (FormType == typeof(Frm_StreamSoundsEditorMain))
+            {
+                Combobox_LookIn.Items.Add(new { Text = "Sounds", Value = 1 });
+            }
 
             //Show Data
             Combobox_LookIn.DisplayMember = "Text";
@@ -57,20 +62,20 @@ namespace EuroSound_Application
         {
             if (!BgWorker_Searches.IsBusy)
             {
-                /*Clear stored data from previous searchs*/
+                //Clear stored data from previous searchs
                 if (Results != null)
                 {
                     Results.Clear();
                 }
                 ListViewResults.Items.Clear();
 
-                /*Reset Status Bar*/
-                ListViewResults.Invoke((MethodInvoker)delegate
+                //Reset Status Bar
+                ListViewResults.BeginInvoke((MethodInvoker)delegate
                 {
-                    Label_Results.Text = string.Format("{0} Items", ListViewResults.Items.Count);
+                    Label_Results.Text = string.Join(" ", new string[] { ListViewResults.Items.Count.ToString(), "Items" });
                 });
 
-                /*Start Search*/
+                //Start Search
                 BgWorker_Searches.RunWorkerAsync();
             }
         }
@@ -93,7 +98,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* Menu Items
         //*===============================================================================================
-        /*-----File-----*/
+        //-----File-----
         private void MenuItemFile_New_Click(object sender, EventArgs e)
         {
             ClearSearch();
@@ -124,12 +129,12 @@ namespace EuroSound_Application
             Close();
         }
 
-        /*edit*/
+        //edit
         private void MenuItemEdit_SelectAll_Click(object sender, EventArgs e)
         {
             Thread SelectAllItems = new Thread(() =>
             {
-                ListViewResults.Invoke((MethodInvoker)delegate
+                ListViewResults.BeginInvoke((MethodInvoker)delegate
                 {
                     foreach (ListViewItem item in ListViewResults.Items)
                     {
@@ -147,7 +152,7 @@ namespace EuroSound_Application
         {
             Thread SelectAllItems = new Thread(() =>
             {
-                ListViewResults.Invoke((MethodInvoker)delegate
+                ListViewResults.BeginInvoke((MethodInvoker)delegate
                 {
                     foreach (ListViewItem item in ListViewResults.Items)
                     {
@@ -165,7 +170,7 @@ namespace EuroSound_Application
         {
             Thread InvertCurrentSelection = new Thread(() =>
             {
-                ListViewResults.Invoke((MethodInvoker)delegate
+                ListViewResults.BeginInvoke((MethodInvoker)delegate
                 {
                     int[] selectedArray = new int[ListViewResults.SelectedIndices.Count];
 
@@ -191,7 +196,7 @@ namespace EuroSound_Application
             InvertCurrentSelection.IsBackground = true;
         }
 
-        /*-------Menu Object------*/
+        //-------Menu Object------
         private void MenuItemObject_Edit_Click(object sender, EventArgs e)
         {
             OpenSelectedItem();
@@ -206,7 +211,7 @@ namespace EuroSound_Application
                     Color NewColor = Color.FromArgb(GenericFunctions.GetColorFromColorPicker());
                     Results[(ListViewResults.SelectedItems[0].Index)].ForeColor = NewColor;
 
-                    /*Update cell color from the list view item*/
+                    //Update cell color from the list view item
                     ListViewResults.SelectedItems[0].SubItems[1].BackColor = NewColor;
                     ListViewResults.SelectedItems[0].UseItemStyleForSubItems = false;
                 }
@@ -220,13 +225,13 @@ namespace EuroSound_Application
         {
             int ComboSelectedIndex = 0;
 
-            /*Get Selected Index*/
-            Combobox_LookIn.Invoke((MethodInvoker)delegate
+            //Get Selected Index
+            Combobox_LookIn.BeginInvoke((MethodInvoker)delegate
             {
                 ComboSelectedIndex = (int)(Combobox_LookIn.SelectedItem as dynamic).Value;
             });
 
-            /*Soundbanks main*/
+            //Soundbanks main
             if (FormType == typeof(Frm_Soundbanks_Main))
             {
                 //Search all
@@ -240,8 +245,12 @@ namespace EuroSound_Application
                     Results = GetNodeCollection(((Frm_Soundbanks_Main)FormToSearch).TreeView_File.Nodes[ComboSelectedIndex].Nodes, ((Frm_Soundbanks_Main)FormToSearch).TreeView_File, Textbox_TextToSearch.Text.Trim(), RadioButton_MatchCase.Checked, e);
                 }
             }
+            else if (FormType == typeof(Frm_StreamSoundsEditorMain))
+            {
+                Results = GetNodeCollection(((Frm_StreamSoundsEditorMain)FormToSearch).TreeView_StreamData.Nodes, ((Frm_StreamSoundsEditorMain)FormToSearch).TreeView_StreamData, Textbox_TextToSearch.Text.Trim(), RadioButton_MatchCase.Checked, e);
+            }
 
-            /*Print list*/
+            //Print list
             if (Results.Count > 0)
             {
                 PrintList(Results, e);
@@ -267,10 +276,10 @@ namespace EuroSound_Application
             {
                 if (FormToSearch != null)
                 {
+                    TreeNode NodeToOpen = Results[(ListViewResults.SelectedItems[0].Index)];
+                    ObjectType = NodeToOpen.Tag.ToString();
                     if (FormType == typeof(Frm_Soundbanks_Main))
                     {
-                        TreeNode NodeToOpen = Results[(ListViewResults.SelectedItems[0].Index)];
-                        ObjectType = NodeToOpen.Tag.ToString();
                         if (ObjectType.Equals("Sound"))
                         {
                             ((Frm_Soundbanks_Main)FormToSearch).OpenSoundProperties(NodeToOpen);
@@ -282,6 +291,13 @@ namespace EuroSound_Application
                         else if (ObjectType.Equals("Audio"))
                         {
                             ((Frm_Soundbanks_Main)FormToSearch).OpenAudioProperties(NodeToOpen);
+                        }
+                    }
+                    else if (FormType == typeof(Frm_StreamSoundsEditorMain))
+                    {
+                        if (ObjectType.Equals("Sound"))
+                        {
+                            ((Frm_StreamSoundsEditorMain)FormToSearch).OpenSoundPropertiesForm(NodeToOpen);
                         }
                     }
                 }
@@ -306,15 +322,15 @@ namespace EuroSound_Application
 
                     try
                     {
-                        ListViewResults.Invoke((MethodInvoker)delegate
+                        ListViewResults.BeginInvoke((MethodInvoker)delegate
                         {
                             ListViewResults.Items.Add(ItemToAdd);
                         });
 
                         //Results Count
-                        ListViewResults.Invoke((MethodInvoker)delegate
+                        ListViewResults.BeginInvoke((MethodInvoker)delegate
                         {
-                            Label_Results.Text = string.Format("{0} Items", ListViewResults.Items.Count);
+                            Label_Results.Text = string.Join(" ", new string[] { ListViewResults.Items.Count.ToString(), "Items" });
                         });
                     }
                     catch
@@ -378,10 +394,10 @@ namespace EuroSound_Application
         {
             if (!BgWorker_Searches.IsBusy)
             {
-                DialogResult AskToClearSearch = MessageBox.Show("This will clear your current search", "EuroSound", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                DialogResult AskToClearSearch = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("SearcherInfoClearButton"), "EuroSound", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (AskToClearSearch == DialogResult.OK)
                 {
-                    /*Clear stored data from previous searchs*/
+                    //Clear stored data from previous searchs
                     if (Results != null)
                     {
                         Results.Clear();

@@ -78,23 +78,26 @@ namespace EuroSound_Application.StreamSounds
 
         private void ContextMenuSounds_Delete_Click(object sender, System.EventArgs e)
         {
-            RemoveStreamSoundSelectedNode();
+            RemoveStreamSoundSelectedNode(TreeView_StreamData.SelectedNode);
             ProjectInfo.FileHasBeenModified = true;
         }
 
         private void ContextMenuSounds_Properties_Click(object sender, EventArgs e)
         {
-            OpenSoundPropertiesForm();
+            if (TreeView_StreamData.SelectedNode != null)
+            {
+                OpenSoundPropertiesForm(TreeView_StreamData.SelectedNode);
+            }
         }
 
         private void ContextMenuSounds_MoveUp_Click(object sender, EventArgs e)
         {
-            TreeNodeFunctions.MoveUp(TreeView_StreamData.SelectedNode);
+            MoveUp(TreeView_StreamData.SelectedNode);
         }
 
         private void ContextMenuSounds_MoveDown_Click(object sender, EventArgs e)
         {
-            TreeNodeFunctions.MoveDown(TreeView_StreamData.SelectedNode);
+            MoveDown(TreeView_StreamData.SelectedNode);
         }
 
         private void ContextMenuSounds_TextColor_Click(object sender, EventArgs e)

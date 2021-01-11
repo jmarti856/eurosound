@@ -10,7 +10,7 @@ namespace EuroSound_Application.SoundBanksEditor
 {
     public partial class Frm_Soundbanks_Main
     {
-        public string SaveDocument(string LoadedFile, TreeView TreeView_File, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, ProjectFile ProjectProperties)
+        private string SaveDocument(string LoadedFile, TreeView TreeView_File, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, ProjectFile ProjectProperties)
         {
             string NewFilePath;
 
@@ -26,7 +26,7 @@ namespace EuroSound_Application.SoundBanksEditor
             return NewFilePath;
         }
 
-        internal string OpenSaveAsDialog(TreeView TreeView_File, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, ProjectFile FileProperties)
+        private string OpenSaveAsDialog(TreeView TreeView_File, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, ProjectFile FileProperties)
         {
             string SavePath = GenericFunctions.SaveFileBrowser("EuroSound Files (*.esf)|*.esf|All files (*.*)|*.*", 1, true, Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, FileProperties.Hashcode));
             if (!string.IsNullOrEmpty(SavePath))
@@ -94,7 +94,7 @@ namespace EuroSound_Application.SoundBanksEditor
             ProjectInfo.FileHasBeenModified = true;
         }
 
-        internal void OpenSelectedNodeSampleProperties(TreeNode SelectedNode)
+        private void OpenSelectedNodeSampleProperties(TreeNode SelectedNode)
         {
             if (SelectedNode != null)
             {
@@ -125,7 +125,7 @@ namespace EuroSound_Application.SoundBanksEditor
             ProjectInfo.FileHasBeenModified = true;
         }
 
-        internal void RemoveAudioAndWarningDependencies(TreeNode SelectedNode)
+        private void RemoveAudioAndWarningDependencies(TreeNode SelectedNode)
         {
             List<string> Dependencies = EXSoundbanksFunctions.GetAudioDependencies(SelectedNode.Name, SelectedNode.Text, SoundsList, TreeView_File, false);
             if (Dependencies.Count > 0)
@@ -145,12 +145,12 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
-        internal void RemoveAudioSelectedNode(TreeNode SelectedNode)
+        private void RemoveAudioSelectedNode(TreeNode SelectedNode)
         {
-            /*Show warning*/
+            //Show warning
             if (GlobalPreferences.ShowWarningMessagesBox)
             {
-                EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox("Delete Audio: " + SelectedNode.Text, "Warning", true);
+                EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Audio:", SelectedNode.Text.ToString() }), "Warning", true);
                 if (WarningDialog.ShowDialog() == DialogResult.OK)
                 {
                     GlobalPreferences.ShowWarningMessagesBox = WarningDialog.ShowWarningAgain;
@@ -164,15 +164,15 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
-        internal void RemoveFolderSelectedNode(TreeNode SelectedNode)
+        private void RemoveFolderSelectedNode(TreeNode SelectedNode)
         {
-            /*Check we are not trying to delete a root folder*/
+            //Check we are not trying to delete a root folder
             if (!(SelectedNode == null || SelectedNode.Tag.Equals("Root")))
             {
-                /*Show warning*/
+                //Show warning
                 if (GlobalPreferences.ShowWarningMessagesBox)
                 {
-                    EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox("Delete Folder: " + SelectedNode.Text, "Warning", true);
+                    EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Folder:", SelectedNode.Text }), "Warning", true);
                     if (WarningDialog.ShowDialog() == DialogResult.OK)
                     {
                         GlobalPreferences.ShowWarningMessagesBox = WarningDialog.ShowWarningAgain;
@@ -187,12 +187,12 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
-        internal void RemoveSampleSelectedNode(TreeNode SelectedNode)
+        private void RemoveSampleSelectedNode(TreeNode SelectedNode)
         {
-            /*Show warning*/
+            //Show warning
             if (GlobalPreferences.ShowWarningMessagesBox)
             {
-                EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox("Delete Sample: " + SelectedNode.Text, "Warning", true);
+                EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Sample:", SelectedNode.Text }), "Warning", true);
                 if (WarningDialog.ShowDialog() == DialogResult.OK)
                 {
                     GlobalPreferences.ShowWarningMessagesBox = WarningDialog.ShowWarningAgain;
@@ -206,12 +206,12 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
-        internal void RemoveSoundSelectedNode(TreeNode SelectedNode)
+        private void RemoveSoundSelectedNode(TreeNode SelectedNode)
         {
-            /*Show warning*/
+            //Show warning
             if (GlobalPreferences.ShowWarningMessagesBox)
             {
-                EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox("Delete Sound: " + SelectedNode.Text, "Warning", true);
+                EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Sound:", SelectedNode.Text }), "Warning", true);
                 if (WarningDialog.ShowDialog() == DialogResult.OK)
                 {
                     GlobalPreferences.ShowWarningMessagesBox = WarningDialog.ShowWarningAgain;
@@ -225,34 +225,22 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
-        private void AddItemToListView(ListViewItem ItemToAdd, ListView ListToAddItem)
-        {
-            try
-            {
-                ListToAddItem.Invoke((MethodInvoker)delegate
-                {
-                    if (!ListToAddItem.IsDisposed)
-                    {
-                        ListToAddItem.Items.Add(ItemToAdd);
-                    }
-                });
-            }
-            catch
-            {
-                // Ignore.  Control is disposed cannot update the UI.
-            }
-        }
-
         private void RemoveAudio()
         {
+            TreeNode SelectedNode = TreeView_File.SelectedNode;
+
+            //Save to Undo List
+            KeyValuePair<string, EXAudio> SoundtoSave = new KeyValuePair<string, EXAudio>(SelectedNode.Name, AudioDataDict[SelectedNode.Name]);
+            SaveSnapshot(SoundtoSave, SelectedNode);
+
             //EXObjectsFunctions.RemoveSound(TreeView_File.SelectedNode.Name, SoundsList);
-            EXSoundbanksFunctions.DeleteAudio(AudioDataDict, TreeView_File.SelectedNode.Name);
-            TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, TreeView_File.SelectedNode, TreeView_File.SelectedNode.Tag.ToString());
+            EXSoundbanksFunctions.DeleteAudio(AudioDataDict, SelectedNode.Name);
+            TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, SelectedNode, SelectedNode.Tag.ToString());
         }
 
         private void RemoveRecursivelyFolder()
         {
-            /*Remove child nodes sounds and samples*/
+            //Remove child nodes sounds and samples
             IList<TreeNode> ChildNodesCollection = new List<TreeNode>();
             foreach (TreeNode ChildNode in TreeNodeFunctions.GetNodesInsideFolder(TreeView_File, TreeView_File.SelectedNode, ChildNodesCollection))
             {
@@ -273,22 +261,29 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void RemoveSound()
         {
-            EXSoundbanksFunctions.RemoveSound(TreeView_File.SelectedNode.Name, SoundsList);
-            TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, TreeView_File.SelectedNode, TreeView_File.SelectedNode.Tag.ToString());
+            TreeNode SelectedNode = TreeView_File.SelectedNode;
+            //Save to Undo List
+            KeyValuePair<uint, EXSound> SoundtoSave = new KeyValuePair<uint, EXSound>(uint.Parse(SelectedNode.Name), SoundsList[uint.Parse(SelectedNode.Name)]);
+            SaveSnapshot(SoundtoSave, SelectedNode);
+
+            EXSoundbanksFunctions.RemoveSound(SelectedNode.Name, SoundsList);
+            TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, SelectedNode, TreeView_File.SelectedNode.Tag.ToString());
         }
 
         private void UpdateHashcodesValidList()
         {
+
             UpdateList = new Thread(() =>
             {
-                /*Clear List*/
-                ListView_Hashcodes.Invoke((MethodInvoker)delegate
+                //Clear List
+                ListView_Hashcodes.BeginInvoke((MethodInvoker)delegate
                 {
                     ListView_Hashcodes.Items.Clear();
+                    ListView_Hashcodes.Enabled = false;
                 });
 
-                /*Level Hashcode*/
-                ListViewItem LevelHashcode = new ListViewItem(new[] { "", ProjectInfo.Hashcode.ToString(), "<Label Not Found>", "File Properties" });
+                //Level Hashcode
+                ListViewItem LevelHashcode = new ListViewItem(new[] { "", string.Join("", new string[] { "0x", ProjectInfo.Hashcode.ToString("X8") }), "<Label Not Found>", "File Properties" });
                 if (Hashcodes.SB_Defines.ContainsKey(ProjectInfo.Hashcode))
                 {
                     LevelHashcode.SubItems[0].Text = "OK";
@@ -301,16 +296,18 @@ namespace EuroSound_Application.SoundBanksEditor
                     LevelHashcode.ImageIndex = 0;
                 }
                 LevelHashcode.UseItemStyleForSubItems = false;
-                AddItemToListView(LevelHashcode, ListView_Hashcodes);
+                LevelHashcode.Tag = "Project";
+                GenericFunctions.AddItemToListView(LevelHashcode, ListView_Hashcodes);
 
-                /*Sounds Hashcodes*/
+                //Sounds Hashcodes
                 try
                 {
-                    string DisplayName;
+                    TreeNode DisplayName;
+                    //string DisplayName;
                     foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
                     {
-                        DisplayName = TreeView_File.Nodes.Find(Sound.Key.ToString(), true)[0].Text;
-                        ListViewItem Hashcode = new ListViewItem(new[] { "", Sound.Value.Hashcode.ToString(), "<Label Not Found>", DisplayName });
+                        DisplayName = TreeView_File.Nodes.Find(Sound.Key.ToString(), true)[0];
+                        ListViewItem Hashcode = new ListViewItem(new[] { "", string.Join("", new string[] { "0x", Sound.Value.Hashcode.ToString("X8") }), "<Label Not Found>", DisplayName.Text });
                         if (Hashcodes.SFX_Defines.ContainsKey(Convert.ToUInt32(Sound.Value.Hashcode)))
                         {
                             Hashcode.SubItems[0].Text = "OK";
@@ -324,20 +321,27 @@ namespace EuroSound_Application.SoundBanksEditor
                             Hashcode.SubItems[2].Text = "<Hashcode Not Found>";
                         }
                         Hashcode.UseItemStyleForSubItems = false;
-                        AddItemToListView(Hashcode, ListView_Hashcodes);
+                        Hashcode.Tag = DisplayName.Name.ToString();
+                        GenericFunctions.AddItemToListView(Hashcode, ListView_Hashcodes);
 
-                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking hashcode: " + Hashcode.SubItems[2].Text);
+                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking hashcode:", Hashcode.SubItems[2].Text }));
 
-                        Thread.Sleep(5);
+                        //Show Items Count
+                        Textbox_HashcodesCount.BeginInvoke((MethodInvoker)delegate
+                        {
+                            Textbox_HashcodesCount.Text = ListView_Hashcodes.Items.Count.ToString();
+                        });
+                        Thread.Sleep(30);
                     }
-                }
-                catch
-                {
-                    /*Clear List*/
-                    ListView_Hashcodes.Invoke((MethodInvoker)delegate
+                    //Clear List
+                    ListView_Hashcodes.BeginInvoke((MethodInvoker)delegate
                     {
-                        ListView_Hashcodes.Items.Clear();
+                        ListView_Hashcodes.Enabled = true;
                     });
+                }
+                catch (ObjectDisposedException)
+                {
+
                 }
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
             })
@@ -356,8 +360,8 @@ namespace EuroSound_Application.SoundBanksEditor
                     string SoundDisplayName;
                     TreeNode NodeToCheck;
 
-                    /*Clear List*/
-                    ListView_StreamData.Invoke((MethodInvoker)delegate
+                    //Clear List
+                    ListView_StreamData.BeginInvoke((MethodInvoker)delegate
                     {
                         ListView_StreamData.Items.Clear();
                         ListView_StreamData.Enabled = false;
@@ -382,28 +386,29 @@ namespace EuroSound_Application.SoundBanksEditor
                                     UseItemStyleForSubItems = false
                                 };
                                 ItemStreamed.Tag = NodeToCheck.Name;
-                                AddItemToListView(ItemStreamed, ListView_StreamData);
+                                GenericFunctions.AddItemToListView(ItemStreamed, ListView_StreamData);
 
-                                GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking Sample: " + NodeToCheck.Text);
+                                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking Sample:", NodeToCheck.Text }));
 
-                                Thread.Sleep(6);
+                                //Show Items Count
+                                Textbox_StreamFilesCount.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    Textbox_StreamFilesCount.Text = ListView_StreamData.Items.Count.ToString();
+                                });
+
+                                Thread.Sleep(35);
                             }
                         }
                     }
 
-                    /*Enable List*/
-                    ListView_StreamData.Invoke((MethodInvoker)delegate
+                    //Enable List
+                    ListView_StreamData.BeginInvoke((MethodInvoker)delegate
                     {
                         ListView_StreamData.Enabled = true;
                     });
                 }
-                catch
+                catch (ObjectDisposedException)
                 {
-                    /*Clear List*/
-                    ListView_StreamData.Invoke((MethodInvoker)delegate
-                    {
-                        ListView_StreamData.Items.Clear();
-                    });
                 }
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
             })
@@ -421,14 +426,14 @@ namespace EuroSound_Application.SoundBanksEditor
                 {
                     TreeNode NodeToCheck;
 
-                    /*Clear List*/
-                    ListView_WavHeaderData.Invoke((MethodInvoker)delegate
+                    //Clear List
+                    ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
                     {
                         ListView_WavHeaderData.Items.Clear();
                         ListView_WavHeaderData.Enabled = false;
                     });
 
-                    /*Add data to list*/
+                    //Add data to list
                     foreach (KeyValuePair<string, EXAudio> item in AudioDataDict)
                     {
                         NodeToCheck = TreeView_File.Nodes.Find(item.Key, true)[0];
@@ -447,26 +452,27 @@ namespace EuroSound_Application.SoundBanksEditor
                             UseItemStyleForSubItems = false
                         };
                         Hashcode.Tag = NodeToCheck.Name;
-                        AddItemToListView(Hashcode, ListView_WavHeaderData);
+                        GenericFunctions.AddItemToListView(Hashcode, ListView_WavHeaderData);
 
-                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking audio: " + item.Value.LoadedFileName.ToString());
+                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking Audio:", item.Value.LoadedFileName.ToString() }));
 
-                        Thread.Sleep(6);
+                        //Show Items Count
+                        Textbox_DataCount.Invoke((MethodInvoker)delegate
+                        {
+                            Textbox_DataCount.Text = ListView_WavHeaderData.Items.Count.ToString();
+                        });
+
+                        Thread.Sleep(25);
                     }
 
-                    /*Enable List*/
-                    ListView_WavHeaderData.Invoke((MethodInvoker)delegate
+                    //Enable List
+                    ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
                     {
                         ListView_WavHeaderData.Enabled = true;
                     });
                 }
-                catch
+                catch (ObjectDisposedException)
                 {
-                    //Cancel and clear list
-                    ListView_WavHeaderData.Invoke((MethodInvoker)delegate
-                    {
-                        ListView_WavHeaderData.Items.Clear();
-                    });
                 }
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
             })
@@ -474,6 +480,26 @@ namespace EuroSound_Application.SoundBanksEditor
                 IsBackground = true
             };
             UpdateWavList.Start();
+        }
+
+        //*===============================================================================================
+        //* UNDO AND REDO
+        //*===============================================================================================
+        // Save a snapshot in the undo list.
+        private void SaveSnapshot(object SoundToSave, TreeNode NodeToSave)
+        {
+            //Save the snapshot.
+            UndoListSounds.Push(SoundToSave);
+            UndoListNodes.Push(new KeyValuePair<string, TreeNode>(NodeToSave.Parent.Name, NodeToSave));
+
+            //Enable or disable the Undo and Redo menu items.
+            EnableUndo();
+        }
+
+        //Enable or disable the Undo and Redo menu items.
+        private void EnableUndo()
+        {
+            MenuItem_Edit_Undo.Enabled = (UndoListSounds.Count > 0);
         }
     }
 }

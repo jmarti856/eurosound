@@ -73,7 +73,7 @@ namespace EuroSound_Application.AudioFunctionsLibrary
 
         internal void DrawAudioWaves(EuroSound_WaveViewer ControlToDraw, EXAudio SelectedSound, int Delay)
         {
-            /*Draw Waves*/
+            //Draw Waves
             if (SelectedSound.PCMdata != null && SelectedSound.Channels > 0)
             {
                 ControlToDraw.RenderDelay = Delay;
@@ -84,7 +84,7 @@ namespace EuroSound_Application.AudioFunctionsLibrary
 
         internal void DrawAudioWaves(EuroSound_WaveViewer ControlToDraw, EXSoundStream SelectedSound, int Delay)
         {
-            /*Draw Waves*/
+            //Draw Waves
             if (SelectedSound.PCM_Data != null && SelectedSound.Channels > 0)
             {
                 ControlToDraw.RenderDelay = Delay;
@@ -100,21 +100,21 @@ namespace EuroSound_Application.AudioFunctionsLibrary
 
             try
             {
-                BinaryReader Reader = new BinaryReader(File.Open(AudioFilePath, FileMode.Open, FileAccess.Read));
+                using (BinaryReader BReader = new BinaryReader(File.Open(AudioFilePath, FileMode.Open, FileAccess.Read)))
+                {
+                    //Go to RAW PCM data
+                    BReader.BaseStream.Seek(0x28, SeekOrigin.Begin);
 
-                /*Go to RAW PCM data*/
-                Reader.BaseStream.Seek(0x28, SeekOrigin.Begin);
+                    //Read size
+                    dataSize = BReader.ReadInt32();
 
-                /*Read size*/
-                dataSize = Reader.ReadInt32();
+                    //Get data
+                    byteArray = BReader.ReadBytes(dataSize);
 
-                /*Get data*/
-                byteArray = Reader.ReadBytes(dataSize);
-
-                Reader.Close();
-                Reader.Dispose();
+                    BReader.Close();
+                }
             }
-            catch
+            catch (IOException)
             {
                 byteArray = null;
             }
@@ -132,7 +132,7 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             //Resample wav
             if (File.Exists(GlobalPreferences.SoXPath))
             {
-                FinalFile = string.Format("{0}{1}f.wav", Path.GetTempPath() + @"EuroSound\", FileName);
+                FinalFile = Path.Combine(new string[] { Path.GetTempPath(), @"EuroSound\", FileName + "f.wav" });
                 using (Sox sox = new Sox(GlobalPreferences.SoXPath))
                 {
                     sox.Output.Type = FileType.WAV;
@@ -161,7 +161,7 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             //Resample wav
             if (File.Exists(GlobalPreferences.SoXPath))
             {
-                FinalFile = string.Format("{0}{1}f.ima", Path.GetTempPath() + @"EuroSound\", FileName);
+                FinalFile = Path.Combine(new string[] { Path.GetTempPath(), @"EuroSound\", FileName + "f.ima" });
                 using (Sox sox = new Sox(GlobalPreferences.SoXPath))
                 {
                     sox.Output.Type = FileType.IMA;
@@ -203,6 +203,7 @@ namespace EuroSound_Application.AudioFunctionsLibrary
 
                     writer.Write(buffer, 0, bytesRead);
                 }
+                writer.Close();
             }
         }
     }

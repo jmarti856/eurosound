@@ -1,5 +1,4 @@
-﻿using EuroSound_Application.ApplicationPreferences;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -7,6 +6,8 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 {
     public partial class Frm_TreeViewPrefs : Form
     {
+        private Form OpenForm;
+
         public Frm_TreeViewPrefs()
         {
             InitializeComponent();
@@ -14,10 +15,11 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
         private void Frm_TreeViewPrefs_Load(object sender, EventArgs e)
         {
-            Textbox_SelectedFont.Text = GlobalPreferences.SelectedFont;
-            Numeric_TreeViewIndent.Value = GlobalPreferences.TreeViewIndent;
-            CheckBox_ShowLines.Checked = GlobalPreferences.ShowLines;
-            Checkbox_ShowRootLines.Checked = GlobalPreferences.ShowRootLines;
+            OpenForm = GenericFunctions.GetFormByName("Frm_MainPreferences", Tag.ToString());
+            Textbox_SelectedFont.Text = ((Frm_MainPreferences)OpenForm).SelectedFontTEMPORAL;
+            Numeric_TreeViewIndent.Value = ((Frm_MainPreferences)OpenForm).TreeViewIndentTEMPORAL;
+            CheckBox_ShowLines.Checked = ((Frm_MainPreferences)OpenForm).ShowLinesTEMPORAL;
+            Checkbox_ShowRootLines.Checked = ((Frm_MainPreferences)OpenForm).ShowRootLinesTEMPORAL;
         }
 
         private void Textbox_SelectedFont_Click(object sender, EventArgs e)
@@ -33,7 +35,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
         private void Frm_TreeViewPrefs_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Form OpenForm = GenericFunctions.GetFormByName("Frm_MainPreferences", Tag.ToString());
             ((Frm_MainPreferences)OpenForm).SelectedFontTEMPORAL = Textbox_SelectedFont.Text;
             ((Frm_MainPreferences)OpenForm).ShowLinesTEMPORAL = CheckBox_ShowLines.Checked;
             ((Frm_MainPreferences)OpenForm).ShowRootLinesTEMPORAL = Checkbox_ShowRootLines.Checked;

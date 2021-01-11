@@ -1,4 +1,5 @@
 ﻿using EuroSound_Application.TreeViewLibraryFunctions;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -55,7 +56,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 EXAudio NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);
                 if (NewAudio != null)
                 {
-                    /*Add data to dictionary and create tree node*/
+                    //Add data to dictionary and create tree node
                     AudioDataDict.Add(MD5Hash, NewAudio);
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, MD5Hash, AudioName, 7, 7, "Audio", Color.Black, TreeView_File);
 
@@ -236,6 +237,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenu_Sound_Remove_Click(object sender, System.EventArgs e)
         {
+            //Remove item
             RemoveSoundSelectedNode(TreeView_File.SelectedNode);
             ProjectInfo.FileHasBeenModified = true;
         }
@@ -270,6 +272,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenu_Sample_Remove_Click(object sender, System.EventArgs e)
         {
+            //Remove item
             RemoveSampleSelectedNode(TreeView_File.SelectedNode);
             ProjectInfo.FileHasBeenModified = true;
         }
@@ -304,6 +307,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenuAudio_Remove_Click(object sender, System.EventArgs e)
         {
+            //Remove Item
             RemoveAudioAndWarningDependencies(TreeView_File.SelectedNode);
             ProjectInfo.FileHasBeenModified = true;
         }
@@ -346,5 +350,28 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
         #endregion ContextMenu_Audio_EVENTS
+
+        //*===============================================================================================
+        //* ContextMenu_HashcodesList
+        //*===============================================================================================
+        #region ContextMenu_HashcodesList
+        private void MenuItem_CopyHashcode_Click(object sender, EventArgs e)
+        {
+            if (ListView_Hashcodes.SelectedItems.Count > 0)
+            {
+                Clipboard.Clear();
+                Clipboard.SetText(ListView_Hashcodes.SelectedItems[0].SubItems[1].Text);
+            }
+        }
+
+        private void MenuItem_CopyLabel_Click(object sender, EventArgs e)
+        {
+            if (ListView_Hashcodes.SelectedItems.Count > 0)
+            {
+                Clipboard.Clear();
+                Clipboard.SetText(ListView_Hashcodes.SelectedItems[0].SubItems[2].Text);
+            }
+        }
+        #endregion
     }
 }

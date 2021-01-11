@@ -28,7 +28,7 @@ namespace EuroSound_Application
 
             ArgumentFromSplash = ArgumentToLoad;
 
-            /*Menu Item: File*/
+            //Menu Item: File
             MainMenu_File.DropDownOpened += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
             MainMenu_File.DropDownClosed += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
 
@@ -40,7 +40,7 @@ namespace EuroSound_Application
             MenuItemFile_OpenESF.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItemFile_Exit.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
 
-            /*Menu Item: View*/
+            //Menu Item: View
             MainMenu_View.DropDownOpened += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
             MainMenu_View.DropDownClosed += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
 
@@ -50,7 +50,7 @@ namespace EuroSound_Application
             MenuItemView_StatusBar.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItemView_Preferences.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
 
-            /*Menu Item: Window*/
+            //Menu Item: Window
             MainMenu_Window.DropDownOpened += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
             MainMenu_Window.DropDownClosed += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
 
@@ -69,7 +69,7 @@ namespace EuroSound_Application
             MenuItemWindow_TileH.Click += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); LayoutMdi(MdiLayout.TileHorizontal); };
             MenuItemWindow_TileV.Click += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); LayoutMdi(MdiLayout.TileVertical); };
 
-            /*Menu Item: Tools*/
+            //Menu Item: Tools
             MainMenu_Tools.DropDownOpened += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
             MainMenu_Tools.DropDownClosed += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
 
@@ -83,7 +83,7 @@ namespace EuroSound_Application
             MainMenuTools_RestoreSettings.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MainMenuTools_ClearTempFiles.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
 
-            /*Menu Item: Help*/
+            //Menu Item: Help
             MainMenu_Help.DropDownOpened += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
             MainMenu_Help.DropDownClosed += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
 
@@ -100,13 +100,13 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void Frm_EuroSound_Main_Load(object sender, EventArgs e)
         {
-            /*GetControl*/
+            //GetControl
             GenericFunctions.ParentFormStatusBar = MainStatusBar;
 
-            /*Update Status Bar*/
+            //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
-            /*This means we loaded a soundbank file*/
+            //This means we loaded a soundbank file
             if (!string.IsNullOrEmpty(ArgumentFromSplash))
             {
                 OpenFormsWithFileToLoad(ArgumentFromSplash);
@@ -115,10 +115,13 @@ namespace EuroSound_Application
 
         private void Frm_EuroSound_Main_Resize(object sender, EventArgs e)
         {
-            if (WindowState == FormWindowState.Minimized)
+            if (GlobalPreferences.UseSystemTray)
             {
-                EuroSoundTrayIcon.Visible = true;
-                ShowInTaskbar = false;
+                if (WindowState == FormWindowState.Minimized)
+                {
+                    EuroSoundTrayIcon.Visible = true;
+                    ShowInTaskbar = false;
+                }
             }
         }
 
@@ -146,7 +149,7 @@ namespace EuroSound_Application
 
         private void Frm_EuroSound_Main_FormClosed(object sender, FormClosedEventArgs e)
         {
-            GenericFunctions.ClearTemporalFiles();
+            ClearTemporalFiles();
         }
 
         //*===============================================================================================
@@ -263,7 +266,7 @@ namespace EuroSound_Application
 
         private void MainMenuTools_ClearTempFiles_Click(object sender, EventArgs e)
         {
-            if (GenericFunctions.ClearTemporalFiles())
+            if (ClearTemporalFiles())
             {
                 MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_TemporalFilesRemovedSuccess"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -305,25 +308,25 @@ namespace EuroSound_Application
             TypeOfFileToLoad = TypeOfEuroSoundFile(FileToLoad);
             if (TypeOfFileToLoad == 0)
             {
-                Frm_Soundbanks_Main SoundBanksForms = new Frm_Soundbanks_Main(string.Empty, FileToLoad)
+                Frm_Soundbanks_Main SoundBanksForm = new Frm_Soundbanks_Main(string.Empty, FileToLoad)
                 {
                     Owner = this,
                     MdiParent = this,
                     Tag = FormID.ToString()
                 };
-                SoundBanksForms.Show();
+                SoundBanksForm.Show();
                 FormID++;
             }
             else if (TypeOfFileToLoad == 1)
             {
-                Frm_StreamSoundsEditorMain SoundBanksForms = new Frm_StreamSoundsEditorMain(string.Empty, ArgumentFromSplash)
+                Frm_StreamSoundsEditorMain StreamSoundsForm = new Frm_StreamSoundsEditorMain(string.Empty, FileToLoad)
                 {
                     Owner = this,
                     MdiParent = this,
                     Tag = FormID.ToString()
                 };
 
-                SoundBanksForms.Show();
+                StreamSoundsForm.Show();
                 FormID++;
             }
         }
@@ -393,6 +396,37 @@ namespace EuroSound_Application
                 EuroSoundTrayIcon.Visible = false;
                 ShowInTaskbar = true;
             }
+        }
+
+        private bool ClearTemporalFiles()
+        {
+            bool FilesRemoved = false;
+            string TemporalFolderPath = Path.Combine(new string[] { Path.GetTempPath(), "EuroSound" });
+
+            //Delete Temp Files from session if exists
+            if (Directory.Exists(TemporalFolderPath))
+            {
+                //Update Status Bar
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_RemovingTempFiles"));
+
+                //Get temporal files
+                DirectoryInfo TemporalDirectoryInfo = new DirectoryInfo(TemporalFolderPath);
+                foreach (FileInfo FileToDelete in TemporalDirectoryInfo.GetFiles())
+                {
+                    FilesRemoved = true;
+                    FileToDelete.Delete();
+                }
+                foreach (DirectoryInfo DirectoryToDelete in TemporalDirectoryInfo.GetDirectories())
+                {
+                    FilesRemoved = true;
+                    DirectoryToDelete.Delete(true);
+                }
+
+                //Update Status Bar
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            }
+
+            return FilesRemoved;
         }
     }
 }

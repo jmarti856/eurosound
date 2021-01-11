@@ -79,7 +79,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 //Add data
                 FinalAudioDataDict = SFXCreator.GetFinalAudioDictionary(UsedAudios, ((Frm_Soundbanks_Main)ParentForm).AudioDataDict, ProgressBar_CurrentTask);
 
-                /*Update Total Progress*/
+                //Update Total Progress
                 TotalProgress += 20;
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
 
@@ -95,58 +95,58 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
 
                 //--------------------------------------[WRITE FILE HEADER]--------------------------------------
-                /*Update Label*/
+                //Update Label
                 SetLabelText(Label_CurrentTask, "Writting File Header");
 
-                /*Write Data*/
+                //Write Data
                 SFXCreator.WriteFileHeader(BWriter, CurrentFileProperties.Hashcode, ProgressBar_CurrentTask);
 
-                /*Update Total Progress*/
+                //Update Total Progress
                 TotalProgress += 10;
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
 
 
                 //--------------------------------------[Write SECTIONS]--------------------------------------
-                /*Update Label*/
+                //Update Label
                 SetLabelText(Label_CurrentTask, "Writting File Sections");
 
-                /*Write Data*/
+                //Write Data
                 SFXCreator.WriteFileSections(BWriter, GenericFunctions.CountNumberOfSamples(FinalSoundsDict), ProgressBar_CurrentTask);
 
-                /*Update Total Progress*/
+                //Update Total Progress
                 TotalProgress += 10;
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
 
 
                 //--------------------------------------[SECTION SFX elements]--------------------------------------
-                /*Write Data*/
+                //Write Data
                 SFXCreator.WriteSFXSection(BWriter, FinalSoundsDict, FinalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
 
-                /*Update Total Progress*/
+                //Update Total Progress
                 TotalProgress += 10;
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
 
 
                 //--------------------------------------[SECTION Sample info elements]--------------------------------------
-                /*Write Data*/
+                //Write Data
                 SFXCreator.WriteSampleInfoSection(BWriter, FinalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
 
-                /*Update Total Progress*/
+                //Update Total Progress
                 TotalProgress += 10;
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
 
                 //--------------------------------------[SECTION Sample data]--------------------------------------
-                /*Write Data*/
+                //Write Data
                 SFXCreator.WriteSampleDataSection(BWriter, FinalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
 
-                /*Update Total Progress*/
+                //Update Total Progress
                 TotalProgress += 10;
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
 
                 //*===============================================================================================
                 //* STEP 4: WRITE FINAL DATA (80%)
                 //*===============================================================================================
-                //Check For Cancelation;
+                //Check For Cancelation
                 if (BackgroundWorker_BuildSFX.CancellationPending == true)
                 {
                     BWriter.Close();
@@ -157,7 +157,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 //Update Label
                 SetLabelText(Label_CurrentTask, "WrittingFinalOffsets");
 
-                /*Write Data*/
+                //Write Data
                 SFXCreator.WriteFinalOffsets(BWriter, ProgressBar_CurrentTask, Label_CurrentTask);
                 BWriter.Close();
                 BWriter.Dispose();
@@ -165,7 +165,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 //Update Label
                 SetLabelText(Label_CurrentTask, "Output Completed");
 
-                /*Update Total Progress*/
+                //Update Total Progress
                 TotalProgress += 9;
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
             }
