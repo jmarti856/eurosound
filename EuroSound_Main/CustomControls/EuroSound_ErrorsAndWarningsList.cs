@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.CustomControls.WarningsList
 {
     public partial class EuroSound_ErrorsAndWarningsList : Form
     {

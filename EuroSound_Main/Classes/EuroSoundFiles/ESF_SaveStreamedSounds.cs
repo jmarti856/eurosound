@@ -1,11 +1,12 @@
-﻿using EuroSound_Application.StreamSounds;
+﻿using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.StreamSounds;
 using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace EuroSound_Application.EuroSoundFilesFunctions
+namespace EuroSound_Application.EuroSoundStreamFilesFunctions
 {
     public class ESF_SaveStreamedSounds
     {
@@ -142,7 +143,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             foreach (KeyValuePair<uint, EXSoundStream> Sound in StreamSoundsList)
             {
                 BWriter.Write(Sound.Key);
-                BWriter.Write(Sound.Value.DisplayName);
                 BWriter.Write(Sound.Value.BaseVolume);
 
                 //Save WAV

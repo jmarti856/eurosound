@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.EuroSoundFilesFunctions;
+using EuroSound_Application.EuroSoundSoundBanksFilesFunctions;
 using EuroSound_Application.GenerateSoundBankSFX;
 using EuroSound_Application.SoundBanksEditor;
 using Syroot.BinaryData;
@@ -9,7 +10,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.BashMode
 {
     internal class EuroSoundBashMode
     {

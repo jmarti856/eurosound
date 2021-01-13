@@ -1,11 +1,12 @@
-﻿using EuroSound_Application.StreamSounds;
+﻿using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.StreamSounds;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace EuroSound_Application.EuroSoundFilesFunctions
+namespace EuroSound_Application.EuroSoundStreamFilesFunctions
 {
     public class ESF_LoadStreamSounds
     {
@@ -55,7 +56,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 SoundStreamKey = BReader.ReadUInt32();
                 EXSoundStream StreamSound = new EXSoundStream
                 {
-                    DisplayName = BReader.ReadString(),
+                    //DisplayName = BReader.ReadString(),
                     BaseVolume = BReader.ReadUInt32(),
                 };
 

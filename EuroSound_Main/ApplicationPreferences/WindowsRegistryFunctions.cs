@@ -45,16 +45,17 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         #endregion Create Keys and SubKeys
 
         #region Color Picker Preferences
-
         internal void SaveCustomColors(int[] CustomColors)
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("CustomColors", true);
-            RegistryKey CustomColorKey = EuroSoundKey.OpenSubKey("CustomColors", true);
-
-            for (int i = 0; i < CustomColors.Length; i++)
+            using (RegistryKey CustomColorKey = EuroSoundKey.OpenSubKey("CustomColors", true))
             {
-                CustomColorKey.SetValue("CustCol" + i, CustomColors[i], RegistryValueKind.DWord);
+                for (int i = 0; i < CustomColors.Length; i++)
+                {
+                    CustomColorKey.SetValue("CustCol" + i, CustomColors[i], RegistryValueKind.DWord);
+                }
+                CustomColorKey.Close();
             }
         }
 
@@ -63,26 +64,29 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             int[] CustomColors = new int[16];
 
             OpenEuroSoundKeys();
-            RegistryKey CustomColorKey = EuroSoundKey.OpenSubKey("CustomColors", true);
-            if (CustomColorKey != null)
+            using (RegistryKey CustomColorKey = EuroSoundKey.OpenSubKey("CustomColors", true))
             {
-                for (int i = 0; i < CustomColors.Length; i++)
+                if (CustomColorKey != null)
                 {
-                    if (CustomColorKey.GetValue("CustCol" + i) != null)
+                    for (int i = 0; i < CustomColors.Length; i++)
                     {
-                        CustomColors[i] = int.Parse(CustomColorKey.GetValue("CustCol" + i).ToString());
+                        if (CustomColorKey.GetValue("CustCol" + i) != null)
+                        {
+                            CustomColors[i] = int.Parse(CustomColorKey.GetValue("CustCol" + i).ToString());
+                        }
+                        else
+                        {
+                            CustomColors[i] = 16777215;
+                        }
                     }
-                    else
+                    CustomColorKey.Close();
+                }
+                else
+                {
+                    for (int i = 0; i < CustomColors.Length; i++)
                     {
                         CustomColors[i] = 16777215;
                     }
-                }
-            }
-            else
-            {
-                for (int i = 0; i < CustomColors.Length; i++)
-                {
-                    CustomColors[i] = 16777215;
                 }
             }
             return CustomColors;
@@ -96,13 +100,15 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             string[] Info = new string[2];
 
             OpenEuroSoundKeys();
-            RegistryKey HashTables = EuroSoundKey.OpenSubKey("HashTables", true);
-            if (HashTables != null)
+            using (RegistryKey HashTables = EuroSoundKey.OpenSubKey("HashTables", true))
             {
-                Info[0] = HashTables.GetValue(HashtableName).ToString();
-                Info[1] = HashTables.GetValue(HashtableName + "MD5").ToString();
+                if (HashTables != null)
+                {
+                    Info[0] = HashTables.GetValue(HashtableName).ToString();
+                    Info[1] = HashTables.GetValue(HashtableName + "MD5").ToString();
+                    HashTables.Close();
+                }
             }
-
             return Info;
         }
 
@@ -110,10 +116,12 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("HashTables", true);
-            RegistryKey HashTables = EuroSoundKey.OpenSubKey("HashTables", true);
-
-            HashTables.SetValue(HashTableName, HashTablePath, RegistryValueKind.String);
-            HashTables.SetValue(HashTableName + "MD5", HashTableMD5, RegistryValueKind.String);
+            using (RegistryKey HashTables = EuroSoundKey.OpenSubKey("HashTables", true))
+            {
+                HashTables.SetValue(HashTableName, HashTablePath, RegistryValueKind.String);
+                HashTables.SetValue(HashTableName + "MD5", HashTableMD5, RegistryValueKind.String);
+                HashTables.Close();
+            }
         }
         #endregion Hash Table Paths
 
@@ -123,20 +131,23 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             string[] TreeViewPreferences = new string[4];
 
             OpenEuroSoundKeys();
-            RegistryKey TreeViewConfig = EuroSoundKey.OpenSubKey("SBEditorTreeView", true);
-            if (TreeViewConfig != null)
+            using (RegistryKey TreeViewConfig = EuroSoundKey.OpenSubKey("SBEditorTreeView", true))
             {
-                TreeViewPreferences[0] = TreeViewConfig.GetValue("SelectedFont", "Microsoft Sans Serif; 8,25pt").ToString();
-                TreeViewPreferences[1] = TreeViewConfig.GetValue("ShowTreeLines", "1").ToString();
-                TreeViewPreferences[2] = TreeViewConfig.GetValue("ShowTreeRootLines", "1").ToString();
-                TreeViewPreferences[3] = TreeViewConfig.GetValue("TreeViewIndent", "19").ToString();
-            }
-            else
-            {
-                TreeViewPreferences[0] = "Microsoft Sans Serif; 8,25pt";
-                TreeViewPreferences[1] = "1";
-                TreeViewPreferences[2] = "1";
-                TreeViewPreferences[3] = "19";
+                if (TreeViewConfig != null)
+                {
+                    TreeViewPreferences[0] = TreeViewConfig.GetValue("SelectedFont", "Microsoft Sans Serif; 8,25pt").ToString();
+                    TreeViewPreferences[1] = TreeViewConfig.GetValue("ShowTreeLines", "1").ToString();
+                    TreeViewPreferences[2] = TreeViewConfig.GetValue("ShowTreeRootLines", "1").ToString();
+                    TreeViewPreferences[3] = TreeViewConfig.GetValue("TreeViewIndent", "19").ToString();
+                    TreeViewConfig.Close();
+                }
+                else
+                {
+                    TreeViewPreferences[0] = "Microsoft Sans Serif; 8,25pt";
+                    TreeViewPreferences[1] = "1";
+                    TreeViewPreferences[2] = "1";
+                    TreeViewPreferences[3] = "19";
+                }
             }
 
             return TreeViewPreferences;
@@ -146,12 +157,14 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("SBEditorTreeView", true);
-            RegistryKey SoundBankTreeViewPrefs = EuroSoundKey.OpenSubKey("SBEditorTreeView", true);
-
-            SoundBankTreeViewPrefs.SetValue("SelectedFont", GlobalPreferences.SelectedFont, RegistryValueKind.String);
-            SoundBankTreeViewPrefs.SetValue("TreeViewIndent", GlobalPreferences.TreeViewIndent, RegistryValueKind.DWord);
-            SoundBankTreeViewPrefs.SetValue("ShowTreeLines", GlobalPreferences.ShowLines, RegistryValueKind.DWord);
-            SoundBankTreeViewPrefs.SetValue("ShowTreeRootLines", GlobalPreferences.ShowRootLines, RegistryValueKind.DWord);
+            using (RegistryKey SoundBankTreeViewPrefs = EuroSoundKey.OpenSubKey("SBEditorTreeView", true))
+            {
+                SoundBankTreeViewPrefs.SetValue("SelectedFont", GlobalPreferences.SelectedFont, RegistryValueKind.String);
+                SoundBankTreeViewPrefs.SetValue("TreeViewIndent", GlobalPreferences.TreeViewIndent, RegistryValueKind.DWord);
+                SoundBankTreeViewPrefs.SetValue("ShowTreeLines", GlobalPreferences.ShowLines, RegistryValueKind.DWord);
+                SoundBankTreeViewPrefs.SetValue("ShowTreeRootLines", GlobalPreferences.ShowRootLines, RegistryValueKind.DWord);
+                SoundBankTreeViewPrefs.Close();
+            }
         }
         #endregion TreeView Preferences
 
@@ -161,20 +174,23 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             string[] GlobalPreferences = new string[4];
 
             OpenEuroSoundKeys();
-            RegistryKey GeneralConfigs = EuroSoundKey.OpenSubKey("General", true);
-            if (GeneralConfigs != null)
+            using (RegistryKey GeneralConfigs = EuroSoundKey.OpenSubKey("General", true))
             {
-                GlobalPreferences[0] = GeneralConfigs.GetValue("SFXOutputPath", @"X:\Sphinx\Binary\_bin_PC\_Eng").ToString();
-                GlobalPreferences[1] = GeneralConfigs.GetValue("MusicOutputPath", @"X:\Sphinx\Binary\_bin_PC\music").ToString();
-                GlobalPreferences[2] = GeneralConfigs.GetValue("ControlWavesColor", "-16777077").ToString();
-                GlobalPreferences[3] = GeneralConfigs.GetValue("ControlWavesBackColor", "-8355712").ToString();
-            }
-            else
-            {
-                GlobalPreferences[0] = @"X:\Sphinx\Binary\_bin_PC\_Eng";
-                GlobalPreferences[1] = @"X:\Sphinx\Binary\_bin_PC\music";
-                GlobalPreferences[2] = "-16777077";
-                GlobalPreferences[3] = "-8355712";
+                if (GeneralConfigs != null)
+                {
+                    GlobalPreferences[0] = GeneralConfigs.GetValue("SFXOutputPath", @"X:\Sphinx\Binary\_bin_PC\_Eng").ToString();
+                    GlobalPreferences[1] = GeneralConfigs.GetValue("MusicOutputPath", @"X:\Sphinx\Binary\_bin_PC\music").ToString();
+                    GlobalPreferences[2] = GeneralConfigs.GetValue("ControlWavesColor", "-16777077").ToString();
+                    GlobalPreferences[3] = GeneralConfigs.GetValue("ControlWavesBackColor", "-8355712").ToString();
+                    GeneralConfigs.Close();
+                }
+                else
+                {
+                    GlobalPreferences[0] = @"X:\Sphinx\Binary\_bin_PC\_Eng";
+                    GlobalPreferences[1] = @"X:\Sphinx\Binary\_bin_PC\music";
+                    GlobalPreferences[2] = "-16777077";
+                    GlobalPreferences[3] = "-8355712";
+                }
             }
 
             return GlobalPreferences;
@@ -184,12 +200,14 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("General", true);
-            RegistryKey SoundBankTreeViewPrefs = EuroSoundKey.OpenSubKey("General", true);
-
-            SoundBankTreeViewPrefs.SetValue("SFXOutputPath", GlobalPreferences.SFXOutputPath, RegistryValueKind.String);
-            SoundBankTreeViewPrefs.SetValue("MusicOutputPath", GlobalPreferences.MusicOutputPath, RegistryValueKind.String);
-            SoundBankTreeViewPrefs.SetValue("ControlWavesColor", GlobalPreferences.ColorWavesControl, RegistryValueKind.DWord);
-            SoundBankTreeViewPrefs.SetValue("ControlWavesBackColor", GlobalPreferences.BackColorWavesControl, RegistryValueKind.DWord);
+            using (RegistryKey SoundBankTreeViewPrefs = EuroSoundKey.OpenSubKey("General", true))
+            {
+                SoundBankTreeViewPrefs.SetValue("SFXOutputPath", GlobalPreferences.SFXOutputPath, RegistryValueKind.String);
+                SoundBankTreeViewPrefs.SetValue("MusicOutputPath", GlobalPreferences.MusicOutputPath, RegistryValueKind.String);
+                SoundBankTreeViewPrefs.SetValue("ControlWavesColor", GlobalPreferences.ColorWavesControl, RegistryValueKind.DWord);
+                SoundBankTreeViewPrefs.SetValue("ControlWavesBackColor", GlobalPreferences.BackColorWavesControl, RegistryValueKind.DWord);
+                SoundBankTreeViewPrefs.Close();
+            }
         }
         #endregion General Preferences
 
@@ -198,9 +216,11 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("StreamFile", true);
-            RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("StreamFile", true);
-
-            StreamFilePath.SetValue("FilePath", GlobalPreferences.StreamFilePath, RegistryValueKind.String);
+            using (RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("StreamFile", true))
+            {
+                StreamFilePath.SetValue("FilePath", GlobalPreferences.StreamFilePath, RegistryValueKind.String);
+                StreamFilePath.Close();
+            }
         }
 
         internal string SetExternalFilePath()
@@ -209,10 +229,14 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("StreamFile", true);
-            RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("StreamFile", true);
-            if (StreamFile != null)
+            using (RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("StreamFile", true))
             {
-                StreamFile = StreamFilePath.GetValue("FilePath", "").ToString();
+                if (StreamFile != null)
+                {
+                    StreamFile = StreamFilePath.GetValue("FilePath", "").ToString();
+                    StreamFilePath.Close();
+                }
+
             }
 
             return StreamFile;
@@ -224,9 +248,11 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("SoXPath", true);
-            RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("SoXPath", true);
-
-            StreamFilePath.SetValue("ExePath", GlobalPreferences.SoXPath, RegistryValueKind.String);
+            using (RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("SoXPath", true))
+            {
+                StreamFilePath.SetValue("ExePath", GlobalPreferences.SoXPath, RegistryValueKind.String);
+                StreamFilePath.Close();
+            }
         }
 
         internal string SetSoxFilePath()
@@ -235,10 +261,13 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("SoXPath", true);
-            RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("SoXPath", true);
-            if (StreamFile != null)
+            using (RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("SoXPath", true))
             {
-                StreamFile = StreamFilePath.GetValue("ExePath", "").ToString();
+                if (StreamFile != null)
+                {
+                    StreamFile = StreamFilePath.GetValue("ExePath", "").ToString();
+                    StreamFilePath.Close();
+                }
             }
 
             return StreamFile;
@@ -250,9 +279,11 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("SystemConfig", true);
-            RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("SystemConfig", true);
-
-            StreamFilePath.SetValue("UseSysTray", GlobalPreferences.UseSystemTray, RegistryValueKind.DWord);
+            using (RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("SystemConfig", true))
+            {
+                StreamFilePath.SetValue("UseSysTray", GlobalPreferences.UseSystemTray, RegistryValueKind.DWord);
+                StreamFilePath.Close();
+            }
         }
 
         internal int SetSystemConfig()
@@ -261,12 +292,121 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("SystemConfig", true);
-            RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("SystemConfig", true);
-            StreamFile = (int)StreamFilePath.GetValue("UseSysTray", 0);
+            using (RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("SystemConfig", true))
+            {
+                StreamFile = (int)StreamFilePath.GetValue("UseSysTray", 0);
+                StreamFilePath.Close();
+            }
 
             return StreamFile;
         }
 
         #endregion
+
+        #region Flags
+        internal void SaveSFXFlagsIfNecessary()
+        {
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("SFXFlags", true);
+            using (RegistryKey SFXFlags = EuroSoundKey.OpenSubKey("SFXFlags", true))
+            {
+                if (SFXFlags.ValueCount < 16)
+                {
+                    string[] FlagsLabels = new string[]
+                    {
+                    "MaxReject","UnPausable","IgnoreMasterVolume","MultiSample","RandomPick","Shuffled","Loop",
+                    "Polyphonic","UnderWater","PauseInstant","HasSubSFX","StealOnLouder","TreatLikeMusic",
+                    "KillMeOwnGroup","GroupStealReject","OneInstancePerFrame"
+                    };
+
+                    for (int i = 0; i < FlagsLabels.Length; i++)
+                    {
+                        SFXFlags.SetValue(string.Join("", new string[] { "Flag", (i + 1).ToString() }), FlagsLabels[i], RegistryValueKind.String);
+                    }
+                }
+                SFXFlags.Close();
+            }
+        }
+
+        internal void SaveAudioFlagsIfNecessary()
+        {
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("AudioFlags", true);
+            using (RegistryKey SFXFlags = EuroSoundKey.OpenSubKey("AudioFlags", true))
+            {
+                if (SFXFlags.ValueCount < 1)
+                {
+                    string[] FlagsLabels = new string[]
+                    {
+                    "Loop"
+                    };
+
+                    for (int i = 0; i < FlagsLabels.Length; i++)
+                    {
+                        SFXFlags.SetValue(string.Join("", new string[] { "Flag", (i + 1).ToString() }), FlagsLabels[i], RegistryValueKind.String);
+                    }
+                }
+                SFXFlags.Close();
+            }
+        }
+        #endregion
+
+        #region WindowsState
+        internal void SaveWindowState(string WindowName, int LocationX, int LocationY, int Width, int Height, bool IsIconic, bool IsMaximized)
+        {
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("WindowState", true);
+            using (RegistryKey SaveWindowState = EuroSoundKey.OpenSubKey("WindowState", true))
+            {
+                SaveWindowState.SetValue(WindowName + "_PositionX", LocationX, RegistryValueKind.DWord);
+                SaveWindowState.SetValue(WindowName + "_PositionY", LocationY, RegistryValueKind.DWord);
+                SaveWindowState.SetValue(WindowName + "_IsIconic", IsIconic, RegistryValueKind.DWord);
+                SaveWindowState.SetValue(WindowName + "_IsMaximized", IsMaximized, RegistryValueKind.DWord);
+                SaveWindowState.SetValue(WindowName + "_Width", Width, RegistryValueKind.DWord);
+                SaveWindowState.SetValue(WindowName + "_Height", Height, RegistryValueKind.DWord);
+                SaveWindowState.Close();
+            }
+        }
+        #endregion
+
+        #region AudioDevice
+        internal void SaveDefaultAudioDevice()
+        {
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("DefAudioDev", true);
+            using (RegistryKey AudioDevice = EuroSoundKey.OpenSubKey("DefAudioDev", true))
+            {
+                AudioDevice.SetValue("AudioDevIndex", GlobalPreferences.DefaultAudioDevice, RegistryValueKind.DWord);
+                AudioDevice.Close();
+            }
+        }
+
+        internal int SetDefaultAudioDevice()
+        {
+            int AudioDeviceNum = 0;
+
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("DefAudioDev", true);
+            using (RegistryKey AudioDevice = EuroSoundKey.OpenSubKey("DefAudioDev", true))
+            {
+                if (AudioDevice != null)
+                {
+                    AudioDeviceNum = (int)AudioDevice.GetValue("AudioDevIndex", 0);
+                    AudioDevice.Close();
+                }
+            }
+
+            return AudioDeviceNum;
+        }
+        #endregion
+
+        internal RegistryKey ReturnRegistryKey(string Name)
+        {
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists(Name, true);
+            RegistryKey KeyToReturn = EuroSoundKey.OpenSubKey(Name, true);
+
+            return KeyToReturn;
+        }
     }
 }

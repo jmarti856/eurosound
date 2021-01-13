@@ -1,5 +1,5 @@
 ﻿
-namespace EuroSound_Application
+namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
 {
     partial class EuroSound_NodesToFolder
     {
@@ -137,6 +137,7 @@ namespace EuroSound_Application
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EuroSound_NodesToFolder";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Sounds to Folder";
             this.ResumeLayout(false);

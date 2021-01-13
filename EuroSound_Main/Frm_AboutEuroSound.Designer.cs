@@ -1,4 +1,4 @@
-﻿namespace EuroSound_Application
+﻿namespace EuroSound_Application.AboutForm
 {
     partial class Frm_AboutEuroSound
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace CustomControls
+namespace EuroSound_Application.CustomControls.NewProjectForm
 {
     public partial class EuroSound_NewFileProject : Form
     {

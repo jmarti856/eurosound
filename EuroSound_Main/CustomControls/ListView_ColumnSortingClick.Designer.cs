@@ -1,4 +1,4 @@
-﻿namespace ListViewExtendedMethods
+﻿namespace EuroSound_Application.CustomControls.ListViewColumnSorting
 {
     partial class ListView_ColumnSortingClick
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace EuroSound_Application
+namespace EuroSound_Application.CustomControls.ObjectInstancesForm
 {
     partial class EuroSound_ItemUsage
     {
@@ -94,6 +94,7 @@ namespace EuroSound_Application
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EuroSound_ItemUsage";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "EuroSound_ItemUsage";
             this.Shown += new System.EventHandler(this.EuroSound_ItemUsage_Shown);

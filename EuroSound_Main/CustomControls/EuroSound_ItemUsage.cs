@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.CustomControls.ObjectInstancesForm
 {
     public partial class EuroSound_ItemUsage : Form
     {

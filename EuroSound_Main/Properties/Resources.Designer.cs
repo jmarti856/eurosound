@@ -376,6 +376,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The specified directory does not exists..
+        /// </summary>
+        internal static string Gen_DirectoryNotExists {
+            get {
+                return ResourceManager.GetString("Gen_DirectoryNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The name can&apos;t be empty.
         /// </summary>
         internal static string Gen_Error_NameIsEmpty {
@@ -399,6 +408,15 @@ namespace EuroSound_Application.Properties {
         internal static string Gen_ErrorRedingFile {
             get {
                 return ResourceManager.GetString("Gen_ErrorRedingFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The specified file does not exists..
+        /// </summary>
+        internal static string Gen_FileNotExists {
+            get {
+                return ResourceManager.GetString("Gen_FileNotExists", resourceCulture);
             }
         }
         
@@ -435,6 +453,15 @@ namespace EuroSound_Application.Properties {
         internal static string GenericHashtablesNotCorrect {
             get {
                 return ResourceManager.GetString("GenericHashtablesNotCorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The selected file is not valid, please choose a file with a valid extension.
+        /// </summary>
+        internal static string GenericUploadedFileWrongExt {
+            get {
+                return ResourceManager.GetString("GenericUploadedFileWrongExt", resourceCulture);
             }
         }
         
@@ -795,6 +822,15 @@ namespace EuroSound_Application.Properties {
         internal static string StatusBar_Status_RadingSoundHashcodes {
             get {
                 return ResourceManager.GetString("StatusBar_Status_RadingSoundHashcodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Reading Directory.
+        /// </summary>
+        internal static string StatusBar_Status_ReadingDirectory {
+            get {
+                return ResourceManager.GetString("StatusBar_Status_ReadingDirectory", resourceCulture);
             }
         }
         

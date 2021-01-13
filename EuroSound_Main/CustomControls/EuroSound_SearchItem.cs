@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.SoundBanksEditor;
+﻿using EuroSound_Application.FunctionsListView;
+using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
 using System;
 using System.Collections;
@@ -6,10 +7,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.CustomControls.SearcherForm
 {
     public partial class EuroSound_SearchItem : Form
     {
@@ -20,6 +20,7 @@ namespace EuroSound_Application
         private Form FormToSearch;
         private List<TreeNode> Results;
         private Type FormType;
+        private ListViewFunctions LVFunctions = new ListViewFunctions();
 
         public EuroSound_SearchItem(string CurrentFormName)
         {
@@ -132,68 +133,17 @@ namespace EuroSound_Application
         //edit
         private void MenuItemEdit_SelectAll_Click(object sender, EventArgs e)
         {
-            Thread SelectAllItems = new Thread(() =>
-            {
-                ListViewResults.BeginInvoke((MethodInvoker)delegate
-                {
-                    foreach (ListViewItem item in ListViewResults.Items)
-                    {
-                        item.Selected = true;
-                    }
-
-                    ListViewResults.Focus();
-                });
-            });
-            SelectAllItems.Start();
-            SelectAllItems.IsBackground = true;
+            LVFunctions.SelectAllItems(ListViewResults);
         }
 
         private void MenuItemEdit_SelectNone_Click(object sender, EventArgs e)
         {
-            Thread SelectAllItems = new Thread(() =>
-            {
-                ListViewResults.BeginInvoke((MethodInvoker)delegate
-                {
-                    foreach (ListViewItem item in ListViewResults.Items)
-                    {
-                        item.Selected = false;
-                    }
-
-                    ListViewResults.Focus();
-                });
-            });
-            SelectAllItems.Start();
-            SelectAllItems.IsBackground = true;
+            LVFunctions.SelectNone(ListViewResults);
         }
 
         private void MenuItemEdit_InvertSelection_Click(object sender, EventArgs e)
         {
-            Thread InvertCurrentSelection = new Thread(() =>
-            {
-                ListViewResults.BeginInvoke((MethodInvoker)delegate
-                {
-                    int[] selectedArray = new int[ListViewResults.SelectedIndices.Count];
-
-                    ListViewResults.SelectedIndices.CopyTo(selectedArray, 0);
-
-                    HashSet<int> selected = new HashSet<int>();
-                    selected.UnionWith(selectedArray);
-
-                    ListViewResults.SelectedIndices.Clear();
-                    for (int i = 0; i < ListViewResults.Items.Count; i++)
-                    {
-                        if (!selected.Contains(i))
-                        {
-                            ListViewResults.SelectedIndices.Add(i);
-                        }
-                    }
-                    ListViewResults.Focus();
-
-                    selected.Clear();
-                });
-            });
-            InvertCurrentSelection.Start();
-            InvertCurrentSelection.IsBackground = true;
+            LVFunctions.InvertSelection(ListViewResults);
         }
 
         //-------Menu Object------

@@ -1,5 +1,5 @@
 ﻿
-namespace EuroSound_Application
+namespace EuroSound_Application.SplashForm
 {
     partial class Frm_EuroSound_Splash
     {

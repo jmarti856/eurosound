@@ -1,11 +1,12 @@
-﻿using EuroSound_Application.SoundBanksEditor;
+﻿using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.SoundBanksEditor;
 using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace EuroSound_Application.EuroSoundFilesFunctions
+namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
 {
     internal class ESF_SaveSoundBanks
     {

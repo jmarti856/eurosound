@@ -1,4 +1,4 @@
-﻿namespace EuroSound_Application
+﻿namespace EuroSound_Application.CustomControls.FlagsForm
 {
     partial class EuroSound_FlagsForm
     {
@@ -79,29 +79,31 @@
             // 
             // Textbox_Flag16
             // 
+            this.Textbox_Flag16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Textbox_Flag16.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Flag16.Location = new System.Drawing.Point(307, 192);
+            this.Textbox_Flag16.Location = new System.Drawing.Point(289, 192);
             this.Textbox_Flag16.Name = "Textbox_Flag16";
             this.Textbox_Flag16.ReadOnly = true;
             this.Textbox_Flag16.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag16.TabIndex = 64;
-            this.Textbox_Flag16.Text = "<Unset>";
+            this.Textbox_Flag16.Text = "Flag16";
             // 
             // Textbox_Flag01
             // 
             this.Textbox_Flag01.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Flag01.Location = new System.Drawing.Point(74, 10);
+            this.Textbox_Flag01.Location = new System.Drawing.Point(74, 9);
             this.Textbox_Flag01.Name = "Textbox_Flag01";
             this.Textbox_Flag01.ReadOnly = true;
             this.Textbox_Flag01.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag01.TabIndex = 34;
-            this.Textbox_Flag01.Text = "<Unset>";
+            this.Textbox_Flag01.Text = "Flag1";
             // 
             // Checkbox_Flag16
             // 
+            this.Checkbox_Flag16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Checkbox_Flag16.AutoSize = true;
             this.Checkbox_Flag16.Enabled = false;
-            this.Checkbox_Flag16.Location = new System.Drawing.Point(240, 194);
+            this.Checkbox_Flag16.Location = new System.Drawing.Point(227, 195);
             this.Checkbox_Flag16.Name = "Checkbox_Flag16";
             this.Checkbox_Flag16.Size = new System.Drawing.Size(56, 17);
             this.Checkbox_Flag16.TabIndex = 63;
@@ -123,29 +125,31 @@
             // 
             // Textbox_Flag15
             // 
+            this.Textbox_Flag15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Textbox_Flag15.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Flag15.Location = new System.Drawing.Point(307, 166);
+            this.Textbox_Flag15.Location = new System.Drawing.Point(289, 166);
             this.Textbox_Flag15.Name = "Textbox_Flag15";
             this.Textbox_Flag15.ReadOnly = true;
             this.Textbox_Flag15.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag15.TabIndex = 62;
-            this.Textbox_Flag15.Text = "<Unset>";
+            this.Textbox_Flag15.Text = "Flag15";
             // 
             // Textbox_Flag02
             // 
             this.Textbox_Flag02.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Flag02.Location = new System.Drawing.Point(74, 36);
+            this.Textbox_Flag02.Location = new System.Drawing.Point(74, 35);
             this.Textbox_Flag02.Name = "Textbox_Flag02";
             this.Textbox_Flag02.ReadOnly = true;
             this.Textbox_Flag02.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag02.TabIndex = 36;
-            this.Textbox_Flag02.Text = "<Unset>";
+            this.Textbox_Flag02.Text = "Flag2";
             // 
             // Checkbox_Flag15
             // 
+            this.Checkbox_Flag15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Checkbox_Flag15.AutoSize = true;
             this.Checkbox_Flag15.Enabled = false;
-            this.Checkbox_Flag15.Location = new System.Drawing.Point(240, 168);
+            this.Checkbox_Flag15.Location = new System.Drawing.Point(227, 169);
             this.Checkbox_Flag15.Name = "Checkbox_Flag15";
             this.Checkbox_Flag15.Size = new System.Drawing.Size(56, 17);
             this.Checkbox_Flag15.TabIndex = 61;
@@ -167,29 +171,31 @@
             // 
             // Textbox_Flag14
             // 
+            this.Textbox_Flag14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Textbox_Flag14.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Flag14.Location = new System.Drawing.Point(307, 140);
+            this.Textbox_Flag14.Location = new System.Drawing.Point(289, 140);
             this.Textbox_Flag14.Name = "Textbox_Flag14";
             this.Textbox_Flag14.ReadOnly = true;
             this.Textbox_Flag14.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag14.TabIndex = 60;
-            this.Textbox_Flag14.Text = "<Unset>";
+            this.Textbox_Flag14.Text = "Flag14";
             // 
             // Textbox_Flag03
             // 
             this.Textbox_Flag03.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Flag03.Location = new System.Drawing.Point(74, 62);
+            this.Textbox_Flag03.Location = new System.Drawing.Point(74, 61);
             this.Textbox_Flag03.Name = "Textbox_Flag03";
             this.Textbox_Flag03.ReadOnly = true;
             this.Textbox_Flag03.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag03.TabIndex = 38;
-            this.Textbox_Flag03.Text = "<Unset>";
+            this.Textbox_Flag03.Text = "Flag3";
             // 
             // Checkbox_Flag14
             // 
+            this.Checkbox_Flag14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Checkbox_Flag14.AutoSize = true;
             this.Checkbox_Flag14.Enabled = false;
-            this.Checkbox_Flag14.Location = new System.Drawing.Point(240, 142);
+            this.Checkbox_Flag14.Location = new System.Drawing.Point(227, 143);
             this.Checkbox_Flag14.Name = "Checkbox_Flag14";
             this.Checkbox_Flag14.Size = new System.Drawing.Size(56, 17);
             this.Checkbox_Flag14.TabIndex = 59;
@@ -211,29 +217,31 @@
             // 
             // Textbox_Flag13
             // 
+            this.Textbox_Flag13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Textbox_Flag13.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Flag13.Location = new System.Drawing.Point(307, 114);
+            this.Textbox_Flag13.Location = new System.Drawing.Point(289, 114);
             this.Textbox_Flag13.Name = "Textbox_Flag13";
             this.Textbox_Flag13.ReadOnly = true;
             this.Textbox_Flag13.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag13.TabIndex = 58;
-            this.Textbox_Flag13.Text = "<Unset>";
+            this.Textbox_Flag13.Text = "Flag13";
             // 
             // Textbox_Flag04
             // 
             this.Textbox_Flag04.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Flag04.Location = new System.Drawing.Point(74, 88);
+            this.Textbox_Flag04.Location = new System.Drawing.Point(74, 87);
             this.Textbox_Flag04.Name = "Textbox_Flag04";
             this.Textbox_Flag04.ReadOnly = true;
             this.Textbox_Flag04.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag04.TabIndex = 40;
-            this.Textbox_Flag04.Text = "<Unset>";
+            this.Textbox_Flag04.Text = "Flag4";
             // 
             // Checkbox_Flag13
             // 
+            this.Checkbox_Flag13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Checkbox_Flag13.AutoSize = true;
             this.Checkbox_Flag13.Enabled = false;
-            this.Checkbox_Flag13.Location = new System.Drawing.Point(240, 116);
+            this.Checkbox_Flag13.Location = new System.Drawing.Point(227, 117);
             this.Checkbox_Flag13.Name = "Checkbox_Flag13";
             this.Checkbox_Flag13.Size = new System.Drawing.Size(56, 17);
             this.Checkbox_Flag13.TabIndex = 57;
@@ -255,29 +263,31 @@
             // 
             // Textbox_Flag12
             // 
+            this.Textbox_Flag12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Textbox_Flag12.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Flag12.Location = new System.Drawing.Point(307, 88);
+            this.Textbox_Flag12.Location = new System.Drawing.Point(289, 88);
             this.Textbox_Flag12.Name = "Textbox_Flag12";
             this.Textbox_Flag12.ReadOnly = true;
             this.Textbox_Flag12.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag12.TabIndex = 56;
-            this.Textbox_Flag12.Text = "<Unset>";
+            this.Textbox_Flag12.Text = "Flag12";
             // 
             // Textbox_Flag05
             // 
             this.Textbox_Flag05.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Flag05.Location = new System.Drawing.Point(74, 114);
+            this.Textbox_Flag05.Location = new System.Drawing.Point(74, 113);
             this.Textbox_Flag05.Name = "Textbox_Flag05";
             this.Textbox_Flag05.ReadOnly = true;
             this.Textbox_Flag05.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag05.TabIndex = 42;
-            this.Textbox_Flag05.Text = "<Unset>";
+            this.Textbox_Flag05.Text = "Flag5";
             // 
             // Checkbox_Flag12
             // 
+            this.Checkbox_Flag12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Checkbox_Flag12.AutoSize = true;
             this.Checkbox_Flag12.Enabled = false;
-            this.Checkbox_Flag12.Location = new System.Drawing.Point(240, 90);
+            this.Checkbox_Flag12.Location = new System.Drawing.Point(227, 91);
             this.Checkbox_Flag12.Name = "Checkbox_Flag12";
             this.Checkbox_Flag12.Size = new System.Drawing.Size(56, 17);
             this.Checkbox_Flag12.TabIndex = 55;
@@ -299,29 +309,31 @@
             // 
             // Textbox_Flag11
             // 
+            this.Textbox_Flag11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Textbox_Flag11.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Flag11.Location = new System.Drawing.Point(307, 62);
+            this.Textbox_Flag11.Location = new System.Drawing.Point(289, 62);
             this.Textbox_Flag11.Name = "Textbox_Flag11";
             this.Textbox_Flag11.ReadOnly = true;
             this.Textbox_Flag11.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag11.TabIndex = 54;
-            this.Textbox_Flag11.Text = "<Unset>";
+            this.Textbox_Flag11.Text = "Flag11";
             // 
             // Textbox_Flag06
             // 
             this.Textbox_Flag06.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Flag06.Location = new System.Drawing.Point(74, 140);
+            this.Textbox_Flag06.Location = new System.Drawing.Point(74, 139);
             this.Textbox_Flag06.Name = "Textbox_Flag06";
             this.Textbox_Flag06.ReadOnly = true;
             this.Textbox_Flag06.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag06.TabIndex = 44;
-            this.Textbox_Flag06.Text = "<Unset>";
+            this.Textbox_Flag06.Text = "Flag6";
             // 
             // Checkbox_Flag11
             // 
+            this.Checkbox_Flag11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Checkbox_Flag11.AutoSize = true;
             this.Checkbox_Flag11.Enabled = false;
-            this.Checkbox_Flag11.Location = new System.Drawing.Point(240, 64);
+            this.Checkbox_Flag11.Location = new System.Drawing.Point(227, 65);
             this.Checkbox_Flag11.Name = "Checkbox_Flag11";
             this.Checkbox_Flag11.Size = new System.Drawing.Size(56, 17);
             this.Checkbox_Flag11.TabIndex = 53;
@@ -343,29 +355,31 @@
             // 
             // Textbox_Flag10
             // 
+            this.Textbox_Flag10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Textbox_Flag10.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Flag10.Location = new System.Drawing.Point(307, 36);
+            this.Textbox_Flag10.Location = new System.Drawing.Point(289, 36);
             this.Textbox_Flag10.Name = "Textbox_Flag10";
             this.Textbox_Flag10.ReadOnly = true;
             this.Textbox_Flag10.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag10.TabIndex = 52;
-            this.Textbox_Flag10.Text = "<Unset>";
+            this.Textbox_Flag10.Text = "Flag10";
             // 
             // Textbox_Flag07
             // 
             this.Textbox_Flag07.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Flag07.Location = new System.Drawing.Point(74, 166);
+            this.Textbox_Flag07.Location = new System.Drawing.Point(74, 165);
             this.Textbox_Flag07.Name = "Textbox_Flag07";
             this.Textbox_Flag07.ReadOnly = true;
             this.Textbox_Flag07.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag07.TabIndex = 46;
-            this.Textbox_Flag07.Text = "<Unset>";
+            this.Textbox_Flag07.Text = "Flag7";
             // 
             // Checkbox_Flag10
             // 
+            this.Checkbox_Flag10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Checkbox_Flag10.AutoSize = true;
             this.Checkbox_Flag10.Enabled = false;
-            this.Checkbox_Flag10.Location = new System.Drawing.Point(240, 38);
+            this.Checkbox_Flag10.Location = new System.Drawing.Point(227, 39);
             this.Checkbox_Flag10.Name = "Checkbox_Flag10";
             this.Checkbox_Flag10.Size = new System.Drawing.Size(56, 17);
             this.Checkbox_Flag10.TabIndex = 51;
@@ -387,29 +401,31 @@
             // 
             // Textbox_Flag09
             // 
+            this.Textbox_Flag09.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Textbox_Flag09.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Flag09.Location = new System.Drawing.Point(307, 10);
+            this.Textbox_Flag09.Location = new System.Drawing.Point(289, 10);
             this.Textbox_Flag09.Name = "Textbox_Flag09";
             this.Textbox_Flag09.ReadOnly = true;
             this.Textbox_Flag09.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag09.TabIndex = 50;
-            this.Textbox_Flag09.Text = "<Unset>";
+            this.Textbox_Flag09.Text = "Flag9";
             // 
             // Textbox_Flag08
             // 
             this.Textbox_Flag08.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Flag08.Location = new System.Drawing.Point(74, 192);
+            this.Textbox_Flag08.Location = new System.Drawing.Point(74, 191);
             this.Textbox_Flag08.Name = "Textbox_Flag08";
             this.Textbox_Flag08.ReadOnly = true;
             this.Textbox_Flag08.Size = new System.Drawing.Size(139, 20);
             this.Textbox_Flag08.TabIndex = 48;
-            this.Textbox_Flag08.Text = "<Unset>";
+            this.Textbox_Flag08.Text = "Flag8";
             // 
             // Checkbox_Flag09
             // 
+            this.Checkbox_Flag09.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Checkbox_Flag09.AutoSize = true;
             this.Checkbox_Flag09.Enabled = false;
-            this.Checkbox_Flag09.Location = new System.Drawing.Point(240, 12);
+            this.Checkbox_Flag09.Location = new System.Drawing.Point(227, 13);
             this.Checkbox_Flag09.Name = "Checkbox_Flag09";
             this.Checkbox_Flag09.Size = new System.Drawing.Size(56, 17);
             this.Checkbox_Flag09.TabIndex = 49;
@@ -419,7 +435,8 @@
             // 
             // Button_OK
             // 
-            this.Button_OK.Location = new System.Drawing.Point(290, 218);
+            this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_OK.Location = new System.Drawing.Point(272, 225);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
             this.Button_OK.TabIndex = 1;
@@ -429,8 +446,9 @@
             // 
             // Button_Cancel
             // 
+            this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_Cancel.Location = new System.Drawing.Point(371, 218);
+            this.Button_Cancel.Location = new System.Drawing.Point(353, 225);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.Button_Cancel.TabIndex = 2;
@@ -444,7 +462,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Button_Cancel;
-            this.ClientSize = new System.Drawing.Size(458, 251);
+            this.ClientSize = new System.Drawing.Size(440, 258);
             this.Controls.Add(this.Checkbox_Flag01);
             this.Controls.Add(this.Button_Cancel);
             this.Controls.Add(this.Textbox_Flag16);

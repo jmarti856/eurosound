@@ -3,7 +3,7 @@ using EuroSound_Application.StreamSounds;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.CurrentProjectFunctions
 {
     public class ProjectFile
     {

@@ -1,4 +1,4 @@
-﻿namespace EuroSound_Application
+﻿namespace EuroSound_Application.CurrentProjectForm
 {
     partial class Frm_FileProperties
     {

@@ -1,5 +1,8 @@
 ﻿using CustomStatusBar;
 using EuroSound_Application.ApplicationRegistryFunctions;
+using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.CustomControls.InputBoxForm;
+using EuroSound_Application.CustomControls.WarningsList;
 using EuroSound_Application.SoundBanksEditor;
 using NAudio.Wave;
 using System;
@@ -178,14 +181,27 @@ namespace EuroSound_Application
             return SelectedPath;
         }
 
+        internal static string OpenFolderBrowser()
+        {
+            string SelectedPath = string.Empty;
+
+            using (FolderBrowserDialog OpenFolder = new FolderBrowserDialog())
+            {
+                if (OpenFolder.ShowDialog() == DialogResult.OK)
+                {
+                    SelectedPath = OpenFolder.SelectedPath;
+                }
+            }
+
+            return SelectedPath;
+        }
+
         internal static void ShowErrorsAndWarningsList(List<string> ListToPrint, string FormTitle)
         {
             //Show Import results
             using (EuroSound_ErrorsAndWarningsList ImportResults = new EuroSound_ErrorsAndWarningsList(ListToPrint))
             {
                 ImportResults.Text = FormTitle;
-                ImportResults.ShowInTaskbar = false;
-                ImportResults.TopMost = true;
 
                 ImportResults.ShowDialog();
             }

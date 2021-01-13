@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace ListViewExtendedMethods
+namespace EuroSound_Application.CustomControls.ListViewColumnSorting
 {
     public partial class ListView_ColumnSortingClick : ListView
     {

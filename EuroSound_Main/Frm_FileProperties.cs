@@ -1,8 +1,9 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.CurrentProjectFunctions;
 using System;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.CurrentProjectForm
 {
     public partial class Frm_FileProperties : Form
     {

@@ -63,6 +63,7 @@ namespace EuroSound_Application
             this.EuroSoundTrayIcon_Restore = new System.Windows.Forms.ToolStripMenuItem();
             this.EuroSoundTrayIcon_Separator = new System.Windows.Forms.ToolStripSeparator();
             this.EuroSoundTrayIcon_Close = new System.Windows.Forms.ToolStripMenuItem();
+            this.MainMenuTools_AudioConverter = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip_MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.File)).BeginInit();
             this.EuroSoundTrayIconMenu.SuspendLayout();
@@ -79,7 +80,7 @@ namespace EuroSound_Application
             this.MenuStrip_MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip_MainMenu.MdiWindowListItem = this.MainMenu_Window;
             this.MenuStrip_MainMenu.Name = "MenuStrip_MainMenu";
-            this.MenuStrip_MainMenu.Size = new System.Drawing.Size(1421, 24);
+            this.MenuStrip_MainMenu.Size = new System.Drawing.Size(1103, 24);
             this.MenuStrip_MainMenu.TabIndex = 0;
             this.MenuStrip_MainMenu.Text = "MainMenu";
             // 
@@ -99,7 +100,7 @@ namespace EuroSound_Application
             this.MenuItemFile_New.MergeIndex = 0;
             this.MenuItemFile_New.Name = "MenuItemFile_New";
             this.MenuItemFile_New.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.MenuItemFile_New.Size = new System.Drawing.Size(146, 22);
+            this.MenuItemFile_New.Size = new System.Drawing.Size(180, 22);
             this.MenuItemFile_New.Text = "New";
             this.MenuItemFile_New.Click += new System.EventHandler(this.MenuItemFile_New_Click);
             // 
@@ -108,7 +109,7 @@ namespace EuroSound_Application
             this.MenuItemFile_OpenESF.MergeIndex = 1;
             this.MenuItemFile_OpenESF.Name = "MenuItemFile_OpenESF";
             this.MenuItemFile_OpenESF.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.MenuItemFile_OpenESF.Size = new System.Drawing.Size(146, 22);
+            this.MenuItemFile_OpenESF.Size = new System.Drawing.Size(180, 22);
             this.MenuItemFile_OpenESF.Text = "Open";
             this.MenuItemFile_OpenESF.Click += new System.EventHandler(this.MenuItemFile_OpenESF_Click);
             // 
@@ -116,13 +117,13 @@ namespace EuroSound_Application
             // 
             this.MenuItemFile_Separator.MergeIndex = 9;
             this.MenuItemFile_Separator.Name = "MenuItemFile_Separator";
-            this.MenuItemFile_Separator.Size = new System.Drawing.Size(143, 6);
+            this.MenuItemFile_Separator.Size = new System.Drawing.Size(177, 6);
             // 
             // MenuItemFile_Exit
             // 
             this.MenuItemFile_Exit.MergeIndex = 10;
             this.MenuItemFile_Exit.Name = "MenuItemFile_Exit";
-            this.MenuItemFile_Exit.Size = new System.Drawing.Size(146, 22);
+            this.MenuItemFile_Exit.Size = new System.Drawing.Size(180, 22);
             this.MenuItemFile_Exit.Text = "Exit";
             this.MenuItemFile_Exit.Click += new System.EventHandler(this.MenuItemFile_Exit_Click);
             // 
@@ -139,7 +140,7 @@ namespace EuroSound_Application
             // 
             this.MenuItemView_Preferences.MergeIndex = 0;
             this.MenuItemView_Preferences.Name = "MenuItemView_Preferences";
-            this.MenuItemView_Preferences.Size = new System.Drawing.Size(135, 22);
+            this.MenuItemView_Preferences.Size = new System.Drawing.Size(180, 22);
             this.MenuItemView_Preferences.Text = "Preferences";
             this.MenuItemView_Preferences.Click += new System.EventHandler(this.MenuItemView_Preferences_Click);
             // 
@@ -150,7 +151,7 @@ namespace EuroSound_Application
             this.MenuItemView_StatusBar.CheckState = System.Windows.Forms.CheckState.Checked;
             this.MenuItemView_StatusBar.MergeIndex = 1;
             this.MenuItemView_StatusBar.Name = "MenuItemView_StatusBar";
-            this.MenuItemView_StatusBar.Size = new System.Drawing.Size(135, 22);
+            this.MenuItemView_StatusBar.Size = new System.Drawing.Size(180, 22);
             this.MenuItemView_StatusBar.Text = "Status Bar";
             this.MenuItemView_StatusBar.CheckStateChanged += new System.EventHandler(this.MenuItemView_StatusBar_CheckStateChanged);
             // 
@@ -169,35 +170,36 @@ namespace EuroSound_Application
             // MenuItemWindow_Cascade
             // 
             this.MenuItemWindow_Cascade.Name = "MenuItemWindow_Cascade";
-            this.MenuItemWindow_Cascade.Size = new System.Drawing.Size(150, 22);
+            this.MenuItemWindow_Cascade.Size = new System.Drawing.Size(180, 22);
             this.MenuItemWindow_Cascade.Text = "Cascade";
             // 
             // MenuItemWindow_TileH
             // 
             this.MenuItemWindow_TileH.Name = "MenuItemWindow_TileH";
-            this.MenuItemWindow_TileH.Size = new System.Drawing.Size(150, 22);
+            this.MenuItemWindow_TileH.Size = new System.Drawing.Size(180, 22);
             this.MenuItemWindow_TileH.Text = "Tile Horizontal";
             // 
             // MenuItemWindow_TileV
             // 
             this.MenuItemWindow_TileV.Name = "MenuItemWindow_TileV";
-            this.MenuItemWindow_TileV.Size = new System.Drawing.Size(150, 22);
+            this.MenuItemWindow_TileV.Size = new System.Drawing.Size(180, 22);
             this.MenuItemWindow_TileV.Text = "Tile Vertical";
             // 
             // MenuItemWindow_Arrange
             // 
             this.MenuItemWindow_Arrange.Name = "MenuItemWindow_Arrange";
-            this.MenuItemWindow_Arrange.Size = new System.Drawing.Size(150, 22);
+            this.MenuItemWindow_Arrange.Size = new System.Drawing.Size(180, 22);
             this.MenuItemWindow_Arrange.Text = "Arrange Icons";
             // 
             // MenuItemWindow_Separator
             // 
             this.MenuItemWindow_Separator.Name = "MenuItemWindow_Separator";
-            this.MenuItemWindow_Separator.Size = new System.Drawing.Size(147, 6);
+            this.MenuItemWindow_Separator.Size = new System.Drawing.Size(177, 6);
             // 
             // MainMenu_Tools
             // 
             this.MainMenu_Tools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MainMenuTools_AudioConverter,
             this.MainMenuTools_SFXDataGen,
             this.MainMenuTools_Separator1,
             this.MainMenuTools_BackupSettings,
@@ -258,24 +260,24 @@ namespace EuroSound_Application
             // MenuItemHelp_About
             // 
             this.MenuItemHelp_About.Name = "MenuItemHelp_About";
-            this.MenuItemHelp_About.Size = new System.Drawing.Size(177, 22);
+            this.MenuItemHelp_About.Size = new System.Drawing.Size(180, 22);
             this.MenuItemHelp_About.Text = "About EuroSound...";
             this.MenuItemHelp_About.Click += new System.EventHandler(this.MenuItemHelp_About_Click);
             // 
             // MenuItemHelp_OnlineHelp
             // 
             this.MenuItemHelp_OnlineHelp.Name = "MenuItemHelp_OnlineHelp";
-            this.MenuItemHelp_OnlineHelp.Size = new System.Drawing.Size(177, 22);
+            this.MenuItemHelp_OnlineHelp.Size = new System.Drawing.Size(180, 22);
             this.MenuItemHelp_OnlineHelp.Text = "Online Help...";
             // 
             // MainStatusBar
             // 
-            this.MainStatusBar.Location = new System.Drawing.Point(0, 834);
+            this.MainStatusBar.Location = new System.Drawing.Point(0, 556);
             this.MainStatusBar.Name = "MainStatusBar";
             this.MainStatusBar.Panels.AddRange(new System.Windows.Forms.StatusBarPanel[] {
             this.File});
             this.MainStatusBar.ShowPanels = true;
-            this.MainStatusBar.Size = new System.Drawing.Size(1421, 22);
+            this.MainStatusBar.Size = new System.Drawing.Size(1103, 22);
             this.MainStatusBar.TabIndex = 1;
             this.MainStatusBar.Text = "EuroSound_StatusBar";
             // 
@@ -284,7 +286,7 @@ namespace EuroSound_Application
             this.File.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
             this.File.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Spring;
             this.File.Name = "File";
-            this.File.Width = 702;
+            this.File.Width = 543;
             // 
             // EuroSoundTrayIcon
             // 
@@ -324,12 +326,19 @@ namespace EuroSound_Application
             this.EuroSoundTrayIcon_Close.Text = "Close";
             this.EuroSoundTrayIcon_Close.Click += new System.EventHandler(this.EuroSoundTrayIcon_Close_Click);
             // 
+            // MainMenuTools_AudioConverter
+            // 
+            this.MainMenuTools_AudioConverter.Name = "MainMenuTools_AudioConverter";
+            this.MainMenuTools_AudioConverter.Size = new System.Drawing.Size(194, 22);
+            this.MainMenuTools_AudioConverter.Text = "Audio Converter";
+            this.MainMenuTools_AudioConverter.Click += new System.EventHandler(this.MainMenuTools_AudioConverter_Click);
+            // 
             // Frm_EuroSound_Main
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1421, 856);
+            this.ClientSize = new System.Drawing.Size(1103, 578);
             this.Controls.Add(this.MainStatusBar);
             this.Controls.Add(this.MenuStrip_MainMenu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -385,5 +394,6 @@ namespace EuroSound_Application
         private System.Windows.Forms.ToolStripMenuItem EuroSoundTrayIcon_Restore;
         private System.Windows.Forms.ToolStripSeparator EuroSoundTrayIcon_Separator;
         private System.Windows.Forms.ToolStripMenuItem EuroSoundTrayIcon_Close;
+        private System.Windows.Forms.ToolStripMenuItem MainMenuTools_AudioConverter;
     }
 }

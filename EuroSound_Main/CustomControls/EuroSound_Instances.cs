@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.CustomControls.ProgramInstancesForm
 {
     public partial class EuroSound_Instances : Form
     {

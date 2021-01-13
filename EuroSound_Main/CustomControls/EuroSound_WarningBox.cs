@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.CustomControls.WarningsForm
 {
     public partial class EuroSound_WarningBox : Form
     {

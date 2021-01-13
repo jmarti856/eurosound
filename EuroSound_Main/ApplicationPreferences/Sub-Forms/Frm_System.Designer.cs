@@ -55,7 +55,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             // 
             this.Label_Title.AutoSize = true;
             this.Label_Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_Title.Location = new System.Drawing.Point(210, 4);
+            this.Label_Title.Location = new System.Drawing.Point(219, 4);
             this.Label_Title.Name = "Label_Title";
             this.Label_Title.Size = new System.Drawing.Size(53, 16);
             this.Label_Title.TabIndex = 1;
@@ -86,6 +86,8 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             // 
             // Label_Expl
             // 
+            this.Label_Expl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_Expl.AutoSize = true;
             this.Label_Expl.Location = new System.Drawing.Point(6, 16);
             this.Label_Expl.Name = "Label_Expl";
@@ -97,6 +99,8 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             // 
             // Groupbox_UseSystemTray
             // 
+            this.Groupbox_UseSystemTray.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Groupbox_UseSystemTray.Controls.Add(this.CheckBox_UseSystemTray);
             this.Groupbox_UseSystemTray.Location = new System.Drawing.Point(12, 186);
             this.Groupbox_UseSystemTray.Name = "Groupbox_UseSystemTray";

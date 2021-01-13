@@ -1,4 +1,4 @@
-﻿namespace EuroSound_Application
+﻿namespace EuroSound_Application.CustomControls.InputBoxForm
 {
     partial class EuroSound_InputBox
     {
@@ -90,6 +90,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EuroSound_InputBox";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "EuroSound_InputBox";
             this.ResumeLayout(false);

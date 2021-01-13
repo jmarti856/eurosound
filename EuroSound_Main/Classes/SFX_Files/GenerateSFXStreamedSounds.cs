@@ -239,7 +239,7 @@ namespace EuroSound_Application.StreamSounds
                     {
                         FinalSoundsDict.Add(NodeKey, SoundToCheck);
                     }
-                    SetLabelText(LabelInfo, "Checking SFX: " + SoundToCheck.DisplayName);
+                    SetLabelText(LabelInfo, "Checking Stream Data");
                     ProgressBarUpdate(Bar, 1);
                 }
             }

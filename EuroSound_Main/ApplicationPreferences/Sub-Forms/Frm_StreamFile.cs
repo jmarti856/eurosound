@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.ApplicationPreferencesForms
@@ -22,7 +23,14 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             string FilePath = GenericFunctions.OpenFileBrowser("EuroSound Files (*.ESF)|*.esf", 0);
             if (!string.IsNullOrEmpty(FilePath))
             {
-                Textbox_ExternalFilePath.Text = FilePath;
+                if (Path.GetExtension(FilePath).ToLower().Equals(".esf"))
+                {
+                    Textbox_ExternalFilePath.Text = FilePath;
+                }
+                else
+                {
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("GenericUploadedFileWrongExt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 

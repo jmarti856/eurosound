@@ -1,5 +1,7 @@
 ﻿
-namespace EuroSound_Application
+using EuroSound_Application.CustomControls.ListViewColumnSorting;
+
+namespace EuroSound_Application.CustomControls.WarningsList
 {
     partial class EuroSound_ErrorsAndWarningsList
     {
@@ -35,7 +37,7 @@ namespace EuroSound_Application
             this.Button_Copy = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.ListViewImages = new System.Windows.Forms.ImageList(this.components);
-            this.ListView_Reports = new ListViewExtendedMethods.ListView_ColumnSortingClick();
+            this.ListView_Reports = new ListView_ColumnSortingClick();
             this.Col_Level = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Error = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
@@ -121,6 +123,7 @@ namespace EuroSound_Application
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EuroSound_ErrorsAndWarningsList";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "EuroSound_ImportResultsList";
             this.TopMost = true;
@@ -133,7 +136,7 @@ namespace EuroSound_Application
         #endregion
         private System.Windows.Forms.Button Button_OK;
         private System.Windows.Forms.Button Button_Copy;
-        private ListViewExtendedMethods.ListView_ColumnSortingClick ListView_Reports;
+        private ListView_ColumnSortingClick ListView_Reports;
         private System.Windows.Forms.ColumnHeader Col_Level;
         private System.Windows.Forms.ColumnHeader Col_Error;
         private System.Windows.Forms.Label label1;

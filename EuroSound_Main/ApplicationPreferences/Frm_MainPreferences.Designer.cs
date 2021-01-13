@@ -29,12 +29,14 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("General");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("ESF Tree");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Hash Tables");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Stream File");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("SoX (Sound eXchange)");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("System");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Audio Devices");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("General", new System.Windows.Forms.TreeNode[] {
+            treeNode1});
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("ESF Tree");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Hash Tables");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Stream File");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("SoX (Sound eXchange)");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("System");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_MainPreferences));
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
@@ -84,25 +86,27 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TreeViewPreferences.Location = new System.Drawing.Point(12, 12);
             this.TreeViewPreferences.Name = "TreeViewPreferences";
-            treeNode1.Name = "General";
-            treeNode1.Text = "General";
-            treeNode2.Name = "ESFTree";
-            treeNode2.Text = "ESF Tree";
-            treeNode3.Name = "HashTables";
-            treeNode3.Text = "Hash Tables";
-            treeNode4.Name = "StreamFile";
-            treeNode4.Text = "Stream File";
-            treeNode5.Name = "SoX";
-            treeNode5.Text = "SoX (Sound eXchange)";
-            treeNode6.Name = "System";
-            treeNode6.Text = "System";
+            treeNode1.Name = "AudioDevices";
+            treeNode1.Text = "Audio Devices";
+            treeNode2.Name = "General";
+            treeNode2.Text = "General";
+            treeNode3.Name = "ESFTree";
+            treeNode3.Text = "ESF Tree";
+            treeNode4.Name = "HashTables";
+            treeNode4.Text = "Hash Tables";
+            treeNode5.Name = "StreamFile";
+            treeNode5.Text = "Stream File";
+            treeNode6.Name = "SoX";
+            treeNode6.Text = "SoX (Sound eXchange)";
+            treeNode7.Name = "System";
+            treeNode7.Text = "System";
             this.TreeViewPreferences.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
             treeNode2,
             treeNode3,
             treeNode4,
             treeNode5,
-            treeNode6});
+            treeNode6,
+            treeNode7});
             this.TreeViewPreferences.Size = new System.Drawing.Size(177, 424);
             this.TreeViewPreferences.TabIndex = 0;
             this.TreeViewPreferences.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeViewPreferences_AfterSelect);

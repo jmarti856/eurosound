@@ -1,7 +1,9 @@
-﻿using System;
+﻿using EuroSound_Application.ApplicationRegistryFunctions;
+using Microsoft.Win32;
+using System;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.CustomControls.FlagsForm
 {
     public partial class EuroSound_FlagsForm : Form
     {
@@ -9,14 +11,16 @@ namespace EuroSound_Application
         private CheckBox[] AllCheckboxes;
         private TextBox[] AllTextboxes;
         private int Flags, FlagsToEnable;
-        private string[] Labels;
+        private string KeyName;
+        private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
+        public int CheckedFlags { get; set; }
 
         //--Properties--
-        public EuroSound_FlagsForm(int CheckedFlags, string[] FlagsLabel, int EnabledFlags)
+        public EuroSound_FlagsForm(int CheckedFlags, string SubKeyName, int EnabledFlags)
         {
             InitializeComponent();
             Flags = CheckedFlags;
-            Labels = FlagsLabel;
+            KeyName = SubKeyName;
             FlagsToEnable = EnabledFlags;
 
             AllCheckboxes = new CheckBox[]
@@ -34,7 +38,6 @@ namespace EuroSound_Application
             };
         }
 
-        public int CheckedFlags { get; set; }
         internal int GetFlags()
         {
             int flags = 0;
@@ -69,23 +72,20 @@ namespace EuroSound_Application
 
         private void EuroSound_FlagsForm_Load(object sender, EventArgs e)
         {
-            for (int i = 0; i < AllCheckboxes.Length; i++)
+            using (RegistryKey StringFlags = WRegFunctions.ReturnRegistryKey(KeyName))
             {
-                bool fChecked = Convert.ToBoolean((Flags >> i) & 1);
-                AllCheckboxes[i].Checked = fChecked;
-            }
-
-            for (int i = 0; i < AllTextboxes.Length; i++)
-            {
-                if (i < Labels.Length)
+                for (int i = 0; i < AllCheckboxes.Length; i++)
                 {
-                    AllTextboxes[i].Text = Labels[i];
+                    bool fChecked = Convert.ToBoolean((Flags >> i) & 1);
+                    AllCheckboxes[i].Checked = fChecked;
                 }
-            }
 
-            for (int i = 0; i < FlagsToEnable; i++)
-            {
-                AllCheckboxes[i].Enabled = true;
+                for (int i = 0; i < FlagsToEnable; i++)
+                {
+                    AllTextboxes[i].Text = (string)StringFlags.GetValue("Flag" + (i + 1), "<Unnamed>");
+                    AllCheckboxes[i].Enabled = true;
+                }
+                StringFlags.Close();
             }
 
             AllTextboxes = null;

@@ -1,13 +1,17 @@
-﻿using CustomControls;
+﻿using EuroSound_Application.AboutForm;
 using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationPreferencesForms;
 using EuroSound_Application.ApplicationRegistryFunctions;
+using EuroSound_Application.AudioConverter;
+using EuroSound_Application.CustomControls.NewProjectForm;
 using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.SFXData;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
+using Microsoft.Win32;
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -21,6 +25,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         private int FormID = 0;
         private string ArgumentFromSplash;
+        private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
 
         public Frm_EuroSound_Main(string ArgumentToLoad)
         {
@@ -100,6 +105,28 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void Frm_EuroSound_Main_Load(object sender, EventArgs e)
         {
+            using (RegistryKey WindowStateConfig = WRegFunctions.ReturnRegistryKey("WindowState"))
+            {
+                bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("MainFrame_IsIconic", 0));
+                bool IsMaximized = Convert.ToBoolean(WindowStateConfig.GetValue("MainFrame_IsMaximized", 0));
+                if (IsIconic)
+                {
+                    WindowState = FormWindowState.Minimized;
+                }
+                else if (IsMaximized)
+                {
+                    WindowState = FormWindowState.Maximized;
+                }
+                else
+                {
+                    Location = new Point(Convert.ToInt32(WindowStateConfig.GetValue("MainFrame_PositionX", 0)), Convert.ToInt32(WindowStateConfig.GetValue("MainFrame_PositionY", 0)));
+                }
+                Width = Convert.ToInt32(WindowStateConfig.GetValue("MainFrame_Width", 1119));
+                Height = Convert.ToInt32(WindowStateConfig.GetValue("MainFrame_Height", 617));
+
+                WindowStateConfig.Close();
+            }
+
             //GetControl
             GenericFunctions.ParentFormStatusBar = MainStatusBar;
 
@@ -149,6 +176,8 @@ namespace EuroSound_Application
 
         private void Frm_EuroSound_Main_FormClosed(object sender, FormClosedEventArgs e)
         {
+            WRegFunctions.SaveWindowState("MainFrame", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
+
             ClearTemporalFiles();
         }
 
@@ -184,7 +213,6 @@ namespace EuroSound_Application
             using (EuroSound_NewFileProject CreateNewFile = new EuroSound_NewFileProject(GenericFunctions.ResourcesManager.GetString("InputBoxNewProject")))
             {
                 CreateNewFile.Owner = this;
-                CreateNewFile.ShowInTaskbar = false;
                 CreateNewFile.ShowDialog();
 
                 if (CreateNewFile.DialogResult == DialogResult.OK)
@@ -274,6 +302,16 @@ namespace EuroSound_Application
             {
                 MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_NoTemporalFilesStored"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private void MainMenuTools_AudioConverter_Click(object sender, EventArgs e)
+        {
+            Frm_AudioConverter ES_AudioConverter = new Frm_AudioConverter
+            {
+                Owner = this,
+                MdiParent = this
+            };
+            ES_AudioConverter.Show();
         }
 
         //*===============================================================================================

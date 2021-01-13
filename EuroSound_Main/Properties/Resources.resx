@@ -225,6 +225,12 @@
   <data name="GenericHashtablesNotCorrect" xml:space="preserve">
     <value>The hashtable paths are not correct, please fix them first before continue.</value>
   </data>
+  <data name="GenericUploadedFileWrongExt" xml:space="preserve">
+    <value>The selected file is not valid, please choose a file with a valid extension</value>
+  </data>
+  <data name="Gen_DirectoryNotExists" xml:space="preserve">
+    <value>The specified directory does not exists.</value>
+  </data>
   <data name="Gen_ErrorReading_FileIncorrect" xml:space="preserve">
     <value>Error reading the file, the file format is corrupt or incorrect</value>
   </data>
@@ -233,6 +239,9 @@
   </data>
   <data name="Gen_Error_NameIsEmpty" xml:space="preserve">
     <value>The name can't be empty</value>
+  </data>
+  <data name="Gen_FileNotExists" xml:space="preserve">
+    <value>The specified file does not exists.</value>
   </data>
   <data name="Gen_NoTemporalFilesStored" xml:space="preserve">
     <value>There are no temporal files to clear</value>
@@ -362,6 +371,9 @@
   </data>
   <data name="StatusBar_Status_RadingSoundHashcodes" xml:space="preserve">
     <value>Reading hashcodes sound file</value>
+  </data>
+  <data name="StatusBar_Status_ReadingDirectory" xml:space="preserve">
+    <value>Reading Directory</value>
   </data>
   <data name="StatusBar_Status_ReadingYamlFile" xml:space="preserve">
     <value>Reading YML File</value>

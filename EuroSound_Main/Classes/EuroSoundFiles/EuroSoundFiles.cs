@@ -1,6 +1,10 @@
-﻿using EuroSound_Application.SoundBanksEditor;
+﻿using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.EuroSoundSoundBanksFilesFunctions;
+using EuroSound_Application.EuroSoundStreamFilesFunctions;
+using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
 using EuroSound_Application.TreeViewLibraryFunctions;
+using EuroSound_Application.TreeViewSorter;
 using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;

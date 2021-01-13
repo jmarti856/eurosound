@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.IO;
+using System.Windows.Forms;
 
 namespace EuroSound_Application.ApplicationPreferencesForms
 {
@@ -24,7 +25,14 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
             if (!string.IsNullOrEmpty(HeaderSoundPath))
             {
-                Textbox_HT_Sound.Text = HeaderSoundPath;
+                if (Path.GetExtension(HeaderSoundPath).ToLower().Equals(".h"))
+                {
+                    Textbox_HT_Sound.Text = HeaderSoundPath;
+                }
+                else
+                {
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("GenericUploadedFileWrongExt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 
@@ -34,7 +42,14 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
             if (!string.IsNullOrEmpty(HeaderSoundData))
             {
-                Textbox_HT_Sound_Data.Text = HeaderSoundData;
+                if (Path.GetExtension(HeaderSoundData).ToLower().Equals(".h"))
+                {
+                    Textbox_HT_Sound_Data.Text = HeaderSoundData;
+                }
+                else
+                {
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("GenericUploadedFileWrongExt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 
@@ -44,7 +59,14 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
             if (!string.IsNullOrEmpty(HeaderMusicFile))
             {
-                Textbox_HT_Music.Text = HeaderMusicFile;
+                if (Path.GetExtension(HeaderMusicFile).ToLower().Equals(".h"))
+                {
+                    Textbox_HT_Music.Text = HeaderMusicFile;
+                }
+                else
+                {
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("GenericUploadedFileWrongExt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 

@@ -7,7 +7,7 @@ using System.Resources;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.SplashForm
 {
     public partial class Frm_EuroSound_Splash : Form
     {
@@ -56,7 +56,7 @@ namespace EuroSound_Application
             GlobalPreferences.ShowRootLines = Convert.ToBoolean(int.Parse(TreeViewPreferences[2]));
             GlobalPreferences.TreeViewIndent = int.Parse(TreeViewPreferences[3]);
 
-            await Task.Delay(rnd.Next(1, 5));
+            await Task.Delay(rnd.Next(1, 50));
             string[] OutputPaths = WRegistryFunctions.LoadGeneralPreferences();
             GlobalPreferences.SFXOutputPath = OutputPaths[0];
             GlobalPreferences.MusicOutputPath = OutputPaths[1];
@@ -100,12 +100,27 @@ namespace EuroSound_Application
                     MessageBox.Show(GenericFunctions.ResourcesManager.GetString("SoXInvalidPath"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            await Task.Delay(rnd.Next(20, 40));
+            await Task.Delay(rnd.Next(20, 50));
             //-----------------------------------------[System config]----------------------------------------
             Label_Status.Text = "Loading System Config, please wait...";
             GlobalPreferences.UseSystemTray = Convert.ToBoolean(WRegistryFunctions.SetSystemConfig());
 
-            await Task.Delay(rnd.Next(5, 20));
+            await Task.Delay(rnd.Next(5, 80));
+
+            //-----------------------------------------[Create Flags]---------------------------------------
+            Label_Status.Text = "Loading Controller Flags, please wait...";
+            WRegistryFunctions.SaveSFXFlagsIfNecessary();
+            WRegistryFunctions.SaveAudioFlagsIfNecessary();
+
+            await Task.Delay(rnd.Next(40, 120));
+
+            //-----------------------------------------[Load AudioDevice]---------------------------------------
+            Label_Status.Text = "Loading Audio Devices Preferences, please wait...";
+            WRegistryFunctions.SetDefaultAudioDevice();
+
+            await Task.Delay(rnd.Next(50, 90));
+
+
             //-----------------------------------------[Open Form]----------------------------------------
             DialogResult = DialogResult.OK;
         }

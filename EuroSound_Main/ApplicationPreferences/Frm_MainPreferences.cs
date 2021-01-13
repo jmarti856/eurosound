@@ -36,6 +36,9 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         //Frm_System
         internal bool UseSystemTrayTEMPORAL;
 
+        //Frm_OutputDevicecs
+        internal int DefaultAudioDeviceTEMPORAL;
+
         //*===============================================================================================
         //* GLOBAL VARS
         //*===============================================================================================
@@ -45,7 +48,9 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         private Frm_StreamFile ExternalFile;
         private Frm_SoxPrefs SoXPreferences;
         private Frm_System SystemPreferences;
+        private Frm_OutputDevicecs AudioDevices;
         private bool SystemFormOpened = false;
+        private bool AudioDevicesOpened = false;
 
         public Frm_MainPreferences()
         {
@@ -150,6 +155,15 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
                 //SaveConfig in Registry
                 WRegistryFunctions.SaveSystemConfig();
+            }
+
+            //-----------------[Frm_OutputDevicecs]-----------------
+            if (AudioDevicesOpened)
+            {
+                GlobalPreferences.DefaultAudioDevice = DefaultAudioDeviceTEMPORAL;
+
+                //SaveConfig in Registry
+                WRegistryFunctions.SaveDefaultAudioDevice();
             }
             Close();
         }
@@ -263,6 +277,24 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                     SystemPreferences.Dock = DockStyle.Fill;
                     SystemPreferences.Show();
                     SystemFormOpened = true;
+                }
+            }
+            else if (string.Equals(e.Node.Name, "AudioDevices"))
+            {
+                if (!Panel_SecondaryForms.Controls.Contains(AudioDevices))
+                {
+                    RemoveAllFormsInsidePanel(Panel_SecondaryForms);
+
+                    AudioDevices = new Frm_OutputDevicecs
+                    {
+                        TopLevel = false,
+                        AutoScroll = true,
+                        Tag = Tag
+                    };
+                    Panel_SecondaryForms.Controls.Add(AudioDevices);
+                    AudioDevices.Dock = DockStyle.Fill;
+                    AudioDevices.Show();
+                    AudioDevicesOpened = true;
                 }
             }
         }

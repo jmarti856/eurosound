@@ -1,6 +1,6 @@
 ﻿using NAudio.Wave;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.AudioMixingFunctions
 {
     public class LoopStream : WaveStream
     {

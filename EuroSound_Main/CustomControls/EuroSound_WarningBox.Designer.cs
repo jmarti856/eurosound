@@ -1,4 +1,4 @@
-﻿namespace EuroSound_Application
+﻿namespace EuroSound_Application.CustomControls.WarningsForm
 {
     partial class EuroSound_WarningBox
     {
@@ -98,6 +98,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EuroSound_WarningBox";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "EuroSound_WarningBox";
             this.ResumeLayout(false);

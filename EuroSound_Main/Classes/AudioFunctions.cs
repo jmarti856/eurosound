@@ -1,4 +1,6 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.AudioMixingFunctions;
+using EuroSound_Application.CustomControls.WavesViewerForm;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
 using NAudio.Wave;
@@ -22,8 +24,8 @@ namespace EuroSound_Application.AudioFunctionsLibrary
                     AudioSample = new MemoryStream(PCMData);
                     IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency + Pitch, Bits, Channels));
                     VolumeSampleProvider volumeProvider = new VolumeSampleProvider(provider.ToSampleProvider());
+                    AudioPlayer.DeviceNumber = GlobalPreferences.DefaultAudioDevice;
                     AudioPlayer.Volume = 1;
-
                     //Pan is only for mono audio
                     if (Channels == 1)
                     {
@@ -54,6 +56,7 @@ namespace EuroSound_Application.AudioFunctionsLibrary
                     {
                         Pan = (Pan / 100)
                     };
+                    AudioPlayer.DeviceNumber = GlobalPreferences.DefaultAudioDevice;
                     AudioPlayer.Volume = 1;
                     AudioPlayer.Init(panProvider);
                     AudioPlayer.Play();
@@ -182,10 +185,11 @@ namespace EuroSound_Application.AudioFunctionsLibrary
 
         internal void CreateWavFile(int Frequency, int BitsPerChannel, int NumberOfChannels, byte[] SampleData, string FilePath)
         {
-            MemoryStream AudioSample = new MemoryStream(SampleData);
-            IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency, BitsPerChannel, NumberOfChannels));
-
-            WriteWavFile(FilePath, provider);
+            using (MemoryStream AudioSample = new MemoryStream(SampleData))
+            {
+                IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency, BitsPerChannel, NumberOfChannels));
+                WriteWavFile(FilePath, provider);
+            }
         }
 
         private void WriteWavFile(string SavePath, IWaveProvider sourceProvider)

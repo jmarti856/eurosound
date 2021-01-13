@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.AboutForm
 {
     internal partial class Frm_AboutEuroSound : Form
     {

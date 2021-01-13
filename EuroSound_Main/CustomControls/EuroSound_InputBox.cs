@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.CustomControls.InputBoxForm
 {
     public partial class EuroSound_InputBox : Form
     {
@@ -9,7 +9,6 @@ namespace EuroSound_Application
         {
             InitializeComponent();
             Label_Text.Text = LabelText;
-            ShowInTaskbar = false;
             Text = Title;
         }
 

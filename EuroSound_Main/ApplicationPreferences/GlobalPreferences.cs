@@ -34,6 +34,9 @@
         //Frm_System
         internal static bool UseSystemTray;
 
+        //Frm_OutputDevicecs
+        internal static int DefaultAudioDevice;
+
         //*===============================================================================================
         //* OTHER TEMPORAL VARIABLES
         //*===============================================================================================

@@ -1,5 +1,5 @@
 ﻿
-namespace CustomControls
+namespace EuroSound_Application.CustomControls.NewProjectForm
 {
     partial class EuroSound_NewFileProject
     {
@@ -138,6 +138,7 @@ namespace CustomControls
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EuroSound_NewFileProject";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "EuroSound_NewFileProject";
             this.Load += new System.EventHandler(this.EuroSound_NewFileProject_Load);

@@ -1,4 +1,7 @@
-﻿using Microsoft.Win32;
+﻿using EuroSound_Application.BashMode;
+using EuroSound_Application.CustomControls.ProgramInstancesForm;
+using EuroSound_Application.SplashForm;
+using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.IO;

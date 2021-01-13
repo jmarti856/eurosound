@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.ApplicationPreferencesForms
@@ -24,7 +25,14 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
             if (!string.IsNullOrEmpty(SoXPath))
             {
-                Textbox_SoXPath.Text = SoXPath;
+                if (Path.GetExtension(SoXPath).ToLower().Equals(".exe"))
+                {
+                    Textbox_SoXPath.Text = SoXPath;
+                }
+                else
+                {
+                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("GenericUploadedFileWrongExt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 

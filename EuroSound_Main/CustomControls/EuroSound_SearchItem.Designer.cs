@@ -1,5 +1,7 @@
 ﻿
-namespace EuroSound_Application
+using EuroSound_Application.CustomControls.ListViewColumnSorting;
+
+namespace EuroSound_Application.CustomControls.SearcherForm
 {
     partial class EuroSound_SearchItem
     {
@@ -57,7 +59,7 @@ namespace EuroSound_Application
             this.RadioButton_WholeWord = new System.Windows.Forms.RadioButton();
             this.Button_NewSearch = new System.Windows.Forms.Button();
             this.BgWorker_Searches = new System.ComponentModel.BackgroundWorker();
-            this.ListViewResults = new ListViewExtendedMethods.ListView_ColumnSortingClick();
+            this.ListViewResults = new ListView_ColumnSortingClick();
             this.Col_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Color = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Type = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -333,6 +335,7 @@ namespace EuroSound_Application
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Menu = this.MainMenu;
             this.Name = "EuroSound_SearchItem";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Search";
             this.Load += new System.EventHandler(this.EuroSound_SearchItem_Load);
@@ -370,7 +373,7 @@ namespace EuroSound_Application
         private System.Windows.Forms.RadioButton RadioButton_MatchCase;
         private System.Windows.Forms.RadioButton RadioButton_WholeWord;
         private System.Windows.Forms.Button Button_NewSearch;
-        private ListViewExtendedMethods.ListView_ColumnSortingClick ListViewResults;
+        private ListView_ColumnSortingClick ListViewResults;
         private System.Windows.Forms.ColumnHeader Col_Name;
         private System.Windows.Forms.ColumnHeader Col_Color;
         private System.Windows.Forms.ColumnHeader Col_Type;

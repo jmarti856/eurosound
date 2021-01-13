@@ -146,7 +146,7 @@ namespace EuroSound_Application
                                             }
                                         }
                                     }
-                                    catch(FormatException)
+                                    catch (FormatException)
                                     {
                                         MessageBox.Show(string.Join(" ", new string[] { "A hashcode with an invalid hex format has been found, the label is:", HexLabel }), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     }

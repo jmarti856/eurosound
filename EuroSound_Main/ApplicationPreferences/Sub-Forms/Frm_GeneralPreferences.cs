@@ -24,7 +24,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
         private void Button_ChooseSFX_OutputPath_Click(object sender, EventArgs e)
         {
-            string SelectedPath = OpenFolderBrowser();
+            string SelectedPath = GenericFunctions.OpenFolderBrowser();
             if (!string.IsNullOrEmpty(SelectedPath))
             {
                 Textbox_SFX_OutputPath.Text = SelectedPath;
@@ -33,7 +33,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
         private void Button_MusicOutputPath_Click(object sender, EventArgs e)
         {
-            string SelectedPath = OpenFolderBrowser();
+            string SelectedPath = GenericFunctions.OpenFolderBrowser();
             if (!string.IsNullOrEmpty(SelectedPath))
             {
                 Textbox_MusicOutputPath.Text = SelectedPath;
@@ -64,21 +64,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             ((Frm_MainPreferences)OpenForm).MusicOutputPathTEMPORAL = Textbox_MusicOutputPath.Text;
             ((Frm_MainPreferences)OpenForm).ColorWavesControlTEMPORAL = Button_WavesColorControl.BackColor.ToArgb();
             ((Frm_MainPreferences)OpenForm).BackColorWavesControlTEMPORAL = Button_WavesBackColor.BackColor.ToArgb();
-        }
-
-        private string OpenFolderBrowser()
-        {
-            string SelectedPath = string.Empty;
-
-            using (FolderBrowserDialog OpenFolder = new FolderBrowserDialog())
-            {
-                if (OpenFolder.ShowDialog() == DialogResult.OK)
-                {
-                    SelectedPath = OpenFolder.SelectedPath;
-                }
-            }
-
-            return SelectedPath;
         }
     }
 }

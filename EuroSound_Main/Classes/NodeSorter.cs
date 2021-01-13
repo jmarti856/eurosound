@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.TreeViewSorter
 {
     // Create a node sorter that implements the IComparer interface.
     public class NodeSorter : IComparer
