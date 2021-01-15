@@ -92,7 +92,7 @@ namespace EuroSound_Application.BashMode
                                     //*===============================================================================================
                                     //* STEP 2: DISCARD AUDIO DATA THAT SHOULD HAVE BEEN PURGED (40%)
                                     //*===============================================================================================
-                                    List<string> UsedAudios = EXSoundbanksFunctions.GetUsedAudios(FinalSoundsDict, true);
+                                    List<string> UsedAudios = EXSoundbanksFunctions.GetAudiosToExport(FinalSoundsDict);
 
                                     //Add data
                                     FinalAudioDataDict = SFXGenerator.GetFinalAudioDictionary(UsedAudios, AudiosList, null);

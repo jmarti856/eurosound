@@ -31,7 +31,7 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EuroSound_NodesToFolder));
             this.label_TypeOfSounds = new System.Windows.Forms.Label();
-            this.Combobox_SoudsType = new System.Windows.Forms.ComboBox();
+            this.Combobox_DataType = new System.Windows.Forms.ComboBox();
             this.ListBox_Items = new System.Windows.Forms.ListBox();
             this.Label_Folder = new System.Windows.Forms.Label();
             this.Combobox_AvailableFolders = new System.Windows.Forms.ComboBox();
@@ -44,23 +44,23 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
             this.label_TypeOfSounds.AutoSize = true;
             this.label_TypeOfSounds.Location = new System.Drawing.Point(12, 15);
             this.label_TypeOfSounds.Name = "label_TypeOfSounds";
-            this.label_TypeOfSounds.Size = new System.Drawing.Size(85, 13);
+            this.label_TypeOfSounds.Size = new System.Drawing.Size(72, 13);
             this.label_TypeOfSounds.TabIndex = 0;
-            this.label_TypeOfSounds.Text = "Type of Sounds:";
+            this.label_TypeOfSounds.Text = "Type of Data:";
             // 
-            // Combobox_SoudsType
+            // Combobox_DataType
             // 
-            this.Combobox_SoudsType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Combobox_SoudsType.FormattingEnabled = true;
-            this.Combobox_SoudsType.Items.AddRange(new object[] {
+            this.Combobox_DataType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Combobox_DataType.FormattingEnabled = true;
+            this.Combobox_DataType.Items.AddRange(new object[] {
             "AudioData",
             "Sounds",
             "StreamedSounds"});
-            this.Combobox_SoudsType.Location = new System.Drawing.Point(103, 12);
-            this.Combobox_SoudsType.Name = "Combobox_SoudsType";
-            this.Combobox_SoudsType.Size = new System.Drawing.Size(252, 21);
-            this.Combobox_SoudsType.TabIndex = 1;
-            this.Combobox_SoudsType.SelectedIndexChanged += new System.EventHandler(this.Combobox_SoudsType_SelectedIndexChanged);
+            this.Combobox_DataType.Location = new System.Drawing.Point(90, 12);
+            this.Combobox_DataType.Name = "Combobox_DataType";
+            this.Combobox_DataType.Size = new System.Drawing.Size(265, 21);
+            this.Combobox_DataType.TabIndex = 1;
+            this.Combobox_DataType.SelectedIndexChanged += new System.EventHandler(this.Combobox_DataType_SelectedIndexChanged);
             // 
             // ListBox_Items
             // 
@@ -79,19 +79,19 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
             // Label_Folder
             // 
             this.Label_Folder.AutoSize = true;
-            this.Label_Folder.Location = new System.Drawing.Point(12, 42);
+            this.Label_Folder.Location = new System.Drawing.Point(20, 42);
             this.Label_Folder.Name = "Label_Folder";
-            this.Label_Folder.Size = new System.Drawing.Size(85, 13);
+            this.Label_Folder.Size = new System.Drawing.Size(64, 13);
             this.Label_Folder.TabIndex = 3;
-            this.Label_Folder.Text = "Move To Folder:";
+            this.Label_Folder.Text = "Dest Folder:";
             // 
             // Combobox_AvailableFolders
             // 
             this.Combobox_AvailableFolders.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Combobox_AvailableFolders.FormattingEnabled = true;
-            this.Combobox_AvailableFolders.Location = new System.Drawing.Point(103, 39);
+            this.Combobox_AvailableFolders.Location = new System.Drawing.Point(90, 39);
             this.Combobox_AvailableFolders.Name = "Combobox_AvailableFolders";
-            this.Combobox_AvailableFolders.Size = new System.Drawing.Size(252, 21);
+            this.Combobox_AvailableFolders.Size = new System.Drawing.Size(265, 21);
             this.Combobox_AvailableFolders.TabIndex = 4;
             // 
             // Button_OK
@@ -130,7 +130,7 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
             this.Controls.Add(this.Combobox_AvailableFolders);
             this.Controls.Add(this.Label_Folder);
             this.Controls.Add(this.ListBox_Items);
-            this.Controls.Add(this.Combobox_SoudsType);
+            this.Controls.Add(this.Combobox_DataType);
             this.Controls.Add(this.label_TypeOfSounds);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -140,6 +140,7 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Sounds to Folder";
+            this.Load += new System.EventHandler(this.EuroSound_NodesToFolder_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -148,7 +149,7 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
         #endregion
 
         private System.Windows.Forms.Label label_TypeOfSounds;
-        private System.Windows.Forms.ComboBox Combobox_SoudsType;
+        private System.Windows.Forms.ComboBox Combobox_DataType;
         private System.Windows.Forms.ListBox ListBox_Items;
         private System.Windows.Forms.Label Label_Folder;
         private System.Windows.Forms.ComboBox Combobox_AvailableFolders;

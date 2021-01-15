@@ -37,7 +37,7 @@ namespace EuroSound_Application.CustomControls.WarningsList
             this.Button_Copy = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.ListViewImages = new System.Windows.Forms.ImageList(this.components);
-            this.ListView_Reports = new ListView_ColumnSortingClick();
+            this.ListView_Reports = new EuroSound_Application.CustomControls.ListViewColumnSorting.ListView_ColumnSortingClick();
             this.Col_Level = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Error = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
@@ -45,7 +45,7 @@ namespace EuroSound_Application.CustomControls.WarningsList
             // Button_OK
             // 
             this.Button_OK.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.Button_OK.Location = new System.Drawing.Point(306, 378);
+            this.Button_OK.Location = new System.Drawing.Point(324, 409);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
             this.Button_OK.TabIndex = 2;
@@ -55,7 +55,8 @@ namespace EuroSound_Application.CustomControls.WarningsList
             // 
             // Button_Copy
             // 
-            this.Button_Copy.Location = new System.Drawing.Point(225, 378);
+            this.Button_Copy.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.Button_Copy.Location = new System.Drawing.Point(243, 409);
             this.Button_Copy.Name = "Button_Copy";
             this.Button_Copy.Size = new System.Drawing.Size(75, 23);
             this.Button_Copy.TabIndex = 1;
@@ -65,8 +66,9 @@ namespace EuroSound_Application.CustomControls.WarningsList
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 383);
+            this.label1.Location = new System.Drawing.Point(12, 409);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(160, 13);
             this.label1.TabIndex = 4;
@@ -93,7 +95,7 @@ namespace EuroSound_Application.CustomControls.WarningsList
             this.ListView_Reports.Location = new System.Drawing.Point(12, 12);
             this.ListView_Reports.MultiSelect = false;
             this.ListView_Reports.Name = "ListView_Reports";
-            this.ListView_Reports.Size = new System.Drawing.Size(590, 360);
+            this.ListView_Reports.Size = new System.Drawing.Size(627, 391);
             this.ListView_Reports.SmallImageList = this.ListViewImages;
             this.ListView_Reports.TabIndex = 0;
             this.ListView_Reports.UseCompatibleStateImageBehavior = false;
@@ -102,18 +104,19 @@ namespace EuroSound_Application.CustomControls.WarningsList
             // Col_Level
             // 
             this.Col_Level.Text = "Level";
+            this.Col_Level.Width = 95;
             // 
             // Col_Error
             // 
             this.Col_Error.Text = "Error";
-            this.Col_Error.Width = 559;
+            this.Col_Error.Width = 520;
             // 
             // EuroSound_ErrorsAndWarningsList
             // 
             this.AcceptButton = this.Button_OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(614, 413);
+            this.ClientSize = new System.Drawing.Size(651, 444);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.ListView_Reports);
             this.Controls.Add(this.Button_Copy);

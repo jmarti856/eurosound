@@ -66,7 +66,7 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         private void Button_ReplaceAudio_Click(object sender, EventArgs e)
         {
-            string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0);
+            string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0, true);
             if (!string.IsNullOrEmpty(AudioPath))
             {
                 if (GenericFunctions.AudioIsValid(AudioPath, 1, 22050))

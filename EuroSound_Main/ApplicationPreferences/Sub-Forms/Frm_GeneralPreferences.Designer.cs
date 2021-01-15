@@ -181,7 +181,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Button_WavesBackColor.FlatAppearance.BorderSize = 2;
             this.Button_WavesBackColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Button_WavesBackColor.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.Button_WavesBackColor.Location = new System.Drawing.Point(239, 17);
+            this.Button_WavesBackColor.Location = new System.Drawing.Point(306, 32);
             this.Button_WavesBackColor.Name = "Button_WavesBackColor";
             this.Button_WavesBackColor.Size = new System.Drawing.Size(50, 29);
             this.Button_WavesBackColor.TabIndex = 3;
@@ -191,7 +191,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             // Label_ColorBackground
             // 
             this.Label_ColorBackground.AutoSize = true;
-            this.Label_ColorBackground.Location = new System.Drawing.Point(139, 25);
+            this.Label_ColorBackground.Location = new System.Drawing.Point(206, 40);
             this.Label_ColorBackground.Name = "Label_ColorBackground";
             this.Label_ColorBackground.Size = new System.Drawing.Size(94, 13);
             this.Label_ColorBackground.TabIndex = 2;
@@ -202,7 +202,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Button_WavesColorControl.FlatAppearance.BorderSize = 2;
             this.Button_WavesColorControl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Button_WavesColorControl.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.Button_WavesColorControl.Location = new System.Drawing.Point(83, 17);
+            this.Button_WavesColorControl.Location = new System.Drawing.Point(150, 32);
             this.Button_WavesColorControl.Name = "Button_WavesColorControl";
             this.Button_WavesColorControl.Size = new System.Drawing.Size(50, 29);
             this.Button_WavesColorControl.TabIndex = 1;
@@ -212,7 +212,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             // Label_ColorWaves
             // 
             this.Label_ColorWaves.AutoSize = true;
-            this.Label_ColorWaves.Location = new System.Drawing.Point(6, 25);
+            this.Label_ColorWaves.Location = new System.Drawing.Point(73, 40);
             this.Label_ColorWaves.Name = "Label_ColorWaves";
             this.Label_ColorWaves.Size = new System.Drawing.Size(70, 13);
             this.Label_ColorWaves.TabIndex = 0;

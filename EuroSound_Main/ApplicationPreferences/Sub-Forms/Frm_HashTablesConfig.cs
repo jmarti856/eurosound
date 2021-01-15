@@ -21,7 +21,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
         private void Button_HT_Sound_Click(object sender, System.EventArgs e)
         {
-            string HeaderSoundPath = GenericFunctions.OpenFileBrowser("Header Files (*.h)|*.h", 0);
+            string HeaderSoundPath = GenericFunctions.OpenFileBrowser("Header Files (*.h)|*.h", 0, true);
 
             if (!string.IsNullOrEmpty(HeaderSoundPath))
             {
@@ -38,7 +38,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
         private void Button_HT_SoundData_Click(object sender, System.EventArgs e)
         {
-            string HeaderSoundData = GenericFunctions.OpenFileBrowser("Header Files (*.h)|*.h", 0);
+            string HeaderSoundData = GenericFunctions.OpenFileBrowser("Header Files (*.h)|*.h", 0, true);
 
             if (!string.IsNullOrEmpty(HeaderSoundData))
             {
@@ -55,7 +55,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
         private void Button_HT_Music_Click(object sender, System.EventArgs e)
         {
-            string HeaderMusicFile = GenericFunctions.OpenFileBrowser("Header Files (*.h)|*.h", 0);
+            string HeaderMusicFile = GenericFunctions.OpenFileBrowser("Header Files (*.h)|*.h", 0, true);
 
             if (!string.IsNullOrEmpty(HeaderMusicFile))
             {

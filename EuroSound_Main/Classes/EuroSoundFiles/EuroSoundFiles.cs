@@ -61,8 +61,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
-
-
         }
 
         internal string SaveSoundBanksDocument(TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
@@ -184,7 +182,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
         {
             if (Node.Tag.Equals("Sound"))
             {
-                EXSound sound = EXSoundbanksFunctions.GetSoundByName(uint.Parse(Node.Name), SoundsList);
+                EXSound sound = EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(Node.Name), SoundsList);
                 if (sound != null)
                 {
                     if (!sound.OutputThisSound)

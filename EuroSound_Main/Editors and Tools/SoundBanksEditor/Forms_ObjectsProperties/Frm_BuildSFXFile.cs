@@ -1,6 +1,5 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.CurrentProjectFunctions;
-using EuroSound_Application.CustomControls.WarningsList;
 using EuroSound_Application.GenerateSoundBankSFX;
 using Syroot.BinaryData;
 using System;
@@ -76,7 +75,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
 
                 //Update Label
                 SetLabelText(Label_CurrentTask, "Getting Audio Data To export");
-                List<string> UsedAudios = EXSoundbanksFunctions.GetUsedAudios(FinalSoundsDict, true);
+                List<string> UsedAudios = EXSoundbanksFunctions.GetAudiosToExport(FinalSoundsDict);
 
                 //Add data
                 FinalAudioDataDict = SFXCreator.GetFinalAudioDictionary(UsedAudios, ((Frm_Soundbanks_Main)ParentForm).AudioDataDict, ProgressBar_CurrentTask);
@@ -196,12 +195,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
             if (Reports.Count > 0)
             {
                 //Show Errors
-                EuroSound_ErrorsAndWarningsList ImportResults = new EuroSound_ErrorsAndWarningsList(Reports)
-                {
-                    Text = FileName + ".SFX Output Errors"
-                };
-                ImportResults.ShowDialog();
-                ImportResults.Dispose();
+                GenericFunctions.ShowErrorsAndWarningsList(Reports, FileName + ".SFX Output Errors");
             }
 
             //Close Form

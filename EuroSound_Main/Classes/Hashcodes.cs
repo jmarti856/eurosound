@@ -156,6 +156,7 @@ namespace EuroSound_Application
                     }
                 }
             }
+            SB_Defines.TrimExcess();
         }
         #endregion SFX Defines && SB Defines dictionary
 
@@ -204,6 +205,7 @@ namespace EuroSound_Application
                     }
                 }
             }
+            SFX_Data.TrimExcess();
         }
 
         private static float StringFloatToDouble(string Number)

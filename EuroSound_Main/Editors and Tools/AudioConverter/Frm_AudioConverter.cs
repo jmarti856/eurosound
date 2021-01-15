@@ -1,9 +1,11 @@
-﻿using EuroSound_Application.ApplicationRegistryFunctions;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.FunctionsListView;
 using Microsoft.Win32;
+using SoxSharp;
 using System;
+using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -19,7 +21,8 @@ namespace EuroSound_Application.AudioConverter
         //*===============================================================================================
         private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
         private ListViewFunctions LVFunctions = new ListViewFunctions();
-
+        internal List<string> Reports;
+        private string[] FilesCollection;
         public Frm_AudioConverter()
         {
             InitializeComponent();
@@ -54,6 +57,9 @@ namespace EuroSound_Application.AudioConverter
                 Height = Convert.ToInt32(WindowStateConfig.GetValue("ACView_Height", 779));
 
                 WindowStateConfig.Close();
+
+                Combobox_Rate.SelectedIndex = 0;
+                ComboBox_Bits.SelectedIndex = 0;
             }
         }
 
@@ -68,6 +74,23 @@ namespace EuroSound_Application.AudioConverter
         //*===============================================================================================
         //* Form Controls Events
         //*===============================================================================================
+        private void Button_Start_Click(object sender, EventArgs e)
+        {
+            if (!Background_ConvertAudios.IsBusy)
+            {
+                Reports = new List<string>();
+                ProgressBar_Status.Value = 0;
+                ProgressBar_Status.Maximum = ListView_ItemsToConvert.Items.Count;
+
+                Background_ConvertAudios.RunWorkerAsync();
+            }
+        }
+
+        private void Button_Cancel_Click(object sender, EventArgs e)
+        {
+            Background_ConvertAudios.CancelAsync();
+        }
+
         private void Button_SearchOutputFolder_Click(object sender, EventArgs e)
         {
             string OutputPath;
@@ -90,6 +113,169 @@ namespace EuroSound_Application.AudioConverter
             }
         }
 
+        private void Button_ClearList_Click(object sender, EventArgs e)
+        {
+            if (ListView_ItemsToConvert.Items.Count > 0)
+            {
+                DialogResult QuestionResult = MessageBox.Show("Are you sure you want to clear the list?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (QuestionResult == DialogResult.Yes)
+                {
+                    ListView_ItemsToConvert.Items.Clear();
+                    UpdateListViewCounter();
+                }
+            }
+        }
+
+        //*===============================================================================================
+        //* BACKGROUND WORKER
+        //*===============================================================================================
+        private void Background_ConvertAudios_DoWorkAsync(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            sbyte Bits = 16;
+            uint Frequency = 22050;
+            ushort Channels = 2;
+            string OutputFilePath;
+
+            //Disable List
+            ListView_ItemsToConvert.BeginInvoke((MethodInvoker)delegate
+            {
+                ListView_ItemsToConvert.Enabled = false;
+            });
+
+            //Get Config
+            Combobox_Rate.BeginInvoke((MethodInvoker)delegate
+            {
+                Frequency = Convert.ToUInt32(Combobox_Rate.SelectedItem);
+            });
+
+            ComboBox_Bits.BeginInvoke((MethodInvoker)delegate
+            {
+                Bits = Convert.ToSByte(ComboBox_Bits.SelectedItem);
+            });
+
+            if (RadioButton_Mono.Checked)
+            {
+                Channels = 1;
+            }
+
+            //Check that we have an input path
+            if (ListView_ItemsToConvert.Items.Count == 0)
+            {
+                Reports.Add(string.Join("", new string[] { "2", "There are no files to convert" }));
+            }
+            else
+            {
+                //Check that we have an output path
+                if (string.IsNullOrEmpty(Textbox_OutputFolder.Text))
+                {
+                    Reports.Add(string.Join("", new string[] { "1", "No output path has been selected" }));
+                }
+                else
+                {
+                    CheckDataToExport();
+
+                    foreach (string InputFilePath in FilesCollection)
+                    {
+                        if (Background_ConvertAudios.CancellationPending)
+                        {
+                            e.Cancel = true;
+                            break;
+                        }
+
+                        //Convert audios
+                        OutputFilePath = Path.Combine(Textbox_OutputFolder.Text, Path.GetFileNameWithoutExtension(InputFilePath) + "Converted.wav");
+
+                        if (File.Exists(InputFilePath))
+                        {
+                            if (Directory.Exists(Textbox_OutputFolder.Text))
+                            {
+                                try
+                                {
+                                    //Start to convert data
+                                    if (File.Exists(GlobalPreferences.SoXPath))
+                                    {
+                                        using (Sox sox = new Sox(GlobalPreferences.SoXPath))
+                                        {
+                                            sox.Multithreaded = true;
+                                            sox.OnLogMessage += Sox_OnLogMessage;
+                                            sox.Output.Type = FileType.WAV;
+                                            sox.Output.SampleRate = Frequency;
+                                            sox.Output.Channels = Channels;
+                                            sox.Output.CustomArgs = "-b " + Bits;
+
+                                            InputFile testInput = new InputFile(InputFilePath);
+                                            sox.Process(testInput, OutputFilePath);
+                                        }
+
+                                        //Update Progress bar
+                                        ProgressBar_Status.Invoke((MethodInvoker)delegate
+                                        {
+                                            ProgressBar_Status.Value += 1;
+                                        });
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.ToString(), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                            }
+                            else
+                            {
+                                Reports.Add(string.Join("", new string[] { "0", "The directory: ", Textbox_OutputFolder.Text, " does not exists" }));
+                            }
+                        }
+                        else
+                        {
+                            Reports.Add(string.Join("", new string[] { "0", "The file: ", InputFilePath, " does not exists" }));
+                        }
+                    }
+                }
+            }
+
+            //Enable List
+            ListView_ItemsToConvert.Invoke((MethodInvoker)delegate
+            {
+                ListView_ItemsToConvert.Enabled = true;
+            });
+        }
+
+        private void Background_ConvertAudios_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            if (e.Error != null)
+            {
+                Reports.Add(string.Join("", new string[] { "0", "An error ocurred during the output: ", e.Error.ToString() }));
+            }
+            if (e.Cancelled)
+            {
+                Reports.Add(string.Join("", new string[] { "2", "Operation cancelled by the user" }));
+            }
+
+            if (Reports.Count > 0)
+            {
+                GenericFunctions.ShowErrorsAndWarningsList(Reports, "Results");
+                Reports = null;
+            }
+            ProgressBar_Status.Value = 0;
+        }
+
+        //*===============================================================================================
+        //* Sox Events
+        //*===============================================================================================
+        void Sox_OnLogMessage(object sender, LogMessageEventArgs e)
+        {
+            if (e.LogLevel == LogLevelType.Warning)
+            {
+                Reports.Add(string.Join("", new string[] { "1", e.Message }));
+            }
+            else if (e.LogLevel == LogLevelType.Info)
+            {
+                Reports.Add(string.Join("", new string[] { "2", e.Message }));
+            }
+            else
+            {
+                Reports.Add(string.Join("", new string[] { "0", e.Message }));
+            }
+        }
 
         //*===============================================================================================
         //* Menu Item File
@@ -99,8 +285,17 @@ namespace EuroSound_Application.AudioConverter
             string FolderToOpen = GenericFunctions.OpenFolderBrowser();
             if (Directory.Exists(FolderToOpen))
             {
-                string[] FilesCollection = Directory.GetFiles(FolderToOpen, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".mp3") || s.EndsWith(".wav") || s.EndsWith(".flac") || s.EndsWith(".wma") || s.EndsWith(".aac")).ToArray();
+                FilesCollection = Directory.GetFiles(FolderToOpen, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".mp3") || s.EndsWith(".wav") || s.EndsWith(".flac") || s.EndsWith(".wma") || s.EndsWith(".aac")).ToArray();
                 PrintFilesCollection(FilesCollection);
+            }
+        }
+
+        private void MenuItemFile_ImportFiles_Click(object sender, EventArgs e)
+        {
+            string FileToOpen = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav|MP3 Files (*.mp3)|*.mp3|FLAC Files (*.flac)|.flac|WMA Files (*.wma)|.wma|AAC Files (*.aac)|.aac", 0, true);
+            if (!string.IsNullOrEmpty(FileToOpen))
+            {
+                AddFileToListView(Path.GetFileName(FileToOpen), Path.GetDirectoryName(FileToOpen), Path.GetExtension(FileToOpen), new FileInfo(FileToOpen).Length.ToString() + " bytes");
             }
         }
 
@@ -170,6 +365,19 @@ namespace EuroSound_Application.AudioConverter
         //*===============================================================================================
         //* Functions
         //*===============================================================================================
+        private void CheckDataToExport()
+        {
+            FilesCollection = new string[ListView_ItemsToConvert.Items.Count];
+
+            for (int i = 0; i < FilesCollection.Length; i++)
+            {
+                ListView_ItemsToConvert.Invoke((MethodInvoker)delegate
+                {
+                    FilesCollection[i] = Path.Combine(ListView_ItemsToConvert.Items[i].SubItems[1].Text, ListView_ItemsToConvert.Items[i].SubItems[0].Text);
+                });
+            }
+        }
+
         private void PrintFilesCollection(string[] Files)
         {
             Thread PrintFiles = new Thread(() =>
@@ -179,11 +387,7 @@ namespace EuroSound_Application.AudioConverter
 
                 for (int i = 0; i < Files.Length; i++)
                 {
-                    ListViewItem ItemToAdd = new ListViewItem(new[] { Path.GetFileName(Files[i]), Path.GetDirectoryName(Files[i]), Path.GetExtension(Files[i]), new FileInfo(Files[i]).Length.ToString() + " bytes" });
-                    ListView_ItemsToConvert.Invoke((MethodInvoker)delegate
-                    {
-                        ListView_ItemsToConvert.Items.Add(ItemToAdd);
-                    });
+                    AddFileToListView(Path.GetFileName(Files[i]), Path.GetDirectoryName(Files[i]), Path.GetExtension(Files[i]), new FileInfo(Files[i]).Length.ToString() + " bytes");
                 }
 
                 //Update Status Bar
@@ -193,30 +397,6 @@ namespace EuroSound_Application.AudioConverter
                 IsBackground = true
             };
             PrintFiles.Start();
-        }
-
-        private void OpenFile(string PathToFile)
-        {
-            if (File.Exists(PathToFile))
-            {
-                Process.Start(PathToFile);
-            }
-            else
-            {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_FileNotExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void OpenFolder(string PathToFolder)
-        {
-            if (Directory.Exists(PathToFolder))
-            {
-                Process.Start(PathToFolder);
-            }
-            else
-            {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_DirectoryNotExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
         private void Button_Search_Click(object sender, EventArgs e)
         {
-            string SoXPath = GenericFunctions.OpenFileBrowser("Executable Files (*.exe)|*.exe", 0);
+            string SoXPath = GenericFunctions.OpenFileBrowser("Executable Files (*.exe)|*.exe", 0, true);
 
             if (!string.IsNullOrEmpty(SoXPath))
             {

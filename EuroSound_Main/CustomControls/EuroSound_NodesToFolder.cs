@@ -7,15 +7,45 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
 {
     public partial class EuroSound_NodesToFolder : Form
     {
+        //*===============================================================================================
+        //* Global Variables
+        //*===============================================================================================
         private Dictionary<string, string> SoundsDictionary = new Dictionary<string, string>();
-        private TreeView treeviewcontrol;
+        private TreeView ParentTreeViewControl;
+        private string CurrentLoadedData;
 
-        public EuroSound_NodesToFolder(TreeView TreeViewControl)
+        public EuroSound_NodesToFolder(TreeView TreeViewControl, string Section)
         {
             InitializeComponent();
-            treeviewcontrol = TreeViewControl;
+            ParentTreeViewControl = TreeViewControl;
+            CurrentLoadedData = Section;
         }
 
+        //*===============================================================================================
+        //* FORM EVENTS
+        //*===============================================================================================
+        private void EuroSound_NodesToFolder_Load(object sender, EventArgs e)
+        {
+            if (CurrentLoadedData.Equals("AudioData"))
+            {
+                Combobox_DataType.SelectedIndex = 0;
+            }
+            else if (CurrentLoadedData.Equals("Sounds"))
+            {
+                Combobox_DataType.SelectedIndex = 1;
+            }
+            else
+            {
+                Combobox_DataType.SelectedIndex = 2;
+            }
+
+            LoadData(CurrentLoadedData);
+        }
+
+
+        //*===============================================================================================
+        //* FORM CONTROLS EVENTS
+        //*===============================================================================================
         private void Button_Cancel_Click(object sender, EventArgs e)
         {
             Close();
@@ -28,47 +58,62 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
             selectedParent = Combobox_AvailableFolders.SelectedItem.ToString();
             if (!string.IsNullOrEmpty(selectedParent))
             {
-                TreeNode NewParentNode = treeviewcontrol.Nodes.Find(selectedParent, true)[0];
+                TreeNode NewParentNode = ParentTreeViewControl.Nodes.Find(selectedParent, true)[0];
+
+                /*Recursively move nodes to the new folder*/
                 foreach (KeyValuePair<string, string> item in ListBox_Items.SelectedItems)
                 {
-                    TreeNode NodeToMove = treeviewcontrol.Nodes.Find(item.Key.ToString(), true)[0];
-                    treeviewcontrol.Nodes.Remove(NodeToMove);
-                    TreeNodeFunctions.TreeNodeAddNewNode(NewParentNode.Name, NodeToMove.Name, NodeToMove.Text, NodeToMove.SelectedImageIndex, NodeToMove.ImageIndex, NodeToMove.Tag.ToString(), NodeToMove.ForeColor, treeviewcontrol);
+                    TreeNode NodeToMove = ParentTreeViewControl.Nodes.Find(item.Key.ToString(), true)[0];
+                    ParentTreeViewControl.Nodes.Remove(NodeToMove);
+                    TreeNodeFunctions.TreeNodeAddNewNode(NewParentNode.Name, NodeToMove.Name, NodeToMove.Text, NodeToMove.SelectedImageIndex, NodeToMove.ImageIndex, NodeToMove.Tag.ToString(), NodeToMove.ForeColor, ParentTreeViewControl);
                     if (NodeToMove.Nodes.Count > 0)
                     {
                         foreach (TreeNode child in NodeToMove.Nodes)
                         {
-                            TreeNodeFunctions.TreeNodeAddNewNode(child.Parent.Name, child.Name, child.Text, child.SelectedImageIndex, child.ImageIndex, child.Tag.ToString(), child.ForeColor, treeviewcontrol);
+                            TreeNodeFunctions.TreeNodeAddNewNode(child.Parent.Name, child.Name, child.Text, child.SelectedImageIndex, child.ImageIndex, child.Tag.ToString(), child.ForeColor, ParentTreeViewControl);
                         }
                     }
                 }
             }
         }
 
+        private void Combobox_DataType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string SelectedTypeData = Combobox_DataType.SelectedItem.ToString();
+
+            if (SelectedTypeData != CurrentLoadedData)
+            {
+                LoadData(SelectedTypeData);
+            }
+        }
+
         //*===============================================================================================
         //* FUNCTIONS
         //*===============================================================================================
-        private void Combobox_SoudsType_SelectedIndexChanged(object sender, EventArgs e)
+        private void LoadData(string ParentName)
         {
-            string ParentName = Combobox_SoudsType.SelectedItem.ToString();
+            CurrentLoadedData = ParentName;
             SoundsDictionary.Clear();
 
-            Combobox_AvailableFolders.DataSource = GetAvailableFolders(treeviewcontrol, ParentName);
-            if (Combobox_SoudsType.SelectedIndex > 0)
+            Combobox_AvailableFolders.DataSource = GetAvailableFolders(ParentTreeViewControl, CurrentLoadedData);
+
+            /*Check for sounds*/
+            if (Combobox_DataType.SelectedIndex > 0)
             {
-                foreach (TreeNode node in treeviewcontrol.Nodes)
+                foreach (TreeNode node in ParentTreeViewControl.Nodes)
                 {
-                    if (node.Name.Equals(ParentName))
+                    if (node.Name.Equals(CurrentLoadedData))
                     {
                         GetObjectsName(node, "Sound");
                     }
                 }
             }
+            /*Check for audios*/
             else
             {
-                foreach (TreeNode node in treeviewcontrol.Nodes)
+                foreach (TreeNode node in ParentTreeViewControl.Nodes)
                 {
-                    if (node.Name.Equals(ParentName))
+                    if (node.Name.Equals(CurrentLoadedData))
                     {
                         GetObjectsName(node, "Audio");
                     }

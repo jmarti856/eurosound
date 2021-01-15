@@ -10,39 +10,9 @@ namespace EuroSound_Application.SoundBanksEditor
 {
     internal static class EXSoundbanksFunctions
     {
-        internal static bool SoundWillBeOutputed(Dictionary<uint, EXSound> SoundsList, uint SoundKey)
+        #region AUDIOS
+        internal static IEnumerable<string> GetAudioDependencies(string AudioKey, string AudioName, Dictionary<uint, EXSound> SoundsList, TreeView ControlNodes, bool ItemUsage)
         {
-            bool Output = false;
-
-            EXSound Test = GetSoundByName(SoundKey, SoundsList);
-            if (Test != null)
-            {
-                if (Test.OutputThisSound)
-                {
-                    Output = true;
-                }
-            }
-
-            return Output;
-        }
-
-        internal static bool AddSampleToSound(EXSound Sound, uint Index, bool StreamedSample)
-        {
-            bool AddedCorrectly = false;
-
-            EXSample Sample = new EXSample
-            {
-                IsStreamed = StreamedSample,
-            };
-
-            Sound.Samples.Add(Index, Sample);
-
-            return AddedCorrectly;
-        }
-
-        internal static List<string> GetAudioDependencies(string AudioKey, string AudioName, Dictionary<uint, EXSound> SoundsList, TreeView ControlNodes, bool ItemUsage)
-        {
-            List<string> Dependencies = new List<string>();
             string DisplayName;
 
             foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
@@ -53,34 +23,72 @@ namespace EuroSound_Application.SoundBanksEditor
                     {
                         if (ItemUsage)
                         {
-                            Dependencies.Add(AudioName + "," + Sound.Key);
+                            yield return AudioName + "," + Sound.Key;
                         }
                         else
                         {
                             DisplayName = ControlNodes.Nodes.Find(Sample.Key.ToString(), true)[0].Text;
-                            Dependencies.Add("0" + DisplayName + " uses this audio");
+                            yield return "0" + DisplayName + " uses this audio";
                         }
                     }
                 }
             }
-            return Dependencies;
         }
 
-        internal static List<string> GetAudiosToPurge(Dictionary<string, EXAudio> AudioDataDict, Dictionary<uint, EXSound> SoundsList)
+        internal static List<string> GetAudiosToExport(Dictionary<uint, EXSound> SoundsList)
         {
-            List<string> AudiosToPurge = new List<string>();
-            List<string> UsedAudios = GetUsedAudios(SoundsList, false);
+            List<string> UsedAudios = new List<string>();
 
-            //Now compare
-            foreach (string key in AudioDataDict.Keys)
+            foreach (KeyValuePair<uint, EXSound> SoundToCheck in SoundsList)
             {
-                if (!UsedAudios.Contains(key))
+                if (SoundToCheck.Value.OutputThisSound)
                 {
-                    AudiosToPurge.Add(key);
+                    foreach (KeyValuePair<uint, EXSample> Sample in SoundToCheck.Value.Samples)
+                    {
+                        if (!UsedAudios.Contains(Sample.Value.ComboboxSelectedAudio))
+                        {
+                            UsedAudios.Add(Sample.Value.ComboboxSelectedAudio);
+                        }
+                    }
+                }
+                else
+                {
+                    continue;
                 }
             }
 
-            return AudiosToPurge;
+            return UsedAudios;
+        }
+
+        internal static IEnumerable<string> GetAudiosToPurge(Dictionary<string, EXAudio> AudioDataDict, Dictionary<uint, EXSound> SoundsList)
+        {
+            bool PurgeCurrent;
+
+            foreach (string AudioKey in AudioDataDict.Keys)
+            {
+                PurgeCurrent = true;
+
+                foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
+                {
+                    foreach (KeyValuePair<uint, EXSample> sample in Sound.Value.Samples)
+                    {
+                        if (sample.Value.ComboboxSelectedAudio.Equals(AudioKey))
+                        {
+                            PurgeCurrent = false;
+                            break;
+                        }
+                    }
+                    if (!PurgeCurrent)
+                    {
+                        break;
+                    }
+                }
+
+                if (PurgeCurrent)
+                {
+                    yield return AudioKey;
+                }
+            }
         }
 
         internal static Dictionary<string, string> GetListAudioData(Dictionary<string, EXAudio> AudiosList, TreeView ControlToSearch)
@@ -89,6 +97,7 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 { "<SUB SFX>", "<SUB SFX>" }
             };
+
             foreach (KeyValuePair<string, EXAudio> item in AudiosList)
             {
                 TreeNode NodeResult = ControlToSearch.Nodes.Find(item.Key, true)[0];
@@ -99,67 +108,6 @@ namespace EuroSound_Application.SoundBanksEditor
             }
 
             return DictionaryToShow;
-        }
-
-        internal static EXSound GetSoundByName(uint SoundID, Dictionary<uint, EXSound> SoundsList)
-        {
-            EXSound SearchedSound = null;
-
-            if (SoundsList.ContainsKey(SoundID))
-            {
-                SearchedSound = SoundsList[SoundID];
-                return SearchedSound;
-            }
-
-            return SearchedSound;
-        }
-
-        internal static EXSample GetSoundSample(EXSound SelectedSound, uint SampleID)
-        {
-            EXSample SelectedSample;
-
-            SelectedSample = SelectedSound.Samples[SampleID];
-
-            return SelectedSample;
-        }
-
-        internal static List<string> GetUsedAudios(Dictionary<uint, EXSound> SoundsList, bool OnlyOutputAudios)
-        {
-            List<string> UsedAudios = new List<string>();
-
-            //First we need to know which audios are used
-            foreach (KeyValuePair<uint, EXSound> SoundToCheck in SoundsList)
-            {
-                if (OnlyOutputAudios)
-                {
-                    if (SoundToCheck.Value.OutputThisSound)
-                    {
-                        foreach (KeyValuePair<uint, EXSample> Sample in SoundToCheck.Value.Samples)
-                        {
-                            if (!UsedAudios.Contains(Sample.Value.ComboboxSelectedAudio))
-                            {
-                                UsedAudios.Add(Sample.Value.ComboboxSelectedAudio);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-                else
-                {
-                    foreach (KeyValuePair<uint, EXSample> Sample in SoundToCheck.Value.Samples)
-                    {
-                        if (!UsedAudios.Contains(Sample.Value.ComboboxSelectedAudio))
-                        {
-                            UsedAudios.Add(Sample.Value.ComboboxSelectedAudio);
-                        }
-                    }
-                }
-            }
-
-            return UsedAudios;
         }
 
         internal static EXAudio LoadAudioData(string FilePath)
@@ -218,14 +166,76 @@ namespace EuroSound_Application.SoundBanksEditor
 
             return DeletedSuccessfully;
         }
+        #endregion
 
-        internal static void RemoveSound(string Name, Dictionary<uint, EXSound> SoundsList)
+        #region SOUNDS
+        internal static bool SoundWillBeOutputed(Dictionary<uint, EXSound> SoundsList, uint SoundKey)
         {
-            EXSound itemToRemove = GetSoundByName(uint.Parse(Name), SoundsList);
+            bool Output = false;
+
+            EXSound Test = ReturnSoundFromDictionary(SoundKey, SoundsList);
+            if (Test != null)
+            {
+                if (Test.OutputThisSound)
+                {
+                    Output = true;
+                }
+            }
+
+            return Output;
+        }
+
+        internal static EXSound ReturnSoundFromDictionary(uint SoundID, Dictionary<uint, EXSound> SoundsList)
+        {
+            //REnamed to ReturnSoundFromDictionary
+            EXSound SearchedSound = null;
+
+            if (SoundsList.ContainsKey(SoundID))
+            {
+                SearchedSound = SoundsList[SoundID];
+                return SearchedSound;
+            }
+
+            return SearchedSound;
+        }
+
+        internal static bool AddSampleToSound(EXSound Sound, uint Index, bool StreamedSample)
+        {
+            bool AddedCorrectly = false;
+
+            EXSample Sample = new EXSample
+            {
+                IsStreamed = StreamedSample,
+            };
+
+            Sound.Samples.Add(Index, Sample);
+
+            return AddedCorrectly;
+        }
+
+        internal static void DeleteSound(string Name, Dictionary<uint, EXSound> SoundsList)
+        {
+            EXSound itemToRemove = ReturnSoundFromDictionary(uint.Parse(Name), SoundsList);
             if (itemToRemove != null)
             {
                 SoundsList.Remove(uint.Parse(Name));
             }
+        }
+        #endregion
+
+        internal static EXSample ReturnSampleFromSound(EXSound SelectedSound, uint SampleID)
+        {
+            //Renamed to ReturnSampleFromSound
+            EXSample SelectedSample;
+
+            SelectedSample = SelectedSound.Samples[SampleID];
+
+            return SelectedSample;
+        }
+
+        internal static bool SubSFXFlagChecked(int Flags)
+        {
+            return Convert.ToBoolean((Flags >> 10) & 1);
         }
 
         internal static string RemoveWhiteSpaces(string TextToModify)
@@ -239,11 +249,6 @@ namespace EuroSound_Application.SoundBanksEditor
             }
 
             return NewString;
-        }
-
-        internal static bool SubSFXFlagChecked(int Flags)
-        {
-            return Convert.ToBoolean((Flags >> 10) & 1);
         }
     }
 }

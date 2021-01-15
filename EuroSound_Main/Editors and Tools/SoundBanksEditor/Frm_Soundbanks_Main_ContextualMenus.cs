@@ -1,12 +1,12 @@
 ﻿using EuroSound_Application.CustomControls.MoveMultiplesNodesForm;
 using EuroSound_Application.CustomControls.ObjectInstancesForm;
-using EuroSound_Application.CustomControls.WarningsList;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using EuroSound_Application.TreeViewSorter;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.SoundBanksEditor
@@ -28,7 +28,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
                 else
                 {
-                    string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0);
+                    string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0, true);
                     if (!string.IsNullOrEmpty(AudioPath))
                     {
                         if (GenericFunctions.AudioIsValid(AudioPath, 1, 22050))
@@ -88,13 +88,13 @@ namespace EuroSound_Application.SoundBanksEditor
                     if (TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name.Equals("StreamedSounds"))
                     {
                         TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SampleID.ToString(), Name, 4, 4, "Sample", Color.Black, TreeView_File);
-                        EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.GetSoundByName(uint.Parse(TreeView_File.SelectedNode.Name), SoundsList), SampleID, true);
+                        EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(TreeView_File.SelectedNode.Name), SoundsList), SampleID, true);
                         ProjectInfo.FileHasBeenModified = true;
                     }
                     else
                     {
                         TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SampleID.ToString(), Name, 4, 4, "Sample", Color.Black, TreeView_File);
-                        EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.GetSoundByName(uint.Parse(TreeView_File.SelectedNode.Name), SoundsList), SampleID, true);
+                        EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(TreeView_File.SelectedNode.Name), SoundsList), SampleID, true);
                     }
                 }
             }
@@ -145,7 +145,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenu_Folders_Move_Click(object sender, System.EventArgs e)
         {
-            EuroSound_NodesToFolder SoundsToFolders = new EuroSound_NodesToFolder(TreeView_File)
+            EuroSound_NodesToFolder SoundsToFolders = new EuroSound_NodesToFolder(TreeView_File, TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name)
             {
                 Owner = this
             };
@@ -180,12 +180,13 @@ namespace EuroSound_Application.SoundBanksEditor
         private void ContextMenuFolder_Purge_Click(object sender, System.EventArgs e)
         {
             List<string> PurgedAudios = new List<string>();
-            List<string> GetAudiosListToRemove = EXSoundbanksFunctions.GetAudiosToPurge(AudioDataDict, SoundsList);
-            if (GetAudiosListToRemove.Count > 0)
+            IEnumerable<string> GetAudiosListToRemove = EXSoundbanksFunctions.GetAudiosToPurge(AudioDataDict, SoundsList);
+
+            if (GetAudiosListToRemove.Any())
             {
-                foreach (string AudioToRemove in GetAudiosListToRemove)
+                foreach (string ItemToRemove in GetAudiosListToRemove)
                 {
-                    TreeNode NodeToRemove = TreeView_File.Nodes.Find(AudioToRemove, true)[0];
+                    TreeNode NodeToRemove = TreeView_File.Nodes.Find(ItemToRemove, true)[0];
                     if (NodeToRemove != null)
                     {
                         PurgedAudios.Add("2Purged Audio: " + NodeToRemove.Text);
@@ -193,27 +194,23 @@ namespace EuroSound_Application.SoundBanksEditor
                         EXSoundbanksFunctions.DeleteAudio(AudioDataDict, NodeToRemove.Name);
                     }
                 }
+                PurgedAudios.TrimExcess();
 
                 if (PurgedAudios.Count > 0)
                 {
-                    EuroSound_ErrorsAndWarningsList ShowDependencies = new EuroSound_ErrorsAndWarningsList(PurgedAudios)
-                    {
-                        Text = "Purging Audios"
-                    };
-                    ShowDependencies.ShowDialog();
-                    ShowDependencies.Dispose();
+                    GenericFunctions.ShowErrorsAndWarningsList(PurgedAudios, "Purged Audios");
                 }
 
                 ProjectInfo.FileHasBeenModified = true;
             }
         }
 
-        private void ContextMenuFolder_Rename_Click(object sender, System.EventArgs e)
+        private void ContextMenuFolder_Rename_Click(object sender, EventArgs e)
         {
             TreeNodeFunctions.EditNodeLabel(TreeView_File, TreeView_File.SelectedNode);
             ProjectInfo.FileHasBeenModified = true;
         }
-        private void ContextMenuFolders_TextColor_Click(object sender, System.EventArgs e)
+        private void ContextMenuFolders_TextColor_Click(object sender, EventArgs e)
         {
             int SelectedColor;
 
@@ -231,25 +228,25 @@ namespace EuroSound_Application.SoundBanksEditor
         //* ContextMenu_Sound
         //*===============================================================================================
         #region ContextMenu_Sound_EVENTS
-        private void ContextMenu_Sound_Properties_Click(object sender, System.EventArgs e)
+        private void ContextMenu_Sound_Properties_Click(object sender, EventArgs e)
         {
             OpenSelectedNodeSampleProperties(TreeView_File.SelectedNode);
         }
 
-        private void ContextMenu_Sound_Remove_Click(object sender, System.EventArgs e)
+        private void ContextMenu_Sound_Remove_Click(object sender, EventArgs e)
         {
             //Remove item
             RemoveSoundSelectedNode(TreeView_File.SelectedNode);
             ProjectInfo.FileHasBeenModified = true;
         }
 
-        private void ContextMenu_Sound_Rename_Click(object sender, System.EventArgs e)
+        private void ContextMenu_Sound_Rename_Click(object sender, EventArgs e)
         {
             TreeNodeFunctions.EditNodeLabel(TreeView_File, TreeView_File.SelectedNode);
             ProjectInfo.FileHasBeenModified = true;
         }
 
-        private void ContextMenu_Sound_TextColor_Click(object sender, System.EventArgs e)
+        private void ContextMenu_Sound_TextColor_Click(object sender, EventArgs e)
         {
             int SelectedColor;
 
@@ -301,25 +298,25 @@ namespace EuroSound_Application.SoundBanksEditor
         //* ContextMenu_Audio
         //*===============================================================================================
         #region ContextMenu_Audio_EVENTS
-        private void ContextMenuAudio_Properties_Click(object sender, System.EventArgs e)
+        private void ContextMenuAudio_Properties_Click(object sender, EventArgs e)
         {
             OpenAudioProperties(TreeView_File.SelectedNode);
         }
 
-        private void ContextMenuAudio_Remove_Click(object sender, System.EventArgs e)
+        private void ContextMenuAudio_Remove_Click(object sender, EventArgs e)
         {
             //Remove Item
             RemoveAudioAndWarningDependencies(TreeView_File.SelectedNode);
             ProjectInfo.FileHasBeenModified = true;
         }
 
-        private void ContextMenuAudio_Rename_Click(object sender, System.EventArgs e)
+        private void ContextMenuAudio_Rename_Click(object sender, EventArgs e)
         {
             TreeNodeFunctions.EditNodeLabel(TreeView_File, TreeView_File.SelectedNode);
             ProjectInfo.FileHasBeenModified = true;
         }
 
-        private void ContextMenuAudio_TextColor_Click(object sender, System.EventArgs e)
+        private void ContextMenuAudio_TextColor_Click(object sender, EventArgs e)
         {
             int SelectedColor;
 
@@ -331,10 +328,10 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
-        private void ContextMenuAudio_Usage_Click(object sender, System.EventArgs e)
+        private void ContextMenuAudio_Usage_Click(object sender, EventArgs e)
         {
-            List<string> Dependencies = EXSoundbanksFunctions.GetAudioDependencies(TreeView_File.SelectedNode.Name, TreeView_File.SelectedNode.Text, SoundsList, TreeView_File, true);
-            if (Dependencies.Count > 0)
+            IEnumerable<string> Dependencies = EXSoundbanksFunctions.GetAudioDependencies(TreeView_File.SelectedNode.Name, TreeView_File.SelectedNode.Text, SoundsList, TreeView_File, true);
+            if (Dependencies.Any())
             {
                 EuroSound_ItemUsage ShowDependencies = new EuroSound_ItemUsage(Dependencies, Tag.ToString())
                 {

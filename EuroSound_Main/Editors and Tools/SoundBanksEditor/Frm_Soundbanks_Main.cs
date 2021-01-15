@@ -535,7 +535,7 @@ namespace EuroSound_Application.SoundBanksEditor
             string SoundName;
             uint SoundHashcode;
 
-            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0);
+            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0, true);
             if (!string.IsNullOrEmpty(FilePath))
             {
                 SoundName = new DirectoryInfo(Path.GetDirectoryName(FilePath)).Name;
@@ -547,7 +547,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void MenuItemFile_ReadYml_Click(object sender, EventArgs e)
         {
-            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0);
+            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0, true);
             if (!string.IsNullOrEmpty(FilePath))
             {
                 //Ask user for a fully reimport

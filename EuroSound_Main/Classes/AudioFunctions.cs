@@ -6,6 +6,7 @@ using EuroSound_Application.StreamSounds;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using SoxSharp;
+using System;
 using System.IO;
 using System.Windows.Forms;
 
@@ -136,14 +137,21 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             if (File.Exists(GlobalPreferences.SoXPath))
             {
                 FinalFile = Path.Combine(new string[] { Path.GetTempPath(), @"EuroSound\", FileName + "f.wav" });
-                using (Sox sox = new Sox(GlobalPreferences.SoXPath))
+                try
                 {
-                    sox.Output.Type = FileType.WAV;
-                    sox.Output.SampleRate = 22050;
-                    sox.Output.Channels = 1;
+                    using (Sox sox = new Sox(GlobalPreferences.SoXPath))
+                    {
+                        sox.Output.Type = FileType.WAV;
+                        sox.Output.SampleRate = 22050;
+                        sox.Output.Channels = 1;
 
-                    InputFile testInput = new InputFile(SourcePath);
-                    sox.Process(testInput, FinalFile);
+                        InputFile testInput = new InputFile(SourcePath);
+                        sox.Process(testInput, FinalFile);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString(), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else

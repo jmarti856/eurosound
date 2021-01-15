@@ -124,13 +124,20 @@ namespace EuroSound_Application
         }
 
         //ChangeLabel Value Text
-        internal static string OpenFileBrowser(string BrowserFilter, int SelectedIndexFilter)
+        internal static string OpenFileBrowser(string BrowserFilter, int SelectedIndexFilter, bool ForceSpecifiedFilter)
         {
             string FilePath = string.Empty;
 
             using (OpenFileDialog FileBrowser = new OpenFileDialog())
             {
-                FileBrowser.Filter = BrowserFilter + "|All files(*.*)|*.*";
+                if (ForceSpecifiedFilter)
+                {
+                    FileBrowser.Filter = BrowserFilter;
+                }
+                else
+                {
+                    FileBrowser.Filter = BrowserFilter + "|All files(*.*)|*.*";
+                }
                 FileBrowser.FilterIndex = SelectedIndexFilter;
 
                 if (FileBrowser.ShowDialog() == DialogResult.OK)
@@ -196,7 +203,7 @@ namespace EuroSound_Application
             return SelectedPath;
         }
 
-        internal static void ShowErrorsAndWarningsList(List<string> ListToPrint, string FormTitle)
+        internal static void ShowErrorsAndWarningsList(IEnumerable<string> ListToPrint, string FormTitle)
         {
             //Show Import results
             using (EuroSound_ErrorsAndWarningsList ImportResults = new EuroSound_ErrorsAndWarningsList(ListToPrint))

@@ -20,7 +20,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
         private void Button_Search_Click(object sender, EventArgs e)
         {
-            string FilePath = GenericFunctions.OpenFileBrowser("EuroSound Files (*.ESF)|*.esf", 0);
+            string FilePath = GenericFunctions.OpenFileBrowser("EuroSound Files (*.ESF)|*.esf", 0, false);
             if (!string.IsNullOrEmpty(FilePath))
             {
                 if (Path.GetExtension(FilePath).ToLower().Equals(".esf"))

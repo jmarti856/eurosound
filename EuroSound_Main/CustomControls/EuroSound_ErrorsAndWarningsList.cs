@@ -8,9 +8,9 @@ namespace EuroSound_Application.CustomControls.WarningsList
 {
     public partial class EuroSound_ErrorsAndWarningsList : Form
     {
-        private List<string> ErrorsAndWarningsListToPrint;
+        private IEnumerable<string> ErrorsAndWarningsListToPrint;
 
-        public EuroSound_ErrorsAndWarningsList(List<string> ErrorsAndWarningsList)
+        public EuroSound_ErrorsAndWarningsList(IEnumerable<string> ErrorsAndWarningsList)
         {
             InitializeComponent();
 

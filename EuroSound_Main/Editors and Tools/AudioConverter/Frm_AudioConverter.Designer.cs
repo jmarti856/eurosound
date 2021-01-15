@@ -49,7 +49,10 @@ namespace EuroSound_Application.AudioConverter
             this.MainMenu_Load = new System.Windows.Forms.ToolStripMenuItem();
             this.convertPreferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Groupbox_Files = new System.Windows.Forms.GroupBox();
-            this.ListView_ItemsToConvert = new ListView_ColumnSortingClick();
+            this.Button_ClearList = new System.Windows.Forms.Button();
+            this.Textbox_ItemsCount = new System.Windows.Forms.TextBox();
+            this.Label_ItemsCount = new System.Windows.Forms.Label();
+            this.ListView_ItemsToConvert = new EuroSound_Application.CustomControls.ListViewColumnSorting.ListView_ColumnSortingClick();
             this.Col_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_FilePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_FileExtension = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -57,23 +60,25 @@ namespace EuroSound_Application.AudioConverter
             this.ContextMenu_ListItemsOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.MenuItem_Open = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_OpenFolder = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_Separator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuItem_SelectAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_SelectNone = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_InvertSelection = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_Separator2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItem_Delete = new System.Windows.Forms.ToolStripMenuItem();
             this.Groupbox_ConvertOptions = new System.Windows.Forms.GroupBox();
             this.RadioButton_Stereo = new System.Windows.Forms.RadioButton();
             this.RadioButton_Mono = new System.Windows.Forms.RadioButton();
             this.Label_Channels = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.ComboBox_Bits = new System.Windows.Forms.ComboBox();
             this.Label_Bits = new System.Windows.Forms.Label();
             this.Combobox_Rate = new System.Windows.Forms.ComboBox();
             this.Label_Rate = new System.Windows.Forms.Label();
             this.Button_Start = new System.Windows.Forms.Button();
             this.ProgressBar_Status = new System.Windows.Forms.ProgressBar();
             this.Label_Status = new System.Windows.Forms.Label();
-            this.MenuItem_SelectAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItem_Separator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.MenuItem_SelectNone = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItem_InvertSelection = new System.Windows.Forms.ToolStripMenuItem();
+            this.Background_ConvertAudios = new System.ComponentModel.BackgroundWorker();
+            this.Button_Cancel = new System.Windows.Forms.Button();
             this.Groupbox_OutputDirectory.SuspendLayout();
             this.AudioConverter_MainMenu.SuspendLayout();
             this.Groupbox_Files.SuspendLayout();
@@ -174,6 +179,7 @@ namespace EuroSound_Application.AudioConverter
             this.MenuItemFile_ImportFiles.Name = "MenuItemFile_ImportFiles";
             this.MenuItemFile_ImportFiles.Size = new System.Drawing.Size(145, 22);
             this.MenuItemFile_ImportFiles.Text = "Import Files...";
+            this.MenuItemFile_ImportFiles.Click += new System.EventHandler(this.MenuItemFile_ImportFiles_Click);
             // 
             // MainMenu_Edit
             // 
@@ -190,21 +196,21 @@ namespace EuroSound_Application.AudioConverter
             // MenuItemEdit_SelectAll
             // 
             this.MenuItemEdit_SelectAll.Name = "MenuItemEdit_SelectAll";
-            this.MenuItemEdit_SelectAll.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemEdit_SelectAll.Size = new System.Drawing.Size(155, 22);
             this.MenuItemEdit_SelectAll.Text = "Select All";
             this.MenuItemEdit_SelectAll.Click += new System.EventHandler(this.MenuItemEdit_SelectAll_Click);
             // 
             // MenuItemEdit_SelectNone
             // 
             this.MenuItemEdit_SelectNone.Name = "MenuItemEdit_SelectNone";
-            this.MenuItemEdit_SelectNone.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemEdit_SelectNone.Size = new System.Drawing.Size(155, 22);
             this.MenuItemEdit_SelectNone.Text = "Select None";
             this.MenuItemEdit_SelectNone.Click += new System.EventHandler(this.MenuItemEdit_SelectNone_Click);
             // 
             // MenuItemEdit_InvertSelection
             // 
             this.MenuItemEdit_InvertSelection.Name = "MenuItemEdit_InvertSelection";
-            this.MenuItemEdit_InvertSelection.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemEdit_InvertSelection.Size = new System.Drawing.Size(155, 22);
             this.MenuItemEdit_InvertSelection.Text = "Invert Selection";
             this.MenuItemEdit_InvertSelection.Click += new System.EventHandler(this.MenuItemEdit_InvertSelection_Click);
             // 
@@ -229,6 +235,9 @@ namespace EuroSound_Application.AudioConverter
             this.Groupbox_Files.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.Groupbox_Files.Controls.Add(this.Button_ClearList);
+            this.Groupbox_Files.Controls.Add(this.Textbox_ItemsCount);
+            this.Groupbox_Files.Controls.Add(this.Label_ItemsCount);
             this.Groupbox_Files.Controls.Add(this.ListView_ItemsToConvert);
             this.Groupbox_Files.Location = new System.Drawing.Point(12, 12);
             this.Groupbox_Files.Name = "Groupbox_Files";
@@ -237,21 +246,55 @@ namespace EuroSound_Application.AudioConverter
             this.Groupbox_Files.TabStop = false;
             this.Groupbox_Files.Text = "Files";
             // 
+            // Button_ClearList
+            // 
+            this.Button_ClearList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_ClearList.Location = new System.Drawing.Point(782, 537);
+            this.Button_ClearList.Name = "Button_ClearList";
+            this.Button_ClearList.Size = new System.Drawing.Size(75, 23);
+            this.Button_ClearList.TabIndex = 3;
+            this.Button_ClearList.Text = "Clear List";
+            this.Button_ClearList.UseVisualStyleBackColor = true;
+            this.Button_ClearList.Click += new System.EventHandler(this.Button_ClearList_Click);
+            // 
+            // Textbox_ItemsCount
+            // 
+            this.Textbox_ItemsCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Textbox_ItemsCount.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_ItemsCount.Location = new System.Drawing.Point(78, 540);
+            this.Textbox_ItemsCount.Name = "Textbox_ItemsCount";
+            this.Textbox_ItemsCount.ReadOnly = true;
+            this.Textbox_ItemsCount.Size = new System.Drawing.Size(100, 20);
+            this.Textbox_ItemsCount.TabIndex = 2;
+            // 
+            // Label_ItemsCount
+            // 
+            this.Label_ItemsCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Label_ItemsCount.AutoSize = true;
+            this.Label_ItemsCount.ForeColor = System.Drawing.Color.Green;
+            this.Label_ItemsCount.Location = new System.Drawing.Point(6, 543);
+            this.Label_ItemsCount.Name = "Label_ItemsCount";
+            this.Label_ItemsCount.Size = new System.Drawing.Size(66, 13);
+            this.Label_ItemsCount.TabIndex = 1;
+            this.Label_ItemsCount.Text = "Items Count:";
+            // 
             // ListView_ItemsToConvert
             // 
+            this.ListView_ItemsToConvert.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ListView_ItemsToConvert.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Col_Name,
             this.Col_FilePath,
             this.Col_FileExtension,
             this.Col_FileSize});
             this.ListView_ItemsToConvert.ContextMenuStrip = this.ContextMenu_ListItemsOptions;
-            this.ListView_ItemsToConvert.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ListView_ItemsToConvert.FullRowSelect = true;
             this.ListView_ItemsToConvert.GridLines = true;
             this.ListView_ItemsToConvert.HideSelection = false;
             this.ListView_ItemsToConvert.Location = new System.Drawing.Point(3, 16);
             this.ListView_ItemsToConvert.Name = "ListView_ItemsToConvert";
-            this.ListView_ItemsToConvert.Size = new System.Drawing.Size(857, 547);
+            this.ListView_ItemsToConvert.Size = new System.Drawing.Size(857, 515);
             this.ListView_ItemsToConvert.TabIndex = 0;
             this.ListView_ItemsToConvert.UseCompatibleStateImageBehavior = false;
             this.ListView_ItemsToConvert.View = System.Windows.Forms.View.Details;
@@ -288,31 +331,57 @@ namespace EuroSound_Application.AudioConverter
             this.MenuItem_Separator2,
             this.MenuItem_Delete});
             this.ContextMenu_ListItemsOptions.Name = "ContextMenu_ListItemsOptions";
-            this.ContextMenu_ListItemsOptions.Size = new System.Drawing.Size(181, 170);
+            this.ContextMenu_ListItemsOptions.Size = new System.Drawing.Size(163, 148);
             // 
             // MenuItem_Open
             // 
             this.MenuItem_Open.Name = "MenuItem_Open";
-            this.MenuItem_Open.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_Open.Size = new System.Drawing.Size(162, 22);
             this.MenuItem_Open.Text = "Open";
             this.MenuItem_Open.Click += new System.EventHandler(this.MenuItem_Open_Click);
             // 
             // MenuItem_OpenFolder
             // 
             this.MenuItem_OpenFolder.Name = "MenuItem_OpenFolder";
-            this.MenuItem_OpenFolder.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_OpenFolder.Size = new System.Drawing.Size(162, 22);
             this.MenuItem_OpenFolder.Text = "Open Folder";
             this.MenuItem_OpenFolder.Click += new System.EventHandler(this.MenuItem_OpenFolder_Click);
+            // 
+            // MenuItem_Separator1
+            // 
+            this.MenuItem_Separator1.Name = "MenuItem_Separator1";
+            this.MenuItem_Separator1.Size = new System.Drawing.Size(159, 6);
+            // 
+            // MenuItem_SelectAll
+            // 
+            this.MenuItem_SelectAll.Name = "MenuItem_SelectAll";
+            this.MenuItem_SelectAll.Size = new System.Drawing.Size(162, 22);
+            this.MenuItem_SelectAll.Text = "Select All";
+            this.MenuItem_SelectAll.Click += new System.EventHandler(this.MenuItem_SelectAll_Click);
+            // 
+            // MenuItem_SelectNone
+            // 
+            this.MenuItem_SelectNone.Name = "MenuItem_SelectNone";
+            this.MenuItem_SelectNone.Size = new System.Drawing.Size(162, 22);
+            this.MenuItem_SelectNone.Text = "Select None";
+            this.MenuItem_SelectNone.Click += new System.EventHandler(this.MenuItem_SelectNone_Click);
+            // 
+            // MenuItem_InvertSelection
+            // 
+            this.MenuItem_InvertSelection.Name = "MenuItem_InvertSelection";
+            this.MenuItem_InvertSelection.Size = new System.Drawing.Size(162, 22);
+            this.MenuItem_InvertSelection.Text = "Invert Selection";
+            this.MenuItem_InvertSelection.Click += new System.EventHandler(this.MenuItem_InvertSelection_Click);
             // 
             // MenuItem_Separator2
             // 
             this.MenuItem_Separator2.Name = "MenuItem_Separator2";
-            this.MenuItem_Separator2.Size = new System.Drawing.Size(177, 6);
+            this.MenuItem_Separator2.Size = new System.Drawing.Size(159, 6);
             // 
             // MenuItem_Delete
             // 
             this.MenuItem_Delete.Name = "MenuItem_Delete";
-            this.MenuItem_Delete.Size = new System.Drawing.Size(180, 22);
+            this.MenuItem_Delete.Size = new System.Drawing.Size(162, 22);
             this.MenuItem_Delete.Text = "Delete (from list)";
             this.MenuItem_Delete.Click += new System.EventHandler(this.MenuItem_Delete_Click);
             // 
@@ -322,7 +391,7 @@ namespace EuroSound_Application.AudioConverter
             this.Groupbox_ConvertOptions.Controls.Add(this.RadioButton_Stereo);
             this.Groupbox_ConvertOptions.Controls.Add(this.RadioButton_Mono);
             this.Groupbox_ConvertOptions.Controls.Add(this.Label_Channels);
-            this.Groupbox_ConvertOptions.Controls.Add(this.comboBox1);
+            this.Groupbox_ConvertOptions.Controls.Add(this.ComboBox_Bits);
             this.Groupbox_ConvertOptions.Controls.Add(this.Label_Bits);
             this.Groupbox_ConvertOptions.Controls.Add(this.Combobox_Rate);
             this.Groupbox_ConvertOptions.Controls.Add(this.Label_Rate);
@@ -364,19 +433,18 @@ namespace EuroSound_Application.AudioConverter
             this.Label_Channels.TabIndex = 4;
             this.Label_Channels.Text = "Channels:";
             // 
-            // comboBox1
+            // ComboBox_Bits
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "8",
+            this.ComboBox_Bits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBox_Bits.FormattingEnabled = true;
+            this.ComboBox_Bits.Items.AddRange(new object[] {
             "16",
             "24",
             "32"});
-            this.comboBox1.Location = new System.Drawing.Point(271, 19);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(101, 21);
-            this.comboBox1.TabIndex = 3;
+            this.ComboBox_Bits.Location = new System.Drawing.Point(271, 19);
+            this.ComboBox_Bits.Name = "ComboBox_Bits";
+            this.ComboBox_Bits.Size = new System.Drawing.Size(101, 21);
+            this.ComboBox_Bits.TabIndex = 3;
             // 
             // Label_Bits
             // 
@@ -419,51 +487,43 @@ namespace EuroSound_Application.AudioConverter
             this.Button_Start.TabIndex = 3;
             this.Button_Start.Text = "Start";
             this.Button_Start.UseVisualStyleBackColor = true;
+            this.Button_Start.Click += new System.EventHandler(this.Button_Start_Click);
             // 
             // ProgressBar_Status
             // 
             this.ProgressBar_Status.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ProgressBar_Status.Location = new System.Drawing.Point(93, 677);
+            this.ProgressBar_Status.Location = new System.Drawing.Point(177, 677);
             this.ProgressBar_Status.Name = "ProgressBar_Status";
-            this.ProgressBar_Status.Size = new System.Drawing.Size(782, 23);
+            this.ProgressBar_Status.Size = new System.Drawing.Size(698, 23);
             this.ProgressBar_Status.TabIndex = 5;
             // 
             // Label_Status
             // 
             this.Label_Status.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Label_Status.AutoSize = true;
-            this.Label_Status.Location = new System.Drawing.Point(90, 661);
+            this.Label_Status.Location = new System.Drawing.Point(174, 661);
             this.Label_Status.Name = "Label_Status";
             this.Label_Status.Size = new System.Drawing.Size(40, 13);
             this.Label_Status.TabIndex = 4;
             this.Label_Status.Text = "Status:";
             // 
-            // MenuItem_SelectAll
+            // Background_ConvertAudios
             // 
-            this.MenuItem_SelectAll.Name = "MenuItem_SelectAll";
-            this.MenuItem_SelectAll.Size = new System.Drawing.Size(180, 22);
-            this.MenuItem_SelectAll.Text = "Select All";
-            this.MenuItem_SelectAll.Click += new System.EventHandler(this.MenuItem_SelectAll_Click);
+            this.Background_ConvertAudios.WorkerSupportsCancellation = true;
+            this.Background_ConvertAudios.DoWork += new System.ComponentModel.DoWorkEventHandler(this.Background_ConvertAudios_DoWorkAsync);
+            this.Background_ConvertAudios.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Background_ConvertAudios_RunWorkerCompleted);
             // 
-            // MenuItem_Separator1
+            // Button_Cancel
             // 
-            this.MenuItem_Separator1.Name = "MenuItem_Separator1";
-            this.MenuItem_Separator1.Size = new System.Drawing.Size(177, 6);
-            // 
-            // MenuItem_SelectNone
-            // 
-            this.MenuItem_SelectNone.Name = "MenuItem_SelectNone";
-            this.MenuItem_SelectNone.Size = new System.Drawing.Size(180, 22);
-            this.MenuItem_SelectNone.Text = "Select None";
-            this.MenuItem_SelectNone.Click += new System.EventHandler(this.MenuItem_SelectNone_Click);
-            // 
-            // MenuItem_InvertSelection
-            // 
-            this.MenuItem_InvertSelection.Name = "MenuItem_InvertSelection";
-            this.MenuItem_InvertSelection.Size = new System.Drawing.Size(180, 22);
-            this.MenuItem_InvertSelection.Text = "Invert Selection";
-            this.MenuItem_InvertSelection.Click += new System.EventHandler(this.MenuItem_InvertSelection_Click);
+            this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_Cancel.Location = new System.Drawing.Point(93, 661);
+            this.Button_Cancel.Name = "Button_Cancel";
+            this.Button_Cancel.Size = new System.Drawing.Size(75, 39);
+            this.Button_Cancel.TabIndex = 6;
+            this.Button_Cancel.Text = "Cancel";
+            this.Button_Cancel.UseVisualStyleBackColor = true;
+            this.Button_Cancel.Click += new System.EventHandler(this.Button_Cancel_Click);
             // 
             // Frm_AudioConverter
             // 
@@ -471,6 +531,7 @@ namespace EuroSound_Application.AudioConverter
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(887, 712);
             this.Controls.Add(this.AudioConverter_MainMenu);
+            this.Controls.Add(this.Button_Cancel);
             this.Controls.Add(this.Label_Status);
             this.Controls.Add(this.ProgressBar_Status);
             this.Controls.Add(this.Button_Start);
@@ -489,6 +550,7 @@ namespace EuroSound_Application.AudioConverter
             this.AudioConverter_MainMenu.ResumeLayout(false);
             this.AudioConverter_MainMenu.PerformLayout();
             this.Groupbox_Files.ResumeLayout(false);
+            this.Groupbox_Files.PerformLayout();
             this.ContextMenu_ListItemsOptions.ResumeLayout(false);
             this.Groupbox_ConvertOptions.ResumeLayout(false);
             this.Groupbox_ConvertOptions.PerformLayout();
@@ -512,7 +574,7 @@ namespace EuroSound_Application.AudioConverter
         private System.Windows.Forms.RadioButton RadioButton_Stereo;
         private System.Windows.Forms.RadioButton RadioButton_Mono;
         private System.Windows.Forms.Label Label_Channels;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox ComboBox_Bits;
         private System.Windows.Forms.Label Label_Bits;
         private System.Windows.Forms.ComboBox Combobox_Rate;
         private System.Windows.Forms.Label Label_Rate;
@@ -540,5 +602,10 @@ namespace EuroSound_Application.AudioConverter
         private System.Windows.Forms.ToolStripMenuItem MenuItem_SelectAll;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_SelectNone;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_InvertSelection;
+        private System.ComponentModel.BackgroundWorker Background_ConvertAudios;
+        private System.Windows.Forms.Button Button_Cancel;
+        private System.Windows.Forms.Button Button_ClearList;
+        private System.Windows.Forms.TextBox Textbox_ItemsCount;
+        private System.Windows.Forms.Label Label_ItemsCount;
     }
 }

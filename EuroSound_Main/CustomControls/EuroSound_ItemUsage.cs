@@ -8,10 +8,10 @@ namespace EuroSound_Application.CustomControls.ObjectInstancesForm
     public partial class EuroSound_ItemUsage : Form
     {
         private string FormID;
-        private List<string> UsageItemsList;
+        private IEnumerable<string> UsageItemsList;
         private Form FormToSearch;
 
-        public EuroSound_ItemUsage(List<string> ListToPrint, string _FormID)
+        public EuroSound_ItemUsage(IEnumerable<string> ListToPrint, string _FormID)
         {
             InitializeComponent();
             UsageItemsList = ListToPrint;

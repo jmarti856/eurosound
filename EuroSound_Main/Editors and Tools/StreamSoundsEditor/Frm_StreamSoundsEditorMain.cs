@@ -464,7 +464,7 @@ namespace EuroSound_Application.StreamSounds
         {
             string SoundName;
 
-            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0);
+            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0, true);
             if (!string.IsNullOrEmpty(FilePath))
             {
                 SoundName = Path.GetFileNameWithoutExtension(FilePath);
@@ -475,7 +475,7 @@ namespace EuroSound_Application.StreamSounds
 
         private void MenuItemFile_ReadYml_Click(object sender, System.EventArgs e)
         {
-            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0);
+            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0, true);
             if (!string.IsNullOrEmpty(FilePath))
             {
                 //--Ask user for a fully reimport--

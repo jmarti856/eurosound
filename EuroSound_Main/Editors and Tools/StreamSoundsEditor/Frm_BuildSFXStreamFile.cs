@@ -1,6 +1,5 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.CurrentProjectFunctions;
-using EuroSound_Application.CustomControls.WarningsList;
 using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
@@ -193,13 +192,7 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
 
             if (Reports.Count > 0)
             {
-                //Show Errors
-                EuroSound_ErrorsAndWarningsList ImportResults = new EuroSound_ErrorsAndWarningsList(Reports)
-                {
-                    Text = FileName + ".SFX Output Errors"
-                };
-                ImportResults.ShowDialog();
-                ImportResults.Dispose();
+                GenericFunctions.ShowErrorsAndWarningsList(Reports, FileName + ".SFX Output Errors");
             }
 
             //Close Form

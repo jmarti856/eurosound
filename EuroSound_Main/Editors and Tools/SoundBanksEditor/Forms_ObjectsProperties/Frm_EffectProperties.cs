@@ -219,7 +219,7 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 string SampleName = List_Samples.SelectedItems[0].Text;
                 uint SampleID = (uint)List_Samples.SelectedItems[0].Tag;
-                EXSample SelectedSample = EXSoundbanksFunctions.GetSoundSample(SelectedSound, SampleID);
+                EXSample SelectedSample = EXSoundbanksFunctions.ReturnSampleFromSound(SelectedSound, SampleID);
 
                 if (SelectedSample != null)
                 {

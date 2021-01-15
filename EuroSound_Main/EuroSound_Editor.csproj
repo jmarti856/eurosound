@@ -103,7 +103,7 @@
     <Reference Include="UIAutomationClient" />
     <Reference Include="UIAutomationTypes" />
     <Reference Include="YamlDotNet, Version=9.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
-      <HintPath>..\packages\YamlDotNet.9.1.1\lib\net45\YamlDotNet.dll</HintPath>
+      <HintPath>..\packages\YamlDotNet.9.1.3\lib\net45\YamlDotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +235,9 @@
     </Compile>
     <Compile Include="CustomControls\EuroSound_WaveViewer.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Editors and Tools\AudioConverter\Frm_AudioConverterFunctions.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Editors and Tools\FilelistBin_Generator\Frm_SFX_DataGenerator.cs">
       <SubType>Form</SubType>

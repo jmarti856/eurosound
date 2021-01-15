@@ -227,7 +227,7 @@ namespace EuroSound_Application
         private void MenuItemFile_OpenESF_Click(object sender, EventArgs e)
         {
             GlobalPreferences.StatusBar_ToolTipMode = false;
-            ArgumentFromSplash = GenericFunctions.OpenFileBrowser("Eurosound Files (*.esf)|*.esf", 0);
+            ArgumentFromSplash = GenericFunctions.OpenFileBrowser("Eurosound Files (*.esf)|*.esf", 0, false);
             if (!string.IsNullOrEmpty(ArgumentFromSplash))
             {
                 OpenFormsWithFileToLoad(ArgumentFromSplash);
@@ -284,7 +284,7 @@ namespace EuroSound_Application
 
         private void MainMenuTools_RestoreSettings_Click(object sender, EventArgs e)
         {
-            string FileToLoad = GenericFunctions.OpenFileBrowser("Eurosound Registry Files (*.esrf)|*.esrf", 0);
+            string FileToLoad = GenericFunctions.OpenFileBrowser("Eurosound Registry Files (*.esrf)|*.esrf", 0, false);
             if (!string.IsNullOrEmpty(FileToLoad))
             {
                 BackupReloadSettings SettingsFunctions = new BackupReloadSettings();
@@ -309,9 +309,11 @@ namespace EuroSound_Application
             Frm_AudioConverter ES_AudioConverter = new Frm_AudioConverter
             {
                 Owner = this,
-                MdiParent = this
+                MdiParent = this,
+                Tag = FormID.ToString()
             };
             ES_AudioConverter.Show();
+            FormID++;
         }
 
         //*===============================================================================================

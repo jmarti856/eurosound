@@ -10,7 +10,6 @@ namespace EuroSound_Application.StreamSounds
         //* GLOBAL VARS
         //*===============================================================================================
         private EXSoundStream SelectedSound, TemporalSelectedSound;
-        private Dictionary<uint, string> MarkerTypes;
         private uint v_MarkerPos, v_MarkerCount;
 
         //*===============================================================================================
@@ -24,26 +23,20 @@ namespace EuroSound_Application.StreamSounds
 
         private void Frm_StreamSounds_MarkersEditor_Load(object sender, EventArgs e)
         {
-            //Combobox Markers
-            MarkerTypes = new Dictionary<uint, string>
-            {
-                { 10, "Start" },
-                { 9, "End" },
-                { 7, "Goto" },
-                { 6, "Loop" },
-                { 5, "Pause" },
-                { 0, "Jump" }
-            };
-            ComboBox_MarkerType.DataSource = new BindingSource(MarkerTypes, null);
-            ComboBox_MarkerType.DisplayMember = "Value";
-            ComboBox_MarkerType.ValueMember = "Key";
+            ComboBox_MarkerType.Items.Add(new { Text = "Start", Value = 10 });
+            ComboBox_MarkerType.Items.Add(new { Text = "End", Value = 9 });
+            ComboBox_MarkerType.Items.Add(new { Text = "Goto", Value = 7 });
+            ComboBox_MarkerType.Items.Add(new { Text = "Loop", Value = 6 });
+            ComboBox_MarkerType.Items.Add(new { Text = "Pause", Value = 5 });
+            ComboBox_MarkerType.Items.Add(new { Text = "Jump", Value = 0 });
+            ComboBox_MarkerType.DisplayMember = "Text";
+            ComboBox_MarkerType.ValueMember = "Value";
 
             //Temporal Sounds
             TemporalSelectedSound = new EXSoundStream
             {
                 StartMarkers = new List<EXStreamStartMarker>(SelectedSound.StartMarkers),
                 Markers = new List<EXStreamMarker>(SelectedSound.Markers)
-
             };
             Reflection.CopyProperties(SelectedSound, TemporalSelectedSound);
 
@@ -160,9 +153,15 @@ namespace EuroSound_Application.StreamSounds
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
+            //Trim lists
+            TemporalSelectedSound.StartMarkers.TrimExcess();
+            TemporalSelectedSound.Markers.TrimExcess();
+
+            //Get lists
             SelectedSound.StartMarkers = new List<EXStreamStartMarker>(TemporalSelectedSound.StartMarkers);
             SelectedSound.Markers = new List<EXStreamMarker>(TemporalSelectedSound.Markers);
 
+            //Get Data
             SelectedSound.MarkerDataCounterID = TemporalSelectedSound.MarkerDataCounterID;
             SelectedSound.MarkerID = TemporalSelectedSound.MarkerID;
             SelectedSound.Markers = TemporalSelectedSound.Markers;
@@ -185,7 +184,8 @@ namespace EuroSound_Application.StreamSounds
             {
                 MarkerItem.Name.ToString(),
                 MarkerItem.Position.ToString(),
-                MarkerTypes[MarkerItem.MusicMakerType],
+                //MarkerTypes[MarkerItem.MusicMakerType],
+                GetMarkerType(MarkerItem.MusicMakerType),
                 MarkerItem.Flags.ToString(),
                 MarkerItem.Extra.ToString(),
                 MarkerItem.LoopStart.ToString(),
@@ -206,6 +206,38 @@ namespace EuroSound_Application.StreamSounds
                 MarkerItem.MarkerCount.ToString()
             });
             ListView_Markers.Items.Add(Marker);
+        }
+
+        private string GetMarkerType(uint MarkerValue)
+        {
+            string MType;
+
+            if (MarkerValue == 10)
+            {
+                MType = "Start";
+            }
+            else if (MarkerValue == 9)
+            {
+                MType = "End";
+            }
+            else if (MarkerValue == 7)
+            {
+                MType = "Goto";
+            }
+            else if (MarkerValue == 6)
+            {
+                MType = "Loop";
+            }
+            else if (MarkerValue == 5)
+            {
+                MType = "Pause";
+            }
+            else
+            {
+                MType = "Jump";
+            }
+
+            return MType;
         }
     }
 }

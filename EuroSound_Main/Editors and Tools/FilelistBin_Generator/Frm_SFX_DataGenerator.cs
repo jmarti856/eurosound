@@ -1,11 +1,11 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
-using EuroSound_Application.CustomControls.WarningsList;
 using EuroSound_Application.GenerateDataBinaryFile;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -232,16 +232,10 @@ namespace EuroSound_Application.SFXData
 
         private void Button_generateFile_Click(object sender, EventArgs e)
         {
-            List<string> ListToPrint = SFXDataBin_Generator.GenerateSFXDataBinaryFile();
-            if (ListToPrint.Count > 0)
+            IEnumerable<string> ListToPrint = SFXDataBin_Generator.GenerateSFXDataBinaryFile();
+            if (ListToPrint.Any())
             {
-                //Show Import results
-                EuroSound_ErrorsAndWarningsList ImportResults = new EuroSound_ErrorsAndWarningsList(ListToPrint)
-                {
-                    Text = "Output Errors"
-                };
-                ImportResults.ShowDialog();
-                ImportResults.Dispose();
+                GenericFunctions.ShowErrorsAndWarningsList(ListToPrint, "Output Errors");
             }
         }
 
