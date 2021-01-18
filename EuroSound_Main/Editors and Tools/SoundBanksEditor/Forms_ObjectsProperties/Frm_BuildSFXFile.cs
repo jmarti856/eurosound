@@ -195,7 +195,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
             if (Reports.Count > 0)
             {
                 //Show Errors
-                GenericFunctions.ShowErrorsAndWarningsList(Reports, FileName + ".SFX Output Errors");
+                GenericFunctions.ShowErrorsAndWarningsList(Reports, FileName + ".SFX Output Errors", this);
             }
 
             //Close Form

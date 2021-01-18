@@ -1,7 +1,6 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -12,7 +11,7 @@ namespace EuroSound_Application
     internal static class Hashcodes
     {
         internal static SortedList<uint, string> SB_Defines = new SortedList<uint, string>();
-        internal static SortedList<uint, float[]> SFX_Data = new SortedList<uint, float[]>();
+        internal static SortedList<int, float[]> SFX_Data = new SortedList<int, float[]>();
         internal static SortedList<uint, string> SFX_Defines = new SortedList<uint, string>();
 
         internal static void AddDataToCombobox(ComboBox ControlToAddData, SortedList<uint, string> HashcodesDict)
@@ -163,9 +162,9 @@ namespace EuroSound_Application
         #region SFX DATA DICTIONARY
         internal static void ReadSFXData()
         {
+            int ItemKey = 0;
             string[] SplitedLine;
             string line;
-            uint Hashcode;
 
             SFX_Data.Clear();
             using (FileStream fs = new FileStream(GlobalPreferences.HT_SoundsDataPath, FileMode.Open, FileAccess.Read))
@@ -186,44 +185,25 @@ namespace EuroSound_Application
                                 if (SplitedLine.Length >= 9)
                                 {
                                     float[] ArrayOfValues = new float[8];
-                                    ArrayOfValues[0] = StringFloatToDouble(SplitedLine[0]);
-                                    ArrayOfValues[1] = StringFloatToDouble(SplitedLine[1]);
-                                    ArrayOfValues[2] = StringFloatToDouble(SplitedLine[2]);
-                                    ArrayOfValues[3] = StringFloatToDouble(SplitedLine[3]);
-                                    ArrayOfValues[4] = StringFloatToDouble(SplitedLine[4]);
-                                    ArrayOfValues[5] = StringFloatToDouble(SplitedLine[5]);
-                                    ArrayOfValues[6] = StringFloatToDouble(SplitedLine[6]);
-                                    ArrayOfValues[7] = StringFloatToDouble(SplitedLine[7]);
-                                    Hashcode = 436207616 + uint.Parse(ArrayOfValues[0].ToString());
-                                    if (!SFX_Data.ContainsKey(Hashcode))
-                                    {
-                                        SFX_Data.Add(Hashcode, ArrayOfValues);
-                                    }
+                                    ArrayOfValues[0] = GenericFunctions.StringFloatToDouble(SplitedLine[0]);
+                                    ArrayOfValues[1] = GenericFunctions.StringFloatToDouble(SplitedLine[1]);
+                                    ArrayOfValues[2] = GenericFunctions.StringFloatToDouble(SplitedLine[2]);
+                                    ArrayOfValues[3] = GenericFunctions.StringFloatToDouble(SplitedLine[3]);
+                                    ArrayOfValues[4] = GenericFunctions.StringFloatToDouble(SplitedLine[4]);
+                                    ArrayOfValues[5] = GenericFunctions.StringFloatToDouble(SplitedLine[5]);
+                                    ArrayOfValues[6] = GenericFunctions.StringFloatToDouble(SplitedLine[6]);
+                                    ArrayOfValues[7] = GenericFunctions.StringFloatToDouble(SplitedLine[7]);
+
+                                    SFX_Data.Add(ItemKey, ArrayOfValues);
                                 }
                             }
+
+                            ItemKey++;
                         }
                     }
                 }
             }
             SFX_Data.TrimExcess();
-        }
-
-        private static float StringFloatToDouble(string Number)
-        {
-            float FinalNumber;
-            string num;
-
-            try
-            {
-                num = Number.Replace("f", string.Empty).Trim();
-                FinalNumber = float.Parse(num, CultureInfo.GetCultureInfo("en-US"));
-            }
-            catch
-            {
-                FinalNumber = 0.0f;
-            }
-
-            return FinalNumber;
         }
         #endregion SFX DATA DICTIONARY
     }

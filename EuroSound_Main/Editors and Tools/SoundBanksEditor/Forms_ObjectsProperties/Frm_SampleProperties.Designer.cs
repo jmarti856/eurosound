@@ -323,7 +323,6 @@
             this.Combobox_SelectedAudio.Location = new System.Drawing.Point(49, 42);
             this.Combobox_SelectedAudio.Name = "Combobox_SelectedAudio";
             this.Combobox_SelectedAudio.Size = new System.Drawing.Size(395, 21);
-            this.Combobox_SelectedAudio.Sorted = true;
             this.Combobox_SelectedAudio.TabIndex = 2;
             // 
             // groupBox2

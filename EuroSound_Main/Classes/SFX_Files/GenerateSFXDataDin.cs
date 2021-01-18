@@ -16,7 +16,7 @@ namespace EuroSound_Application.GenerateDataBinaryFile
             {
                 using (BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.MusicOutputPath + "\\SFX_Data.bin", FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                 {
-                    foreach (KeyValuePair<uint, float[]> Item in Hashcodes.SFX_Data)
+                    foreach (KeyValuePair<int, float[]> Item in Hashcodes.SFX_Data)
                     {
                         float[] Values = Item.Value;
 

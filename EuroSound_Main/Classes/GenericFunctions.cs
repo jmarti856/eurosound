@@ -7,6 +7,7 @@ using EuroSound_Application.SoundBanksEditor;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Resources;
 using System.Security.Cryptography;
@@ -203,13 +204,14 @@ namespace EuroSound_Application
             return SelectedPath;
         }
 
-        internal static void ShowErrorsAndWarningsList(IEnumerable<string> ListToPrint, string FormTitle)
+        internal static void ShowErrorsAndWarningsList(IEnumerable<string> ListToPrint, string FormTitle, Form OwnerForm)
         {
             //Show Import results
             using (EuroSound_ErrorsAndWarningsList ImportResults = new EuroSound_ErrorsAndWarningsList(ListToPrint))
             {
                 ImportResults.Text = FormTitle;
-
+                ImportResults.Owner = OwnerForm;
+                ImportResults.TopMost = true;
                 ImportResults.ShowDialog();
             }
         }
@@ -306,6 +308,24 @@ namespace EuroSound_Application
             {
                 // Ignore.  Control is disposed cannot update the UI.
             }
+        }
+
+        internal static float StringFloatToDouble(string Number)
+        {
+            float FinalNumber;
+            string num;
+
+            try
+            {
+                num = Number.Replace("f", string.Empty).Trim();
+                FinalNumber = float.Parse(num, CultureInfo.GetCultureInfo("en-US"));
+            }
+            catch
+            {
+                FinalNumber = 0.0f;
+            }
+
+            return FinalNumber;
         }
     }
 }

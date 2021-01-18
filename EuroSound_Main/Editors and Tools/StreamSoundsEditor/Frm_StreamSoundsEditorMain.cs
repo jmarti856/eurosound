@@ -1,8 +1,8 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.AudioFunctionsLibrary;
-using EuroSound_Application.CurrentProjectForm;
 using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.CustomControls.ProjectSettings;
 using EuroSound_Application.CustomControls.SearcherForm;
 using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.StreamSounds.BuildSFX;
@@ -45,12 +45,14 @@ namespace EuroSound_Application.StreamSounds
             ProjectName = Name;
 
             //Menu Item: File
+            MenuItem_File_Close.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_Close")); };
             MenuItem_File_Save.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_Save")); };
             MenuItem_File_SaveAs.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_SaveAs")); };
             MenuItem_File_Export.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_Export")); };
             MenuItemFile_ReadSound.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_ReadSound")); };
             MenuItemFile_ReadYml.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_ReadYml")); };
 
+            MenuItem_File_Close.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItem_File_Save.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItem_File_SaveAs.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItem_File_Export.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
@@ -85,6 +87,9 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         private void Frm_StreamSoundsEditorMain_Load(object sender, EventArgs e)
         {
+            // Fixes bug where loading form maximised in MDI window shows incorrect icon. 
+            Icon = Icon.Clone() as Icon;
+
             //Load Preferences
             using (RegistryKey WindowStateConfig = WRegFunctions.ReturnRegistryKey("WindowState"))
             {
@@ -96,8 +101,6 @@ namespace EuroSound_Application.StreamSounds
                 }
                 else if (IsMaximized)
                 {
-                    // Fixes bug where loading form maximised in MDI window shows incorrect icon. 
-                    Icon = Icon.Clone() as Icon;
                     WindowState = FormWindowState.Maximized;
                 }
                 else
@@ -415,6 +418,11 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         //* MAIN MENU FILE
         //*===============================================================================================
+        private void MenuItem_File_Close_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
         private void MenuItem_File_Save_Click(object sender, System.EventArgs e)
         {
             LoadedFile = SaveDocument(LoadedFile, TreeView_StreamData, StreamSoundsList, ProjectInfo);

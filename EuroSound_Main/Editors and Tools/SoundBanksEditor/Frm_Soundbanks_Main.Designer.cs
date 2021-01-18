@@ -66,11 +66,12 @@ namespace EuroSound_Application.SoundBanksEditor
             this.ContextMenuSound_TextColor = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.MenuItem_File = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_File_Close = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_File_Save = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_File_SaveAs = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuItem_File_Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItem_File_Export = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuItem_File_Separator2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItemFile_ReadYml = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemFile_ReadSound = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_Edit = new System.Windows.Forms.ToolStripMenuItem();
@@ -106,7 +107,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.TabPage_WavHeaderData = new System.Windows.Forms.TabPage();
             this.Textbox_DataCount = new System.Windows.Forms.TextBox();
             this.Label_ItemsCountWav = new System.Windows.Forms.Label();
-            this.ListView_WavHeaderData = new ListView_ColumnSortingClick();
+            this.ListView_WavHeaderData = new EuroSound_Application.CustomControls.ListViewColumnSorting.ListView_ColumnSortingClick();
             this.Col_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_LoopOffset = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Frequency = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -119,7 +120,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Textbox_StreamFilesCount = new System.Windows.Forms.TextBox();
             this.Label_StreamFilesCount = new System.Windows.Forms.Label();
             this.Button_UpdateList_StreamData = new System.Windows.Forms.Button();
-            this.ListView_StreamData = new ListView_ColumnSortingClick();
+            this.ListView_StreamData = new EuroSound_Application.CustomControls.ListViewColumnSorting.ListView_ColumnSortingClick();
             this.Col_StreamName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_FileRef = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Sound = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -410,7 +411,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.MainMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(981, 24);
+            this.MainMenu.Size = new System.Drawing.Size(908, 24);
             this.MainMenu.TabIndex = 0;
             this.MainMenu.Text = "MainMenu";
             this.MainMenu.Visible = false;
@@ -418,11 +419,12 @@ namespace EuroSound_Application.SoundBanksEditor
             // MenuItem_File
             // 
             this.MenuItem_File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItem_File_Close,
             this.MenuItem_File_Save,
             this.MenuItem_File_SaveAs,
-            this.toolStripSeparator2,
+            this.MenuItem_File_Separator1,
             this.MenuItem_File_Export,
-            this.toolStripSeparator1,
+            this.MenuItem_File_Separator2,
             this.MenuItemFile_ReadYml,
             this.MenuItemFile_ReadSound});
             this.MenuItem_File.MergeAction = System.Windows.Forms.MergeAction.MatchOnly;
@@ -431,11 +433,21 @@ namespace EuroSound_Application.SoundBanksEditor
             this.MenuItem_File.Size = new System.Drawing.Size(37, 20);
             this.MenuItem_File.Text = "File";
             // 
+            // MenuItem_File_Close
+            // 
+            this.MenuItem_File_Close.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.MenuItem_File_Close.MergeIndex = 2;
+            this.MenuItem_File_Close.Name = "MenuItem_File_Close";
+            this.MenuItem_File_Close.Size = new System.Drawing.Size(207, 22);
+            this.MenuItem_File_Close.Text = "Close";
+            this.MenuItem_File_Close.Click += new System.EventHandler(this.MenuItem_File_Close_Click);
+            // 
             // MenuItem_File_Save
             // 
             this.MenuItem_File_Save.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.MenuItem_File_Save.MergeIndex = 2;
+            this.MenuItem_File_Save.MergeIndex = 3;
             this.MenuItem_File_Save.Name = "MenuItem_File_Save";
+            this.MenuItem_File_Save.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.MenuItem_File_Save.Size = new System.Drawing.Size(207, 22);
             this.MenuItem_File_Save.Text = "Save";
             this.MenuItem_File_Save.Click += new System.EventHandler(this.MenuItem_File_Save_Click);
@@ -443,39 +455,39 @@ namespace EuroSound_Application.SoundBanksEditor
             // MenuItem_File_SaveAs
             // 
             this.MenuItem_File_SaveAs.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.MenuItem_File_SaveAs.MergeIndex = 3;
+            this.MenuItem_File_SaveAs.MergeIndex = 4;
             this.MenuItem_File_SaveAs.Name = "MenuItem_File_SaveAs";
             this.MenuItem_File_SaveAs.Size = new System.Drawing.Size(207, 22);
             this.MenuItem_File_SaveAs.Text = "Save As...";
             this.MenuItem_File_SaveAs.Click += new System.EventHandler(this.MenuItem_File_SaveAs_Click);
             // 
-            // toolStripSeparator2
+            // MenuItem_File_Separator1
             // 
-            this.toolStripSeparator2.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripSeparator2.MergeIndex = 4;
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(204, 6);
+            this.MenuItem_File_Separator1.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.MenuItem_File_Separator1.MergeIndex = 5;
+            this.MenuItem_File_Separator1.Name = "MenuItem_File_Separator1";
+            this.MenuItem_File_Separator1.Size = new System.Drawing.Size(204, 6);
             // 
             // MenuItem_File_Export
             // 
             this.MenuItem_File_Export.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.MenuItem_File_Export.MergeIndex = 5;
+            this.MenuItem_File_Export.MergeIndex = 6;
             this.MenuItem_File_Export.Name = "MenuItem_File_Export";
             this.MenuItem_File_Export.Size = new System.Drawing.Size(207, 22);
             this.MenuItem_File_Export.Text = "Export";
             this.MenuItem_File_Export.Click += new System.EventHandler(this.MenuItemFile_Export_Click);
             // 
-            // toolStripSeparator1
+            // MenuItem_File_Separator2
             // 
-            this.toolStripSeparator1.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripSeparator1.MergeIndex = 6;
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(204, 6);
+            this.MenuItem_File_Separator2.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.MenuItem_File_Separator2.MergeIndex = 7;
+            this.MenuItem_File_Separator2.Name = "MenuItem_File_Separator2";
+            this.MenuItem_File_Separator2.Size = new System.Drawing.Size(204, 6);
             // 
             // MenuItemFile_ReadYml
             // 
             this.MenuItemFile_ReadYml.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.MenuItemFile_ReadYml.MergeIndex = 7;
+            this.MenuItemFile_ReadYml.MergeIndex = 8;
             this.MenuItemFile_ReadYml.Name = "MenuItemFile_ReadYml";
             this.MenuItemFile_ReadYml.Size = new System.Drawing.Size(207, 22);
             this.MenuItemFile_ReadYml.Text = "Import Sounds List (.yml)";
@@ -484,7 +496,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // MenuItemFile_ReadSound
             // 
             this.MenuItemFile_ReadSound.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.MenuItemFile_ReadSound.MergeIndex = 8;
+            this.MenuItemFile_ReadSound.MergeIndex = 9;
             this.MenuItemFile_ReadSound.Name = "MenuItemFile_ReadSound";
             this.MenuItemFile_ReadSound.Size = new System.Drawing.Size(207, 22);
             this.MenuItemFile_ReadSound.Text = "Read Sound (.yml)";
@@ -1058,7 +1070,7 @@ namespace EuroSound_Application.SoundBanksEditor
         private System.Windows.Forms.ToolStripMenuItem MenuItem_File;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_File_Save;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_File_SaveAs;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripSeparator MenuItem_File_Separator1;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Edit;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Edit_FileProps;
         private System.Windows.Forms.ContextMenuStrip ContextMenu_Sample;
@@ -1080,7 +1092,7 @@ namespace EuroSound_Application.SoundBanksEditor
         private System.Windows.Forms.ColumnHeader Col_Hashcode_Label;
         private System.Windows.Forms.ColumnHeader Col_UsedIn;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_File_Export;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator MenuItem_File_Separator2;
         private System.Windows.Forms.TabControl TabControlDataViewer;
         private System.Windows.Forms.TabPage TabPage_StreamData;
         private System.Windows.Forms.TabPage TabPage_WavHeaderData;
@@ -1144,5 +1156,6 @@ namespace EuroSound_Application.SoundBanksEditor
         private System.Windows.Forms.ContextMenuStrip ContextMenu_HashcodesList;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_CopyHashcode;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_CopyLabel;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_File_Close;
     }
 }

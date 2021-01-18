@@ -273,6 +273,9 @@
   <data name="MenuItemEdit_UndoSoundbanks" xml:space="preserve">
     <value>Undo the last item deletion (not works with samples and folders)</value>
   </data>
+  <data name="MenuItemFile_Close" xml:space="preserve">
+    <value>Close the active document</value>
+  </data>
   <data name="MenuItemFile_Exit" xml:space="preserve">
     <value>Quit the application; prompts to save documents</value>
   </data>
@@ -284,6 +287,9 @@
   </data>
   <data name="MenuItemFile_ReadYml" xml:space="preserve">
     <value>Read YML file list with multiples sounds</value>
+  </data>
+  <data name="MenuItemFile_RecentFile" xml:space="preserve">
+    <value>Open this document</value>
   </data>
   <data name="MenuItemHelp_About" xml:space="preserve">
     <value>Display program information, version number and copyright</value>

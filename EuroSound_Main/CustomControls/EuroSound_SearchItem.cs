@@ -38,6 +38,9 @@ namespace EuroSound_Application.CustomControls.SearcherForm
             FormType = FormToSearch.GetType();
 
             //InsertItems To Combobox
+            Combobox_LookIn.DisplayMember = "Text";
+            Combobox_LookIn.ValueMember = "Value";
+
             Combobox_LookIn.Items.Add(new { Text = "All", Value = 9 });
             if (FormType == typeof(Frm_Soundbanks_Main))
             {
@@ -51,8 +54,6 @@ namespace EuroSound_Application.CustomControls.SearcherForm
             }
 
             //Show Data
-            Combobox_LookIn.DisplayMember = "Text";
-            Combobox_LookIn.ValueMember = "Value";
             Combobox_LookIn.SelectedIndex = 0;
         }
 
@@ -176,7 +177,7 @@ namespace EuroSound_Application.CustomControls.SearcherForm
             int ComboSelectedIndex = 0;
 
             //Get Selected Index
-            Combobox_LookIn.BeginInvoke((MethodInvoker)delegate
+            Combobox_LookIn.Invoke((MethodInvoker)delegate
             {
                 ComboSelectedIndex = (int)(Combobox_LookIn.SelectedItem as dynamic).Value;
             });
@@ -295,14 +296,14 @@ namespace EuroSound_Application.CustomControls.SearcherForm
         {
             List<TreeNode> Matches = new List<TreeNode>();
 
-            SearchNodeRecursiveByText(Collection, SearchFor, ControlToSearch, MatchOnly, Matches, e);
+            SearchNodeRecursiveByText(Collection, SearchFor.ToLower(), ControlToSearch, MatchOnly, Matches, e);
 
             return Matches;
         }
 
-        internal void SearchNodeRecursiveByText(IEnumerable nodes, string searchFor, TreeView TreeViewControl, bool MatchOnly, List<TreeNode> Matches, DoWorkEventArgs e)
+        internal void SearchNodeRecursiveByText(IEnumerable NodeParent, string searchFor, TreeView TreeViewControl, bool MatchOnly, List<TreeNode> Matches, DoWorkEventArgs e)
         {
-            foreach (TreeNode node in nodes)
+            foreach (TreeNode ChildNode in NodeParent)
             {
                 if (BgWorker_Searches.CancellationPending)
                 {
@@ -312,29 +313,33 @@ namespace EuroSound_Application.CustomControls.SearcherForm
                 }
                 else
                 {
-                    if (MatchOnly)
+                    //Search inside folders
+                    if (ChildNode.Tag.Equals("Root") || ChildNode.Tag.Equals("Folder"))
                     {
-                        if (!(node.Tag.Equals("Root") || node.Tag.Equals("Folder")))
-                        {
-                            if (node.Text.ToLower().Contains(searchFor))
-                            {
-                                Matches.Add(node);
-                            }
-                        }
+                        SearchNodeRecursiveByText(ChildNode.Nodes, searchFor, TreeViewControl, MatchOnly, Matches, e);
                     }
                     else
                     {
-                        if (!(node.Tag.Equals("Root") || node.Tag.Equals("Folder")))
+                        //Search type
+                        if (MatchOnly)
                         {
-                            if (node.Text.Equals(searchFor, StringComparison.OrdinalIgnoreCase))
+                            if (ChildNode.Text.ToLower().Contains(searchFor))
                             {
-                                Matches.Add(node);
+                                Matches.Add(ChildNode);
                             }
                         }
-                    }
-                    if (node != null)
-                    {
-                        SearchNodeRecursiveByText(node.Nodes, searchFor, TreeViewControl, MatchOnly, Matches, e);
+                        else
+                        {
+                            if (ChildNode.Text.Equals(searchFor, StringComparison.OrdinalIgnoreCase))
+                            {
+                                Matches.Add(ChildNode);
+                            }
+                        }
+
+                        if (ChildNode.Nodes.Count > 0)
+                        {
+                            SearchNodeRecursiveByText(ChildNode.Nodes, searchFor, TreeViewControl, MatchOnly, Matches, e);
+                        }
                     }
                 }
             }
@@ -342,18 +347,21 @@ namespace EuroSound_Application.CustomControls.SearcherForm
 
         private void ClearSearch()
         {
-            if (!BgWorker_Searches.IsBusy)
+            if (ListViewResults.Items.Count > 0)
             {
-                DialogResult AskToClearSearch = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("SearcherInfoClearButton"), "EuroSound", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                if (AskToClearSearch == DialogResult.OK)
+                if (!BgWorker_Searches.IsBusy)
                 {
-                    //Clear stored data from previous searchs
-                    if (Results != null)
+                    DialogResult AskToClearSearch = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("SearcherInfoClearButton"), "EuroSound", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                    if (AskToClearSearch == DialogResult.OK)
                     {
-                        Results.Clear();
+                        //Clear stored data from previous searchs
+                        if (Results != null)
+                        {
+                            Results.Clear();
+                        }
+                        ListViewResults.Items.Clear();
+                        Textbox_TextToSearch.Clear();
                     }
-                    ListViewResults.Items.Clear();
-                    Textbox_TextToSearch.Clear();
                 }
             }
         }

@@ -37,18 +37,21 @@ namespace EuroSound_Application.CustomControls.WarningsList
             this.Button_Copy = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.ListViewImages = new System.Windows.Forms.ImageList(this.components);
+            this.Button_Print = new System.Windows.Forms.Button();
             this.ListView_Reports = new EuroSound_Application.CustomControls.ListViewColumnSorting.ListView_ColumnSortingClick();
             this.Col_Level = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Error = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.PrintDialog_Document = new System.Windows.Forms.PrintDialog();
+            this.PrintDocument_DocumentToPrint = new System.Drawing.Printing.PrintDocument();
             this.SuspendLayout();
             // 
             // Button_OK
             // 
             this.Button_OK.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.Button_OK.Location = new System.Drawing.Point(324, 409);
+            this.Button_OK.Location = new System.Drawing.Point(368, 409);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
-            this.Button_OK.TabIndex = 2;
+            this.Button_OK.TabIndex = 3;
             this.Button_OK.Text = "OK";
             this.Button_OK.UseVisualStyleBackColor = true;
             this.Button_OK.Click += new System.EventHandler(this.Button_OK_Click);
@@ -56,7 +59,7 @@ namespace EuroSound_Application.CustomControls.WarningsList
             // Button_Copy
             // 
             this.Button_Copy.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.Button_Copy.Location = new System.Drawing.Point(243, 409);
+            this.Button_Copy.Location = new System.Drawing.Point(206, 409);
             this.Button_Copy.Name = "Button_Copy";
             this.Button_Copy.Size = new System.Drawing.Size(75, 23);
             this.Button_Copy.TabIndex = 1;
@@ -81,6 +84,17 @@ namespace EuroSound_Application.CustomControls.WarningsList
             this.ListViewImages.Images.SetKeyName(0, "Message_Error.png");
             this.ListViewImages.Images.SetKeyName(1, "Message_Warning.png");
             this.ListViewImages.Images.SetKeyName(2, "Message_Info.png");
+            // 
+            // Button_Print
+            // 
+            this.Button_Print.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.Button_Print.Location = new System.Drawing.Point(287, 409);
+            this.Button_Print.Name = "Button_Print";
+            this.Button_Print.Size = new System.Drawing.Size(75, 23);
+            this.Button_Print.TabIndex = 2;
+            this.Button_Print.Text = "Print";
+            this.Button_Print.UseVisualStyleBackColor = true;
+            this.Button_Print.Click += new System.EventHandler(this.Button_Print_Click);
             // 
             // ListView_Reports
             // 
@@ -111,12 +125,24 @@ namespace EuroSound_Application.CustomControls.WarningsList
             this.Col_Error.Text = "Error";
             this.Col_Error.Width = 520;
             // 
+            // PrintDialog_Document
+            // 
+            this.PrintDialog_Document.AllowSelection = true;
+            this.PrintDialog_Document.PrintToFile = true;
+            this.PrintDialog_Document.UseEXDialog = true;
+            // 
+            // PrintDocument_DocumentToPrint
+            // 
+            this.PrintDocument_DocumentToPrint.OriginAtMargins = true;
+            this.PrintDocument_DocumentToPrint.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintDocument_DocumentToPrint_PrintPage);
+            // 
             // EuroSound_ErrorsAndWarningsList
             // 
             this.AcceptButton = this.Button_OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(651, 444);
+            this.Controls.Add(this.Button_Print);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.ListView_Reports);
             this.Controls.Add(this.Button_Copy);
@@ -129,7 +155,6 @@ namespace EuroSound_Application.CustomControls.WarningsList
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "EuroSound_ImportResultsList";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.EuroSound_ImportResultsList_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -144,5 +169,8 @@ namespace EuroSound_Application.CustomControls.WarningsList
         private System.Windows.Forms.ColumnHeader Col_Error;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ImageList ListViewImages;
+        private System.Windows.Forms.Button Button_Print;
+        private System.Windows.Forms.PrintDialog PrintDialog_Document;
+        private System.Drawing.Printing.PrintDocument PrintDocument_DocumentToPrint;
     }
 }

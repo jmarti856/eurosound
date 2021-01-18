@@ -601,6 +601,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Close the active document.
+        /// </summary>
+        internal static string MenuItemFile_Close {
+            get {
+                return ResourceManager.GetString("MenuItemFile_Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Quit the application; prompts to save documents.
         /// </summary>
         internal static string MenuItemFile_Exit {
@@ -633,6 +642,15 @@ namespace EuroSound_Application.Properties {
         internal static string MenuItemFile_ReadYml {
             get {
                 return ResourceManager.GetString("MenuItemFile_ReadYml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Open this document.
+        /// </summary>
+        internal static string MenuItemFile_RecentFile {
+            get {
+                return ResourceManager.GetString("MenuItemFile_RecentFile", resourceCulture);
             }
         }
         

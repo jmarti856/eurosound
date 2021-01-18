@@ -127,32 +127,31 @@ namespace EuroSound_Application.SFXData
                 Button_Search.Enabled = false;
             });
 
-            foreach (KeyValuePair<uint, float[]> Item in Hashcodes.SFX_Data)
+            foreach (KeyValuePair<int, float[]> Item in Hashcodes.SFX_Data)
             {
-                if (Item.Key != 436207616)
+                ItemValue = Item.Value;
+                ItemToAdd = new ListViewItem(new[] { ItemValue[0].ToString(), ItemValue[1].ToString("n1"), ItemValue[2].ToString("n1"), ItemValue[3].ToString("n1"), ItemValue[4].ToString("n6"), ItemValue[5].ToString(), ItemValue[6].ToString(), ItemValue[7].ToString() })
                 {
-                    ItemValue = Item.Value;
-                    ItemToAdd = new ListViewItem(new[] { ItemValue[0].ToString(), ItemValue[1].ToString("n1"), ItemValue[2].ToString("n1"), ItemValue[3].ToString("n1"), ItemValue[4].ToString("n6"), ItemValue[5].ToString(), ItemValue[6].ToString(), ItemValue[7].ToString() })
-                    {
-                        Tag = Item.Key
-                    };
+                    Tag = (int)ItemValue[0] + 436207616
+                };
 
-                    //Save check in case the object is disposed. 
-                    try
+                //Save check in case the object is disposed. 
+                try
+                {
+                    ListView_HashTableData.Invoke((MethodInvoker)delegate
                     {
-                        ListView_HashTableData.Invoke((MethodInvoker)delegate
-                        {
-                            ListView_HashTableData.Items.Add(ItemToAdd);
-                        });
-                    }
-                    catch (ObjectDisposedException)
-                    {
-
-                    }
-                    GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking Hashcode: " + Item.Key);
+                        ListView_HashTableData.Items.Add(ItemToAdd);
+                    });
                 }
-                Thread.Sleep(14);
+                catch (ObjectDisposedException)
+                {
+
+                }
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking Hashcode: " + Item.Key);
+
+                //Thread.Sleep(14);
             }
+
 
             ListView_HashTableData.BeginInvoke((MethodInvoker)delegate
             {
@@ -235,7 +234,7 @@ namespace EuroSound_Application.SFXData
             IEnumerable<string> ListToPrint = SFXDataBin_Generator.GenerateSFXDataBinaryFile();
             if (ListToPrint.Any())
             {
-                GenericFunctions.ShowErrorsAndWarningsList(ListToPrint, "Output Errors");
+                GenericFunctions.ShowErrorsAndWarningsList(ListToPrint, "Output Errors", this);
             }
         }
 
@@ -268,7 +267,7 @@ namespace EuroSound_Application.SFXData
                 ListViewItem SelectedItem = ListView_HashTableData.SelectedItems[0];
                 if (SelectedItem.SubItems.Count > 0)
                 {
-                    SelectedHash = 436207616 + uint.Parse(SelectedItem.SubItems[0].Text);
+                    SelectedHash = uint.Parse(SelectedItem.SubItems[0].Text) + 436207616;
                     if (Hashcodes.SFX_Defines.ContainsKey(SelectedHash))
                     {
                         Textbox_SelectedHashcode.Text = Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, SelectedHash);

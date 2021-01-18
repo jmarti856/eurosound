@@ -245,22 +245,25 @@
     <Compile Include="Editors and Tools\FilelistBin_Generator\Frm_SFX_DataGenerator.Designer.cs">
       <DependentUpon>Frm_SFX_DataGenerator.cs</DependentUpon>
     </Compile>
-    <Compile Include="Frm_AboutEuroSound.cs">
+    <Compile Include="MainFrame\Frm_AboutEuroSound.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Frm_AboutEuroSound.Designer.cs">
+    <Compile Include="MainFrame\Frm_AboutEuroSound.Designer.cs">
       <DependentUpon>Frm_AboutEuroSound.cs</DependentUpon>
     </Compile>
-    <Compile Include="Frm_EuroSound_Main.cs">
+    <Compile Include="MainFrame\Frm_EuroSound_Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Frm_EuroSound_Main.Designer.cs">
+    <Compile Include="MainFrame\Frm_EuroSound_Main.Designer.cs">
       <DependentUpon>Frm_EuroSound_Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Frm_EuroSound_Splash.cs">
+    <Compile Include="MainFrame\Frm_EuroSound_MainFunctions.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Frm_EuroSound_Splash.Designer.cs">
+    <Compile Include="MainFrame\Frm_EuroSound_Splash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainFrame\Frm_EuroSound_Splash.Designer.cs">
       <DependentUpon>Frm_EuroSound_Splash.cs</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\ListView_ColumnSortingClick.cs">
@@ -311,11 +314,11 @@
     <Compile Include="Editors and Tools\SoundBanksEditor\Forms_ObjectsProperties\Frm_BuildSFXFile.Designer.cs">
       <DependentUpon>Frm_BuildSFXFile.cs</DependentUpon>
     </Compile>
-    <Compile Include="Frm_FileProperties.cs">
+    <Compile Include="CustomControls\EuroSound_ProjectSettings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Frm_FileProperties.Designer.cs">
-      <DependentUpon>Frm_FileProperties.cs</DependentUpon>
+    <Compile Include="CustomControls\EuroSound_ProjectSettings.Designer.cs">
+      <DependentUpon>EuroSound_ProjectSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Editors and Tools\SoundBanksEditor\Frm_Soundbanks_Main.cs">
       <SubType>Form</SubType>
@@ -422,13 +425,13 @@
     <EmbeddedResource Include="Editors and Tools\FilelistBin_Generator\Frm_SFX_DataGenerator.resx">
       <DependentUpon>Frm_SFX_DataGenerator.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Frm_AboutEuroSound.resx">
+    <EmbeddedResource Include="MainFrame\Frm_AboutEuroSound.resx">
       <DependentUpon>Frm_AboutEuroSound.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Frm_EuroSound_Main.resx">
+    <EmbeddedResource Include="MainFrame\Frm_EuroSound_Main.resx">
       <DependentUpon>Frm_EuroSound_Main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Frm_EuroSound_Splash.resx">
+    <EmbeddedResource Include="MainFrame\Frm_EuroSound_Splash.resx">
       <DependentUpon>Frm_EuroSound_Splash.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\ListView_ColumnSortingClick.resx">
@@ -459,8 +462,8 @@
     <EmbeddedResource Include="Editors and Tools\SoundBanksEditor\Forms_ObjectsProperties\Frm_BuildSFXFile.resx">
       <DependentUpon>Frm_BuildSFXFile.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Frm_FileProperties.resx">
-      <DependentUpon>Frm_FileProperties.cs</DependentUpon>
+    <EmbeddedResource Include="CustomControls\EuroSound_ProjectSettings.resx">
+      <DependentUpon>EuroSound_ProjectSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editors and Tools\SoundBanksEditor\Frm_Soundbanks_Main.resx">
       <DependentUpon>Frm_Soundbanks_Main.cs</DependentUpon>

@@ -4,16 +4,13 @@ using EuroSound_Application.ApplicationPreferencesForms;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.AudioConverter;
 using EuroSound_Application.CustomControls.NewProjectForm;
-using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.SFXData;
-using EuroSound_Application.SoundBanksEditor;
-using EuroSound_Application.StreamSounds;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Text;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -25,6 +22,8 @@ namespace EuroSound_Application
         //*===============================================================================================
         private int FormID = 0;
         private string ArgumentFromSplash;
+        private string[] RecentFilesList = new string[8];
+        private int NextMergeIndexRecentFiles = 1;
         private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
 
         public Frm_EuroSound_Main(string ArgumentToLoad)
@@ -133,6 +132,27 @@ namespace EuroSound_Application
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
+            //Load Recent Files
+            IEnumerable<string> FilesList = WRegFunctions.LoadRecentFilesList();
+            if (FilesList.Any())
+            {
+                int i = 0;
+                MainMenu_File.DropDownItems.RemoveAt(3);
+                foreach (string File in FilesList)
+                {
+                    if (i < RecentFilesList.Length)
+                    {
+                        InsertRecentFileToMenu(File);
+                        RecentFilesList[i] = File;
+                        i++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
             //This means we loaded a soundbank file
             if (!string.IsNullOrEmpty(ArgumentFromSplash))
             {
@@ -177,9 +197,10 @@ namespace EuroSound_Application
         private void Frm_EuroSound_Main_FormClosed(object sender, FormClosedEventArgs e)
         {
             WRegFunctions.SaveWindowState("MainFrame", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
-
+            WRegFunctions.SaveRecentFilesList(RecentFilesList);
             ClearTemporalFiles();
         }
+
 
         //*===============================================================================================
         //* MAIN MENU -- TOOLS
@@ -233,6 +254,42 @@ namespace EuroSound_Application
                 OpenFormsWithFileToLoad(ArgumentFromSplash);
             }
         }
+
+        //*===============================================================================================
+        //* MAIN MENU -- RECENT FILES
+        //*===============================================================================================
+        private void RecentFile_click(object sender, EventArgs e)
+        {
+            string FilePath;
+
+            //Get item and file path
+            ToolStripMenuItem ClickedBy = (ToolStripMenuItem)sender;
+            FilePath = ClickedBy.Tag.ToString();
+
+            //Update status bar
+            GlobalPreferences.StatusBar_ToolTipMode = false;
+
+            //Load file
+            if (System.IO.File.Exists(FilePath))
+            {
+                OpenFormsWithFileToLoad(ClickedBy.Tag.ToString());
+            }
+            else
+            {
+                MessageBox.Show(string.Join(" ", "Loading File:", FilePath, "\n", "\n", "Error:", FilePath, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void RecentFile_MouseHover(object sender, EventArgs e)
+        {
+            GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_RecentFile"));
+        }
+
+        private void RecentFile_MouseLeave(object sender, EventArgs e)
+        {
+            GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+        }
+
 
         //*===============================================================================================
         //* MAIN MENU -- HELP
@@ -336,137 +393,6 @@ namespace EuroSound_Application
         {
             RestoreApplication();
             Close();
-        }
-
-        //*===============================================================================================
-        //* FUNCTIONS
-        //*===============================================================================================
-        private void OpenFormsWithFileToLoad(string FileToLoad)
-        {
-            int TypeOfFileToLoad;
-
-            TypeOfFileToLoad = TypeOfEuroSoundFile(FileToLoad);
-            if (TypeOfFileToLoad == 0)
-            {
-                Frm_Soundbanks_Main SoundBanksForm = new Frm_Soundbanks_Main(string.Empty, FileToLoad)
-                {
-                    Owner = this,
-                    MdiParent = this,
-                    Tag = FormID.ToString()
-                };
-                SoundBanksForm.Show();
-                FormID++;
-            }
-            else if (TypeOfFileToLoad == 1)
-            {
-                Frm_StreamSoundsEditorMain StreamSoundsForm = new Frm_StreamSoundsEditorMain(string.Empty, FileToLoad)
-                {
-                    Owner = this,
-                    MdiParent = this,
-                    Tag = FormID.ToString()
-                };
-
-                StreamSoundsForm.Show();
-                FormID++;
-            }
-        }
-
-        private void OpenEmptyForms(string ProjectName, int TypeOfdata)
-        {
-            /*--[COMBOBOX FILE PROJECT SELECTED VALUES]--
-            0 = Soundbanks; 1 = Streamed sounds; 2 = Music tracks*/
-
-            if (TypeOfdata == 0)
-            {
-                Frm_Soundbanks_Main SoundBanksForms = new Frm_Soundbanks_Main(ProjectName, string.Empty)
-                {
-                    Owner = this,
-                    MdiParent = this,
-                    Tag = FormID.ToString()
-                };
-                SoundBanksForms.Show();
-                FormID++;
-            }
-            else if (TypeOfdata == 1)
-            {
-                Frm_StreamSoundsEditorMain SoundBanksForms = new Frm_StreamSoundsEditorMain(ProjectName, string.Empty)
-                {
-                    Owner = this,
-                    MdiParent = this,
-                    Tag = FormID.ToString()
-                };
-                SoundBanksForms.Show();
-                FormID++;
-            }
-        }
-
-        private int TypeOfEuroSoundFile(string FileToLoad)
-        {
-            int Type = -1;
-
-            /* TYPE VALUES
-            Type -1 = bad format
-            Type 0  = Soundbank
-            Type 1  = Stream Soundbank
-            Type 2  = Musics --NOT IMPLEMENTED YET--
-            */
-
-            if (System.IO.File.Exists(FileToLoad))
-            {
-                EuroSoundFiles ESFFiles = new EuroSoundFiles();
-                using (BinaryReader BReader = new BinaryReader(System.IO.File.Open(FileToLoad, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
-                {
-                    if (ESFFiles.FileIsCorrect(BReader))
-                    {
-                        Type = BReader.ReadSByte();
-                    }
-
-                    BReader.Close();
-                }
-            }
-
-            return Type;
-        }
-
-        private void RestoreApplication()
-        {
-            if (WindowState == FormWindowState.Minimized)
-            {
-                WindowState = FormWindowState.Maximized;
-                EuroSoundTrayIcon.Visible = false;
-                ShowInTaskbar = true;
-            }
-        }
-
-        private bool ClearTemporalFiles()
-        {
-            bool FilesRemoved = false;
-            string TemporalFolderPath = Path.Combine(new string[] { Path.GetTempPath(), "EuroSound" });
-
-            //Delete Temp Files from session if exists
-            if (Directory.Exists(TemporalFolderPath))
-            {
-                //Update Status Bar
-                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_RemovingTempFiles"));
-
-                //Get temporal files
-                DirectoryInfo TemporalDirectoryInfo = new DirectoryInfo(TemporalFolderPath);
-                foreach (FileInfo FileToDelete in TemporalDirectoryInfo.GetFiles())
-                {
-                    FilesRemoved = true;
-                    FileToDelete.Delete();
-                }
-                foreach (DirectoryInfo DirectoryToDelete in TemporalDirectoryInfo.GetDirectories())
-                {
-                    FilesRemoved = true;
-                    DirectoryToDelete.Delete(true);
-                }
-
-                //Update Status Bar
-                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
-            }
-
-            return FilesRemoved;
         }
     }
 }

@@ -198,7 +198,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
                 if (PurgedAudios.Count > 0)
                 {
-                    GenericFunctions.ShowErrorsAndWarningsList(PurgedAudios, "Purged Audios");
+                    GenericFunctions.ShowErrorsAndWarningsList(PurgedAudios, "Purged Audios", this);
                 }
 
                 ProjectInfo.FileHasBeenModified = true;

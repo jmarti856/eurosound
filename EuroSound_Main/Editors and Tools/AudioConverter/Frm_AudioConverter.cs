@@ -252,7 +252,7 @@ namespace EuroSound_Application.AudioConverter
 
             if (Reports.Count > 0)
             {
-                GenericFunctions.ShowErrorsAndWarningsList(Reports, "Results");
+                GenericFunctions.ShowErrorsAndWarningsList(Reports, "Results", this);
                 Reports = null;
             }
             ProgressBar_Status.Value = 0;

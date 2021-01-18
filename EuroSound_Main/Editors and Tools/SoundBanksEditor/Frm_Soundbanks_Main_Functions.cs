@@ -19,7 +19,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
             if (!string.IsNullOrEmpty(LoadedFile))
             {
-                NewFilePath = SerializeInfo.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, LoadedFile, ProjectProperties);
+                NewFilePath = EuroSoundFilesFunctions.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, LoadedFile, ProjectProperties);
             }
             else
             {
@@ -36,7 +36,7 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 if (Directory.Exists(Path.GetDirectoryName(SavePath)))
                 {
-                    SerializeInfo.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, SavePath, FileProperties);
+                    EuroSoundFilesFunctions.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, SavePath, FileProperties);
                 }
             }
             return SavePath;
@@ -133,7 +133,7 @@ namespace EuroSound_Application.SoundBanksEditor
             IEnumerable<string> Dependencies = EXSoundbanksFunctions.GetAudioDependencies(SelectedNode.Name, SelectedNode.Text, SoundsList, TreeView_File, false);
             if (Dependencies.Any())
             {
-                GenericFunctions.ShowErrorsAndWarningsList(Dependencies, "Deleting Audio");
+                GenericFunctions.ShowErrorsAndWarningsList(Dependencies, "Deleting Audio", this);
             }
             else
             {

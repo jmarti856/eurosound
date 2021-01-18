@@ -23,14 +23,16 @@ namespace EuroSound_Application.StreamSounds
 
         private void Frm_StreamSounds_MarkersEditor_Load(object sender, EventArgs e)
         {
+            ComboBox_MarkerType.DisplayMember = "Text";
+            ComboBox_MarkerType.ValueMember = "Value";
+
             ComboBox_MarkerType.Items.Add(new { Text = "Start", Value = 10 });
             ComboBox_MarkerType.Items.Add(new { Text = "End", Value = 9 });
             ComboBox_MarkerType.Items.Add(new { Text = "Goto", Value = 7 });
             ComboBox_MarkerType.Items.Add(new { Text = "Loop", Value = 6 });
             ComboBox_MarkerType.Items.Add(new { Text = "Pause", Value = 5 });
             ComboBox_MarkerType.Items.Add(new { Text = "Jump", Value = 0 });
-            ComboBox_MarkerType.DisplayMember = "Text";
-            ComboBox_MarkerType.ValueMember = "Value";
+
 
             //Temporal Sounds
             TemporalSelectedSound = new EXSoundStream
@@ -64,7 +66,7 @@ namespace EuroSound_Application.StreamSounds
             uint MarkerType;
 
             //Get type of the selected combobox value
-            MarkerType = (uint)ComboBox_MarkerType.SelectedValue;
+            MarkerType = (uint)(ComboBox_MarkerType.SelectedItem as dynamic).Value;
 
             //---------------------------------[Add Start Marker]-------------------------------
             if (MarkerType != 9)
@@ -98,7 +100,7 @@ namespace EuroSound_Application.StreamSounds
                 {
                     Name = (int)v_MarkerCount,
                     Position = (uint)Numeric_MarkerPosition.Value,
-                    MusicMakerType = (uint)ComboBox_MarkerType.SelectedValue,
+                    MusicMakerType = MarkerType,
                     MarkerCount = (v_MarkerCount + 1),
                     LoopMarkerCount = 1
                 };
@@ -116,7 +118,7 @@ namespace EuroSound_Application.StreamSounds
                 {
                     Name = (int)-1,
                     Position = (uint)Numeric_MarkerPosition.Value,
-                    MusicMakerType = (uint)ComboBox_MarkerType.SelectedValue,
+                    MusicMakerType = MarkerType,
                     MarkerCount = v_MarkerCount,
                 };
 
@@ -130,7 +132,7 @@ namespace EuroSound_Application.StreamSounds
                 {
                     Name = (int)v_MarkerCount,
                     Position = (uint)Numeric_MarkerPosition.Value,
-                    MusicMakerType = (uint)ComboBox_MarkerType.SelectedValue,
+                    MusicMakerType = MarkerType,
                     MarkerCount = v_MarkerCount,
                 };
 

@@ -295,7 +295,7 @@ namespace EuroSound_Application.StreamSounds.YMLReader
         {
             if (Reports.Count > 0)
             {
-                GenericFunctions.ShowErrorsAndWarningsList(Reports, Path.GetFileName(FilePath) + " Import results");
+                GenericFunctions.ShowErrorsAndWarningsList(Reports, Path.GetFileName(FilePath) + " Import results", null);
                 Reports = null;
             }
         }

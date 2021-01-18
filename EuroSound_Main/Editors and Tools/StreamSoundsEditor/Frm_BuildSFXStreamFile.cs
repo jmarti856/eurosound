@@ -192,7 +192,7 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
 
             if (Reports.Count > 0)
             {
-                GenericFunctions.ShowErrorsAndWarningsList(Reports, FileName + ".SFX Output Errors");
+                GenericFunctions.ShowErrorsAndWarningsList(Reports, FileName + ".SFX Output Errors", this);
             }
 
             //Close Form

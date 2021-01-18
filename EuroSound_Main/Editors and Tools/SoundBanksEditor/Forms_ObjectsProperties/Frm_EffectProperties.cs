@@ -171,23 +171,23 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void Cbx_hashcode_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            uint KeyToCheck = Convert.ToUInt32(cbx_hashcode.SelectedValue);
-            if (Hashcodes.SFX_Data.ContainsKey(KeyToCheck))
+            uint KeyToCheck = Convert.ToUInt32(cbx_hashcode.SelectedValue) - 436207616;
+            float[] SFXValues = Hashcodes.SFX_Data.FirstOrDefault(x => x.Value[0] == KeyToCheck).Value;
+
+            if (SFXValues != null)
             {
-                float[] items = Hashcodes.SFX_Data[KeyToCheck];
-                /*
-                [0] HashCode;    --USED--
-                [1] InnerRadius; --USED--
-                [2] OuterRadius; --USED--
-                [3] Altertness;
-                [4] Duration;
-                [5] Looping;
-                [6] Tracking3d; --USED--
-                [7] SampleStreamed;
-                */
-                Textbox_InnerRadius.Text = items[1].ToString();
-                Textbox_OuterRadius.Text = items[2].ToString();
-                cbx_trackingtype.SelectedIndex = int.Parse(items[6].ToString());
+                //[0] HashCode;    --USED--
+                //[1] InnerRadius; --USED--
+                //[2] OuterRadius; --USED--
+                //[3] Altertness;
+                //[4] Duration;
+                //[5] Looping;
+                //[6] Tracking3d; --USED--
+                //[7] SampleStreamed;
+
+                Textbox_InnerRadius.Text = SFXValues[1].ToString();
+                Textbox_OuterRadius.Text = SFXValues[2].ToString();
+                cbx_trackingtype.SelectedIndex = int.Parse(SFXValues[6].ToString());
             }
             else
             {

@@ -3,7 +3,7 @@ using EuroSound_Application.CurrentProjectFunctions;
 using System;
 using System.Windows.Forms;
 
-namespace EuroSound_Application.CurrentProjectForm
+namespace EuroSound_Application.CustomControls.ProjectSettings
 {
     public partial class Frm_FileProperties : Form
     {
