@@ -16,9 +16,8 @@ namespace EuroSound_Application.StreamSounds.YMLReader
         private AudioFunctions AudioLibrary = new AudioFunctions();
         internal List<string> Reports;
 
-        internal List<string> GetFilePathsFromList(string LevelSoundBankPath, string FilePath)
+        internal IEnumerable<string> GetFilePathsFromList(string LevelSoundBankPath, string FilePath)
         {
-            List<string> Paths = new List<string>();
             Reports = new List<string>();
 
             string[] lines = File.ReadAllLines(LevelSoundBankPath);
@@ -31,7 +30,7 @@ namespace EuroSound_Application.StreamSounds.YMLReader
                         if (!string.IsNullOrEmpty(lines[i]))
                         {
                             string[] line = lines[i].Split(null);
-                            Paths.Add(Path.GetDirectoryName(FilePath) + "\\" + line[1]);
+                            yield return Path.GetDirectoryName(FilePath) + "\\" + line[1];
                         }
                     }
                 }
@@ -41,16 +40,12 @@ namespace EuroSound_Application.StreamSounds.YMLReader
             {
                 Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect") + ": " + LevelSoundBankPath);
             }
-
-            return Paths;
         }
 
         internal void LoadDataFromSwyterUnpacker(Dictionary<uint, EXSoundStream> SoundsList, TreeView TreeViewControl, string FilePath, ProjectFile FileProperties)
         {
-            List<string> SoundsPaths;
-
             //Read sounds from the unpacker folder
-            SoundsPaths = GetFilePathsFromList(FilePath, FilePath);
+            IEnumerable<string> SoundsPaths = GetFilePathsFromList(FilePath, FilePath);
             foreach (string path in SoundsPaths)
             {
                 ReadYmlFile(SoundsList, TreeViewControl, path, Path.GetFileName(path), FileProperties);
@@ -69,8 +64,8 @@ namespace EuroSound_Application.StreamSounds.YMLReader
         {
             uint SoundID;
             uint[] CurrentSoundParams;
-            List<uint[]> StartMarkers;
-            List<int[]> Markers;
+            IEnumerable<uint[]> StartMarkers;
+            IEnumerable<int[]> Markers;
             string WavDataPath;
 
             //Update Status Bar
@@ -84,86 +79,93 @@ namespace EuroSound_Application.StreamSounds.YMLReader
             string FileCheck = reader.ReadLine();
             if (FileCheck.Equals("#ftype:4", StringComparison.OrdinalIgnoreCase))
             {
-                //Load the stream
-                YamlStream yaml = new YamlStream();
-                yaml.Load(reader);
-
-                //Examine the stream
-                YamlMappingNode mapping = (YamlMappingNode)yaml.Documents[0].RootNode;
-
-                CurrentSoundParams = GetSoundParams(mapping);
-                StartMarkers = GetStartMarkers(mapping);
-                Markers = GetMarkers(mapping);
-                WavDataPath = GetSoundFilePath(mapping, FilePath);
-
-                EXSoundStream SoundToAdd = new EXSoundStream
+                try
                 {
-                    MarkerID = CurrentSoundParams[0],
-                    MarkerDataCounterID = CurrentSoundParams[1],
-                    BaseVolume = CurrentSoundParams[4],
-                };
+                    //Load the stream
+                    YamlStream yaml = new YamlStream();
+                    yaml.Load(reader);
 
-                //------------------READ WAV FILE----------------------
-                if (GenericFunctions.AudioIsValid(WavDataPath, 1, 22050))
-                {
-                    LoadAudio(WavDataPath, SoundToAdd);
-                }
-                else
-                {
-                    string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(WavDataPath, Path.GetFileNameWithoutExtension(WavDataPath));
-                    if (!string.IsNullOrEmpty(FileTempFile))
+                    //Examine the stream
+                    YamlMappingNode mapping = (YamlMappingNode)yaml.Documents[0].RootNode;
+
+                    CurrentSoundParams = GetSoundParams(mapping);
+                    StartMarkers = GetStartMarkers(mapping);
+                    Markers = GetMarkers(mapping);
+                    WavDataPath = GetSoundFilePath(mapping, FilePath);
+
+                    EXSoundStream SoundToAdd = new EXSoundStream
+                    {
+                        MarkerID = CurrentSoundParams[0],
+                        MarkerDataCounterID = CurrentSoundParams[1],
+                        BaseVolume = CurrentSoundParams[4],
+                    };
+
+                    //------------------READ WAV FILE----------------------
+                    if (GenericFunctions.AudioIsValid(WavDataPath, 1, 22050))
                     {
                         LoadAudio(WavDataPath, SoundToAdd);
                     }
                     else
                     {
-                        Reports.Add("1Can't load: " + WavDataPath + " format not valid");
+                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(WavDataPath, Path.GetFileNameWithoutExtension(WavDataPath));
+                        if (!string.IsNullOrEmpty(FileTempFile))
+                        {
+                            LoadAudio(WavDataPath, SoundToAdd);
+                        }
+                        else
+                        {
+                            Reports.Add("1Can't load: " + WavDataPath + " format not valid");
+                        }
                     }
-                }
 
-                foreach (uint[] StartMarkerData in StartMarkers)
-                {
-                    EXStreamStartMarker StartMarker = new EXStreamStartMarker
+                    foreach (uint[] StartMarkerData in StartMarkers)
                     {
-                        Name = StartMarkerData[0],
-                        Position = StartMarkerData[1],
-                        MusicMakerType = StartMarkerData[2],
-                        Flags = StartMarkerData[3],
-                        Extra = StartMarkerData[4],
-                        LoopStart = StartMarkerData[5],
-                        MarkerCount = StartMarkerData[6],
-                        LoopMarkerCount = StartMarkerData[7],
-                        MarkerPos = StartMarkerData[8],
-                        IsInstant = StartMarkerData[9],
-                        InstantBuffer = StartMarkerData[10],
-                        StateA = StartMarkerData[11],
-                        StateB = StartMarkerData[12]
-                    };
+                        EXStreamStartMarker StartMarker = new EXStreamStartMarker
+                        {
+                            Name = StartMarkerData[0],
+                            Position = StartMarkerData[1],
+                            MusicMakerType = StartMarkerData[2],
+                            Flags = StartMarkerData[3],
+                            Extra = StartMarkerData[4],
+                            LoopStart = StartMarkerData[5],
+                            MarkerCount = StartMarkerData[6],
+                            LoopMarkerCount = StartMarkerData[7],
+                            MarkerPos = StartMarkerData[8],
+                            IsInstant = StartMarkerData[9],
+                            InstantBuffer = StartMarkerData[10],
+                            StateA = StartMarkerData[11],
+                            StateB = StartMarkerData[12]
+                        };
 
-                    SoundToAdd.StartMarkers.Add(StartMarker);
-                }
+                        SoundToAdd.StartMarkers.Add(StartMarker);
+                    }
 
-                foreach (int[] MarkerData in Markers)
-                {
-                    EXStreamMarker Marker = new EXStreamMarker
+                    foreach (int[] MarkerData in Markers)
                     {
-                        Name = MarkerData[0],
-                        Position = (uint)MarkerData[1],
-                        MusicMakerType = (uint)MarkerData[2],
-                        Flags = (uint)MarkerData[3],
-                        Extra = (uint)MarkerData[4],
-                        LoopStart = (uint)MarkerData[5],
-                        MarkerCount = (uint)MarkerData[6],
-                        LoopMarkerCount = (uint)MarkerData[7]
-                    };
+                        EXStreamMarker Marker = new EXStreamMarker
+                        {
+                            Name = MarkerData[0],
+                            Position = (uint)MarkerData[1],
+                            MusicMakerType = (uint)MarkerData[2],
+                            Flags = (uint)MarkerData[3],
+                            Extra = (uint)MarkerData[4],
+                            LoopStart = (uint)MarkerData[5],
+                            MarkerCount = (uint)MarkerData[6],
+                            LoopMarkerCount = (uint)MarkerData[7]
+                        };
 
-                    SoundToAdd.Markers.Add(Marker);
+                        SoundToAdd.Markers.Add(Marker);
+                    }
+
+                    SoundID = GenericFunctions.GetNewObjectID(FileProperties);
+                    SoundsList.Add(SoundID, SoundToAdd);
+
+                    TreeNodeFunctions.TreeNodeAddNewNode("Sounds", SoundID.ToString(), SoundName, 2, 2, "Sound", Color.Black, TreeViewControl);
                 }
-
-                SoundID = GenericFunctions.GetNewObjectID(FileProperties);
-                SoundsList.Add(SoundID, SoundToAdd);
-
-                TreeNodeFunctions.TreeNodeAddNewNode("Sounds", SoundID.ToString(), SoundName, 2, 2, "Sound", Color.Black, TreeViewControl);
+                catch
+                {
+                    Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect"));
+                }
             }
             else
             {
@@ -226,11 +228,10 @@ namespace EuroSound_Application.StreamSounds.YMLReader
             return SoundFilePath;
         }
 
-        private List<uint[]> GetStartMarkers(YamlMappingNode mapping)
+        private IEnumerable<uint[]> GetStartMarkers(YamlMappingNode mapping)
         {
             int SampleIndex;
             int index;
-            List<uint[]> Markers = new List<uint[]>();
 
             YamlMappingNode SampleParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("StartMarkers")];
             foreach (KeyValuePair<YamlNode, YamlNode> entry in SampleParameters.Children)
@@ -253,17 +254,14 @@ namespace EuroSound_Application.StreamSounds.YMLReader
                         index++;
                     }
                 }
-                Markers.Add(SampleParams);
+                yield return SampleParams;
             }
-
-            return Markers;
         }
 
-        private List<int[]> GetMarkers(YamlMappingNode mapping)
+        private IEnumerable<int[]> GetMarkers(YamlMappingNode mapping)
         {
             int SampleIndex;
             int index;
-            List<int[]> Markers = new List<int[]>();
 
             YamlMappingNode SampleParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("Markers")];
             foreach (KeyValuePair<YamlNode, YamlNode> entry in SampleParameters.Children)
@@ -285,10 +283,8 @@ namespace EuroSound_Application.StreamSounds.YMLReader
                         index++;
                     }
                 }
-                Markers.Add(SampleParams);
+                yield return SampleParams;
             }
-
-            return Markers;
         }
 
         private void ShowErrorsWarningsList(string FilePath)
@@ -307,26 +303,33 @@ namespace EuroSound_Application.StreamSounds.YMLReader
             SoundToLoad.WAVFileMD5 = GenericFunctions.CalculateMD5(AudioPath);
             SoundToLoad.WAVFileName = Path.GetFileName(AudioPath);
 
-            using (WaveFileReader AudioReader = new WaveFileReader(AudioPath))
+            try
             {
-                SoundToLoad.Channels = (byte)AudioReader.WaveFormat.Channels;
-                SoundToLoad.Frequency = (uint)AudioReader.WaveFormat.SampleRate;
-                SoundToLoad.RealSize = (uint)new FileInfo(AudioPath).Length;
-                SoundToLoad.Bits = (uint)AudioReader.WaveFormat.BitsPerSample;
-                SoundToLoad.Encoding = AudioReader.WaveFormat.Encoding.ToString();
-                SoundToLoad.Duration = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1);
-
-                AudioReader.Close();
-
-                //Get PCM Data
-                SoundToLoad.PCM_Data = AudioLibrary.GetWavPCMData(AudioPath);
-
-                //Get IMA ADPCM Data
-                ImaPath = AudioLibrary.ConvertWavToIMAADPCM(AudioPath, Path.GetFileNameWithoutExtension(AudioPath));
-                if (!string.IsNullOrEmpty(ImaPath))
+                using (WaveFileReader AudioReader = new WaveFileReader(AudioPath))
                 {
-                    SoundToLoad.IMA_ADPCM_DATA = File.ReadAllBytes(ImaPath);
+                    SoundToLoad.Channels = (byte)AudioReader.WaveFormat.Channels;
+                    SoundToLoad.Frequency = (uint)AudioReader.WaveFormat.SampleRate;
+                    SoundToLoad.RealSize = (uint)new FileInfo(AudioPath).Length;
+                    SoundToLoad.Bits = (uint)AudioReader.WaveFormat.BitsPerSample;
+                    SoundToLoad.Encoding = AudioReader.WaveFormat.Encoding.ToString();
+                    SoundToLoad.Duration = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1);
+
+                    AudioReader.Close();
+
+                    //Get PCM Data
+                    SoundToLoad.PCM_Data = AudioLibrary.GetWavPCMData(AudioPath);
+
+                    //Get IMA ADPCM Data
+                    ImaPath = AudioLibrary.ConvertWavToIMAADPCM(AudioPath, Path.GetFileNameWithoutExtension(AudioPath));
+                    if (!string.IsNullOrEmpty(ImaPath))
+                    {
+                        SoundToLoad.IMA_ADPCM_DATA = File.ReadAllBytes(ImaPath);
+                    }
                 }
+            }
+            catch (FormatException)
+            {
+
             }
 
             if (SoundToLoad.PCM_Data == null)

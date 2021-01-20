@@ -13,9 +13,8 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
     {
         internal List<string> Reports;
 
-        internal List<string> GetFilePathsFromList(string LevelSoundBankPath, string FilePath)
+        internal IEnumerable<string> GetFilePathsFromList(string LevelSoundBankPath, string FilePath)
         {
-            List<string> Paths = new List<string>();
             Reports = new List<string>();
 
             string[] lines = File.ReadAllLines(LevelSoundBankPath);
@@ -28,7 +27,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
                         string[] line = lines[i].Split(null);
                         if (line.Length > 1)
                         {
-                            Paths.Add(Path.GetDirectoryName(FilePath) + "\\" + line[1] + "\\effectProperties.yml");
+                            yield return Path.GetDirectoryName(FilePath) + "\\" + line[1] + "\\effectProperties.yml";
                         }
                     }
                 }
@@ -38,18 +37,15 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
             {
                 Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect") + ": " + LevelSoundBankPath);
             }
-
-            return Paths;
         }
 
         internal void LoadDataFromSwyterUnpacker(Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDict, TreeView TreeViewControl, string FilePath, ProjectFile FileProperties)
         {
-            List<string> SoundsPaths;
             uint SoundHashcode;
             string SoundName;
 
             //Read sounds from the unpacker folder
-            SoundsPaths = GetFilePathsFromList(FilePath, FilePath);
+            IEnumerable<string> SoundsPaths = GetFilePathsFromList(FilePath, FilePath);
             foreach (string path in SoundsPaths)
             {
                 SoundName = new DirectoryInfo(Path.GetDirectoryName(path)).Name;
@@ -63,12 +59,15 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
             }
 
             //Collapse root nodes
-            TreeViewControl.Invoke((MethodInvoker)delegate
+            if (TreeViewControl.IsHandleCreated)
             {
-                TreeViewControl.Nodes[0].Collapse();
-                TreeViewControl.Nodes[1].Collapse();
-                TreeViewControl.Nodes[2].Collapse();
-            });
+                TreeViewControl.Invoke((MethodInvoker)delegate
+                {
+                    TreeViewControl.Nodes[0].Collapse();
+                    TreeViewControl.Nodes[1].Collapse();
+                    TreeViewControl.Nodes[2].Collapse();
+                });
+            }
 
             ShowErrorsWarningsList(FilePath);
         }
@@ -163,7 +162,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
                                 if (EXSoundbanksFunctions.SubSFXFlagChecked(CurrentSoundParams[11]))
                                 {
                                     uint GetHashcode = Convert.ToUInt32("0x" + Entry.Value[0].ToString("X8"), 16);
-                                    NewSample.HashcodeSubSFX = GetSoundHashcode(GetHashcode);
+                                    NewSample.HashcodeSubSFX = 0x1A000000 | GetHashcode;
                                     NewSample.ComboboxSelectedAudio = "<SUB SFX>";
                                 }
                                 else
@@ -311,12 +310,6 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
             }
 
             return Samples;
-        }
-
-        private uint GetSoundHashcode(uint Hashcode)
-        {
-            uint FinalHashcode = 0x1A000000 | Hashcode;
-            return FinalHashcode;
         }
 
         private int[] GetSoundParams(YamlMappingNode mapping)

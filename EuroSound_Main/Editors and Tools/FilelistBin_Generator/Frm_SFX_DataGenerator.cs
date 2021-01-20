@@ -132,7 +132,7 @@ namespace EuroSound_Application.SFXData
                 ItemValue = Item.Value;
                 ItemToAdd = new ListViewItem(new[] { ItemValue[0].ToString(), ItemValue[1].ToString("n1"), ItemValue[2].ToString("n1"), ItemValue[3].ToString("n1"), ItemValue[4].ToString("n6"), ItemValue[5].ToString(), ItemValue[6].ToString(), ItemValue[7].ToString() })
                 {
-                    Tag = (int)ItemValue[0] + 436207616
+                    Tag = 0x1A000000 | (uint)ItemValue[0]
                 };
 
                 //Save check in case the object is disposed. 
@@ -267,7 +267,7 @@ namespace EuroSound_Application.SFXData
                 ListViewItem SelectedItem = ListView_HashTableData.SelectedItems[0];
                 if (SelectedItem.SubItems.Count > 0)
                 {
-                    SelectedHash = uint.Parse(SelectedItem.SubItems[0].Text) + 436207616;
+                    SelectedHash = 0x1A000000 | uint.Parse(SelectedItem.SubItems[0].Text);
                     if (Hashcodes.SFX_Defines.ContainsKey(SelectedHash))
                     {
                         Textbox_SelectedHashcode.Text = Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, SelectedHash);

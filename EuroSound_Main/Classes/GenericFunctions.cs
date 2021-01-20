@@ -260,22 +260,30 @@ namespace EuroSound_Application
         internal static bool AudioIsValid(string FilePath, int NumChannels, int frequency)
         {
             bool AudioIsCorrect = false;
-            using (WaveFileReader AudioReader = new WaveFileReader(FilePath))
+
+            try
             {
-                int Rate, Bits, Channels;
-                string Encoding;
-
-                Rate = AudioReader.WaveFormat.SampleRate;
-                Bits = AudioReader.WaveFormat.BitsPerSample;
-                Encoding = AudioReader.WaveFormat.Encoding.ToString();
-                Channels = AudioReader.WaveFormat.Channels;
-
-                if (Encoding.Equals("Pcm") && Bits == 16 && Rate == frequency && Channels == NumChannels)
+                using (WaveFileReader AudioReader = new WaveFileReader(FilePath))
                 {
-                    AudioIsCorrect = true;
-                }
+                    int Rate, Bits, Channels;
+                    string Encoding;
 
-                AudioReader.Close();
+                    Rate = AudioReader.WaveFormat.SampleRate;
+                    Bits = AudioReader.WaveFormat.BitsPerSample;
+                    Encoding = AudioReader.WaveFormat.Encoding.ToString();
+                    Channels = AudioReader.WaveFormat.Channels;
+
+                    if (Encoding.Equals("Pcm") && Bits == 16 && Rate == frequency && Channels == NumChannels)
+                    {
+                        AudioIsCorrect = true;
+                    }
+
+                    AudioReader.Close();
+                }
+            }
+            catch (FormatException)
+            {
+
             }
 
             return AudioIsCorrect;

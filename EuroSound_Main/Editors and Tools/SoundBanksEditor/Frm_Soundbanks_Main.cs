@@ -30,7 +30,7 @@ namespace EuroSound_Application.SoundBanksEditor
         internal Dictionary<uint, EXSound> SoundsList = new Dictionary<uint, EXSound>();
         internal ProjectFile ProjectInfo = new ProjectFile();
         private EuroSoundFiles EuroSoundFilesFunctions = new EuroSoundFiles();
-        private Thread UpdateList, UpdateWavList, UpdateStreamDataList;
+        private Thread UpdateList, UpdateWavList, UpdateStreamDataList, LoadYamlFile;
         private SoundBanksYMLReader LibYamlReader = new SoundBanksYMLReader();
         private AudioFunctions AudioFunctionsLibrary = new AudioFunctions();
         private readonly Regex sWhitespace = new Regex(@"\s+");
@@ -249,6 +249,11 @@ namespace EuroSound_Application.SoundBanksEditor
             if (UpdateStreamDataList != null)
             {
                 UpdateStreamDataList.Abort();
+            }
+
+            if (LoadYamlFile != null)
+            {
+                LoadYamlFile.Abort();
             }
 
             //Clear stack lists
@@ -571,7 +576,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
 
                 //Load New data
-                Thread LoadYamlFile = new Thread(() => LibYamlReader.LoadDataFromSwyterUnpacker(SoundsList, AudioDataDict, TreeView_File, FilePath, ProjectInfo))
+                LoadYamlFile = new Thread(() => LibYamlReader.LoadDataFromSwyterUnpacker(SoundsList, AudioDataDict, TreeView_File, FilePath, ProjectInfo))
                 {
                     IsBackground = true
                 };
