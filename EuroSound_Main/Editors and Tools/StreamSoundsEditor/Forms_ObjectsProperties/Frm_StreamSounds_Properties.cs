@@ -101,7 +101,7 @@ namespace EuroSound_Application.StreamSounds
         {
             if (TemporalSound.PCM_Data != null)
             {
-                AudioLibrary.PlayAudio(_waveOut, TemporalSound.PCM_Data, (int)TemporalSound.Frequency, 0, (int)TemporalSound.Bits, (int)TemporalSound.Channels, 0, Numeric_BaseVolume.Value);
+                AudioLibrary.PlayAudio(_waveOut, TemporalSound.PCM_Data, (int)TemporalSound.Frequency, 1, (int)TemporalSound.Bits, (int)TemporalSound.Channels, 0, Numeric_BaseVolume.Value);
             }
             else
             {

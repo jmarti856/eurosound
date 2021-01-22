@@ -47,7 +47,7 @@ namespace EuroSound_Application.AudioConverter
             this.MenuItemEdit_SelectNone = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemEdit_InvertSelection = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu_Load = new System.Windows.Forms.ToolStripMenuItem();
-            this.convertPreferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemLoad_Presets = new System.Windows.Forms.ToolStripMenuItem();
             this.Groupbox_Files = new System.Windows.Forms.GroupBox();
             this.Button_ClearList = new System.Windows.Forms.Button();
             this.Textbox_ItemsCount = new System.Windows.Forms.TextBox();
@@ -217,18 +217,19 @@ namespace EuroSound_Application.AudioConverter
             // MainMenu_Load
             // 
             this.MainMenu_Load.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.convertPreferencesToolStripMenuItem});
+            this.MenuItemLoad_Presets});
             this.MainMenu_Load.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.MainMenu_Load.MergeIndex = 3;
             this.MainMenu_Load.Name = "MainMenu_Load";
             this.MainMenu_Load.Size = new System.Drawing.Size(45, 20);
             this.MainMenu_Load.Text = "Load";
             // 
-            // convertPreferencesToolStripMenuItem
+            // MenuItemLoad_Presets
             // 
-            this.convertPreferencesToolStripMenuItem.Name = "convertPreferencesToolStripMenuItem";
-            this.convertPreferencesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.convertPreferencesToolStripMenuItem.Text = "Convert Preferences";
+            this.MenuItemLoad_Presets.Name = "MenuItemLoad_Presets";
+            this.MenuItemLoad_Presets.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemLoad_Presets.Text = "Convert Preferences";
+            this.MenuItemLoad_Presets.Click += new System.EventHandler(this.MenuItemLoad_Presets_Click);
             // 
             // Groupbox_Files
             // 
@@ -571,18 +572,14 @@ namespace EuroSound_Application.AudioConverter
         private System.Windows.Forms.ToolStripMenuItem MenuItemFile_ImportFiles;
         private System.Windows.Forms.GroupBox Groupbox_Files;
         private System.Windows.Forms.GroupBox Groupbox_ConvertOptions;
-        private System.Windows.Forms.RadioButton RadioButton_Stereo;
-        private System.Windows.Forms.RadioButton RadioButton_Mono;
         private System.Windows.Forms.Label Label_Channels;
-        private System.Windows.Forms.ComboBox ComboBox_Bits;
         private System.Windows.Forms.Label Label_Bits;
-        private System.Windows.Forms.ComboBox Combobox_Rate;
         private System.Windows.Forms.Label Label_Rate;
         private System.Windows.Forms.Button Button_Start;
         private System.Windows.Forms.ProgressBar ProgressBar_Status;
         private System.Windows.Forms.Label Label_Status;
         private System.Windows.Forms.ToolStripMenuItem MainMenu_Load;
-        private System.Windows.Forms.ToolStripMenuItem convertPreferencesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemLoad_Presets;
         private System.Windows.Forms.ToolStripMenuItem MainMenu_Edit;
         private System.Windows.Forms.ToolStripMenuItem MenuItemEdit_SelectAll;
         private System.Windows.Forms.ToolStripMenuItem MenuItemEdit_SelectNone;
@@ -607,5 +604,9 @@ namespace EuroSound_Application.AudioConverter
         private System.Windows.Forms.Button Button_ClearList;
         private System.Windows.Forms.TextBox Textbox_ItemsCount;
         private System.Windows.Forms.Label Label_ItemsCount;
+        protected internal System.Windows.Forms.RadioButton RadioButton_Stereo;
+        protected internal System.Windows.Forms.RadioButton RadioButton_Mono;
+        protected internal System.Windows.Forms.ComboBox ComboBox_Bits;
+        protected internal System.Windows.Forms.ComboBox Combobox_Rate;
     }
 }

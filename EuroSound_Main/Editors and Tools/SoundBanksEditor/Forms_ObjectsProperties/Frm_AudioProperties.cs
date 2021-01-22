@@ -136,7 +136,7 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             if (TemporalAudio.PCMdata != null)
             {
-                AudioFunctionsLibrary.PlayAudio(_waveOut, TemporalAudio.PCMdata, (int)TemporalAudio.Frequency, 0, (int)TemporalAudio.Bits, (int)TemporalAudio.Channels, 0, 1);
+                AudioFunctionsLibrary.PlayAudio(_waveOut, TemporalAudio.PCMdata, (int)TemporalAudio.Frequency, 1, (int)TemporalAudio.Bits, (int)TemporalAudio.Channels, 0, 1);
             }
             else
             {

@@ -241,7 +241,7 @@
             0,
             0});
             this.numeric_pitchoffset.Minimum = new decimal(new int[] {
-            22000,
+            32768,
             0,
             0,
             -2147483648});

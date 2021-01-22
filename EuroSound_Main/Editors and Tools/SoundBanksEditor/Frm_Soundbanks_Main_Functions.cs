@@ -485,7 +485,6 @@ namespace EuroSound_Application.SoundBanksEditor
 
             //Update Hashcode name label
             GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, ProjectInfo.Hashcode), "Hashcode");
-
         }
 
         private void ClearStatusBarLabels()

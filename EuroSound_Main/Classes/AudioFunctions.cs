@@ -23,7 +23,7 @@ namespace EuroSound_Application.AudioFunctionsLibrary
                 if (AudioPlayer.PlaybackState == PlaybackState.Stopped)
                 {
                     AudioSample = new MemoryStream(PCMData);
-                    IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency + Pitch, Bits, Channels));
+                    IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(CalculateValidRate(Frequency, Pitch), Bits, Channels));
                     VolumeSampleProvider volumeProvider = new VolumeSampleProvider(provider.ToSampleProvider());
                     AudioPlayer.DeviceNumber = GlobalPreferences.DefaultAudioDevice;
                     AudioPlayer.Volume = (float)Volume;
@@ -43,6 +43,19 @@ namespace EuroSound_Application.AudioFunctionsLibrary
                     AudioPlayer.Play();
                 }
             }
+        }
+
+        private int CalculateValidRate(int DefaultRate, int Pitch)
+        {
+            int NewPitch;
+
+            NewPitch = DefaultRate + Pitch;
+            while (NewPitch <= 0)
+            {
+                NewPitch = DefaultRate + (Pitch / 10);
+            }
+
+            return NewPitch;
         }
 
         internal void PlayAudioLoopOffset(WaveOut AudioPlayer, byte[] PCMData, int Frequency, int Pitch, int Bits, int Channels, int Pan)

@@ -201,7 +201,6 @@ namespace EuroSound_Application.SoundBanksEditor
             //Update File name label
             UpdateStatusBarLabels();
 
-
             //Apply User Preferences
             FontConverter cvt = new FontConverter();
             TreeView_File.Indent = GlobalPreferences.TreeViewIndent;

@@ -318,6 +318,19 @@ namespace EuroSound_Application.AudioConverter
         }
 
         //*===============================================================================================
+        //* Menu Item Load
+        //*===============================================================================================
+        private void MenuItemLoad_Presets_Click(object sender, EventArgs e)
+        {
+            using (Frm_AudioConverter_Presets AC_Presets = new Frm_AudioConverter_Presets())
+            {
+                AC_Presets.Owner = Owner;
+                AC_Presets.Tag = Tag;
+                AC_Presets.ShowDialog();
+            }
+        }
+
+        //*===============================================================================================
         //* Context Menu
         //*===============================================================================================
         private void MenuItem_Open_Click(object sender, EventArgs e)

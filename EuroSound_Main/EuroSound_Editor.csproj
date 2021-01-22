@@ -239,6 +239,12 @@
     <Compile Include="Editors and Tools\AudioConverter\Frm_AudioConverterFunctions.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Editors and Tools\AudioConverter\Frm_AudioConverter_Presets.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editors and Tools\AudioConverter\Frm_AudioConverter_Presets.Designer.cs">
+      <DependentUpon>Frm_AudioConverter_Presets.cs</DependentUpon>
+    </Compile>
     <Compile Include="Editors and Tools\FilelistBin_Generator\Frm_SFX_DataGenerator.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -421,6 +427,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\EuroSound_WarningBox.resx">
       <DependentUpon>EuroSound_WarningBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editors and Tools\AudioConverter\Frm_AudioConverter_Presets.resx">
+      <DependentUpon>Frm_AudioConverter_Presets.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editors and Tools\FilelistBin_Generator\Frm_SFX_DataGenerator.resx">
       <DependentUpon>Frm_SFX_DataGenerator.cs</DependentUpon>
