@@ -199,7 +199,8 @@ namespace EuroSound_Application.SoundBanksEditor
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
             //Update File name label
-            GenericFunctions.SetCurrentFileLabel(ProjectInfo.FileName);
+            UpdateStatusBarLabels();
+
 
             //Apply User Preferences
             FontConverter cvt = new FontConverter();
@@ -211,7 +212,9 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void Frm_Soundbanks_Main_Enter(object sender, EventArgs e)
         {
-            GenericFunctions.SetCurrentFileLabel(ProjectInfo.FileName);
+            //Update File name label
+            UpdateStatusBarLabels();
+
             if (!(WindowState == FormWindowState.Maximized))
             {
                 MdiParent.Text = "EuroSound - " + Text;
@@ -271,14 +274,12 @@ namespace EuroSound_Application.SoundBanksEditor
                     {
                         LoadedFile = SaveDocument(LoadedFile, TreeView_File, SoundsList, AudioDataDict, ProjectInfo);
                         ProjectInfo.FileHasBeenModified = false;
-                        GenericFunctions.SetCurrentFileLabel("");
                         MdiParent.Text = "EuroSound";
                         Close();
                     }
                     else if (dialogResult == DialogResult.No)
                     {
                         ProjectInfo.FileHasBeenModified = false;
-                        GenericFunctions.SetCurrentFileLabel("");
                         MdiParent.Text = "EuroSound";
                         Close();
                     }
@@ -289,9 +290,10 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
                 else
                 {
-                    GenericFunctions.SetCurrentFileLabel("");
                     MdiParent.Text = "EuroSound";
                 }
+
+                ClearStatusBarLabels();
             }
 
             WRegFunctions.SaveWindowState("SBView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
@@ -573,6 +575,14 @@ namespace EuroSound_Application.SoundBanksEditor
                     //Clear stack lists
                     UndoListSounds.Clear();
                     UndoListNodes.Clear();
+                }
+
+                //Update file Hashcode
+                DialogResult QuestionAnswer = MessageBox.Show("Do you want to use the hashcode of the loaded file?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (QuestionAnswer == DialogResult.Yes)
+                {
+                    ProjectInfo.Hashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SB_Defines, Path.GetFileNameWithoutExtension(FilePath));
+                    GenericFunctions.SetCurrentFileLabel(Path.GetFileNameWithoutExtension(FilePath), "Hashcode");
                 }
 
                 //Load New data

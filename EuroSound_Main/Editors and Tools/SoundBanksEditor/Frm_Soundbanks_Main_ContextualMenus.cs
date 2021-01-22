@@ -40,7 +40,7 @@ namespace EuroSound_Application.SoundBanksEditor
                             DialogResult TryToReload = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrect"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                             if (TryToReload == DialogResult.Yes)
                             {
-                                string FileTempFile = AudioFunctionsLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath));
+                                string FileTempFile = AudioFunctionsLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), 22050, 1, 16);
                                 if (!string.IsNullOrEmpty(FileTempFile))
                                 {
                                     LoadAudio(FileTempFile, NodeName);
@@ -214,10 +214,12 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             int SelectedColor;
 
-            SelectedColor = GenericFunctions.GetColorFromColorPicker();
+            TreeNode SelectedNode = TreeView_File.SelectedNode;
+
+            SelectedColor = GenericFunctions.GetColorFromColorPicker(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
-                TreeView_File.SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
+                SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
                 ProjectInfo.FileHasBeenModified = true;
             }
         }
@@ -250,10 +252,12 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             int SelectedColor;
 
-            SelectedColor = GenericFunctions.GetColorFromColorPicker();
+            TreeNode SelectedNode = TreeView_File.SelectedNode;
+
+            SelectedColor = GenericFunctions.GetColorFromColorPicker(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
-                TreeView_File.SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
+                SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
                 ProjectInfo.FileHasBeenModified = true;
             }
         }
@@ -284,10 +288,12 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             int SelectedColor;
 
-            SelectedColor = GenericFunctions.GetColorFromColorPicker();
+            TreeNode SelectedNode = TreeView_File.SelectedNode;
+
+            SelectedColor = GenericFunctions.GetColorFromColorPicker(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
-                TreeView_File.SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
+                SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
                 ProjectInfo.FileHasBeenModified = true;
             }
         }
@@ -320,10 +326,12 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             int SelectedColor;
 
-            SelectedColor = GenericFunctions.GetColorFromColorPicker();
+            TreeNode SelectedNode = TreeView_File.SelectedNode;
+
+            SelectedColor = GenericFunctions.GetColorFromColorPicker(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
-                TreeView_File.SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
+                SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
                 ProjectInfo.FileHasBeenModified = true;
             }
         }

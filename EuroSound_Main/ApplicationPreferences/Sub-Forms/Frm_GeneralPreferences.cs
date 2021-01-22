@@ -42,7 +42,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
         private void Button_WavesColorControl_Click(object sender, EventArgs e)
         {
-            int SelectedColor = GenericFunctions.GetColorFromColorPicker();
+            int SelectedColor = GenericFunctions.GetColorFromColorPicker(Button_WavesColorControl.BackColor);
             if (SelectedColor != -1)
             {
                 Button_WavesColorControl.BackColor = Color.FromArgb(SelectedColor);
@@ -51,7 +51,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
         private void Button_WavesBackColor_Click(object sender, EventArgs e)
         {
-            int SelectedColor = GenericFunctions.GetColorFromColorPicker();
+            int SelectedColor = GenericFunctions.GetColorFromColorPicker(Button_WavesBackColor.BackColor);
             if (SelectedColor != -1)
             {
                 Button_WavesBackColor.BackColor = Color.FromArgb(SelectedColor);

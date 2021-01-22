@@ -135,13 +135,13 @@ namespace EuroSound_Application.StreamSounds
 
         private void UpdateWavDataList()
         {
+            int Index = 1;
+            TreeNode NodeToCheck;
+
             UpdateWavList = new Thread(() =>
             {
                 try
                 {
-                    int Index = 1;
-                    TreeNode NodeToCheck;
-
                     //Clear List
                     ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
                     {
@@ -149,10 +149,16 @@ namespace EuroSound_Application.StreamSounds
                         ListView_WavHeaderData.Enabled = false;
                     });
 
-                    //Disable update button
+                    //Disable Update IMA data button
                     Button_UpdateIMAData.BeginInvoke((MethodInvoker)delegate
                     {
                         Button_UpdateIMAData.Enabled = false;
+                    });
+
+                    //Disable Update button
+                    Button_UpdateList_WavData.BeginInvoke((MethodInvoker)delegate
+                    {
+                        Button_UpdateList_WavData.Enabled = false;
                     });
 
                     //Add data to list
@@ -191,19 +197,21 @@ namespace EuroSound_Application.StreamSounds
                         Button_UpdateIMAData.Enabled = true;
                     });
 
-                    //Enable update button
+                    //Enable update ima button
                     Button_UpdateIMAData.BeginInvoke((MethodInvoker)delegate
                     {
                         Button_UpdateIMAData.Enabled = true;
                     });
-                }
-                catch
-                {
-                    //Cancel and clear list
-                    ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
+
+                    //Enable Update button
+                    Button_UpdateList_WavData.BeginInvoke((MethodInvoker)delegate
                     {
-                        ListView_WavHeaderData.Items.Clear();
+                        Button_UpdateList_WavData.Enabled = true;
                     });
+                }
+                catch (ObjectDisposedException)
+                {
+
                 }
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
             })
@@ -211,6 +219,26 @@ namespace EuroSound_Application.StreamSounds
                 IsBackground = true
             };
             UpdateWavList.Start();
+        }
+
+        private void UpdateStatusBarLabels()
+        {
+            //Update File name label
+            GenericFunctions.SetCurrentFileLabel(ProjectInfo.FileName, "File");
+
+            //Update Hashcode name label
+            GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, ProjectInfo.Hashcode), "Hashcode");
+
+        }
+
+        private void ClearStatusBarLabels()
+        {
+            //Update File name label
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "File");
+
+            //Update Hashcode name label
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "Hashcode");
+
         }
 
         //*===============================================================================================

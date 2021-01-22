@@ -33,6 +33,8 @@ namespace EuroSound_Application.StreamSounds
             ComboBox_MarkerType.Items.Add(new { Text = "Pause", Value = 5 });
             ComboBox_MarkerType.Items.Add(new { Text = "Jump", Value = 0 });
 
+            ComboBox_MarkerType.SelectedIndex = 0;
+
 
             //Temporal Sounds
             TemporalSelectedSound = new EXSoundStream

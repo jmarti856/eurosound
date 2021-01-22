@@ -107,7 +107,7 @@ namespace EuroSound_Application.StreamSounds.YMLReader
                     }
                     else
                     {
-                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(WavDataPath, Path.GetFileNameWithoutExtension(WavDataPath));
+                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(WavDataPath, Path.GetFileNameWithoutExtension(WavDataPath), 22050, 1, 16);
                         if (!string.IsNullOrEmpty(FileTempFile))
                         {
                             LoadAudio(WavDataPath, SoundToAdd);

@@ -82,7 +82,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.GroupBox_HT_SoundSection.Size = new System.Drawing.Size(467, 76);
             this.GroupBox_HT_SoundSection.TabIndex = 3;
             this.GroupBox_HT_SoundSection.TabStop = false;
-            this.GroupBox_HT_SoundSection.Text = "HT_Sound";
+            this.GroupBox_HT_SoundSection.Text = "HT_Sound:";
             // 
             // button_HT_Sound
             // 
@@ -138,7 +138,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.GroupBox_HT_Music.Size = new System.Drawing.Size(467, 76);
             this.GroupBox_HT_Music.TabIndex = 4;
             this.GroupBox_HT_Music.TabStop = false;
-            this.GroupBox_HT_Music.Text = "HT_Sound_Data";
+            this.GroupBox_HT_Music.Text = "HT_Sound_Data:";
             // 
             // button_HT_SoundData
             // 
@@ -183,7 +183,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.groupBox1.Size = new System.Drawing.Size(467, 76);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "HT_Music";
+            this.groupBox1.Text = "HT_Music:";
             // 
             // button_HT_Music
             // 

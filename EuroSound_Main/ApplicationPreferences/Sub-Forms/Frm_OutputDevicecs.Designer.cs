@@ -32,10 +32,10 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Panel_Title = new System.Windows.Forms.Panel();
             this.Label_Title = new System.Windows.Forms.Label();
             this.GroupboxAudioDevices = new System.Windows.Forms.GroupBox();
+            this.Combobox_Driver = new System.Windows.Forms.ComboBox();
+            this.Label_Driver = new System.Windows.Forms.Label();
             this.Combobox_AvailableDevices = new System.Windows.Forms.ComboBox();
             this.Label_AudioDevice = new System.Windows.Forms.Label();
-            this.Label_Driver = new System.Windows.Forms.Label();
-            this.Combobox_Driver = new System.Windows.Forms.ComboBox();
             this.Panel_Title.SuspendLayout();
             this.GroupboxAudioDevices.SuspendLayout();
             this.SuspendLayout();
@@ -74,7 +74,28 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.GroupboxAudioDevices.Size = new System.Drawing.Size(467, 107);
             this.GroupboxAudioDevices.TabIndex = 2;
             this.GroupboxAudioDevices.TabStop = false;
-            this.GroupboxAudioDevices.Text = "Available Devices";
+            this.GroupboxAudioDevices.Text = "Available Devices:";
+            // 
+            // Combobox_Driver
+            // 
+            this.Combobox_Driver.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Combobox_Driver.Enabled = false;
+            this.Combobox_Driver.FormattingEnabled = true;
+            this.Combobox_Driver.Items.AddRange(new object[] {
+            "MME"});
+            this.Combobox_Driver.Location = new System.Drawing.Point(56, 60);
+            this.Combobox_Driver.Name = "Combobox_Driver";
+            this.Combobox_Driver.Size = new System.Drawing.Size(121, 21);
+            this.Combobox_Driver.TabIndex = 3;
+            // 
+            // Label_Driver
+            // 
+            this.Label_Driver.AutoSize = true;
+            this.Label_Driver.Location = new System.Drawing.Point(12, 63);
+            this.Label_Driver.Name = "Label_Driver";
+            this.Label_Driver.Size = new System.Drawing.Size(38, 13);
+            this.Label_Driver.TabIndex = 2;
+            this.Label_Driver.Text = "Driver:";
             // 
             // Combobox_AvailableDevices
             // 
@@ -95,27 +116,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Label_AudioDevice.Size = new System.Drawing.Size(44, 13);
             this.Label_AudioDevice.TabIndex = 0;
             this.Label_AudioDevice.Text = "Device:";
-            // 
-            // Label_Driver
-            // 
-            this.Label_Driver.AutoSize = true;
-            this.Label_Driver.Location = new System.Drawing.Point(12, 63);
-            this.Label_Driver.Name = "Label_Driver";
-            this.Label_Driver.Size = new System.Drawing.Size(38, 13);
-            this.Label_Driver.TabIndex = 2;
-            this.Label_Driver.Text = "Driver:";
-            // 
-            // Combobox_Driver
-            // 
-            this.Combobox_Driver.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Combobox_Driver.Enabled = false;
-            this.Combobox_Driver.FormattingEnabled = true;
-            this.Combobox_Driver.Items.AddRange(new object[] {
-            "MME"});
-            this.Combobox_Driver.Location = new System.Drawing.Point(56, 60);
-            this.Combobox_Driver.Name = "Combobox_Driver";
-            this.Combobox_Driver.Size = new System.Drawing.Size(121, 21);
-            this.Combobox_Driver.TabIndex = 3;
             // 
             // Frm_OutputDevicecs
             // 

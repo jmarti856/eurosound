@@ -78,7 +78,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     DialogResult TryToReload = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrect"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (TryToReload == DialogResult.Yes)
                     {
-                        string FileTempFile = AudioFunctionsLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath));
+                        string FileTempFile = AudioFunctionsLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), 22050, 1, 16);
                         if (!string.IsNullOrEmpty(FileTempFile))
                         {
                             LoadAudio(FileTempFile);
@@ -136,7 +136,7 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             if (TemporalAudio.PCMdata != null)
             {
-                AudioFunctionsLibrary.PlayAudio(_waveOut, TemporalAudio.PCMdata, (int)TemporalAudio.Frequency, 0, (int)TemporalAudio.Bits, (int)TemporalAudio.Channels, 0);
+                AudioFunctionsLibrary.PlayAudio(_waveOut, TemporalAudio.PCMdata, (int)TemporalAudio.Frequency, 0, (int)TemporalAudio.Bits, (int)TemporalAudio.Channels, 0, 1);
             }
             else
             {

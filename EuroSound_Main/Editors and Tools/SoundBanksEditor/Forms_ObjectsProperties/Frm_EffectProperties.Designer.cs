@@ -365,7 +365,7 @@
             this.groupbox_samples.Size = new System.Drawing.Size(524, 293);
             this.groupbox_samples.TabIndex = 2;
             this.groupbox_samples.TabStop = false;
-            this.groupbox_samples.Text = "Associated Samples";
+            this.groupbox_samples.Text = "Associated Samples:";
             // 
             // List_Samples
             // 
@@ -423,7 +423,7 @@
             this.grbx_hashcode.Size = new System.Drawing.Size(524, 57);
             this.grbx_hashcode.TabIndex = 0;
             this.grbx_hashcode.TabStop = false;
-            this.grbx_hashcode.Text = "Hashcode";
+            this.grbx_hashcode.Text = "Hashcode:";
             // 
             // cbx_hashcode
             // 

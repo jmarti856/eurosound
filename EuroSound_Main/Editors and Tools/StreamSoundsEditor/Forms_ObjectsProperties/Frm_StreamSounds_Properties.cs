@@ -30,7 +30,7 @@ namespace EuroSound_Application.StreamSounds
         private void Frm_StreamSounds_Properties_Load(object sender, System.EventArgs e)
         {
             //Editable Data
-            Numeric_BaseVolume.Value = SelectedSound.BaseVolume;
+            Numeric_BaseVolume.Value = decimal.Divide(SelectedSound.BaseVolume, 100);
 
             TemporalSound = new EXSoundStream();
             Reflection.CopyProperties(SelectedSound, TemporalSound);
@@ -49,6 +49,16 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         //* FORM CONTROLS EVENTS
         //*===============================================================================================
+        private void Button_SaveAudio_Click(object sender, EventArgs e)
+        {
+            SaveAudio();
+        }
+
+        private void ContextMenuAudioSave_Click(object sender, EventArgs e)
+        {
+            SaveAudio();
+        }
+
         private void Button_MarkersEditor_Click(object sender, System.EventArgs e)
         {
             AudioLibrary.StopAudio(_waveOut);
@@ -77,7 +87,7 @@ namespace EuroSound_Application.StreamSounds
                     DialogResult TryToReload = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrect"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (TryToReload == DialogResult.Yes)
                     {
-                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath));
+                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), 22050, 1, 16);
                         if (!string.IsNullOrEmpty(FileTempFile))
                         {
                             LoadAudio(FileTempFile);
@@ -91,7 +101,7 @@ namespace EuroSound_Application.StreamSounds
         {
             if (TemporalSound.PCM_Data != null)
             {
-                AudioLibrary.PlayAudio(_waveOut, TemporalSound.PCM_Data, (int)TemporalSound.Frequency, 0, (int)TemporalSound.Bits, (int)TemporalSound.Channels, 0);
+                AudioLibrary.PlayAudio(_waveOut, TemporalSound.PCM_Data, (int)TemporalSound.Frequency, 0, (int)TemporalSound.Bits, (int)TemporalSound.Channels, 0, Numeric_BaseVolume.Value);
             }
             else
             {
@@ -106,7 +116,7 @@ namespace EuroSound_Application.StreamSounds
 
         private void Button_OK_Click(object sender, System.EventArgs e)
         {
-            SelectedSound.BaseVolume = (uint)Numeric_BaseVolume.Value;
+            SelectedSound.BaseVolume = (uint)(Numeric_BaseVolume.Value * 100);
             SelectedSound.OutputThisSound = CheckBox_OutputThisSound.Checked;
 
             if (TemporalSound.PCM_Data != null)
@@ -202,6 +212,17 @@ namespace EuroSound_Application.StreamSounds
             else
             {
                 MessageBox.Show("Error reading this file, seems that is being used by another process", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void SaveAudio()
+        {
+            string SavePath;
+
+            SavePath = GenericFunctions.SaveFileBrowser("WAV Files (*.wav)|*.wav", 0, true, TemporalSound.WAVFileName);
+            if (!string.IsNullOrEmpty(SavePath))
+            {
+                AudioLibrary.CreateWavFile((int)TemporalSound.Frequency, (int)TemporalSound.Bits, (int)TemporalSound.Channels, TemporalSound.PCM_Data, SavePath);
             }
         }
     }

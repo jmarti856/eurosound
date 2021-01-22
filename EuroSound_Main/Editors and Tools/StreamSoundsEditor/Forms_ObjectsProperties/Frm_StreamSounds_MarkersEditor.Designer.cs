@@ -80,7 +80,7 @@ namespace EuroSound_Application.StreamSounds
             this.GroupBox_MarkerData.Size = new System.Drawing.Size(512, 92);
             this.GroupBox_MarkerData.TabIndex = 1;
             this.GroupBox_MarkerData.TabStop = false;
-            this.GroupBox_MarkerData.Text = "Marker Data";
+            this.GroupBox_MarkerData.Text = "Marker Data:";
             // 
             // Button_Clear
             // 

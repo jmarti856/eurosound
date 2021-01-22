@@ -16,7 +16,7 @@ namespace EuroSound_Application.AudioFunctionsLibrary
     {
         private MemoryStream AudioSample;
 
-        internal void PlayAudio(WaveOut AudioPlayer, byte[] PCMData, int Frequency, int Pitch, int Bits, int Channels, int Pan)
+        internal void PlayAudio(WaveOut AudioPlayer, byte[] PCMData, int Frequency, int Pitch, int Bits, int Channels, decimal AudioPan, decimal Volume)
         {
             if (Frequency != 0)
             {
@@ -26,13 +26,13 @@ namespace EuroSound_Application.AudioFunctionsLibrary
                     IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency + Pitch, Bits, Channels));
                     VolumeSampleProvider volumeProvider = new VolumeSampleProvider(provider.ToSampleProvider());
                     AudioPlayer.DeviceNumber = GlobalPreferences.DefaultAudioDevice;
-                    AudioPlayer.Volume = 1;
+                    AudioPlayer.Volume = (float)Volume;
                     //Pan is only for mono audio
                     if (Channels == 1)
                     {
                         PanningSampleProvider panProvider = new PanningSampleProvider(volumeProvider)
                         {
-                            Pan = (Pan / 100)
+                            Pan = (float)AudioPan
                         };
                         AudioPlayer.Init(panProvider);
                     }
@@ -126,7 +126,7 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             return byteArray;
         }
 
-        internal string ConvertWavToSoundBankValid(string SourcePath, string FileName)
+        internal string ConvertWavToSoundBankValid(string SourcePath, string FileName, uint Frequency, ushort Channels, int Bits)
         {
             string FinalFile = string.Empty;
 
@@ -136,14 +136,15 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             //Resample wav
             if (File.Exists(GlobalPreferences.SoXPath))
             {
-                FinalFile = Path.Combine(new string[] { Path.GetTempPath(), @"EuroSound\", FileName + "f.wav" });
+                FinalFile = Path.Combine(Path.GetTempPath(), @"EuroSound\", FileName + "f.wav");
                 try
                 {
                     using (Sox sox = new Sox(GlobalPreferences.SoXPath))
                     {
                         sox.Output.Type = FileType.WAV;
-                        sox.Output.SampleRate = 22050;
-                        sox.Output.Channels = 1;
+                        sox.Output.SampleRate = Frequency;
+                        sox.Output.Channels = Channels;
+                        sox.Output.CustomArgs = " -b " + Bits;
 
                         InputFile testInput = new InputFile(SourcePath);
                         sox.Process(testInput, FinalFile);
@@ -197,6 +198,18 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             {
                 IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency, BitsPerChannel, NumberOfChannels));
                 WriteWavFile(FilePath, provider);
+            }
+        }
+
+        internal void CreateWavFileForPS2(int Frequency, int BitsPerChannel, int NumberOfChannels, byte[] SampleData, string FilePath)
+        {
+            using (MemoryStream AudioSample = new MemoryStream(SampleData))
+            {
+                RawSourceWaveStream provider = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency, BitsPerChannel, NumberOfChannels));
+                using (WaveFormatConversionStream Converter = new WaveFormatConversionStream(new WaveFormat(13000, 4, 1), provider))
+                {
+                    WriteWavFile(FilePath, Converter);
+                }
             }
         }
 

@@ -167,13 +167,13 @@ namespace EuroSound_Application.StreamSounds
                 BWriter.WriteUInt32((uint)(MarkerDataOffset + StartMarkerOffset));
 
                 //Write ima data
-                AudioOffset = SoundStartOffset + 0x1000;
+                AudioOffset = SoundStartOffset + FileStart2;
                 BWriter.Seek((int)AudioOffset, SeekOrigin.Begin);
                 BWriter.Write(SoundToWrtie.Value.IMA_ADPCM_DATA);
                 BWriter.Seek(516, SeekOrigin.Current);
 
                 //Align Bytes
-                AlignOffset = (BWriter.BaseStream.Position + 4096) & (4096 - 1);
+                AlignOffset = (BWriter.BaseStream.Position + FileStart2) & (FileStart2 - 1);
                 BWriter.Seek(AlignOffset, SeekOrigin.Current);
 
                 BWriter.Align(16);

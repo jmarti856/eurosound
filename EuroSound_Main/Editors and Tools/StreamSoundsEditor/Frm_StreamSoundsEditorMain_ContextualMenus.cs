@@ -56,10 +56,11 @@ namespace EuroSound_Application.StreamSounds
         {
             int SelectedColor;
 
-            SelectedColor = GenericFunctions.GetColorFromColorPicker();
+            TreeNode SelectedNode = TreeView_StreamData.SelectedNode;
+            SelectedColor = GenericFunctions.GetColorFromColorPicker(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
-                TreeView_StreamData.SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
+                SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
                 ProjectInfo.FileHasBeenModified = true;
             }
         }
@@ -101,10 +102,12 @@ namespace EuroSound_Application.StreamSounds
         {
             int SelectedColor;
 
-            SelectedColor = GenericFunctions.GetColorFromColorPicker();
+            TreeNode SelectedNode = TreeView_StreamData.SelectedNode;
+
+            SelectedColor = GenericFunctions.GetColorFromColorPicker(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
-                TreeView_StreamData.SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
+                SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
                 ProjectInfo.FileHasBeenModified = true;
             }
         }

@@ -7,6 +7,7 @@ using EuroSound_Application.SoundBanksEditor;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Resources;
@@ -25,22 +26,22 @@ namespace EuroSound_Application
         {
             if (str.Length > maxLenght)
             {
-                str = str.Substring(0, maxLenght) + "...";
+                str = string.Join("", str.Substring(0, maxLenght), "...");
             }
 
             return str;
         }
 
-        internal static void SetCurrentFileLabel(string text)
+        internal static void SetCurrentFileLabel(string TextToShow, string strPanelName)
         {
             if (ParentFormStatusBar.Visible && ParentFormStatusBar != null)
             {
                 ParentFormStatusBar.Invoke((MethodInvoker)delegate
                 {
-                    ParentFormStatusBar.Panels["File"].Text = text;
+                    ParentFormStatusBar.Panels[strPanelName].Text = TextToShow;
                 });
             }
-            text = null;
+            TextToShow = null;
         }
 
         internal static string CalculateMD5(string filename)
@@ -81,13 +82,14 @@ namespace EuroSound_Application
             return Modified;
         }
 
-        internal static int GetColorFromColorPicker()
+        internal static int GetColorFromColorPicker(Color SelectedUserColor)
         {
             int SelectedColor = -1;
 
             WindowsRegistryFunctions WRegistryFunctions = new WindowsRegistryFunctions();
             using (ColorDialog ColorDiag = new ColorDialog())
             {
+                ColorDiag.Color = SelectedUserColor;
                 ColorDiag.AllowFullOpen = true;
                 ColorDiag.FullOpen = true;
                 ColorDiag.CustomColors = WRegistryFunctions.SetCustomColors();
@@ -95,6 +97,19 @@ namespace EuroSound_Application
                 {
                     SelectedColor = ColorDiag.Color.ToArgb();
                     WRegistryFunctions.SaveCustomColors(ColorDiag.CustomColors);
+                }
+            }
+
+            //Ask user to reset color
+            if (SelectedColor == -1)
+            {
+                if (!SelectedUserColor.ToArgb().Equals(Color.Black.ToArgb()))
+                {
+                    DialogResult QuestionAnswer = MessageBox.Show(ResourcesManager.GetString("ColorDialogRemoveColor"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (QuestionAnswer == DialogResult.Yes)
+                    {
+                        SelectedColor = Color.Black.ToArgb();
+                    }
                 }
             }
 
@@ -328,7 +343,7 @@ namespace EuroSound_Application
                 num = Number.Replace("f", string.Empty).Trim();
                 FinalNumber = float.Parse(num, CultureInfo.GetCultureInfo("en-US"));
             }
-            catch
+            catch (FormatException)
             {
                 FinalNumber = 0.0f;
             }

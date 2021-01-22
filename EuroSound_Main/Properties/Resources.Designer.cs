@@ -133,6 +133,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Remove color from item?.
+        /// </summary>
+        internal static string ColorDialogRemoveColor {
+            get {
+                return ResourceManager.GetString("ColorDialogRemoveColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Adds a new audio.
         /// </summary>
         internal static string ContextMenuFolder_AddAudio {

@@ -360,7 +360,7 @@ namespace EuroSound_Application.StreamSounds
             this.GroupBox_StreamData.Size = new System.Drawing.Size(565, 520);
             this.GroupBox_StreamData.TabIndex = 2;
             this.GroupBox_StreamData.TabStop = false;
-            this.GroupBox_StreamData.Text = "Stream Data";
+            this.GroupBox_StreamData.Text = "Stream Data:";
             // 
             // ListView_WavHeaderData
             // 

@@ -27,10 +27,10 @@ namespace EuroSound_Application.SoundBanksEditor
 
             numeric_pitchoffset.Value = SelectedSample.PitchOffset;
             numeric_randomPitchOffset.Value = SelectedSample.RandomPitchOffset;
-            Numeric_BaseVolume.Value = SelectedSample.BaseVolume;
-            numeric_randomvolumeoffset.Value = SelectedSample.RandomVolumeOffset;
-            numeric_pan.Value = SelectedSample.Pan;
-            numeric_randompan.Value = SelectedSample.RandomPan;
+            Numeric_BaseVolume.Value = decimal.Divide(SelectedSample.BaseVolume, 100);
+            numeric_randomvolumeoffset.Value = decimal.Divide(SelectedSample.RandomVolumeOffset, 100);
+            numeric_pan.Value = decimal.Divide(SelectedSample.Pan, 100);
+            numeric_randompan.Value = decimal.Divide(SelectedSample.RandomPan, 100);
 
             if (SelectedSample.FileRef != 0)
             {
@@ -47,10 +47,10 @@ namespace EuroSound_Application.SoundBanksEditor
             DialogResult = DialogResult.OK;
             SelectedSample.PitchOffset = (short)numeric_pitchoffset.Value;
             SelectedSample.RandomPitchOffset = (short)numeric_randomPitchOffset.Value;
-            SelectedSample.BaseVolume = (sbyte)Numeric_BaseVolume.Value;
-            SelectedSample.RandomVolumeOffset = (sbyte)numeric_randomvolumeoffset.Value;
-            SelectedSample.Pan = (sbyte)numeric_pan.Value;
-            SelectedSample.RandomPan = (sbyte)numeric_randompan.Value;
+            SelectedSample.BaseVolume = (sbyte)(Numeric_BaseVolume.Value * 100);
+            SelectedSample.RandomVolumeOffset = (sbyte)(numeric_randomvolumeoffset.Value * 100);
+            SelectedSample.Pan = (sbyte)(numeric_pan.Value * 100);
+            SelectedSample.RandomPan = (sbyte)(numeric_randompan.Value * 100);
 
             SelectedSound = (ListBox_StreamSounds.SelectedIndex + 1) * -1;
             Close();

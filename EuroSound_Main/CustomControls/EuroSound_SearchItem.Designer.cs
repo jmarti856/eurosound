@@ -59,7 +59,7 @@ namespace EuroSound_Application.CustomControls.SearcherForm
             this.RadioButton_WholeWord = new System.Windows.Forms.RadioButton();
             this.Button_NewSearch = new System.Windows.Forms.Button();
             this.BgWorker_Searches = new System.ComponentModel.BackgroundWorker();
-            this.ListViewResults = new ListView_ColumnSortingClick();
+            this.ListViewResults = new EuroSound_Application.CustomControls.ListViewColumnSorting.ListView_ColumnSortingClick();
             this.Col_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Color = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Type = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));

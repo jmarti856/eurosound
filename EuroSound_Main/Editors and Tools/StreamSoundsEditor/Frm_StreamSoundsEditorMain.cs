@@ -163,8 +163,7 @@ namespace EuroSound_Application.StreamSounds
             //Set Program status
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
-            //Update File name label
-            GenericFunctions.SetCurrentFileLabel(ProjectInfo.FileName);
+            UpdateStatusBarLabels();
 
             //Apply User Preferences
             FontConverter cvt = new FontConverter();
@@ -176,7 +175,8 @@ namespace EuroSound_Application.StreamSounds
 
         private void Frm_StreamSoundsEditorMain_Enter(object sender, System.EventArgs e)
         {
-            GenericFunctions.SetCurrentFileLabel(ProjectInfo.FileName);
+            UpdateStatusBarLabels();
+
             if (!(WindowState == FormWindowState.Maximized))
             {
                 MdiParent.Text = "EuroSound - " + Text;
@@ -219,14 +219,12 @@ namespace EuroSound_Application.StreamSounds
                     {
                         LoadedFile = SaveDocument(LoadedFile, TreeView_StreamData, StreamSoundsList, ProjectInfo);
                         ProjectInfo.FileHasBeenModified = false;
-                        GenericFunctions.SetCurrentFileLabel("");
                         MdiParent.Text = "EuroSound";
                         Close();
                     }
                     else if (dialogResult == DialogResult.No)
                     {
                         ProjectInfo.FileHasBeenModified = false;
-                        GenericFunctions.SetCurrentFileLabel("");
                         MdiParent.Text = "EuroSound";
                         Close();
                     }
@@ -237,12 +235,16 @@ namespace EuroSound_Application.StreamSounds
                 }
                 else
                 {
-                    GenericFunctions.SetCurrentFileLabel("");
                     MdiParent.Text = "EuroSound";
                 }
+
+                ClearStatusBarLabels();
             }
 
             WRegFunctions.SaveWindowState("SSView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
+
+            //Update Status Bar
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         //*===============================================================================================

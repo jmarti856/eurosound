@@ -645,7 +645,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.GroupBox_Hashcodes.Size = new System.Drawing.Size(515, 183);
             this.GroupBox_Hashcodes.TabIndex = 3;
             this.GroupBox_Hashcodes.TabStop = false;
-            this.GroupBox_Hashcodes.Text = "Hashcodes";
+            this.GroupBox_Hashcodes.Text = "Hashcodes:";
             // 
             // Textbox_HashcodesCount
             // 

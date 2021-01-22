@@ -49,7 +49,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Groupbox_AudioProperties = new System.Windows.Forms.GroupBox();
             this.Button_TestLoopOffset = new System.Windows.Forms.Button();
             this.Textbox_Flags = new System.Windows.Forms.TextBox();
-            this.euroSound_WaveViewer1 = new EuroSound_WaveViewer();
+            this.euroSound_WaveViewer1 = new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer();
             this.ContextMenu_SaveAudio = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ContextMenuAudioSave = new System.Windows.Forms.ToolStripMenuItem();
             this.Textbox_Encoding = new System.Windows.Forms.TextBox();
@@ -196,7 +196,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.groupBox1.Size = new System.Drawing.Size(484, 58);
             this.groupBox1.TabIndex = 33;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Loaded Media";
+            this.groupBox1.Text = "Loaded Media:";
             // 
             // Button_SaveAudio
             // 
@@ -294,7 +294,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.euroSound_WaveViewer1.StartPosition = ((long)(0));
             this.euroSound_WaveViewer1.TabIndex = 22;
             this.euroSound_WaveViewer1.WaveStream = null;
-            this.euroSound_WaveViewer1.OnLineDrawEvent += new EuroSound_WaveViewer.OnLineDrawHandler(this.EuroSound_WaveViewer1_OnLineDrawEvent);
+            this.euroSound_WaveViewer1.OnLineDrawEvent += new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer.OnLineDrawHandler(this.EuroSound_WaveViewer1_OnLineDrawEvent);
             // 
             // ContextMenu_SaveAudio
             // 
@@ -476,7 +476,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Groupbox_FileProperties.Size = new System.Drawing.Size(486, 60);
             this.Groupbox_FileProperties.TabIndex = 37;
             this.Groupbox_FileProperties.TabStop = false;
-            this.Groupbox_FileProperties.Text = "File Properties";
+            this.Groupbox_FileProperties.Text = "File Properties:";
             // 
             // Frm_AudioProperties
             // 

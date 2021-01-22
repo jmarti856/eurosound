@@ -159,8 +159,12 @@ namespace EuroSound_Application.CustomControls.SearcherForm
             {
                 if (FormToSearch != null)
                 {
-                    Color NewColor = Color.FromArgb(GenericFunctions.GetColorFromColorPicker());
-                    Results[(ListViewResults.SelectedItems[0].Index)].ForeColor = NewColor;
+                    //Get the node we have to modify
+                    TreeNode NodeToChange = Results[(ListViewResults.SelectedItems[0].Index)];
+
+                    //Apply color
+                    Color NewColor = Color.FromArgb(GenericFunctions.GetColorFromColorPicker(NodeToChange.ForeColor));
+                    NodeToChange.ForeColor = NewColor;
 
                     //Update cell color from the list view item
                     ListViewResults.SelectedItems[0].SubItems[1].BackColor = NewColor;

@@ -140,7 +140,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.GroupBox_Lines.Size = new System.Drawing.Size(467, 78);
             this.GroupBox_Lines.TabIndex = 9;
             this.GroupBox_Lines.TabStop = false;
-            this.GroupBox_Lines.Text = "Lines";
+            this.GroupBox_Lines.Text = "Lines:";
             // 
             // Frm_TreeViewPrefs
             // 

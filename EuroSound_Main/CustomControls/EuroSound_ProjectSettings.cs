@@ -67,7 +67,10 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
             }
 
             //Update Current File label
-            GenericFunctions.SetCurrentFileLabel(CurrentFileProperties.FileName);
+            GenericFunctions.SetCurrentFileLabel(CurrentFileProperties.FileName, "File");
+
+            //Update Hashcode File Label
+            GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, CurrentFileProperties.Hashcode), "Hashcode");
 
             //Close current form
             Close();

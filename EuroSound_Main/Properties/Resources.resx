@@ -141,6 +141,9 @@
   <data name="ButtonSoundsBankSearch" xml:space="preserve">
     <value>Search for the specified text</value>
   </data>
+  <data name="ColorDialogRemoveColor" xml:space="preserve">
+    <value>Remove color from item?</value>
+  </data>
   <data name="ContextMenuFolders_New" xml:space="preserve">
     <value>Creates a new folder</value>
   </data>

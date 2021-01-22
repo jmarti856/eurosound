@@ -81,7 +81,7 @@
             this.GroupBox_HashTable.Size = new System.Drawing.Size(451, 61);
             this.GroupBox_HashTable.TabIndex = 5;
             this.GroupBox_HashTable.TabStop = false;
-            this.GroupBox_HashTable.Text = "An entry for this ESF file can be placed in this hash table";
+            this.GroupBox_HashTable.Text = "An entry for this ESF file can be placed in this hash table:";
             // 
             // Combobox_FileHashcode
             // 
@@ -122,7 +122,7 @@
             this.groupBox1.Size = new System.Drawing.Size(451, 195);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Hash Table Configuration";
+            this.groupBox1.Text = "Hash Table Configuration:";
             // 
             // Textbox_Musics_Path
             // 

@@ -26,10 +26,13 @@ namespace EuroSound_Application.CustomControls.WarningsList
         //*===============================================================================================
         private void EuroSound_ImportResultsList_Load(object sender, EventArgs e)
         {
+            ListViewItem Item;
+            char MessageType;
+
             foreach (string item in ErrorsAndWarningsListToPrint)
             {
-                char MessageType = item[0];
-                ListViewItem Item = new ListViewItem(new[] { "", item.Substring(1) });
+                MessageType = item[0];
+                Item = new ListViewItem(new[] { "", item.Substring(1) });
 
                 if (MessageType == '0')
                 {

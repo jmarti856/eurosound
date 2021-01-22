@@ -83,7 +83,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.GroupBox_Output.Size = new System.Drawing.Size(467, 52);
             this.GroupBox_Output.TabIndex = 1;
             this.GroupBox_Output.TabStop = false;
-            this.GroupBox_Output.Text = "SFX Output Directory";
+            this.GroupBox_Output.Text = "SFX Output Directory:";
             // 
             // Button_ChooseSFX_OutputPath
             // 
@@ -128,7 +128,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.GroupBox_MusicOutputPath.Size = new System.Drawing.Size(467, 52);
             this.GroupBox_MusicOutputPath.TabIndex = 0;
             this.GroupBox_MusicOutputPath.TabStop = false;
-            this.GroupBox_MusicOutputPath.Text = "Music Output Directory";
+            this.GroupBox_MusicOutputPath.Text = "Music Output Directory:";
             // 
             // Button_MusicOutputPath
             // 
@@ -174,7 +174,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Groupbox_Waves.Size = new System.Drawing.Size(467, 98);
             this.Groupbox_Waves.TabIndex = 3;
             this.Groupbox_Waves.TabStop = false;
-            this.Groupbox_Waves.Text = "Audio Waves Viewer";
+            this.Groupbox_Waves.Text = "Audio Waves Viewer:";
             // 
             // Button_WavesBackColor
             // 

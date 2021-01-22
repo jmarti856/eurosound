@@ -50,10 +50,9 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
             {
                 SoundName = new DirectoryInfo(Path.GetDirectoryName(path)).Name;
                 SoundHashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SFX_Defines, SoundName);
-                FileProperties.Hashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SB_Defines, Path.GetFileNameWithoutExtension(FilePath));
                 if (SoundHashcode == 0x00000000)
                 {
-                    Reports.Add("0Hashcode not found for the sound ");
+                    Reports.Add(string.Join(" ", "0Hashcode not found for the sound:", SoundName));
                 }
                 ReadYmlFile(SoundsList, AudioDict, TreeViewControl, path, SoundName, SoundHashcode, false, FileProperties);
             }

@@ -98,7 +98,7 @@ namespace EuroSound_Application.AudioConverter
             this.Groupbox_OutputDirectory.Size = new System.Drawing.Size(479, 71);
             this.Groupbox_OutputDirectory.TabIndex = 1;
             this.Groupbox_OutputDirectory.TabStop = false;
-            this.Groupbox_OutputDirectory.Text = "Output Directory";
+            this.Groupbox_OutputDirectory.Text = "Output Directory:";
             // 
             // Button_SearchOutputFolder
             // 
@@ -400,7 +400,7 @@ namespace EuroSound_Application.AudioConverter
             this.Groupbox_ConvertOptions.Size = new System.Drawing.Size(378, 71);
             this.Groupbox_ConvertOptions.TabIndex = 2;
             this.Groupbox_ConvertOptions.TabStop = false;
-            this.Groupbox_ConvertOptions.Text = "Convert Options";
+            this.Groupbox_ConvertOptions.Text = "Convert Options:";
             // 
             // RadioButton_Stereo
             // 

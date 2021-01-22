@@ -90,7 +90,18 @@
             // 
             // Numeric_BaseVolume
             // 
+            this.Numeric_BaseVolume.DecimalPlaces = 2;
+            this.Numeric_BaseVolume.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
             this.Numeric_BaseVolume.Location = new System.Drawing.Point(94, 45);
+            this.Numeric_BaseVolume.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.Numeric_BaseVolume.Name = "Numeric_BaseVolume";
             this.Numeric_BaseVolume.Size = new System.Drawing.Size(94, 20);
             this.Numeric_BaseVolume.TabIndex = 8;
@@ -132,14 +143,20 @@
             // 
             // numeric_randompan
             // 
+            this.numeric_randompan.DecimalPlaces = 2;
+            this.numeric_randompan.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
             this.numeric_randompan.Location = new System.Drawing.Point(342, 71);
             this.numeric_randompan.Maximum = new decimal(new int[] {
-            127,
+            1,
             0,
             0,
             0});
             this.numeric_randompan.Minimum = new decimal(new int[] {
-            128,
+            1,
             0,
             0,
             -2147483648});
@@ -158,14 +175,20 @@
             // 
             // numeric_pan
             // 
+            this.numeric_pan.DecimalPlaces = 2;
+            this.numeric_pan.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
             this.numeric_pan.Location = new System.Drawing.Point(94, 71);
             this.numeric_pan.Maximum = new decimal(new int[] {
-            127,
+            1,
             0,
             0,
             0});
             this.numeric_pan.Minimum = new decimal(new int[] {
-            128,
+            1,
             0,
             0,
             -2147483648});
@@ -184,17 +207,18 @@
             // 
             // numeric_randomvolumeoffset
             // 
+            this.numeric_randomvolumeoffset.DecimalPlaces = 2;
+            this.numeric_randomvolumeoffset.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
             this.numeric_randomvolumeoffset.Location = new System.Drawing.Point(342, 45);
             this.numeric_randomvolumeoffset.Maximum = new decimal(new int[] {
-            127,
+            1,
             0,
             0,
             0});
-            this.numeric_randomvolumeoffset.Minimum = new decimal(new int[] {
-            128,
-            0,
-            0,
-            -2147483648});
             this.numeric_randomvolumeoffset.Name = "numeric_randomvolumeoffset";
             this.numeric_randomvolumeoffset.Size = new System.Drawing.Size(94, 20);
             this.numeric_randomvolumeoffset.TabIndex = 10;
@@ -271,7 +295,7 @@
             this.GroupBoxMedia.Size = new System.Drawing.Size(450, 109);
             this.GroupBoxMedia.TabIndex = 3;
             this.GroupBoxMedia.TabStop = false;
-            this.GroupBoxMedia.Text = "Media";
+            this.GroupBoxMedia.Text = "Media:";
             // 
             // Button_Edit
             // 
@@ -337,7 +361,7 @@
             this.groupBox2.Size = new System.Drawing.Size(450, 100);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Hashcode";
+            this.groupBox2.Text = "Hashcode:";
             // 
             // Combobox_Hashcode
             // 

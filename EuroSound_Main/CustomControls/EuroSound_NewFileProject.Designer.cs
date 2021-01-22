@@ -51,7 +51,7 @@ namespace EuroSound_Application.CustomControls.NewProjectForm
             this.GroupBox_Properties.Size = new System.Drawing.Size(316, 71);
             this.GroupBox_Properties.TabIndex = 0;
             this.GroupBox_Properties.TabStop = false;
-            this.GroupBox_Properties.Text = "Project Properties";
+            this.GroupBox_Properties.Text = "Project Properties:";
             // 
             // Textbox_ProjectName
             // 

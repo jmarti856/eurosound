@@ -35,20 +35,15 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
-        internal static List<string> GetAudiosToExport(Dictionary<uint, EXSound> SoundsList)
+        internal static IEnumerable<string> GetAudiosToExport(Dictionary<uint, EXSound> SoundsList)
         {
-            List<string> UsedAudios = new List<string>();
-
             foreach (KeyValuePair<uint, EXSound> SoundToCheck in SoundsList)
             {
                 if (SoundToCheck.Value.OutputThisSound)
                 {
                     foreach (KeyValuePair<uint, EXSample> Sample in SoundToCheck.Value.Samples)
                     {
-                        if (!UsedAudios.Contains(Sample.Value.ComboboxSelectedAudio))
-                        {
-                            UsedAudios.Add(Sample.Value.ComboboxSelectedAudio);
-                        }
+                        yield return Sample.Value.ComboboxSelectedAudio;
                     }
                 }
                 else
@@ -56,13 +51,12 @@ namespace EuroSound_Application.SoundBanksEditor
                     continue;
                 }
             }
-
-            return UsedAudios;
         }
 
         internal static IEnumerable<string> GetAudiosToPurge(Dictionary<string, EXAudio> AudioDataDict, Dictionary<uint, EXSound> SoundsList)
         {
             bool PurgeCurrent;
+            List<string> AudiosToPurge = new List<string>();
 
             foreach (string AudioKey in AudioDataDict.Keys)
             {
@@ -86,9 +80,12 @@ namespace EuroSound_Application.SoundBanksEditor
 
                 if (PurgeCurrent)
                 {
-                    yield return AudioKey;
+                    AudiosToPurge.Add(AudioKey);
                 }
             }
+            AudiosToPurge.TrimExcess();
+
+            return AudiosToPurge;
         }
 
         internal static Dictionary<string, string> GetListAudioData(Dictionary<string, EXAudio> AudiosList, TreeView ControlToSearch)

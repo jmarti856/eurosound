@@ -31,6 +31,7 @@ namespace EuroSound_Application.StreamSounds
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_StreamSounds_Properties));
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
@@ -39,7 +40,9 @@ namespace EuroSound_Application.StreamSounds
             this.Label_RealSize = new System.Windows.Forms.Label();
             this.Button_Stop = new System.Windows.Forms.Button();
             this.Button_Play = new System.Windows.Forms.Button();
-            this.euroSound_WaveViewer1 = new EuroSound_WaveViewer();
+            this.euroSound_WaveViewer1 = new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer();
+            this.ContextMenu_SaveAudio = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ContextMenuAudioSave = new System.Windows.Forms.ToolStripMenuItem();
             this.Textbox_Encoding = new System.Windows.Forms.TextBox();
             this.Numeric_BaseVolume = new System.Windows.Forms.NumericUpDown();
             this.Label_Encoding = new System.Windows.Forms.Label();
@@ -53,12 +56,14 @@ namespace EuroSound_Application.StreamSounds
             this.Label_Frequency = new System.Windows.Forms.Label();
             this.CheckBox_OutputThisSound = new System.Windows.Forms.CheckBox();
             this.GroupBox_IMA_Data = new System.Windows.Forms.GroupBox();
+            this.Button_SaveAudio = new System.Windows.Forms.Button();
             this.Textbox_MD5_Hash = new System.Windows.Forms.TextBox();
             this.Label_MD5_Hash = new System.Windows.Forms.Label();
             this.Label_Data = new System.Windows.Forms.Label();
             this.Button_SearchIMA = new System.Windows.Forms.Button();
             this.Textbox_IMA_ADPCM = new System.Windows.Forms.TextBox();
             this.GroupBox_Properties.SuspendLayout();
+            this.ContextMenu_SaveAudio.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_BaseVolume)).BeginInit();
             this.GroupBox_IMA_Data.SuspendLayout();
             this.SuspendLayout();
@@ -113,7 +118,7 @@ namespace EuroSound_Application.StreamSounds
             this.GroupBox_Properties.Size = new System.Drawing.Size(496, 336);
             this.GroupBox_Properties.TabIndex = 1;
             this.GroupBox_Properties.TabStop = false;
-            this.GroupBox_Properties.Text = "Sound Properties";
+            this.GroupBox_Properties.Text = "Sound Properties:";
             // 
             // Textbox_RealSize
             // 
@@ -135,6 +140,7 @@ namespace EuroSound_Application.StreamSounds
             // 
             // Button_Stop
             // 
+            this.Button_Stop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_Stop.Location = new System.Drawing.Point(415, 74);
             this.Button_Stop.Name = "Button_Stop";
             this.Button_Stop.Size = new System.Drawing.Size(75, 23);
@@ -145,6 +151,7 @@ namespace EuroSound_Application.StreamSounds
             // 
             // Button_Play
             // 
+            this.Button_Play.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_Play.Location = new System.Drawing.Point(334, 74);
             this.Button_Play.Name = "Button_Play";
             this.Button_Play.Size = new System.Drawing.Size(75, 23);
@@ -161,6 +168,7 @@ namespace EuroSound_Application.StreamSounds
             this.euroSound_WaveViewer1.AutoScroll = true;
             this.euroSound_WaveViewer1.BackColor = System.Drawing.Color.Gray;
             this.euroSound_WaveViewer1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.euroSound_WaveViewer1.ContextMenuStrip = this.ContextMenu_SaveAudio;
             this.euroSound_WaveViewer1.CurrentWaveImage = null;
             this.euroSound_WaveViewer1.Location = new System.Drawing.Point(6, 103);
             this.euroSound_WaveViewer1.Name = "euroSound_WaveViewer1";
@@ -170,6 +178,20 @@ namespace EuroSound_Application.StreamSounds
             this.euroSound_WaveViewer1.StartPosition = ((long)(0));
             this.euroSound_WaveViewer1.TabIndex = 14;
             this.euroSound_WaveViewer1.WaveStream = null;
+            // 
+            // ContextMenu_SaveAudio
+            // 
+            this.ContextMenu_SaveAudio.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ContextMenuAudioSave});
+            this.ContextMenu_SaveAudio.Name = "ContextMenu_SaveAudio";
+            this.ContextMenu_SaveAudio.Size = new System.Drawing.Size(132, 26);
+            // 
+            // ContextMenuAudioSave
+            // 
+            this.ContextMenuAudioSave.Name = "ContextMenuAudioSave";
+            this.ContextMenuAudioSave.Size = new System.Drawing.Size(131, 22);
+            this.ContextMenuAudioSave.Text = "Save audio";
+            this.ContextMenuAudioSave.Click += new System.EventHandler(this.ContextMenuAudioSave_Click);
             // 
             // Textbox_Encoding
             // 
@@ -182,7 +204,18 @@ namespace EuroSound_Application.StreamSounds
             // 
             // Numeric_BaseVolume
             // 
+            this.Numeric_BaseVolume.DecimalPlaces = 2;
+            this.Numeric_BaseVolume.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
             this.Numeric_BaseVolume.Location = new System.Drawing.Point(84, 19);
+            this.Numeric_BaseVolume.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.Numeric_BaseVolume.Name = "Numeric_BaseVolume";
             this.Numeric_BaseVolume.Size = new System.Drawing.Size(87, 20);
             this.Numeric_BaseVolume.TabIndex = 3;
@@ -287,6 +320,7 @@ namespace EuroSound_Application.StreamSounds
             // 
             this.GroupBox_IMA_Data.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox_IMA_Data.Controls.Add(this.Button_SaveAudio);
             this.GroupBox_IMA_Data.Controls.Add(this.Textbox_MD5_Hash);
             this.GroupBox_IMA_Data.Controls.Add(this.Label_MD5_Hash);
             this.GroupBox_IMA_Data.Controls.Add(this.Label_Data);
@@ -297,7 +331,18 @@ namespace EuroSound_Application.StreamSounds
             this.GroupBox_IMA_Data.Size = new System.Drawing.Size(496, 85);
             this.GroupBox_IMA_Data.TabIndex = 0;
             this.GroupBox_IMA_Data.TabStop = false;
-            this.GroupBox_IMA_Data.Text = "Loaded Data";
+            this.GroupBox_IMA_Data.Text = "Loaded Data:";
+            // 
+            // Button_SaveAudio
+            // 
+            this.Button_SaveAudio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_SaveAudio.Location = new System.Drawing.Point(449, 18);
+            this.Button_SaveAudio.Name = "Button_SaveAudio";
+            this.Button_SaveAudio.Size = new System.Drawing.Size(41, 20);
+            this.Button_SaveAudio.TabIndex = 5;
+            this.Button_SaveAudio.Text = "Save";
+            this.Button_SaveAudio.UseVisualStyleBackColor = true;
+            this.Button_SaveAudio.Click += new System.EventHandler(this.Button_SaveAudio_Click);
             // 
             // Textbox_MD5_Hash
             // 
@@ -331,7 +376,7 @@ namespace EuroSound_Application.StreamSounds
             // Button_SearchIMA
             // 
             this.Button_SearchIMA.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_SearchIMA.Location = new System.Drawing.Point(466, 19);
+            this.Button_SearchIMA.Location = new System.Drawing.Point(419, 19);
             this.Button_SearchIMA.Name = "Button_SearchIMA";
             this.Button_SearchIMA.Size = new System.Drawing.Size(24, 20);
             this.Button_SearchIMA.TabIndex = 2;
@@ -347,7 +392,7 @@ namespace EuroSound_Application.StreamSounds
             this.Textbox_IMA_ADPCM.Location = new System.Drawing.Point(44, 19);
             this.Textbox_IMA_ADPCM.Name = "Textbox_IMA_ADPCM";
             this.Textbox_IMA_ADPCM.ReadOnly = true;
-            this.Textbox_IMA_ADPCM.Size = new System.Drawing.Size(417, 20);
+            this.Textbox_IMA_ADPCM.Size = new System.Drawing.Size(369, 20);
             this.Textbox_IMA_ADPCM.TabIndex = 1;
             // 
             // Frm_StreamSounds_Properties
@@ -374,6 +419,7 @@ namespace EuroSound_Application.StreamSounds
             this.Load += new System.EventHandler(this.Frm_StreamSounds_Properties_Load);
             this.GroupBox_Properties.ResumeLayout(false);
             this.GroupBox_Properties.PerformLayout();
+            this.ContextMenu_SaveAudio.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_BaseVolume)).EndInit();
             this.GroupBox_IMA_Data.ResumeLayout(false);
             this.GroupBox_IMA_Data.PerformLayout();
@@ -409,5 +455,8 @@ namespace EuroSound_Application.StreamSounds
         private System.Windows.Forms.Button Button_Play;
         private System.Windows.Forms.Label Label_RealSize;
         private System.Windows.Forms.TextBox Textbox_RealSize;
+        private System.Windows.Forms.Button Button_SaveAudio;
+        private System.Windows.Forms.ContextMenuStrip ContextMenu_SaveAudio;
+        private System.Windows.Forms.ToolStripMenuItem ContextMenuAudioSave;
     }
 }

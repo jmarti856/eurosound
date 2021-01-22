@@ -108,7 +108,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.GroupboxSoxPath.Size = new System.Drawing.Size(467, 79);
             this.GroupboxSoxPath.TabIndex = 6;
             this.GroupboxSoxPath.TabStop = false;
-            this.GroupboxSoxPath.Text = "SoX Path";
+            this.GroupboxSoxPath.Text = "SoX Path:";
             // 
             // Button_Search
             // 

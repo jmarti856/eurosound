@@ -137,7 +137,7 @@ namespace EuroSound_Application
                                                 }
                                             }
                                         }
-                                        else if (HexLabel.StartsWith("SB_", StringComparison.OrdinalIgnoreCase))
+                                        else if (HexLabel.StartsWith("SB_", StringComparison.OrdinalIgnoreCase) || HexLabel.StartsWith("StreamFileHashCode", StringComparison.OrdinalIgnoreCase))
                                         {
                                             if (!SB_Defines.ContainsKey(HexNum))
                                             {

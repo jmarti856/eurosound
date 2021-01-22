@@ -81,53 +81,55 @@ namespace EuroSound_Application.BashMode
 
                                 if (Directory.Exists(GlobalPreferences.SFXOutputPath))
                                 {
-                                    BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
+                                    using (BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
+                                    {
 
-                                    //*===============================================================================================
-                                    //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED (20%)
-                                    //*===============================================================================================
-                                    //Discard SFXs that has checked as "no output"
-                                    FinalSoundsDict = SFXGenerator.GetFinalSoundsDictionary(SoundsList, null, null);
+                                        //*===============================================================================================
+                                        //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED (20%)
+                                        //*===============================================================================================
+                                        //Discard SFXs that has checked as "no output"
+                                        FinalSoundsDict = SFXGenerator.GetFinalSoundsDictionary(SoundsList, null, null);
 
-                                    //*===============================================================================================
-                                    //* STEP 2: DISCARD AUDIO DATA THAT SHOULD HAVE BEEN PURGED (40%)
-                                    //*===============================================================================================
-                                    List<string> UsedAudios = EXSoundbanksFunctions.GetAudiosToExport(FinalSoundsDict);
+                                        //*===============================================================================================
+                                        //* STEP 2: DISCARD AUDIO DATA THAT SHOULD HAVE BEEN PURGED (40%)
+                                        //*===============================================================================================
+                                        IEnumerable<string> UsedAudios = EXSoundbanksFunctions.GetAudiosToExport(FinalSoundsDict);
 
-                                    //Add data
-                                    FinalAudioDataDict = SFXGenerator.GetFinalAudioDictionary(UsedAudios, AudiosList, null);
+                                        //Add data
+                                        FinalAudioDataDict = SFXGenerator.GetFinalAudioDictionaryPCMData(UsedAudios, AudiosList, null);
 
-                                    //*===============================================================================================
-                                    //* STEP 3: START WRITTING (80%)
-                                    //*===============================================================================================
-                                    //--------------------------------------[WRITE FILE HEADER]--------------------------------------
-                                    //Write Data
-                                    SFXGenerator.WriteFileHeader(BWriter, File_Hashcode, null);
+                                        //*===============================================================================================
+                                        //* STEP 3: START WRITTING (80%)
+                                        //*===============================================================================================
+                                        //--------------------------------------[WRITE FILE HEADER]--------------------------------------
+                                        //Write Data
+                                        SFXGenerator.WriteFileHeader(BWriter, File_Hashcode, null);
 
-                                    //--------------------------------------[Write SECTIONS]--------------------------------------
-                                    //Write Data
-                                    SFXGenerator.WriteFileSections(BWriter, GenericFunctions.CountNumberOfSamples(FinalSoundsDict), null);
+                                        //--------------------------------------[Write SECTIONS]--------------------------------------
+                                        //Write Data
+                                        SFXGenerator.WriteFileSections(BWriter, GenericFunctions.CountNumberOfSamples(FinalSoundsDict), null);
 
-                                    //--------------------------------------[SECTION SFX elements]--------------------------------------
-                                    //Write Data
-                                    SFXGenerator.WriteSFXSection(BWriter, FinalSoundsDict, FinalAudioDataDict, null, null);
+                                        //--------------------------------------[SECTION SFX elements]--------------------------------------
+                                        //Write Data
+                                        SFXGenerator.WriteSFXSection(BWriter, FinalSoundsDict, FinalAudioDataDict, null, null);
 
-                                    //--------------------------------------[SECTION Sample info elements]--------------------------------------
-                                    //Write Data
-                                    SFXGenerator.WriteSampleInfoSection(BWriter, FinalAudioDataDict, null, null);
+                                        //--------------------------------------[SECTION Sample info elements]--------------------------------------
+                                        //Write Data
+                                        SFXGenerator.WriteSampleInfoSection(BWriter, FinalAudioDataDict, null, null);
 
-                                    //--------------------------------------[SECTION Sample data]--------------------------------------
-                                    //Write Data
-                                    SFXGenerator.WriteSampleDataSection(BWriter, FinalAudioDataDict, null, null);
+                                        //--------------------------------------[SECTION Sample data]--------------------------------------
+                                        //Write Data
+                                        SFXGenerator.WriteSampleDataSection(BWriter, FinalAudioDataDict, null, null);
 
-                                    //*===============================================================================================
-                                    //* STEP 4: WRITE FINAL DATA (80%)
-                                    //*===============================================================================================
-                                    //Write Data
-                                    SFXGenerator.WriteFinalOffsets(BWriter, null, null);
+                                        //*===============================================================================================
+                                        //* STEP 4: WRITE FINAL DATA (80%)
+                                        //*===============================================================================================
+                                        //Write Data
+                                        SFXGenerator.WriteFinalOffsets(BWriter, null, null);
 
-                                    //Close file
-                                    BWriter.Close();
+                                        //Close file
+                                        BWriter.Close();
+                                    }
                                 }
                             }
 

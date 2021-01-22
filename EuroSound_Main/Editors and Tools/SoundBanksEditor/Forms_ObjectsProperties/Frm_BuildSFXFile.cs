@@ -75,10 +75,10 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
 
                 //Update Label
                 SetLabelText(Label_CurrentTask, "Getting Audio Data To export");
-                List<string> UsedAudios = EXSoundbanksFunctions.GetAudiosToExport(FinalSoundsDict);
+                IEnumerable<string> UsedAudios = EXSoundbanksFunctions.GetAudiosToExport(FinalSoundsDict);
 
                 //Add data
-                FinalAudioDataDict = SFXCreator.GetFinalAudioDictionary(UsedAudios, ((Frm_Soundbanks_Main)ParentForm).AudioDataDict, ProgressBar_CurrentTask);
+                FinalAudioDataDict = SFXCreator.GetFinalAudioDictionaryPCMData(UsedAudios, ((Frm_Soundbanks_Main)ParentForm).AudioDataDict, ProgressBar_CurrentTask);
 
                 //Update Total Progress
                 TotalProgress += 20;

@@ -49,10 +49,10 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             numeric_pitchoffset.Value = SelectedSample.PitchOffset;
             numeric_randomPitchOffset.Value = SelectedSample.RandomPitchOffset;
-            Numeric_BaseVolume.Value = SelectedSample.BaseVolume;
-            numeric_randomvolumeoffset.Value = SelectedSample.RandomVolumeOffset;
-            numeric_pan.Value = SelectedSample.Pan;
-            numeric_randompan.Value = SelectedSample.RandomPan;
+            Numeric_BaseVolume.Value = decimal.Divide(SelectedSample.BaseVolume, 100);
+            numeric_randomvolumeoffset.Value = decimal.Divide(SelectedSample.RandomVolumeOffset, 100);
+            numeric_pan.Value = decimal.Divide(SelectedSample.Pan, 100);
+            numeric_randompan.Value = decimal.Divide(SelectedSample.RandomPan, 100);
 
             //---Put the selected audio in case is not null---
             EnableOrDisableSubSFXSection(IsSubSFX);
@@ -75,7 +75,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 EXAudio AudioSelected = TreeNodeFunctions.GetSelectedAudio(Combobox_SelectedAudio.SelectedValue.ToString(), ((Frm_Soundbanks_Main)ParentForm).AudioDataDict);
                 if (AudioSelected != null && AudioSelected.PCMdata != null)
                 {
-                    AudioFunctionsLibrary.PlayAudio(_waveOut, AudioSelected.PCMdata, (int)AudioSelected.Frequency, int.Parse(numeric_pitchoffset.Value.ToString()), (int)AudioSelected.Bits, (int)AudioSelected.Channels, int.Parse(numeric_pan.Value.ToString()));
+                    AudioFunctionsLibrary.PlayAudio(_waveOut, AudioSelected.PCMdata, (int)AudioSelected.Frequency, int.Parse(numeric_pitchoffset.Value.ToString()), (int)AudioSelected.Bits, (int)AudioSelected.Channels, numeric_pan.Value, Numeric_BaseVolume.Value);
                 }
             }
         }
@@ -89,10 +89,10 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             SelectedSample.PitchOffset = (short)numeric_pitchoffset.Value;
             SelectedSample.RandomPitchOffset = (short)numeric_randomPitchOffset.Value;
-            SelectedSample.BaseVolume = (sbyte)Numeric_BaseVolume.Value;
-            SelectedSample.RandomVolumeOffset = (sbyte)numeric_randomvolumeoffset.Value;
-            SelectedSample.Pan = (sbyte)numeric_pan.Value;
-            SelectedSample.RandomPan = (sbyte)numeric_randompan.Value;
+            SelectedSample.BaseVolume = (sbyte)(Numeric_BaseVolume.Value * 100);
+            SelectedSample.RandomVolumeOffset = (sbyte)(numeric_randomvolumeoffset.Value * 100);
+            SelectedSample.Pan = (sbyte)(numeric_pan.Value * 100);
+            SelectedSample.RandomPan = (sbyte)(numeric_randompan.Value * 100);
 
             if (Combobox_SelectedAudio.SelectedValue != null)
             {

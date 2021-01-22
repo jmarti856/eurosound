@@ -478,6 +478,26 @@ namespace EuroSound_Application.SoundBanksEditor
             UpdateWavList.Start();
         }
 
+        private void UpdateStatusBarLabels()
+        {
+            //Update File name label
+            GenericFunctions.SetCurrentFileLabel(ProjectInfo.FileName, "File");
+
+            //Update Hashcode name label
+            GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, ProjectInfo.Hashcode), "Hashcode");
+
+        }
+
+        private void ClearStatusBarLabels()
+        {
+            //Update File name label
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "File");
+
+            //Update Hashcode name label
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "Hashcode");
+
+        }
+
         //*===============================================================================================
         //* UNDO AND REDO
         //*===============================================================================================

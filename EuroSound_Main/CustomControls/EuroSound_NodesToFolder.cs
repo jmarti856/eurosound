@@ -132,6 +132,7 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
                     GetFolders(node, AvailableFolders);
                 }
             }
+            AvailableFolders.TrimExcess();
 
             return AvailableFolders;
         }
