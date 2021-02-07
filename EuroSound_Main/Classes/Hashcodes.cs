@@ -10,11 +10,11 @@ namespace EuroSound_Application
 {
     internal static class Hashcodes
     {
-        internal static SortedList<uint, string> SB_Defines = new SortedList<uint, string>();
-        internal static SortedList<int, float[]> SFX_Data = new SortedList<int, float[]>();
-        internal static SortedList<uint, string> SFX_Defines = new SortedList<uint, string>();
+        internal static Dictionary<uint, string> SB_Defines = new Dictionary<uint, string>();
+        internal static Dictionary<int, float[]> SFX_Data = new Dictionary<int, float[]>();
+        internal static Dictionary<uint, string> SFX_Defines = new Dictionary<uint, string>();
 
-        internal static void AddDataToCombobox(ComboBox ControlToAddData, SortedList<uint, string> HashcodesDict)
+        internal static void AddDataToCombobox(ComboBox ControlToAddData, Dictionary<uint, string> HashcodesDict)
         {
             //Datasource Combobox
             ControlToAddData.DataSource = HashcodesDict.ToList();
@@ -33,7 +33,7 @@ namespace EuroSound_Application
             }
         }
 
-        internal static uint GetHashcodeByLabel(SortedList<uint, string> DataDict, string Hashcode)
+        internal static uint GetHashcodeByLabel(Dictionary<uint, string> DataDict, string Hashcode)
         {
             uint HashcodeHex = 0x00000000;
             foreach (KeyValuePair<uint, string> Entry in DataDict)
@@ -48,7 +48,7 @@ namespace EuroSound_Application
             return HashcodeHex;
         }
 
-        internal static string GetHashcodeLabel(SortedList<uint, string> DataDict, uint Hashcode)
+        internal static string GetHashcodeLabel(Dictionary<uint, string> DataDict, uint Hashcode)
         {
             string HashcodeHex = string.Empty;
             foreach (KeyValuePair<uint, string> Entry in DataDict)
@@ -127,7 +127,7 @@ namespace EuroSound_Application
                                     {
                                         HexNum = Convert.ToUInt32(matches[1].Value.Trim(), 16);
 
-                                        if (HexNum >= 436207616)
+                                        if (HexNum >= 0x1A000000)
                                         {
                                             if (HexLabel.StartsWith("SF", StringComparison.OrdinalIgnoreCase))
                                             {
@@ -155,7 +155,6 @@ namespace EuroSound_Application
                     }
                 }
             }
-            SB_Defines.TrimExcess();
         }
         #endregion SFX Defines && SB Defines dictionary
 
@@ -203,7 +202,6 @@ namespace EuroSound_Application
                     }
                 }
             }
-            SFX_Data.TrimExcess();
         }
         #endregion SFX DATA DICTIONARY
     }

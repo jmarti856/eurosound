@@ -251,6 +251,18 @@
     <Compile Include="Editors and Tools\FilelistBin_Generator\Frm_SFX_DataGenerator.Designer.cs">
       <DependentUpon>Frm_SFX_DataGenerator.cs</DependentUpon>
     </Compile>
+    <Compile Include="Editors and Tools\SoundBanksEditor\Frm_Sounbanks_DebugOutput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editors and Tools\SoundBanksEditor\Frm_Sounbanks_DebugOutput.Designer.cs">
+      <DependentUpon>Frm_Sounbanks_DebugOutput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSoundsDebugInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSoundsDebugInfo.Designer.cs">
+      <DependentUpon>Frm_StreamSoundsDebugInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainFrame\Frm_AboutEuroSound.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -434,6 +446,12 @@
     <EmbeddedResource Include="Editors and Tools\FilelistBin_Generator\Frm_SFX_DataGenerator.resx">
       <DependentUpon>Frm_SFX_DataGenerator.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Editors and Tools\SoundBanksEditor\Frm_Sounbanks_DebugOutput.resx">
+      <DependentUpon>Frm_Sounbanks_DebugOutput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSoundsDebugInfo.resx">
+      <DependentUpon>Frm_StreamSoundsDebugInfo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainFrame\Frm_AboutEuroSound.resx">
       <DependentUpon>Frm_AboutEuroSound.cs</DependentUpon>
     </EmbeddedResource>
@@ -512,6 +530,10 @@
     <ProjectReference Include="..\CustomStatusBar\StatusBarWithToolTips.csproj">
       <Project>{e938cbed-777a-425e-a238-bf90f4e1ec89}</Project>
       <Name>StatusBarWithToolTips</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EngineXImaAdpcm\EngineXImaAdpcm.csproj">
+      <Project>{b8992d74-f65b-44a2-b49d-77246d7c5ca1}</Project>
+      <Name>EngineXImaAdpcm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

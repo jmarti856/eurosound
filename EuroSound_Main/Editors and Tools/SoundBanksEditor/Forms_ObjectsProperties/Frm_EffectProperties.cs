@@ -171,7 +171,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void Cbx_hashcode_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            uint KeyToCheck = Convert.ToUInt32(cbx_hashcode.SelectedValue) - 436207616;
+            uint KeyToCheck = Convert.ToUInt32(cbx_hashcode.SelectedValue) - 0x1A000000;
             float[] SFXValues = Hashcodes.SFX_Data.FirstOrDefault(x => x.Value[0] == KeyToCheck).Value;
 
             if (SFXValues != null)

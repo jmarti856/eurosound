@@ -91,6 +91,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.ContextMenuSample_TextColor = new System.Windows.Forms.ToolStripMenuItem();
             this.Button_UpdateList_WavData = new System.Windows.Forms.Button();
             this.GroupBox_Hashcodes = new System.Windows.Forms.GroupBox();
+            this.Button_StopHashcodeUpdate = new System.Windows.Forms.Button();
             this.Textbox_HashcodesCount = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.Button_UpdateList_Hashcodes = new System.Windows.Forms.Button();
@@ -105,6 +106,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.ImageList_ListView = new System.Windows.Forms.ImageList(this.components);
             this.TabControlDataViewer = new System.Windows.Forms.TabControl();
             this.TabPage_WavHeaderData = new System.Windows.Forms.TabPage();
+            this.Button_Stop_WavUpdate = new System.Windows.Forms.Button();
             this.Textbox_DataCount = new System.Windows.Forms.TextBox();
             this.Label_ItemsCountWav = new System.Windows.Forms.Label();
             this.ListView_WavHeaderData = new EuroSound_Application.CustomControls.ListViewColumnSorting.ListView_ColumnSortingClick();
@@ -117,6 +119,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Col_Encoding = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Duration = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TabPage_StreamData = new System.Windows.Forms.TabPage();
+            this.Button_StopStreamData = new System.Windows.Forms.Button();
             this.Textbox_StreamFilesCount = new System.Windows.Forms.TextBox();
             this.Label_StreamFilesCount = new System.Windows.Forms.Label();
             this.Button_UpdateList_StreamData = new System.Windows.Forms.Button();
@@ -624,7 +627,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // Button_UpdateList_WavData
             // 
             this.Button_UpdateList_WavData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateList_WavData.Location = new System.Drawing.Point(426, 276);
+            this.Button_UpdateList_WavData.Location = new System.Drawing.Point(345, 276);
             this.Button_UpdateList_WavData.Name = "Button_UpdateList_WavData";
             this.Button_UpdateList_WavData.Size = new System.Drawing.Size(75, 23);
             this.Button_UpdateList_WavData.TabIndex = 3;
@@ -636,6 +639,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // 
             this.GroupBox_Hashcodes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox_Hashcodes.Controls.Add(this.Button_StopHashcodeUpdate);
             this.GroupBox_Hashcodes.Controls.Add(this.Textbox_HashcodesCount);
             this.GroupBox_Hashcodes.Controls.Add(this.label1);
             this.GroupBox_Hashcodes.Controls.Add(this.Button_UpdateList_Hashcodes);
@@ -646,6 +650,17 @@ namespace EuroSound_Application.SoundBanksEditor
             this.GroupBox_Hashcodes.TabIndex = 3;
             this.GroupBox_Hashcodes.TabStop = false;
             this.GroupBox_Hashcodes.Text = "Hashcodes:";
+            // 
+            // Button_StopHashcodeUpdate
+            // 
+            this.Button_StopHashcodeUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_StopHashcodeUpdate.Location = new System.Drawing.Point(434, 154);
+            this.Button_StopHashcodeUpdate.Name = "Button_StopHashcodeUpdate";
+            this.Button_StopHashcodeUpdate.Size = new System.Drawing.Size(75, 23);
+            this.Button_StopHashcodeUpdate.TabIndex = 5;
+            this.Button_StopHashcodeUpdate.Text = "Stop/Clear";
+            this.Button_StopHashcodeUpdate.UseVisualStyleBackColor = true;
+            this.Button_StopHashcodeUpdate.Click += new System.EventHandler(this.Button_StopHashcodeUpdate_Click);
             // 
             // Textbox_HashcodesCount
             // 
@@ -672,7 +687,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // Button_UpdateList_Hashcodes
             // 
             this.Button_UpdateList_Hashcodes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateList_Hashcodes.Location = new System.Drawing.Point(434, 154);
+            this.Button_UpdateList_Hashcodes.Location = new System.Drawing.Point(353, 154);
             this.Button_UpdateList_Hashcodes.Name = "Button_UpdateList_Hashcodes";
             this.Button_UpdateList_Hashcodes.Size = new System.Drawing.Size(75, 23);
             this.Button_UpdateList_Hashcodes.TabIndex = 3;
@@ -767,6 +782,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // TabPage_WavHeaderData
             // 
             this.TabPage_WavHeaderData.BackColor = System.Drawing.SystemColors.Control;
+            this.TabPage_WavHeaderData.Controls.Add(this.Button_Stop_WavUpdate);
             this.TabPage_WavHeaderData.Controls.Add(this.Textbox_DataCount);
             this.TabPage_WavHeaderData.Controls.Add(this.Label_ItemsCountWav);
             this.TabPage_WavHeaderData.Controls.Add(this.ListView_WavHeaderData);
@@ -777,6 +793,17 @@ namespace EuroSound_Application.SoundBanksEditor
             this.TabPage_WavHeaderData.Size = new System.Drawing.Size(507, 305);
             this.TabPage_WavHeaderData.TabIndex = 1;
             this.TabPage_WavHeaderData.Text = "Wav Header Data";
+            // 
+            // Button_Stop_WavUpdate
+            // 
+            this.Button_Stop_WavUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Stop_WavUpdate.Location = new System.Drawing.Point(426, 276);
+            this.Button_Stop_WavUpdate.Name = "Button_Stop_WavUpdate";
+            this.Button_Stop_WavUpdate.Size = new System.Drawing.Size(75, 23);
+            this.Button_Stop_WavUpdate.TabIndex = 4;
+            this.Button_Stop_WavUpdate.Text = "Stop/Clear";
+            this.Button_Stop_WavUpdate.UseVisualStyleBackColor = true;
+            this.Button_Stop_WavUpdate.Click += new System.EventHandler(this.Button_Stop_WavUpdate_Click);
             // 
             // Textbox_DataCount
             // 
@@ -865,6 +892,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // TabPage_StreamData
             // 
             this.TabPage_StreamData.BackColor = System.Drawing.SystemColors.Control;
+            this.TabPage_StreamData.Controls.Add(this.Button_StopStreamData);
             this.TabPage_StreamData.Controls.Add(this.Textbox_StreamFilesCount);
             this.TabPage_StreamData.Controls.Add(this.Label_StreamFilesCount);
             this.TabPage_StreamData.Controls.Add(this.Button_UpdateList_StreamData);
@@ -875,6 +903,17 @@ namespace EuroSound_Application.SoundBanksEditor
             this.TabPage_StreamData.Size = new System.Drawing.Size(507, 305);
             this.TabPage_StreamData.TabIndex = 0;
             this.TabPage_StreamData.Text = "Stream Data";
+            // 
+            // Button_StopStreamData
+            // 
+            this.Button_StopStreamData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_StopStreamData.Location = new System.Drawing.Point(426, 276);
+            this.Button_StopStreamData.Name = "Button_StopStreamData";
+            this.Button_StopStreamData.Size = new System.Drawing.Size(75, 23);
+            this.Button_StopStreamData.TabIndex = 4;
+            this.Button_StopStreamData.Text = "Stop/Clear";
+            this.Button_StopStreamData.UseVisualStyleBackColor = true;
+            this.Button_StopStreamData.Click += new System.EventHandler(this.Button_StopStreamData_Click);
             // 
             // Textbox_StreamFilesCount
             // 
@@ -899,7 +938,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // Button_UpdateList_StreamData
             // 
             this.Button_UpdateList_StreamData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateList_StreamData.Location = new System.Drawing.Point(426, 276);
+            this.Button_UpdateList_StreamData.Location = new System.Drawing.Point(345, 276);
             this.Button_UpdateList_StreamData.Name = "Button_UpdateList_StreamData";
             this.Button_UpdateList_StreamData.Size = new System.Drawing.Size(75, 23);
             this.Button_UpdateList_StreamData.TabIndex = 3;
@@ -1157,5 +1196,8 @@ namespace EuroSound_Application.SoundBanksEditor
         private System.Windows.Forms.ToolStripMenuItem MenuItem_CopyHashcode;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_CopyLabel;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_File_Close;
+        private System.Windows.Forms.Button Button_StopHashcodeUpdate;
+        private System.Windows.Forms.Button Button_Stop_WavUpdate;
+        private System.Windows.Forms.Button Button_StopStreamData;
     }
 }

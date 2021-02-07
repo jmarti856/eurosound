@@ -18,12 +18,14 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
         private ProjectFile CurrentFileProperties;
         private List<string> Reports = new List<string>();
         private string FileName;
+        private int DebugFlags;
 
-        public Frm_BuildSFXStreamFile(ProjectFile FileProperties, string SoundBankFinalName)
+        public Frm_BuildSFXStreamFile(ProjectFile FileProperties, string SoundBankFinalName, int CheckedDebugFlags)
         {
             InitializeComponent();
             CurrentFileProperties = FileProperties;
             FileName = SoundBankFinalName;
+            DebugFlags = CheckedDebugFlags;
         }
 
         //*===============================================================================================
@@ -48,9 +50,8 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
             {
                 Dictionary<uint, EXSoundStream> FinalSoundsDict;
                 GenerateSFXStreamedSounds SFXCreator = new GenerateSFXStreamedSounds();
-                //BinaryWriter BWriter = new BinaryWriter(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), Encoding.ASCII);
-
                 BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
+                StreamWriter DebugFileWritter = null;
 
                 Form ParentForm = GenericFunctions.GetFormByName("Frm_StreamSoundsEditorMain", Tag.ToString());
                 int TotalProgress = 1;
@@ -60,9 +61,25 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 {
                     BWriter.Close();
                     BWriter.Dispose();
+                    if (DebugFileWritter != null)
+                    {
+                        DebugFileWritter.Close();
+                    }
                     e.Cancel = true;
                 }
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+
+                //Check if user wants a debug file
+                if (DebugFlags != 0)
+                {
+                    DebugFileWritter = new StreamWriter(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".dbg");
+                    DebugFileWritter.WriteLine(new String('/', 70));
+                    DebugFileWritter.WriteLine("// EngineX Output: " + GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX");
+                    DebugFileWritter.WriteLine("// Soundbank: " + CurrentFileProperties.FileName);
+                    DebugFileWritter.WriteLine("// Output By: " + Environment.UserName);
+                    DebugFileWritter.WriteLine("// Output Date: " + DateTime.Now);
+                    DebugFileWritter.WriteLine(new String('/', 70) + "\n");
+                }
 
                 //*===============================================================================================
                 //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED (20%)
@@ -76,7 +93,7 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 ProgressBarSetMaximum(ProgressBar_CurrentTask, ((Frm_StreamSoundsEditorMain)ParentForm).StreamSoundsList.Keys.Count);
 
                 //Discard SFXs that has checked as "no output"
-                FinalSoundsDict = SFXCreator.GetFinalSoundsDictionary(((Frm_StreamSoundsEditorMain)ParentForm).StreamSoundsList, ((Frm_StreamSoundsEditorMain)ParentForm).TreeView_StreamData, ProgressBar_CurrentTask, Label_CurrentTask);
+                FinalSoundsDict = SFXCreator.GetFinalSoundsDictionary(((Frm_StreamSoundsEditorMain)ParentForm).StreamSoundsList, ProgressBar_CurrentTask, Label_CurrentTask);
 
                 TotalProgress += 20;
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
@@ -89,6 +106,10 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 {
                     BWriter.Close();
                     BWriter.Dispose();
+                    if (DebugFileWritter != null)
+                    {
+                        DebugFileWritter.Close();
+                    }
                     e.Cancel = true;
                 }
 
@@ -96,7 +117,7 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 //Update Label
                 SetLabelText(Label_CurrentTask, "Writting File Header");
 
-                //Write Data
+                //Write Header
                 SFXCreator.WriteFileHeader(BWriter, CurrentFileProperties.Hashcode, ProgressBar_CurrentTask);
 
                 //Update Total Progress
@@ -108,7 +129,7 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 //Update Label
                 SetLabelText(Label_CurrentTask, "Writting File Sections");
 
-                //Write Data
+                //Write Sections
                 SFXCreator.WriteFileSections(BWriter, ProgressBar_CurrentTask);
 
                 //Update Total Progress
@@ -120,7 +141,7 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 //Update Label
                 SetLabelText(Label_CurrentTask, "Writting Look Up Table");
 
-                //Write Data
+                //Write Table
                 SFXCreator.WriteLookUptable(BWriter, FinalSoundsDict, ProgressBar_CurrentTask);
 
                 //Update Total Progress
@@ -132,7 +153,7 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 SetLabelText(Label_CurrentTask, "Writting Markers");
 
                 //Write Data
-                SFXCreator.WriteStreamFile(BWriter, FinalSoundsDict, ProgressBar_CurrentTask);
+                SFXCreator.WriteStreamFile(BWriter, FinalSoundsDict, DebugFlags, DebugFileWritter, ProgressBar_CurrentTask);
 
                 //Update Total Progress
                 TotalProgress += 10;
@@ -150,16 +171,31 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 {
                     BWriter.Close();
                     BWriter.Dispose();
+                    if (DebugFileWritter != null)
+                    {
+                        DebugFileWritter.Close();
+                    }
                     e.Cancel = true;
                 }
 
                 //Update Label
                 SetLabelText(Label_CurrentTask, "WrittingFinalOffsets");
 
-                //Write Data
-                SFXCreator.WriteFinalOffsets(BWriter, ProgressBar_CurrentTask);
+                //Write Offsets
+                SFXCreator.WriteFinalOffsets(BWriter, CurrentFileProperties.Hashcode, DebugFlags, DebugFileWritter, ProgressBar_CurrentTask);
+
+                //Close Writer
                 BWriter.Close();
                 BWriter.Dispose();
+
+                //Close DebugFile
+                if (DebugFileWritter != null)
+                {
+                    DebugFileWritter.Close();
+                }
+
+                //Clear Temporal Dictionary
+                FinalSoundsDict.Clear();
 
                 //Update Label
                 SetLabelText(Label_CurrentTask, "Output Completed");

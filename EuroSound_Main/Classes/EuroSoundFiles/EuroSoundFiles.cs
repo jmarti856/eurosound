@@ -65,22 +65,23 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 
         internal string SaveSoundBanksDocument(TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
         {
-            BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
-            //*===============================================================================================
-            //* HEADER
-            //*===============================================================================================
-            //MAGIC
-            BWriter.Write(Encoding.ASCII.GetBytes("ESF"));
-            //FileVersion
-            BWriter.Write(Convert.ToUInt32(11));
-            //Type of stored data
-            BWriter.Write(Convert.ToSByte(FileProperties.TypeOfData));
+            using (BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read), null, Encoding.ASCII))
+            {
+                //*===============================================================================================
+                //* HEADER
+                //*===============================================================================================
+                //MAGIC
+                BWriter.Write(Encoding.ASCII.GetBytes("ESF"));
+                //FileVersion
+                BWriter.Write(Convert.ToUInt32(11));
+                //Type of stored data
+                BWriter.Write(Convert.ToSByte(FileProperties.TypeOfData));
 
-            ESF_SaveSoundBanks SaveSoundBank = new ESF_SaveSoundBanks();
-            SaveSoundBank.SaveSoundBanks(BWriter, TreeViewControl, SoundsList, AudiosList, FileProperties);
+                ESF_SaveSoundBanks SaveSoundBank = new ESF_SaveSoundBanks();
+                SaveSoundBank.SaveSoundBanks(BWriter, TreeViewControl, SoundsList, AudiosList, FileProperties);
 
-            BWriter.Close();
-            BWriter.Dispose();
+                BWriter.Close();
+            }
 
             return FilePath;
         }

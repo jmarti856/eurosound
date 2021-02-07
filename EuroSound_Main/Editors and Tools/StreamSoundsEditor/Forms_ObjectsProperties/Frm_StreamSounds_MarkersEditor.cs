@@ -11,7 +11,8 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         private EXSoundStream SelectedSound, TemporalSelectedSound;
         private uint v_MarkerPos, v_MarkerCount;
-
+        private EngineXImaAdpcm.ImaADPCM_Decoder ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Decoder();
+        private uint StateA = 0, StateB = 0;
         //*===============================================================================================
         //* FORM EVENTS
         //*===============================================================================================
@@ -65,27 +66,24 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         private void Button_AddMarker_Click(object sender, EventArgs e)
         {
-            uint MarkerType;
+            int SamplesToDecode;
+            uint[] IMAStates;
+            uint MarkerType, IMAPosition;
+            bool PendingToAddStates = false;
 
             //Get type of the selected combobox value
             MarkerType = (uint)(ComboBox_MarkerType.SelectedItem as dynamic).Value;
 
-            //---------------------------------[Add Start Marker]-------------------------------
-            if (MarkerType != 9)
+            //---------------------------------[Start Marker]-------------------------------
+            EXStreamStartMarker NewStartMarker = new EXStreamStartMarker
             {
-                EXStreamStartMarker NewStartMarker = new EXStreamStartMarker
-                {
-                    Position = (uint)Numeric_MarkerPosition.Value,
-                    MusicMakerType = 10,
-                    Flags = 2,
-                    Extra = 0,
-                    MarkerCount = v_MarkerCount,
-                    MarkerPos = v_MarkerPos
-                };
-
-                TemporalSelectedSound.StartMarkers.Add(NewStartMarker);
-                AddMarkerStartToListView(NewStartMarker);
-            }
+                Position = (uint)Numeric_Position.Value,
+                MusicMakerType = 10,
+                Flags = 2,
+                Extra = 0,
+                MarkerCount = v_MarkerCount,
+                MarkerPos = v_MarkerPos
+            };
 
             //---------------------------------[Add Marker]---------------------------------
             if (MarkerType == 6) //Loop
@@ -95,18 +93,44 @@ namespace EuroSound_Application.StreamSounds
                 {
                     Name = (int)v_MarkerCount,
                     MusicMakerType = 10,
-                    MarkerCount = v_MarkerCount,
+                    MarkerCount = v_MarkerCount
                 };
+
+                //Get States
+                if ((uint)Numeric_MarkerLoopStart.Value > 0)
+                {
+                    NewStartLoopMarker.Position = (uint)Numeric_MarkerLoopStart.Value;
+
+                    //Calculate States
+                    SamplesToDecode = TemporalSelectedSound.IMA_ADPCM_DATA.Length * 2;
+                    IMAStates = new uint[SamplesToDecode];
+                    ImaADPCM.DecodeIMA_ADPCM(TemporalSelectedSound.IMA_ADPCM_DATA, SamplesToDecode, IMAStates);
+
+                    //Get States
+                    IMAPosition = ((uint)Numeric_MarkerLoopStart.Value / 2) - 1;
+                    StateA = IMAStates[IMAPosition];
+                    StateB = IMAStates[IMAPosition];
+
+                    //Add States
+                    PendingToAddStates = true;
+                }
+                else
+                {
+                    StateA = 0;
+                    StateB = 0;
+                }
 
                 EXStreamMarker NewLoopMarker = new EXStreamMarker
                 {
                     Name = (int)v_MarkerCount,
-                    Position = (uint)Numeric_MarkerPosition.Value,
+                    Position = (uint)Numeric_Position.Value,
                     MusicMakerType = MarkerType,
                     MarkerCount = (v_MarkerCount + 1),
+                    LoopStart = (uint)Numeric_MarkerLoopStart.Value,
                     LoopMarkerCount = 1
                 };
 
+                //Add Markers
                 TemporalSelectedSound.Markers.Add(NewStartLoopMarker);
                 TemporalSelectedSound.Markers.Add(NewLoopMarker);
 
@@ -119,13 +143,49 @@ namespace EuroSound_Application.StreamSounds
                 EXStreamMarker NewMarker = new EXStreamMarker
                 {
                     Name = (int)-1,
-                    Position = (uint)Numeric_MarkerPosition.Value,
+                    Position = (uint)Numeric_Position.Value,
                     MusicMakerType = MarkerType,
                     MarkerCount = v_MarkerCount,
                 };
 
                 TemporalSelectedSound.Markers.Add(NewMarker);
                 AddMarkerDataToListView(NewMarker);
+            }
+            else if (MarkerType == 10) //Start
+            {
+                v_MarkerPos += 1;
+                EXStreamMarker NewMarker = new EXStreamMarker
+                {
+                    Name = (int)v_MarkerCount,
+                    Position = (uint)Numeric_Position.Value,
+                    MusicMakerType = 10,
+                    MarkerCount = v_MarkerCount,
+                };
+
+                TemporalSelectedSound.Markers.Add(NewMarker);
+                AddMarkerDataToListView(NewMarker);
+
+                //Get States
+                if ((uint)Numeric_Position.Value > 0)
+                {
+                    //Calculate States
+                    SamplesToDecode = TemporalSelectedSound.IMA_ADPCM_DATA.Length * 2;
+                    IMAStates = new uint[SamplesToDecode];
+                    ImaADPCM.DecodeIMA_ADPCM(TemporalSelectedSound.IMA_ADPCM_DATA, SamplesToDecode, IMAStates);
+
+                    //Get States
+                    IMAPosition = ((uint)Numeric_Position.Value / 2) - 1;
+                    StateA = IMAStates[IMAPosition];
+                    StateB = IMAStates[IMAPosition];
+
+                    PendingToAddStates = true;
+                }
+                else
+                {
+                    PendingToAddStates = false;
+                    StateA = 0;
+                    StateB = 0;
+                }
             }
             else
             {
@@ -133,7 +193,7 @@ namespace EuroSound_Application.StreamSounds
                 EXStreamMarker NewMarker = new EXStreamMarker
                 {
                     Name = (int)v_MarkerCount,
-                    Position = (uint)Numeric_MarkerPosition.Value,
+                    Position = (uint)Numeric_Position.Value,
                     MusicMakerType = MarkerType,
                     MarkerCount = v_MarkerCount,
                 };
@@ -142,12 +202,30 @@ namespace EuroSound_Application.StreamSounds
                 AddMarkerDataToListView(NewMarker);
             }
 
+            //---------------------------------[Add Start Marker]-------------------------------
+            if (MarkerType != 9)
+            {
+                if (PendingToAddStates)
+                {
+                    if (StateA != 0 && StateB != 0)
+                    {
+                        NewStartMarker.StateA = StateA;
+                        NewStartMarker.StateB = StateB;
+                    }
+                }
+
+                TemporalSelectedSound.StartMarkers.Add(NewStartMarker);
+                AddMarkerStartToListView(NewStartMarker);
+            }
+
+
             v_MarkerCount += 1;
             TemporalSelectedSound.MarkerDataCounterID = v_MarkerPos;
         }
 
         private void Button_Clear_Click(object sender, EventArgs e)
         {
+            TemporalSelectedSound.StartMarkers.Clear();
             TemporalSelectedSound.Markers.Clear();
             ListView_Markers.Items.Clear();
             ListView_MarkerData.Items.Clear();

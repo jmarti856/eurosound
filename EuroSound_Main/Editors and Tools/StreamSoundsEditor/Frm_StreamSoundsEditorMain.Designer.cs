@@ -62,6 +62,7 @@ namespace EuroSound_Application.StreamSounds
             this.MenuItem_Edit_Separator = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItem_Edit_Search = new System.Windows.Forms.ToolStripMenuItem();
             this.GroupBox_StreamData = new System.Windows.Forms.GroupBox();
+            this.Button_StopUpdate = new System.Windows.Forms.Button();
             this.ListView_WavHeaderData = new EuroSound_Application.CustomControls.ListViewColumnSorting.ListView_ColumnSortingClick();
             this.Col_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Index = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -353,6 +354,7 @@ namespace EuroSound_Application.StreamSounds
             // 
             this.GroupBox_StreamData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox_StreamData.Controls.Add(this.Button_StopUpdate);
             this.GroupBox_StreamData.Controls.Add(this.ListView_WavHeaderData);
             this.GroupBox_StreamData.Controls.Add(this.Button_UpdateList_WavData);
             this.GroupBox_StreamData.Location = new System.Drawing.Point(331, 12);
@@ -361,6 +363,17 @@ namespace EuroSound_Application.StreamSounds
             this.GroupBox_StreamData.TabIndex = 2;
             this.GroupBox_StreamData.TabStop = false;
             this.GroupBox_StreamData.Text = "Stream Data:";
+            // 
+            // Button_StopUpdate
+            // 
+            this.Button_StopUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_StopUpdate.Location = new System.Drawing.Point(484, 491);
+            this.Button_StopUpdate.Name = "Button_StopUpdate";
+            this.Button_StopUpdate.Size = new System.Drawing.Size(75, 23);
+            this.Button_StopUpdate.TabIndex = 2;
+            this.Button_StopUpdate.Text = "Stop/Clear";
+            this.Button_StopUpdate.UseVisualStyleBackColor = true;
+            this.Button_StopUpdate.Click += new System.EventHandler(this.Button_StopUpdate_Click);
             // 
             // ListView_WavHeaderData
             // 
@@ -438,7 +451,7 @@ namespace EuroSound_Application.StreamSounds
             // Button_UpdateList_WavData
             // 
             this.Button_UpdateList_WavData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateList_WavData.Location = new System.Drawing.Point(484, 491);
+            this.Button_UpdateList_WavData.Location = new System.Drawing.Point(403, 491);
             this.Button_UpdateList_WavData.Name = "Button_UpdateList_WavData";
             this.Button_UpdateList_WavData.Size = new System.Drawing.Size(75, 23);
             this.Button_UpdateList_WavData.TabIndex = 1;
@@ -605,5 +618,6 @@ namespace EuroSound_Application.StreamSounds
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Edit_Undo;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_File_Close;
+        private System.Windows.Forms.Button Button_StopUpdate;
     }
 }

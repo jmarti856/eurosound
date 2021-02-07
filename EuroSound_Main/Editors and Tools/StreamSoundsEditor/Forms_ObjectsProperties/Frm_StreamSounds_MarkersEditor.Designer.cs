@@ -37,8 +37,8 @@ namespace EuroSound_Application.StreamSounds
             this.Label_LoopStart = new System.Windows.Forms.Label();
             this.ComboBox_MarkerType = new System.Windows.Forms.ComboBox();
             this.Label_Type = new System.Windows.Forms.Label();
-            this.Numeric_MarkerPosition = new System.Windows.Forms.NumericUpDown();
-            this.Label_MarkerPosition = new System.Windows.Forms.Label();
+            this.Numeric_Position = new System.Windows.Forms.NumericUpDown();
+            this.Label_Position = new System.Windows.Forms.Label();
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
             this.Label_StartMarkers = new System.Windows.Forms.Label();
@@ -60,7 +60,7 @@ namespace EuroSound_Application.StreamSounds
             this.Col_LoopMarkerCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.GroupBox_MarkerData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_MarkerLoopStart)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Numeric_MarkerPosition)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Numeric_Position)).BeginInit();
             this.SuspendLayout();
             // 
             // GroupBox_MarkerData
@@ -73,11 +73,11 @@ namespace EuroSound_Application.StreamSounds
             this.GroupBox_MarkerData.Controls.Add(this.Label_LoopStart);
             this.GroupBox_MarkerData.Controls.Add(this.ComboBox_MarkerType);
             this.GroupBox_MarkerData.Controls.Add(this.Label_Type);
-            this.GroupBox_MarkerData.Controls.Add(this.Numeric_MarkerPosition);
-            this.GroupBox_MarkerData.Controls.Add(this.Label_MarkerPosition);
+            this.GroupBox_MarkerData.Controls.Add(this.Numeric_Position);
+            this.GroupBox_MarkerData.Controls.Add(this.Label_Position);
             this.GroupBox_MarkerData.Location = new System.Drawing.Point(12, 12);
             this.GroupBox_MarkerData.Name = "GroupBox_MarkerData";
-            this.GroupBox_MarkerData.Size = new System.Drawing.Size(512, 92);
+            this.GroupBox_MarkerData.Size = new System.Drawing.Size(529, 92);
             this.GroupBox_MarkerData.TabIndex = 1;
             this.GroupBox_MarkerData.TabStop = false;
             this.GroupBox_MarkerData.Text = "Marker Data:";
@@ -85,7 +85,7 @@ namespace EuroSound_Application.StreamSounds
             // Button_Clear
             // 
             this.Button_Clear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Clear.Location = new System.Drawing.Point(363, 53);
+            this.Button_Clear.Location = new System.Drawing.Point(380, 53);
             this.Button_Clear.Name = "Button_Clear";
             this.Button_Clear.Size = new System.Drawing.Size(78, 21);
             this.Button_Clear.TabIndex = 12;
@@ -96,7 +96,7 @@ namespace EuroSound_Application.StreamSounds
             // Button_AddMarker
             // 
             this.Button_AddMarker.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_AddMarker.Location = new System.Drawing.Point(447, 53);
+            this.Button_AddMarker.Location = new System.Drawing.Point(464, 53);
             this.Button_AddMarker.Name = "Button_AddMarker";
             this.Button_AddMarker.Size = new System.Drawing.Size(59, 21);
             this.Button_AddMarker.TabIndex = 11;
@@ -106,7 +106,7 @@ namespace EuroSound_Application.StreamSounds
             // 
             // Numeric_MarkerLoopStart
             // 
-            this.Numeric_MarkerLoopStart.Location = new System.Drawing.Point(397, 26);
+            this.Numeric_MarkerLoopStart.Location = new System.Drawing.Point(411, 26);
             this.Numeric_MarkerLoopStart.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -119,7 +119,7 @@ namespace EuroSound_Application.StreamSounds
             // Label_LoopStart
             // 
             this.Label_LoopStart.AutoSize = true;
-            this.Label_LoopStart.Location = new System.Drawing.Point(332, 29);
+            this.Label_LoopStart.Location = new System.Drawing.Point(346, 29);
             this.Label_LoopStart.Name = "Label_LoopStart";
             this.Label_LoopStart.Size = new System.Drawing.Size(59, 13);
             this.Label_LoopStart.TabIndex = 8;
@@ -131,7 +131,7 @@ namespace EuroSound_Application.StreamSounds
             this.ComboBox_MarkerType.FormattingEnabled = true;
             this.ComboBox_MarkerType.Location = new System.Drawing.Point(46, 25);
             this.ComboBox_MarkerType.Name = "ComboBox_MarkerType";
-            this.ComboBox_MarkerType.Size = new System.Drawing.Size(101, 21);
+            this.ComboBox_MarkerType.Size = new System.Drawing.Size(115, 21);
             this.ComboBox_MarkerType.TabIndex = 3;
             // 
             // Label_Type
@@ -143,31 +143,31 @@ namespace EuroSound_Application.StreamSounds
             this.Label_Type.TabIndex = 2;
             this.Label_Type.Text = "Type:";
             // 
-            // Numeric_MarkerPosition
+            // Numeric_Position
             // 
-            this.Numeric_MarkerPosition.Location = new System.Drawing.Point(206, 26);
-            this.Numeric_MarkerPosition.Maximum = new decimal(new int[] {
-            999999,
+            this.Numeric_Position.Location = new System.Drawing.Point(220, 26);
+            this.Numeric_Position.Maximum = new decimal(new int[] {
+            -1,
             0,
             0,
             0});
-            this.Numeric_MarkerPosition.Name = "Numeric_MarkerPosition";
-            this.Numeric_MarkerPosition.Size = new System.Drawing.Size(120, 20);
-            this.Numeric_MarkerPosition.TabIndex = 1;
+            this.Numeric_Position.Name = "Numeric_Position";
+            this.Numeric_Position.Size = new System.Drawing.Size(120, 20);
+            this.Numeric_Position.TabIndex = 1;
             // 
-            // Label_MarkerPosition
+            // Label_Position
             // 
-            this.Label_MarkerPosition.AutoSize = true;
-            this.Label_MarkerPosition.Location = new System.Drawing.Point(153, 28);
-            this.Label_MarkerPosition.Name = "Label_MarkerPosition";
-            this.Label_MarkerPosition.Size = new System.Drawing.Size(47, 13);
-            this.Label_MarkerPosition.TabIndex = 0;
-            this.Label_MarkerPosition.Text = "Position:";
+            this.Label_Position.AutoSize = true;
+            this.Label_Position.Location = new System.Drawing.Point(167, 29);
+            this.Label_Position.Name = "Label_Position";
+            this.Label_Position.Size = new System.Drawing.Size(47, 13);
+            this.Label_Position.TabIndex = 0;
+            this.Label_Position.Text = "Position:";
             // 
             // Button_OK
             // 
             this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_OK.Location = new System.Drawing.Point(368, 480);
+            this.Button_OK.Location = new System.Drawing.Point(385, 512);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
             this.Button_OK.TabIndex = 6;
@@ -179,7 +179,7 @@ namespace EuroSound_Application.StreamSounds
             // 
             this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_Cancel.Location = new System.Drawing.Point(449, 480);
+            this.Button_Cancel.Location = new System.Drawing.Point(466, 512);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.Button_Cancel.TabIndex = 7;
@@ -211,7 +211,7 @@ namespace EuroSound_Application.StreamSounds
             this.ListView_Markers.HideSelection = false;
             this.ListView_Markers.Location = new System.Drawing.Point(12, 123);
             this.ListView_Markers.Name = "ListView_Markers";
-            this.ListView_Markers.Size = new System.Drawing.Size(512, 145);
+            this.ListView_Markers.Size = new System.Drawing.Size(529, 145);
             this.ListView_Markers.TabIndex = 8;
             this.ListView_Markers.UseCompatibleStateImageBehavior = false;
             this.ListView_Markers.View = System.Windows.Forms.View.Details;
@@ -268,7 +268,7 @@ namespace EuroSound_Application.StreamSounds
             this.ListView_MarkerData.HideSelection = false;
             this.ListView_MarkerData.Location = new System.Drawing.Point(12, 287);
             this.ListView_MarkerData.Name = "ListView_MarkerData";
-            this.ListView_MarkerData.Size = new System.Drawing.Size(512, 187);
+            this.ListView_MarkerData.Size = new System.Drawing.Size(529, 219);
             this.ListView_MarkerData.TabIndex = 10;
             this.ListView_MarkerData.UseCompatibleStateImageBehavior = false;
             this.ListView_MarkerData.View = System.Windows.Forms.View.Details;
@@ -317,7 +317,7 @@ namespace EuroSound_Application.StreamSounds
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Button_Cancel;
-            this.ClientSize = new System.Drawing.Size(536, 515);
+            this.ClientSize = new System.Drawing.Size(553, 547);
             this.Controls.Add(this.ListView_MarkerData);
             this.Controls.Add(this.Label_MarkerData);
             this.Controls.Add(this.ListView_Markers);
@@ -336,7 +336,7 @@ namespace EuroSound_Application.StreamSounds
             this.GroupBox_MarkerData.ResumeLayout(false);
             this.GroupBox_MarkerData.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_MarkerLoopStart)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Numeric_MarkerPosition)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Numeric_Position)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -348,8 +348,8 @@ namespace EuroSound_Application.StreamSounds
         private System.Windows.Forms.Label Label_LoopStart;
         private System.Windows.Forms.ComboBox ComboBox_MarkerType;
         private System.Windows.Forms.Label Label_Type;
-        private System.Windows.Forms.NumericUpDown Numeric_MarkerPosition;
-        private System.Windows.Forms.Label Label_MarkerPosition;
+        private System.Windows.Forms.NumericUpDown Numeric_Position;
+        private System.Windows.Forms.Label Label_Position;
         private System.Windows.Forms.Button Button_OK;
         private System.Windows.Forms.Button Button_Cancel;
         private System.Windows.Forms.Label Label_StartMarkers;

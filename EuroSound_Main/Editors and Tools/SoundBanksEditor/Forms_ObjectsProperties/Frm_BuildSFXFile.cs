@@ -14,14 +14,16 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
     public partial class Frm_BuildSFXFile : Form
     {
         private ProjectFile CurrentFileProperties;
-        private string FileName;
         private List<string> Reports = new List<string>();
+        private string FileName;
+        private int DebugFlags;
 
-        public Frm_BuildSFXFile(ProjectFile FileProperties, string SoundBankFinalName)
+        public Frm_BuildSFXFile(ProjectFile FileProperties, string SoundBankFinalName, int CheckedDebugFlags)
         {
             InitializeComponent();
             CurrentFileProperties = FileProperties;
             FileName = SoundBankFinalName;
+            DebugFlags = CheckedDebugFlags;
         }
 
         private void BackgroundWorker_BuildSFX_DoWork(object sender, DoWorkEventArgs e)
@@ -36,6 +38,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 Dictionary<string, EXAudio> FinalAudioDataDict;
                 GenerateSFXSoundBank SFXCreator = new GenerateSFXSoundBank();
                 BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
+                StreamWriter DebugFileWritter = null;
 
                 Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
                 int TotalProgress = 1;
@@ -45,10 +48,26 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 {
                     BWriter.Close();
                     BWriter.Dispose();
+                    if (DebugFileWritter != null)
+                    {
+                        DebugFileWritter.Close();
+                    }
                     e.Cancel = true;
                 }
 
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+
+                //Check if user wants a debug file
+                if (DebugFlags != 0)
+                {
+                    DebugFileWritter = new StreamWriter(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".dbg");
+                    DebugFileWritter.WriteLine(new String('/', 70));
+                    DebugFileWritter.WriteLine("// EngineX Output: " + GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX");
+                    DebugFileWritter.WriteLine("// Soundbank: " + CurrentFileProperties.FileName);
+                    DebugFileWritter.WriteLine("// Output By: " + Environment.UserName);
+                    DebugFileWritter.WriteLine("// Output Date: " + DateTime.Now);
+                    DebugFileWritter.WriteLine(new String('/', 70) + "\n");
+                }
 
                 //*===============================================================================================
                 //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED (20%)
@@ -92,6 +111,10 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 {
                     BWriter.Close();
                     BWriter.Dispose();
+                    if (DebugFileWritter != null)
+                    {
+                        DebugFileWritter.Close();
+                    }
                     e.Cancel = true;
                 }
 
@@ -121,7 +144,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
 
                 //--------------------------------------[SECTION SFX elements]--------------------------------------
                 //Write Data
-                SFXCreator.WriteSFXSection(BWriter, FinalSoundsDict, FinalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
+                SFXCreator.WriteSFXSection(BWriter, FinalSoundsDict, FinalAudioDataDict, DebugFlags, DebugFileWritter, ProgressBar_CurrentTask, Label_CurrentTask);
 
                 //Update Total Progress
                 TotalProgress += 10;
@@ -130,7 +153,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
 
                 //--------------------------------------[SECTION Sample info elements]--------------------------------------
                 //Write Data
-                SFXCreator.WriteSampleInfoSection(BWriter, FinalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
+                SFXCreator.WriteSampleInfoSection(BWriter, FinalAudioDataDict, DebugFlags, DebugFileWritter, ProgressBar_CurrentTask, Label_CurrentTask);
 
                 //Update Total Progress
                 TotalProgress += 10;
@@ -138,7 +161,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
 
                 //--------------------------------------[SECTION Sample data]--------------------------------------
                 //Write Data
-                SFXCreator.WriteSampleDataSection(BWriter, FinalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
+                SFXCreator.WriteSampleDataSection(BWriter, FinalAudioDataDict, DebugFlags, DebugFileWritter, ProgressBar_CurrentTask, Label_CurrentTask);
 
                 //Update Total Progress
                 TotalProgress += 10;
@@ -152,6 +175,10 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 {
                     BWriter.Close();
                     BWriter.Dispose();
+                    if (DebugFileWritter != null)
+                    {
+                        DebugFileWritter.Close();
+                    }
                     e.Cancel = true;
                 }
 
@@ -159,9 +186,22 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 SetLabelText(Label_CurrentTask, "WrittingFinalOffsets");
 
                 //Write Data
-                SFXCreator.WriteFinalOffsets(BWriter, ProgressBar_CurrentTask, Label_CurrentTask);
+                SFXCreator.WriteFinalOffsets(BWriter, DebugFlags, DebugFileWritter, CurrentFileProperties.Hashcode, ProgressBar_CurrentTask, Label_CurrentTask);
+
+                //Close Binary Writter
                 BWriter.Close();
                 BWriter.Dispose();
+
+                //Close Text Writer
+                if (DebugFileWritter != null)
+                {
+                    DebugFileWritter.Close();
+                    DebugFileWritter.Dispose();
+                }
+
+                //Clear Temporal Dictionaries
+                FinalSoundsDict.Clear();
+                FinalAudioDataDict.Clear();
 
                 //Update Label
                 SetLabelText(Label_CurrentTask, "Output Completed");

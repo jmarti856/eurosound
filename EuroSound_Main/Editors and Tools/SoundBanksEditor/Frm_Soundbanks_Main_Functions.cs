@@ -299,7 +299,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 try
                 {
                     TreeNode DisplayName;
-                    //string DisplayName;
+
                     foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
                     {
                         DisplayName = TreeView_File.Nodes.Find(Sound.Key.ToString(), true)[0];
@@ -329,7 +329,8 @@ namespace EuroSound_Application.SoundBanksEditor
                         });
                         Thread.Sleep(30);
                     }
-                    //Clear List
+
+                    //Enable List
                     ListView_Hashcodes.BeginInvoke((MethodInvoker)delegate
                     {
                         ListView_Hashcodes.Enabled = true;
@@ -345,6 +346,18 @@ namespace EuroSound_Application.SoundBanksEditor
                 IsBackground = true
             };
             UpdateList.Start();
+        }
+
+        private void Button_StopHashcodeUpdate_Click(object sender, EventArgs e)
+        {
+            if (UpdateList != null)
+            {
+                UpdateList.Abort();
+                ListView_Hashcodes.Items.Clear();
+                ListView_Hashcodes.Enabled = true;
+                Textbox_HashcodesCount.Text = "0";
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            }
         }
 
         private void UpdateStreamedDataList()
@@ -414,6 +427,18 @@ namespace EuroSound_Application.SoundBanksEditor
             UpdateStreamDataList.Start();
         }
 
+        private void Button_StopStreamData_Click(object sender, EventArgs e)
+        {
+            if (UpdateStreamDataList != null)
+            {
+                UpdateStreamDataList.Abort();
+                ListView_StreamData.Items.Clear();
+                ListView_StreamData.Enabled = true;
+                Textbox_StreamFilesCount.Text = "0";
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            }
+        }
+
         private void UpdateWavDataList()
         {
             UpdateWavList = new Thread(() =>
@@ -476,6 +501,18 @@ namespace EuroSound_Application.SoundBanksEditor
                 IsBackground = true
             };
             UpdateWavList.Start();
+        }
+
+        private void Button_Stop_WavUpdate_Click(object sender, EventArgs e)
+        {
+            if (UpdateWavList != null)
+            {
+                UpdateWavList.Abort();
+                ListView_WavHeaderData.Items.Clear();
+                ListView_WavHeaderData.Enabled = true;
+                Textbox_DataCount.Text = "0";
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            }
         }
 
         private void UpdateStatusBarLabels()

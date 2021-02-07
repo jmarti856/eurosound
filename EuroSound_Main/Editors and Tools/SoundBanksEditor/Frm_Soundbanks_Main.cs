@@ -530,18 +530,39 @@ namespace EuroSound_Application.SoundBanksEditor
             if (ProjectInfo.Hashcode != 0x00000000)
             {
                 string FileName = "HC" + ProjectInfo.Hashcode.ToString("X8").Substring(2);
-                Frm_BuildSFXFile BuildFile = new Frm_BuildSFXFile(ProjectInfo, FileName)
+
+                //---[Output with debug options
+                if ((ModifierKeys & Keys.Control) == Keys.Control)
                 {
-                    Tag = Tag,
-                    Owner = Owner,
-                    ShowInTaskbar = false
-                };
-                BuildFile.ShowDialog();
+                    using (Frm_Sounbanks_DebugOutput DebugOpts = new Frm_Sounbanks_DebugOutput())
+                    {
+                        if (DebugOpts.ShowDialog() == DialogResult.OK)
+                        {
+                            BuildSfxForm(FileName, DebugOpts.CheckedOptions);
+                        }
+                    }
+                }
+                else
+                {
+
+                    BuildSfxForm(FileName, 0);
+                }
             }
             else
             {
                 MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_BuildSFX_NoHashcode"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void BuildSfxForm(string FileName, int DebugFlags)
+        {
+            Frm_BuildSFXFile BuildFile = new Frm_BuildSFXFile(ProjectInfo, FileName, DebugFlags)
+            {
+                Tag = Tag,
+                Owner = Owner,
+                ShowInTaskbar = false
+            };
+            BuildFile.ShowDialog();
         }
 
         private void MenuItemFile_ReadSound_Click(object sender, EventArgs e)

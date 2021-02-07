@@ -36,7 +36,7 @@ namespace EuroSound_Application
         {
             //args = new string[2];
             //args[0] = "/o";
-            //args[1] = "SB_Lev_Abydos_South.esf";
+            //args[1] = "Sakkara_1.esf";
 
             /*--Check For .NET Framework v4.5--*/
             if (Get45or451FromRegistry())

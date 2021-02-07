@@ -93,11 +93,22 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         //* WRITE MARKERS
         //*===============================================================================================
-        public void WriteStreamFile(BinaryStream BWriter, Dictionary<uint, EXSoundStream> StreamSoundsList, ProgressBar Bar)
+        public void WriteStreamFile(BinaryStream BWriter, Dictionary<uint, EXSoundStream> StreamSoundsList, int DebugFlags, StreamWriter DebugFile, ProgressBar Bar)
         {
             long StartMarkerOffset, MarkerSizeStartOffset, AudioOffset;
             long AlignOffset;
             uint SoundStartOffset, MarkerDataOffset, MarkerSize;
+            bool DebugMarkersData;
+
+            //CheckFlag Stream Data is checked
+            DebugMarkersData = Convert.ToBoolean((DebugFlags >> 1) & 1);
+
+            if (DebugMarkersData)
+            {
+                DebugFile.WriteLine(new String('/', 70));
+                DebugFile.WriteLine("// Stream Sounds Data");
+                DebugFile.WriteLine(new String('/', 70) + "\n");
+            }
 
             //Update GUI
             ProgressBarReset(Bar);
@@ -127,6 +138,26 @@ namespace EuroSound_Application.StreamSounds
                 //Base volume
                 BWriter.WriteUInt32(SoundToWrtie.Value.BaseVolume);
 
+                //--[Write Debug File]--
+                if (DebugMarkersData)
+                {
+                    DebugFile.WriteLine(new String('/', 70));
+                    DebugFile.WriteLine("// Wav File Name");
+                    DebugFile.WriteLine("\t" + SoundToWrtie.Value.WAVFileName);
+                    DebugFile.WriteLine("// Audio size");
+                    DebugFile.WriteLine("\t" + (uint)SoundToWrtie.Value.IMA_ADPCM_DATA.Length);
+                    DebugFile.WriteLine("// Start marker count");
+                    DebugFile.WriteLine("\t" + (uint)SoundToWrtie.Value.StartMarkers.Count);
+                    DebugFile.WriteLine("// Marker count");
+                    DebugFile.WriteLine("\t" + (uint)SoundToWrtie.Value.Markers.Count);
+                    DebugFile.WriteLine("// Start marker offset");
+                    DebugFile.WriteLine("\t" + (uint)StartMarkerOffset);
+                    DebugFile.WriteLine("// Marker offset");
+                    DebugFile.WriteLine("\t" + (uint)00000000);
+                    DebugFile.WriteLine("// Base volume");
+                    DebugFile.WriteLine("\t" + SoundToWrtie.Value.BaseVolume + "\n");
+                }
+
                 MarkerSizeStartOffset = BWriter.BaseStream.Position;
                 //Start Markers Data
                 for (int i = 0; i < SoundToWrtie.Value.StartMarkers.Count; i++)
@@ -145,7 +176,43 @@ namespace EuroSound_Application.StreamSounds
                     BWriter.WriteUInt32(SoundToWrtie.Value.StartMarkers[i].StateA);
                     BWriter.WriteUInt32(SoundToWrtie.Value.StartMarkers[i].StateB);
                 }
+
+                //--[Write Debug File]--
+                if (DebugMarkersData)
+                {
+                    for (int i = 0; i < SoundToWrtie.Value.StartMarkers.Count; i++)
+                    {
+                        DebugFile.WriteLine("// ----Start Markers Data----" + "\n");
+                        DebugFile.WriteLine("// Name");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.StartMarkers[i].Name);
+                        DebugFile.WriteLine("// Position");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.StartMarkers[i].Position);
+                        DebugFile.WriteLine("// Music Maker Type");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.StartMarkers[i].MusicMakerType);
+                        DebugFile.WriteLine("// Flags");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.StartMarkers[i].Flags);
+                        DebugFile.WriteLine("// Extra");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.StartMarkers[i].Extra);
+                        DebugFile.WriteLine("// Loop Start");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.StartMarkers[i].LoopStart);
+                        DebugFile.WriteLine("// Marker Count");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.StartMarkers[i].MarkerCount);
+                        DebugFile.WriteLine("// Loop Marker Count");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.StartMarkers[i].LoopMarkerCount);
+                        DebugFile.WriteLine("// Marker Pos");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.StartMarkers[i].MarkerPos);
+                        DebugFile.WriteLine("// Is Instant");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.StartMarkers[i].IsInstant);
+                        DebugFile.WriteLine("// Instant Buffer");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.StartMarkers[i].InstantBuffer);
+                        DebugFile.WriteLine("// StateA");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.StartMarkers[i].StateA);
+                        DebugFile.WriteLine("// StateB");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.StartMarkers[i].StateB);
+                    }
+                }
                 MarkerDataOffset = (uint)(BWriter.BaseStream.Position - MarkerSizeStartOffset);
+
                 //Markers
                 for (int j = 0; j < SoundToWrtie.Value.Markers.Count; j++)
                 {
@@ -157,6 +224,31 @@ namespace EuroSound_Application.StreamSounds
                     BWriter.WriteUInt32(SoundToWrtie.Value.Markers[j].LoopStart);
                     BWriter.WriteUInt32(SoundToWrtie.Value.Markers[j].MarkerCount);
                     BWriter.WriteUInt32(SoundToWrtie.Value.Markers[j].LoopMarkerCount);
+                }
+
+                //--[Write Debug File]--
+                if (DebugMarkersData)
+                {
+                    for (int j = 0; j < SoundToWrtie.Value.Markers.Count; j++)
+                    {
+                        DebugFile.WriteLine("// ----Markers Data----" + "\n");
+                        DebugFile.WriteLine("// Name");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.Markers[j].Name);
+                        DebugFile.WriteLine("// Position");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.Markers[j].Position);
+                        DebugFile.WriteLine("// Music Maker Type");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.Markers[j].MusicMakerType);
+                        DebugFile.WriteLine("// Flags");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.Markers[j].Flags);
+                        DebugFile.WriteLine("// Extra");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.Markers[j].Extra);
+                        DebugFile.WriteLine("// Loop Start");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.Markers[j].LoopStart);
+                        DebugFile.WriteLine("// Marker Count");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.Markers[j].MarkerCount);
+                        DebugFile.WriteLine("// Loop Marker Count");
+                        DebugFile.WriteLine("\t" + SoundToWrtie.Value.Markers[j].LoopMarkerCount + "\n");
+                    }
                 }
                 MarkerSize = (uint)(BWriter.BaseStream.Position - MarkerSizeStartOffset);
 
@@ -189,8 +281,13 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         //* FINAL OFFSETS
         //*===============================================================================================
-        public void WriteFinalOffsets(BinaryStream BWriter, ProgressBar Bar)
+        public void WriteFinalOffsets(BinaryStream BWriter, uint FileHashcode, int DebugFlags, StreamWriter DebugFile, ProgressBar Bar)
         {
+            bool DebugLookupTable;
+
+            //CheckFlag Stream Data is checked
+            DebugLookupTable = Convert.ToBoolean((DebugFlags >> 0) & 1);
+
             //Update GUI
             ProgressBarReset(Bar);
             ProgressBarMaximum(Bar, MarkersStartList.Count);
@@ -208,11 +305,50 @@ namespace EuroSound_Application.StreamSounds
             BWriter.WriteUInt32((uint)FileLength2);
 
             //Stream look-up
+            if (DebugLookupTable)
+            {
+                DebugFile.WriteLine(new String('/', 70));
+                DebugFile.WriteLine("// Lookup Table");
+                DebugFile.WriteLine(new String('/', 70) + "\n");
+            }
+
             BWriter.Seek((int)FileStart1, SeekOrigin.Begin);
             foreach (long Offset in MarkersStartList)
             {
                 BWriter.WriteUInt32((uint)Offset);
                 ProgressBarUpdate(Bar, 1);
+                if (DebugLookupTable)
+                {
+                    DebugFile.WriteLine("\t" + (uint)Offset);
+                }
+            }
+
+            //CheckFlag Header Info is checked
+            if (Convert.ToBoolean((DebugFlags >> 2) & 1))
+            {
+                DebugFile.WriteLine(new String('/', 70));
+                DebugFile.WriteLine("// Stream File Header");
+                DebugFile.WriteLine(new String('/', 70) + "\n");
+                DebugFile.WriteLine("// 'MUSX' Marker");
+                DebugFile.WriteLine("\t4d555358");
+                DebugFile.WriteLine("// File HashCode");
+                DebugFile.WriteLine("\t0x" + FileHashcode.ToString("X8"));
+                DebugFile.WriteLine("// File Version");
+                DebugFile.WriteLine("\t000000c9");
+                DebugFile.WriteLine("// File Size");
+                DebugFile.WriteLine("\t" + FullFileLength);
+                DebugFile.WriteLine("// Offset To File Start 1");
+                DebugFile.WriteLine("\t800h");
+                DebugFile.WriteLine("// File Start 1 Length");
+                DebugFile.WriteLine("\t" + FileLength1);
+                DebugFile.WriteLine("// Offset To File Start 2");
+                DebugFile.WriteLine("\t1000h");
+                DebugFile.WriteLine("// File Start 2 Length");
+                DebugFile.WriteLine("\t" + FileLength2);
+                DebugFile.WriteLine("// Offset To File Start 3");
+                DebugFile.WriteLine("\t0");
+                DebugFile.WriteLine("// File Start 3 Length");
+                DebugFile.WriteLine("\t0" + "\n");
             }
         }
 
@@ -220,28 +356,22 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         //* FUNCTIONS
         //*===============================================================================================
-        internal Dictionary<uint, EXSoundStream> GetFinalSoundsDictionary(Dictionary<uint, EXSoundStream> SoundsList, TreeView TreeViewControl, ProgressBar Bar, Label LabelInfo)
+        internal Dictionary<uint, EXSoundStream> GetFinalSoundsDictionary(Dictionary<uint, EXSoundStream> SoundsList, ProgressBar Bar, Label LabelInfo)
         {
-            uint NodeKey;
             Dictionary<uint, EXSoundStream> FinalSoundsDict = new Dictionary<uint, EXSoundStream>();
 
             ProgressBarReset(Bar);
             ProgressBarMaximum(Bar, SoundsList.Count());
 
             //Discard SFXs that has checked as "no output"
-            foreach (TreeNode node in TreeViewControl.Nodes[0].Nodes)
+            foreach (KeyValuePair<uint, EXSoundStream> SoundToCheck in SoundsList)
             {
-                NodeKey = Convert.ToUInt32(node.Name);
-                EXSoundStream SoundToCheck = EXStreamSoundsFunctions.GetSoundByName(NodeKey, SoundsList);
-                if (SoundToCheck != null)
+                if (SoundToCheck.Value.OutputThisSound)
                 {
-                    if (SoundToCheck.OutputThisSound)
-                    {
-                        FinalSoundsDict.Add(NodeKey, SoundToCheck);
-                    }
-                    SetLabelText(LabelInfo, "Checking Stream Data");
-                    ProgressBarUpdate(Bar, 1);
+                    FinalSoundsDict.Add(SoundToCheck.Key, SoundToCheck.Value);
                 }
+                SetLabelText(LabelInfo, "Checking Stream Data");
+                ProgressBarUpdate(Bar, 1);
             }
 
             return FinalSoundsDict;

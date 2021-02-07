@@ -221,6 +221,17 @@ namespace EuroSound_Application.StreamSounds
             UpdateWavList.Start();
         }
 
+        private void Button_StopUpdate_Click(object sender, EventArgs e)
+        {
+            if (UpdateWavList != null)
+            {
+                UpdateWavList.Abort();
+                ListView_WavHeaderData.Items.Clear();
+                ListView_WavHeaderData.Enabled = true;
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            }
+        }
+
         private void UpdateStatusBarLabels()
         {
             //Update File name label

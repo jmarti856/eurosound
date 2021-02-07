@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EuroSound_Editor", "EuroSou
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatusBarWithToolTips", "CustomStatusBar\StatusBarWithToolTips.csproj", "{E938CBED-777A-425E-A238-BF90F4E1EC89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineXImaAdpcm", "EngineXImaAdpcm\EngineXImaAdpcm.csproj", "{B8992D74-F65B-44A2-B49D-77246D7C5CA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E938CBED-777A-425E-A238-BF90F4E1EC89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E938CBED-777A-425E-A238-BF90F4E1EC89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E938CBED-777A-425E-A238-BF90F4E1EC89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8992D74-F65B-44A2-B49D-77246D7C5CA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8992D74-F65B-44A2-B49D-77246D7C5CA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8992D74-F65B-44A2-B49D-77246D7C5CA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8992D74-F65B-44A2-B49D-77246D7C5CA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

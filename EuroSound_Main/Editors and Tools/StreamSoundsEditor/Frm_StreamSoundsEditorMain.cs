@@ -457,17 +457,38 @@ namespace EuroSound_Application.StreamSounds
             if (ProjectInfo.Hashcode != 0x00000000)
             {
                 string FileName = "HC00FFFF";
-                Frm_BuildSFXStreamFile BuildFile = new Frm_BuildSFXStreamFile(ProjectInfo, FileName)
+
+                //---[Output with debug options
+                if ((ModifierKeys & Keys.Control) == Keys.Control)
                 {
-                    Tag = Tag,
-                    Owner = Owner
-                };
-                BuildFile.ShowDialog();
+                    using (Frm_StreamSoundsDebugInfo DebugOpts = new Frm_StreamSoundsDebugInfo())
+                    {
+                        if (DebugOpts.ShowDialog() == DialogResult.OK)
+                        {
+                            BuildSfxForm(FileName, DebugOpts.CheckedOptions);
+                        }
+                    }
+                }
+                else
+                {
+
+                    BuildSfxForm(FileName, 0);
+                }
             }
             else
             {
                 MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_BuildSFX_NoHashcode"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void BuildSfxForm(string FileName, int DebugFlags)
+        {
+            Frm_BuildSFXStreamFile BuildFile = new Frm_BuildSFXStreamFile(ProjectInfo, FileName, DebugFlags)
+            {
+                Tag = Tag,
+                Owner = Owner
+            };
+            BuildFile.ShowDialog();
         }
 
         private void MenuItemFile_ReadSound_Click(object sender, System.EventArgs e)
