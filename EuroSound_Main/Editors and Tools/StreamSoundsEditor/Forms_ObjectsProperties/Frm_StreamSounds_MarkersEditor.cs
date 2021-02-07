@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.StreamSounds
 {
     public partial class Frm_StreamSounds_MarkersEditor : Form
-    {
+    { 
         //*===============================================================================================
         //* GLOBAL VARS
         //*===============================================================================================
@@ -13,6 +14,7 @@ namespace EuroSound_Application.StreamSounds
         private uint v_MarkerPos, v_MarkerCount;
         private EngineXImaAdpcm.ImaADPCM_Decoder ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Decoder();
         private uint StateA = 0, StateB = 0;
+
         //*===============================================================================================
         //* FORM EVENTS
         //*===============================================================================================
@@ -66,9 +68,9 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         private void Button_AddMarker_Click(object sender, EventArgs e)
         {
-            int SamplesToDecode;
-            uint[] IMAStates;
-            uint MarkerType, IMAPosition;
+            int SamplesToDecode, IMAPosition;
+            int[] IMAStates;
+            uint MarkerType;
             bool PendingToAddStates = false;
 
             //Get type of the selected combobox value
@@ -103,13 +105,13 @@ namespace EuroSound_Application.StreamSounds
 
                     //Calculate States
                     SamplesToDecode = TemporalSelectedSound.IMA_ADPCM_DATA.Length * 2;
-                    IMAStates = new uint[SamplesToDecode];
+                    IMAStates = new int[SamplesToDecode];
                     ImaADPCM.DecodeIMA_ADPCM(TemporalSelectedSound.IMA_ADPCM_DATA, SamplesToDecode, IMAStates);
 
                     //Get States
-                    IMAPosition = ((uint)Numeric_MarkerLoopStart.Value / 2) - 1;
-                    StateA = IMAStates[IMAPosition];
-                    StateB = IMAStates[IMAPosition];
+                    IMAPosition = ((int)Numeric_MarkerLoopStart.Value / 2) - 1;
+                    StateA = (uint)IMAStates[IMAPosition];
+                    StateB = (uint)IMAStates[IMAPosition];
 
                     //Add States
                     PendingToAddStates = true;
@@ -170,13 +172,13 @@ namespace EuroSound_Application.StreamSounds
                 {
                     //Calculate States
                     SamplesToDecode = TemporalSelectedSound.IMA_ADPCM_DATA.Length * 2;
-                    IMAStates = new uint[SamplesToDecode];
+                    IMAStates = new int[SamplesToDecode];
                     ImaADPCM.DecodeIMA_ADPCM(TemporalSelectedSound.IMA_ADPCM_DATA, SamplesToDecode, IMAStates);
 
                     //Get States
-                    IMAPosition = ((uint)Numeric_Position.Value / 2) - 1;
-                    StateA = IMAStates[IMAPosition];
-                    StateB = IMAStates[IMAPosition];
+                    IMAPosition = ((int)Numeric_Position.Value / 2) - 1;
+                    StateA = (uint)IMAStates[IMAPosition];
+                    StateB = (uint)IMAStates[IMAPosition];
 
                     PendingToAddStates = true;
                 }
@@ -217,7 +219,6 @@ namespace EuroSound_Application.StreamSounds
                 TemporalSelectedSound.StartMarkers.Add(NewStartMarker);
                 AddMarkerStartToListView(NewStartMarker);
             }
-
 
             v_MarkerCount += 1;
             TemporalSelectedSound.MarkerDataCounterID = v_MarkerPos;

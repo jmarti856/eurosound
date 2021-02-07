@@ -92,23 +92,17 @@ namespace EuroSound_Application.StreamSounds
 
         private void UpdateIMAData()
         {
+            EngineXImaAdpcm.ImaADPCM_Decoder ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Decoder();
+
             UpdateImaData = new Thread(() =>
             {
                 try
                 {
-                    string ImaPath;
-
                     foreach (KeyValuePair<uint, EXSoundStream> SoundToUpdate in StreamSoundsList)
                     {
-                        string AudioPath = Path.Combine(new string[] { Path.GetTempPath(), @"EuroSound\", SoundToUpdate.Key.ToString() + ".wav" });
-                        AudioLibrary.CreateWavFile((int)SoundToUpdate.Value.Frequency, (int)SoundToUpdate.Value.Bits, (int)SoundToUpdate.Value.Channels, SoundToUpdate.Value.PCM_Data, AudioPath);
-
                         //Get IMA ADPCM Data
-                        ImaPath = AudioLibrary.ConvertWavToIMAADPCM(AudioPath, Path.GetFileNameWithoutExtension(AudioPath));
-                        if (!string.IsNullOrEmpty(ImaPath))
-                        {
-                            SoundToUpdate.Value.IMA_ADPCM_DATA = File.ReadAllBytes(ImaPath);
-                        }
+                        short[] ShortArrayPCMData = AudioLibrary.ConvertPCMDataToShortArray(SoundToUpdate.Value.PCM_Data);
+                        SoundToUpdate.Value.IMA_ADPCM_DATA = ImaADPCM.EncodeIMA_ADPCM(ShortArrayPCMData, SoundToUpdate.Value.PCM_Data.Length / 2);
 
                         //Update Status Bar
                         GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking:", SoundToUpdate.Key.ToString() }));

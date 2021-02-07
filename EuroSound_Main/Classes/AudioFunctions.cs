@@ -8,6 +8,7 @@ using NAudio.Wave.SampleProviders;
 using SoxSharp;
 using System;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.AudioFunctionsLibrary
@@ -139,6 +140,30 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             return byteArray;
         }
 
+        internal short[] ConvertPCMDataToShortArray(byte[] PCMData)
+        {
+            short[] PCMDataShortArray;
+
+            using (MemoryStream MSPCMData = new MemoryStream(PCMData))
+            {
+                using (BinaryReader BReader = new BinaryReader(MSPCMData))
+                {
+                    PCMDataShortArray = new short[PCMData.Length / 2];
+
+                    //Get data
+                    for (int i = 0; i < PCMDataShortArray.Length; i++)
+                    {
+                        PCMDataShortArray[i] = BReader.ReadInt16();
+                    }
+
+                    //Close Reader
+                    BReader.Close();
+                }
+            }
+
+            return PCMDataShortArray;
+        }
+
         internal string ConvertWavToSoundBankValid(string SourcePath, string FileName, uint Frequency, ushort Channels, int Bits)
         {
             string FinalFile = string.Empty;
@@ -176,72 +201,39 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             return FinalFile;
         }
 
-        public string ConvertWavToIMAADPCM(string SourcePath, string FileName)
+        internal void CreateWavFile(int Frequency, int BitsPerChannel, int NumberOfChannels, byte[] PCMData, string FilePath)
         {
-            string FinalFile = string.Empty;
-
-            //Create folder in %temp%
-            GenericFunctions.CreateTemporalFolder();
-
-            //Resample wav
-            if (File.Exists(GlobalPreferences.SoXPath))
+            using (FileStream WavFile = new FileStream(FilePath, FileMode.Create))
             {
-                FinalFile = Path.Combine(new string[] { Path.GetTempPath(), @"EuroSound\", FileName + "f.ima" });
-                using (Sox sox = new Sox(GlobalPreferences.SoXPath))
+                using (BinaryWriter BWritter = new BinaryWriter(WavFile))
                 {
-                    sox.Output.Type = FileType.IMA;
-                    sox.Output.SampleRate = 22050;
-                    sox.Output.Channels = 1;
+                    //Write WAV Header
+                    BWritter.Write(Encoding.UTF8.GetBytes("RIFF")); //Chunk ID
+                    BWritter.Write((uint)(36 + PCMData.Length)); //Chunk Size
+                    BWritter.Write(Encoding.UTF8.GetBytes("WAVE")); //Format
+                    BWritter.Write(Encoding.UTF8.GetBytes("fmt ")); //Subchunk1 ID
+                    BWritter.Write((uint)16); //Subchunk1 Size
+                    BWritter.Write((ushort)1); //Audio Format
+                    BWritter.Write((ushort)NumberOfChannels); //Num Channels
+                    BWritter.Write((uint)(Frequency)); //Sample Rate
+                    BWritter.Write((uint)((Frequency * NumberOfChannels * BitsPerChannel) / 8)); //Byte Rate
+                    BWritter.Write((ushort)((NumberOfChannels * BitsPerChannel) / 8)); //Block Align
+                    BWritter.Write((ushort)(BitsPerChannel)); //Bits Per Sample
+                    BWritter.Write(Encoding.UTF8.GetBytes("data")); //Subchunk2 ID
+                    BWritter.Write((uint)PCMData.Length); //Subchunk2 Size
 
-                    InputFile testInput = new InputFile(SourcePath);
-                    sox.Process(testInput, FinalFile);
-                }
-            }
-            else
-            {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("SoXInvalidPath"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            return FinalFile;
-        }
-
-        internal void CreateWavFile(int Frequency, int BitsPerChannel, int NumberOfChannels, byte[] SampleData, string FilePath)
-        {
-            using (MemoryStream AudioSample = new MemoryStream(SampleData))
-            {
-                IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency, BitsPerChannel, NumberOfChannels));
-                WriteWavFile(FilePath, provider);
-            }
-        }
-
-        internal void CreateWavFileForPS2(int Frequency, int BitsPerChannel, int NumberOfChannels, byte[] SampleData, string FilePath)
-        {
-            using (MemoryStream AudioSample = new MemoryStream(SampleData))
-            {
-                RawSourceWaveStream provider = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency, BitsPerChannel, NumberOfChannels));
-                using (WaveFormatConversionStream Converter = new WaveFormatConversionStream(new WaveFormat(13000, 4, 1), provider))
-                {
-                    WriteWavFile(FilePath, Converter);
-                }
-            }
-        }
-
-        private void WriteWavFile(string SavePath, IWaveProvider sourceProvider)
-        {
-            using (WaveFileWriter writer = new WaveFileWriter(SavePath, sourceProvider.WaveFormat))
-            {
-                byte[] buffer = new byte[sourceProvider.WaveFormat.AverageBytesPerSecond * 4];
-                while (true)
-                {
-                    int bytesRead = sourceProvider.Read(buffer, 0, buffer.Length);
-                    if (bytesRead == 0)
+                    //Write PCM Data
+                    for (int i = 0; i < PCMData.Length; i++)
                     {
-                        break;
+                        BWritter.Write(PCMData[i]);
                     }
 
-                    writer.Write(buffer, 0, bytesRead);
+                    //Close Writter
+                    BWritter.Close();
                 }
-                writer.Close();
+
+                //Close File
+                WavFile.Close();
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace EngineXImaAdpcm
 {
@@ -6,7 +7,7 @@ namespace EngineXImaAdpcm
     {
         private class ImaAdpcmState
         {
-            public int valpredicted;
+            public int valprev;
             public int index;
         }
 
@@ -28,10 +29,131 @@ namespace EngineXImaAdpcm
             15289, 16818, 18500, 20350, 22385, 24623, 27086, 29794, 32767
         };
 
-        public void DecodeIMA_ADPCM(byte[] ImaFileData, int numSamples, uint[] ArrayOfStates)
+        public byte[] EncodeIMA_ADPCM(short[] input, int numSamples)
+        {
+            byte[] EncodedIMAData;
+            int val;                /* Current input sample value */
+            int inp;                /* Input buffer pointer */
+            int sign;               /* Current adpcm sign bit */
+            int delta;              /* Current adpcm output value */
+            int diff;               /* Difference between val and valprev */
+            int step;               /* Stepsize */
+            int valpred;            /* Predicted output value */
+            int vpdiff;             /* Current change to valpred */
+            int index;              /* Current step change index */
+            int outputbuffer = 0;   /* place to keep previous 4-bit value */
+            bool bufferstep;        /* toggle between outputbuffer/output */
+
+            ImaAdpcmState m_state = new ImaAdpcmState();
+
+            using (MemoryStream DecodedData = new MemoryStream())
+            {
+                using (BinaryWriter BWriter = new BinaryWriter(DecodedData))
+                {
+                    inp = 0;
+
+                    valpred = m_state.valprev;
+                    index = m_state.index;
+                    step = stepsizeTable[index];
+
+                    bufferstep = true;
+
+                    for (; numSamples > 0; numSamples--)
+                    {
+                        val = input[inp];
+                        inp++;
+
+                        /* Step 1 - compute difference with previous value */
+                        diff = val - valpred;
+                        sign = (diff < 0) ? 8 : 0;
+                        if (sign != 0) diff = (-diff);
+
+                        /* Step 2 - Divide and clamp */
+                        /* Note:
+                        ** This code *approximately* computes:
+                        **    delta = diff*4/step;
+                        **    vpdiff = (delta+0.5)*step/4;
+                        ** but in shift step bits are dropped. The net result of this is
+                        ** that even if you have fast mul/div hardware you cannot put it to
+                        ** good use since the fixup would be too expensive.
+                        */
+                        delta = 0;
+                        vpdiff = (step >> 3);
+
+                        if (diff >= step)
+                        {
+                            delta = 4;
+                            diff -= step;
+                            vpdiff += step;
+                        }
+                        step >>= 1;
+                        if (diff >= step)
+                        {
+                            delta |= 2;
+                            diff -= step;
+                            vpdiff += step;
+                        }
+                        step >>= 1;
+                        if (diff >= step)
+                        {
+                            delta |= 1;
+                            vpdiff += step;
+                        }
+
+                        /* Step 3 - Update previous value */
+                        if (sign != 0)
+                            valpred -= vpdiff;
+                        else
+                            valpred += vpdiff;
+
+                        /* Step 4 - Clamp previous value to 16 bits */
+                        if (valpred > 32767)
+                            valpred = 32767;
+                        else if (valpred < -32768)
+                            valpred = -32768;
+
+                        /* Step 5 - Assemble value, update index and step values */
+                        delta |= sign;
+
+                        index += indexTable[delta];
+                        if (index < 0)
+                            index = 0;
+                        if (index > 88)
+                            index = 88;
+                        step = stepsizeTable[index];
+
+                        /* Step 6 - Output value */
+                        if (bufferstep)
+                        {
+                            outputbuffer = (delta << 4) & 0xf0;
+                        }
+                        else
+                        {
+                            BWriter.Write((byte)((delta & 0x0f) | outputbuffer));
+                        }
+                        bufferstep = !bufferstep;
+                    }
+
+                    /* Output last step, if needed */
+                    if (!bufferstep)
+                        BWriter.Write((byte)outputbuffer);
+
+                    m_state.valprev = valpred;
+                    m_state.index = index;
+
+                }
+
+                //Convert data to a byte array to save then in a IMA file.
+                EncodedIMAData = DecodedData.ToArray();
+            }
+
+            return EncodedIMAData;
+        }
+
+        public void DecodeIMA_ADPCM(byte[] ImaFileData, int numSamples, int[] ArrayOfStates)
         {
             int Counter = 0;
-            uint inp;                /* Input buffer pointer */
+            uint inp;               /* Input buffer pointer */
             int sign;               /* Current adpcm sign bit */
             int delta;              /* Current adpcm output value */
             int step;               /* Stepsize */
@@ -41,11 +163,11 @@ namespace EngineXImaAdpcm
             int inputbuffer = 0;    /* place to keep next 4-bit value */
             bool bufferstep;		/* toggle between inputbuffer/input */
 
-            ImaAdpcmState m_state = new ImaAdpcmState();
+            ImaAdpcmState state = new ImaAdpcmState();
             inp = 0;
 
-            valpred = m_state.valpredicted;
-            index = m_state.index;
+            valpred = state.valprev;
+            index = state.index;
             step = stepsizeTable[index];
 
             bufferstep = false;
@@ -100,8 +222,7 @@ namespace EngineXImaAdpcm
 
                 /* Step 7 - Calculate State A and B */
                 byte bufferstepInt = Convert.ToByte(bufferstep);
-                int EngineXStateInte = (((((short)valpred) & 0xffff) << 16) | ((inputbuffer & 0xff) << 8) | ((bufferstepInt & 0x1) << 7) | ((index & 0x7f) << 0));
-                uint EngineXState = Convert.ToUInt32((uint)EngineXStateInte);
+                int EngineXState = (((((short)valpred) & 0xffff) << 16) | ((inputbuffer & 0xff) << 8) | ((bufferstepInt & 0x1) << 7) | ((index & 0x7f) << 0));
 
                 /*Store data*/
                 ArrayOfStates[Counter] = EngineXState;
@@ -110,8 +231,8 @@ namespace EngineXImaAdpcm
                 Counter++;
             }
 
-            m_state.valpredicted = valpred;
-            m_state.index = index;
+            state.valprev = valpred;
+            state.index = index;
         }
     }
 }

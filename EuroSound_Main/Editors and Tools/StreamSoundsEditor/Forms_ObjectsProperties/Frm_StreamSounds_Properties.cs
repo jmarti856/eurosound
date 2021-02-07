@@ -178,7 +178,7 @@ namespace EuroSound_Application.StreamSounds
 
         private void LoadAudio(string AudioPath)
         {
-            string ImaPath;
+            EngineXImaAdpcm.ImaADPCM_Decoder ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Decoder();
 
             TemporalSound.WAVFileMD5 = GenericFunctions.CalculateMD5(AudioPath);
             TemporalSound.WAVFileName = Path.GetFileName(AudioPath);
@@ -198,11 +198,7 @@ namespace EuroSound_Application.StreamSounds
                 TemporalSound.PCM_Data = AudioLibrary.GetWavPCMData(AudioPath);
 
                 //Get IMA ADPCM Data
-                ImaPath = AudioLibrary.ConvertWavToIMAADPCM(AudioPath, Path.GetFileNameWithoutExtension(AudioPath));
-                if (!string.IsNullOrEmpty(ImaPath))
-                {
-                    TemporalSound.IMA_ADPCM_DATA = File.ReadAllBytes(ImaPath);
-                }
+                TemporalSound.IMA_ADPCM_DATA = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalSound.PCM_Data), TemporalSound.PCM_Data.Length / 2);
             }
 
             if (TemporalSound != null && TemporalSound.PCM_Data != null)

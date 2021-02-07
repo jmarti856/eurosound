@@ -298,7 +298,7 @@ namespace EuroSound_Application.StreamSounds.YMLReader
 
         private void LoadAudio(string AudioPath, EXSoundStream SoundToLoad)
         {
-            string ImaPath;
+            EngineXImaAdpcm.ImaADPCM_Decoder ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Decoder();
 
             SoundToLoad.WAVFileMD5 = GenericFunctions.CalculateMD5(AudioPath);
             SoundToLoad.WAVFileName = Path.GetFileName(AudioPath);
@@ -320,11 +320,8 @@ namespace EuroSound_Application.StreamSounds.YMLReader
                     SoundToLoad.PCM_Data = AudioLibrary.GetWavPCMData(AudioPath);
 
                     //Get IMA ADPCM Data
-                    ImaPath = AudioLibrary.ConvertWavToIMAADPCM(AudioPath, Path.GetFileNameWithoutExtension(AudioPath));
-                    if (!string.IsNullOrEmpty(ImaPath))
-                    {
-                        SoundToLoad.IMA_ADPCM_DATA = File.ReadAllBytes(ImaPath);
-                    }
+                    short[] ShortArrayPCMData = AudioLibrary.ConvertPCMDataToShortArray(SoundToLoad.PCM_Data);
+                    SoundToLoad.IMA_ADPCM_DATA = ImaADPCM.EncodeIMA_ADPCM(ShortArrayPCMData, SoundToLoad.PCM_Data.Length / 2);
                 }
             }
             catch (FormatException)
