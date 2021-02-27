@@ -4,6 +4,7 @@ using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls.InputBoxForm;
 using EuroSound_Application.CustomControls.WarningsList;
 using EuroSound_Application.SoundBanksEditor;
+using EuroSound_Application.TreeViewLibraryFunctions;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
@@ -349,6 +350,21 @@ namespace EuroSound_Application
             }
 
             return FinalNumber;
+        }
+
+        internal static string GetNextAvailableName(string BaseName, TreeView TreeViewControl)
+        {
+            string FinalName = BaseName;
+
+            int Loops = 0;
+            //Check there's no item with the same name
+            while (TreeNodeFunctions.CheckIfNodeExistsByText(TreeViewControl, FinalName))
+            {
+                Loops++;
+                FinalName = BaseName + Loops;
+            }
+
+            return FinalName;
         }
     }
 }

@@ -14,14 +14,15 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         private WaveOut _waveOut = new WaveOut();
         private EXSoundStream SelectedSound, TemporalSound;
-        private string SelectedSoundKey;
+        private string SelectedSoundKey, SoundName;
         private AudioFunctions AudioLibrary = new AudioFunctions();
 
-        public Frm_StreamSounds_Properties(EXSoundStream SoundToCheck, string SoundKey)
+        public Frm_StreamSounds_Properties(EXSoundStream SoundToCheck, string SoundKey, string CurrentSoundName)
         {
             InitializeComponent();
             SelectedSound = SoundToCheck;
             SelectedSoundKey = SoundKey;
+            SoundName = CurrentSoundName;
         }
 
         //*===============================================================================================
@@ -59,12 +60,12 @@ namespace EuroSound_Application.StreamSounds
             SaveAudio();
         }
 
-        private void Button_MarkersEditor_Click(object sender, System.EventArgs e)
+        private void Button_MarkersEditor_Click(object sender, EventArgs e)
         {
             AudioLibrary.StopAudio(_waveOut);
             Frm_StreamSounds_MarkersEditor MarkersEditr = new Frm_StreamSounds_MarkersEditor(SelectedSound)
             {
-                Text = "Markers Editor",
+                Text = GenericFunctions.TruncateLongString(SoundName, 25) + " - Markers",
                 Tag = Tag.ToString(),
                 Owner = this,
                 ShowInTaskbar = false
@@ -178,7 +179,7 @@ namespace EuroSound_Application.StreamSounds
 
         private void LoadAudio(string AudioPath)
         {
-            EngineXImaAdpcm.ImaADPCM_Decoder ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Decoder();
+            EngineXImaAdpcm.ImaADPCM_Functions ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Functions();
 
             TemporalSound.WAVFileMD5 = GenericFunctions.CalculateMD5(AudioPath);
             TemporalSound.WAVFileName = Path.GetFileName(AudioPath);

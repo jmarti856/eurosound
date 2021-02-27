@@ -119,7 +119,7 @@
             this.Textbox_OuterRadius.Name = "Textbox_OuterRadius";
             this.Textbox_OuterRadius.ReadOnly = true;
             this.Textbox_OuterRadius.Size = new System.Drawing.Size(134, 20);
-            this.Textbox_OuterRadius.TabIndex = 25;
+            this.Textbox_OuterRadius.TabIndex = 9;
             // 
             // Textbox_InnerRadius
             // 
@@ -128,7 +128,7 @@
             this.Textbox_InnerRadius.Name = "Textbox_InnerRadius";
             this.Textbox_InnerRadius.ReadOnly = true;
             this.Textbox_InnerRadius.Size = new System.Drawing.Size(134, 20);
-            this.Textbox_InnerRadius.TabIndex = 24;
+            this.Textbox_InnerRadius.TabIndex = 7;
             // 
             // numeric_mastervolume
             // 
@@ -395,7 +395,7 @@
             this.button_ok.Location = new System.Drawing.Point(380, 560);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(75, 23);
-            this.button_ok.TabIndex = 3;
+            this.button_ok.TabIndex = 4;
             this.button_ok.Text = "OK";
             this.button_ok.UseVisualStyleBackColor = true;
             this.button_ok.Click += new System.EventHandler(this.Button_ok_Click);
@@ -407,7 +407,7 @@
             this.button_cancel.Location = new System.Drawing.Point(461, 560);
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(75, 23);
-            this.button_cancel.TabIndex = 4;
+            this.button_cancel.TabIndex = 5;
             this.button_cancel.Text = "Cancel";
             this.button_cancel.UseVisualStyleBackColor = true;
             this.button_cancel.Click += new System.EventHandler(this.Button_cancel_Click);
@@ -451,7 +451,7 @@
             this.Checkbox_OutputThisSound.Location = new System.Drawing.Point(12, 560);
             this.Checkbox_OutputThisSound.Name = "Checkbox_OutputThisSound";
             this.Checkbox_OutputThisSound.Size = new System.Drawing.Size(115, 17);
-            this.Checkbox_OutputThisSound.TabIndex = 5;
+            this.Checkbox_OutputThisSound.TabIndex = 3;
             this.Checkbox_OutputThisSound.Text = "Output This Sound";
             this.Checkbox_OutputThisSound.UseVisualStyleBackColor = true;
             // 

@@ -1,5 +1,6 @@
 ﻿using EuroSound_Application.CustomControls.MoveMultiplesNodesForm;
 using EuroSound_Application.CustomControls.ObjectInstancesForm;
+using EuroSound_Application.EuroSoundInterchangeFile;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using EuroSound_Application.TreeViewSorter;
 using System;
@@ -224,6 +225,24 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
+        private void ContextMenuFolder_ExportSounds_Click(object sender, EventArgs e)
+        {
+            string ExportPath, FolderPath;
+
+            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.ESIF)|*.esif", 0, true, "");
+            FolderPath = Path.GetDirectoryName(ExportPath) + "\\MediaData";
+            Directory.CreateDirectory(FolderPath);
+
+            if (!string.IsNullOrEmpty(ExportPath))
+            {
+                IList<TreeNode> ChildNodesCollection = new List<TreeNode>();
+                ESIF_Exporter ESIF_Exp = new ESIF_Exporter();
+
+                TreeNodeFunctions.GetNodesInsideFolder(TreeView_File, TreeView_File.SelectedNode, ChildNodesCollection);
+                ESIF_Exp.ExportFolder(ChildNodesCollection, ExportPath, SoundsList, AudioDataDict, TreeView_File);
+            }
+        }
+
         #endregion ContextMenu_Folders_EVENTS
 
         //*===============================================================================================
@@ -261,6 +280,22 @@ namespace EuroSound_Application.SoundBanksEditor
                 ProjectInfo.FileHasBeenModified = true;
             }
         }
+
+        private void ContextMenuSound_ExportSingle_Click(object sender, EventArgs e)
+        {
+            TreeNode SelectedNode;
+            string ExportPath;
+
+            SelectedNode = TreeView_File.SelectedNode;
+            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.ESIF)|*.esif", 0, true, SelectedNode.Text);
+
+            if (!string.IsNullOrEmpty(ExportPath))
+            {
+                ESIF_Exporter ESIF_Exp = new ESIF_Exporter();
+                ESIF_Exp.ExportSingleSFX(ExportPath, uint.Parse(SelectedNode.Name), SoundsList, AudioDataDict, TreeView_File);
+            }
+        }
+
         #endregion ContextMenu_Sound_EVENTS
 
         //*===============================================================================================

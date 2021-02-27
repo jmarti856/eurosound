@@ -104,7 +104,7 @@
             0});
             this.Numeric_BaseVolume.Name = "Numeric_BaseVolume";
             this.Numeric_BaseVolume.Size = new System.Drawing.Size(94, 20);
-            this.Numeric_BaseVolume.TabIndex = 8;
+            this.Numeric_BaseVolume.TabIndex = 5;
             // 
             // Label_BaseVolume
             // 
@@ -112,7 +112,7 @@
             this.Label_BaseVolume.Location = new System.Drawing.Point(16, 47);
             this.Label_BaseVolume.Name = "Label_BaseVolume";
             this.Label_BaseVolume.Size = new System.Drawing.Size(72, 13);
-            this.Label_BaseVolume.TabIndex = 7;
+            this.Label_BaseVolume.TabIndex = 4;
             this.Label_BaseVolume.Text = "Base Volume:";
             // 
             // numeric_randomPitchOffset
@@ -130,7 +130,7 @@
             -2147483648});
             this.numeric_randomPitchOffset.Name = "numeric_randomPitchOffset";
             this.numeric_randomPitchOffset.Size = new System.Drawing.Size(94, 20);
-            this.numeric_randomPitchOffset.TabIndex = 6;
+            this.numeric_randomPitchOffset.TabIndex = 3;
             // 
             // Label_RandomPitchOffset
             // 
@@ -138,7 +138,7 @@
             this.Label_RandomPitchOffset.Location = new System.Drawing.Point(228, 21);
             this.Label_RandomPitchOffset.Name = "Label_RandomPitchOffset";
             this.Label_RandomPitchOffset.Size = new System.Drawing.Size(108, 13);
-            this.Label_RandomPitchOffset.TabIndex = 5;
+            this.Label_RandomPitchOffset.TabIndex = 2;
             this.Label_RandomPitchOffset.Text = "Random Pitch Offset:";
             // 
             // numeric_randompan
@@ -162,7 +162,7 @@
             -2147483648});
             this.numeric_randompan.Name = "numeric_randompan";
             this.numeric_randompan.Size = new System.Drawing.Size(94, 20);
-            this.numeric_randompan.TabIndex = 14;
+            this.numeric_randompan.TabIndex = 11;
             // 
             // label_randompan
             // 
@@ -170,7 +170,7 @@
             this.label_randompan.Location = new System.Drawing.Point(264, 71);
             this.label_randompan.Name = "label_randompan";
             this.label_randompan.Size = new System.Drawing.Size(72, 13);
-            this.label_randompan.TabIndex = 13;
+            this.label_randompan.TabIndex = 10;
             this.label_randompan.Text = "Random Pan:";
             // 
             // numeric_pan
@@ -194,7 +194,7 @@
             -2147483648});
             this.numeric_pan.Name = "numeric_pan";
             this.numeric_pan.Size = new System.Drawing.Size(94, 20);
-            this.numeric_pan.TabIndex = 12;
+            this.numeric_pan.TabIndex = 9;
             // 
             // label_pan
             // 
@@ -202,7 +202,7 @@
             this.label_pan.Location = new System.Drawing.Point(59, 73);
             this.label_pan.Name = "label_pan";
             this.label_pan.Size = new System.Drawing.Size(29, 13);
-            this.label_pan.TabIndex = 11;
+            this.label_pan.TabIndex = 8;
             this.label_pan.Text = "Pan:";
             // 
             // numeric_randomvolumeoffset
@@ -221,7 +221,7 @@
             0});
             this.numeric_randomvolumeoffset.Name = "numeric_randomvolumeoffset";
             this.numeric_randomvolumeoffset.Size = new System.Drawing.Size(94, 20);
-            this.numeric_randomvolumeoffset.TabIndex = 10;
+            this.numeric_randomvolumeoffset.TabIndex = 7;
             // 
             // label_randomvolumeoffset
             // 
@@ -229,7 +229,7 @@
             this.label_randomvolumeoffset.Location = new System.Drawing.Point(217, 47);
             this.label_randomvolumeoffset.Name = "label_randomvolumeoffset";
             this.label_randomvolumeoffset.Size = new System.Drawing.Size(119, 13);
-            this.label_randomvolumeoffset.TabIndex = 9;
+            this.label_randomvolumeoffset.TabIndex = 6;
             this.label_randomvolumeoffset.Text = "Random Volume Offset:";
             // 
             // numeric_pitchoffset
@@ -247,7 +247,7 @@
             -2147483648});
             this.numeric_pitchoffset.Name = "numeric_pitchoffset";
             this.numeric_pitchoffset.Size = new System.Drawing.Size(94, 20);
-            this.numeric_pitchoffset.TabIndex = 4;
+            this.numeric_pitchoffset.TabIndex = 1;
             // 
             // label_pitchoffset
             // 
@@ -255,7 +255,7 @@
             this.label_pitchoffset.Location = new System.Drawing.Point(23, 21);
             this.label_pitchoffset.Name = "label_pitchoffset";
             this.label_pitchoffset.Size = new System.Drawing.Size(65, 13);
-            this.label_pitchoffset.TabIndex = 3;
+            this.label_pitchoffset.TabIndex = 0;
             this.label_pitchoffset.Text = "Pitch Offset:";
             // 
             // button_ok
@@ -264,7 +264,7 @@
             this.button_ok.Location = new System.Drawing.Point(306, 348);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(75, 23);
-            this.button_ok.TabIndex = 1;
+            this.button_ok.TabIndex = 3;
             this.button_ok.Text = "OK";
             this.button_ok.UseVisualStyleBackColor = true;
             this.button_ok.Click += new System.EventHandler(this.Button_ok_Click);
@@ -276,7 +276,7 @@
             this.button_cancel.Location = new System.Drawing.Point(387, 348);
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(75, 23);
-            this.button_cancel.TabIndex = 2;
+            this.button_cancel.TabIndex = 4;
             this.button_cancel.Text = "Cancel";
             this.button_cancel.UseVisualStyleBackColor = true;
             this.button_cancel.Click += new System.EventHandler(this.Button_cancel_Click);
@@ -293,7 +293,7 @@
             this.GroupBoxMedia.Location = new System.Drawing.Point(12, 126);
             this.GroupBoxMedia.Name = "GroupBoxMedia";
             this.GroupBoxMedia.Size = new System.Drawing.Size(450, 109);
-            this.GroupBoxMedia.TabIndex = 3;
+            this.GroupBoxMedia.TabIndex = 1;
             this.GroupBoxMedia.TabStop = false;
             this.GroupBoxMedia.Text = "Media:";
             // 
@@ -303,7 +303,7 @@
             this.Button_Edit.Location = new System.Drawing.Point(190, 80);
             this.Button_Edit.Name = "Button_Edit";
             this.Button_Edit.Size = new System.Drawing.Size(92, 23);
-            this.Button_Edit.TabIndex = 3;
+            this.Button_Edit.TabIndex = 2;
             this.Button_Edit.Text = "Open Properties";
             this.Button_Edit.UseVisualStyleBackColor = true;
             this.Button_Edit.Click += new System.EventHandler(this.Button_Edit_Click);
@@ -314,7 +314,7 @@
             this.Button_Stop.Location = new System.Drawing.Point(369, 80);
             this.Button_Stop.Name = "Button_Stop";
             this.Button_Stop.Size = new System.Drawing.Size(75, 23);
-            this.Button_Stop.TabIndex = 5;
+            this.Button_Stop.TabIndex = 4;
             this.Button_Stop.Text = "Stop";
             this.Button_Stop.UseVisualStyleBackColor = true;
             this.Button_Stop.Click += new System.EventHandler(this.Button_Stop_Click);
@@ -326,7 +326,7 @@
             this.Button_PlayAudio.Location = new System.Drawing.Point(288, 80);
             this.Button_PlayAudio.Name = "Button_PlayAudio";
             this.Button_PlayAudio.Size = new System.Drawing.Size(75, 23);
-            this.Button_PlayAudio.TabIndex = 4;
+            this.Button_PlayAudio.TabIndex = 3;
             this.Button_PlayAudio.Text = "Play";
             this.Button_PlayAudio.UseVisualStyleBackColor = true;
             this.Button_PlayAudio.Click += new System.EventHandler(this.Button_PlayAudio_Click);
@@ -337,7 +337,7 @@
             this.Label_AudioSelected.Location = new System.Drawing.Point(6, 45);
             this.Label_AudioSelected.Name = "Label_AudioSelected";
             this.Label_AudioSelected.Size = new System.Drawing.Size(37, 13);
-            this.Label_AudioSelected.TabIndex = 1;
+            this.Label_AudioSelected.TabIndex = 0;
             this.Label_AudioSelected.Text = "Audio:";
             // 
             // Combobox_SelectedAudio
@@ -347,7 +347,7 @@
             this.Combobox_SelectedAudio.Location = new System.Drawing.Point(49, 42);
             this.Combobox_SelectedAudio.Name = "Combobox_SelectedAudio";
             this.Combobox_SelectedAudio.Size = new System.Drawing.Size(395, 21);
-            this.Combobox_SelectedAudio.TabIndex = 2;
+            this.Combobox_SelectedAudio.TabIndex = 1;
             // 
             // groupBox2
             // 
@@ -359,7 +359,7 @@
             this.groupBox2.Location = new System.Drawing.Point(12, 241);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(450, 100);
-            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Hashcode:";
             // 

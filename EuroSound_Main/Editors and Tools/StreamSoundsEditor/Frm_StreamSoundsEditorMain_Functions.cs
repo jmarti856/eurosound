@@ -49,7 +49,7 @@ namespace EuroSound_Application.StreamSounds
             EXSoundStream SelectedSound = EXStreamSoundsFunctions.GetSoundByName(Convert.ToUInt32(SoundKeyInDictionary), StreamSoundsList);
             if (SelectedSound != null)
             {
-                Frm_StreamSounds_Properties FormAudioProps = new Frm_StreamSounds_Properties(SelectedSound, SoundKeyInDictionary)
+                Frm_StreamSounds_Properties FormAudioProps = new Frm_StreamSounds_Properties(SelectedSound, SoundKeyInDictionary, SelectedNode.Text)
                 {
                     Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
                     Tag = Tag,
@@ -92,7 +92,7 @@ namespace EuroSound_Application.StreamSounds
 
         private void UpdateIMAData()
         {
-            EngineXImaAdpcm.ImaADPCM_Decoder ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Decoder();
+            EngineXImaAdpcm.ImaADPCM_Functions ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Functions();
 
             UpdateImaData = new Thread(() =>
             {

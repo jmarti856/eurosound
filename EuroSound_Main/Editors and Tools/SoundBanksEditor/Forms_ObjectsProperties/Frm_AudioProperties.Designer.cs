@@ -194,7 +194,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(484, 58);
-            this.groupBox1.TabIndex = 33;
+            this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Loaded Media:";
             // 
@@ -215,7 +215,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Button_Cancel.Location = new System.Drawing.Point(421, 412);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
-            this.Button_Cancel.TabIndex = 34;
+            this.Button_Cancel.TabIndex = 4;
             this.Button_Cancel.Text = "Cancel";
             this.Button_Cancel.UseVisualStyleBackColor = true;
             this.Button_Cancel.Click += new System.EventHandler(this.Button_Cancel_Click);
@@ -251,7 +251,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Groupbox_AudioProperties.Location = new System.Drawing.Point(12, 76);
             this.Groupbox_AudioProperties.Name = "Groupbox_AudioProperties";
             this.Groupbox_AudioProperties.Size = new System.Drawing.Size(484, 264);
-            this.Groupbox_AudioProperties.TabIndex = 35;
+            this.Groupbox_AudioProperties.TabIndex = 1;
             this.Groupbox_AudioProperties.TabStop = false;
             this.Groupbox_AudioProperties.Text = "Audio Properties:";
             // 
@@ -292,7 +292,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.euroSound_WaveViewer1.SamplesPerPixel = 128;
             this.euroSound_WaveViewer1.Size = new System.Drawing.Size(472, 132);
             this.euroSound_WaveViewer1.StartPosition = ((long)(0));
-            this.euroSound_WaveViewer1.TabIndex = 22;
+            this.euroSound_WaveViewer1.TabIndex = 23;
             this.euroSound_WaveViewer1.WaveStream = null;
             this.euroSound_WaveViewer1.OnLineDrawEvent += new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer.OnLineDrawHandler(this.EuroSound_WaveViewer1_OnLineDrawEvent);
             // 
@@ -442,7 +442,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Button_OK.Location = new System.Drawing.Point(340, 412);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
-            this.Button_OK.TabIndex = 36;
+            this.Button_OK.TabIndex = 3;
             this.Button_OK.Text = "OK";
             this.Button_OK.UseVisualStyleBackColor = true;
             this.Button_OK.Click += new System.EventHandler(this.Button_OK_Click);
@@ -453,7 +453,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Label_MD5Hash.Location = new System.Drawing.Point(6, 22);
             this.Label_MD5Hash.Name = "Label_MD5Hash";
             this.Label_MD5Hash.Size = new System.Drawing.Size(61, 13);
-            this.Label_MD5Hash.TabIndex = 12;
+            this.Label_MD5Hash.TabIndex = 0;
             this.Label_MD5Hash.Text = "MD5 Hash:";
             // 
             // Textbox_MD5Hash
@@ -465,7 +465,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Textbox_MD5Hash.Name = "Textbox_MD5Hash";
             this.Textbox_MD5Hash.ReadOnly = true;
             this.Textbox_MD5Hash.Size = new System.Drawing.Size(407, 20);
-            this.Textbox_MD5Hash.TabIndex = 13;
+            this.Textbox_MD5Hash.TabIndex = 1;
             // 
             // Groupbox_FileProperties
             // 
@@ -474,7 +474,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Groupbox_FileProperties.Location = new System.Drawing.Point(12, 346);
             this.Groupbox_FileProperties.Name = "Groupbox_FileProperties";
             this.Groupbox_FileProperties.Size = new System.Drawing.Size(486, 60);
-            this.Groupbox_FileProperties.TabIndex = 37;
+            this.Groupbox_FileProperties.TabIndex = 2;
             this.Groupbox_FileProperties.TabStop = false;
             this.Groupbox_FileProperties.Text = "File Properties:";
             // 

@@ -90,7 +90,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.ListBox_StreamSounds.Name = "ListBox_StreamSounds";
             this.ListBox_StreamSounds.ScrollAlwaysVisible = true;
             this.ListBox_StreamSounds.Size = new System.Drawing.Size(456, 316);
-            this.ListBox_StreamSounds.TabIndex = 3;
+            this.ListBox_StreamSounds.TabIndex = 4;
             // 
             // Button_OK
             // 
@@ -99,7 +99,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Button_OK.Location = new System.Drawing.Point(312, 487);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
-            this.Button_OK.TabIndex = 5;
+            this.Button_OK.TabIndex = 6;
             this.Button_OK.Text = "OK";
             this.Button_OK.UseVisualStyleBackColor = true;
             this.Button_OK.Click += new System.EventHandler(this.Button_OK_Click);
@@ -111,7 +111,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Button_Cancel.Location = new System.Drawing.Point(393, 487);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
-            this.Button_Cancel.TabIndex = 6;
+            this.Button_Cancel.TabIndex = 7;
             this.Button_Cancel.Text = "Cancel";
             this.Button_Cancel.UseVisualStyleBackColor = true;
             this.Button_Cancel.Click += new System.EventHandler(this.Button_Cancel_Click);
@@ -122,7 +122,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Label_Text.Location = new System.Drawing.Point(12, 152);
             this.Label_Text.Name = "Label_Text";
             this.Label_Text.Size = new System.Drawing.Size(115, 13);
-            this.Label_Text.TabIndex = 2;
+            this.Label_Text.TabIndex = 3;
             this.Label_Text.Text = "Select a stream sound:";
             // 
             // Button_RefreshList
@@ -131,7 +131,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Button_RefreshList.Location = new System.Drawing.Point(12, 487);
             this.Button_RefreshList.Name = "Button_RefreshList";
             this.Button_RefreshList.Size = new System.Drawing.Size(75, 23);
-            this.Button_RefreshList.TabIndex = 4;
+            this.Button_RefreshList.TabIndex = 5;
             this.Button_RefreshList.Text = "Refresh";
             this.Button_RefreshList.UseVisualStyleBackColor = true;
             this.Button_RefreshList.Click += new System.EventHandler(this.Button_RefreshList_Click);
@@ -155,7 +155,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.groupbox_properties.Location = new System.Drawing.Point(12, 38);
             this.groupbox_properties.Name = "groupbox_properties";
             this.groupbox_properties.Size = new System.Drawing.Size(456, 108);
-            this.groupbox_properties.TabIndex = 7;
+            this.groupbox_properties.TabIndex = 2;
             this.groupbox_properties.TabStop = false;
             this.groupbox_properties.Text = "Properties:";
             // 
@@ -175,7 +175,7 @@ namespace EuroSound_Application.SoundBanksEditor
             0});
             this.Numeric_BaseVolume.Name = "Numeric_BaseVolume";
             this.Numeric_BaseVolume.Size = new System.Drawing.Size(94, 20);
-            this.Numeric_BaseVolume.TabIndex = 8;
+            this.Numeric_BaseVolume.TabIndex = 5;
             // 
             // Label_BaseVolume
             // 
@@ -183,7 +183,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Label_BaseVolume.Location = new System.Drawing.Point(16, 47);
             this.Label_BaseVolume.Name = "Label_BaseVolume";
             this.Label_BaseVolume.Size = new System.Drawing.Size(72, 13);
-            this.Label_BaseVolume.TabIndex = 7;
+            this.Label_BaseVolume.TabIndex = 4;
             this.Label_BaseVolume.Text = "Base Volume:";
             // 
             // numeric_randomPitchOffset
@@ -201,7 +201,7 @@ namespace EuroSound_Application.SoundBanksEditor
             -2147483648});
             this.numeric_randomPitchOffset.Name = "numeric_randomPitchOffset";
             this.numeric_randomPitchOffset.Size = new System.Drawing.Size(94, 20);
-            this.numeric_randomPitchOffset.TabIndex = 6;
+            this.numeric_randomPitchOffset.TabIndex = 3;
             // 
             // Label_RandomPitchOffset
             // 
@@ -209,7 +209,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Label_RandomPitchOffset.Location = new System.Drawing.Point(228, 21);
             this.Label_RandomPitchOffset.Name = "Label_RandomPitchOffset";
             this.Label_RandomPitchOffset.Size = new System.Drawing.Size(108, 13);
-            this.Label_RandomPitchOffset.TabIndex = 5;
+            this.Label_RandomPitchOffset.TabIndex = 2;
             this.Label_RandomPitchOffset.Text = "Random Pitch Offset:";
             // 
             // numeric_randompan
@@ -233,7 +233,7 @@ namespace EuroSound_Application.SoundBanksEditor
             -2147483648});
             this.numeric_randompan.Name = "numeric_randompan";
             this.numeric_randompan.Size = new System.Drawing.Size(94, 20);
-            this.numeric_randompan.TabIndex = 14;
+            this.numeric_randompan.TabIndex = 11;
             // 
             // label_randompan
             // 
@@ -241,7 +241,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.label_randompan.Location = new System.Drawing.Point(264, 71);
             this.label_randompan.Name = "label_randompan";
             this.label_randompan.Size = new System.Drawing.Size(72, 13);
-            this.label_randompan.TabIndex = 13;
+            this.label_randompan.TabIndex = 10;
             this.label_randompan.Text = "Random Pan:";
             // 
             // numeric_pan
@@ -265,7 +265,7 @@ namespace EuroSound_Application.SoundBanksEditor
             -2147483648});
             this.numeric_pan.Name = "numeric_pan";
             this.numeric_pan.Size = new System.Drawing.Size(94, 20);
-            this.numeric_pan.TabIndex = 12;
+            this.numeric_pan.TabIndex = 9;
             // 
             // label_pan
             // 
@@ -273,7 +273,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.label_pan.Location = new System.Drawing.Point(59, 73);
             this.label_pan.Name = "label_pan";
             this.label_pan.Size = new System.Drawing.Size(29, 13);
-            this.label_pan.TabIndex = 11;
+            this.label_pan.TabIndex = 8;
             this.label_pan.Text = "Pan:";
             // 
             // numeric_randomvolumeoffset
@@ -292,7 +292,7 @@ namespace EuroSound_Application.SoundBanksEditor
             0});
             this.numeric_randomvolumeoffset.Name = "numeric_randomvolumeoffset";
             this.numeric_randomvolumeoffset.Size = new System.Drawing.Size(94, 20);
-            this.numeric_randomvolumeoffset.TabIndex = 10;
+            this.numeric_randomvolumeoffset.TabIndex = 7;
             // 
             // label_randomvolumeoffset
             // 
@@ -300,7 +300,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.label_randomvolumeoffset.Location = new System.Drawing.Point(217, 47);
             this.label_randomvolumeoffset.Name = "label_randomvolumeoffset";
             this.label_randomvolumeoffset.Size = new System.Drawing.Size(119, 13);
-            this.label_randomvolumeoffset.TabIndex = 9;
+            this.label_randomvolumeoffset.TabIndex = 6;
             this.label_randomvolumeoffset.Text = "Random Volume Offset:";
             // 
             // numeric_pitchoffset
@@ -318,7 +318,7 @@ namespace EuroSound_Application.SoundBanksEditor
             -2147483648});
             this.numeric_pitchoffset.Name = "numeric_pitchoffset";
             this.numeric_pitchoffset.Size = new System.Drawing.Size(94, 20);
-            this.numeric_pitchoffset.TabIndex = 4;
+            this.numeric_pitchoffset.TabIndex = 1;
             // 
             // label_pitchoffset
             // 
@@ -326,7 +326,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.label_pitchoffset.Location = new System.Drawing.Point(23, 21);
             this.label_pitchoffset.Name = "label_pitchoffset";
             this.label_pitchoffset.Size = new System.Drawing.Size(65, 13);
-            this.label_pitchoffset.TabIndex = 3;
+            this.label_pitchoffset.TabIndex = 0;
             this.label_pitchoffset.Text = "Pitch Offset:";
             // 
             // Frm_NewStreamSound

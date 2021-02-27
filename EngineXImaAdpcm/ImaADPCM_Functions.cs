@@ -1,9 +1,42 @@
-﻿using System;
+﻿/***********************************************************
+Copyright 1992 by Stichting Mathematisch Centrum, Amsterdam, The
+Netherlands.
+
+                        All Rights Reserved
+
+Permission to use, copy, modify, and distribute this software and its 
+documentation for any purpose and without fee is hereby granted, 
+provided that the above copyright notice appear in all copies and that
+both that copyright notice and this permission notice appear in 
+supporting documentation, and that the names of Stichting Mathematisch
+Centrum or CWI not be used in advertising or publicity pertaining to
+distribution of the software without specific, written prior permission.
+
+STICHTING MATHEMATISCH CENTRUM DISCLAIMS ALL WARRANTIES WITH REGARD TO
+THIS SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS, IN NO EVENT SHALL STICHTING MATHEMATISCH CENTRUM BE LIABLE
+FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
+OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+******************************************************************/
+
+/*
+** Intel/DVI ADPCM coder/decoder.
+**
+** The algorithm for this coder was taken from the IMA Compatability Project
+** proceedings, Vol 2, Number 2; May 1992.
+**
+** Version 1.2, 18-Dec-92.
+*/
+
+using System;
 using System.IO;
 
 namespace EngineXImaAdpcm
 {
-    public class ImaADPCM_Decoder
+    public class ImaADPCM_Functions
     {
         private class ImaAdpcmState
         {
@@ -140,7 +173,6 @@ namespace EngineXImaAdpcm
 
                     m_state.valprev = valpred;
                     m_state.index = index;
-
                 }
 
                 //Convert data to a byte array to save then in a IMA file.
@@ -150,9 +182,9 @@ namespace EngineXImaAdpcm
             return EncodedIMAData;
         }
 
-        public void DecodeIMA_ADPCM(byte[] ImaFileData, int numSamples, int[] ArrayOfStates)
+        public void DecodeIMA_ADPCM(byte[] ImaFileData, int numSamples, int[] outdata)
         {
-            int Counter = 0;
+            int outp = 0;           /* output buffer pointer */
             uint inp;               /* Input buffer pointer */
             int sign;               /* Current adpcm sign bit */
             int delta;              /* Current adpcm output value */
@@ -171,7 +203,6 @@ namespace EngineXImaAdpcm
             step = stepsizeTable[index];
 
             bufferstep = false;
-
             for (; numSamples > 0; numSamples--)
             {
                 /* Step 1 - get the delta value */
@@ -194,7 +225,9 @@ namespace EngineXImaAdpcm
 
                 /* Step 3 - Separate sign and magnitude */
                 sign = delta & 8;
+#pragma warning disable IDE0054 // Usar la asignación compuesta
                 delta = delta & 7;
+#pragma warning restore IDE0054 // Usar la asignación compuesta
 
                 /* Step 4 - Compute difference and new predicted value */
                 /*
@@ -225,10 +258,10 @@ namespace EngineXImaAdpcm
                 int EngineXState = (((((short)valpred) & 0xffff) << 16) | ((inputbuffer & 0xff) << 8) | ((bufferstepInt & 0x1) << 7) | ((index & 0x7f) << 0));
 
                 /*Store data*/
-                ArrayOfStates[Counter] = EngineXState;
+                outdata[outp] = EngineXState;
 
                 //Update Counter
-                Counter++;
+                outp++;
             }
 
             state.valprev = valpred;

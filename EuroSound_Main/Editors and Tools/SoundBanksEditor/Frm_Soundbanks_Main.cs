@@ -5,6 +5,7 @@ using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls.ProjectSettings;
 using EuroSound_Application.CustomControls.SearcherForm;
 using EuroSound_Application.EuroSoundFilesFunctions;
+using EuroSound_Application.EuroSoundInterchangeFile;
 using EuroSound_Application.SoundBanksEditor.BuildSFX;
 using EuroSound_Application.SoundBanksEditor.YMLReader;
 using EuroSound_Application.TreeViewLibraryFunctions;
@@ -53,15 +54,15 @@ namespace EuroSound_Application.SoundBanksEditor
             MenuItem_File_Save.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_Save")); };
             MenuItem_File_SaveAs.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_SaveAs")); };
             MenuItem_File_Export.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_Export")); };
-            MenuItemFile_ReadSound.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_ReadSound")); };
-            MenuItemFile_ReadYml.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_ReadYml")); };
+            MenuItem_File_ImportYML_Single.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_ReadSound")); };
+            MenuItem_File_ImportYML_List.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_ReadYml")); };
 
             MenuItem_File_Close.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItem_File_Save.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItem_File_SaveAs.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItem_File_Export.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
-            MenuItemFile_ReadSound.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
-            MenuItemFile_ReadYml.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItem_File_ImportYML_Single.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItem_File_ImportYML_List.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
 
             //Menu Item: Edit
             MenuItem_Edit.DropDownOpened += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
@@ -326,6 +327,21 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
+        private void Button_ExportInterchangeFile_Click(object sender, EventArgs e)
+        {
+            string ExportPath, FolderPath;
+
+            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.ESIF)|*.esif", 0, true, ProjectInfo.FileName);
+            FolderPath = Path.GetDirectoryName(ExportPath) + "\\MediaData";
+            Directory.CreateDirectory(FolderPath);
+
+            if (!string.IsNullOrEmpty(ExportPath))
+            {
+                ESIF_Exporter ESIF_Exp = new ESIF_Exporter();
+                ESIF_Exp.ExportProject(ExportPath, true, ProjectInfo, SoundsList, AudioDataDict, TreeView_File);
+            }
+        }
+
         //*===============================================================================================
         //* LIST VIEWS DATA
         //*===============================================================================================
@@ -491,7 +507,68 @@ namespace EuroSound_Application.SoundBanksEditor
 
         //*===============================================================================================
         //* MAIN MENU FILE
-        //*===============================================================================================
+        //*==============================================================================================
+        private void MenuItem_File_ImportESIF_Click(object sender, EventArgs e)
+        {
+            string FilePath = GenericFunctions.OpenFileBrowser("EuroSound Interchange File (*.ESIF)|*.esif", 0, true);
+            if (!string.IsNullOrEmpty(FilePath))
+            {
+                ESIF_Loader EuroSoundPropertiesFileLoader = new ESIF_Loader();
+                EuroSoundPropertiesFileLoader.LoadSFX_File(FilePath, ProjectInfo, SoundsList, AudioDataDict, TreeView_File);
+            }
+        }
+
+        private void MenuItem_File_ImportYML_List_Click(object sender, EventArgs e)
+        {
+            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0, true);
+            if (!string.IsNullOrEmpty(FilePath))
+            {
+                //Ask user for a fully reimport
+                DialogResult ReimportQuestion = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("MenuItem_File_LoadListCleanData"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (ReimportQuestion == DialogResult.Yes)
+                {
+                    //Clear Data
+                    ProjectInfo.ClearSoundBankStoredData(SoundsList, AudioDataDict, TreeView_File);
+
+                    //Clear stack lists
+                    UndoListSounds.Clear();
+                    UndoListNodes.Clear();
+                }
+
+                //Update file Hashcode
+                DialogResult QuestionAnswer = MessageBox.Show("Do you want to use the hashcode of the loaded file?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (QuestionAnswer == DialogResult.Yes)
+                {
+                    ProjectInfo.Hashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SB_Defines, Path.GetFileNameWithoutExtension(FilePath));
+                    GenericFunctions.SetCurrentFileLabel(Path.GetFileNameWithoutExtension(FilePath), "Hashcode");
+                }
+
+                //Load New data
+                LoadYamlFile = new Thread(() => LibYamlReader.LoadDataFromSwyterUnpacker(SoundsList, AudioDataDict, TreeView_File, FilePath, ProjectInfo))
+                {
+                    IsBackground = true
+                };
+                LoadYamlFile.Start();
+
+                ProjectInfo.FileHasBeenModified = true;
+            }
+        }
+
+        private void MenuItem_File_ImportYML_Single_Click(object sender, EventArgs e)
+        {
+            string SoundName;
+            uint SoundHashcode;
+
+            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0, true);
+            if (!string.IsNullOrEmpty(FilePath))
+            {
+                SoundName = new DirectoryInfo(Path.GetDirectoryName(FilePath)).Name;
+                SoundHashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SFX_Defines, SoundName);
+                LibYamlReader.ReadYmlFile(SoundsList, AudioDataDict, TreeView_File, FilePath, SoundName, SoundHashcode, true, ProjectInfo);
+                ProjectInfo.FileHasBeenModified = true;
+            }
+        }
+
         private void MenuItem_File_Close_Click(object sender, EventArgs e)
         {
             Close();

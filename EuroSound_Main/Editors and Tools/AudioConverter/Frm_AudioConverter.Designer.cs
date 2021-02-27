@@ -546,6 +546,9 @@ namespace EuroSound_Application.AudioConverter
             this.Text = "Audio Converter";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_AudioConverter_FormClosing);
             this.Load += new System.EventHandler(this.Frm_AudioConverter_Load);
+            this.Shown += new System.EventHandler(this.Frm_AudioConverter_Shown);
+            this.SizeChanged += new System.EventHandler(this.Frm_AudioConverter_SizeChanged);
+            this.Enter += new System.EventHandler(this.Frm_AudioConverter_Enter);
             this.Groupbox_OutputDirectory.ResumeLayout(false);
             this.Groupbox_OutputDirectory.PerformLayout();
             this.AudioConverter_MainMenu.ResumeLayout(false);

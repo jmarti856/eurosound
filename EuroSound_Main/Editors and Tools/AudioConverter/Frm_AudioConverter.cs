@@ -63,9 +63,44 @@ namespace EuroSound_Application.AudioConverter
             }
         }
 
+        private void Frm_AudioConverter_Shown(object sender, EventArgs e)
+        {
+            //Update from title
+            if (WindowState != FormWindowState.Maximized)
+            {
+                MdiParent.Text = "EuroSound - Audio Converter";
+            }
+
+            //Set Program status
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+        }
+
+        private void Frm_AudioConverter_Enter(object sender, EventArgs e)
+        {
+            if (!(WindowState == FormWindowState.Maximized))
+            {
+                MdiParent.Text = "EuroSound - Audio Converter";
+            }
+        }
+
+        private void Frm_AudioConverter_SizeChanged(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Maximized)
+            {
+                MdiParent.Text = "EuroSound";
+            }
+            else
+            {
+                MdiParent.Text = "EuroSound - Audio Converter";
+            }
+        }
+
         private void Frm_AudioConverter_FormClosing(object sender, FormClosingEventArgs e)
         {
             WRegFunctions.SaveWindowState("ACView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
+
+            //Update Text
+            MdiParent.Text = "EuroSound";
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));

@@ -298,7 +298,7 @@ namespace EuroSound_Application.StreamSounds.YMLReader
 
         private void LoadAudio(string AudioPath, EXSoundStream SoundToLoad)
         {
-            EngineXImaAdpcm.ImaADPCM_Decoder ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Decoder();
+            EngineXImaAdpcm.ImaADPCM_Functions ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Functions();
 
             SoundToLoad.WAVFileMD5 = GenericFunctions.CalculateMD5(AudioPath);
             SoundToLoad.WAVFileName = Path.GetFileName(AudioPath);
