@@ -229,7 +229,7 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             string ExportPath;
 
-            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.ESIF)|*.esif", 0, true, "");
+            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, "");
 
             if (!string.IsNullOrEmpty(ExportPath))
             {
@@ -285,7 +285,7 @@ namespace EuroSound_Application.SoundBanksEditor
             string ExportPath;
 
             SelectedNode = TreeView_File.SelectedNode;
-            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.ESIF)|*.esif", 0, true, SelectedNode.Text);
+            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, SelectedNode.Text);
 
             if (!string.IsNullOrEmpty(ExportPath))
             {

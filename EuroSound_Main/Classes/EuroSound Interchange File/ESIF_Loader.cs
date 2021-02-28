@@ -15,11 +15,12 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
     {
         //Key = FILEREF, Value = MD5HASH
         Dictionary<int, string> AudiosAssocTable = new Dictionary<int, string>();
+        List<string> ImportResults = new List<string>();
 
         //*===============================================================================================
         //* MAIN
         //*===============================================================================================
-        internal void LoadSFX_File(string FilePath, ProjectFile FileProperties, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
+        internal List<string> LoadSFX_File(string FilePath, ProjectFile FileProperties, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
         {
             string[] lines = File.ReadAllLines(FilePath);
 
@@ -58,35 +59,50 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                 lines = null;
                 AudiosAssocTable.Clear();
             }
+            else
+            {
+                ImportResults.Add(string.Join("", "0", "Error the file: ", FilePath, " is not valid"));
+            }
+
+            return ImportResults;
         }
 
         //*===============================================================================================
         //* PROJECTSETTINGS
         //*===============================================================================================
-        private void ReadProjectSettingsBlock(string[] lines, int CurrentIndex, ProjectFile FileProperties)
+        private void ReadProjectSettingsBlock(string[] FileLines, int CurrentIndex, ProjectFile FileProperties)
         {
             string[] SplitedData;
 
-            while (!lines[CurrentIndex].Trim().Equals("}"))
+            while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
-                if (lines[CurrentIndex].Trim().StartsWith("*FILENAME"))
+                if (FileLines[CurrentIndex].Trim().StartsWith("*FILENAME"))
                 {
-                    SplitedData = lines[CurrentIndex].Trim().Split('"');
+                    SplitedData = FileLines[CurrentIndex].Trim().Split('"');
                     if (SplitedData.Length > 1)
                     {
                         FileProperties.FileName = SplitedData[1];
                     }
+                    else
+                    {
+                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *FILENAME does not contains any value"));
+                        break;
+                    }
                 }
 
-                if (lines[CurrentIndex].Trim().StartsWith("*HASHCODE"))
+                if (FileLines[CurrentIndex].Trim().StartsWith("*HASHCODE"))
                 {
-                    SplitedData = lines[CurrentIndex].Trim().Split(' ');
+                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
                     if (SplitedData.Length > 1)
                     {
                         FileProperties.Hashcode = Convert.ToUInt32(SplitedData[1], 16);
                     }
+                    else
+                    {
+                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *HASHCODE does not contains any value"));
+                        break;
+                    }
                 }
-
                 CurrentIndex++;
             }
         }
@@ -103,7 +119,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             int FileRef;
             Color DefaultNodeColor = Color.FromArgb(1, 0, 0, 0);
 
-            while (!FileLines[CurrentIndex].Trim().Equals("}"))
+            while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
                 if (FileLines[CurrentIndex].Trim().StartsWith("*AUDIO"))
                 {
@@ -114,7 +130,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                         FileRef = int.Parse(SplitedData[1]);
 
                         CurrentIndex++;
-                        while (!FileLines[CurrentIndex].Trim().Equals("}"))
+                        while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
                         {
                             if (FileLines[CurrentIndex].Trim().StartsWith("*PATH"))
                             {
@@ -122,14 +138,27 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                 if (SplitedData.Length > 1)
                                 {
                                     AudioPath = RemoveCharactersWithoutDisplayWidth(SplitedData[1].Trim());
-                                    if (GenericFunctions.AudioIsValid(AudioPath, 1, 22050))
+                                    if (File.Exists(AudioPath))
                                     {
-                                        MD5AudioFilehash = GenericFunctions.CalculateMD5(AudioPath);
-                                        if (!AudiosList.ContainsKey(MD5AudioFilehash))
+                                        if (GenericFunctions.AudioIsValid(AudioPath, 1, 22050))
                                         {
+                                            MD5AudioFilehash = GenericFunctions.CalculateMD5(AudioPath);
                                             NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);
                                         }
+                                        else
+                                        {
+                                            ImportResults.Add(string.Join("", "1", "The file: ", AudioPath, " does not have a valid value and will not be loaded"));
+                                        }
                                     }
+                                    else
+                                    {
+                                        ImportResults.Add(string.Join("", "1", "The file: ", AudioPath, " was not found"));
+                                    }
+                                }
+                                else
+                                {
+                                    ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *PATH does not have a valid value"));
+                                    break;
                                 }
                             }
                             if (FileLines[CurrentIndex].Trim().StartsWith("*NODECOLOR"))
@@ -139,6 +168,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                 {
                                     DefaultNodeColor = Color.FromArgb(1, int.Parse(SplitedData[1]), int.Parse(SplitedData[2]), int.Parse(SplitedData[3]));
                                 }
+                                else
+                                {
+                                    ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *NODECOLOR does not have a valid value"));
+                                    break;
+                                }
                             }
                             if (FileLines[CurrentIndex].Trim().StartsWith("*FLAGS"))
                             {
@@ -146,6 +180,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                 if (SplitedData.Length > 1)
                                 {
                                     AudioFlags = ushort.Parse(SplitedData[1].Trim());
+                                }
+                                else
+                                {
+                                    ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *FLAGS does not have a valid value"));
+                                    break;
                                 }
                             }
                             if (FileLines[CurrentIndex].Trim().StartsWith("*LOOPOFFSET"))
@@ -155,6 +194,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                 {
                                     LoopOffset = ushort.Parse(SplitedData[1].Trim());
                                 }
+                                else
+                                {
+                                    ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *LOOPOFFSET does not have a valid value"));
+                                    break;
+                                }
                             }
                             if (FileLines[CurrentIndex].Trim().StartsWith("*PSI"))
                             {
@@ -162,6 +206,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                 if (SplitedData.Length > 1)
                                 {
                                     AudioPSI = uint.Parse(SplitedData[1].Trim());
+                                }
+                                else
+                                {
+                                    ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *PSI does not have a valid value"));
+                                    break;
                                 }
                             }
                             CurrentIndex++;
@@ -171,6 +220,10 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                         if (!AudiosAssocTable.ContainsKey(FileRef))
                         {
                             AudiosAssocTable.Add(FileRef, MD5AudioFilehash);
+                        }
+                        else
+                        {
+                            ImportResults.Add(string.Join("", "1", "The audio with the file ref: ", FileRef, " is duplicated"));
                         }
 
                         //Add audio to dictionary
@@ -189,6 +242,14 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                 NodeName = "AD_" + Path.GetFileNameWithoutExtension(AudioPath);
                                 TreeNodeFunctions.TreeNodeAddNewNode("AudioData", MD5AudioFilehash, GenericFunctions.GetNextAvailableName(NodeName, TreeViewControl), 7, 7, "Audio", DefaultNodeColor, TreeViewControl);
                             }
+                            else
+                            {
+                                ImportResults.Add(string.Join("", "2", "The project also contains: ", NewAudio.LoadedFileName, " with the MD5 hash: ", MD5AudioFilehash));
+                            }
+                        }
+                        else
+                        {
+                            ImportResults.Add(string.Join("", "1", "The audio with the file ref: ", FileRef, " is null and can't be loaded"));
                         }
                     }
                 }
@@ -209,7 +270,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             EXSound SFXSound = new EXSound();
             Color DefaultNodeColor = Color.FromArgb(1, 0, 0, 0);
             Color DefaultSampleNodeColor = Color.FromArgb(1, 0, 0, 0);
-            while (!FileLines[CurrentIndex].Trim().Equals("}"))
+            while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
                 if (FileLines[CurrentIndex].Trim().StartsWith("*NODENAME"))
                 {
@@ -217,6 +278,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     if (SplitedData.Length > 1)
                     {
                         NodeName = SplitedData[1].Trim();
+                    }
+                    else
+                    {
+                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *NODENAME does not have a valid value"));
+                        break;
                     }
                 }
                 if (FileLines[CurrentIndex].Trim().StartsWith("*HASHCODE"))
@@ -226,6 +292,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     {
                         SFXSound.Hashcode = Convert.ToUInt32(SplitedData[1].Trim(), 16);
                     }
+                    else
+                    {
+                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *HASHCODE does not have a valid value"));
+                        break;
+                    }
                 }
                 if (FileLines[CurrentIndex].Trim().StartsWith("*NODECOLOR"))
                 {
@@ -234,11 +305,16 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     {
                         DefaultNodeColor = Color.FromArgb(1, int.Parse(SplitedData[1]), int.Parse(SplitedData[2]), int.Parse(SplitedData[3]));
                     }
+                    else
+                    {
+                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *NODECOLOR does not have a valid value"));
+                        break;
+                    }
                 }
                 if (FileLines[CurrentIndex].Trim().StartsWith("*PARAMETERS"))
                 {
                     CurrentIndex++;
-                    while (!FileLines[CurrentIndex].Trim().Equals("}"))
+                    while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
                     {
                         if (FileLines[CurrentIndex].Trim().StartsWith("*DUCKERLENGTH"))
                         {
@@ -246,6 +322,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                             if (SplitedData.Length > 1)
                             {
                                 SFXSound.DuckerLenght = short.Parse(SplitedData[1].Trim());
+                            }
+                            else
+                            {
+                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *DUCKERLENGTH does not have a valid value"));
+                                break;
                             }
                         }
                         if (FileLines[CurrentIndex].Trim().StartsWith("*MINDELAY"))
@@ -255,6 +336,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                             {
                                 SFXSound.MinDelay = short.Parse(SplitedData[1].Trim());
                             }
+                            else
+                            {
+                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MINDELAY does not have a valid value"));
+                                break;
+                            }
                         }
                         if (FileLines[CurrentIndex].Trim().StartsWith("*MAXDELAY"))
                         {
@@ -262,6 +348,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                             if (SplitedData.Length > 1)
                             {
                                 SFXSound.MaxDelay = short.Parse(SplitedData[1].Trim());
+                            }
+                            else
+                            {
+                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MAXDELAY does not have a valid value"));
+                                break;
                             }
                         }
                         if (FileLines[CurrentIndex].Trim().StartsWith("*REVERBSEND"))
@@ -271,6 +362,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                             {
                                 SFXSound.ReverbSend = sbyte.Parse(SplitedData[1].Trim());
                             }
+                            else
+                            {
+                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *REVERBSEND does not have a valid value"));
+                                break;
+                            }
                         }
                         if (FileLines[CurrentIndex].Trim().StartsWith("*TRACKINGTYPE"))
                         {
@@ -278,6 +374,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                             if (SplitedData.Length > 1)
                             {
                                 SFXSound.TrackingType = sbyte.Parse(SplitedData[1].Trim());
+                            }
+                            else
+                            {
+                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *TRACKINGTYPE does not have a valid value"));
+                                break;
                             }
                         }
                         if (FileLines[CurrentIndex].Trim().StartsWith("*MAXVOICES"))
@@ -287,6 +388,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                             {
                                 SFXSound.MaxVoices = sbyte.Parse(SplitedData[1].Trim());
                             }
+                            else
+                            {
+                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MAXVOICES does not have a valid value"));
+                                break;
+                            }
                         }
                         if (FileLines[CurrentIndex].Trim().StartsWith("*PRIORITY"))
                         {
@@ -294,6 +400,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                             if (SplitedData.Length > 1)
                             {
                                 SFXSound.Priority = sbyte.Parse(SplitedData[1].Trim());
+                            }
+                            else
+                            {
+                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *PRIORITY does not have a valid value"));
+                                break;
                             }
                         }
                         if (FileLines[CurrentIndex].Trim().Contains("*DUCKER "))
@@ -303,6 +414,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                             {
                                 SFXSound.Ducker = sbyte.Parse(SplitedData[1].Trim());
                             }
+                            else
+                            {
+                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *DUCKER does not have a valid value"));
+                                break;
+                            }
                         }
                         if (FileLines[CurrentIndex].Trim().StartsWith("*MASTERVOLUME"))
                         {
@@ -311,6 +427,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                             {
                                 SFXSound.MasterVolume = sbyte.Parse(SplitedData[1].Trim());
                             }
+                            else
+                            {
+                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MASTERVOLUME does not have a valid value"));
+                                break;
+                            }
                         }
                         if (FileLines[CurrentIndex].Trim().StartsWith("*FLAGS"))
                         {
@@ -318,6 +439,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                             if (SplitedData.Length > 1)
                             {
                                 SFXSound.Flags = ushort.Parse(SplitedData[1].Trim());
+                            }
+                            else
+                            {
+                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *FLAGS does not have a valid value"));
+                                break;
                             }
                         }
                         CurrentIndex++;
@@ -331,6 +457,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                         SFXSound.InnerRadiusReal = (short)SFXValues[1];
                         SFXSound.OuterRadiusReal = (short)SFXValues[2];
                     }
+
                     //Add Sound to dictionary
                     SoundsList.Add(NewSoundKey, SFXSound);
                 }
@@ -338,7 +465,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                 if (FileLines[CurrentIndex].Trim().StartsWith("*SAMPLES"))
                 {
                     CurrentIndex++;
-                    while (!FileLines[CurrentIndex].Trim().Equals("}"))
+                    while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
                     {
                         if (FileLines[CurrentIndex].Trim().StartsWith("*SAMPLE"))
                         {
@@ -356,6 +483,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     {
                                         NewSample.Name = SplitedData[1].Trim();
                                     }
+                                    else
+                                    {
+                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *NODENAME does not have a valid value"));
+                                        break;
+                                    }
                                 }
                                 if (FileLines[CurrentIndex].Trim().StartsWith("*NODECOLOR"))
                                 {
@@ -363,6 +495,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     if (SplitedData.Length > 3)
                                     {
                                         NewSample.NodeColor = Color.FromArgb(1, int.Parse(SplitedData[1]), int.Parse(SplitedData[2]), int.Parse(SplitedData[3]));
+                                    }
+                                    else
+                                    {
+                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *NODECOLOR does not have a valid value"));
+                                        break;
                                     }
                                 }
                                 if (FileLines[CurrentIndex].Trim().StartsWith("*PITCHOFFSET"))
@@ -372,6 +509,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     {
                                         NewSample.PitchOffset = short.Parse(SplitedData[1].Trim());
                                     }
+                                    else
+                                    {
+                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *PITCHOFFSET does not have a valid value"));
+                                        break;
+                                    }
                                 }
                                 if (FileLines[CurrentIndex].Trim().StartsWith("*BASEVOLUME"))
                                 {
@@ -379,6 +521,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     if (SplitedData.Length > 1)
                                     {
                                         NewSample.BaseVolume = sbyte.Parse(SplitedData[1].Trim());
+                                    }
+                                    else
+                                    {
+                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *BASEVOLUME does not have a valid value"));
+                                        break;
                                     }
                                 }
                                 if (FileLines[CurrentIndex].Trim().StartsWith("*PAN"))
@@ -388,6 +535,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     {
                                         NewSample.Pan = sbyte.Parse(SplitedData[1].Trim());
                                     }
+                                    else
+                                    {
+                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *PAN does not have a valid value"));
+                                        break;
+                                    }
                                 }
                                 if (FileLines[CurrentIndex].Trim().StartsWith("*RANDOMPITCHOFFSET"))
                                 {
@@ -395,6 +547,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     if (SplitedData.Length > 1)
                                     {
                                         NewSample.RandomPitchOffset = short.Parse(SplitedData[1].Trim());
+                                    }
+                                    else
+                                    {
+                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *RANDOMPITCHOFFSET does not have a valid value"));
+                                        break;
                                     }
                                 }
                                 if (FileLines[CurrentIndex].Trim().StartsWith("*RANDOMVOLUMEOFFSET"))
@@ -404,6 +561,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     {
                                         NewSample.RandomVolumeOffset = sbyte.Parse(SplitedData[1].Trim());
                                     }
+                                    else
+                                    {
+                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *RANDOMVOLUMEOFFSET does not have a valid value"));
+                                        break;
+                                    }
                                 }
                                 if (FileLines[CurrentIndex].Trim().StartsWith("*RANDOMPAN"))
                                 {
@@ -411,6 +573,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     if (SplitedData.Length > 1)
                                     {
                                         NewSample.RandomPan = sbyte.Parse(SplitedData[1].Trim());
+                                    }
+                                    else
+                                    {
+                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *RANDOMPAN does not have a valid value"));
+                                        break;
                                     }
                                 }
                                 if (FileLines[CurrentIndex].Trim().StartsWith("*FILEREF"))
@@ -432,8 +599,20 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                         }
                                         else
                                         {
-                                            NewSample.ComboboxSelectedAudio = AudiosAssocTable[FileRef];
+                                            if (AudiosAssocTable.ContainsKey(FileRef))
+                                            {
+                                                NewSample.ComboboxSelectedAudio = AudiosAssocTable[FileRef];
+                                            }
+                                            else
+                                            {
+                                                ImportResults.Add(string.Join("", "0", "The audio with the file ref: ", FileRef, " was not found"));
+                                            }
                                         }
+                                    }
+                                    else
+                                    {
+                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *FILEREF does not have a valid value"));
+                                        break;
                                     }
                                 }
                                 CurrentIndex++;

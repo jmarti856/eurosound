@@ -38,11 +38,11 @@ namespace EuroSound_Application.CustomControls.WarningsList
             this.label1 = new System.Windows.Forms.Label();
             this.ListViewImages = new System.Windows.Forms.ImageList(this.components);
             this.Button_Print = new System.Windows.Forms.Button();
+            this.PrintDialog_Document = new System.Windows.Forms.PrintDialog();
+            this.PrintDocument_DocumentToPrint = new System.Drawing.Printing.PrintDocument();
             this.ListView_Reports = new EuroSound_Application.CustomControls.ListViewColumnSorting.ListView_ColumnSortingClick();
             this.Col_Level = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Error = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.PrintDialog_Document = new System.Windows.Forms.PrintDialog();
-            this.PrintDocument_DocumentToPrint = new System.Drawing.Printing.PrintDocument();
             this.SuspendLayout();
             // 
             // Button_OK
@@ -96,6 +96,17 @@ namespace EuroSound_Application.CustomControls.WarningsList
             this.Button_Print.UseVisualStyleBackColor = true;
             this.Button_Print.Click += new System.EventHandler(this.Button_Print_Click);
             // 
+            // PrintDialog_Document
+            // 
+            this.PrintDialog_Document.AllowSelection = true;
+            this.PrintDialog_Document.PrintToFile = true;
+            this.PrintDialog_Document.UseEXDialog = true;
+            // 
+            // PrintDocument_DocumentToPrint
+            // 
+            this.PrintDocument_DocumentToPrint.OriginAtMargins = true;
+            this.PrintDocument_DocumentToPrint.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintDocument_DocumentToPrint_PrintPage);
+            // 
             // ListView_Reports
             // 
             this.ListView_Reports.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -118,23 +129,12 @@ namespace EuroSound_Application.CustomControls.WarningsList
             // Col_Level
             // 
             this.Col_Level.Text = "Level";
-            this.Col_Level.Width = 95;
+            this.Col_Level.Width = 70;
             // 
             // Col_Error
             // 
             this.Col_Error.Text = "Error";
-            this.Col_Error.Width = 520;
-            // 
-            // PrintDialog_Document
-            // 
-            this.PrintDialog_Document.AllowSelection = true;
-            this.PrintDialog_Document.PrintToFile = true;
-            this.PrintDialog_Document.UseEXDialog = true;
-            // 
-            // PrintDocument_DocumentToPrint
-            // 
-            this.PrintDocument_DocumentToPrint.OriginAtMargins = true;
-            this.PrintDocument_DocumentToPrint.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintDocument_DocumentToPrint_PrintPage);
+            this.Col_Error.Width = 620;
             // 
             // EuroSound_ErrorsAndWarningsList
             // 

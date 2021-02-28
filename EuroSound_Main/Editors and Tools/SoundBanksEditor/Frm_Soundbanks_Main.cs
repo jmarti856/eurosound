@@ -331,8 +331,7 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             string ExportPath;
 
-            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.ESIF)|*.esif", 0, true, ProjectInfo.FileName);
-
+            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, ProjectInfo.FileName);
             if (!string.IsNullOrEmpty(ExportPath))
             {
                 ESIF_Exporter ESIF_Exp = new ESIF_Exporter();
@@ -512,7 +511,13 @@ namespace EuroSound_Application.SoundBanksEditor
             if (!string.IsNullOrEmpty(FilePath))
             {
                 ESIF_Loader EuroSoundPropertiesFileLoader = new ESIF_Loader();
-                EuroSoundPropertiesFileLoader.LoadSFX_File(FilePath, ProjectInfo, SoundsList, AudioDataDict, TreeView_File);
+                List<string> ImportResults = EuroSoundPropertiesFileLoader.LoadSFX_File(FilePath, ProjectInfo, SoundsList, AudioDataDict, TreeView_File);
+                if (ImportResults.Count > 0)
+                {
+                    GenericFunctions.ShowErrorsAndWarningsList(ImportResults, "Import Results", this);
+                }
+
+                ProjectInfo.FileHasBeenModified = true;
             }
         }
 
