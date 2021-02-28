@@ -227,11 +227,9 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenuFolder_ExportSounds_Click(object sender, EventArgs e)
         {
-            string ExportPath, FolderPath;
+            string ExportPath;
 
             ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.ESIF)|*.esif", 0, true, "");
-            FolderPath = Path.GetDirectoryName(ExportPath) + "\\MediaData";
-            Directory.CreateDirectory(FolderPath);
 
             if (!string.IsNullOrEmpty(ExportPath))
             {

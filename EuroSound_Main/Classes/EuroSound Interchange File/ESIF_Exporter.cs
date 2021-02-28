@@ -16,6 +16,8 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         internal void ExportSingleSFX(string FilePath, uint SoundKey, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
         {
             string AudioPath;
+            string MediaFolder = GenericFunctions.OpenFolderBrowser();
+
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
             {
                 EXSound SFXObject = EXSoundbanksFunctions.ReturnSoundFromDictionary(SoundKey, SoundsList);
@@ -31,7 +33,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                         EXAudio SampleAudio = AudiosList[SFXObjectSample.Value.ComboboxSelectedAudio];
                         TreeNode AudioNode = TreeViewControl.Nodes.Find(SFXObjectSample.Value.ComboboxSelectedAudio, true)[0];
 
-                        AudioPath = Path.Combine(Path.GetDirectoryName(FilePath), AudioNode.Text + ".wav");
+                        AudioPath = Path.Combine(MediaFolder, AudioNode.Text + ".wav");
 
                         //Export Audio if Not Exists
                         if (!File.Exists(AudioPath))
@@ -113,6 +115,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         {
             int AudioIndex = 0;
             string SndHash, AudioPath;
+            string MediaFolder = GenericFunctions.OpenFolderBrowser();
 
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
             {
@@ -135,7 +138,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                 foreach (KeyValuePair<string, EXAudio> SampleAudio in AudiosList)
                 {
                     TreeNode AudioNode = TreeViewControl.Nodes.Find(SampleAudio.Key, true)[0];
-                    AudioPath = Path.Combine(Path.GetDirectoryName(FilePath), "MediaData", AudioNode.Text + ".wav");
+                    AudioPath = Path.Combine(MediaFolder, AudioNode.Text + ".wav");
 
                     //Export Audio if Not Exists
                     if (!File.Exists(AudioPath))
