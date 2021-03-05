@@ -60,7 +60,7 @@ namespace EuroSound_Application.StreamSounds
             this.Textbox_MD5_Hash = new System.Windows.Forms.TextBox();
             this.Label_MD5_Hash = new System.Windows.Forms.Label();
             this.Label_Data = new System.Windows.Forms.Label();
-            this.Button_SearchIMA = new System.Windows.Forms.Button();
+            this.Button_ReplaceAudio = new System.Windows.Forms.Button();
             this.Textbox_IMA_ADPCM = new System.Windows.Forms.TextBox();
             this.GroupBox_Properties.SuspendLayout();
             this.ContextMenu_SaveAudio.SuspendLayout();
@@ -324,7 +324,7 @@ namespace EuroSound_Application.StreamSounds
             this.GroupBox_IMA_Data.Controls.Add(this.Textbox_MD5_Hash);
             this.GroupBox_IMA_Data.Controls.Add(this.Label_MD5_Hash);
             this.GroupBox_IMA_Data.Controls.Add(this.Label_Data);
-            this.GroupBox_IMA_Data.Controls.Add(this.Button_SearchIMA);
+            this.GroupBox_IMA_Data.Controls.Add(this.Button_ReplaceAudio);
             this.GroupBox_IMA_Data.Controls.Add(this.Textbox_IMA_ADPCM);
             this.GroupBox_IMA_Data.Location = new System.Drawing.Point(12, 12);
             this.GroupBox_IMA_Data.Name = "GroupBox_IMA_Data";
@@ -373,16 +373,16 @@ namespace EuroSound_Application.StreamSounds
             this.Label_Data.TabIndex = 0;
             this.Label_Data.Text = "Path:";
             // 
-            // Button_SearchIMA
+            // Button_ReplaceAudio
             // 
-            this.Button_SearchIMA.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_SearchIMA.Location = new System.Drawing.Point(419, 19);
-            this.Button_SearchIMA.Name = "Button_SearchIMA";
-            this.Button_SearchIMA.Size = new System.Drawing.Size(24, 20);
-            this.Button_SearchIMA.TabIndex = 2;
-            this.Button_SearchIMA.Text = "...";
-            this.Button_SearchIMA.UseVisualStyleBackColor = true;
-            this.Button_SearchIMA.Click += new System.EventHandler(this.Button_SearchIMA_Click);
+            this.Button_ReplaceAudio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_ReplaceAudio.Location = new System.Drawing.Point(419, 19);
+            this.Button_ReplaceAudio.Name = "Button_ReplaceAudio";
+            this.Button_ReplaceAudio.Size = new System.Drawing.Size(24, 20);
+            this.Button_ReplaceAudio.TabIndex = 2;
+            this.Button_ReplaceAudio.Text = "...";
+            this.Button_ReplaceAudio.UseVisualStyleBackColor = true;
+            this.Button_ReplaceAudio.Click += new System.EventHandler(this.Button_ReplaceAudio_Click);
             // 
             // Textbox_IMA_ADPCM
             // 
@@ -438,7 +438,7 @@ namespace EuroSound_Application.StreamSounds
         private System.Windows.Forms.CheckBox CheckBox_OutputThisSound;
         private System.Windows.Forms.GroupBox GroupBox_IMA_Data;
         private System.Windows.Forms.Label Label_Data;
-        private System.Windows.Forms.Button Button_SearchIMA;
+        private System.Windows.Forms.Button Button_ReplaceAudio;
         private System.Windows.Forms.TextBox Textbox_IMA_ADPCM;
         private System.Windows.Forms.TextBox Textbox_MD5_Hash;
         private System.Windows.Forms.Label Label_MD5_Hash;

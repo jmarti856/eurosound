@@ -66,7 +66,7 @@ namespace EuroSound_Application.StreamSounds.YMLReader
             uint[] CurrentSoundParams;
             IEnumerable<uint[]> StartMarkers;
             IEnumerable<int[]> Markers;
-            string WavDataPath;
+            string WavDataPath, FileCheck;
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_ReadingYamlFile") + ": " + SoundName);
@@ -76,7 +76,7 @@ namespace EuroSound_Application.StreamSounds.YMLReader
             }
 
             StreamReader reader = new StreamReader(FilePath);
-            string FileCheck = reader.ReadLine();
+            FileCheck = reader.ReadLine();
             if (FileCheck.Equals("#ftype:4", StringComparison.OrdinalIgnoreCase))
             {
                 try
@@ -314,10 +314,10 @@ namespace EuroSound_Application.StreamSounds.YMLReader
                     SoundToLoad.Encoding = AudioReader.WaveFormat.Encoding.ToString();
                     SoundToLoad.Duration = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1);
 
-                    AudioReader.Close();
-
                     //Get PCM Data
-                    SoundToLoad.PCM_Data = AudioLibrary.GetWavPCMData(AudioPath);
+                    SoundToLoad.PCM_Data = new byte[AudioReader.Length];
+                    AudioReader.Read(SoundToLoad.PCM_Data, 0, (int)AudioReader.Length);
+                    AudioReader.Close();
 
                     //Get IMA ADPCM Data
                     short[] ShortArrayPCMData = AudioLibrary.ConvertPCMDataToShortArray(SoundToLoad.PCM_Data);

@@ -45,7 +45,8 @@ namespace EuroSound_Application.SoundBanksEditor
             numeric_psi.Value = TemporalAudio.PSIsample;
             numeric_loopOffset.Value = TemporalAudio.LoopOffset;
 
-            if (TemporalAudio.PCMdata != null)
+            //Draw audio waves in the UI
+            if (TemporalAudio.PCMdata != null && TemporalAudio.Channels > 0)
             {
                 AudioFunctionsLibrary.DrawAudioWaves(euroSound_WaveViewer1, TemporalAudio, 0);
             }
@@ -112,11 +113,12 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             if (byte.Parse(Textbox_Flags.Text) == 1)
             {
+                int SamplesToSkip;
                 byte[] LoopSamples;
 
                 try
                 {
-                    int SamplesToSkip = (int.Parse(numeric_loopOffset.Value.ToString()) / 2) * 2;
+                    SamplesToSkip = int.Parse(numeric_loopOffset.Value.ToString()) * 2;
 
                     LoopSamples = TemporalAudio.PCMdata.Skip(SamplesToSkip).ToArray();
                     AudioFunctionsLibrary.PlayAudioLoopOffset(_waveOut, LoopSamples, (int)TemporalAudio.Frequency, 0, (int)TemporalAudio.Bits, (int)TemporalAudio.Channels, 0);
@@ -254,6 +256,8 @@ namespace EuroSound_Application.SoundBanksEditor
                 UpdateControls();
                 numeric_psi.Value = TemporalAudio.PSIsample;
                 Textbox_MD5Hash.Text = TemporalAudioHash;
+
+                //Draw audio waves in the UI
                 AudioFunctionsLibrary.DrawAudioWaves(euroSound_WaveViewer1, TemporalAudio, 0);
 
                 //Ask user if wants to maintain config

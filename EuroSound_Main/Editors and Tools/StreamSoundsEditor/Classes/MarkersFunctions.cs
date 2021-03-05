@@ -46,22 +46,26 @@ namespace EuroSound_Application.Editors_and_Tools.StreamSoundsEditor.Classes
             return NewMarker;
         }
 
-        internal uint[] CalculateMarkerStates(byte[] ImaADPCM_File, int Position)
+        internal uint[] GetEngineXMarkerStates(byte[] ImaADPCM_File, int Position)
         {
+            int Pointer, SamplesToDecode;
+            uint[] States, IMAStates;
+
             ImaADPCM_Functions ImaADPCM = new ImaADPCM_Functions();
-            uint[] States = new uint[2];
-            int pointer = (Position / 2) - 1;
+            States = new uint[2];
+
+            Pointer = ((Position & -256) / 2) - 1;
 
             //Calculate States
-            int SamplesToDecode = ImaADPCM_File.Length * 2;
-            int[] IMAStates = new int[SamplesToDecode];
+            SamplesToDecode = ImaADPCM_File.Length * 2;
+            IMAStates = new uint[SamplesToDecode];
             ImaADPCM.DecodeIMA_ADPCM(ImaADPCM_File, SamplesToDecode, IMAStates);
 
             //Get states
-            if (pointer > 0 && pointer <= IMAStates.Length)
+            if (Pointer > 0 && Pointer <= IMAStates.Length)
             {
-                States[0] = (uint)IMAStates[pointer];
-                States[1] = (uint)IMAStates[pointer];
+                States[0] = IMAStates[Pointer];
+                States[1] = IMAStates[Pointer];
             }
 
             return States;

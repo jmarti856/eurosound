@@ -182,7 +182,7 @@ namespace EngineXImaAdpcm
             return EncodedIMAData;
         }
 
-        public void DecodeIMA_ADPCM(byte[] ImaFileData, int numSamples, int[] outdata)
+        public void DecodeIMA_ADPCM(byte[] ImaFileData, int numSamples, uint[] outdata)
         {
             int outp = 0;           /* output buffer pointer */
             uint inp;               /* Input buffer pointer */
@@ -194,6 +194,7 @@ namespace EngineXImaAdpcm
             int index;              /* Current step change index */
             int inputbuffer = 0;    /* place to keep next 4-bit value */
             bool bufferstep;		/* toggle between inputbuffer/input */
+            uint EngineXState;      /* EngineX StateA and StateB field*/
 
             ImaAdpcmState state = new ImaAdpcmState();
             inp = 0;
@@ -203,7 +204,7 @@ namespace EngineXImaAdpcm
             step = stepsizeTable[index];
 
             bufferstep = false;
-            for (; numSamples > 0; numSamples--)
+            for (int i = 0; i < numSamples; i++)
             {
                 /* Step 1 - get the delta value */
                 if (bufferstep)
@@ -225,9 +226,7 @@ namespace EngineXImaAdpcm
 
                 /* Step 3 - Separate sign and magnitude */
                 sign = delta & 8;
-#pragma warning disable IDE0054 // Usar la asignación compuesta
                 delta = delta & 7;
-#pragma warning restore IDE0054 // Usar la asignación compuesta
 
                 /* Step 4 - Compute difference and new predicted value */
                 /*
@@ -255,7 +254,7 @@ namespace EngineXImaAdpcm
 
                 /* Step 7 - Calculate State A and B */
                 byte bufferstepInt = Convert.ToByte(bufferstep);
-                int EngineXState = (((((short)valpred) & 0xffff) << 16) | ((inputbuffer & 0xff) << 8) | ((bufferstepInt & 0x1) << 7) | ((index & 0x7f) << 0));
+                EngineXState = ((uint)((((short)valpred & 0xffff) << 0) | ((inputbuffer & 0xff) << 16) | (((bufferstepInt & 0x1) << 7) | ((index & 0x7f) << 0)) << 24));
 
                 /*Store data*/
                 outdata[outp] = EngineXState;

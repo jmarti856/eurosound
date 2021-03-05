@@ -189,6 +189,9 @@
   <data name="ContextMenuSound_AddSample" xml:space="preserve">
     <value>Add a sample to the selected sound</value>
   </data>
+  <data name="ContextMenuSound_ExportESIF" xml:space="preserve">
+    <value>Export data to an EuroSound Interchange File</value>
+  </data>
   <data name="ContextMenuSound_Properties" xml:space="preserve">
     <value>Open properties form for the selected sound</value>
   </data>
@@ -282,6 +285,9 @@
   <data name="MenuItemFile_Exit" xml:space="preserve">
     <value>Quit the application; prompts to save documents</value>
   </data>
+  <data name="MenuItemFile_ImportESIF" xml:space="preserve">
+    <value>Import data from EuroSound Interchange File</value>
+  </data>
   <data name="MenuItemFile_OpenESF" xml:space="preserve">
     <value>Open an existing document</value>
   </data>
@@ -356,6 +362,9 @@
   </data>
   <data name="OutputSFXSoundbankErrors" xml:space="preserve">
     <value>An error occurred in the output and the file might be corrupt</value>
+  </data>
+  <data name="ProjectSettings_ErrorHashcode" xml:space="preserve">
+    <value>You can't assign the selected hashcode to this project, the changes will not be applied</value>
   </data>
   <data name="SearcherInfoClearButton" xml:space="preserve">
     <value>This will clear your current search</value>

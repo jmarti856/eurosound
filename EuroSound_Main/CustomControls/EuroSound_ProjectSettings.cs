@@ -7,6 +7,11 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
 {
     public partial class Frm_FileProperties : Form
     {
+        /*====================[Available Types Of Data]====================
+         0 = Soundbanks
+         1 = Stream Sounds (does not allow adding new stream sounds to the game, there's a bug that will not probably be fixed)
+         2 = Musics (not sure if will be ever implemented)
+        */
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
@@ -58,19 +63,36 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
+            uint SelectedHashcode;
+
             //Update properties
             CurrentFileProperties.FileName = Textbox_FileName.Text.Trim();
-
-            if (Combobox_FileHashcode.SelectedValue != null)
-            {
-                CurrentFileProperties.Hashcode = Convert.ToUInt32(Combobox_FileHashcode.SelectedValue.ToString());
-            }
 
             //Update Current File label
             GenericFunctions.SetCurrentFileLabel(CurrentFileProperties.FileName, "File");
 
-            //Update Hashcode File Label
-            GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, CurrentFileProperties.Hashcode), "Hashcode");
+            //Check we have selected a value
+            if (Combobox_FileHashcode.SelectedValue != null)
+            {
+                SelectedHashcode = Convert.ToUInt32(Combobox_FileHashcode.SelectedValue.ToString());
+
+                //Soundbanks and Music project types can't have the hashcode 0x0000FFFF
+                if (CurrentFileProperties.TypeOfData != 1)
+                {
+                    if (SelectedHashcode == 0x0000FFFF)
+                    {
+                        MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ProjectSettings_ErrorHashcode"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    else
+                    {
+                        //Assign Hashcode
+                        CurrentFileProperties.Hashcode = SelectedHashcode;
+
+                        //Update Hashcode File Label
+                        GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, CurrentFileProperties.Hashcode), "Hashcode");
+                    }
+                }
+            }
 
             //Close current form
             Close();

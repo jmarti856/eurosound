@@ -28,6 +28,7 @@ namespace EuroSound_Application.AudioFunctionsLibrary
                     VolumeSampleProvider volumeProvider = new VolumeSampleProvider(provider.ToSampleProvider());
                     AudioPlayer.DeviceNumber = GlobalPreferences.DefaultAudioDevice;
                     AudioPlayer.Volume = (float)Volume;
+
                     //Pan is only for mono audio
                     if (Channels == 1)
                     {
@@ -89,55 +90,20 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             }
         }
 
-        internal void DrawAudioWaves(EuroSound_WaveViewer ControlToDraw, EXAudio SelectedSound, int Delay)
+        internal void DrawAudioWaves(EuroSound_WaveViewer ControlToDraw, object SelectedSound, int Delay)
         {
-            //Draw Waves
-            if (SelectedSound.PCMdata != null && SelectedSound.Channels > 0)
+            ControlToDraw.RenderDelay = Delay;
+            if (SelectedSound.GetType() == typeof(EXSoundStream))
             {
-                ControlToDraw.RenderDelay = Delay;
-                ControlToDraw.WaveStream = new RawSourceWaveStream(new MemoryStream(SelectedSound.PCMdata), new WaveFormat((int)SelectedSound.Frequency, (int)SelectedSound.Bits, (int)SelectedSound.Channels));
-                ControlToDraw.InitControl();
+                EXSoundStream StreamSounds = ((EXSoundStream)SelectedSound);
+                ControlToDraw.WaveStream = new RawSourceWaveStream(new MemoryStream(StreamSounds.PCM_Data), new WaveFormat((int)StreamSounds.Frequency, (int)StreamSounds.Bits, (int)StreamSounds.Channels));
             }
-        }
-
-        internal void DrawAudioWaves(EuroSound_WaveViewer ControlToDraw, EXSoundStream SelectedSound, int Delay)
-        {
-            //Draw Waves
-            if (SelectedSound.PCM_Data != null && SelectedSound.Channels > 0)
+            else if (SelectedSound.GetType() == typeof(EXAudio))
             {
-                ControlToDraw.RenderDelay = Delay;
-                ControlToDraw.WaveStream = new RawSourceWaveStream(new MemoryStream(SelectedSound.PCM_Data), new WaveFormat((int)SelectedSound.Frequency, (int)SelectedSound.Bits, (int)SelectedSound.Channels));
-                ControlToDraw.InitControl();
+                EXAudio AudioObject = ((EXAudio)SelectedSound);
+                ControlToDraw.WaveStream = new RawSourceWaveStream(new MemoryStream(AudioObject.PCMdata), new WaveFormat((int)AudioObject.Frequency, (int)AudioObject.Bits, (int)AudioObject.Channels));
             }
-        }
-
-        internal byte[] GetWavPCMData(string AudioFilePath)
-        {
-            int dataSize;
-            byte[] byteArray;
-
-            try
-            {
-                using (BinaryReader BReader = new BinaryReader(File.Open(AudioFilePath, FileMode.Open, FileAccess.Read)))
-                {
-                    //Go to RAW PCM data
-                    BReader.BaseStream.Seek(0x28, SeekOrigin.Begin);
-
-                    //Read size
-                    dataSize = BReader.ReadInt32();
-
-                    //Get data
-                    byteArray = BReader.ReadBytes(dataSize);
-
-                    BReader.Close();
-                }
-            }
-            catch (IOException)
-            {
-                byteArray = null;
-            }
-
-            return byteArray;
+            ControlToDraw.InitControl();
         }
 
         internal short[] ConvertPCMDataToShortArray(byte[] PCMData)

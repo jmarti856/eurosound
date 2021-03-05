@@ -134,7 +134,7 @@ namespace EuroSound_Application.StreamSounds
                 StartMarkerOffset = BWriter.BaseStream.Position - SoundStartOffset;
                 BWriter.WriteUInt32((uint)StartMarkerOffset);
                 //Marker offset
-                BWriter.WriteUInt32((uint)00000000);
+                BWriter.WriteUInt32(00000000);
                 //Base volume
                 BWriter.WriteUInt32(SoundToWrtie.Value.BaseVolume);
 

@@ -287,7 +287,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
         }
 
-        internal int SetSystemConfig()
+        internal int GetSystemConfig()
         {
             int StreamFile;
 
@@ -439,6 +439,35 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
         }
         #endregion
+
+        #region Folder Browser
+        internal void SaveFolderBrowserLastPath(string SelectedPath)
+        {
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("FolderBrowser", true);
+            using (RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("FolderBrowser", true))
+            {
+                StreamFilePath.SetValue("LastPath", SelectedPath, RegistryValueKind.String);
+                StreamFilePath.Close();
+            }
+        }
+
+        internal string GetFolderBrowserLastPath()
+        {
+            string LastPath = string.Empty;
+
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("FolderBrowser", true);
+            using (RegistryKey StreamFilePath = EuroSoundKey.OpenSubKey("FolderBrowser", true))
+            {
+                LastPath = StreamFilePath.GetValue("LastPath", "").ToString();
+                StreamFilePath.Close();
+            }
+
+            return LastPath;
+        }
+        #endregion
+
 
         internal RegistryKey ReturnRegistryKey(string Name)
         {

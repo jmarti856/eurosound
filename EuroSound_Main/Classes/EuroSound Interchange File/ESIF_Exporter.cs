@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.SoundBanksEditor;
+using EuroSound_Application.StreamSounds;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +14,9 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         AudioFunctions AudioF = new AudioFunctions();
         List<string> AudiosAssocTable = new List<string>();
 
+        //*===============================================================================================
+        //* SFX Soundbank
+        //*===============================================================================================
         internal void ExportSingleSFX(string FilePath, uint SoundKey, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
         {
             string AudioPath;
@@ -21,10 +25,12 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
             {
                 EXSound SFXObject = EXSoundbanksFunctions.ReturnSoundFromDictionary(SoundKey, SoundsList);
+                TreeNode SoundNode = TreeViewControl.Nodes.Find(SoundKey.ToString(), true)[0];
 
-                TextFileWriter.WriteLine("*EUROSOUND_INTERCHANGE_FILE V1.0");
-                TextFileWriter.WriteLine("*COMMENT " + DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss"));
-                TextFileWriter.WriteLine("");
+                //Header
+                WriteFileHeader(TextFileWriter);
+
+                //Write Audio Data
                 TextFileWriter.WriteLine("*AUDIODATA {");
                 foreach (KeyValuePair<uint, EXSample> SFXObjectSample in SFXObject.Samples)
                 {
@@ -49,18 +55,18 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                         TextFileWriter.WriteLine("\t\t*PATH \"{0}\"", AudioPath);
                         TextFileWriter.WriteLine("\t\t*NODECOLOR {0} {1} {2}", AudioNode.ForeColor.R, AudioNode.ForeColor.G, AudioNode.ForeColor.B);
                         TextFileWriter.WriteLine("\t\t*FLAGS {0}", SampleAudio.Flags);
-                        TextFileWriter.WriteLine("\t\t*LOOPOFFSET {0}", SampleAudio.LoopOffset);
+                        TextFileWriter.WriteLine("\t\t*LOOPOFFSET {0}", SampleAudio.LoopOffset * 2);
                         TextFileWriter.WriteLine("\t\t*PSI {0}", SampleAudio.PSIsample);
                         TextFileWriter.WriteLine("\t\t*CHANNELS {0}", SampleAudio.Channels);
                         TextFileWriter.WriteLine("\t\t*FREQUENCY {0}", SampleAudio.Frequency);
                         TextFileWriter.WriteLine("\t}");
                     }
                 }
-                TreeNode SoundNode = TreeViewControl.Nodes.Find(SoundKey.ToString(), true)[0];
                 TextFileWriter.WriteLine("}");
                 TextFileWriter.WriteLine("");
                 TextFileWriter.WriteLine("*SFXSOUND {");
                 TextFileWriter.WriteLine("\t*NODENAME \"{0}\"", SoundNode.Text);
+                TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", SoundNode.Parent.Name);
                 TextFileWriter.WriteLine("\t*HASHCODE " + "0x" + SFXObject.Hashcode.ToString("X8"));
                 TextFileWriter.WriteLine("\t*NODECOLOR {0} {1} {2}", SoundNode.ForeColor.R, SoundNode.ForeColor.G, SoundNode.ForeColor.B);
                 TextFileWriter.WriteLine("\t*NUMSAMPLES " + SFXObject.Samples.Count);
@@ -119,9 +125,8 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
             {
-                TextFileWriter.WriteLine("*EUROSOUND_INTERCHANGE_FILE V1.0");
-                TextFileWriter.WriteLine("*COMMENT " + DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss"));
-                TextFileWriter.WriteLine("");
+                //Header
+                WriteFileHeader(TextFileWriter);
 
                 if (IncludeProjectSettings)
                 {
@@ -171,6 +176,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     TreeNode SoundNode = TreeViewControl.Nodes.Find(SFXObject.Key.ToString(), true)[0];
                     TextFileWriter.WriteLine("*SFXSOUND {");
                     TextFileWriter.WriteLine("\t*NODENAME \"{0}\"", SoundNode.Text);
+                    TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", SoundNode.Parent.Name);
                     TextFileWriter.WriteLine("\t*HASHCODE " + "0x" + SFXObject.Value.Hashcode.ToString("X8"));
                     TextFileWriter.WriteLine("\t*NODECOLOR {0} {1} {2}", SoundNode.ForeColor.R, SoundNode.ForeColor.G, SoundNode.ForeColor.B);
                     TextFileWriter.WriteLine("\t*NUMSAMPLES " + SFXObject.Value.Samples.Count);
@@ -217,7 +223,6 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     TextFileWriter.WriteLine("\t}");
                     TextFileWriter.WriteLine("}");
                 }
-
                 TextFileWriter.Close();
             }
         }
@@ -253,7 +258,10 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 
                             if (!UsedAudios.ContainsKey(AudioKey))
                             {
-                                UsedAudios.Add(AudioKey, AudiosList[AudioKey]);
+                                if (AudiosList.ContainsKey(AudioKey))
+                                {
+                                    UsedAudios.Add(AudioKey, AudiosList[AudioKey]);
+                                }
                             }
                         }
                     }
@@ -265,6 +273,179 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             }
 
             return UsedAudios;
+        }
+
+        //*===============================================================================================
+        //* Stream Soundbank
+        //*===============================================================================================
+        internal void ExportStreamSoundbank(string FilePath, uint SoundKey, Dictionary<uint, EXSoundStream> SoundsList, TreeView TreeViewControl)
+        {
+            string AudioPath;
+            string MediaFolder = GenericFunctions.OpenFolderBrowser();
+
+            using (StreamWriter TextFileWriter = File.CreateText(FilePath))
+            {
+                EXSoundStream StreamObject = SoundsList[SoundKey];
+                TreeNode SoundNode = TreeViewControl.Nodes.Find(SoundKey.ToString(), true)[0];
+
+                //Audio Path
+                AudioPath = Path.Combine(MediaFolder, Path.GetFileNameWithoutExtension(StreamObject.WAVFileName) + ".wav");
+
+                //Export Audio if Not Exists
+                if (!File.Exists(AudioPath))
+                {
+                    AudioF.CreateWavFile(22050, 16, 1, StreamObject.PCM_Data, AudioPath);
+                }
+
+                //Header
+                WriteFileHeader(TextFileWriter);
+
+                //Write Object Data
+                TextFileWriter.WriteLine("*STREAMSOUND {");
+                TextFileWriter.WriteLine("\t*NODENAME \"{0}\"", SoundNode.Text);
+                TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", SoundNode.Parent.Name);
+                TextFileWriter.WriteLine("\t*NODECOLOR {0} {1} {2}", SoundNode.ForeColor.R, SoundNode.ForeColor.G, SoundNode.ForeColor.B);
+                TextFileWriter.WriteLine("\t*FILEPATH \"{0}\"", AudioPath);
+                TextFileWriter.WriteLine("\t*BASEVOLUME {0}", StreamObject.BaseVolume);
+                TextFileWriter.WriteLine("\t*NUMSTARTMARKERS {0}", StreamObject.StartMarkers.Count);
+                TextFileWriter.WriteLine("\t*NUMMARKERS {0}", StreamObject.Markers.Count);
+
+                //Write Start Markers
+                TextFileWriter.WriteLine("\t*STARTMARKERS {");
+                foreach (EXStreamStartMarker StrtMarker in StreamObject.StartMarkers)
+                {
+                    TextFileWriter.WriteLine("\t\t*STARTMARKER {");
+                    TextFileWriter.WriteLine("\t\t\t*NAME {0}", StrtMarker.Name);
+                    TextFileWriter.WriteLine("\t\t\t*POSITION {0}", StrtMarker.Position);
+                    TextFileWriter.WriteLine("\t\t\t*MUSICMARKERTYPE {0}", StrtMarker.MusicMakerType);
+                    TextFileWriter.WriteLine("\t\t\t*FLAGS {0}", StrtMarker.Flags);
+                    TextFileWriter.WriteLine("\t\t\t*EXTRA {0}", StrtMarker.Extra);
+                    TextFileWriter.WriteLine("\t\t\t*LOOPSTART {0}", StrtMarker.LoopStart);
+                    TextFileWriter.WriteLine("\t\t\t*MARKERCOUNT {0}", StrtMarker.MarkerCount);
+                    TextFileWriter.WriteLine("\t\t\t*LOOPMARKERCOUNT {0}", StrtMarker.LoopMarkerCount);
+                    TextFileWriter.WriteLine("\t\t\t*MARKERPOS {0}", StrtMarker.MarkerPos);
+                    TextFileWriter.WriteLine("\t\t\t*ISINSTANT {0}", StrtMarker.IsInstant);
+                    TextFileWriter.WriteLine("\t\t\t*INSTANTBUFFER {0}", StrtMarker.InstantBuffer);
+                    TextFileWriter.WriteLine("\t\t\t*STATEA {0}", StrtMarker.StateA);
+                    TextFileWriter.WriteLine("\t\t\t*STATEB {0}", StrtMarker.StateB);
+                    TextFileWriter.WriteLine("\t\t}");
+                }
+                TextFileWriter.WriteLine("\t}");
+
+                //Write Markers 
+                TextFileWriter.WriteLine("\t*MARKERS {");
+                foreach (EXStreamMarker StrmMarker in StreamObject.Markers)
+                {
+                    TextFileWriter.WriteLine("\t\t*MARKER {");
+                    TextFileWriter.WriteLine("\t\t\t*NAME {0}", StrmMarker.Name);
+                    TextFileWriter.WriteLine("\t\t\t*POSITION {0}", StrmMarker.Position);
+                    TextFileWriter.WriteLine("\t\t\t*MUSICMARKERTYPE {0}", StrmMarker.MusicMakerType);
+                    TextFileWriter.WriteLine("\t\t\t*FLAGS {0}", StrmMarker.Flags);
+                    TextFileWriter.WriteLine("\t\t\t*EXTRA {0}", StrmMarker.Extra);
+                    TextFileWriter.WriteLine("\t\t\t*LOOPSTART {0}", StrmMarker.LoopStart);
+                    TextFileWriter.WriteLine("\t\t\t*MARKERCOUNT {0}", StrmMarker.MarkerCount);
+                    TextFileWriter.WriteLine("\t\t\t*LOOPMARKERCOUNT {0}", StrmMarker.LoopMarkerCount);
+                    TextFileWriter.WriteLine("\t\t}");
+                }
+                TextFileWriter.WriteLine("\t}");
+                TextFileWriter.WriteLine("}");
+                TextFileWriter.Close();
+            }
+        }
+
+        internal void ExportProjectStream(string FilePath, ProjectFile ProjectSettings, Dictionary<uint, EXSoundStream> SoundsList, TreeView TreeViewControl)
+        {
+            string AudioPath, SndHash;
+            string MediaFolder = GenericFunctions.OpenFolderBrowser();
+
+            using (StreamWriter TextFileWriter = File.CreateText(FilePath))
+            {
+                //Header
+                WriteFileHeader(TextFileWriter);
+
+                SndHash = Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, ProjectSettings.Hashcode);
+                TextFileWriter.WriteLine("*PROJECTSETTINGS {");
+                TextFileWriter.WriteLine("\t*FILENAME \"{0}\"", SndHash);
+                TextFileWriter.WriteLine("\t*STREAMOBJECTS {0}", SoundsList.Count);
+                TextFileWriter.WriteLine("}");
+                TextFileWriter.WriteLine("");
+
+                foreach (KeyValuePair<uint, EXSoundStream> StreamFileObject in SoundsList)
+                {
+                    TreeNode SoundNode = TreeViewControl.Nodes.Find(StreamFileObject.Key.ToString(), true)[0];
+
+                    //Audio Path
+                    AudioPath = Path.Combine(MediaFolder, Path.GetFileNameWithoutExtension(StreamFileObject.Value.WAVFileName) + ".wav");
+
+                    //Export Audio if Not Exists
+                    if (!File.Exists(AudioPath))
+                    {
+                        AudioF.CreateWavFile(22050, 16, 1, StreamFileObject.Value.PCM_Data, AudioPath);
+                    }
+
+                    //Write Object Data
+                    TextFileWriter.WriteLine("*STREAMSOUND {");
+                    TextFileWriter.WriteLine("\t*NODENAME \"{0}\"", SoundNode.Text);
+                    TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", SoundNode.Parent.Name);
+                    TextFileWriter.WriteLine("\t*NODECOLOR {0} {1} {2}", SoundNode.ForeColor.R, SoundNode.ForeColor.G, SoundNode.ForeColor.B);
+                    TextFileWriter.WriteLine("\t*FILEPATH \"{0}\"", AudioPath);
+                    TextFileWriter.WriteLine("\t*BASEVOLUME {0}", StreamFileObject.Value.BaseVolume);
+                    TextFileWriter.WriteLine("\t*NUMSTARTMARKERS {0}", StreamFileObject.Value.StartMarkers.Count);
+                    TextFileWriter.WriteLine("\t*NUMMARKERS {0}", StreamFileObject.Value.Markers.Count);
+
+                    //Write Start Markers
+                    TextFileWriter.WriteLine("\t*STARTMARKERS {");
+                    foreach (EXStreamStartMarker StrtMarker in StreamFileObject.Value.StartMarkers)
+                    {
+                        TextFileWriter.WriteLine("\t\t*STARTMARKER {");
+                        TextFileWriter.WriteLine("\t\t\t*NAME {0}", StrtMarker.Name);
+                        TextFileWriter.WriteLine("\t\t\t*POSITION {0}", StrtMarker.Position);
+                        TextFileWriter.WriteLine("\t\t\t*MUSICMARKERTYPE {0}", StrtMarker.MusicMakerType);
+                        TextFileWriter.WriteLine("\t\t\t*FLAGS {0}", StrtMarker.Flags);
+                        TextFileWriter.WriteLine("\t\t\t*EXTRA {0}", StrtMarker.Extra);
+                        TextFileWriter.WriteLine("\t\t\t*LOOPSTART {0}", StrtMarker.LoopStart);
+                        TextFileWriter.WriteLine("\t\t\t*MARKERCOUNT {0}", StrtMarker.MarkerCount);
+                        TextFileWriter.WriteLine("\t\t\t*LOOPMARKERCOUNT {0}", StrtMarker.LoopMarkerCount);
+                        TextFileWriter.WriteLine("\t\t\t*MARKERPOS {0}", StrtMarker.MarkerPos);
+                        TextFileWriter.WriteLine("\t\t\t*ISINSTANT {0}", StrtMarker.IsInstant);
+                        TextFileWriter.WriteLine("\t\t\t*INSTANTBUFFER {0}", StrtMarker.InstantBuffer);
+                        TextFileWriter.WriteLine("\t\t\t*STATEA {0}", StrtMarker.StateA);
+                        TextFileWriter.WriteLine("\t\t\t*STATEB {0}", StrtMarker.StateB);
+                        TextFileWriter.WriteLine("\t\t}");
+                    }
+                    TextFileWriter.WriteLine("\t}");
+
+                    //Write Markers 
+                    TextFileWriter.WriteLine("\t*MARKERS {");
+                    foreach (EXStreamMarker StrmMarker in StreamFileObject.Value.Markers)
+                    {
+                        TextFileWriter.WriteLine("\t\t*MARKER {");
+                        TextFileWriter.WriteLine("\t\t\t*NAME {0}", StrmMarker.Name);
+                        TextFileWriter.WriteLine("\t\t\t*POSITION {0}", StrmMarker.Position);
+                        TextFileWriter.WriteLine("\t\t\t*MUSICMARKERTYPE {0}", StrmMarker.MusicMakerType);
+                        TextFileWriter.WriteLine("\t\t\t*FLAGS {0}", StrmMarker.Flags);
+                        TextFileWriter.WriteLine("\t\t\t*EXTRA {0}", StrmMarker.Extra);
+                        TextFileWriter.WriteLine("\t\t\t*LOOPSTART {0}", StrmMarker.LoopStart);
+                        TextFileWriter.WriteLine("\t\t\t*MARKERCOUNT {0}", StrmMarker.MarkerCount);
+                        TextFileWriter.WriteLine("\t\t\t*LOOPMARKERCOUNT {0}", StrmMarker.LoopMarkerCount);
+                        TextFileWriter.WriteLine("\t\t}");
+                    }
+                    TextFileWriter.WriteLine("\t}");
+                    TextFileWriter.WriteLine("}");
+                }
+                TextFileWriter.Close();
+            }
+        }
+
+        //*===============================================================================================
+        //* FUNCTIONS
+        //*===============================================================================================
+        private void WriteFileHeader(StreamWriter TextFileWriter)
+        {
+            TextFileWriter.WriteLine("*EUROSOUND_INTERCHANGE_FILE V1.0");
+            TextFileWriter.WriteLine("*COMMENT EUROSOUND VERSION: {0}", GenericFunctions.GetEuroSoundVersion());
+            TextFileWriter.WriteLine("*COMMENT " + DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss").ToUpper());
+            TextFileWriter.WriteLine("");
         }
     }
 }

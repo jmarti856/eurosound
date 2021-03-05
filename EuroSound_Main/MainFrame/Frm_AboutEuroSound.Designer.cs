@@ -155,7 +155,7 @@
             // Label_EngineX
             // 
             this.Label_EngineX.AutoSize = true;
-            this.Label_EngineX.Location = new System.Drawing.Point(100, 33);
+            this.Label_EngineX.Location = new System.Drawing.Point(93, 33);
             this.Label_EngineX.Name = "Label_EngineX";
             this.Label_EngineX.Size = new System.Drawing.Size(25, 13);
             this.Label_EngineX.TabIndex = 5;
@@ -164,7 +164,7 @@
             // Label_Version
             // 
             this.Label_Version.AutoSize = true;
-            this.Label_Version.Location = new System.Drawing.Point(100, 16);
+            this.Label_Version.Location = new System.Drawing.Point(93, 16);
             this.Label_Version.Name = "Label_Version";
             this.Label_Version.Size = new System.Drawing.Size(42, 13);
             this.Label_Version.TabIndex = 4;

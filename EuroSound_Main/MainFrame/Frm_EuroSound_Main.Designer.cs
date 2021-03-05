@@ -60,17 +60,17 @@ namespace EuroSound_Application
             this.MenuItemHelp_About = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemHelp_OnlineHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.MainStatusBar = new CustomStatusBar.StatusBarToolTips();
+            this.Hashcode = new System.Windows.Forms.StatusBarPanel();
             this.File = new System.Windows.Forms.StatusBarPanel();
             this.EuroSoundTrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.EuroSoundTrayIconMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.EuroSoundTrayIcon_Restore = new System.Windows.Forms.ToolStripMenuItem();
             this.EuroSoundTrayIcon_Separator = new System.Windows.Forms.ToolStripSeparator();
             this.EuroSoundTrayIcon_Close = new System.Windows.Forms.ToolStripMenuItem();
-            this.Hashcode = new System.Windows.Forms.StatusBarPanel();
             this.MenuStrip_MainMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Hashcode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.File)).BeginInit();
             this.EuroSoundTrayIconMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Hashcode)).BeginInit();
             this.SuspendLayout();
             // 
             // MenuStrip_MainMenu
@@ -240,7 +240,7 @@ namespace EuroSound_Application
             // 
             this.MainMenuTools_SFXDataGen.Name = "MainMenuTools_SFXDataGen";
             this.MainMenuTools_SFXDataGen.Size = new System.Drawing.Size(194, 22);
-            this.MainMenuTools_SFXDataGen.Text = "SFX Data Binary File";
+            this.MainMenuTools_SFXDataGen.Text = "SFX Data Table";
             this.MainMenuTools_SFXDataGen.Click += new System.EventHandler(this.MainMenuTools_SFXDataGen_Click);
             // 
             // MainMenuTools_Separator1
@@ -308,12 +308,22 @@ namespace EuroSound_Application
             this.MainStatusBar.TabIndex = 1;
             this.MainStatusBar.Text = "EuroSound_StatusBar";
             // 
+            // Hashcode
+            // 
+            this.Hashcode.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Hashcode.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Contents;
+            this.Hashcode.MinWidth = 40;
+            this.Hashcode.Name = "Hashcode";
+            this.Hashcode.ToolTipText = "Project Hashcode";
+            this.Hashcode.Width = 40;
+            // 
             // File
             // 
             this.File.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
             this.File.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Contents;
             this.File.MinWidth = 40;
             this.File.Name = "File";
+            this.File.ToolTipText = "Project Name";
             this.File.Width = 40;
             // 
             // EuroSoundTrayIcon
@@ -354,14 +364,6 @@ namespace EuroSound_Application
             this.EuroSoundTrayIcon_Close.Text = "Close";
             this.EuroSoundTrayIcon_Close.Click += new System.EventHandler(this.EuroSoundTrayIcon_Close_Click);
             // 
-            // Hashcode
-            // 
-            this.Hashcode.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
-            this.Hashcode.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Contents;
-            this.Hashcode.MinWidth = 40;
-            this.Hashcode.Name = "Hashcode";
-            this.Hashcode.Width = 40;
-            // 
             // Frm_EuroSound_Main
             // 
             this.AllowDrop = true;
@@ -383,9 +385,9 @@ namespace EuroSound_Application
             this.Resize += new System.EventHandler(this.Frm_EuroSound_Main_Resize);
             this.MenuStrip_MainMenu.ResumeLayout(false);
             this.MenuStrip_MainMenu.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Hashcode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.File)).EndInit();
             this.EuroSoundTrayIconMenu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Hashcode)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

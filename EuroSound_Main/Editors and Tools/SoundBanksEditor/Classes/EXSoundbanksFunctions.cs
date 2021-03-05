@@ -132,14 +132,11 @@ namespace EuroSound_Application.SoundBanksEditor
                         LoopOffset = 0,
                         PSIsample = 0
                     };
-                    AudioReader.Close();
+                    //Get PCM Data
+                    Audio.PCMdata = new byte[AudioReader.Length];
+                    AudioReader.Read(Audio.PCMdata, 0, (int)AudioReader.Length);
 
-                    //Get PCM data
-                    Audio.PCMdata = AudioLibrary.GetWavPCMData(FilePath);
-                    if (Audio.PCMdata != null)
-                    {
-                        Audio.DataSize = Convert.ToUInt32(Audio.PCMdata.Length);
-                    }
+                    AudioReader.Close();
                     return Audio;
                 }
             }

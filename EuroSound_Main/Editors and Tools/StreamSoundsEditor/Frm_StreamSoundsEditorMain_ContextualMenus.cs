@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.TreeViewLibraryFunctions;
+﻿using EuroSound_Application.EuroSoundInterchangeFile;
+using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -85,6 +86,21 @@ namespace EuroSound_Application.StreamSounds
             if (TreeView_StreamData.SelectedNode != null)
             {
                 OpenSoundPropertiesForm(TreeView_StreamData.SelectedNode);
+            }
+        }
+
+        private void ContextMenuSounds_ExportESIF_Click(object sender, EventArgs e)
+        {
+            TreeNode SelectedNode;
+            string ExportPath;
+
+            SelectedNode = TreeView_StreamData.SelectedNode;
+            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, SelectedNode.Text);
+
+            if (!string.IsNullOrEmpty(ExportPath))
+            {
+                ESIF_Exporter ESIF_Exp = new ESIF_Exporter();
+                ESIF_Exp.ExportStreamSoundbank(ExportPath, uint.Parse(SelectedNode.Name), StreamSoundsList, TreeView_StreamData);
             }
         }
 

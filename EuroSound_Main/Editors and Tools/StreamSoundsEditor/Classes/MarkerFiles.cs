@@ -58,11 +58,6 @@ namespace EuroSound_Application.Editors_and_Tools.StreamSoundsEditor.Classes
                     }
                 }
             }
-            //Clear array
-#pragma warning disable IDE0059 // Asignación innecesaria de un valor
-            FileData = null;
-            SplittedInfo = null;
-#pragma warning restore IDE0059 // Asignación innecesaria de un valor
 
             //Integrity check
             if (!(Markers.Count % 5 == 0))

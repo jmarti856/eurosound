@@ -282,7 +282,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                 BWriter.WriteUInt32(entry.Value.Channels);
                 BWriter.WriteUInt32(entry.Value.Bits);
                 BWriter.WriteUInt32(entry.Value.PSIsample);
-                BWriter.WriteUInt32(entry.Value.LoopOffset);
+                BWriter.WriteUInt32(entry.Value.LoopOffset * 2);
                 BWriter.WriteUInt32(entry.Value.Duration);
 
                 //--Write debug file
@@ -306,7 +306,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                     DebugFile.WriteLine("// PSIsample");
                     DebugFile.WriteLine("\t" + entry.Value.PSIsample);
                     DebugFile.WriteLine("// LoopOffset");
-                    DebugFile.WriteLine("\t" + entry.Value.LoopOffset);
+                    DebugFile.WriteLine("\t" + entry.Value.LoopOffset * 2);
                     DebugFile.WriteLine("// Duration");
                     DebugFile.WriteLine("\t" + entry.Value.Duration + "\n");
                 }

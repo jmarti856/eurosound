@@ -277,6 +277,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Export data to an EuroSound Interchange File.
+        /// </summary>
+        internal static string ContextMenuSound_ExportESIF {
+            get {
+                return ResourceManager.GetString("ContextMenuSound_ExportESIF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Open properties form for the selected sound.
         /// </summary>
         internal static string ContextMenuSound_Properties {
@@ -628,6 +637,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Import data from EuroSound Interchange File.
+        /// </summary>
+        internal static string MenuItemFile_ImportESIF {
+            get {
+                return ResourceManager.GetString("MenuItemFile_ImportESIF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Open an existing document.
         /// </summary>
         internal static string MenuItemFile_OpenESF {
@@ -777,6 +795,15 @@ namespace EuroSound_Application.Properties {
         internal static string OutputSFXSoundbankErrors {
             get {
                 return ResourceManager.GetString("OutputSFXSoundbankErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You can&apos;t assign the selected hashcode to this project, the changes will not be applied.
+        /// </summary>
+        internal static string ProjectSettings_ErrorHashcode {
+            get {
+                return ResourceManager.GetString("ProjectSettings_ErrorHashcode", resourceCulture);
             }
         }
         

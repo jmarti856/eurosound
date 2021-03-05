@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Resources;
 using System.Security.Cryptography;
 using System.Text;
@@ -208,12 +209,15 @@ namespace EuroSound_Application
         internal static string OpenFolderBrowser()
         {
             string SelectedPath = string.Empty;
+            WindowsRegistryFunctions WRegistryFunctions = new WindowsRegistryFunctions();
 
             using (FolderBrowserDialog OpenFolder = new FolderBrowserDialog())
             {
+                OpenFolder.SelectedPath = WRegistryFunctions.GetFolderBrowserLastPath();
                 if (OpenFolder.ShowDialog() == DialogResult.OK)
                 {
                     SelectedPath = OpenFolder.SelectedPath;
+                    WRegistryFunctions.SaveFolderBrowserLastPath(SelectedPath);
                 }
             }
 
@@ -365,6 +369,11 @@ namespace EuroSound_Application
             }
 
             return FinalName;
+        }
+
+        internal static string GetEuroSoundVersion()
+        {
+            return Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
     }
 }

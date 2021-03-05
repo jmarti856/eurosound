@@ -40,7 +40,7 @@ namespace EuroSound_Application.SFXData
             this.Label_Hashcodes = new System.Windows.Forms.Label();
             this.Combobox_LabelHashcodes = new System.Windows.Forms.ComboBox();
             this.Button_Search = new System.Windows.Forms.Button();
-            this.ListView_HashTableData = new ListView_ColumnSortingClick();
+            this.ListView_HashTableData = new EuroSound_Application.CustomControls.ListViewColumnSorting.ListView_ColumnSortingClick();
             this.col_hashcode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.col_innerradius = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.col_outerradius = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -205,7 +205,7 @@ namespace EuroSound_Application.SFXData
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Frm_SFX_DataGenerator";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Generate SFX Data Binary File";
+            this.Text = "SFX Data Table";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_SFX_DataGenerator_FormClosing);
             this.Load += new System.EventHandler(this.Frm_SFX_DataGenerator_Load);
             this.Shown += new System.EventHandler(this.Frm_SFX_DataGenerator_Shown);

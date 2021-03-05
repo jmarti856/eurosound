@@ -404,7 +404,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
                     {
                         NewAudio.Flags = Convert.ToUInt16(AudioProps[0]);
                         NewAudio.PSIsample = Convert.ToUInt32(AudioProps[1]);
-                        NewAudio.LoopOffset = Convert.ToUInt32(AudioProps[2]);
+                        NewAudio.LoopOffset = Convert.ToUInt32(AudioProps[2]) / 2;
 
                         //Add Audio to dictionary and tree node
                         AudioDict.Add(MD5Hash, NewAudio);
