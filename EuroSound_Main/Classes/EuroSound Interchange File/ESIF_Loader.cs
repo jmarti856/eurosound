@@ -1,7 +1,7 @@
 ﻿using EngineXImaAdpcm;
 using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.CurrentProjectFunctions;
-using EuroSound_Application.Editors_and_Tools.StreamSoundsEditor.Classes;
+using EuroSound_Application.MarkerFiles.StreamSoundsEditor.Classes;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
 using EuroSound_Application.TreeViewLibraryFunctions;
@@ -31,6 +31,10 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         {
             string[] lines = File.ReadAllLines(FilePath);
 
+            //Update Status Bar
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESIFFile"));
+
+            //Check File
             if (lines[0].Equals("*EUROSOUND_INTERCHANGE_FILE V1.0"))
             {
                 for (int i = 1; i < lines.Length; i++)
@@ -69,6 +73,9 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             {
                 ImportResults.Add(string.Join("", "0", "Error the file: ", FilePath, " is not valid"));
             }
+
+            //Update Status Bar
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
             return ImportResults;
         }
@@ -639,6 +646,10 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         {
             string[] lines = File.ReadAllLines(FilePath);
 
+            //Update Status Bar
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESIFFile"));
+
+            //Check File
             if (lines[0].Equals("*EUROSOUND_INTERCHANGE_FILE V1.0"))
             {
                 for (int i = 1; i < lines.Length; i++)
@@ -670,6 +681,10 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             {
                 ImportResults.Add(string.Join("", "0", "Error the file: ", FilePath, " is not valid"));
             }
+
+            //Update Status Bar
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+
             return ImportResults;
         }
 
@@ -680,7 +695,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             uint ObjectID;
             bool NodeAddedInFolder;
             Color DefaultNodeColor = Color.FromArgb(1, 0, 0, 0);
-            EXSoundStream NewSSound =new EXSoundStream();
+            EXSoundStream NewSSound = new EXSoundStream();
 
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
@@ -787,7 +802,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                 }
                 if (FileLines[CurrentIndex].Trim().StartsWith("*STARTMARKERS"))
                 {
-                    uint Position = 0, MarkerType = 0, MarkerCount = 0, MarkerPos = 0, StateA = 0, StateB = 0;
+                    uint Position = 0, MarkerType = 0, MarkerPos = 0, StateA = 0, StateB = 0;
 
                     CurrentIndex++;
                     while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
@@ -820,19 +835,6 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     else
                                     {
                                         ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MUSICMARKERTYPE does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*MARKERCOUNT"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        MarkerCount = uint.Parse(SplitedData[1].Trim());
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MARKERCOUNT does not have a valid value"));
                                         break;
                                     }
                                 }
@@ -877,7 +879,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                 }
                                 CurrentIndex++;
                             }
-                            MarkerFunctionsClass.CreateStartMarker(NewSSound.StartMarkers, Position, MarkerType, MarkerCount, MarkerPos, StateA, StateB);
+                            MarkerFunctionsClass.CreateStartMarker(NewSSound.StartMarkers, Position, MarkerType, MarkerPos, StateA, StateB);
                             CurrentIndex++;
                         }
                     }

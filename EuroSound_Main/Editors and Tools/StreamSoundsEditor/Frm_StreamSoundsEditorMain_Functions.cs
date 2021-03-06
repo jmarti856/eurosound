@@ -169,8 +169,8 @@ namespace EuroSound_Application.StreamSounds
                             item.Value.PCM_Data.Length.ToString(),
                             item.Value.Encoding.ToString(),
                             item.Value.Duration.ToString(),
-                            item.Value.MarkerDataCounterID.ToString(),
-                            item.Value.MarkerID.ToString()
+                            item.Value.StartMarkers.Count.ToString(),
+                            item.Value.Markers.Count.ToString(),
                         })
                         {
                             UseItemStyleForSubItems = false

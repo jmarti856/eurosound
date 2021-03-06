@@ -2,11 +2,11 @@
 using EuroSound_Application.StreamSounds;
 using System.Collections.Generic;
 
-namespace EuroSound_Application.Editors_and_Tools.StreamSoundsEditor.Classes
+namespace EuroSound_Application.MarkerFiles.StreamSoundsEditor.Classes
 {
     class MarkersFunctions
     {
-        internal EXStreamStartMarker CreateStartMarker(List<EXStreamStartMarker> MarkersList, uint v_pos, uint v_type, uint v_mkrcount, uint v_mkrpos, uint v_stateA, uint v_stateB)
+        internal EXStreamStartMarker CreateStartMarker(List<EXStreamStartMarker> MarkersList, uint v_pos, uint v_type, uint v_mkrpos, uint v_stateA, uint v_stateB)
         {
             //Create Start Marker
             EXStreamStartMarker NewStartMarker = new EXStreamStartMarker
@@ -15,7 +15,7 @@ namespace EuroSound_Application.Editors_and_Tools.StreamSoundsEditor.Classes
                 MusicMakerType = v_type,
                 Flags = 2,
                 Extra = 0,
-                MarkerCount = v_mkrcount,
+                MarkerCount = (uint)MarkersList.Count,
                 MarkerPos = v_mkrpos,
                 StateA = v_stateA,
                 StateB = v_stateB

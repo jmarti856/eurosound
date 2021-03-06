@@ -40,5 +40,34 @@ namespace EuroSound_Application.StreamSounds
 
             return Output;
         }
+
+        internal static string GetMarkerType(uint MarkerValue)
+        {
+            string MType;
+
+            switch (MarkerValue)
+            {
+                case 10:
+                    MType = "Start";
+                    break;
+                case 9:
+                    MType = "End";
+                    break;
+                case 7:
+                    MType = "Goto";
+                    break;
+                case 6:
+                    MType = "Loop";
+                    break;
+                case 5:
+                    MType = "Pause";
+                    break;
+                default:
+                    MType = "Jump";
+                    break;
+            }
+
+            return MType;
+        }
     }
 }

@@ -172,6 +172,7 @@
     <Compile Include="Classes\EuroSound Interchange File\ESIF_Exporter.cs" />
     <Compile Include="Classes\EuroSound Interchange File\ESIF_Loader.cs" />
     <Compile Include="Classes\ListViewFunctions.cs" />
+    <Compile Include="Classes\EuroSound Markers File\MarkerFiles_Exporter.cs" />
     <Compile Include="Editors and Tools\AudioConverter\Frm_AudioConverter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -268,7 +269,7 @@
     <Compile Include="Editors and Tools\SoundBanksEditor\Frm_Sounbanks_DebugOutput.Designer.cs">
       <DependentUpon>Frm_Sounbanks_DebugOutput.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editors and Tools\StreamSoundsEditor\Classes\MarkerFiles.cs" />
+    <Compile Include="Classes\EuroSound Markers File\MarkerFiles_Loader.cs" />
     <Compile Include="Editors and Tools\StreamSoundsEditor\Classes\MarkersFunctions.cs" />
     <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSoundsDebugInfo.cs">
       <SubType>Form</SubType>

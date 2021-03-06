@@ -196,10 +196,6 @@ namespace EuroSound_Application.EuroSoundStreamFilesFunctions
 
                 //Extra info
                 BWriter.Write(Sound.Value.OutputThisSound);
-
-                //IDS
-                BWriter.Write(Sound.Value.MarkerDataCounterID);
-                BWriter.Write(Sound.Value.MarkerID);
             }
         }
     }

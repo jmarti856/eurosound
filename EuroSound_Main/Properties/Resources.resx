@@ -381,6 +381,12 @@
   <data name="StatusBar_ReadingESFFile" xml:space="preserve">
     <value>Reading ESF File</value>
   </data>
+  <data name="StatusBar_ReadingESIFFile" xml:space="preserve">
+    <value>Reading ESIF File</value>
+  </data>
+  <data name="StatusBar_ReadingMRKFile" xml:space="preserve">
+    <value>Reading MRK File</value>
+  </data>
   <data name="StatusBar_RemovingTempFiles" xml:space="preserve">
     <value>Cleaning temporal folder</value>
   </data>

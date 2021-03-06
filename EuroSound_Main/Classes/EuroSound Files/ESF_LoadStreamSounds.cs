@@ -114,11 +114,7 @@ namespace EuroSound_Application.EuroSoundStreamFilesFunctions
                     };
                     StreamSound.Markers.Add(Marker);
                 }
-
                 StreamSound.OutputThisSound = BReader.ReadBoolean();
-
-                StreamSound.MarkerDataCounterID = BReader.ReadUInt32();
-                StreamSound.MarkerID = BReader.ReadUInt32();
 
                 DictionaryData.Add(SoundStreamKey, StreamSound);
             }

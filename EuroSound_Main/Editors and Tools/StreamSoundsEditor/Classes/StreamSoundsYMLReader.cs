@@ -95,8 +95,6 @@ namespace EuroSound_Application.StreamSounds.YMLReader
 
                     EXSoundStream SoundToAdd = new EXSoundStream
                     {
-                        MarkerID = CurrentSoundParams[0],
-                        MarkerDataCounterID = CurrentSoundParams[1],
                         BaseVolume = CurrentSoundParams[4],
                     };
 

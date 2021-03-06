@@ -1,6 +1,8 @@
-﻿using EuroSound_Application.Editors_and_Tools.StreamSoundsEditor.Classes;
+﻿using EuroSound_Application.MarkerFiles;
+using EuroSound_Application.MarkerFiles.StreamSoundsEditor.Classes;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.StreamSounds
@@ -11,9 +13,8 @@ namespace EuroSound_Application.StreamSounds
         //* GLOBAL VARS
         //*===============================================================================================
         private EXSoundStream SelectedSound, TemporalSelectedSound;
-        private MarkerFiles MarkerFilesFunctions = new MarkerFiles();
         private MarkersFunctions MarkerFunctions = new MarkersFunctions();
-        private uint v_MarkerPos, v_MarkerCount;
+        int v_MarkerName;
 
         //*===============================================================================================
         //* FORM EVENTS
@@ -47,20 +48,14 @@ namespace EuroSound_Application.StreamSounds
             };
             Reflection.CopyProperties(SelectedSound, TemporalSelectedSound);
 
-            //IDs
-            v_MarkerCount = (uint)TemporalSelectedSound.StartMarkers.Count;
-            v_MarkerPos = TemporalSelectedSound.MarkerDataCounterID;
+            //Marker Pos
+            v_MarkerName = TemporalSelectedSound.Markers.Count;
 
-            //Print Start Markers
-            foreach (EXStreamStartMarker Marker in TemporalSelectedSound.StartMarkers)
-            {
-                AddMarkerStartToListView(Marker);
-            }
+            //PrintMarkers
+            PrintStartMarkers(TemporalSelectedSound.StartMarkers);
+
             //Print Markers
-            foreach (EXStreamMarker MarkerData in TemporalSelectedSound.Markers)
-            {
-                AddMarkerDataToListView(MarkerData);
-            }
+            PrintMarkers(TemporalSelectedSound.Markers);
         }
 
         //*===============================================================================================
@@ -68,42 +63,56 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         private void Button_LoadFile_Click(object sender, EventArgs e)
         {
+            MarkerFiles_Loader MarkerFilesFunctions = new MarkerFiles_Loader();
             string FilePath = GenericFunctions.OpenFileBrowser("EuroSound Markers Files|*.mrk", 0, true);
+
             if (!string.IsNullOrEmpty(FilePath))
             {
-                List<string> FileData = MarkerFilesFunctions.ReadMarkersFile(FilePath);
-                if (FileData.Count > 0)
+                //Load Markers
+                List<string> ImportResults = MarkerFilesFunctions.LoadSTRMarkersFile(FilePath, TemporalSelectedSound);
+                if (ImportResults.Count > 0)
                 {
-                    MarkerFilesFunctions.ApplyMarkersReadedData(TemporalSelectedSound, FileData);
+                    GenericFunctions.ShowErrorsAndWarningsList(ImportResults, "Import Results", this);
                 }
-                else
-                {
-                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+
+                //Clear Lists
+                ListView_Markers.Items.Clear();
+                ListView_MarkerData.Items.Clear();
+
+                //Print Markers
+                PrintStartMarkers(TemporalSelectedSound.StartMarkers);
+                PrintMarkers(TemporalSelectedSound.Markers);
             }
         }
 
         private void Button_SaveMarkers_Click(object sender, EventArgs e)
         {
+            MarkerFiles_Exporter MKExporter = new MarkerFiles_Exporter();
+            string SoundName = Path.GetFileNameWithoutExtension(TemporalSelectedSound.WAVFileName);
+            string FilePath = GenericFunctions.SaveFileBrowser("EuroSound Markers Files|*.mrk", 0, true, SoundName);
 
+            if (!string.IsNullOrEmpty(FilePath))
+            {
+                MKExporter.ExportMarkersFromSound(FilePath, SoundName, TemporalSelectedSound);
+            }
         }
 
         private void Button_AddMarker_Click(object sender, EventArgs e)
         {
-            //Get type of the selected combobox value
             uint Position, LoopStart;
             uint MarkerType = (uint)(ComboBox_MarkerType.SelectedItem as dynamic).Value;
             uint[] IMA_States;
 
             LoopStart = (uint)Numeric_MarkerLoopStart.Value * 2;
             Position = (uint)Numeric_Position.Value * 2;
+            v_MarkerName = TemporalSelectedSound.StartMarkers.Count;
 
             //End
             if (MarkerType == 9)
             {
                 //--------------------------------------------------[Markers]---------------------------------------------------
                 //----Add End Marker----
-                EXStreamMarker MarkerStart = MarkerFunctions.CreateMarker(TemporalSelectedSound.Markers, -1, Position, MarkerType, v_MarkerCount, 0, 0);
+                EXStreamMarker MarkerStart = MarkerFunctions.CreateMarker(TemporalSelectedSound.Markers, -1, Position, MarkerType, (uint)TemporalSelectedSound.StartMarkers.Count, 0, 0);
                 AddMarkerDataToListView(MarkerStart);
 
             }
@@ -111,51 +120,59 @@ namespace EuroSound_Application.StreamSounds
             else if (MarkerType == 6)
             {
                 //Calculate States --Loop Start Control--
-
                 IMA_States = MarkerFunctions.GetEngineXMarkerStates(TemporalSelectedSound.IMA_ADPCM_DATA, (int)LoopStart);
 
                 //--------------------------------------------------[Start Markers]--------------------------------------------------
-                EXStreamStartMarker MarkerStartData = MarkerFunctions.CreateStartMarker(TemporalSelectedSound.StartMarkers, Position, 10, v_MarkerCount, v_MarkerPos, IMA_States[0], IMA_States[1]);
+                EXStreamStartMarker MarkerStartData = MarkerFunctions.CreateStartMarker(TemporalSelectedSound.StartMarkers, Position, 10, (uint)TemporalSelectedSound.Markers.Count, IMA_States[0], IMA_States[1]);
                 AddMarkerStartToListView(MarkerStartData);
+
+                //-----------------------------------------------------[Markers Start Loop]-----------------------------------------------------
+                //----Add Start Marker----
+                EXStreamMarker MarkerLoopStart = MarkerFunctions.CreateMarker(TemporalSelectedSound.Markers, v_MarkerName, LoopStart, 10, (uint)TemporalSelectedSound.Markers.Count, 0, 0);
+                AddMarkerDataToListView(MarkerLoopStart);
+
+                //----Add Loop Marker----
+                EXStreamMarker MarkerLoop = MarkerFunctions.CreateMarker(TemporalSelectedSound.Markers, v_MarkerName, Position, MarkerType, (uint)TemporalSelectedSound.Markers.Count, LoopStart, 1);
+                AddMarkerDataToListView(MarkerLoop);
+
+                //-----------------------------------------------------[Markers End Loop]-----------------------------------------------------
+                //Calculate States
+                IMA_States = MarkerFunctions.GetEngineXMarkerStates(TemporalSelectedSound.IMA_ADPCM_DATA, (int)Position);
+
+                v_MarkerName = TemporalSelectedSound.StartMarkers.Count;
+                //--------------------------------------------------[Start Markers]--------------------------------------------------
+                EXStreamStartMarker MarkerStart = MarkerFunctions.CreateStartMarker(TemporalSelectedSound.StartMarkers, Position, MarkerType, (uint)TemporalSelectedSound.Markers.Count, IMA_States[0], IMA_States[1]);
+                AddMarkerStartToListView(MarkerStart);
 
                 //-----------------------------------------------------[Markers]-----------------------------------------------------
                 //----Add Start Marker----
-                EXStreamMarker MarkerStart = MarkerFunctions.CreateMarker(TemporalSelectedSound.Markers, (int)v_MarkerCount, LoopStart, 10, v_MarkerCount, 0, 0);
-                AddMarkerDataToListView(MarkerStart);
-                v_MarkerPos += 1;
+                EXStreamMarker Marker = MarkerFunctions.CreateMarker(TemporalSelectedSound.Markers, v_MarkerName, Position, 10, (uint)v_MarkerName, 0, 0);
+                AddMarkerDataToListView(Marker);
 
-                //----Add Loop Marker----
-                EXStreamMarker MarkerLoop = MarkerFunctions.CreateMarker(TemporalSelectedSound.Markers, (int)v_MarkerCount, Position, MarkerType, (v_MarkerCount + 1), LoopStart, 1);
-                AddMarkerDataToListView(MarkerLoop);
-
+                //Reset Values
+                Numeric_Position.Value = 0;
+                Numeric_MarkerLoopStart.Value = 0;
             }
             else
             {
                 //Calculate States --Position Control--
-
                 IMA_States = MarkerFunctions.GetEngineXMarkerStates(TemporalSelectedSound.IMA_ADPCM_DATA, (int)Position);
 
                 //--------------------------------------------------[Start Markers]--------------------------------------------------
-                EXStreamStartMarker MarkerStartData = MarkerFunctions.CreateStartMarker(TemporalSelectedSound.StartMarkers, Position, MarkerType, v_MarkerCount, v_MarkerPos, IMA_States[0], IMA_States[1]);
-                AddMarkerStartToListView(MarkerStartData);
+                EXStreamStartMarker MarkerStart = MarkerFunctions.CreateStartMarker(TemporalSelectedSound.StartMarkers, Position, MarkerType, (uint)TemporalSelectedSound.Markers.Count, IMA_States[0], IMA_States[1]);
+                AddMarkerStartToListView(MarkerStart);
 
                 //-----------------------------------------------------[Markers]-----------------------------------------------------
-                //----Add Start Marker----
-                EXStreamMarker MarkerStart = MarkerFunctions.CreateMarker(TemporalSelectedSound.Markers, (int)v_MarkerCount, Position, MarkerType, v_MarkerCount, 0, 0);
-                AddMarkerDataToListView(MarkerStart);
+                EXStreamMarker Marker = MarkerFunctions.CreateMarker(TemporalSelectedSound.Markers, v_MarkerName, Position, MarkerType, (uint)TemporalSelectedSound.Markers.Count, 0, 0);
+                AddMarkerDataToListView(Marker);
             }
-
-            //--------------------------------------------------[Update Counters]--------------------------------------------------
-            v_MarkerCount += 1;
-            v_MarkerPos += 1;
         }
 
         private void Button_Clear_Click(object sender, EventArgs e)
         {
-            v_MarkerCount = 0;
-            v_MarkerPos = 0;
             TemporalSelectedSound.StartMarkers.Clear();
             TemporalSelectedSound.Markers.Clear();
+            v_MarkerName = 0;
             ListView_Markers.Items.Clear();
             ListView_MarkerData.Items.Clear();
         }
@@ -171,8 +188,6 @@ namespace EuroSound_Application.StreamSounds
             SelectedSound.Markers = new List<EXStreamMarker>(TemporalSelectedSound.Markers);
 
             //Get Data
-            SelectedSound.MarkerDataCounterID = TemporalSelectedSound.MarkerDataCounterID;
-            SelectedSound.MarkerID = TemporalSelectedSound.MarkerID;
             SelectedSound.Markers = TemporalSelectedSound.Markers;
 
             Close();
@@ -193,7 +208,7 @@ namespace EuroSound_Application.StreamSounds
             {
                 MarkerItem.Name.ToString(),
                 MarkerItem.Position.ToString(),
-                GetMarkerType(MarkerItem.MusicMakerType),
+                EXStreamSoundsFunctions.GetMarkerType(MarkerItem.MusicMakerType),
                 MarkerItem.Flags.ToString(),
                 MarkerItem.Extra.ToString(),
                 MarkerItem.LoopStart.ToString(),
@@ -216,33 +231,20 @@ namespace EuroSound_Application.StreamSounds
             ListView_Markers.Items.Add(Marker);
         }
 
-        private string GetMarkerType(uint MarkerValue)
+        private void PrintStartMarkers(List<EXStreamStartMarker> StartMarkersList)
         {
-            string MType;
-
-            switch (MarkerValue)
+            foreach (EXStreamStartMarker Marker in StartMarkersList)
             {
-                case 10:
-                    MType = "Start";
-                    break;
-                case 9:
-                    MType = "End";
-                    break;
-                case 7:
-                    MType = "Goto";
-                    break;
-                case 6:
-                    MType = "Loop";
-                    break;
-                case 5:
-                    MType = "Pause";
-                    break;
-                default:
-                    MType = "Jump";
-                    break;
+                AddMarkerStartToListView(Marker);
             }
+        }
 
-            return MType;
+        private void PrintMarkers(List<EXStreamMarker> MarkersList)
+        {
+            foreach (EXStreamMarker MarkerData in MarkersList)
+            {
+                AddMarkerDataToListView(MarkerData);
+            }
         }
     }
 }

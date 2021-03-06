@@ -24,9 +24,5 @@ namespace EuroSound_Application.StreamSounds
 
         //IMA ADPCM
         public byte[] IMA_ADPCM_DATA { get; set; } = new byte[2];
-
-        //IDs
-        public uint MarkerDataCounterID { get; set; } = 0;
-        public uint MarkerID { get; set; } = 0;
     }
 }

@@ -853,6 +853,24 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Reading ESIF File.
+        /// </summary>
+        internal static string StatusBar_ReadingESIFFile {
+            get {
+                return ResourceManager.GetString("StatusBar_ReadingESIFFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Reading MRK File.
+        /// </summary>
+        internal static string StatusBar_ReadingMRKFile {
+            get {
+                return ResourceManager.GetString("StatusBar_ReadingMRKFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Cleaning temporal folder.
         /// </summary>
         internal static string StatusBar_RemovingTempFiles {
