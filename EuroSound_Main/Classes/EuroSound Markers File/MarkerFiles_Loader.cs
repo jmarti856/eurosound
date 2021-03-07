@@ -13,6 +13,7 @@ namespace EuroSound_Application.MarkerFiles
         internal List<string> LoadSTRMarkersFile(string FilePath, EXSoundStream StreamSoundToModify)
         {
             string[] lines = File.ReadAllLines(FilePath);
+            string CurrentLine;
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingMRKFile"));
@@ -22,14 +23,15 @@ namespace EuroSound_Application.MarkerFiles
             {
                 for (int i = 1; i < lines.Length; i++)
                 {
-                    if (string.IsNullOrEmpty(lines[i]) || lines[i].StartsWith("*COMMENT"))
+                    CurrentLine = lines[i].Trim();
+                    if (string.IsNullOrEmpty(CurrentLine) || CurrentLine.StartsWith("*COMMENT"))
                     {
                         continue;
                     }
                     else
                     {
                         //Check for start markers block
-                        if (lines[i].Trim().StartsWith("*STRSTARTMARKERS"))
+                        if (CurrentLine.StartsWith("*STRSTARTMARKERS"))
                         {
                             i++;
                             StreamSoundToModify.StartMarkers.Clear();
@@ -37,7 +39,7 @@ namespace EuroSound_Application.MarkerFiles
                         }
 
                         //Check for markers block
-                        if (lines[i].Trim().StartsWith("*STRMARKERS"))
+                        if (CurrentLine.StartsWith("*STRMARKERS"))
                         {
                             i++;
                             StreamSoundToModify.Markers.Clear();
@@ -70,63 +72,34 @@ namespace EuroSound_Application.MarkerFiles
                     while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
                     {
                         SplitedData = FileLines[CurrentIndex].Trim().Split('=');
-                        if (SplitedData[0].StartsWith("*POSITION"))
+                        if (SplitedData.Length > 1)
                         {
-                            if (SplitedData.Length > 1)
+                            if (SplitedData[0].StartsWith("*POSITION"))
                             {
                                 Position = uint.Parse(SplitedData[1].Trim());
                             }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *POSITION does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (SplitedData[0].StartsWith("*TYPE"))
-                        {
-                            if (SplitedData.Length > 1)
+                            if (SplitedData[0].StartsWith("*TYPE"))
                             {
                                 MarkerType = uint.Parse(SplitedData[1].Trim());
                             }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MUSICMARKERTYPE does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (SplitedData[0].StartsWith("*MARKERPOS"))
-                        {
-                            if (SplitedData.Length > 1)
+                            if (SplitedData[0].StartsWith("*MARKERPOS"))
                             {
                                 MarkerPos = uint.Parse(SplitedData[1].Trim());
                             }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MARKERPOS does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (SplitedData[0].StartsWith("*STATEA"))
-                        {
-                            if (SplitedData.Length > 1)
+                            if (SplitedData[0].StartsWith("*STATEA"))
                             {
                                 StateA = uint.Parse(SplitedData[1].Trim());
                             }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *STATEA does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (SplitedData[0].StartsWith("*STATEB"))
-                        {
-                            if (SplitedData.Length > 1)
+                            if (SplitedData[0].StartsWith("*STATEB"))
                             {
                                 StateB = uint.Parse(SplitedData[1].Trim());
                             }
-                            else
+                        }
+                        else
+                        {
+                            if (!SplitedData[0].StartsWith("*COMMENT"))
                             {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *STATEB does not have a valid value"));
+                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " can not find a valid value"));
                                 break;
                             }
                         }
@@ -152,75 +125,38 @@ namespace EuroSound_Application.MarkerFiles
                     while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
                     {
                         SplitedData = FileLines[CurrentIndex].Trim().Split('=');
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*NAME"))
+                        if (SplitedData.Length > 1)
                         {
-                            if (SplitedData.Length > 1)
+                            if (FileLines[CurrentIndex].Trim().StartsWith("*NAME"))
                             {
                                 Name = int.Parse(SplitedData[1].Trim());
                             }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *NAME does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*POSITION"))
-                        {
-                            if (SplitedData.Length > 1)
+                            if (FileLines[CurrentIndex].Trim().StartsWith("*POSITION"))
                             {
                                 Position = uint.Parse(SplitedData[1].Trim());
                             }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *POSITION does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*TYPE"))
-                        {
-                            if (SplitedData.Length > 1)
+                            if (FileLines[CurrentIndex].Trim().StartsWith("*TYPE"))
                             {
                                 MarkerType = uint.Parse(SplitedData[1].Trim());
                             }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MUSICMARKERTYPE does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*MARKERCOUNT"))
-                        {
-                            if (SplitedData.Length > 1)
+                            if (FileLines[CurrentIndex].Trim().StartsWith("*MARKERCOUNT"))
                             {
                                 MarkerCount = uint.Parse(SplitedData[1].Trim());
                             }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MARKERCOUNT does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*LOOPSTART"))
-                        {
-                            if (SplitedData.Length > 1)
+                            if (FileLines[CurrentIndex].Trim().StartsWith("*LOOPSTART"))
                             {
                                 LoopStart = uint.Parse(SplitedData[1].Trim());
                             }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *LOOPSTART does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*LOOPMARKERCOUNT"))
-                        {
-                            if (SplitedData.Length > 1)
+                            if (FileLines[CurrentIndex].Trim().StartsWith("*LOOPMARKERCOUNT"))
                             {
                                 LoopMarkerCount = uint.Parse(SplitedData[1].Trim());
                             }
-                            else
+                        }
+                        else
+                        {
+                            if (!SplitedData[0].StartsWith("*COMMENT"))
                             {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *LOOPMARKERCOUNT does not have a valid value"));
+                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " can not find a valid value"));
                                 break;
                             }
                         }

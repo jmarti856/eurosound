@@ -30,6 +30,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         internal List<string> LoadSFX_File(string FilePath, ProjectFile FileProperties, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
         {
             string[] lines = File.ReadAllLines(FilePath);
+            string CurrentLine;
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESIFFile"));
@@ -39,28 +40,29 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             {
                 for (int i = 1; i < lines.Length; i++)
                 {
-                    if (string.IsNullOrEmpty(lines[i]) || lines[i].StartsWith("*COMMENT"))
+                    CurrentLine = lines[i].Trim();
+                    if (string.IsNullOrEmpty(CurrentLine) || CurrentLine.StartsWith("*COMMENT"))
                     {
                         continue;
                     }
                     else
                     {
                         //Check for project settings block
-                        if (lines[i].Trim().StartsWith("*PROJECTSETTINGS"))
+                        if (CurrentLine.StartsWith("*PROJECTSETTINGS"))
                         {
                             i++;
                             ReadProjectSettingsBlock(lines, i, FileProperties);
                         }
 
                         //Check for audio data block
-                        if (lines[i].Trim().StartsWith("*AUDIODATA"))
+                        if (CurrentLine.StartsWith("*AUDIODATA"))
                         {
                             i++;
                             ReadAudioDataBlock(lines, i, AudiosList, TreeViewControl);
                         }
 
                         //SFX SOUND BLOCK
-                        if (lines[i].Trim().StartsWith("*SFXSOUND"))
+                        if (CurrentLine.StartsWith("*SFXSOUND"))
                         {
                             i++;
                             ReadSFXSoundBlock(lines, i, FileProperties, TreeViewControl, SoundsList);
