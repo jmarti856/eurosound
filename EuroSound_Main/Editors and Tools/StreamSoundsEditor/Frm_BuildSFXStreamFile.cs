@@ -197,6 +197,14 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 //Clear Temporal Dictionary
                 FinalSoundsDict.Clear();
 
+                //*===============================================================================================
+                //* STEP 5: BUILD FILELIST
+                //*===============================================================================================
+                //Update Label
+                SetLabelText(Label_CurrentTask, "Building Filelist");
+
+                GenericFunctions.BuildSphinxFilelist();
+
                 //Update Label
                 SetLabelText(Label_CurrentTask, "Output Completed");
 

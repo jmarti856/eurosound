@@ -5,6 +5,7 @@ using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -202,6 +203,14 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 //Clear Temporal Dictionaries
                 FinalSoundsDict.Clear();
                 FinalAudioDataDict.Clear();
+
+                //*===============================================================================================
+                //* STEP 5: BUILD FILELIST
+                //*===============================================================================================
+                //Update Label
+                SetLabelText(Label_CurrentTask, "Building Filelist");
+
+                GenericFunctions.BuildSphinxFilelist();
 
                 //Update Label
                 SetLabelText(Label_CurrentTask, "Output Completed");

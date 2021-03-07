@@ -8,6 +8,7 @@ using EuroSound_Application.TreeViewLibraryFunctions;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -374,6 +375,31 @@ namespace EuroSound_Application
         internal static string GetEuroSoundVersion()
         {
             return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        }
+
+        internal static void ExecuteCMDCommand(string Command)
+        {
+            using (Process ProcessExecuteCMD = new Process())
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                startInfo.FileName = "cmd.exe";
+                startInfo.Arguments = Command;
+                ProcessExecuteCMD.StartInfo = startInfo;
+                ProcessExecuteCMD.Start();
+            }
+        }
+
+        internal static void BuildSphinxFilelist()
+        {
+            if (File.Exists(@"x:\EngineX\Utils\Batch\MkFileList.bat"))
+            {
+                ExecuteCMDCommand(@"/C x:\EngineX\Utils\Batch\MkFileList.bat Sphinx PC");
+            }
+            if (File.Exists(@"x:\EngineX\Utils\Batch\MkFileList2.bat"))
+            {
+                ExecuteCMDCommand(@"/C x:\EngineX\Utils\Batch\MkFileList2.bat Sphinx PC");
+            }
         }
     }
 }

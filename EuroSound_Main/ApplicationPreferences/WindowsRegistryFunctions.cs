@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using Microsoft.Win32;
 using System.Collections.Generic;
+using System.IO;
 
 namespace EuroSound_Application.ApplicationRegistryFunctions
 {
@@ -430,7 +431,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 for (int i = 0; i < 8; i++)
                 {
                     FilePath = (string)RecentFiles.GetValue("File" + i, string.Empty);
-                    if (!string.IsNullOrEmpty(FilePath))
+                    if (!string.IsNullOrEmpty(FilePath) && File.Exists(FilePath))
                     {
                         yield return FilePath;
                     }
