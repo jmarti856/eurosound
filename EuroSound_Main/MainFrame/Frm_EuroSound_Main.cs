@@ -182,23 +182,6 @@ namespace EuroSound_Application
         }
 
         //*===============================================================================================
-        //* MAIN MENU -- TOOLS
-        //*===============================================================================================
-        private void MainMenuTools_SFXDataGen_Click(object sender, EventArgs e)
-        {
-            GlobalPreferences.StatusBar_ToolTipMode = false;
-
-            Frm_SFX_DataGenerator BinaryFileGenerator = new Frm_SFX_DataGenerator()
-            {
-                Owner = this,
-                MdiParent = this,
-                Tag = FormID.ToString()
-            };
-            BinaryFileGenerator.Show();
-            FormID++;
-        }
-
-        //*===============================================================================================
         //* MAIN MENU -- FILE
         //*===============================================================================================
         private void MenuItemFile_Exit_Click(object sender, EventArgs e)
@@ -230,7 +213,6 @@ namespace EuroSound_Application
             ArgumentFromSplash = GenericFunctions.OpenFileBrowser("Eurosound Files (*.esf)|*.esf", 0, false);
             if (!string.IsNullOrEmpty(ArgumentFromSplash))
             {
-                RecentFilesMenu.AddFile(ArgumentFromSplash);
                 OpenFormsWithFileToLoad(ArgumentFromSplash);
             }
         }
@@ -254,17 +236,6 @@ namespace EuroSound_Application
                 RecentFilesMenu.RemoveFile(number);
             }
         }
-
-        private void RecentFile_MouseHover(object sender, EventArgs e)
-        {
-            GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_RecentFile"));
-        }
-
-        private void RecentFile_MouseLeave(object sender, EventArgs e)
-        {
-            GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
-        }
-
 
         //*===============================================================================================
         //* MAIN MENU -- HELP
@@ -304,6 +275,31 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* MAIN MENU -- TOOLS
         //*===============================================================================================
+        private void MainMenuTools_AudioConverter_Click(object sender, EventArgs e)
+        {
+            Frm_AudioConverter ES_AudioConverter = new Frm_AudioConverter
+            {
+                Owner = this,
+                MdiParent = this,
+                Tag = FormID.ToString()
+            };
+            ES_AudioConverter.Show();
+            FormID++;
+        }
+        private void MainMenuTools_SFXDataGen_Click(object sender, EventArgs e)
+        {
+            GlobalPreferences.StatusBar_ToolTipMode = false;
+
+            Frm_SFX_DataGenerator BinaryFileGenerator = new Frm_SFX_DataGenerator()
+            {
+                Owner = this,
+                MdiParent = this,
+                Tag = FormID.ToString()
+            };
+            BinaryFileGenerator.Show();
+            FormID++;
+        }
+
         private void MainMenuTools_BackupSettings_Click(object sender, EventArgs e)
         {
             string SavePath = GenericFunctions.SaveFileBrowser("Eurosound Registry Files (*.esrf)|*.esrf", 1, true, null);
@@ -321,6 +317,7 @@ namespace EuroSound_Application
             {
                 BackupReloadSettings SettingsFunctions = new BackupReloadSettings();
                 SettingsFunctions.RestoreSettings(FileToLoad);
+                RecentFilesMenu.LoadFromRegistry();
             }
         }
 
@@ -334,18 +331,6 @@ namespace EuroSound_Application
             {
                 MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_NoTemporalFilesStored"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-        }
-
-        private void MainMenuTools_AudioConverter_Click(object sender, EventArgs e)
-        {
-            Frm_AudioConverter ES_AudioConverter = new Frm_AudioConverter
-            {
-                Owner = this,
-                MdiParent = this,
-                Tag = FormID.ToString()
-            };
-            ES_AudioConverter.Show();
-            FormID++;
         }
 
         //*===============================================================================================

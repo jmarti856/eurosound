@@ -13,10 +13,14 @@ namespace EuroSound_Application
         {
             int TypeOfFileToLoad;
 
-            //Open form
+            //Check File Type
             TypeOfFileToLoad = TypeOfEuroSoundFile(FileToLoad);
             if (TypeOfFileToLoad == 0)
             {
+                //Add file to recent list
+                RecentFilesMenu.AddFile(FileToLoad);
+
+                //Open Form
                 Frm_Soundbanks_Main SoundBanksForm = new Frm_Soundbanks_Main(string.Empty, FileToLoad)
                 {
                     Owner = this,
@@ -28,6 +32,10 @@ namespace EuroSound_Application
             }
             else if (TypeOfFileToLoad == 1)
             {
+                //Add file to recent list
+                RecentFilesMenu.AddFile(FileToLoad);
+
+                //Open Form
                 Frm_StreamSoundsEditorMain StreamSoundsForm = new Frm_StreamSoundsEditorMain(string.Empty, FileToLoad)
                 {
                     Owner = this,
@@ -37,6 +45,10 @@ namespace EuroSound_Application
 
                 StreamSoundsForm.Show();
                 FormID++;
+            }
+            else
+            {
+                MessageBox.Show(string.Join(" ", "Loading file:", FileToLoad, "\n\n", "Error:", FileToLoad, "has a bad format"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

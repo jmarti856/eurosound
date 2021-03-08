@@ -23,7 +23,7 @@ namespace EuroSound_Application
         protected string registryKeyName;
         protected int numEntries = 0;
         protected int maxEntries = 4;
-        protected int maxShortenPathLength = 96;
+        protected int maxShortenPathLength = 30;
         protected Mutex mruStripMutex;
 
         #region MruMenuItem
@@ -36,14 +36,6 @@ namespace EuroSound_Application
         /// resolved labelName, that will be returned in the event handler.</remarks>
         public class MruMenuItem : ToolStripMenuItem
         {
-            /// <summary>
-            /// Initializes a new instance of the MruMenuItem class.
-            /// </summary>
-            public MruMenuItem()
-            {
-                Tag = "";
-            }
-
             /// <summary>
             /// Initializes an MruMenuItem object.
             /// </summary>
@@ -79,76 +71,6 @@ namespace EuroSound_Application
         #region Construction
 
         protected MostRecentFilesMenu() { }
-
-        /// <summary>
-        /// Initializes a new instance of the MruMenu class.
-        /// </summary>
-        /// <param labelName="recentFileMenuItem">The temporary menu item which will be replaced with the MRU list.</param>
-        /// <param labelName="clickedHandler">The delegate to handle the item selection (click) event.</param>
-        public MostRecentFilesMenu(ToolStripMenuItem recentFileMenuItem, ClickedHandler clickedHandler)
-            : this(recentFileMenuItem, clickedHandler, null, false, 4)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the MruMenu class.
-        /// </summary>
-        /// <param labelName="recentFileMenuItem">The temporary menu item which will be replaced with the MRU list.</param>
-        /// <param labelName="clickedHandler">The delegate to handle the item selection (click) event.</param>
-        /// <param labelName="maxEntries"></param>
-        public MostRecentFilesMenu(ToolStripMenuItem recentFileMenuItem, ClickedHandler clickedHandler, int maxEntries)
-            : this(recentFileMenuItem, clickedHandler, null, false, maxEntries)
-        {
-
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the MruMenu class.
-        /// </summary>
-        /// <param labelName="recentFileMenuItem">The temporary menu item which will be replaced with the MRU list.</param>
-        /// <param labelName="clickedHandler">The delegate to handle the item selection (click) event.</param>
-        /// <param labelName="registryKeyName"></param>
-        public MostRecentFilesMenu(ToolStripMenuItem recentFileMenuItem, ClickedHandler clickedHandler, string registryKeyName)
-            : this(recentFileMenuItem, clickedHandler, registryKeyName, true, 4)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the MruMenu class.
-        /// </summary>
-        /// <param labelName="recentFileMenuItem">The temporary menu item which will be replaced with the MRU list.</param>
-        /// <param labelName="clickedHandler">The delegate to handle the item selection (click) event.</param>
-        /// <param labelName="registryKeyName">The name or path of the registry key to use to store the MRU list and settings.</param>
-        /// <param labelName="maxEntries">The maximum number of items on the MRU list.</param>
-        public MostRecentFilesMenu(ToolStripMenuItem recentFileMenuItem, ClickedHandler clickedHandler, string registryKeyName, int maxEntries)
-            : this(recentFileMenuItem, clickedHandler, registryKeyName, true, maxEntries)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the MruMenu class.
-        /// </summary>
-        /// <param labelName="recentFileMenuItem">The temporary menu item which will be replaced with the MRU list.</param>
-        /// <param labelName="clickedHandler">The delegate to handle the item selection (click) event.</param>
-        /// <param labelName="registryKeyName">The name or path of the registry key to use to store the MRU list and settings.</param>
-        /// <param labelName="loadFromRegistry">Loads the MRU settings from the registry immediately.</param>
-        public MostRecentFilesMenu(ToolStripMenuItem recentFileMenuItem, ClickedHandler clickedHandler, string registryKeyName, bool loadFromRegistry)
-            : this(recentFileMenuItem, clickedHandler, registryKeyName, loadFromRegistry, 4)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the MruMenu class.
-        /// </summary>
-        /// <param labelName="recentFileMenuItem">The temporary menu item which will be replaced with the MRU list.</param>
-        /// <param labelName="clickedHandler">The delegate to handle the item selection (click) event.</param>
-        /// <param labelName="registryKeyName">The name or path of the registry key to use to store the MRU list and settings.</param>
-        /// <param labelName="loadFromRegistry">Loads the MRU settings from the registry immediately.</param>
-        /// <param labelName="maxEntries">The maximum number of items on the MRU list.</param>
-        public MostRecentFilesMenu(ToolStripMenuItem recentFileMenuItem, ClickedHandler clickedHandler, string registryKeyName, bool loadFromRegistry, int maxEntries)
-        {
-            Init(recentFileMenuItem, clickedHandler, registryKeyName, loadFromRegistry, maxEntries);
-        }
 
         protected void Init(ToolStripMenuItem recentFileMenuItem, ClickedHandler clickedHandler, string registryKeyName, bool loadFromRegistry, int maxEntries)
         {
@@ -218,14 +140,6 @@ namespace EuroSound_Application
         }
 
         public virtual int EndIndex
-        {
-            get
-            {
-                return numEntries;
-            }
-        }
-
-        public int NumEntries
         {
             get
             {
@@ -353,105 +267,46 @@ namespace EuroSound_Application
         /// (Use Path.GetFullPath() to obtain this.)</para>
         /// </remarks>
         /// <returns></returns>
-        static public string ShortenPathname(string pathname, int maxLength)
+        static public string ShortenPathname(string FullPath)
         {
-            if (pathname.Length <= maxLength)
-                return pathname;
+            string ShortPath;
+            string SplittedPath;
 
-            string root = Path.GetPathRoot(pathname);
-            if (root.Length > 3)
-                root += Path.DirectorySeparatorChar;
+            //Get filename
+            ShortPath = Path.GetFileName(FullPath);
 
-            string[] elements = pathname.Substring(root.Length).Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            //Split path
+            string[] Paths = FullPath.Split(new string[] { "\\" }, StringSplitOptions.None);
 
-            int filenameIndex = elements.GetLength(0) - 1;
-
-            if (elements.GetLength(0) == 1) // pathname is just a root and filename
+            //We have more than 3 directories
+            if (Paths.Length > 3)
             {
-                if (elements[0].Length > 5) // long enough to shorten
+                SplittedPath = string.Join(@"\", Paths[0], Paths[1], "...", Paths[Paths.Length - 1]);
+                if (SplittedPath.Length <= 30)
                 {
-                    // if path is a UNC path, root may be rather long
-                    if (root.Length + 6 >= maxLength)
-                    {
-                        return root + elements[0].Substring(0, 3) + "...";
-                    }
-                    else
-                    {
-                        return pathname.Substring(0, maxLength - 3) + "...";
-                    }
+                    ShortPath = SplittedPath;
                 }
             }
-            else if ((root.Length + 4 + elements[filenameIndex].Length) > maxLength) // pathname is just a root and filename
+            //We have 2 directories (Root Folder Filename)
+            else if (Paths.Length == 3)
             {
-                root += "...\\";
-
-                int len = elements[filenameIndex].Length;
-                if (len < 6)
-                    return root + elements[filenameIndex];
-
-                if ((root.Length + 6) >= maxLength)
+                SplittedPath = string.Join(@"\", Paths[0], Paths[1], Paths[Paths.Length - 1]);
+                if (SplittedPath.Length <= 30)
                 {
-                    len = 3;
+                    ShortPath = SplittedPath;
                 }
-                else
-                {
-                    len = maxLength - root.Length - 3;
-                }
-                return root + elements[filenameIndex].Substring(0, len) + "...";
             }
-            else if (elements.GetLength(0) == 2)
+            //We have root and file name
+            else if (Paths.Length < 3)
             {
-                return root + "...\\" + elements[1];
+                SplittedPath = string.Join(@"\", Paths[0], Paths[Paths.Length - 1]);
+                if (SplittedPath.Length <= 30)
+                {
+                    ShortPath = SplittedPath;
+                }
             }
-            else
-            {
-                int len = 0;
-                int begin = 0;
 
-                for (int i = 0; i < filenameIndex; i++)
-                {
-                    if (elements[i].Length > len)
-                    {
-                        begin = i;
-                        len = elements[i].Length;
-                    }
-                }
-
-                int totalLength = pathname.Length - len + 3;
-                int end = begin + 1;
-
-                while (totalLength > maxLength)
-                {
-                    if (begin > 0)
-                        totalLength -= elements[--begin].Length - 1;
-
-                    if (totalLength <= maxLength)
-                        break;
-
-                    if (end < filenameIndex)
-                        totalLength -= elements[++end].Length - 1;
-
-                    if (begin == 0 && end == filenameIndex)
-                        break;
-                }
-
-                // assemble final string
-
-                for (int i = 0; i < begin; i++)
-                {
-                    root += elements[i] + '\\';
-                }
-
-                root += "...\\";
-
-                for (int i = end; i < filenameIndex; i++)
-                {
-                    root += elements[i] + '\\';
-                }
-
-                return root + elements[filenameIndex];
-            }
-            return pathname;
+            return ShortPath;
         }
 
         #endregion
@@ -495,80 +350,13 @@ namespace EuroSound_Application
             int number = FindFilenameNumber(filename);
             return number < 0 ? -1 : StartIndex + number;
         }
-
-        /// <summary>
-        /// Returns the menu index for a specified MRU item number.
-        /// </summary>
-        /// <param name="number">The MRU item number.</param>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        /// <returns>The menu index of the passed MRU number.</returns>
-        public int GetMenuIndex(int number)
-        {
-            if (number < 0 || number >= numEntries)
-                throw new ArgumentOutOfRangeException("number");
-
-            return StartIndex + number;
-        }
-
-        public string GetFileAt(int number)
-        {
-            if (number < 0 || number >= numEntries)
-                throw new ArgumentOutOfRangeException("number");
-
-            return ((MruMenuItem)MenuItems[StartIndex + number]).Filename;
-        }
-
-        public string[] GetFiles()
-        {
-            string[] filenames = new string[numEntries];
-
-            int index = StartIndex;
-            for (int i = 0; i < filenames.GetLength(0); i++, index++)
-            {
-                filenames[i] = ((MruMenuItem)MenuItems[index]).Filename;
-            }
-
-            return filenames;
-        }
-
-        // This is used for testing
-        public string[] GetFilesFullEntrystring()
-        {
-            string[] filenames = new string[numEntries];
-
-            int index = StartIndex;
-            for (int i = 0; i < filenames.GetLength(0); i++, index++)
-            {
-                filenames[i] = MenuItems[index].Text;
-            }
-
-            return filenames;
-        }
         #endregion
 
         #region Add Methods
-
-        public void SetFiles(string[] filenames)
-        {
-            RemoveAll();
-            for (int i = filenames.GetLength(0) - 1; i >= 0; i--)
-            {
-                AddFile(filenames[i]);
-            }
-        }
-
-        public void AddFiles(string[] filenames)
-        {
-            for (int i = filenames.GetLength(0) - 1; i >= 0; i--)
-            {
-                AddFile(filenames[i]);
-            }
-        }
-
         public void AddFile(string filename)
         {
             string pathname = Path.GetFullPath(filename);
-            AddFile(pathname, ShortenPathname(pathname, MaxShortenPathLength));
+            AddFile(pathname, ShortenPathname(pathname));
         }
 
         public void AddFile(string filename, string entryname)
@@ -651,14 +439,6 @@ namespace EuroSound_Application
             }
         }
 
-        public void RemoveFile(string filename)
-        {
-            if (numEntries > 0)
-            {
-                RemoveFile(FindFilenameNumber(filename));
-            }
-        }
-
         public virtual void RemoveAll()
         {
             if (numEntries > 0)
@@ -668,40 +448,6 @@ namespace EuroSound_Application
                 Disable();
                 numEntries = 0;
             }
-        }
-
-        #endregion
-
-        #region Rename Methods
-
-        public void RenameFile(string oldFilename, string newFilename)
-        {
-            string newPathname = Path.GetFullPath(newFilename);
-
-            RenameFile(Path.GetFullPath(oldFilename), newPathname, ShortenPathname(newPathname, MaxShortenPathLength));
-        }
-
-        public void RenameFile(string oldFilename, string newFilename, string newEntryname)
-        {
-            if (newFilename == null)
-                throw new ArgumentNullException("newFilename");
-
-            if (newFilename.Length == 0)
-                throw new ArgumentException("newFilename");
-
-            if (numEntries > 0)
-            {
-                int index = FindFilenameMenuIndex(oldFilename);
-                if (index >= 0)
-                {
-                    MruMenuItem menuItem = (MruMenuItem)MenuItems[index];
-                    menuItem.Text = FixupEntryname(0, newEntryname);
-                    menuItem.Filename = newFilename;
-                    return;
-                }
-            }
-
-            AddFile(newFilename, newEntryname);
         }
 
         #endregion
@@ -733,12 +479,6 @@ namespace EuroSound_Application
             }
         }
 
-        public void LoadFromRegistry(string keyName)
-        {
-            RegistryKeyName = keyName;
-            LoadFromRegistry();
-        }
-
         public void LoadFromRegistry()
         {
             if (registryKeyName != null)
@@ -756,19 +496,15 @@ namespace EuroSound_Application
                     {
                         string filename = (string)regKey.GetValue("File" + number.ToString());
                         if (filename != null)
+                        {
                             AddFile(filename);
+                        }
                     }
 
                     regKey.Close();
                 }
                 mruStripMutex.ReleaseMutex();
             }
-        }
-
-        public void SaveToRegistry(string keyName)
-        {
-            RegistryKeyName = keyName;
-            SaveToRegistry();
         }
 
         public void SaveToRegistry()
@@ -819,28 +555,8 @@ namespace EuroSound_Application
 
         //private MruStripMenuInline(
 
-        public MruStripMenuInline(ToolStripMenuItem owningMenu, ToolStripMenuItem recentFileMenuItem, ClickedHandler clickedHandler)
-            : this(owningMenu, recentFileMenuItem, clickedHandler, null, false, 4)
-        {
-        }
-
-        public MruStripMenuInline(ToolStripMenuItem owningMenu, ToolStripMenuItem recentFileMenuItem, ClickedHandler clickedHandler, int maxEntries)
-            : this(owningMenu, recentFileMenuItem, clickedHandler, null, false, maxEntries)
-        {
-        }
-
-        public MruStripMenuInline(ToolStripMenuItem owningMenu, ToolStripMenuItem recentFileMenuItem, ClickedHandler clickedHandler, string registryKeyName)
-            : this(owningMenu, recentFileMenuItem, clickedHandler, registryKeyName, true, 4)
-        {
-        }
-
         public MruStripMenuInline(ToolStripMenuItem owningMenu, ToolStripMenuItem recentFileMenuItem, ClickedHandler clickedHandler, string registryKeyName, int maxEntries)
             : this(owningMenu, recentFileMenuItem, clickedHandler, registryKeyName, true, maxEntries)
-        {
-        }
-
-        public MruStripMenuInline(ToolStripMenuItem owningMenu, ToolStripMenuItem recentFileMenuItem, ClickedHandler clickedHandler, string registryKeyName, bool loadFromRegistry)
-            : this(owningMenu, recentFileMenuItem, clickedHandler, registryKeyName, loadFromRegistry, 4)
         {
         }
 

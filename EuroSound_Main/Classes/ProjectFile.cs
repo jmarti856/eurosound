@@ -9,8 +9,8 @@ namespace EuroSound_Application.CurrentProjectFunctions
     {
         /*====================[Available Types Of Data]====================
          0 = Soundbanks
-         1 = Stream Sounds (does not allow adding new stream sounds to the game, there's a bug that will not probably be fixed)
-         2 = Musics (not sure if will be ever implemented)
+         1 = Stream Sounds
+         2 = Musics --NOT IMPLEMENTED YET--
         */
         public string FileName = "Unnamed";
         public sbyte TypeOfData = 0;
