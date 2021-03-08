@@ -22,6 +22,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         private AudioFunctions AudioLibrary = new AudioFunctions();
         private MarkersFunctions MarkerFunctionsClass = new MarkersFunctions();
         private Dictionary<int, string> AudiosAssocTable = new Dictionary<int, string>();
+        private Regex RemoveCharactersFromPathString = new Regex(@"[\p{Cc}\p{Cf}\p{Mn}\p{Me}\p{Zl}\p{Zp}]");
         private List<string> ImportResults = new List<string>();
 
         //*===============================================================================================
@@ -29,43 +30,44 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         //*===============================================================================================
         internal List<string> LoadSFX_File(string FilePath, ProjectFile FileProperties, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
         {
-            string[] lines = File.ReadAllLines(FilePath);
-            string CurrentLine;
+            string[] FileLines = File.ReadAllLines(FilePath);
+            string[] KeyWordValues = null;
+            string CurrentKeyWord;
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESIFFile"));
 
             //Check File
-            if (lines[0].Equals("*EUROSOUND_INTERCHANGE_FILE V1.0"))
+            if (FileLines[0].Equals("*EUROSOUND_INTERCHANGE_FILE V1.0"))
             {
-                for (int i = 1; i < lines.Length; i++)
+                for (int i = 1; i < FileLines.Length; i++)
                 {
-                    CurrentLine = lines[i].Trim();
-                    if (string.IsNullOrEmpty(CurrentLine) || CurrentLine.StartsWith("*COMMENT"))
+                    CurrentKeyWord = GetKeyWord(FileLines[i]);
+                    if (string.IsNullOrEmpty(CurrentKeyWord) || CurrentKeyWord.Equals("COMMENT"))
                     {
                         continue;
                     }
                     else
                     {
                         //Check for project settings block
-                        if (CurrentLine.StartsWith("*PROJECTSETTINGS"))
+                        if (CurrentKeyWord.Equals("PROJECTSETTINGS"))
                         {
                             i++;
-                            ReadProjectSettingsBlock(lines, i, FileProperties);
+                            ReadProjectSettingsBlock(FileLines, i, CurrentKeyWord, KeyWordValues, FileProperties);
                         }
 
                         //Check for audio data block
-                        if (CurrentLine.StartsWith("*AUDIODATA"))
+                        if (CurrentKeyWord.Equals("AUDIODATA"))
                         {
                             i++;
-                            ReadAudioDataBlock(lines, i, AudiosList, TreeViewControl);
+                            ReadAudioDataBlock(FileLines, i, CurrentKeyWord, KeyWordValues, AudiosList, TreeViewControl);
                         }
 
                         //SFX SOUND BLOCK
-                        if (CurrentLine.StartsWith("*SFXSOUND"))
+                        if (CurrentKeyWord.Equals("SFXSOUND"))
                         {
                             i++;
-                            ReadSFXSoundBlock(lines, i, FileProperties, TreeViewControl, SoundsList);
+                            ReadSFXSoundBlock(FileLines, i, CurrentKeyWord, KeyWordValues, FileProperties, TreeViewControl, SoundsList);
                         }
                     }
                 }
@@ -82,9 +84,8 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             return ImportResults;
         }
 
-        private void ReadAudioDataBlock(string[] FileLines, int CurrentIndex, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
+        private void ReadAudioDataBlock(string[] FileLines, int CurrentIndex, string CurrentKeyWord, string[] KeyWordValues, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
         {
-            string[] SplitedData;
             string MD5AudioFilehash = string.Empty, AudioPath = string.Empty, NodeName;
             ushort AudioFlags = 0;
             uint AudioPSI = 0, LoopOffset = 0;
@@ -93,23 +94,25 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
-                if (FileLines[CurrentIndex].Trim().StartsWith("*AUDIO"))
+                CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                if (CurrentKeyWord.Equals("AUDIO"))
                 {
-                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                    if (SplitedData.Length > 1)
+                    KeyWordValues = FileLines[CurrentIndex].Trim().Split(' ');
+                    if (KeyWordValues.Length > 1)
                     {
                         EXAudio NewAudio = null;
-                        FileRef = int.Parse(SplitedData[1]);
+                        FileRef = int.Parse(KeyWordValues[1]);
 
                         CurrentIndex++;
                         while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
                         {
-                            if (FileLines[CurrentIndex].Trim().StartsWith("*PATH"))
+                            CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                            KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
+                            if (KeyWordValues.Length > 0)
                             {
-                                SplitedData = FileLines[CurrentIndex].Trim().Split('"');
-                                if (SplitedData.Length > 1)
+                                if (CurrentKeyWord.Equals("PATH"))
                                 {
-                                    AudioPath = RemoveCharactersWithoutDisplayWidth(SplitedData[1].Trim());
+                                    AudioPath = RemoveCharactersFromPathString.Replace(KeyWordValues[0], "");
                                     if (File.Exists(AudioPath))
                                     {
                                         if (GenericFunctions.AudioIsValid(AudioPath, 1, 22050))
@@ -127,61 +130,32 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                         ImportResults.Add(string.Join("", "1", "The file: ", AudioPath, " was not found"));
                                     }
                                 }
-                                else
+                                if (CurrentKeyWord.Equals("NODECOLOR"))
                                 {
-                                    ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *PATH does not have a valid value"));
-                                    break;
+                                    int[] RGBColors = KeyWordValues[0].Split(' ').Select(n => int.Parse(n)).ToArray();
+                                    if (RGBColors.Length == 3)
+                                    {
+                                        DefaultNodeColor = Color.FromArgb(1, RGBColors[0], RGBColors[1], RGBColors[2]);
+                                    }
+                                }
+                                if (CurrentKeyWord.Equals("FLAGS"))
+                                {
+                                    AudioFlags = ushort.Parse(KeyWordValues[0]);
+                                }
+                                if (CurrentKeyWord.Equals("LOOPOFFSET"))
+                                {
+                                    LoopOffset = uint.Parse(KeyWordValues[0]);
+                                }
+                                if (CurrentKeyWord.Equals("PSI"))
+                                {
+                                    AudioPSI = uint.Parse(KeyWordValues[0]);
                                 }
                             }
-                            if (FileLines[CurrentIndex].Trim().StartsWith("*NODECOLOR"))
+                            else
                             {
-                                SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                if (SplitedData.Length > 3)
+                                if (!CurrentKeyWord.Equals("COMMENT"))
                                 {
-                                    DefaultNodeColor = Color.FromArgb(1, int.Parse(SplitedData[1]), int.Parse(SplitedData[2]), int.Parse(SplitedData[3]));
-                                }
-                                else
-                                {
-                                    ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *NODECOLOR does not have a valid value"));
-                                    break;
-                                }
-                            }
-                            if (FileLines[CurrentIndex].Trim().StartsWith("*FLAGS"))
-                            {
-                                SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                if (SplitedData.Length > 1)
-                                {
-                                    AudioFlags = ushort.Parse(SplitedData[1].Trim());
-                                }
-                                else
-                                {
-                                    ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *FLAGS does not have a valid value"));
-                                    break;
-                                }
-                            }
-                            if (FileLines[CurrentIndex].Trim().StartsWith("*LOOPOFFSET"))
-                            {
-                                SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                if (SplitedData.Length > 1)
-                                {
-                                    LoopOffset = uint.Parse(SplitedData[1].Trim());
-                                }
-                                else
-                                {
-                                    ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *LOOPOFFSET does not have a valid value"));
-                                    break;
-                                }
-                            }
-                            if (FileLines[CurrentIndex].Trim().StartsWith("*PSI"))
-                            {
-                                SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                if (SplitedData.Length > 1)
-                                {
-                                    AudioPSI = uint.Parse(SplitedData[1].Trim());
-                                }
-                                else
-                                {
-                                    ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *PSI does not have a valid value"));
+                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains any value"));
                                     break;
                                 }
                             }
@@ -229,229 +203,125 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             }
         }
 
-        private void ReadSFXSoundBlock(string[] FileLines, int CurrentIndex, ProjectFile FileProperties, TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList)
+        private void ReadSFXSoundBlock(string[] FileLines, int CurrentIndex, string CurrentKeyWord, string[] KeyWordValues, ProjectFile FileProperties, TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList)
         {
-            string[] SplitedData;
-            string NodeName = string.Empty;
-            string FolderName = string.Empty;
-            string SampleName = string.Empty;
+            string NodeName = string.Empty, FolderName = string.Empty, SampleName = string.Empty;
             bool NodeAddedInFolder;
             uint NewSoundKey = GenericFunctions.GetNewObjectID(FileProperties);
             short FileRef = 0;
             EXSound SFXSound = new EXSound();
             Color DefaultNodeColor = Color.FromArgb(1, 0, 0, 0);
             Color DefaultSampleNodeColor = Color.FromArgb(1, 0, 0, 0);
+
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
-                if (FileLines[CurrentIndex].Trim().StartsWith("*NODENAME"))
+                CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
+                if (KeyWordValues.Length > 0)
                 {
-                    SplitedData = FileLines[CurrentIndex].Trim().Split('"');
-                    if (SplitedData.Length > 1)
+                    if (CurrentKeyWord.Equals("NODENAME"))
                     {
-                        NodeName = SplitedData[1].Trim();
+                        NodeName = KeyWordValues[0];
                     }
-                    else
+                    if (CurrentKeyWord.Equals("FOLDERNAME"))
                     {
-                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *NODENAME does not have a valid value"));
-                        break;
+                        FolderName = KeyWordValues[0];
                     }
-                }
-                if (FileLines[CurrentIndex].Trim().StartsWith("*FOLDERNAME"))
-                {
-                    SplitedData = FileLines[CurrentIndex].Trim().Split('"');
-                    if (SplitedData.Length > 1)
+                    if (CurrentKeyWord.Equals("HASHCODE"))
                     {
-                        FolderName = SplitedData[1].Trim();
+                        SFXSound.Hashcode = Convert.ToUInt32(KeyWordValues[0], 16);
                     }
-                    else
+                    if (CurrentKeyWord.Equals("NODECOLOR"))
                     {
-                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *FOLDERNAME does not have a valid value"));
-                        break;
+                        int[] RGBColors = KeyWordValues[0].Split(' ').Select(n => int.Parse(n)).ToArray();
+                        if (RGBColors.Length == 3)
+                        {
+                            DefaultNodeColor = Color.FromArgb(1, RGBColors[0], RGBColors[1], RGBColors[2]);
+                        }
                     }
-                }
-                if (FileLines[CurrentIndex].Trim().StartsWith("*HASHCODE"))
-                {
-                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                    if (SplitedData.Length > 1)
+                    if (CurrentKeyWord.Equals("PARAMETERS"))
                     {
-                        SFXSound.Hashcode = Convert.ToUInt32(SplitedData[1].Trim(), 16);
-                    }
-                    else
-                    {
-                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *HASHCODE does not have a valid value"));
-                        break;
-                    }
-                }
-                if (FileLines[CurrentIndex].Trim().StartsWith("*NODECOLOR"))
-                {
-                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                    if (SplitedData.Length > 3)
-                    {
-                        DefaultNodeColor = Color.FromArgb(1, int.Parse(SplitedData[1]), int.Parse(SplitedData[2]), int.Parse(SplitedData[3]));
-                    }
-                    else
-                    {
-                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *NODECOLOR does not have a valid value"));
-                        break;
-                    }
-                }
-                if (FileLines[CurrentIndex].Trim().StartsWith("*PARAMETERS"))
-                {
-                    CurrentIndex++;
-                    while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
-                    {
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*DUCKERLENGTH"))
-                        {
-                            SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                            if (SplitedData.Length > 1)
-                            {
-                                SFXSound.DuckerLenght = short.Parse(SplitedData[1].Trim());
-                            }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *DUCKERLENGTH does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*MINDELAY"))
-                        {
-                            SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                            if (SplitedData.Length > 1)
-                            {
-                                SFXSound.MinDelay = short.Parse(SplitedData[1].Trim());
-                            }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MINDELAY does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*MAXDELAY"))
-                        {
-                            SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                            if (SplitedData.Length > 1)
-                            {
-                                SFXSound.MaxDelay = short.Parse(SplitedData[1].Trim());
-                            }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MAXDELAY does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*REVERBSEND"))
-                        {
-                            SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                            if (SplitedData.Length > 1)
-                            {
-                                SFXSound.ReverbSend = sbyte.Parse(SplitedData[1].Trim());
-                            }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *REVERBSEND does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*TRACKINGTYPE"))
-                        {
-                            SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                            if (SplitedData.Length > 1)
-                            {
-                                SFXSound.TrackingType = sbyte.Parse(SplitedData[1].Trim());
-                            }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *TRACKINGTYPE does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*MAXVOICES"))
-                        {
-                            SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                            if (SplitedData.Length > 1)
-                            {
-                                SFXSound.MaxVoices = sbyte.Parse(SplitedData[1].Trim());
-                            }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MAXVOICES does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*PRIORITY"))
-                        {
-                            SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                            if (SplitedData.Length > 1)
-                            {
-                                SFXSound.Priority = sbyte.Parse(SplitedData[1].Trim());
-                            }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *PRIORITY does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (FileLines[CurrentIndex].Trim().Contains("*DUCKER "))
-                        {
-                            SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                            if (SplitedData.Length > 1)
-                            {
-                                SFXSound.Ducker = sbyte.Parse(SplitedData[1].Trim());
-                            }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *DUCKER does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*MASTERVOLUME"))
-                        {
-                            SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                            if (SplitedData.Length > 1)
-                            {
-                                SFXSound.MasterVolume = sbyte.Parse(SplitedData[1].Trim());
-                            }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MASTERVOLUME does not have a valid value"));
-                                break;
-                            }
-                        }
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*FLAGS"))
-                        {
-                            SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                            if (SplitedData.Length > 1)
-                            {
-                                SFXSound.Flags = ushort.Parse(SplitedData[1].Trim());
-                            }
-                            else
-                            {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *FLAGS does not have a valid value"));
-                                break;
-                            }
-                        }
                         CurrentIndex++;
-                    }
+                        while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
+                        {
+                            CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                            KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
+                            if (KeyWordValues.Length > 0)
+                            {
+                                switch (CurrentKeyWord)
+                                {
+                                    case "DUCKERLENGTH":
+                                        SFXSound.DuckerLenght = short.Parse(KeyWordValues[0]);
+                                        break;
+                                    case "MINDELAY":
+                                        SFXSound.MinDelay = short.Parse(KeyWordValues[0]);
+                                        break;
+                                    case "MAXDELAY":
+                                        SFXSound.MaxDelay = short.Parse(KeyWordValues[0]);
+                                        break;
+                                    case "REVERBSEND":
+                                        SFXSound.ReverbSend = sbyte.Parse(KeyWordValues[0]);
+                                        break;
+                                    case "TRACKINGTYPE":
+                                        SFXSound.TrackingType = sbyte.Parse(KeyWordValues[0]);
+                                        break;
+                                    case "MAXVOICES":
+                                        SFXSound.MaxVoices = sbyte.Parse(KeyWordValues[0]);
+                                        break;
+                                    case "PRIORITY":
+                                        SFXSound.Priority = sbyte.Parse(KeyWordValues[0]);
+                                        break;
+                                    case "DUCKER":
+                                        SFXSound.Ducker = sbyte.Parse(KeyWordValues[0]);
+                                        break;
+                                    case "MASTERVOLUME":
+                                        SFXSound.MasterVolume = sbyte.Parse(KeyWordValues[0]);
+                                        break;
+                                    case "FLAGS":
+                                        SFXSound.Flags = ushort.Parse(KeyWordValues[0]);
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                if (!CurrentKeyWord.Equals("COMMENT"))
+                                {
+                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains any value"));
+                                    break;
+                                }
+                            }
+                            CurrentIndex++;
+                        }
 
-                    //Parameters from SFX Data
-                    uint KeyToCheck = SFXSound.Hashcode - 0x1A000000;
-                    float[] SFXValues = Hashcodes.SFX_Data.FirstOrDefault(x => x.Value[0] == KeyToCheck).Value;
-                    if (SFXValues != null)
+                        //Parameters from SFX Data
+                        uint KeyToCheck = SFXSound.Hashcode - 0x1A000000;
+                        float[] SFXValues = Hashcodes.SFX_Data.FirstOrDefault(x => x.Value[0] == KeyToCheck).Value;
+                        if (SFXValues != null)
+                        {
+                            SFXSound.InnerRadiusReal = (short)SFXValues[1];
+                            SFXSound.OuterRadiusReal = (short)SFXValues[2];
+                        }
+
+                        //Add Sound to dictionary
+                        SoundsList.Add(NewSoundKey, SFXSound);
+                    }
+                }
+                else
+                {
+                    if (!CurrentKeyWord.Equals("COMMENT"))
                     {
-                        SFXSound.InnerRadiusReal = (short)SFXValues[1];
-                        SFXSound.OuterRadiusReal = (short)SFXValues[2];
+                        ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains any value"));
+                        break;
                     }
-
-                    //Add Sound to dictionary
-                    SoundsList.Add(NewSoundKey, SFXSound);
                 }
                 //Check for sound samples
-                if (FileLines[CurrentIndex].Trim().StartsWith("*SAMPLES"))
+                if (CurrentKeyWord.Equals("SAMPLES"))
                 {
                     CurrentIndex++;
                     while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
                     {
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*SAMPLE"))
+                        CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                        if (CurrentKeyWord.Equals("SAMPLE"))
                         {
                             uint SampleID = GenericFunctions.GetNewObjectID(FileProperties);
                             EXSample NewSample = new EXSample();
@@ -460,142 +330,72 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                             CurrentIndex++;
                             while (!FileLines[CurrentIndex].Trim().Equals("}"))
                             {
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*NODENAME"))
+                                CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                                KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
+                                if (KeyWordValues.Length > 0)
                                 {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split('"');
-                                    if (SplitedData.Length > 1)
+                                    switch (CurrentKeyWord)
                                     {
-                                        NewSample.Name = SplitedData[1].Trim();
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *NODENAME does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*NODECOLOR"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 3)
-                                    {
-                                        NewSample.NodeColor = Color.FromArgb(1, int.Parse(SplitedData[1]), int.Parse(SplitedData[2]), int.Parse(SplitedData[3]));
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *NODECOLOR does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*PITCHOFFSET"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        NewSample.PitchOffset = short.Parse(SplitedData[1].Trim());
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *PITCHOFFSET does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*BASEVOLUME"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        NewSample.BaseVolume = sbyte.Parse(SplitedData[1].Trim());
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *BASEVOLUME does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*PAN"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        NewSample.Pan = sbyte.Parse(SplitedData[1].Trim());
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *PAN does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*RANDOMPITCHOFFSET"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        NewSample.RandomPitchOffset = short.Parse(SplitedData[1].Trim());
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *RANDOMPITCHOFFSET does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*RANDOMVOLUMEOFFSET"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        NewSample.RandomVolumeOffset = sbyte.Parse(SplitedData[1].Trim());
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *RANDOMVOLUMEOFFSET does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*RANDOMPAN"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        NewSample.RandomPan = sbyte.Parse(SplitedData[1].Trim());
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *RANDOMPAN does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*FILEREF"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        FileRef = short.Parse(SplitedData[1].Trim());
-                                        NewSample.FileRef = FileRef;
-                                        if (FileRef < 0)
-                                        {
-                                            NewSample.IsStreamed = true;
-                                        }
-                                        else if (EXSoundbanksFunctions.SubSFXFlagChecked(SFXSound.Flags))
-                                        {
-                                            uint RefHashC = (uint)FileRef;
-                                            NewSample.HashcodeSubSFX = 0x1A000000 | RefHashC;
-                                            NewSample.ComboboxSelectedAudio = "<SUB SFX>";
-                                        }
-                                        else
-                                        {
-                                            if (AudiosAssocTable.ContainsKey(FileRef))
+                                        case "NODENAME":
+                                            NewSample.Name = KeyWordValues[0];
+                                            break;
+                                        case "NODECOLOR":
+                                            int[] RGBColors = KeyWordValues[0].Split(' ').Select(n => int.Parse(n)).ToArray();
+                                            if (RGBColors.Length == 3)
                                             {
-                                                NewSample.ComboboxSelectedAudio = AudiosAssocTable[FileRef];
+                                                NewSample.NodeColor = Color.FromArgb(1, RGBColors[0], RGBColors[1], RGBColors[2]);
+                                            }
+                                            break;
+                                        case "PITCHOFFSET":
+                                            NewSample.PitchOffset = short.Parse(KeyWordValues[0]);
+                                            break;
+                                        case "BASEVOLUME":
+                                            NewSample.BaseVolume = sbyte.Parse(KeyWordValues[0]);
+                                            break;
+                                        case "PAN":
+                                            NewSample.Pan = sbyte.Parse(KeyWordValues[0]);
+                                            break;
+                                        case "RANDOMPITCHOFFSET":
+                                            NewSample.RandomPitchOffset = short.Parse(KeyWordValues[0]);
+                                            break;
+                                        case "RANDOMVOLUMEOFFSET":
+                                            NewSample.RandomVolumeOffset = sbyte.Parse(KeyWordValues[0]);
+                                            break;
+                                        case "RANDOMPAN":
+                                            NewSample.RandomPan = sbyte.Parse(KeyWordValues[0]);
+                                            break;
+                                        case "FILEREF":
+                                            FileRef = short.Parse(KeyWordValues[0]);
+                                            NewSample.FileRef = FileRef;
+                                            if (FileRef < 0)
+                                            {
+                                                NewSample.IsStreamed = true;
+                                            }
+                                            else if (EXSoundbanksFunctions.SubSFXFlagChecked(SFXSound.Flags))
+                                            {
+                                                uint RefHashC = (uint)FileRef;
+                                                NewSample.HashcodeSubSFX = 0x1A000000 | RefHashC;
+                                                NewSample.ComboboxSelectedAudio = "<SUB SFX>";
                                             }
                                             else
                                             {
-                                                ImportResults.Add(string.Join("", "0", "The audio with the file ref: ", FileRef, " was not found"));
+                                                if (AudiosAssocTable.ContainsKey(FileRef))
+                                                {
+                                                    NewSample.ComboboxSelectedAudio = AudiosAssocTable[FileRef];
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join("", "0", "The audio with the file ref: ", FileRef, " was not found"));
+                                                }
                                             }
-                                        }
+                                            break;
                                     }
-                                    else
+                                }
+                                else
+                                {
+                                    if (!CurrentKeyWord.Equals("COMMENT"))
                                     {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *FILEREF does not have a valid value"));
+                                        ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains any value"));
                                         break;
                                     }
                                 }
@@ -647,6 +447,8 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         internal List<string> LoadStreamSoundBank_File(string FilePath, ProjectFile FileProperties, Dictionary<uint, EXSoundStream> SoundsList, TreeView TreeViewControl)
         {
             string[] lines = File.ReadAllLines(FilePath);
+            string[] KeyWordValues = null;
+            string CurrentKeyWord;
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESIFFile"));
@@ -656,28 +458,28 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             {
                 for (int i = 1; i < lines.Length; i++)
                 {
-                    if (string.IsNullOrEmpty(lines[i]) || lines[i].StartsWith("*COMMENT"))
+                    CurrentKeyWord = GetKeyWord(lines[i]);
+                    if (string.IsNullOrEmpty(CurrentKeyWord) || CurrentKeyWord.Equals("COMMENT"))
                     {
                         continue;
                     }
                     else
                     {
                         //Check for project settings block
-                        if (lines[i].Trim().StartsWith("*PROJECTSETTINGS"))
+                        if (CurrentKeyWord.Equals("PROJECTSETTINGS"))
                         {
                             i++;
-                            ReadProjectSettingsBlock(lines, i, FileProperties);
+                            ReadProjectSettingsBlock(lines, i, CurrentKeyWord, KeyWordValues, FileProperties);
                         }
 
                         //Check for project settings block
-                        if (lines[i].Trim().StartsWith("*STREAMSOUND"))
+                        if (CurrentKeyWord.Equals("STREAMSOUND"))
                         {
                             i++;
-                            ReadStreamSoundsBlock(lines, i, SoundsList, FileProperties, TreeViewControl);
+                            ReadStreamSoundsBlock(lines, i, CurrentKeyWord, KeyWordValues, SoundsList, FileProperties, TreeViewControl);
                         }
                     }
                 }
-                AudiosAssocTable.Clear();
             }
             else
             {
@@ -690,9 +492,8 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             return ImportResults;
         }
 
-        private void ReadStreamSoundsBlock(string[] FileLines, int CurrentIndex, Dictionary<uint, EXSoundStream> SoundsList, ProjectFile FileProperties, TreeView TreeViewControl)
+        private void ReadStreamSoundsBlock(string[] FileLines, int CurrentIndex, string CurrentKeyWord, string[] KeyWordValues, Dictionary<uint, EXSoundStream> SoundsList, ProjectFile FileProperties, TreeView TreeViewControl)
         {
-            string[] SplitedData;
             string NodeName = string.Empty, FolderName = string.Empty, AudioPath;
             uint ObjectID;
             bool NodeAddedInFolder;
@@ -701,51 +502,29 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
-                if (FileLines[CurrentIndex].Trim().StartsWith("*NODENAME"))
+                CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
+                if (KeyWordValues.Length > 0)
                 {
-                    SplitedData = FileLines[CurrentIndex].Trim().Split('"');
-                    if (SplitedData.Length > 1)
+                    if (CurrentKeyWord.Equals("NODENAME"))
                     {
-                        NodeName = SplitedData[1];
+                        NodeName = KeyWordValues[0];
                     }
-                    else
+                    if (CurrentKeyWord.Equals("FOLDERNAME"))
                     {
-                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *NODENAME does not contains a valid value"));
-                        break;
+                        FolderName = KeyWordValues[0];
                     }
-                }
-                if (FileLines[CurrentIndex].Trim().StartsWith("*FOLDERNAME"))
-                {
-                    SplitedData = FileLines[CurrentIndex].Trim().Split('"');
-                    if (SplitedData.Length > 1)
+                    if (CurrentKeyWord.Equals("NODECOLOR"))
                     {
-                        FolderName = SplitedData[1];
+                        int[] RGBColors = KeyWordValues[0].Split(' ').Select(n => int.Parse(n)).ToArray();
+                        if (RGBColors.Length == 3)
+                        {
+                            DefaultNodeColor = Color.FromArgb(1, RGBColors[0], RGBColors[1], RGBColors[2]);
+                        }
                     }
-                    else
+                    if (CurrentKeyWord.Equals("FILEPATH"))
                     {
-                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *FOLDERNAME does not contains a valid value"));
-                        break;
-                    }
-                }
-                if (FileLines[CurrentIndex].Trim().StartsWith("*NODECOLOR"))
-                {
-                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                    if (SplitedData.Length > 3)
-                    {
-                        DefaultNodeColor = Color.FromArgb(1, int.Parse(SplitedData[1]), int.Parse(SplitedData[2]), int.Parse(SplitedData[3]));
-                    }
-                    else
-                    {
-                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *NODECOLOR does not have a valid value"));
-                        break;
-                    }
-                }
-                if (FileLines[CurrentIndex].Trim().StartsWith("*FILEPATH"))
-                {
-                    SplitedData = FileLines[CurrentIndex].Trim().Split('"');
-                    if (SplitedData.Length > 1)
-                    {
-                        AudioPath = RemoveCharactersWithoutDisplayWidth(SplitedData[1].Trim());
+                        AudioPath = RemoveCharactersFromPathString.Replace(KeyWordValues[0], "");
                         if (File.Exists(AudioPath))
                         {
                             if (GenericFunctions.AudioIsValid(AudioPath, 1, 22050))
@@ -783,205 +562,123 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                             ImportResults.Add(string.Join("", "1", "The file: ", AudioPath, " could not be found"));
                         }
                     }
-                    else
+                    if (CurrentKeyWord.Equals("BASEVOLUME"))
                     {
-                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *FILEPATH does not have a valid value"));
-                        break;
+                        NewSSound.BaseVolume = uint.Parse(KeyWordValues[0]);
                     }
-                }
-                if (FileLines[CurrentIndex].Trim().StartsWith("*BASEVOLUME"))
-                {
-                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                    if (SplitedData.Length > 1)
+                    if (CurrentKeyWord.Equals("STARTMARKERS"))
                     {
-                        NewSSound.BaseVolume = uint.Parse(SplitedData[1].Trim());
-                    }
-                    else
-                    {
-                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *BASEVOLUME does not have a valid value"));
-                        break;
-                    }
-                }
-                if (FileLines[CurrentIndex].Trim().StartsWith("*STARTMARKERS"))
-                {
-                    uint Position = 0, MarkerType = 0, MarkerPos = 0, StateA = 0, StateB = 0;
+                        uint Position = 0, MarkerType = 0, MarkerPos = 0, StateA = 0, StateB = 0;
 
-                    CurrentIndex++;
-                    while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
-                    {
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*STARTMARKER"))
+                        CurrentIndex++;
+                        while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
                         {
-                            CurrentIndex++;
-                            while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
+                            CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                            if (CurrentKeyWord.Equals("STARTMARKER"))
                             {
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*POSITION"))
+                                CurrentIndex++;
+                                while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
                                 {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
+                                    CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                                    KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
+                                    if (KeyWordValues.Length > 0)
                                     {
-                                        Position = uint.Parse(SplitedData[1].Trim());
+                                        switch (CurrentKeyWord)
+                                        {
+                                            case "POSITION":
+                                                Position = uint.Parse(KeyWordValues[0]);
+                                                break;
+                                            case "MUSICMARKERTYPE":
+                                                MarkerType = uint.Parse(KeyWordValues[0]);
+                                                break;
+                                            case "MARKERPOS":
+                                                MarkerPos = uint.Parse(KeyWordValues[0]);
+                                                break;
+                                            case "STATEA":
+                                                StateA = uint.Parse(KeyWordValues[0]);
+                                                break;
+                                            case "STATEB":
+                                                StateB = uint.Parse(KeyWordValues[0]);
+                                                break;
+                                        }
                                     }
                                     else
                                     {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *POSITION does not have a valid value"));
-                                        break;
+                                        if (!CurrentKeyWord.Equals("COMMENT"))
+                                        {
+                                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains any value"));
+                                            break;
+                                        }
                                     }
+                                    CurrentIndex++;
                                 }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*MUSICMARKERTYPE"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        MarkerType = uint.Parse(SplitedData[1].Trim());
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MUSICMARKERTYPE does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*MARKERPOS"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        MarkerPos = uint.Parse(SplitedData[1].Trim());
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MARKERPOS does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*STATEA"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        StateA = uint.Parse(SplitedData[1].Trim());
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *STATEA does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*STATEB"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        StateB = uint.Parse(SplitedData[1].Trim());
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *STATEB does not have a valid value"));
-                                        break;
-                                    }
-                                }
+                                MarkerFunctionsClass.CreateStartMarker(NewSSound.StartMarkers, Position, MarkerType, MarkerPos, StateA, StateB);
                                 CurrentIndex++;
                             }
-                            MarkerFunctionsClass.CreateStartMarker(NewSSound.StartMarkers, Position, MarkerType, MarkerPos, StateA, StateB);
-                            CurrentIndex++;
+                        }
+                    }
+                    if (CurrentKeyWord.Equals("MARKERS"))
+                    {
+                        int Name = 0;
+                        uint Position = 0, MarkerType = 0, MarkerCount = 0, LoopStart = 0, LoopMarkerCount = 0;
+
+                        CurrentIndex++;
+                        while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
+                        {
+                            CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                            if (CurrentKeyWord.Equals("MARKER"))
+                            {
+                                CurrentIndex++;
+                                while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
+                                {
+                                    CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                                    KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
+                                    if (KeyWordValues.Length > 0)
+                                    {
+                                        switch (CurrentKeyWord)
+                                        {
+                                            case "NAME":
+                                                Name = int.Parse(KeyWordValues[0]);
+                                                break;
+                                            case "POSITION":
+                                                Position = uint.Parse(KeyWordValues[0]);
+                                                break;
+                                            case "MUSICMARKERTYPE":
+                                                MarkerType = uint.Parse(KeyWordValues[0]);
+                                                break;
+                                            case "MARKERCOUNT":
+                                                MarkerCount = uint.Parse(KeyWordValues[0]);
+                                                break;
+                                            case "LOOPSTART":
+                                                LoopStart = uint.Parse(KeyWordValues[0]);
+                                                break;
+                                            case "LOOPMARKERCOUNT":
+                                                LoopMarkerCount = uint.Parse(KeyWordValues[0]);
+                                                break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (!CurrentKeyWord.Equals("COMMENT"))
+                                        {
+                                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains any value"));
+                                            break;
+                                        }
+                                    }
+                                    CurrentIndex++;
+                                }
+                                MarkerFunctionsClass.CreateMarker(NewSSound.Markers, Name, Position, MarkerType, MarkerCount, LoopStart, LoopMarkerCount);
+                                CurrentIndex++;
+                            }
                         }
                     }
                 }
-                if (FileLines[CurrentIndex].Trim().StartsWith("*MARKERS"))
+                else
                 {
-                    int Name = 0;
-                    uint Position = 0, MarkerType = 0, MarkerCount = 0, LoopStart = 0, LoopMarkerCount = 0;
-
-                    CurrentIndex++;
-                    while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
+                    if (!CurrentKeyWord.Equals("COMMENT"))
                     {
-                        if (FileLines[CurrentIndex].Trim().StartsWith("*MARKER"))
-                        {
-                            CurrentIndex++;
-                            while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
-                            {
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*NAME"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        Name = int.Parse(SplitedData[1].Trim());
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *NAME does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*POSITION"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        Position = uint.Parse(SplitedData[1].Trim());
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *POSITION does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*MUSICMARKERTYPE"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        MarkerType = uint.Parse(SplitedData[1].Trim());
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MUSICMARKERTYPE does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*MARKERCOUNT"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        MarkerCount = uint.Parse(SplitedData[1].Trim());
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *MARKERCOUNT does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*LOOPSTART"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        LoopStart = uint.Parse(SplitedData[1].Trim());
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *LOOPSTART does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                if (FileLines[CurrentIndex].Trim().StartsWith("*LOOPMARKERCOUNT"))
-                                {
-                                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                                    if (SplitedData.Length > 1)
-                                    {
-                                        LoopMarkerCount = uint.Parse(SplitedData[1].Trim());
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *LOOPMARKERCOUNT does not have a valid value"));
-                                        break;
-                                    }
-                                }
-                                CurrentIndex++;
-                            }
-                            MarkerFunctionsClass.CreateMarker(NewSSound.Markers, Name, Position, MarkerType, MarkerCount, LoopStart, LoopMarkerCount);
-                            CurrentIndex++;
-                        }
+                        ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains any value"));
+                        break;
                     }
                 }
                 CurrentIndex++;
@@ -1026,38 +723,30 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             return NodeAddedInFolder;
         }
 
-        private void ReadProjectSettingsBlock(string[] FileLines, int CurrentIndex, ProjectFile FileProperties)
+        private void ReadProjectSettingsBlock(string[] FileLines, int CurrentIndex, string CurrentKeyWord, string[] KeyWordValues, ProjectFile FileProperties)
         {
-            string[] SplitedData;
-
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
-                if (FileLines[CurrentIndex].Trim().StartsWith("*FILENAME"))
+                CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
+                if (KeyWordValues.Length > 0)
                 {
-                    SplitedData = FileLines[CurrentIndex].Trim().Split('"');
-                    if (SplitedData.Length > 1)
+                    if (CurrentKeyWord.Equals("FILENAME"))
                     {
-                        FileProperties.FileName = SplitedData[1];
+                        FileProperties.FileName = KeyWordValues[0];
                         GenericFunctions.SetCurrentFileLabel(FileProperties.FileName, "File");
                     }
-                    else
+                    if (CurrentKeyWord.Equals("HASHCODE"))
                     {
-                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *FILENAME does not contains any value"));
-                        break;
-                    }
-                }
-
-                if (FileLines[CurrentIndex].Trim().StartsWith("*HASHCODE"))
-                {
-                    SplitedData = FileLines[CurrentIndex].Trim().Split(' ');
-                    if (SplitedData.Length > 1)
-                    {
-                        FileProperties.Hashcode = Convert.ToUInt32(SplitedData[1], 16);
+                        FileProperties.Hashcode = Convert.ToUInt32(KeyWordValues[0], 16);
                         GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, FileProperties.Hashcode), "Hashcode");
                     }
-                    else
+                }
+                else
+                {
+                    if (!CurrentKeyWord.Equals("COMMENT"))
                     {
-                        ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " *HASHCODE does not contains any value"));
+                        ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains any value"));
                         break;
                     }
                 }
@@ -1065,10 +754,24 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             }
         }
 
-        private string RemoveCharactersWithoutDisplayWidth(string str)
+        private string GetKeyWord(string FileLine)
         {
-            Regex regex = new Regex(@"[\p{Cc}\p{Cf}\p{Mn}\p{Me}\p{Zl}\p{Zp}]");
-            return regex.Replace(str, "");
+            string KeyWord = string.Empty;
+
+            MatchCollection Matches = Regex.Matches(FileLine, @"(?<=[*])\w[A-Z]+");
+
+            if (Matches.Count > 0)
+            {
+                KeyWord = Matches[0].ToString();
+            }
+
+            return KeyWord;
+        }
+
+        private string[] GetKeyValues(string FileLine)
+        {
+            string[] Values = Regex.Matches(FileLine, @"(?<=[*])\w+[\s-[\r\n]]*""?(.*?)""?\r?$").Cast<Match>().Select(x => x.Groups[1].Value).ToArray();
+            return Values;
         }
     }
 }

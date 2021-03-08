@@ -5,7 +5,6 @@ using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -14,6 +13,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
 {
     public partial class Frm_BuildSFXFile : Form
     {
+        private BinaryStream BWriter;
         private ProjectFile CurrentFileProperties;
         private List<string> Reports = new List<string>();
         private string FileName;
@@ -27,6 +27,33 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
             DebugFlags = CheckedDebugFlags;
         }
 
+        //*===============================================================================================
+        //* FORM EVENTS
+        //*===============================================================================================
+        private void Frm_BuildSFXFile_Load(object sender, EventArgs e)
+        {
+            //Run Background Worker
+            if (!BackgroundWorker_BuildSFX.IsBusy)
+            {
+                BackgroundWorker_BuildSFX.RunWorkerAsync();
+            }
+        }
+
+        private void Frm_BuildSFXFile_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            BWriter.Close();
+            BWriter.Dispose();
+            BackgroundWorker_BuildSFX.Dispose();
+        }
+
+        //*===============================================================================================
+        //* FORM CONTROLS EVENTS
+        //*===============================================================================================
+        private void Button_Abort_Click(object sender, EventArgs e)
+        {
+            BackgroundWorker_BuildSFX.CancelAsync();
+        }
+
         private void BackgroundWorker_BuildSFX_DoWork(object sender, DoWorkEventArgs e)
         {
             Reports.Clear();
@@ -38,12 +65,12 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 Dictionary<uint, EXSound> FinalSoundsDict;
                 Dictionary<string, EXAudio> FinalAudioDataDict;
                 GenerateSFXSoundBank SFXCreator = new GenerateSFXSoundBank();
-                BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
                 StreamWriter DebugFileWritter = null;
 
                 Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
                 int TotalProgress = 1;
 
+                BWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
                 //Check For Cancelation;
                 if (BackgroundWorker_BuildSFX.CancellationPending == true)
                 {
@@ -250,20 +277,6 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
             //Close Form
             Close();
             Dispose();
-        }
-
-        private void Button_Abort_Click(object sender, EventArgs e)
-        {
-            BackgroundWorker_BuildSFX.CancelAsync();
-        }
-
-        private void Frm_BuildSFXFile_Load(object sender, EventArgs e)
-        {
-            //Run Background Worker
-            if (!BackgroundWorker_BuildSFX.IsBusy)
-            {
-                BackgroundWorker_BuildSFX.RunWorkerAsync();
-            }
         }
 
         //*===============================================================================================

@@ -120,6 +120,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
             this.Name = "Frm_BuildSFXFile";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Frm_BuildSFXFile";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_BuildSFXFile_FormClosing);
             this.Load += new System.EventHandler(this.Frm_BuildSFXFile_Load);
             this.Panel_Container.ResumeLayout(false);
             this.Panel_Container.PerformLayout();
