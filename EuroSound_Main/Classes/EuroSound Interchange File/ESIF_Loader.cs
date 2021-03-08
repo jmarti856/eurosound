@@ -53,7 +53,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                         if (CurrentKeyWord.Equals("PROJECTSETTINGS"))
                         {
                             i++;
-                            ReadProjectSettingsBlock(FileLines, i, CurrentKeyWord, KeyWordValues, FileProperties);
+                            ReadProjectSettingsBlock(FileLines, i, FileProperties);
                         }
 
                         //Check for audio data block
@@ -469,7 +469,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                         if (CurrentKeyWord.Equals("PROJECTSETTINGS"))
                         {
                             i++;
-                            ReadProjectSettingsBlock(lines, i, CurrentKeyWord, KeyWordValues, FileProperties);
+                            ReadProjectSettingsBlock(lines, i, FileProperties);
                         }
 
                         //Check for project settings block
@@ -723,8 +723,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             return NodeAddedInFolder;
         }
 
-        private void ReadProjectSettingsBlock(string[] FileLines, int CurrentIndex, string CurrentKeyWord, string[] KeyWordValues, ProjectFile FileProperties)
+        private void ReadProjectSettingsBlock(string[] FileLines, int CurrentIndex, ProjectFile FileProperties)
         {
+            string CurrentKeyWord;
+            string[] KeyWordValues;
+
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
                 CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
@@ -759,7 +762,6 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             string KeyWord = string.Empty;
 
             MatchCollection Matches = Regex.Matches(FileLine, @"(?<=[*])\w[A-Z]+");
-
             if (Matches.Count > 0)
             {
                 KeyWord = Matches[0].ToString();

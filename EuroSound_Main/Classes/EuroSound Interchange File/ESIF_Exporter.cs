@@ -120,7 +120,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         internal void ExportProject(string FilePath, bool IncludeProjectSettings, ProjectFile ProjectSettings, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
         {
             int AudioIndex = 0;
-            string SndHash, AudioPath;
+            string AudioPath;
             string MediaFolder = GenericFunctions.OpenFolderBrowser();
 
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
@@ -130,9 +130,8 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 
                 if (IncludeProjectSettings)
                 {
-                    SndHash = Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, ProjectSettings.Hashcode);
                     TextFileWriter.WriteLine("*PROJECTSETTINGS {");
-                    TextFileWriter.WriteLine("\t*FILENAME \"{0}\"", SndHash);
+                    TextFileWriter.WriteLine("\t*FILENAME \"{0}\"", ProjectSettings.FileName);
                     TextFileWriter.WriteLine("\t*HASHCODE {0}", "0x" + ProjectSettings.Hashcode.ToString("X8"));
                     TextFileWriter.WriteLine("\t*SFXOBJECTS {0}", SoundsList.Count);
                     TextFileWriter.WriteLine("\t*NUMSAMPLES {0}", AudiosList.Count);
@@ -355,7 +354,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 
         internal void ExportProjectStream(string FilePath, ProjectFile ProjectSettings, Dictionary<uint, EXSoundStream> SoundsList, TreeView TreeViewControl)
         {
-            string AudioPath, SndHash;
+            string AudioPath;
             string MediaFolder = GenericFunctions.OpenFolderBrowser();
 
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
@@ -363,9 +362,8 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                 //Header
                 WriteFileHeader(TextFileWriter);
 
-                SndHash = Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, ProjectSettings.Hashcode);
                 TextFileWriter.WriteLine("*PROJECTSETTINGS {");
-                TextFileWriter.WriteLine("\t*FILENAME \"{0}\"", SndHash);
+                TextFileWriter.WriteLine("\t*FILENAME \"{0}\"", ProjectSettings.FileName);
                 TextFileWriter.WriteLine("\t*STREAMOBJECTS {0}", SoundsList.Count);
                 TextFileWriter.WriteLine("}");
                 TextFileWriter.WriteLine("");

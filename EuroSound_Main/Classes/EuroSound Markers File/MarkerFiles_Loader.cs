@@ -2,6 +2,8 @@
 using EuroSound_Application.StreamSounds;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace EuroSound_Application.MarkerFiles
 {
@@ -12,38 +14,39 @@ namespace EuroSound_Application.MarkerFiles
 
         internal List<string> LoadSTRMarkersFile(string FilePath, EXSoundStream StreamSoundToModify)
         {
-            string[] lines = File.ReadAllLines(FilePath);
-            string CurrentLine;
+            string[] FileLines = File.ReadAllLines(FilePath);
+            string[] KeyWordValues = null;
+            string CurrentKeyWord;
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingMRKFile"));
 
             //Check File
-            if (lines[0].Equals("*EUROSOUND_MARKERS_FILE V1.0"))
+            if (FileLines[0].Equals("*EUROSOUND_MARKERS_FILE V1.0"))
             {
-                for (int i = 1; i < lines.Length; i++)
+                for (int i = 1; i < FileLines.Length; i++)
                 {
-                    CurrentLine = lines[i].Trim();
-                    if (string.IsNullOrEmpty(CurrentLine) || CurrentLine.StartsWith("*COMMENT"))
+                    CurrentKeyWord = GetKeyWord(FileLines[i]);
+                    if (string.IsNullOrEmpty(CurrentKeyWord) || CurrentKeyWord.Equals("COMMENT"))
                     {
                         continue;
                     }
                     else
                     {
                         //Check for start markers block
-                        if (CurrentLine.StartsWith("*STRSTARTMARKERS"))
+                        if (CurrentKeyWord.Equals("STRSTARTMARKERS"))
                         {
                             i++;
                             StreamSoundToModify.StartMarkers.Clear();
-                            ReadSTRStartMarkersBlock(lines, i, StreamSoundToModify);
+                            ReadSTRStartMarkersBlock(FileLines, i, CurrentKeyWord, KeyWordValues, StreamSoundToModify);
                         }
 
                         //Check for markers block
-                        if (CurrentLine.StartsWith("*STRMARKERS"))
+                        if (CurrentKeyWord.Equals("STRMARKERS"))
                         {
                             i++;
                             StreamSoundToModify.Markers.Clear();
-                            ReadSTRMarkersBlock(lines, i, StreamSoundToModify);
+                            ReadSTRMarkersBlock(FileLines, i, CurrentKeyWord, KeyWordValues, StreamSoundToModify);
                         }
                     }
                 }
@@ -59,47 +62,46 @@ namespace EuroSound_Application.MarkerFiles
             return ImportResults;
         }
 
-        private void ReadSTRStartMarkersBlock(string[] FileLines, int CurrentIndex, EXSoundStream StreamSound)
+        private void ReadSTRStartMarkersBlock(string[] FileLines, int CurrentIndex, string CurrentKeyWord, string[] KeyWordValues, EXSoundStream StreamSound)
         {
-            string[] SplitedData;
             uint Position = 0, MarkerType = 0, MarkerPos = 0, StateA = 0, StateB = 0;
 
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
-                if (FileLines[CurrentIndex].Trim().StartsWith("*MARKER"))
+                CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                if (CurrentKeyWord.Equals("MARKER"))
                 {
                     CurrentIndex++;
                     while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
                     {
-                        SplitedData = FileLines[CurrentIndex].Trim().Split('=');
-                        if (SplitedData.Length > 1)
+                        CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                        KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
+                        if (KeyWordValues.Length > 0)
                         {
-                            if (SplitedData[0].StartsWith("*POSITION"))
+                            switch (CurrentKeyWord)
                             {
-                                Position = uint.Parse(SplitedData[1].Trim());
-                            }
-                            if (SplitedData[0].StartsWith("*TYPE"))
-                            {
-                                MarkerType = uint.Parse(SplitedData[1].Trim());
-                            }
-                            if (SplitedData[0].StartsWith("*MARKERPOS"))
-                            {
-                                MarkerPos = uint.Parse(SplitedData[1].Trim());
-                            }
-                            if (SplitedData[0].StartsWith("*STATEA"))
-                            {
-                                StateA = uint.Parse(SplitedData[1].Trim());
-                            }
-                            if (SplitedData[0].StartsWith("*STATEB"))
-                            {
-                                StateB = uint.Parse(SplitedData[1].Trim());
+                                case "POSITION":
+                                    Position = uint.Parse(KeyWordValues[0]);
+                                    break;
+                                case "TYPE":
+                                    MarkerType = uint.Parse(KeyWordValues[0]);
+                                    break;
+                                case "MARKERPOS":
+                                    MarkerPos = uint.Parse(KeyWordValues[0]);
+                                    break;
+                                case "STATEA":
+                                    StateA = uint.Parse(KeyWordValues[0]);
+                                    break;
+                                case "STATEB":
+                                    StateB = uint.Parse(KeyWordValues[0]);
+                                    break;
                             }
                         }
                         else
                         {
-                            if (!SplitedData[0].StartsWith("*COMMENT"))
+                            if (!CurrentKeyWord.Equals("COMMENT"))
                             {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " can not find a valid value"));
+                                ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains any value"));
                                 break;
                             }
                         }
@@ -111,52 +113,50 @@ namespace EuroSound_Application.MarkerFiles
             }
         }
 
-        private void ReadSTRMarkersBlock(string[] FileLines, int CurrentIndex, EXSoundStream StreamSound)
+        private void ReadSTRMarkersBlock(string[] FileLines, int CurrentIndex, string CurrentKeyWord, string[] KeyWordValues, EXSoundStream StreamSound)
         {
             int Name = 0;
-            string[] SplitedData;
             uint Position = 0, MarkerType = 0, MarkerCount = 0, LoopStart = 0, LoopMarkerCount = 0;
 
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
-                if (FileLines[CurrentIndex].Trim().StartsWith("*MARKER"))
+                CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                if (CurrentKeyWord.Equals("MARKER"))
                 {
                     CurrentIndex++;
                     while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
                     {
-                        SplitedData = FileLines[CurrentIndex].Trim().Split('=');
-                        if (SplitedData.Length > 1)
+                        CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                        KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
+                        if (KeyWordValues.Length > 0)
                         {
-                            if (FileLines[CurrentIndex].Trim().StartsWith("*NAME"))
+                            switch (CurrentKeyWord)
                             {
-                                Name = int.Parse(SplitedData[1].Trim());
-                            }
-                            if (FileLines[CurrentIndex].Trim().StartsWith("*POSITION"))
-                            {
-                                Position = uint.Parse(SplitedData[1].Trim());
-                            }
-                            if (FileLines[CurrentIndex].Trim().StartsWith("*TYPE"))
-                            {
-                                MarkerType = uint.Parse(SplitedData[1].Trim());
-                            }
-                            if (FileLines[CurrentIndex].Trim().StartsWith("*MARKERCOUNT"))
-                            {
-                                MarkerCount = uint.Parse(SplitedData[1].Trim());
-                            }
-                            if (FileLines[CurrentIndex].Trim().StartsWith("*LOOPSTART"))
-                            {
-                                LoopStart = uint.Parse(SplitedData[1].Trim());
-                            }
-                            if (FileLines[CurrentIndex].Trim().StartsWith("*LOOPMARKERCOUNT"))
-                            {
-                                LoopMarkerCount = uint.Parse(SplitedData[1].Trim());
+                                case "NAME":
+                                    Name = int.Parse(KeyWordValues[0]);
+                                    break;
+                                case "POSITION":
+                                    Position = uint.Parse(KeyWordValues[0]);
+                                    break;
+                                case "TYPE":
+                                    MarkerType = uint.Parse(KeyWordValues[0]);
+                                    break;
+                                case "MARKERCOUNT":
+                                    MarkerCount = uint.Parse(KeyWordValues[0]);
+                                    break;
+                                case "LOOPSTART":
+                                    LoopStart = uint.Parse(KeyWordValues[0]);
+                                    break;
+                                case "LOOPMARKERCOUNT":
+                                    LoopMarkerCount = uint.Parse(KeyWordValues[0]);
+                                    break;
                             }
                         }
                         else
                         {
-                            if (!SplitedData[0].StartsWith("*COMMENT"))
+                            if (!CurrentKeyWord.Equals("COMMENT"))
                             {
-                                ImportResults.Add(string.Join("", "0", "Error in line: ", (CurrentIndex + 1), " can not find a valid value"));
+                                ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains any value"));
                                 break;
                             }
                         }
@@ -166,6 +166,25 @@ namespace EuroSound_Application.MarkerFiles
                     CurrentIndex++;
                 }
             }
+        }
+
+        private string GetKeyWord(string FileLine)
+        {
+            string KeyWord = string.Empty;
+
+            MatchCollection Matches = Regex.Matches(FileLine, @"(?<=[*])\w[A-Z]+");
+            if (Matches.Count > 0)
+            {
+                KeyWord = Matches[0].ToString();
+            }
+
+            return KeyWord;
+        }
+
+        private string[] GetKeyValues(string FileLine)
+        {
+            string[] Values = Regex.Matches(FileLine, @"(?<=[*])\w+[\s-[\r\n]]*=[\s-[\r\n]]*(.*?)\r?$").Cast<Match>().Select(x => x.Groups[1].Value).ToArray();
+            return Values;
         }
     }
 }
