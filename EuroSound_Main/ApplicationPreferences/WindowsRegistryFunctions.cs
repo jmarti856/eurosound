@@ -1,7 +1,5 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using Microsoft.Win32;
-using System.Collections.Generic;
-using System.IO;
 
 namespace EuroSound_Application.ApplicationRegistryFunctions
 {
@@ -399,45 +397,6 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
 
             return AudioDeviceNum;
-        }
-        #endregion
-
-        #region SaveRecentFilesList
-        internal void SaveRecentFilesList(string[] FilesList)
-        {
-            OpenEuroSoundKeys();
-            CreateEuroSoundSubkeyIfNotExists("RecentFiles", true);
-            using (RegistryKey RecentFiles = EuroSoundKey.OpenSubKey("RecentFiles", true))
-            {
-                for (int i = 0; i < FilesList.Length; i++)
-                {
-                    if (!string.IsNullOrEmpty(FilesList[i]))
-                    {
-                        RecentFiles.SetValue("File" + i, FilesList[i], RegistryValueKind.String);
-                    }
-                }
-                RecentFiles.Close();
-            }
-        }
-
-        internal IEnumerable<string> LoadRecentFilesList()
-        {
-            string FilePath;
-
-            OpenEuroSoundKeys();
-            CreateEuroSoundSubkeyIfNotExists("RecentFiles", true);
-            using (RegistryKey RecentFiles = EuroSoundKey.OpenSubKey("RecentFiles", true))
-            {
-                for (int i = 0; i < 8; i++)
-                {
-                    FilePath = (string)RecentFiles.GetValue("File" + i, string.Empty);
-                    if (!string.IsNullOrEmpty(FilePath) && File.Exists(FilePath))
-                    {
-                        yield return FilePath;
-                    }
-                }
-                RecentFiles.Close();
-            }
         }
         #endregion
 

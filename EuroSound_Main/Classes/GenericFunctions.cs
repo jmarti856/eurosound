@@ -381,10 +381,12 @@ namespace EuroSound_Application
         {
             using (Process ProcessExecuteCMD = new Process())
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                startInfo.FileName = "cmd.exe";
-                startInfo.Arguments = Command;
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    FileName = "cmd.exe",
+                    Arguments = Command
+                };
                 ProcessExecuteCMD.StartInfo = startInfo;
                 ProcessExecuteCMD.Start();
             }

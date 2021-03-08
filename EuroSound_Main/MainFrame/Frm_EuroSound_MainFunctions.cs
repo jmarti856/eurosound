@@ -1,9 +1,7 @@
 ﻿using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
-using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -14,20 +12,6 @@ namespace EuroSound_Application
         private void OpenFormsWithFileToLoad(string FileToLoad)
         {
             int TypeOfFileToLoad;
-
-            //Save file to recent files list
-            if (string.IsNullOrEmpty(RecentFilesList[0]))
-            {
-                MainMenu_File.DropDownItems.RemoveAt(3);
-            }
-
-            //Add it to list if not exists
-            if (!RecentFilesList.Contains(FileToLoad))
-            {
-
-                RecentFilesList[NextMergeIndexRecentFiles - 1] = FileToLoad;
-                InsertRecentFileToMenu(FileToLoad);
-            }
 
             //Open form
             TypeOfFileToLoad = TypeOfEuroSoundFile(FileToLoad);
@@ -152,96 +136,6 @@ namespace EuroSound_Application
             }
 
             return FilesRemoved;
-        }
-
-        private void InsertRecentFileToMenu(string FilePath)
-        {
-            bool ItemExists = false;
-            string NextItemName;
-
-            //Get Name
-            NextItemName = "RecentFile" + NextMergeIndexRecentFiles;
-
-            //If Exists Modify
-            foreach (object item in MainMenu_File.DropDownItems)
-            {
-                if (item.GetType() == typeof(ToolStripMenuItem))
-                {
-                    ToolStripMenuItem TItem = (ToolStripMenuItem)item;
-                    if (TItem.Name.Equals(NextItemName))
-                    {
-                        TItem.Text = string.Join(" ", NextMergeIndexRecentFiles.ToString(), GetShortPath(FilePath));
-                        TItem.Tag = FilePath;
-                        ItemExists = true;
-                        break;
-                    }
-                }
-            }
-
-            //Create From Scratch
-            if (!ItemExists)
-            {
-                //Add Item
-                int RelativeIndex = MainMenu_File.DropDownItems.IndexOf(MenuItemFile_Separator1);
-
-                ToolStripMenuItem RecentFile = new ToolStripMenuItem(string.Join(" ", NextMergeIndexRecentFiles.ToString(), GetShortPath(FilePath)), null, RecentFile_click);
-                RecentFile.MouseHover += new EventHandler(RecentFile_MouseHover);
-                RecentFile.MouseLeave += new EventHandler(RecentFile_MouseLeave);
-                RecentFile.MergeIndex = 11 + (NextMergeIndexRecentFiles);
-                RecentFile.Tag = FilePath;
-                RecentFile.Name = NextItemName;
-                MainMenu_File.DropDownItems.Insert(NextMergeIndexRecentFiles + RelativeIndex, RecentFile);
-            }
-
-            NextMergeIndexRecentFiles++;
-
-            //Items Count
-            if (NextMergeIndexRecentFiles > 8)
-            {
-                NextMergeIndexRecentFiles = 1;
-            }
-        }
-
-        private string GetShortPath(string FullPath)
-        {
-            string ShortPath;
-            string SplittedPath;
-
-            //Get filename
-            ShortPath = Path.GetFileName(FullPath);
-
-            //Split path
-            string[] Paths = FullPath.Split(new string[] { "\\" }, StringSplitOptions.None);
-
-            //We have more than 3 directories
-            if (Paths.Length > 3)
-            {
-                SplittedPath = string.Join(@"\", Paths[0], Paths[1], "...", Paths[Paths.Length - 1]);
-                if (SplittedPath.Length <= 30)
-                {
-                    ShortPath = SplittedPath;
-                }
-            }
-            //We have 2 directories (Root Folder Filename)
-            else if (Paths.Length == 3)
-            {
-                SplittedPath = string.Join(@"\", Paths[0], Paths[1], Paths[Paths.Length - 1]);
-                if (SplittedPath.Length <= 30)
-                {
-                    ShortPath = SplittedPath;
-                }
-            }
-            //We have root and file name
-            else if (Paths.Length < 3)
-            {
-                SplittedPath = string.Join(@"\", Paths[0], Paths[Paths.Length - 1]);
-                if (SplittedPath.Length <= 30)
-                {
-                    ShortPath = SplittedPath;
-                }
-            }
-
-            return ShortPath;
         }
     }
 }

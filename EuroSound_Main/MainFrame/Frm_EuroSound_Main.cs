@@ -7,10 +7,8 @@ using EuroSound_Application.CustomControls.NewProjectForm;
 using EuroSound_Application.SFXData;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -22,14 +20,13 @@ namespace EuroSound_Application
         //*===============================================================================================
         private int FormID = 0;
         private string ArgumentFromSplash;
-        private string[] RecentFilesList = new string[8];
-        private int NextMergeIndexRecentFiles = 1;
         private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
+        protected MostRecentFilesMenu RecentFilesMenu;
+        private string RecentFilesMenuRegKey = "SOFTWARE\\Eurocomm\\EuroSound\\RecentFiles";
 
         public Frm_EuroSound_Main(string ArgumentToLoad)
         {
             InitializeComponent();
-
             ArgumentFromSplash = ArgumentToLoad;
 
             //Menu Item: File
@@ -133,25 +130,8 @@ namespace EuroSound_Application
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
             //Load Recent Files
-            IEnumerable<string> FilesList = WRegFunctions.LoadRecentFilesList();
-            if (FilesList.Any())
-            {
-                int i = 0;
-                MainMenu_File.DropDownItems.RemoveAt(3);
-                foreach (string File in FilesList)
-                {
-                    if (i < RecentFilesList.Length)
-                    {
-                        InsertRecentFileToMenu(File);
-                        RecentFilesList[i] = File;
-                        i++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
+            RecentFilesMenu = new MruStripMenuInline(MainMenu_File, MenuItemFile_RecentFiles, new MostRecentFilesMenu.ClickedHandler(RecentFile_click), RecentFilesMenuRegKey, 8);
+            RecentFilesMenu.LoadFromRegistry();
 
             //This means we loaded a soundbank file
             if (!string.IsNullOrEmpty(ArgumentFromSplash))
@@ -197,7 +177,7 @@ namespace EuroSound_Application
         private void Frm_EuroSound_Main_FormClosed(object sender, FormClosedEventArgs e)
         {
             WRegFunctions.SaveWindowState("MainFrame", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
-            WRegFunctions.SaveRecentFilesList(RecentFilesList);
+            RecentFilesMenu.SaveToRegistry();
             ClearTemporalFiles();
         }
 
@@ -250,6 +230,7 @@ namespace EuroSound_Application
             ArgumentFromSplash = GenericFunctions.OpenFileBrowser("Eurosound Files (*.esf)|*.esf", 0, false);
             if (!string.IsNullOrEmpty(ArgumentFromSplash))
             {
+                RecentFilesMenu.AddFile(ArgumentFromSplash);
                 OpenFormsWithFileToLoad(ArgumentFromSplash);
             }
         }
@@ -257,25 +238,20 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* MAIN MENU -- RECENT FILES
         //*===============================================================================================
-        private void RecentFile_click(object sender, EventArgs e)
+        private void RecentFile_click(int number, String filename)
         {
-            string FilePath;
-
-            //Get item and file path
-            ToolStripMenuItem ClickedBy = (ToolStripMenuItem)sender;
-            FilePath = ClickedBy.Tag.ToString();
-
             //Update status bar
             GlobalPreferences.StatusBar_ToolTipMode = false;
 
             //Load file
-            if (System.IO.File.Exists(FilePath))
+            if (System.IO.File.Exists(filename))
             {
-                OpenFormsWithFileToLoad(ClickedBy.Tag.ToString());
+                OpenFormsWithFileToLoad(filename);
             }
             else
             {
-                MessageBox.Show(string.Join(" ", "Loading File:", FilePath, "\n", "\n", "Error:", FilePath, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(string.Join(" ", "Loading File:", filename, "\n", "\n", "Error:", filename, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                RecentFilesMenu.RemoveFile(number);
             }
         }
 

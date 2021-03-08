@@ -31,9 +31,9 @@ namespace EuroSound_Application.SoundBanksEditor
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Audio Data", 0, 0);
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Sounds", 0, 0);
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Streamed Sounds", 0, 0);
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Audio Data", 0, 0);
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Sounds", 0, 0);
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Streamed Sounds", 0, 0);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Soundbanks_Main));
             this.TreeView_File = new System.Windows.Forms.TreeView();
             this.ImageList_TreeNode = new System.Windows.Forms.ImageList(this.components);
@@ -169,25 +169,25 @@ namespace EuroSound_Application.SoundBanksEditor
             this.TreeView_File.Location = new System.Drawing.Point(0, 0);
             this.TreeView_File.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.TreeView_File.Name = "TreeView_File";
-            treeNode4.ImageIndex = 0;
-            treeNode4.Name = "AudioData";
-            treeNode4.SelectedImageIndex = 0;
-            treeNode4.Tag = "Root";
-            treeNode4.Text = "Audio Data";
-            treeNode5.ImageIndex = 0;
-            treeNode5.Name = "Sounds";
-            treeNode5.SelectedImageIndex = 0;
-            treeNode5.Tag = "Root";
-            treeNode5.Text = "Sounds";
-            treeNode6.ImageIndex = 0;
-            treeNode6.Name = "StreamedSounds";
-            treeNode6.SelectedImageIndex = 0;
-            treeNode6.Tag = "Root";
-            treeNode6.Text = "Streamed Sounds";
+            treeNode1.ImageIndex = 0;
+            treeNode1.Name = "AudioData";
+            treeNode1.SelectedImageIndex = 0;
+            treeNode1.Tag = "Root";
+            treeNode1.Text = "Audio Data";
+            treeNode2.ImageIndex = 0;
+            treeNode2.Name = "Sounds";
+            treeNode2.SelectedImageIndex = 0;
+            treeNode2.Tag = "Root";
+            treeNode2.Text = "Sounds";
+            treeNode3.ImageIndex = 0;
+            treeNode3.Name = "StreamedSounds";
+            treeNode3.SelectedImageIndex = 0;
+            treeNode3.Tag = "Root";
+            treeNode3.Text = "Streamed Sounds";
             this.TreeView_File.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode4,
-            treeNode5,
-            treeNode6});
+            treeNode1,
+            treeNode2,
+            treeNode3});
             this.TreeView_File.SelectedImageIndex = 0;
             this.TreeView_File.Size = new System.Drawing.Size(456, 591);
             this.TreeView_File.TabIndex = 1;
@@ -231,7 +231,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.ContextMenuFolders_Separator3,
             this.ContextMenuFolder_TextColor});
             this.ContextMenu_Folders.Name = "contextMenuStrip1";
-            this.ContextMenu_Folders.Size = new System.Drawing.Size(181, 198);
+            this.ContextMenu_Folders.Size = new System.Drawing.Size(168, 176);
             // 
             // ContextMenuFolders_Folder
             // 
@@ -247,7 +247,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.ContextMenuFolders_Separator7,
             this.ContextMenuFolder_Move});
             this.ContextMenuFolders_Folder.Name = "ContextMenuFolders_Folder";
-            this.ContextMenuFolders_Folder.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuFolders_Folder.Size = new System.Drawing.Size(167, 22);
             this.ContextMenuFolders_Folder.Text = "Folder";
             // 
             // ContextMenuFolders_New
@@ -315,57 +315,57 @@ namespace EuroSound_Application.SoundBanksEditor
             // ContextMenuFolders_Separator1
             // 
             this.ContextMenuFolders_Separator1.Name = "ContextMenuFolders_Separator1";
-            this.ContextMenuFolders_Separator1.Size = new System.Drawing.Size(177, 6);
+            this.ContextMenuFolders_Separator1.Size = new System.Drawing.Size(164, 6);
             // 
             // ContextMenuFolder_AddSound
             // 
             this.ContextMenuFolder_AddSound.Name = "ContextMenuFolder_AddSound";
-            this.ContextMenuFolder_AddSound.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuFolder_AddSound.Size = new System.Drawing.Size(167, 22);
             this.ContextMenuFolder_AddSound.Text = "Add Sound";
             this.ContextMenuFolder_AddSound.Click += new System.EventHandler(this.ContextMenu_Folders_AddSound_Click);
             // 
             // ContextMenuFolder_Rename
             // 
             this.ContextMenuFolder_Rename.Name = "ContextMenuFolder_Rename";
-            this.ContextMenuFolder_Rename.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuFolder_Rename.Size = new System.Drawing.Size(167, 22);
             this.ContextMenuFolder_Rename.Text = "Rename";
             this.ContextMenuFolder_Rename.Click += new System.EventHandler(this.ContextMenuFolder_Rename_Click);
             // 
             // ContextMenuFolder_AddAudio
             // 
             this.ContextMenuFolder_AddAudio.Name = "ContextMenuFolder_AddAudio";
-            this.ContextMenuFolder_AddAudio.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuFolder_AddAudio.Size = new System.Drawing.Size(167, 22);
             this.ContextMenuFolder_AddAudio.Text = "Add Audio";
             this.ContextMenuFolder_AddAudio.Click += new System.EventHandler(this.ContextMenu_Folders_AddAudio_Click);
             // 
             // ContextMenuFolder_ExportSounds
             // 
             this.ContextMenuFolder_ExportSounds.Name = "ContextMenuFolder_ExportSounds";
-            this.ContextMenuFolder_ExportSounds.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuFolder_ExportSounds.Size = new System.Drawing.Size(167, 22);
             this.ContextMenuFolder_ExportSounds.Text = "Export Sounds";
             this.ContextMenuFolder_ExportSounds.Click += new System.EventHandler(this.ContextMenuFolder_ExportSounds_Click);
             // 
             // ContextMenuFolders_Separator2
             // 
             this.ContextMenuFolders_Separator2.Name = "ContextMenuFolders_Separator2";
-            this.ContextMenuFolders_Separator2.Size = new System.Drawing.Size(177, 6);
+            this.ContextMenuFolders_Separator2.Size = new System.Drawing.Size(164, 6);
             // 
             // ContextMenuFolder_Purge
             // 
             this.ContextMenuFolder_Purge.Name = "ContextMenuFolder_Purge";
-            this.ContextMenuFolder_Purge.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuFolder_Purge.Size = new System.Drawing.Size(167, 22);
             this.ContextMenuFolder_Purge.Text = "Purge Audio Data";
             this.ContextMenuFolder_Purge.Click += new System.EventHandler(this.ContextMenuFolder_Purge_Click);
             // 
             // ContextMenuFolders_Separator3
             // 
             this.ContextMenuFolders_Separator3.Name = "ContextMenuFolders_Separator3";
-            this.ContextMenuFolders_Separator3.Size = new System.Drawing.Size(177, 6);
+            this.ContextMenuFolders_Separator3.Size = new System.Drawing.Size(164, 6);
             // 
             // ContextMenuFolder_TextColor
             // 
             this.ContextMenuFolder_TextColor.Name = "ContextMenuFolder_TextColor";
-            this.ContextMenuFolder_TextColor.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuFolder_TextColor.Size = new System.Drawing.Size(167, 22);
             this.ContextMenuFolder_TextColor.Text = "Text Color...";
             this.ContextMenuFolder_TextColor.Click += new System.EventHandler(this.ContextMenuFolders_TextColor_Click);
             // 
@@ -947,7 +947,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // Button_StopStreamData
             // 
             this.Button_StopStreamData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_StopStreamData.Location = new System.Drawing.Point(353, 265);
+            this.Button_StopStreamData.Location = new System.Drawing.Point(353, 256);
             this.Button_StopStreamData.Name = "Button_StopStreamData";
             this.Button_StopStreamData.Size = new System.Drawing.Size(75, 23);
             this.Button_StopStreamData.TabIndex = 4;
@@ -958,7 +958,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // Textbox_StreamFilesCount
             // 
             this.Textbox_StreamFilesCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Textbox_StreamFilesCount.Location = new System.Drawing.Point(124, 267);
+            this.Textbox_StreamFilesCount.Location = new System.Drawing.Point(124, 258);
             this.Textbox_StreamFilesCount.Name = "Textbox_StreamFilesCount";
             this.Textbox_StreamFilesCount.Size = new System.Drawing.Size(100, 20);
             this.Textbox_StreamFilesCount.TabIndex = 2;
@@ -969,7 +969,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Label_StreamFilesCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Label_StreamFilesCount.AutoSize = true;
             this.Label_StreamFilesCount.ForeColor = System.Drawing.Color.ForestGreen;
-            this.Label_StreamFilesCount.Location = new System.Drawing.Point(6, 270);
+            this.Label_StreamFilesCount.Location = new System.Drawing.Point(6, 261);
             this.Label_StreamFilesCount.Name = "Label_StreamFilesCount";
             this.Label_StreamFilesCount.Size = new System.Drawing.Size(112, 13);
             this.Label_StreamFilesCount.TabIndex = 1;
@@ -978,7 +978,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // Button_UpdateList_StreamData
             // 
             this.Button_UpdateList_StreamData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateList_StreamData.Location = new System.Drawing.Point(272, 265);
+            this.Button_UpdateList_StreamData.Location = new System.Drawing.Point(272, 256);
             this.Button_UpdateList_StreamData.Name = "Button_UpdateList_StreamData";
             this.Button_UpdateList_StreamData.Size = new System.Drawing.Size(75, 23);
             this.Button_UpdateList_StreamData.TabIndex = 3;
@@ -1001,7 +1001,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.ListView_StreamData.HideSelection = false;
             this.ListView_StreamData.Location = new System.Drawing.Point(6, 6);
             this.ListView_StreamData.Name = "ListView_StreamData";
-            this.ListView_StreamData.Size = new System.Drawing.Size(422, 253);
+            this.ListView_StreamData.Size = new System.Drawing.Size(422, 244);
             this.ListView_StreamData.TabIndex = 0;
             this.ListView_StreamData.UseCompatibleStateImageBehavior = false;
             this.ListView_StreamData.View = System.Windows.Forms.View.Details;

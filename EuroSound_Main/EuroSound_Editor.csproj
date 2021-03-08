@@ -304,6 +304,7 @@
     <Compile Include="CustomControls\ListView_ColumnSortingClick.Designer.cs">
       <DependentUpon>ListView_ColumnSortingClick.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainFrame\MostRecentFilesMenu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Classes\NodeSorter.cs" />
