@@ -19,12 +19,12 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
             FileProperties.SoundID = BReader.ReadUInt32();
             //TreeView Data
             TreeViewDataOffset = BReader.ReadUInt32();
-            //SoundsListData Offset -- Not used for now
+            //SoundsListData Offset
             SoundsListDataOffset = BReader.ReadUInt32();
-            //AudioData Offset -- Not used for now
+            //AudioData Offset
             AudioDataOffset = BReader.ReadUInt32();
             //FullSize
-            BReader.ReadUInt32();
+            BReader.BaseStream.Position += 4;
             //File Name
             FileProperties.FileName = BReader.ReadString();
 

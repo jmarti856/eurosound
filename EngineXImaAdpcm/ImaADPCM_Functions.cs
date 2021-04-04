@@ -204,6 +204,8 @@ namespace EngineXImaAdpcm
             step = stepsizeTable[index];
 
             bufferstep = false;
+
+
             for (int i = 0; i < numSamples; i++)
             {
                 /* Step 1 - get the delta value */
@@ -265,6 +267,46 @@ namespace EngineXImaAdpcm
 
             state.valprev = valpred;
             state.index = index;
+        }
+
+        public byte[] InterleaveStereo(byte[] LeftChannel, byte[] RightChannel)
+        {
+            int IndexLC, IndexRC;
+            bool StereoInterleaving;
+            int TotalLength;
+            byte[] InterleavingStereoData;
+
+            //Initialize variables
+            IndexLC = 0;
+            IndexRC = 0;
+            StereoInterleaving = true;
+            TotalLength = LeftChannel.Length * 2;
+
+            using (MemoryStream InterleavedStereo = new MemoryStream())
+            {
+                using (BinaryWriter BWriter = new BinaryWriter(InterleavedStereo))
+                {
+                    //Write ima data
+                    for (int i = 0; i < TotalLength; i++)
+                    {
+                        if (StereoInterleaving)
+                        {
+                            BWriter.Write(LeftChannel[IndexLC]);
+                            IndexLC++;
+                        }
+                        else
+                        {
+                            BWriter.Write(RightChannel[IndexRC]);
+                            IndexRC++;
+                        }
+                        StereoInterleaving = !StereoInterleaving;
+                    }
+                }
+
+                InterleavingStereoData = InterleavedStereo.ToArray();
+            }
+
+            return InterleavingStereoData;
         }
     }
 }

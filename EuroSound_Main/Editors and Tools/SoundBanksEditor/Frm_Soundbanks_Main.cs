@@ -35,6 +35,7 @@ namespace EuroSound_Application.SoundBanksEditor
         private SoundBanksYMLReader LibYamlReader = new SoundBanksYMLReader();
         private AudioFunctions AudioFunctionsLibrary = new AudioFunctions();
         private readonly Regex sWhitespace = new Regex(@"\s+");
+        private MostRecentFilesMenu RecentFilesMenu;
         private string FileToLoadArg, ProjectName;
         private string LoadedFile = string.Empty;
 
@@ -42,12 +43,13 @@ namespace EuroSound_Application.SoundBanksEditor
         private Stack<object> UndoListSounds = new Stack<object>();
         private Stack<KeyValuePair<string, TreeNode>> UndoListNodes = new Stack<KeyValuePair<string, TreeNode>>();
 
-        public Frm_Soundbanks_Main(string NewProjectName, string FileToLoad)
+        public Frm_Soundbanks_Main(string NewProjectName, string FileToLoad, MostRecentFilesMenu RecentFiles)
         {
             InitializeComponent();
 
             FileToLoadArg = FileToLoad;
             ProjectName = NewProjectName;
+            RecentFilesMenu = RecentFiles;
 
             //Menu Item: File
             MenuItem_File_Close.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_Close")); };

@@ -13,6 +13,7 @@ namespace EuroSound_Application
         internal static Dictionary<uint, string> SB_Defines = new Dictionary<uint, string>();
         internal static Dictionary<int, float[]> SFX_Data = new Dictionary<int, float[]>();
         internal static Dictionary<uint, string> SFX_Defines = new Dictionary<uint, string>();
+        internal static Dictionary<uint, string> MFX_Defines = new Dictionary<uint, string>();
 
         internal static void AddDataToCombobox(ComboBox ControlToAddData, Dictionary<uint, string> HashcodesDict)
         {
@@ -70,6 +71,20 @@ namespace EuroSound_Application
                 //Read Data
                 ReadSFXData();
                 GlobalPreferences.HT_SoundsDataMD5 = GenericFunctions.CalculateMD5(GlobalPreferences.HT_SoundsDataPath);
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Hashcodes_SFXData_NotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        internal static void LoadMusicHashcodes()
+        {
+            if (File.Exists(GlobalPreferences.HT_MusicPath))
+            {
+                //Read Data
+                ReadMusicHashcodes();
+                GlobalPreferences.HT_MusicMD5 = GenericFunctions.CalculateMD5(GlobalPreferences.HT_MusicPath);
             }
             else
             {
@@ -157,6 +172,66 @@ namespace EuroSound_Application
             }
         }
         #endregion SFX Defines && SB Defines dictionary
+
+        #region MFX Defines
+        internal static void ReadMusicHashcodes()
+        {
+            string line;
+            uint HexNum;
+            string HexLabel;
+
+            //Clear dictionaries
+            SFX_Defines.Clear();
+            SB_Defines.Clear();
+
+            //Regex FindHexNumber = new Regex(@"(0[xX][A-Fa-f0-9]+;?)+$");
+            Regex FindHashcodeLabel = new Regex(@"\s+(\w+)");
+
+            using (FileStream fs = new FileStream(GlobalPreferences.HT_MusicPath, FileMode.Open, FileAccess.Read))
+            {
+                using (BufferedStream bs = new BufferedStream(fs))
+                {
+                    using (StreamReader reader = new StreamReader(bs))
+                    {
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            if (line.StartsWith("/"))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                MatchCollection matches = FindHashcodeLabel.Matches(line);
+                                if (matches.Count >= 2)
+                                {
+                                    HexLabel = matches[0].Value.Trim();
+                                    try
+                                    {
+                                        HexNum = Convert.ToUInt32(matches[1].Value.Trim(), 16);
+
+                                        if (HexNum >= 0x1BE00000)
+                                        {
+                                            if (HexLabel.StartsWith("MF", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                if (!MFX_Defines.ContainsKey(HexNum))
+                                                {
+                                                    MFX_Defines.Add(HexNum, HexLabel);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    catch (FormatException)
+                                    {
+                                        MessageBox.Show(string.Join(" ", new string[] { "A hashcode with an invalid hex format has been found, the label is:", HexLabel }), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        #endregion MFX Defines
 
         #region SFX DATA DICTIONARY
         internal static void ReadSFXData()

@@ -38,7 +38,14 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
         private void Frm_FileProperties_Shown(object sender, EventArgs e)
         {
             //Datasource Combobox
-            Hashcodes.AddDataToCombobox(Combobox_FileHashcode, Hashcodes.SB_Defines);
+            if (CurrentFileProperties.TypeOfData != 2)
+            {
+                Hashcodes.AddDataToCombobox(Combobox_FileHashcode, Hashcodes.SB_Defines);
+            }
+            else
+            {
+                Hashcodes.AddDataToCombobox(Combobox_FileHashcode, Hashcodes.MFX_Defines);
+            }
 
             //Put the selected hashcode in case is not null
             if (CurrentFileProperties.Hashcode != 0x00000000)
@@ -89,7 +96,14 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
                         CurrentFileProperties.Hashcode = SelectedHashcode;
 
                         //Update Hashcode File Label
-                        GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, CurrentFileProperties.Hashcode), "Hashcode");
+                        if (CurrentFileProperties.TypeOfData == 2)
+                        {
+                            GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, CurrentFileProperties.Hashcode), "Hashcode");
+                        }
+                        else
+                        {
+                            GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, CurrentFileProperties.Hashcode), "Hashcode");
+                        }
                     }
                 }
             }

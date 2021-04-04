@@ -79,12 +79,15 @@ namespace EuroSound_Application.StreamSounds
 
         private string OpenSaveAsDialog(TreeView TreeView_File, Dictionary<uint, EXSoundStream> StreamSoundsList, ProjectFile FileProperties)
         {
-            string SavePath = GenericFunctions.SaveFileBrowser("EuroSound Files (*.esf)|*.esf|All files (*.*)|*.*", 1, true, "StreamFile");
+            string SavePath = GenericFunctions.SaveFileBrowser("EuroSound Files (*.esf)|*.esf|All files (*.*)|*.*", 1, true, FileProperties.FileName);
             if (!string.IsNullOrEmpty(SavePath))
             {
                 if (Directory.Exists(Path.GetDirectoryName(SavePath)))
                 {
                     SerializeInfo.SaveStreamedSoundsBank(TreeView_File, StreamSoundsList, SavePath, FileProperties);
+
+                    //Add file to recent list
+                    RecentFilesMenu.AddFile(SavePath);
                 }
             }
             return SavePath;

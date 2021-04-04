@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Reflection;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.AboutForm
@@ -11,14 +11,19 @@ namespace EuroSound_Application.AboutForm
             InitializeComponent();
         }
 
+        private void Frm_AboutEuroSound_Load(object sender, EventArgs e)
+        {
+            Label_Version.Text = GenericFunctions.GetEuroSoundVersion();
+        }
+
+        private void Button_ReleaseInfo_Click(object sender, EventArgs e)
+        {
+            Process.Start(string.Join("", "https://github.com/jmarti856/eurosound/releases/tag/", GenericFunctions.GetEuroSoundVersion()));
+        }
+
         private void Button_OK_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void Frm_AboutEuroSound_Load(object sender, EventArgs e)
-        {
-            Label_Version.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
     }
 }

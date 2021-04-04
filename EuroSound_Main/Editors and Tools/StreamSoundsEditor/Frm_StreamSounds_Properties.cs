@@ -69,7 +69,7 @@ namespace EuroSound_Application.StreamSounds
         private void Button_MarkersEditor_Click(object sender, EventArgs e)
         {
             AudioLibrary.StopAudio(_waveOut);
-            Frm_StreamSounds_MarkersEditor MarkersEditr = new Frm_StreamSounds_MarkersEditor(TemporalSound)
+            Frm_StreamSounds_MarkersEditor MarkersEditr = new Frm_StreamSounds_MarkersEditor(TemporalSound, null, false)
             {
                 Text = GenericFunctions.TruncateLongString(SoundName, 25) + " - Markers",
                 Tag = Tag.ToString(),
@@ -123,6 +123,9 @@ namespace EuroSound_Application.StreamSounds
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
+            TreeNode[] Results;
+            Form OpenForm;
+
             SelectedSound.BaseVolume = (uint)(Numeric_BaseVolume.Value * 100);
             SelectedSound.OutputThisSound = CheckBox_OutputThisSound.Checked;
 
@@ -142,9 +145,10 @@ namespace EuroSound_Application.StreamSounds
                 SelectedSound.Markers = new List<EXStreamMarker>(TemporalSound.Markers);
             }
 
-            //--Change icon in the parent form--
-            Form OpenForm = GenericFunctions.GetFormByName("Frm_StreamSoundsEditorMain", Tag.ToString());
-            TreeNode[] Results = ((Frm_StreamSoundsEditorMain)OpenForm).TreeView_StreamData.Nodes.Find(SelectedSoundKey, true);
+            //Change node icon
+            OpenForm = GenericFunctions.GetFormByName("Frm_StreamSoundsEditorMain", Tag.ToString());
+            Results = ((Frm_StreamSoundsEditorMain)OpenForm).TreeView_StreamData.Nodes.Find(SelectedSoundKey, true);
+
             if (Results.Length > 0)
             {
                 if (SelectedSound.OutputThisSound)

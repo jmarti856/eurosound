@@ -79,6 +79,12 @@ namespace EuroSound_Application.SplashForm
 
             await Task.Delay(RandomNumber.Next(80, 100));
 
+            //-----------------------------------------[Music Defines]----------------------------------------
+            Label_Status.Text = "Loading musics hashtable, please wait...";
+            Hashcodes.LoadMusicHashcodes();
+
+            await Task.Delay(RandomNumber.Next(30, 120));
+
             //-----------------------------------------[External File]----------------------------------------
             Label_Status.Text = "Loading External File Path, please wait...";
             GlobalPreferences.StreamFilePath = WRegistryFunctions.SetExternalFilePath();

@@ -37,6 +37,9 @@ namespace EuroSound_Application.SoundBanksEditor
                 if (Directory.Exists(Path.GetDirectoryName(SavePath)))
                 {
                     EuroSoundFilesFunctions.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, SavePath, FileProperties);
+
+                    //Add file to recent list
+                    RecentFilesMenu.AddFile(SavePath);
                 }
             }
             return SavePath;

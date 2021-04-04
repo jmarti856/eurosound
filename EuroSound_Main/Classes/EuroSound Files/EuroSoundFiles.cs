@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.EuroSoundMusicFilesFunctions;
 using EuroSound_Application.EuroSoundSoundBanksFilesFunctions;
-using EuroSound_Application.EuroSoundStreamFilesFunctions;
+using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
 using EuroSound_Application.TreeViewLibraryFunctions;
@@ -154,6 +155,74 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             return FilePath;
         }
 
+        internal void LoadMusicsDocument(TreeView TreeViewControl, Dictionary<uint, EXMusic> MusicsList, string FilePath, ProjectFile FileProperties, ResourceManager ResxM)
+        {
+            sbyte TypeOfStoredData;
+            //Update Status Bar
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_ReadingESFFile"));
+
+            //Disable temporaly the treeview
+            TreeViewControl.Enabled = false;
+
+            //Init reader
+            using (BufferedStream bs = new BufferedStream(File.Open(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read)))
+            {
+                using (BinaryReader BReader = new BinaryReader(bs, Encoding.ASCII))
+                {
+                    if (FileIsCorrect(BReader))
+                    {
+                        //Type of stored data
+                        TypeOfStoredData = BReader.ReadSByte();
+                        if (TypeOfStoredData == 2)
+                        {
+                            ESF_LoadMusics Version11Reader = new ESF_LoadMusics();
+                            Version11Reader.ReadEuroSoundFile11(FileProperties, BReader, TreeViewControl, MusicsList);
+                        }
+                    }
+                    BReader.Close();
+                }
+                bs.Close();
+            }
+
+            //Expand root nodes only
+            TreeViewControl.Nodes[0].Collapse();
+            TreeViewControl.Nodes[0].Expand();
+
+            //Update images
+            foreach (TreeNode Node in TreeViewControl.Nodes)
+            {
+                UpdateNodeImagesMusicSoundBank(Node, MusicsList);
+            }
+
+            //Enable again the treeview
+            TreeViewControl.Enabled = true;
+
+            //Update Status Bar
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_Status_Ready"));
+        }
+
+        internal string SaveMusics(TreeView TreeViewControl, Dictionary<uint, EXMusic> StreamSoundsList, string FilePath, ProjectFile FileProperties)
+        {
+            BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.Create, FileAccess.Write, FileShare.Read), null, Encoding.ASCII);
+            //*===============================================================================================
+            //* HEADER
+            //*===============================================================================================
+            //MAGIC
+            BWriter.Write(Encoding.ASCII.GetBytes("ESF"));
+            //FileVersion
+            BWriter.Write(Convert.ToUInt32(11));
+            //Type of stored data
+            BWriter.Write(Convert.ToSByte(FileProperties.TypeOfData));
+
+            ESF_SaveMusics SaveMusicBank = new ESF_SaveMusics();
+            SaveMusicBank.SaveMusics(BWriter, TreeViewControl, StreamSoundsList, FileProperties);
+
+            BWriter.Close();
+            BWriter.Dispose();
+
+            return FilePath;
+        }
+
         public bool FileIsCorrect(BinaryReader BReader)
         {
             string Magic;
@@ -219,6 +288,28 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 foreach (TreeNode tn in Node.Nodes)
                 {
                     UpdateNodeImagesStreamSoundBank(tn, SoundsList);
+                }
+            }
+        }
+
+        private void UpdateNodeImagesMusicSoundBank(TreeNode Node, Dictionary<uint, EXMusic> SoundsList)
+        {
+            if (Node.Tag.Equals("Sound"))
+            {
+                EXMusic sound = EXMusicsFunctions.GetMusicByName(uint.Parse(Node.Name), SoundsList);
+                if (sound != null)
+                {
+                    if (!sound.OutputThisSound)
+                    {
+                        TreeNodeFunctions.TreeNodeSetNodeImage(Node, 5, 5);
+                    }
+                }
+            }
+            else
+            {
+                foreach (TreeNode tn in Node.Nodes)
+                {
+                    UpdateNodeImagesMusicSoundBank(tn, SoundsList);
                 }
             }
         }

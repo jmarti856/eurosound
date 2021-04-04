@@ -41,9 +41,15 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
 
         private void Frm_BuildSFXFile_FormClosing(object sender, FormClosingEventArgs e)
         {
-            BWriter.Close();
-            BWriter.Dispose();
-            BackgroundWorker_BuildSFX.Dispose();
+            if (BWriter != null)
+            {
+                BWriter.Close();
+                BWriter.Dispose();
+            }
+            if (BackgroundWorker_BuildSFX.IsBusy)
+            {
+                BackgroundWorker_BuildSFX.Dispose();
+            }
         }
 
         //*===============================================================================================

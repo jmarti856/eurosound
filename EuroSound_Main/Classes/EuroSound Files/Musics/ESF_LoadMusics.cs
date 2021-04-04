@@ -1,4 +1,5 @@
 ﻿using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.Musics;
 using EuroSound_Application.StreamSounds;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using System.Collections.Generic;
@@ -6,11 +7,11 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace EuroSound_Application.EuroSoundStreamFilesFunctions
+namespace EuroSound_Application.EuroSoundMusicFilesFunctions
 {
-    public class ESF_LoadStreamSounds
+    public class ESF_LoadMusics
     {
-        internal void ReadEuroSoundFile11(ProjectFile FileProperties, BinaryReader BReader, TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList)
+        internal void ReadEuroSoundFile11(ProjectFile FileProperties, BinaryReader BReader, TreeView TreeViewControl, Dictionary<uint, EXMusic> MusicsList)
         {
             uint TreeViewDataOffset, StreamSoundsDictionaryOffset;
 
@@ -19,13 +20,13 @@ namespace EuroSound_Application.EuroSoundStreamFilesFunctions
             //Sound ID
             FileProperties.SoundID = BReader.ReadUInt32();
             //Sounds List Offset
-            BReader.ReadUInt32();//Only Used in the "Frm_NewStreamSound" Form
+            BReader.BaseStream.Position += 4;//Only Used in the "Frm_NewStreamSound" Form
             //TreeViewData Offset
             TreeViewDataOffset = BReader.ReadUInt32();
             //Dictionary Data Offset
             StreamSoundsDictionaryOffset = BReader.ReadUInt32();
             //FileSize
-            BReader.ReadUInt32();
+            BReader.BaseStream.Position += 4;
             //File Name
             FileProperties.FileName = BReader.ReadString();
 
@@ -39,13 +40,13 @@ namespace EuroSound_Application.EuroSoundStreamFilesFunctions
             //* Dictionary Info
             //*===============================================================================================
             BReader.BaseStream.Position = StreamSoundsDictionaryOffset;
-            ReadDictionaryData(BReader, StreamSoundsList);
+            ReadDictionaryData(BReader, MusicsList);
 
             //Close Reader
             BReader.Close();
         }
 
-        internal void ReadDictionaryData(BinaryReader BReader, Dictionary<uint, EXSoundStream> DictionaryData)
+        internal void ReadDictionaryData(BinaryReader BReader, Dictionary<uint, EXMusic> DictionaryData)
         {
             int DictionaryItems, PCM_DataLength, ADPCM_DataLength;
             uint SoundStreamKey, StartMarkersCount, MarkersCount;
@@ -54,25 +55,37 @@ namespace EuroSound_Application.EuroSoundStreamFilesFunctions
             for (int i = 0; i < DictionaryItems; i++)
             {
                 SoundStreamKey = BReader.ReadUInt32();
-                EXSoundStream StreamSound = new EXSoundStream
+                EXMusic Music = new EXMusic
                 {
                     //DisplayName = BReader.ReadString(),
                     BaseVolume = BReader.ReadUInt32(),
                 };
 
-                //Read Wav
+                //Read Data
+                Music.Frequency = BReader.ReadUInt32();
+                Music.Channels = BReader.ReadByte();
+                Music.Bits = BReader.ReadUInt32();
+                Music.Duration = BReader.ReadUInt32();
+                Music.RealSize = BReader.ReadUInt32();
+                Music.Encoding = BReader.ReadString();
+                Music.WAVFileMD5 = BReader.ReadString();
+                Music.WAVFileName = BReader.ReadString();
+
+                //Read Wav Left Channel
                 PCM_DataLength = BReader.ReadInt32();
-                StreamSound.PCM_Data = BReader.ReadBytes(PCM_DataLength);
+                Music.PCM_Data_LeftChannel = BReader.ReadBytes(PCM_DataLength);
                 ADPCM_DataLength = BReader.ReadInt32();
-                StreamSound.IMA_ADPCM_DATA = BReader.ReadBytes(ADPCM_DataLength);
-                StreamSound.Frequency = BReader.ReadUInt32();
-                StreamSound.Channels = BReader.ReadByte();
-                StreamSound.Bits = BReader.ReadUInt32();
-                StreamSound.Duration = BReader.ReadUInt32();
-                StreamSound.Encoding = BReader.ReadString();
-                StreamSound.WAVFileMD5 = BReader.ReadString();
-                StreamSound.WAVFileName = BReader.ReadString();
-                StreamSound.RealSize = BReader.ReadUInt32();
+                Music.IMA_ADPCM_DATA_LeftChannel = BReader.ReadBytes(ADPCM_DataLength);
+
+                //Read Wav Right Channel
+                PCM_DataLength = BReader.ReadInt32();
+                Music.PCM_Data_RightChannel = BReader.ReadBytes(PCM_DataLength);
+                ADPCM_DataLength = BReader.ReadInt32();
+                Music.IMA_ADPCM_DATA_RightChannel = BReader.ReadBytes(ADPCM_DataLength);
+
+                //Read Stereo Track
+                PCM_DataLength = BReader.ReadInt32();
+                Music.PCM_Data = BReader.ReadBytes(PCM_DataLength);
 
                 //Read Start Markers List
                 StartMarkersCount = BReader.ReadUInt32();
@@ -94,7 +107,7 @@ namespace EuroSound_Application.EuroSoundStreamFilesFunctions
                         StateA = BReader.ReadUInt32(),
                         StateB = BReader.ReadUInt32()
                     };
-                    StreamSound.StartMarkers.Add(StartMarker);
+                    Music.StartMarkers.Add(StartMarker);
                 }
 
                 //Read Markers
@@ -112,11 +125,10 @@ namespace EuroSound_Application.EuroSoundStreamFilesFunctions
                         MarkerCount = BReader.ReadUInt32(),
                         LoopMarkerCount = BReader.ReadUInt32()
                     };
-                    StreamSound.Markers.Add(Marker);
+                    Music.Markers.Add(Marker);
                 }
-                StreamSound.OutputThisSound = BReader.ReadBoolean();
-
-                DictionaryData.Add(SoundStreamKey, StreamSound);
+                Music.OutputThisSound = BReader.ReadBoolean();
+                DictionaryData.Add(SoundStreamKey, Music);
             }
         }
 
@@ -134,7 +146,7 @@ namespace EuroSound_Application.EuroSoundStreamFilesFunctions
                 NodeName = BReader.ReadString();
                 DisplayName = BReader.ReadString();
                 //Index Unused for now
-                BReader.ReadInt32();
+                BReader.BaseStream.Position += 4;
                 //ImageKey Unused for now
                 BReader.ReadString();
                 SelectedImageIndex = BReader.ReadInt32();

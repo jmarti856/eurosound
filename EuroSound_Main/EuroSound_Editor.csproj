@@ -169,10 +169,15 @@
     <Compile Include="ApplicationPreferences\Frm_MainPreferences.Designer.cs">
       <DependentUpon>Frm_MainPreferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="Classes\EuroSound Files\Musics\ESF_LoadMusics.cs" />
+    <Compile Include="Classes\EuroSound Files\Musics\ESF_SaveMusics.cs" />
     <Compile Include="Classes\EuroSound Interchange File\ESIF_Exporter.cs" />
     <Compile Include="Classes\EuroSound Interchange File\ESIF_Loader.cs" />
+    <Compile Include="Classes\EuroSound Markers File\MarkerFilesMusic_Loader.cs" />
+    <Compile Include="Classes\EuroSound Markers File\MarkerFilesMusic_Exporter.cs" />
     <Compile Include="Classes\ListViewFunctions.cs" />
     <Compile Include="Classes\EuroSound Markers File\MarkerFiles_Exporter.cs" />
+    <Compile Include="Classes\SFX_Files\GenerateSFXMusicBank.cs" />
     <Compile Include="Editors and Tools\AudioConverter\Frm_AudioConverter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -181,10 +186,10 @@
     </Compile>
     <Compile Include="Classes\AudioFunctions.cs" />
     <Compile Include="Classes\EuroSoundBashMode.cs" />
-    <Compile Include="Classes\EuroSound Files\ESF_LoadStreamSounds.cs" />
-    <Compile Include="Classes\EuroSound Files\ESF_SaveSoundBanks.cs" />
-    <Compile Include="Classes\EuroSound Files\ESF_LoadSoundBanks.cs" />
-    <Compile Include="Classes\EuroSound Files\ESF_SaveStreamedSounds.cs" />
+    <Compile Include="Classes\EuroSound Files\StreamSounds\ESF_LoadStreamSounds.cs" />
+    <Compile Include="Classes\EuroSound Files\SoundBanks\ESF_SaveSoundBanks.cs" />
+    <Compile Include="Classes\EuroSound Files\SoundBanks\ESF_LoadSoundBanks.cs" />
+    <Compile Include="Classes\EuroSound Files\StreamSounds\ESF_SaveStreamedSounds.cs" />
     <Compile Include="Classes\LoopStream.cs" />
     <Compile Include="Classes\GenericFunctions.cs" />
     <Compile Include="Classes\Hashcodes.cs" />
@@ -262,6 +267,32 @@
     </Compile>
     <Compile Include="Editors and Tools\FilelistBin_Generator\Frm_SFX_DataGenerator.Designer.cs">
       <DependentUpon>Frm_SFX_DataGenerator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editors and Tools\MusicBanksEditor\Classes\EXObjects\EXMusic.cs" />
+    <Compile Include="Editors and Tools\MusicBanksEditor\Classes\EXMusicsFunctions.cs" />
+    <Compile Include="Editors and Tools\MusicBanksEditor\Frm_BuildSFXMusicFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editors and Tools\MusicBanksEditor\Frm_BuildSFXMusicFile.Designer.cs">
+      <DependentUpon>Frm_BuildSFXMusicFile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editors and Tools\MusicBanksEditor\Frm_Musics_Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editors and Tools\MusicBanksEditor\Frm_Musics_Main.Designer.cs">
+      <DependentUpon>Frm_Musics_Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editors and Tools\MusicBanksEditor\Frm_Musics_Main_ContextMenus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editors and Tools\MusicBanksEditor\Frm_Musics_Main_Functions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editors and Tools\MusicBanksEditor\Frm_Musics_Properties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editors and Tools\MusicBanksEditor\Frm_Musics_Properties.Designer.cs">
+      <DependentUpon>Frm_Musics_Properties.cs</DependentUpon>
     </Compile>
     <Compile Include="Editors and Tools\SoundBanksEditor\Frm_Sounbanks_DebugOutput.cs">
       <SubType>Form</SubType>
@@ -388,16 +419,16 @@
     <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSoundsEditorMain_Functions.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Editors and Tools\StreamSoundsEditor\Forms_ObjectsProperties\Frm_StreamSounds_MarkersEditor.cs">
+    <Compile Include="Editors and Tools\Frm_StreamSounds_MarkersEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Editors and Tools\StreamSoundsEditor\Forms_ObjectsProperties\Frm_StreamSounds_MarkersEditor.Designer.cs">
+    <Compile Include="Editors and Tools\Frm_StreamSounds_MarkersEditor.Designer.cs">
       <DependentUpon>Frm_StreamSounds_MarkersEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editors and Tools\StreamSoundsEditor\Forms_ObjectsProperties\Frm_StreamSounds_Properties.cs">
+    <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSounds_Properties.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Editors and Tools\StreamSoundsEditor\Forms_ObjectsProperties\Frm_StreamSounds_Properties.Designer.cs">
+    <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSounds_Properties.Designer.cs">
       <DependentUpon>Frm_StreamSounds_Properties.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_HashTablesConfig.resx">
@@ -462,6 +493,15 @@
     <EmbeddedResource Include="Editors and Tools\FilelistBin_Generator\Frm_SFX_DataGenerator.resx">
       <DependentUpon>Frm_SFX_DataGenerator.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Editors and Tools\MusicBanksEditor\Frm_BuildSFXMusicFile.resx">
+      <DependentUpon>Frm_BuildSFXMusicFile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editors and Tools\MusicBanksEditor\Frm_Musics_Main.resx">
+      <DependentUpon>Frm_Musics_Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editors and Tools\MusicBanksEditor\Frm_Musics_Properties.resx">
+      <DependentUpon>Frm_Musics_Properties.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Editors and Tools\SoundBanksEditor\Frm_Sounbanks_DebugOutput.resx">
       <DependentUpon>Frm_Sounbanks_DebugOutput.cs</DependentUpon>
     </EmbeddedResource>
@@ -517,10 +557,10 @@
     <EmbeddedResource Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSoundsEditorMain.resx">
       <DependentUpon>Frm_StreamSoundsEditorMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Editors and Tools\StreamSoundsEditor\Forms_ObjectsProperties\Frm_StreamSounds_MarkersEditor.resx">
+    <EmbeddedResource Include="Editors and Tools\Frm_StreamSounds_MarkersEditor.resx">
       <DependentUpon>Frm_StreamSounds_MarkersEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Editors and Tools\StreamSoundsEditor\Forms_ObjectsProperties\Frm_StreamSounds_Properties.resx">
+    <EmbeddedResource Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSounds_Properties.resx">
       <DependentUpon>Frm_StreamSounds_Properties.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />

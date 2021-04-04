@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.AudioMixingFunctions;
 using EuroSound_Application.CustomControls.WavesViewerForm;
+using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
 using NAudio.Wave;
@@ -96,12 +97,17 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             if (SelectedSound.GetType() == typeof(EXSoundStream))
             {
                 EXSoundStream StreamSounds = ((EXSoundStream)SelectedSound);
-                ControlToDraw.WaveStream = new RawSourceWaveStream(new MemoryStream(StreamSounds.PCM_Data), new WaveFormat((int)StreamSounds.Frequency, (int)StreamSounds.Bits, (int)StreamSounds.Channels));
+                ControlToDraw.WaveStream = new RawSourceWaveStream(new MemoryStream(StreamSounds.PCM_Data), new WaveFormat((int)StreamSounds.Frequency, (int)StreamSounds.Bits, StreamSounds.Channels));
             }
             else if (SelectedSound.GetType() == typeof(EXAudio))
             {
                 EXAudio AudioObject = ((EXAudio)SelectedSound);
                 ControlToDraw.WaveStream = new RawSourceWaveStream(new MemoryStream(AudioObject.PCMdata), new WaveFormat((int)AudioObject.Frequency, (int)AudioObject.Bits, (int)AudioObject.Channels));
+            }
+            else if (SelectedSound.GetType() == typeof(EXMusic))
+            {
+                EXMusic AudioObject = ((EXMusic)SelectedSound);
+                ControlToDraw.WaveStream = new RawSourceWaveStream(new MemoryStream(AudioObject.PCM_Data), new WaveFormat((int)AudioObject.Frequency, (int)AudioObject.Bits, AudioObject.Channels));
             }
             ControlToDraw.InitControl();
         }
@@ -201,6 +207,35 @@ namespace EuroSound_Application.AudioFunctionsLibrary
                 //Close File
                 WavFile.Close();
             }
+        }
+
+        internal byte[] SplitChannels(byte[] PCM_Data, bool LeftChannel)
+        {
+            byte[] ChannelData;
+
+            using (BinaryReader BReader = new BinaryReader(new MemoryStream(PCM_Data)))
+            {
+                using (MemoryStream MS_ChannelData = new MemoryStream())
+                {
+                    using (BinaryWriter BWriter = new BinaryWriter(MS_ChannelData))
+                    {
+                        while (BReader.BaseStream.Position != BReader.BaseStream.Length)
+                        {
+                            if (LeftChannel)
+                            {
+                                BWriter.Write(BReader.ReadUInt16());
+                            }
+                            else
+                            {
+                                BReader.ReadUInt16();
+                            }
+                            LeftChannel = !LeftChannel;
+                        }
+                    }
+                    ChannelData = MS_ChannelData.ToArray();
+                }
+            }
+            return ChannelData;
         }
     }
 }

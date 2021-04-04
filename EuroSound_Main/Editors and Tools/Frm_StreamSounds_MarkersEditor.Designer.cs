@@ -132,7 +132,7 @@ namespace EuroSound_Application.StreamSounds
             // 
             this.Numeric_MarkerLoopStart.Location = new System.Drawing.Point(423, 26);
             this.Numeric_MarkerLoopStart.Maximum = new decimal(new int[] {
-            999999,
+            -1,
             0,
             0,
             0});

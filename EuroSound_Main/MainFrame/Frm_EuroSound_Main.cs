@@ -90,10 +90,16 @@ namespace EuroSound_Application
 
             MenuItemHelp_About.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemHelp_About")); };
             MenuItemHelp_OnlineHelp.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemHelp_OnlineHelp")); };
+            MenuItemHelp_ReleaseInfo.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemHelp_ReleaseInfo")); };
+            MenuItemHelp_CurrentReleaseInfo.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemHelp_CurrentReleaseInfo")); };
 
             MenuItemHelp_About.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItemHelp_OnlineHelp.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItemHelp_OnlineHelp.Click += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; Process.Start("https://sphinxandthecursedmummy.fandom.com/wiki/SFX"); };
+            MenuItemHelp_ReleaseInfo.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItemHelp_ReleaseInfo.Click += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; Process.Start("https://github.com/jmarti856/eurosound/releases"); };
+            MenuItemHelp_CurrentReleaseInfo.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItemHelp_CurrentReleaseInfo.Click += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; Process.Start(string.Join("", "https://github.com/jmarti856/eurosound/releases/tag/", GenericFunctions.GetEuroSoundVersion())); };
         }
 
         //*===============================================================================================

@@ -376,6 +376,24 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Error, the audio file is not correct, the frequency must be in mono, have 32000hz, encoded in PCM and have 16 bits per sample. Do you want that EuroSound tries to convert it with the correct config?.
+        /// </summary>
+        internal static string ErrorWavFileIncorrectMusicsMono {
+            get {
+                return ResourceManager.GetString("ErrorWavFileIncorrectMusicsMono", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Error, the audio file is not correct, the frequency must be in stereo, have 32000hz, encoded in PCM and have 16 bits per sample. Do you want that EuroSound tries to convert it with the correct config?.
+        /// </summary>
+        internal static string ErrorWavFileIncorrectMusicsStereo {
+            get {
+                return ResourceManager.GetString("ErrorWavFileIncorrectMusicsStereo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a An error occurred registering EuroSound File-Types with the shell.
         /// </summary>
         internal static string EuroSoundFile_TypesRegisterdError {
@@ -691,11 +709,29 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Show what changes have been made in the current release.
+        /// </summary>
+        internal static string MenuItemHelp_CurrentReleaseInfo {
+            get {
+                return ResourceManager.GetString("MenuItemHelp_CurrentReleaseInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Show online help.
         /// </summary>
         internal static string MenuItemHelp_OnlineHelp {
             get {
                 return ResourceManager.GetString("MenuItemHelp_OnlineHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Show what changes have been made in recent releases.
+        /// </summary>
+        internal static string MenuItemHelp_ReleaseInfo {
+            get {
+                return ResourceManager.GetString("MenuItemHelp_ReleaseInfo", resourceCulture);
             }
         }
         

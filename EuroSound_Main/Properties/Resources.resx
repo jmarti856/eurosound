@@ -210,6 +210,12 @@
   <data name="ErrorWavFileIncorrect" xml:space="preserve">
     <value>Error, the audio file is not correct, the frequency must be in mono, have 22050hz, encoded in PCM and have 16 bits per sample. Do you want that EuroSound tries to convert it with the correct config?</value>
   </data>
+  <data name="ErrorWavFileIncorrectMusicsMono" xml:space="preserve">
+    <value>Error, the audio file is not correct, the frequency must be in mono, have 32000hz, encoded in PCM and have 16 bits per sample. Do you want that EuroSound tries to convert it with the correct config?</value>
+  </data>
+  <data name="ErrorWavFileIncorrectMusicsStereo" xml:space="preserve">
+    <value>Error, the audio file is not correct, the frequency must be in stereo, have 32000hz, encoded in PCM and have 16 bits per sample. Do you want that EuroSound tries to convert it with the correct config?</value>
+  </data>
   <data name="Error_Adding_AlreadyExists" xml:space="preserve">
     <value>Sorry, cannot add an item with this name, an item with this name already exists</value>
   </data>
@@ -303,8 +309,14 @@
   <data name="MenuItemHelp_About" xml:space="preserve">
     <value>Display program information, version number and copyright</value>
   </data>
+  <data name="MenuItemHelp_CurrentReleaseInfo" xml:space="preserve">
+    <value>Show what changes have been made in the current release</value>
+  </data>
   <data name="MenuItemHelp_OnlineHelp" xml:space="preserve">
     <value>Show online help</value>
+  </data>
+  <data name="MenuItemHelp_ReleaseInfo" xml:space="preserve">
+    <value>Show what changes have been made in recent releases</value>
   </data>
   <data name="MenuItemTools_BackupSettings" xml:space="preserve">
     <value>Create a file with the current program preferences</value>

@@ -1,16 +1,16 @@
 ﻿using EuroSound_Application.CurrentProjectFunctions;
-using EuroSound_Application.StreamSounds;
+using EuroSound_Application.Musics;
 using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace EuroSound_Application.EuroSoundStreamFilesFunctions
+namespace EuroSound_Application.EuroSoundMusicFilesFunctions
 {
-    public class ESF_SaveStreamedSounds
+    public class ESF_SaveMusics
     {
-        public void SaveStreamedSounds(BinaryStream BWriter, TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, ProjectFile FileProperties)
+        public void SaveMusics(BinaryStream BWriter, TreeView TreeViewControl, Dictionary<uint, EXMusic> MusicsList, ProjectFile FileProperties)
         {
             long AlignOffset;
 
@@ -64,7 +64,7 @@ namespace EuroSound_Application.EuroSoundStreamFilesFunctions
 
             //Write Data
             long DictionaryDataOffset = BWriter.BaseStream.Position;
-            SaveDictionaryData(StreamSoundsList, BWriter);
+            SaveDictionaryData(MusicsList, BWriter);
             long FileSize = BWriter.BaseStream.Position;
 
             //*===============================================================================================
@@ -135,67 +135,79 @@ namespace EuroSound_Application.EuroSoundStreamFilesFunctions
             }
         }
 
-        private void SaveDictionaryData(Dictionary<uint, EXSoundStream> StreamSoundsList, BinaryStream BWriter)
+        private void SaveDictionaryData(Dictionary<uint, EXMusic> MusicsList, BinaryStream BWriter)
         {
             uint NumberOfStartMarkers, NumberOfMarkers;
 
-            BWriter.Write(StreamSoundsList.Count);
-            foreach (KeyValuePair<uint, EXSoundStream> Sound in StreamSoundsList)
+            BWriter.Write(MusicsList.Count);
+            foreach (KeyValuePair<uint, EXMusic> Music in MusicsList)
             {
-                BWriter.Write(Sound.Key);
-                BWriter.Write(Sound.Value.BaseVolume);
+                BWriter.Write(Music.Key);
+                BWriter.Write(Music.Value.BaseVolume);
 
-                //Save WAV
-                BWriter.Write(Sound.Value.PCM_Data.Length);
-                BWriter.Write(Sound.Value.PCM_Data);
-                BWriter.Write(Sound.Value.IMA_ADPCM_DATA.Length);
-                BWriter.Write(Sound.Value.IMA_ADPCM_DATA);
-                BWriter.Write(Sound.Value.Frequency);
-                BWriter.Write(Sound.Value.Channels);
-                BWriter.Write(Sound.Value.Bits);
-                BWriter.Write(Sound.Value.Duration);
-                BWriter.Write(Sound.Value.Encoding);
-                BWriter.Write(Sound.Value.WAVFileMD5);
-                BWriter.Write(Sound.Value.WAVFileName);
-                BWriter.Write(Sound.Value.RealSize);
+                //Save Data
+                BWriter.Write(Music.Value.Frequency);
+                BWriter.Write(Music.Value.Channels);
+                BWriter.Write(Music.Value.Bits);
+                BWriter.Write(Music.Value.Duration);
+                BWriter.Write(Music.Value.RealSize);
+                BWriter.Write(Music.Value.Encoding);
+                BWriter.Write(Music.Value.WAVFileMD5);
+                BWriter.Write(Music.Value.WAVFileName);
+
+                //Save WAV Left Channel
+                BWriter.Write(Music.Value.PCM_Data_LeftChannel.Length);
+                BWriter.Write(Music.Value.PCM_Data_LeftChannel);
+                BWriter.Write(Music.Value.IMA_ADPCM_DATA_LeftChannel.Length);
+                BWriter.Write(Music.Value.IMA_ADPCM_DATA_LeftChannel);
+
+                //Save WAV Right Channel
+                BWriter.Write(Music.Value.PCM_Data_RightChannel.Length);
+                BWriter.Write(Music.Value.PCM_Data_RightChannel);
+                BWriter.Write(Music.Value.IMA_ADPCM_DATA_RightChannel.Length);
+                BWriter.Write(Music.Value.IMA_ADPCM_DATA_RightChannel);
+
+                //Stereo Track
+                BWriter.Write(Music.Value.PCM_Data.Length);
+                BWriter.Write(Music.Value.PCM_Data);
 
                 //Start Markers List
-                NumberOfStartMarkers = (uint)Sound.Value.StartMarkers.Count;
+                NumberOfStartMarkers = (uint)Music.Value.StartMarkers.Count;
                 BWriter.Write(NumberOfStartMarkers);
                 for (int i = 0; i < NumberOfStartMarkers; i++)
                 {
-                    BWriter.Write(Sound.Value.StartMarkers[i].Name);
-                    BWriter.Write(Sound.Value.StartMarkers[i].Position);
-                    BWriter.Write(Sound.Value.StartMarkers[i].MusicMakerType);
-                    BWriter.Write(Sound.Value.StartMarkers[i].Flags);
-                    BWriter.Write(Sound.Value.StartMarkers[i].Extra);
-                    BWriter.Write(Sound.Value.StartMarkers[i].LoopStart);
-                    BWriter.Write(Sound.Value.StartMarkers[i].MarkerCount);
-                    BWriter.Write(Sound.Value.StartMarkers[i].LoopMarkerCount);
-                    BWriter.Write(Sound.Value.StartMarkers[i].MarkerPos);
-                    BWriter.Write(Sound.Value.StartMarkers[i].IsInstant);
-                    BWriter.Write(Sound.Value.StartMarkers[i].InstantBuffer);
-                    BWriter.Write(Sound.Value.StartMarkers[i].StateA);
-                    BWriter.Write(Sound.Value.StartMarkers[i].StateB);
+                    BWriter.Write(Music.Value.StartMarkers[i].Name);
+                    BWriter.Write(Music.Value.StartMarkers[i].Position);
+                    BWriter.Write(Music.Value.StartMarkers[i].MusicMakerType);
+                    BWriter.Write(Music.Value.StartMarkers[i].Flags);
+                    BWriter.Write(Music.Value.StartMarkers[i].Extra);
+                    BWriter.Write(Music.Value.StartMarkers[i].LoopStart);
+                    BWriter.Write(Music.Value.StartMarkers[i].MarkerCount);
+                    BWriter.Write(Music.Value.StartMarkers[i].LoopMarkerCount);
+                    BWriter.Write(Music.Value.StartMarkers[i].MarkerPos);
+                    BWriter.Write(Music.Value.StartMarkers[i].IsInstant);
+                    BWriter.Write(Music.Value.StartMarkers[i].InstantBuffer);
+                    BWriter.Write(Music.Value.StartMarkers[i].StateA);
+                    BWriter.Write(Music.Value.StartMarkers[i].StateB);
                 }
 
                 //Markers List
-                NumberOfMarkers = (uint)Sound.Value.Markers.Count;
+                NumberOfMarkers = (uint)Music.Value.Markers.Count;
                 BWriter.Write(NumberOfMarkers);
                 for (int j = 0; j < NumberOfMarkers; j++)
                 {
-                    BWriter.Write(Sound.Value.Markers[j].Name);
-                    BWriter.Write(Sound.Value.Markers[j].Position);
-                    BWriter.Write(Sound.Value.Markers[j].MusicMakerType);
-                    BWriter.Write(Sound.Value.Markers[j].Flags);
-                    BWriter.Write(Sound.Value.Markers[j].Extra);
-                    BWriter.Write(Sound.Value.Markers[j].LoopStart);
-                    BWriter.Write(Sound.Value.Markers[j].MarkerCount);
-                    BWriter.Write(Sound.Value.Markers[j].LoopMarkerCount);
+                    BWriter.Write(Music.Value.Markers[j].Name);
+                    BWriter.Write(Music.Value.Markers[j].Position);
+                    BWriter.Write(Music.Value.Markers[j].MusicMakerType);
+                    BWriter.Write(Music.Value.Markers[j].Flags);
+                    BWriter.Write(Music.Value.Markers[j].Extra);
+                    BWriter.Write(Music.Value.Markers[j].LoopStart);
+                    BWriter.Write(Music.Value.Markers[j].MarkerCount);
+                    BWriter.Write(Music.Value.Markers[j].LoopMarkerCount);
                 }
 
                 //Extra info
-                BWriter.Write(Sound.Value.OutputThisSound);
+                BWriter.Write(Music.Value.OutputThisSound);
             }
         }
     }
