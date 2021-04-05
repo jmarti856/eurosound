@@ -540,6 +540,7 @@ namespace EuroSound_Application.Musics
         {
             string DestSection, SourceSection, DestNodeType;
 
+            //Retrieve the client coordinates of the drop location.
             Point pt = TreeView_MusicData.PointToClient(new Point(e.X, e.Y));
 
             //Retrieve the node at the drop location.
@@ -571,6 +572,10 @@ namespace EuroSound_Application.Musics
 
                     if (canDrop)
                     {
+                        /*
+                        Confirm we are not outside the node section and that the destination place is a folder or the root
+                        node section
+                        */
                         if (SourceSection.Equals(DestSection) && (DestNodeType.Equals("Folder") || DestNodeType.Equals("Root")))
                         {
                             draggedNode.Remove();

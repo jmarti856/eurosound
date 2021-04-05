@@ -809,6 +809,9 @@ namespace EuroSound_Application.SoundBanksEditor
             //Retrieve the node at the drop location.
             TreeNode targetNode = TreeView_File.GetNodeAt(targetPoint);
             TreeNode FindTargetNode = TreeNodeFunctions.FindRootNode(targetNode);
+
+            TreeNode parentNode = targetNode;
+
             if (FindTargetNode != null)
             {
                 DestSection = FindTargetNode.Text;
@@ -821,21 +824,31 @@ namespace EuroSound_Application.SoundBanksEditor
                 //Confirm that the node at the drop location is not
                 //the dragged node and that target node isn't null
                 //(for example if you drag outside the control)
-                if (!draggedNode.Equals(targetNode) && targetNode != null)
+                if (!draggedNode.Equals(targetNode) && draggedNode != null && targetNode != null)
                 {
-                    /*
-                    Confirm we are not outside the node section and that the destination place is a folder or the root
-                    node section
-                    */
-                    if (SourceSection.Equals(DestSection) && (DestNodeType.Equals("Folder") || DestNodeType.Equals("Root")))
+                    bool canDrop = true;
+                    while (canDrop && (parentNode != null))
                     {
-                        //Remove the node from its current
-                        //location and add it to the node at the drop location.
-                        draggedNode.Remove();
-                        targetNode.Nodes.Add(draggedNode);
-                        targetNode.Expand();
-                        TreeView_File.SelectedNode = draggedNode;
-                        ProjectInfo.FileHasBeenModified = true;
+                        canDrop = !Object.ReferenceEquals(draggedNode, parentNode);
+                        parentNode = parentNode.Parent;
+                    }
+
+                    if (canDrop)
+                    {
+                        /*
+                        Confirm we are not outside the node section and that the destination place is a folder or the root
+                        node section
+                        */
+                        if (SourceSection.Equals(DestSection) && (DestNodeType.Equals("Folder") || DestNodeType.Equals("Root")))
+                        {
+                            //Remove the node from its current
+                            //location and add it to the node at the drop location.
+                            draggedNode.Remove();
+                            targetNode.Nodes.Add(draggedNode);
+                            targetNode.Expand();
+                            TreeView_File.SelectedNode = draggedNode;
+                            ProjectInfo.FileHasBeenModified = true;
+                        }
                     }
                 }
             }
