@@ -1,5 +1,6 @@
 ﻿using CustomStatusBar;
 using EuroSound_Application.ApplicationRegistryFunctions;
+using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls.InputBoxForm;
 using EuroSound_Application.CustomControls.WarningsList;
@@ -401,6 +402,17 @@ namespace EuroSound_Application
             if (File.Exists(@"x:\EngineX\Utils\Batch\MkFileList2.bat"))
             {
                 ExecuteCMDCommand(@"/C x:\EngineX\Utils\Batch\MkFileList2.bat Sphinx PC");
+            }
+        }
+
+        internal static void SaveAudio(AudioFunctions AudioLibrary, string FileName, int Frequency, int Bits, int Channels, byte[] PCM_Data)
+        {
+            string SavePath;
+
+            SavePath = SaveFileBrowser("WAV Files (*.wav)|*.wav", 0, true, FileName);
+            if (!string.IsNullOrEmpty(SavePath))
+            {
+                AudioLibrary.CreateWavFile(Frequency, Bits, Channels, PCM_Data, SavePath);
             }
         }
     }

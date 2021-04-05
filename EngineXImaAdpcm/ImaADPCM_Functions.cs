@@ -182,7 +182,7 @@ namespace EngineXImaAdpcm
             return EncodedIMAData;
         }
 
-        public void DecodeIMA_ADPCM(byte[] ImaFileData, int numSamples, uint[] outdata)
+        public void DecodeIMA_ADPCM(byte[] ImaFileData, int numSamples, uint[] outdata, string Path)
         {
             int outp = 0;           /* output buffer pointer */
             uint inp;               /* Input buffer pointer */
@@ -204,7 +204,6 @@ namespace EngineXImaAdpcm
             step = stepsizeTable[index];
 
             bufferstep = false;
-
 
             for (int i = 0; i < numSamples; i++)
             {
@@ -272,15 +271,15 @@ namespace EngineXImaAdpcm
         public byte[] InterleaveStereo(byte[] LeftChannel, byte[] RightChannel)
         {
             int IndexLC, IndexRC;
-            bool StereoInterleaving;
             int TotalLength;
+            bool StereoInterleaving;
             byte[] InterleavingStereoData;
 
             //Initialize variables
             IndexLC = 0;
             IndexRC = 0;
             StereoInterleaving = true;
-            TotalLength = LeftChannel.Length * 2;
+            TotalLength = LeftChannel.Length + RightChannel.Length;
 
             using (MemoryStream InterleavedStereo = new MemoryStream())
             {
@@ -302,7 +301,6 @@ namespace EngineXImaAdpcm
                         StereoInterleaving = !StereoInterleaving;
                     }
                 }
-
                 InterleavingStereoData = InterleavedStereo.ToArray();
             }
 

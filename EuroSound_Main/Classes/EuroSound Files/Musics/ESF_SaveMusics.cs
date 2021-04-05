@@ -145,31 +145,33 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
                 BWriter.Write(Music.Key);
                 BWriter.Write(Music.Value.BaseVolume);
 
-                //Save Data
-                BWriter.Write(Music.Value.Frequency);
-                BWriter.Write(Music.Value.Channels);
-                BWriter.Write(Music.Value.Bits);
-                BWriter.Write(Music.Value.Duration);
-                BWriter.Write(Music.Value.RealSize);
-                BWriter.Write(Music.Value.Encoding);
-                BWriter.Write(Music.Value.WAVFileMD5);
-                BWriter.Write(Music.Value.WAVFileName);
-
-                //Save WAV Left Channel
+                //Save Data Left Channel
+                BWriter.Write(Music.Value.Frequency_LeftChannel);
+                BWriter.Write(Music.Value.Channels_LeftChannel);
+                BWriter.Write(Music.Value.Bits_LeftChannel);
+                BWriter.Write(Music.Value.Duration_LeftChannel);
+                BWriter.Write(Music.Value.RealSize_LeftChannel);
+                BWriter.Write(Music.Value.Encoding_LeftChannel);
+                BWriter.Write(Music.Value.WAVFileMD5_LeftChannel);
+                BWriter.Write(Music.Value.WAVFileName_LeftChannel);
                 BWriter.Write(Music.Value.PCM_Data_LeftChannel.Length);
                 BWriter.Write(Music.Value.PCM_Data_LeftChannel);
                 BWriter.Write(Music.Value.IMA_ADPCM_DATA_LeftChannel.Length);
                 BWriter.Write(Music.Value.IMA_ADPCM_DATA_LeftChannel);
 
-                //Save WAV Right Channel
+                //Save Data Right Channel
+                BWriter.Write(Music.Value.Frequency_RightChannel);
+                BWriter.Write(Music.Value.Channels_RightChannel);
+                BWriter.Write(Music.Value.Bits_RightChannel);
+                BWriter.Write(Music.Value.Duration_RightChannel);
+                BWriter.Write(Music.Value.RealSize_RightChannel);
+                BWriter.Write(Music.Value.Encoding_RightChannel);
+                BWriter.Write(Music.Value.WAVFileMD5_RightChannel);
+                BWriter.Write(Music.Value.WAVFileName_RightChannel);
                 BWriter.Write(Music.Value.PCM_Data_RightChannel.Length);
                 BWriter.Write(Music.Value.PCM_Data_RightChannel);
                 BWriter.Write(Music.Value.IMA_ADPCM_DATA_RightChannel.Length);
                 BWriter.Write(Music.Value.IMA_ADPCM_DATA_RightChannel);
-
-                //Stereo Track
-                BWriter.Write(Music.Value.PCM_Data.Length);
-                BWriter.Write(Music.Value.PCM_Data);
 
                 //Start Markers List
                 NumberOfStartMarkers = (uint)Music.Value.StartMarkers.Count;

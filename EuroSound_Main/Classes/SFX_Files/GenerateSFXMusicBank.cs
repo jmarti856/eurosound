@@ -1,4 +1,5 @@
-﻿using Syroot.BinaryData;
+﻿using EngineXImaAdpcm;
+using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +12,7 @@ namespace EuroSound_Application.Musics
 {
     internal class GenerateSFXMusicBank
     {
+        private ImaADPCM_Functions IMA_Functions = new ImaADPCM_Functions();
         private List<long> MarkersStartList = new List<long>();
         long FileLength1, FileLength2, FullFileLength;
 
@@ -123,7 +125,7 @@ namespace EuroSound_Application.Musics
                 {
                     DebugFile.WriteLine(new String('/', 70));
                     DebugFile.WriteLine("// Wav File Name");
-                    DebugFile.WriteLine("\t" + MusicToExport.WAVFileMD5);
+                    DebugFile.WriteLine("\t" + MusicToExport.WAVFileMD5_LeftChannel);
                     DebugFile.WriteLine("// Start marker count");
                     DebugFile.WriteLine("\t" + (uint)MusicToExport.StartMarkers.Count);
                     DebugFile.WriteLine("// Marker count");
@@ -252,36 +254,13 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         public void WriteFileSection2(BinaryStream BWriter, Dictionary<uint, EXMusic> MusicsDictionary)
         {
-            int IndexLC, IndexRC;
-            bool StereoInterleaving;
-            int TotalLength;
-
             //Write ADPCM Data
             BWriter.Seek((int)FileStart2, SeekOrigin.Begin);
 
             foreach (EXMusic MusicToExport in MusicsDictionary.Values)
             {
-                //Initialize variables
-                IndexLC = 0;
-                IndexRC = 0;
-                StereoInterleaving = true;
-                TotalLength = MusicToExport.IMA_ADPCM_DATA_LeftChannel.Length * 2;
-
-                //Write ima data
-                for (int i = 0; i < TotalLength; i++)
-                {
-                    if (StereoInterleaving)
-                    {
-                        BWriter.Write(MusicToExport.IMA_ADPCM_DATA_LeftChannel[IndexLC]);
-                        IndexLC++;
-                    }
-                    else
-                    {
-                        BWriter.Write(MusicToExport.IMA_ADPCM_DATA_RightChannel[IndexRC]);
-                        IndexRC++;
-                    }
-                    StereoInterleaving = !StereoInterleaving;
-                }
+                byte[] MusicData = IMA_Functions.InterleaveStereo(MusicToExport.IMA_ADPCM_DATA_LeftChannel, MusicToExport.IMA_ADPCM_DATA_RightChannel);
+                BWriter.Write(MusicData);
 
                 FileLength2 = BWriter.BaseStream.Position - FileStart2;
                 FullFileLength = BWriter.BaseStream.Position;

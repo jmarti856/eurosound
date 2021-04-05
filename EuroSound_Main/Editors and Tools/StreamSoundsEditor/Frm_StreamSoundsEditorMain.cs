@@ -30,8 +30,8 @@ namespace EuroSound_Application.StreamSounds
         public ProjectFile ProjectInfo = new ProjectFile();
         private StreamSoundsYMLReader LibYamlReader = new StreamSoundsYMLReader();
         private AudioFunctions AudioLibrary = new AudioFunctions();
-        private MostRecentFilesMenu RecentFilesMenu;
         private Thread UpdateImaData, UpdateWavList;
+        private MostRecentFilesMenu RecentFilesMenu;
         private string FileToLoadArg, ProjectName;
         private string LoadedFile = string.Empty;
 

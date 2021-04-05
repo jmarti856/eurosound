@@ -76,10 +76,17 @@ namespace EuroSound_Application.Musics
             this.SplitContainerMusicsForm = new System.Windows.Forms.SplitContainer();
             this.TreeView_MusicData = new System.Windows.Forms.TreeView();
             this.GroupBox_StreamData = new System.Windows.Forms.GroupBox();
+            this.Textbox_DataCount = new System.Windows.Forms.TextBox();
+            this.Label_ItemsCountWav = new System.Windows.Forms.Label();
             this.Button_StopUpdate = new System.Windows.Forms.Button();
+            this.Button_UpdateProperties = new System.Windows.Forms.Button();
+            this.GroupBox_MusicHashcodes = new System.Windows.Forms.GroupBox();
+            this.Textbox_Hashcodes = new System.Windows.Forms.TextBox();
+            this.Button_Generate_Hashcodes = new System.Windows.Forms.Button();
+            this.Button_UpdateIMAData = new System.Windows.Forms.Button();
+            this.Button_ExportInterchangeFile = new System.Windows.Forms.Button();
             this.ListView_WavHeaderData = new EuroSound_Application.CustomControls.ListViewColumnSorting.ListView_ColumnSortingClick();
             this.Col_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_Index = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Frequency = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Channels = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Bits = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -88,12 +95,6 @@ namespace EuroSound_Application.Musics
             this.Col_Duration = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_MarkersCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_StartMarkerCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.button1 = new System.Windows.Forms.Button();
-            this.GroupBox_MusicHashcodes = new System.Windows.Forms.GroupBox();
-            this.Textbox_Hashcodes = new System.Windows.Forms.TextBox();
-            this.Button_UpdateList_WavData = new System.Windows.Forms.Button();
-            this.Button_UpdateIMAData = new System.Windows.Forms.Button();
-            this.Button_ExportInterchangeFile = new System.Windows.Forms.Button();
             this.MainMenu.SuspendLayout();
             this.ContextMenu_Sounds.SuspendLayout();
             this.ContextMenu_Folders.SuspendLayout();
@@ -446,7 +447,7 @@ namespace EuroSound_Application.Musics
             // SplitContainerMusicsForm
             // 
             this.SplitContainerMusicsForm.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SplitContainerMusicsForm.Location = new System.Drawing.Point(0, 24);
+            this.SplitContainerMusicsForm.Location = new System.Drawing.Point(0, 0);
             this.SplitContainerMusicsForm.Name = "SplitContainerMusicsForm";
             // 
             // SplitContainerMusicsForm.Panel1
@@ -459,7 +460,7 @@ namespace EuroSound_Application.Musics
             this.SplitContainerMusicsForm.Panel2.Controls.Add(this.GroupBox_MusicHashcodes);
             this.SplitContainerMusicsForm.Panel2.Controls.Add(this.Button_UpdateIMAData);
             this.SplitContainerMusicsForm.Panel2.Controls.Add(this.Button_ExportInterchangeFile);
-            this.SplitContainerMusicsForm.Size = new System.Drawing.Size(908, 567);
+            this.SplitContainerMusicsForm.Size = new System.Drawing.Size(908, 591);
             this.SplitContainerMusicsForm.SplitterDistance = 456;
             this.SplitContainerMusicsForm.TabIndex = 6;
             // 
@@ -481,7 +482,7 @@ namespace EuroSound_Application.Musics
             this.TreeView_MusicData.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1});
             this.TreeView_MusicData.SelectedImageIndex = 0;
-            this.TreeView_MusicData.Size = new System.Drawing.Size(456, 567);
+            this.TreeView_MusicData.Size = new System.Drawing.Size(456, 591);
             this.TreeView_MusicData.TabIndex = 1;
             this.TreeView_MusicData.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.TreeView_MusicData_AfterLabelEdit);
             this.TreeView_MusicData.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.TreeView_MusicData_BeforeCollapse);
@@ -499,25 +500,120 @@ namespace EuroSound_Application.Musics
             this.GroupBox_StreamData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox_StreamData.Controls.Add(this.Textbox_DataCount);
+            this.GroupBox_StreamData.Controls.Add(this.Label_ItemsCountWav);
             this.GroupBox_StreamData.Controls.Add(this.Button_StopUpdate);
             this.GroupBox_StreamData.Controls.Add(this.ListView_WavHeaderData);
-            this.GroupBox_StreamData.Controls.Add(this.button1);
+            this.GroupBox_StreamData.Controls.Add(this.Button_UpdateProperties);
             this.GroupBox_StreamData.Location = new System.Drawing.Point(3, 283);
             this.GroupBox_StreamData.Name = "GroupBox_StreamData";
-            this.GroupBox_StreamData.Size = new System.Drawing.Size(442, 243);
+            this.GroupBox_StreamData.Size = new System.Drawing.Size(442, 267);
             this.GroupBox_StreamData.TabIndex = 5;
             this.GroupBox_StreamData.TabStop = false;
             this.GroupBox_StreamData.Text = "Music Data:";
             // 
+            // Textbox_DataCount
+            // 
+            this.Textbox_DataCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Textbox_DataCount.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_DataCount.Location = new System.Drawing.Point(74, 240);
+            this.Textbox_DataCount.Name = "Textbox_DataCount";
+            this.Textbox_DataCount.ReadOnly = true;
+            this.Textbox_DataCount.Size = new System.Drawing.Size(100, 20);
+            this.Textbox_DataCount.TabIndex = 4;
+            this.Textbox_DataCount.Text = "0";
+            // 
+            // Label_ItemsCountWav
+            // 
+            this.Label_ItemsCountWav.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Label_ItemsCountWav.AutoSize = true;
+            this.Label_ItemsCountWav.ForeColor = System.Drawing.Color.ForestGreen;
+            this.Label_ItemsCountWav.Location = new System.Drawing.Point(6, 243);
+            this.Label_ItemsCountWav.Name = "Label_ItemsCountWav";
+            this.Label_ItemsCountWav.Size = new System.Drawing.Size(62, 13);
+            this.Label_ItemsCountWav.TabIndex = 3;
+            this.Label_ItemsCountWav.Text = "Files Count:";
+            // 
             // Button_StopUpdate
             // 
             this.Button_StopUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_StopUpdate.Location = new System.Drawing.Point(361, 214);
+            this.Button_StopUpdate.Location = new System.Drawing.Point(361, 238);
             this.Button_StopUpdate.Name = "Button_StopUpdate";
             this.Button_StopUpdate.Size = new System.Drawing.Size(75, 23);
             this.Button_StopUpdate.TabIndex = 2;
             this.Button_StopUpdate.Text = "Stop/Clear";
             this.Button_StopUpdate.UseVisualStyleBackColor = true;
+            this.Button_StopUpdate.Click += new System.EventHandler(this.Button_StopUpdate_Click);
+            // 
+            // Button_UpdateProperties
+            // 
+            this.Button_UpdateProperties.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_UpdateProperties.Location = new System.Drawing.Point(280, 238);
+            this.Button_UpdateProperties.Name = "Button_UpdateProperties";
+            this.Button_UpdateProperties.Size = new System.Drawing.Size(75, 23);
+            this.Button_UpdateProperties.TabIndex = 1;
+            this.Button_UpdateProperties.Text = "Update";
+            this.Button_UpdateProperties.UseVisualStyleBackColor = true;
+            this.Button_UpdateProperties.Click += new System.EventHandler(this.Button_UpdateProperties_Click);
+            // 
+            // GroupBox_MusicHashcodes
+            // 
+            this.GroupBox_MusicHashcodes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox_MusicHashcodes.Controls.Add(this.Textbox_Hashcodes);
+            this.GroupBox_MusicHashcodes.Controls.Add(this.Button_Generate_Hashcodes);
+            this.GroupBox_MusicHashcodes.Location = new System.Drawing.Point(3, 12);
+            this.GroupBox_MusicHashcodes.Name = "GroupBox_MusicHashcodes";
+            this.GroupBox_MusicHashcodes.Size = new System.Drawing.Size(442, 265);
+            this.GroupBox_MusicHashcodes.TabIndex = 2;
+            this.GroupBox_MusicHashcodes.TabStop = false;
+            this.GroupBox_MusicHashcodes.Text = "Hashcodes:";
+            // 
+            // Textbox_Hashcodes
+            // 
+            this.Textbox_Hashcodes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Textbox_Hashcodes.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Hashcodes.Location = new System.Drawing.Point(6, 19);
+            this.Textbox_Hashcodes.Multiline = true;
+            this.Textbox_Hashcodes.Name = "Textbox_Hashcodes";
+            this.Textbox_Hashcodes.ReadOnly = true;
+            this.Textbox_Hashcodes.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            this.Textbox_Hashcodes.Size = new System.Drawing.Size(430, 211);
+            this.Textbox_Hashcodes.TabIndex = 2;
+            // 
+            // Button_Generate_Hashcodes
+            // 
+            this.Button_Generate_Hashcodes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Generate_Hashcodes.Location = new System.Drawing.Point(361, 236);
+            this.Button_Generate_Hashcodes.Name = "Button_Generate_Hashcodes";
+            this.Button_Generate_Hashcodes.Size = new System.Drawing.Size(75, 23);
+            this.Button_Generate_Hashcodes.TabIndex = 1;
+            this.Button_Generate_Hashcodes.Text = "Calculate";
+            this.Button_Generate_Hashcodes.UseVisualStyleBackColor = true;
+            this.Button_Generate_Hashcodes.Click += new System.EventHandler(this.Button_Generate_Hashcodes_Click);
+            // 
+            // Button_UpdateIMAData
+            // 
+            this.Button_UpdateIMAData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_UpdateIMAData.Location = new System.Drawing.Point(316, 556);
+            this.Button_UpdateIMAData.Name = "Button_UpdateIMAData";
+            this.Button_UpdateIMAData.Size = new System.Drawing.Size(120, 23);
+            this.Button_UpdateIMAData.TabIndex = 4;
+            this.Button_UpdateIMAData.Text = "Update ADPCM Data";
+            this.Button_UpdateIMAData.UseVisualStyleBackColor = true;
+            this.Button_UpdateIMAData.Click += new System.EventHandler(this.Button_UpdateIMAData_Click);
+            // 
+            // Button_ExportInterchangeFile
+            // 
+            this.Button_ExportInterchangeFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_ExportInterchangeFile.Location = new System.Drawing.Point(184, 556);
+            this.Button_ExportInterchangeFile.Name = "Button_ExportInterchangeFile";
+            this.Button_ExportInterchangeFile.Size = new System.Drawing.Size(126, 23);
+            this.Button_ExportInterchangeFile.TabIndex = 3;
+            this.Button_ExportInterchangeFile.Text = "Export Interchange File";
+            this.Button_ExportInterchangeFile.UseVisualStyleBackColor = true;
             // 
             // ListView_WavHeaderData
             // 
@@ -526,7 +622,6 @@ namespace EuroSound_Application.Musics
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ListView_WavHeaderData.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Col_Name,
-            this.Col_Index,
             this.Col_Frequency,
             this.Col_Channels,
             this.Col_Bits,
@@ -540,19 +635,16 @@ namespace EuroSound_Application.Musics
             this.ListView_WavHeaderData.HideSelection = false;
             this.ListView_WavHeaderData.Location = new System.Drawing.Point(6, 19);
             this.ListView_WavHeaderData.Name = "ListView_WavHeaderData";
-            this.ListView_WavHeaderData.Size = new System.Drawing.Size(430, 189);
+            this.ListView_WavHeaderData.Size = new System.Drawing.Size(430, 213);
             this.ListView_WavHeaderData.TabIndex = 0;
             this.ListView_WavHeaderData.UseCompatibleStateImageBehavior = false;
             this.ListView_WavHeaderData.View = System.Windows.Forms.View.Details;
+            this.ListView_WavHeaderData.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListView_WavHeaderData_MouseDoubleClick);
             // 
             // Col_Name
             // 
             this.Col_Name.Text = "Name";
             this.Col_Name.Width = 153;
-            // 
-            // Col_Index
-            // 
-            this.Col_Index.Text = "Index";
             // 
             // Col_Frequency
             // 
@@ -591,73 +683,6 @@ namespace EuroSound_Application.Musics
             this.Col_StartMarkerCount.Text = "Start Marker Count";
             this.Col_StartMarkerCount.Width = 100;
             // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(280, 214);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Update";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // GroupBox_MusicHashcodes
-            // 
-            this.GroupBox_MusicHashcodes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.GroupBox_MusicHashcodes.Controls.Add(this.Textbox_Hashcodes);
-            this.GroupBox_MusicHashcodes.Controls.Add(this.Button_UpdateList_WavData);
-            this.GroupBox_MusicHashcodes.Location = new System.Drawing.Point(3, 12);
-            this.GroupBox_MusicHashcodes.Name = "GroupBox_MusicHashcodes";
-            this.GroupBox_MusicHashcodes.Size = new System.Drawing.Size(442, 265);
-            this.GroupBox_MusicHashcodes.TabIndex = 2;
-            this.GroupBox_MusicHashcodes.TabStop = false;
-            this.GroupBox_MusicHashcodes.Text = "Hashcodes:";
-            // 
-            // Textbox_Hashcodes
-            // 
-            this.Textbox_Hashcodes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_Hashcodes.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Textbox_Hashcodes.Location = new System.Drawing.Point(6, 19);
-            this.Textbox_Hashcodes.Multiline = true;
-            this.Textbox_Hashcodes.Name = "Textbox_Hashcodes";
-            this.Textbox_Hashcodes.ReadOnly = true;
-            this.Textbox_Hashcodes.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-            this.Textbox_Hashcodes.Size = new System.Drawing.Size(430, 211);
-            this.Textbox_Hashcodes.TabIndex = 2;
-            // 
-            // Button_UpdateList_WavData
-            // 
-            this.Button_UpdateList_WavData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateList_WavData.Location = new System.Drawing.Point(361, 236);
-            this.Button_UpdateList_WavData.Name = "Button_UpdateList_WavData";
-            this.Button_UpdateList_WavData.Size = new System.Drawing.Size(75, 23);
-            this.Button_UpdateList_WavData.TabIndex = 1;
-            this.Button_UpdateList_WavData.Text = "Calculate";
-            this.Button_UpdateList_WavData.UseVisualStyleBackColor = true;
-            // 
-            // Button_UpdateIMAData
-            // 
-            this.Button_UpdateIMAData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateIMAData.Location = new System.Drawing.Point(316, 532);
-            this.Button_UpdateIMAData.Name = "Button_UpdateIMAData";
-            this.Button_UpdateIMAData.Size = new System.Drawing.Size(120, 23);
-            this.Button_UpdateIMAData.TabIndex = 4;
-            this.Button_UpdateIMAData.Text = "Update ADPCM Data";
-            this.Button_UpdateIMAData.UseVisualStyleBackColor = true;
-            // 
-            // Button_ExportInterchangeFile
-            // 
-            this.Button_ExportInterchangeFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_ExportInterchangeFile.Location = new System.Drawing.Point(184, 532);
-            this.Button_ExportInterchangeFile.Name = "Button_ExportInterchangeFile";
-            this.Button_ExportInterchangeFile.Size = new System.Drawing.Size(126, 23);
-            this.Button_ExportInterchangeFile.TabIndex = 3;
-            this.Button_ExportInterchangeFile.Text = "Export Interchange File";
-            this.Button_ExportInterchangeFile.UseVisualStyleBackColor = true;
-            // 
             // Frm_Musics_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -684,6 +709,7 @@ namespace EuroSound_Application.Musics
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainerMusicsForm)).EndInit();
             this.SplitContainerMusicsForm.ResumeLayout(false);
             this.GroupBox_StreamData.ResumeLayout(false);
+            this.GroupBox_StreamData.PerformLayout();
             this.GroupBox_MusicHashcodes.ResumeLayout(false);
             this.GroupBox_MusicHashcodes.PerformLayout();
             this.ResumeLayout(false);
@@ -731,7 +757,7 @@ namespace EuroSound_Application.Musics
         private System.Windows.Forms.SplitContainer SplitContainerMusicsForm;
         protected internal System.Windows.Forms.TreeView TreeView_MusicData;
         private System.Windows.Forms.GroupBox GroupBox_MusicHashcodes;
-        private System.Windows.Forms.Button Button_UpdateList_WavData;
+        private System.Windows.Forms.Button Button_Generate_Hashcodes;
         private System.Windows.Forms.Button Button_UpdateIMAData;
         private System.Windows.Forms.Button Button_ExportInterchangeFile;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_NewFolder;
@@ -745,7 +771,6 @@ namespace EuroSound_Application.Musics
         private System.Windows.Forms.Button Button_StopUpdate;
         private CustomControls.ListViewColumnSorting.ListView_ColumnSortingClick ListView_WavHeaderData;
         private System.Windows.Forms.ColumnHeader Col_Name;
-        private System.Windows.Forms.ColumnHeader Col_Index;
         private System.Windows.Forms.ColumnHeader Col_Frequency;
         private System.Windows.Forms.ColumnHeader Col_Channels;
         private System.Windows.Forms.ColumnHeader Col_Bits;
@@ -754,6 +779,8 @@ namespace EuroSound_Application.Musics
         private System.Windows.Forms.ColumnHeader Col_Duration;
         private System.Windows.Forms.ColumnHeader Col_MarkersCount;
         private System.Windows.Forms.ColumnHeader Col_StartMarkerCount;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button Button_UpdateProperties;
+        private System.Windows.Forms.TextBox Textbox_DataCount;
+        private System.Windows.Forms.Label Label_ItemsCountWav;
     }
 }

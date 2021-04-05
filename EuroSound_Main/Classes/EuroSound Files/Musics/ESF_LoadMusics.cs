@@ -61,31 +61,33 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
                     BaseVolume = BReader.ReadUInt32(),
                 };
 
-                //Read Data
-                Music.Frequency = BReader.ReadUInt32();
-                Music.Channels = BReader.ReadByte();
-                Music.Bits = BReader.ReadUInt32();
-                Music.Duration = BReader.ReadUInt32();
-                Music.RealSize = BReader.ReadUInt32();
-                Music.Encoding = BReader.ReadString();
-                Music.WAVFileMD5 = BReader.ReadString();
-                Music.WAVFileName = BReader.ReadString();
-
-                //Read Wav Left Channel
+                //Read Data Left Channel
+                Music.Frequency_LeftChannel = BReader.ReadUInt32();
+                Music.Channels_LeftChannel = BReader.ReadByte();
+                Music.Bits_LeftChannel = BReader.ReadUInt32();
+                Music.Duration_LeftChannel = BReader.ReadUInt32();
+                Music.RealSize_LeftChannel = BReader.ReadUInt32();
+                Music.Encoding_LeftChannel = BReader.ReadString();
+                Music.WAVFileMD5_LeftChannel = BReader.ReadString();
+                Music.WAVFileName_LeftChannel = BReader.ReadString();
                 PCM_DataLength = BReader.ReadInt32();
                 Music.PCM_Data_LeftChannel = BReader.ReadBytes(PCM_DataLength);
                 ADPCM_DataLength = BReader.ReadInt32();
                 Music.IMA_ADPCM_DATA_LeftChannel = BReader.ReadBytes(ADPCM_DataLength);
 
-                //Read Wav Right Channel
+                //Read Data Right Channel
+                Music.Frequency_RightChannel = BReader.ReadUInt32();
+                Music.Channels_RightChannel = BReader.ReadByte();
+                Music.Bits_RightChannel = BReader.ReadUInt32();
+                Music.Duration_RightChannel = BReader.ReadUInt32();
+                Music.RealSize_RightChannel = BReader.ReadUInt32();
+                Music.Encoding_RightChannel = BReader.ReadString();
+                Music.WAVFileMD5_RightChannel = BReader.ReadString();
+                Music.WAVFileName_RightChannel = BReader.ReadString();
                 PCM_DataLength = BReader.ReadInt32();
                 Music.PCM_Data_RightChannel = BReader.ReadBytes(PCM_DataLength);
                 ADPCM_DataLength = BReader.ReadInt32();
                 Music.IMA_ADPCM_DATA_RightChannel = BReader.ReadBytes(ADPCM_DataLength);
-
-                //Read Stereo Track
-                PCM_DataLength = BReader.ReadInt32();
-                Music.PCM_Data = BReader.ReadBytes(PCM_DataLength);
 
                 //Read Start Markers List
                 StartMarkersCount = BReader.ReadUInt32();

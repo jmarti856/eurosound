@@ -1,5 +1,6 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
+using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls.ProjectSettings;
 using EuroSound_Application.CustomControls.SearcherForm;
@@ -26,6 +27,8 @@ namespace EuroSound_Application.Musics
         private EuroSoundFiles SerializeInfo = new EuroSoundFiles();
         public ProjectFile ProjectInfo = new ProjectFile();
         private MostRecentFilesMenu RecentFilesMenu;
+        private AudioFunctions AudioLibrary = new AudioFunctions();
+        private Thread UpdateImaData, UpdateWavList;
         private string FileToLoadArg, ProjectName;
         private string LoadedFile = string.Empty;
 
@@ -373,7 +376,7 @@ namespace EuroSound_Application.Musics
             {
                 TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 0, 0);
             }
-            else if (e.Node.Tag.Equals("Sound"))
+            else if (e.Node.Tag.Equals("Music"))
             {
                 if (EXMusicsFunctions.MusicWillBeOutputed(MusicsList, e.Node.Name))
                 {
@@ -393,7 +396,7 @@ namespace EuroSound_Application.Musics
             {
                 TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 1, 1);
             }
-            else if (e.Node.Tag.Equals("Sound"))
+            else if (e.Node.Tag.Equals("Music"))
             {
                 if (EXMusicsFunctions.MusicWillBeOutputed(MusicsList, e.Node.Name))
                 {
@@ -461,7 +464,7 @@ namespace EuroSound_Application.Musics
             //Delete selected Node
             if (e.KeyCode == Keys.Delete)
             {
-                if (SelectedNode.Tag.Equals("Sound"))
+                if (SelectedNode.Tag.Equals("Music"))
                 {
                     RemoveMusicSelectedNode(TreeView_MusicData.SelectedNode);
                     ProjectInfo.FileHasBeenModified = true;
@@ -482,7 +485,7 @@ namespace EuroSound_Application.Musics
                 {
                     ContextMenu_Folders.Show(Cursor.Position);
                 }
-                else if (SelectedNode.Tag.Equals("Sound"))
+                else if (SelectedNode.Tag.Equals("Music"))
                 {
                     ContextMenu_Sounds.Show(Cursor.Position);
                 }
@@ -493,7 +496,7 @@ namespace EuroSound_Application.Musics
         {
             if (TreeView_MusicData.SelectedNode != null)
             {
-                if (TreeView_MusicData.SelectedNode.Tag.Equals("Sound"))
+                if (TreeView_MusicData.SelectedNode.Tag.Equals("Music"))
                 {
                     OpenMusicPropertiesForm(TreeView_MusicData.SelectedNode);
                     ProjectInfo.FileHasBeenModified = true;
@@ -537,12 +540,14 @@ namespace EuroSound_Application.Musics
         {
             string DestSection, SourceSection, DestNodeType;
 
-            //Retrieve the client coordinates of the drop location.
-            Point targetPoint = TreeView_MusicData.PointToClient(new Point(e.X, e.Y));
+            Point pt = TreeView_MusicData.PointToClient(new Point(e.X, e.Y));
 
             //Retrieve the node at the drop location.
-            TreeNode targetNode = TreeView_MusicData.GetNodeAt(targetPoint);
+            TreeNode targetNode = TreeView_MusicData.GetNodeAt(pt);
             TreeNode FindTargetNode = TreeNodeFunctions.FindRootNode(targetNode);
+
+            TreeNode parentNode = targetNode;
+
             if (FindTargetNode != null)
             {
                 DestSection = FindTargetNode.Text;
@@ -555,21 +560,25 @@ namespace EuroSound_Application.Musics
                 //Confirm that the node at the drop location is not
                 //the dragged node and that target node isn't null
                 //(for example if you drag outside the control)
-                if (!draggedNode.Equals(targetNode) && targetNode != null)
+                if (!draggedNode.Equals(targetNode) && draggedNode != null && targetNode != null)
                 {
-                    /*
-                    Confirm we are not outside the node section and that the destination place is a folder or the root
-                    node section
-                    */
-                    if (SourceSection.Equals(DestSection) && (DestNodeType.Equals("Folder") || DestNodeType.Equals("Root")))
+                    bool canDrop = true;
+                    while (canDrop && (parentNode != null))
                     {
-                        //Remove the node from its current
-                        //location and add it to the node at the drop location.
-                        draggedNode.Remove();
-                        targetNode.Nodes.Add(draggedNode);
-                        targetNode.Expand();
-                        TreeView_MusicData.SelectedNode = draggedNode;
-                        ProjectInfo.FileHasBeenModified = true;
+                        canDrop = !Object.ReferenceEquals(draggedNode, parentNode);
+                        parentNode = parentNode.Parent;
+                    }
+
+                    if (canDrop)
+                    {
+                        if (SourceSection.Equals(DestSection) && (DestNodeType.Equals("Folder") || DestNodeType.Equals("Root")))
+                        {
+                            draggedNode.Remove();
+                            targetNode.Nodes.Add(draggedNode);
+                            targetNode.Expand();
+                            TreeView_MusicData.SelectedNode = draggedNode;
+                            ProjectInfo.FileHasBeenModified = true;
+                        }
                     }
                 }
             }
@@ -586,7 +595,7 @@ namespace EuroSound_Application.Musics
                 if (targetNode != null)
                 {
                     //Type of nodes that are allowed to be re-ubicated
-                    if (draggedNode.Tag.Equals("Folder") || draggedNode.Tag.Equals("Sound"))
+                    if (draggedNode.Tag.Equals("Folder") || draggedNode.Tag.Equals("Music"))
                     {
                         e.Effect = DragDropEffects.Move;
                     }
@@ -620,6 +629,49 @@ namespace EuroSound_Application.Musics
         private void TreeView_MusicData_ItemDrag(object sender, ItemDragEventArgs e)
         {
             DoDragDrop(e.Item, DragDropEffects.Move);
+        }
+
+        private void Button_UpdateProperties_Click(object sender, EventArgs e)
+        {
+            UpdateWavDataList();
+        }
+
+        private void Button_StopUpdate_Click(object sender, EventArgs e)
+        {
+            if (UpdateWavList != null)
+            {
+                UpdateWavList.Abort();
+                ListView_WavHeaderData.Items.Clear();
+                ListView_WavHeaderData.Enabled = true;
+                Textbox_DataCount.Text = "0";
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            }
+        }
+
+        private void Button_UpdateIMAData_Click(object sender, EventArgs e)
+        {
+            UpdateIMAData();
+        }
+
+        private void ListView_WavHeaderData_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (ListView_WavHeaderData.SelectedItems.Count > 0)
+            {
+                TreeNode[] SelectedNode = TreeView_MusicData.Nodes.Find(ListView_WavHeaderData.SelectedItems[0].Tag.ToString(), true);
+                if (SelectedNode.Length > 0)
+                {
+                    OpenMusicPropertiesForm(SelectedNode[0]);
+                }
+            }
+        }
+
+        private void Button_Generate_Hashcodes_Click(object sender, EventArgs e)
+        {
+            //Clear textbox
+            Textbox_Hashcodes.Clear();
+
+            //Generate comment
+            Textbox_Hashcodes.Text += "// Music Jump Codes For Level " + Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, ProjectInfo.Hashcode);
         }
 
         private void MenuItem_Edit_Search_Click(object sender, EventArgs e)

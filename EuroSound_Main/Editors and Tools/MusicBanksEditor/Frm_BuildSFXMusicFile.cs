@@ -52,7 +52,6 @@ namespace EuroSound_Application.Musics
                 GenerateSFXMusicBank SFXCreator = new GenerateSFXMusicBank();
                 BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.MusicOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
                 StreamWriter DebugFileWritter = null;
-                EXMusic MusicToExport;
 
                 Form ParentForm = GenericFunctions.GetFormByName("Frm_Musics_Main", Tag.ToString());
                 int TotalProgress = 1;

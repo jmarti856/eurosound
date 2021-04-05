@@ -45,7 +45,8 @@ namespace EuroSound_Application.Musics
             Reflection.CopyProperties(SelectedMusic, TemporalMusic);
 
             //Show Info in Textboxes
-            ShowAudioInfo();
+            ShowAudioInfoLeftChannel();
+            ShowAudioInfoRightChannel();
 
             CheckBox_OutputThisMusic.Checked = SelectedMusic.OutputThisSound;
         }
@@ -58,33 +59,62 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         //* FORM CONTROLS EVENTS
         //*===============================================================================================
-        private void Button_ReplaceAudio_Click(object sender, System.EventArgs e)
+        private void Button_ReplaceAudio_LeftChannel_Click(object sender, System.EventArgs e)
         {
             string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0, true);
             if (!string.IsNullOrEmpty(AudioPath))
             {
-                if (GenericFunctions.AudioIsValid(AudioPath, 2, 32000))
+                if (GenericFunctions.AudioIsValid(AudioPath, 1, 32000))
                 {
-                    LoadData(AudioPath);
+                    LoadDataLeftChannel(AudioPath);
                 }
                 else
                 {
                     DialogResult TryToReload = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrectMusicsMono"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (TryToReload == DialogResult.Yes)
                     {
-                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), 32000, 1, 16);
+                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), 22050, 2, 16);
                         if (!string.IsNullOrEmpty(FileTempFile))
                         {
-                            LoadData(FileTempFile);
+                            LoadDataLeftChannel(FileTempFile);
                         }
                     }
                 }
             }
         }
 
-        private void Button_SaveAudio_Click(object sender, System.EventArgs e)
+        private void Button_SaveAudio_LeftChannel_Click(object sender, System.EventArgs e)
         {
-            SaveAudio();
+            GenericFunctions.SaveAudio(AudioLibrary, TemporalMusic.WAVFileName_LeftChannel, (int)TemporalMusic.Frequency_LeftChannel, (int)TemporalMusic.Bits_LeftChannel, TemporalMusic.Channels_LeftChannel, TemporalMusic.PCM_Data_LeftChannel);
+        }
+
+        private void Button_ReplaceAudio_RightChannel_Click(object sender, EventArgs e)
+        {
+            string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0, true);
+            if (!string.IsNullOrEmpty(AudioPath))
+            {
+                if (GenericFunctions.AudioIsValid(AudioPath, 1, 32000))
+                {
+                    LoadDataRightChannel(AudioPath);
+                }
+                else
+                {
+                    DialogResult TryToReload = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrectMusicsMono"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                    if (TryToReload == DialogResult.Yes)
+                    {
+                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), 22050, 2, 16);
+                        if (!string.IsNullOrEmpty(FileTempFile))
+                        {
+                            LoadDataRightChannel(FileTempFile);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void Button_SaveAudio_RightChannel_Click(object sender, EventArgs e)
+        {
+            GenericFunctions.SaveAudio(AudioLibrary, TemporalMusic.WAVFileName_RightChannel, (int)TemporalMusic.Frequency_RightChannel, (int)TemporalMusic.Bits_RightChannel, TemporalMusic.Channels_RightChannel, TemporalMusic.PCM_Data_RightChannel);
         }
 
         private void Button_MarkersEditor_Click(object sender, System.EventArgs e)
@@ -101,11 +131,11 @@ namespace EuroSound_Application.Musics
             MarkersEditr.Dispose();
         }
 
-        private void Button_Play_Click(object sender, System.EventArgs e)
+        private void Button_Play_LeftChannel_Click(object sender, System.EventArgs e)
         {
-            if (TemporalMusic.PCM_Data != null)
+            if (TemporalMusic.PCM_Data_LeftChannel != null)
             {
-                AudioLibrary.PlayAudio(_waveOut, TemporalMusic.PCM_Data, (int)TemporalMusic.Frequency, 1, (int)TemporalMusic.Bits, TemporalMusic.Channels, 0, Numeric_BaseVolume.Value);
+                AudioLibrary.PlayAudio(_waveOut, TemporalMusic.PCM_Data_LeftChannel, (int)TemporalMusic.Frequency_LeftChannel, 1, (int)TemporalMusic.Bits_LeftChannel, TemporalMusic.Channels_LeftChannel, 0, Numeric_BaseVolume.Value);
             }
             else
             {
@@ -113,7 +143,34 @@ namespace EuroSound_Application.Musics
             }
         }
 
-        private void Button_Stop_Click(object sender, System.EventArgs e)
+        private void Button_Stop_LeftChannel_Click(object sender, System.EventArgs e)
+        {
+            AudioLibrary.StopAudio(_waveOut);
+        }
+
+        private void Button_Play_RightChannel_Click(object sender, EventArgs e)
+        {
+            if (TemporalMusic.PCM_Data_RightChannel != null)
+            {
+                AudioLibrary.PlayAudio(_waveOut, TemporalMusic.PCM_Data_RightChannel, (int)TemporalMusic.Frequency_RightChannel, 1, (int)TemporalMusic.Bits_RightChannel, TemporalMusic.Channels_RightChannel, 0, Numeric_BaseVolume.Value);
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("AudioProperties_FileCorrupt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Button_Stop_RightChannel_Click(object sender, EventArgs e)
+        {
+            AudioLibrary.StopAudio(_waveOut);
+        }
+
+        private void Button_Play_Click(object sender, EventArgs e)
+        {
+            AudioLibrary.PlayAudioMultiplexing(_waveOut, TemporalMusic.PCM_Data_LeftChannel, TemporalMusic.PCM_Data_RightChannel, (int)TemporalMusic.Frequency_LeftChannel, (int)TemporalMusic.Bits_LeftChannel, 1, Numeric_BaseVolume.Value);
+        }
+
+        private void Button_Stop_Click(object sender, EventArgs e)
         {
             AudioLibrary.StopAudio(_waveOut);
         }
@@ -126,21 +183,37 @@ namespace EuroSound_Application.Musics
             SelectedMusic.BaseVolume = (uint)(Numeric_BaseVolume.Value * 100);
             SelectedMusic.OutputThisSound = CheckBox_OutputThisMusic.Checked;
 
-            if (TemporalMusic.PCM_Data != null)
+            if (TemporalMusic.PCM_Data_LeftChannel != null && TemporalMusic.PCM_Data_RightChannel != null)
             {
-                SelectedMusic.Frequency = TemporalMusic.Frequency;
-                SelectedMusic.Channels = TemporalMusic.Channels;
-                SelectedMusic.Bits = TemporalMusic.Bits;
-                SelectedMusic.Duration = TemporalMusic.Duration;
-                SelectedMusic.RealSize = TemporalMusic.RealSize;
-                SelectedMusic.Encoding = TemporalMusic.Encoding;
-                SelectedMusic.WAVFileMD5 = TemporalMusic.WAVFileMD5;
-                SelectedMusic.WAVFileName = TemporalMusic.WAVFileName;
+                //Save Left Channel
+                SelectedMusic.Frequency_LeftChannel = TemporalMusic.Frequency_LeftChannel;
+                SelectedMusic.Channels_LeftChannel = TemporalMusic.Channels_LeftChannel;
+                SelectedMusic.Bits_LeftChannel = TemporalMusic.Bits_LeftChannel;
+                SelectedMusic.Duration_LeftChannel = TemporalMusic.Duration_LeftChannel;
+                SelectedMusic.RealSize_LeftChannel = TemporalMusic.RealSize_LeftChannel;
+                SelectedMusic.Encoding_LeftChannel = TemporalMusic.Encoding_LeftChannel;
+                SelectedMusic.WAVFileMD5_LeftChannel = TemporalMusic.WAVFileMD5_LeftChannel;
+                SelectedMusic.WAVFileName_LeftChannel = TemporalMusic.WAVFileName_LeftChannel;
                 SelectedMusic.PCM_Data_LeftChannel = TemporalMusic.PCM_Data_LeftChannel;
                 SelectedMusic.IMA_ADPCM_DATA_LeftChannel = TemporalMusic.IMA_ADPCM_DATA_LeftChannel;
                 SelectedMusic.PCM_Data_RightChannel = TemporalMusic.PCM_Data_RightChannel;
                 SelectedMusic.IMA_ADPCM_DATA_RightChannel = TemporalMusic.IMA_ADPCM_DATA_RightChannel;
-                SelectedMusic.PCM_Data = TemporalMusic.PCM_Data;
+
+                //Save Right Channel
+                SelectedMusic.Frequency_RightChannel = TemporalMusic.Frequency_RightChannel;
+                SelectedMusic.Channels_RightChannel = TemporalMusic.Channels_RightChannel;
+                SelectedMusic.Bits_RightChannel = TemporalMusic.Bits_RightChannel;
+                SelectedMusic.Duration_RightChannel = TemporalMusic.Duration_RightChannel;
+                SelectedMusic.RealSize_RightChannel = TemporalMusic.RealSize_RightChannel;
+                SelectedMusic.Encoding_RightChannel = TemporalMusic.Encoding_RightChannel;
+                SelectedMusic.WAVFileMD5_RightChannel = TemporalMusic.WAVFileMD5_RightChannel;
+                SelectedMusic.WAVFileName_RightChannel = TemporalMusic.WAVFileName_RightChannel;
+                SelectedMusic.PCM_Data_RightChannel = TemporalMusic.PCM_Data_RightChannel;
+                SelectedMusic.IMA_ADPCM_DATA_RightChannel = TemporalMusic.IMA_ADPCM_DATA_RightChannel;
+                SelectedMusic.PCM_Data_RightChannel = TemporalMusic.PCM_Data_RightChannel;
+                SelectedMusic.IMA_ADPCM_DATA_RightChannel = TemporalMusic.IMA_ADPCM_DATA_RightChannel;
+
+                //Save Global 
                 SelectedMusic.StartMarkers = new List<EXStreamStartMarker>(TemporalMusic.StartMarkers);
                 SelectedMusic.Markers = new List<EXStreamMarker>(TemporalMusic.Markers);
             }
@@ -170,48 +243,37 @@ namespace EuroSound_Application.Musics
             Close();
         }
 
-        private void ContextMenuAudioSave_Click(object sender, EventArgs e)
-        {
-            SaveAudio();
-        }
-
         //*===============================================================================================
         //* FUNCTIONS EVENTS
         //*===============================================================================================
-        private void LoadData(string AudioPath)
+        private void LoadDataLeftChannel(string AudioPath)
         {
             EngineXImaAdpcm.ImaADPCM_Functions ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Functions();
 
-            TemporalMusic.WAVFileMD5 = GenericFunctions.CalculateMD5(AudioPath);
-            TemporalMusic.WAVFileName = Path.GetFileName(AudioPath);
+            TemporalMusic.WAVFileMD5_LeftChannel = GenericFunctions.CalculateMD5(AudioPath);
+            TemporalMusic.WAVFileName_LeftChannel = Path.GetFileName(AudioPath);
 
             using (WaveFileReader AudioReader = new WaveFileReader(AudioPath))
             {
-                TemporalMusic.Channels = (byte)AudioReader.WaveFormat.Channels;
-                TemporalMusic.Frequency = (uint)AudioReader.WaveFormat.SampleRate;
-                TemporalMusic.RealSize = (uint)new FileInfo(AudioPath).Length;
-                TemporalMusic.Bits = (uint)AudioReader.WaveFormat.BitsPerSample;
-                TemporalMusic.Encoding = AudioReader.WaveFormat.Encoding.ToString();
-                TemporalMusic.Duration = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1);
+                TemporalMusic.Channels_LeftChannel = (byte)AudioReader.WaveFormat.Channels;
+                TemporalMusic.Frequency_LeftChannel = (uint)AudioReader.WaveFormat.SampleRate;
+                TemporalMusic.RealSize_LeftChannel = (uint)new FileInfo(AudioPath).Length;
+                TemporalMusic.Bits_LeftChannel = (uint)AudioReader.WaveFormat.BitsPerSample;
+                TemporalMusic.Encoding_LeftChannel = AudioReader.WaveFormat.Encoding.ToString();
+                TemporalMusic.Duration_LeftChannel = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1);
 
                 //Get PCM Data Stereo
-                TemporalMusic.PCM_Data = new byte[AudioReader.Length];
-                AudioReader.Read(TemporalMusic.PCM_Data, 0, (int)AudioReader.Length);
+                TemporalMusic.PCM_Data_LeftChannel = new byte[AudioReader.Length];
+                AudioReader.Read(TemporalMusic.PCM_Data_LeftChannel, 0, (int)AudioReader.Length);
 
-                //Get Left Channel
-                TemporalMusic.PCM_Data_LeftChannel = AudioLibrary.SplitChannels(TemporalMusic.PCM_Data, true);
+                //Get IMA ADPCM Data
                 TemporalMusic.IMA_ADPCM_DATA_LeftChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_LeftChannel), TemporalMusic.PCM_Data_LeftChannel.Length / 2);
-
-                //Get Right Channel
-                TemporalMusic.PCM_Data_RightChannel = AudioLibrary.SplitChannels(TemporalMusic.PCM_Data, false);
-                TemporalMusic.IMA_ADPCM_DATA_RightChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_RightChannel), TemporalMusic.PCM_Data_RightChannel.Length / 2);
-
                 AudioReader.Close();
             }
 
             if (TemporalMusic != null && TemporalMusic.PCM_Data_LeftChannel != null)
             {
-                ShowAudioInfo();
+                ShowAudioInfoLeftChannel();
             }
             else
             {
@@ -219,32 +281,61 @@ namespace EuroSound_Application.Musics
             }
         }
 
-        private void ShowAudioInfo()
+        private void LoadDataRightChannel(string AudioPath)
         {
-            Textbox_IMA_ADPCM.Text = TemporalMusic.WAVFileName;
-            Textbox_MD5_Hash.Text = TemporalMusic.WAVFileMD5;
-            Textbox_Bits.Text = TemporalMusic.Bits.ToString();
-            Textbox_Encoding.Text = TemporalMusic.Encoding.ToUpper();
-            Textbox_Channels.Text = TemporalMusic.Channels.ToString();
-            Textbox_Frequency.Text = string.Join(" ", new string[] { TemporalMusic.Frequency.ToString(), "Hz" });
-            Textbox_RealSize.Text = string.Join(" ", new string[] { TemporalMusic.RealSize.ToString(), "bytes" });
+            EngineXImaAdpcm.ImaADPCM_Functions ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Functions();
 
-            //Draw audio waves in the UI
-            if (TemporalMusic.PCM_Data != null && TemporalMusic.Channels > 0)
+            TemporalMusic.WAVFileMD5_RightChannel = GenericFunctions.CalculateMD5(AudioPath);
+            TemporalMusic.WAVFileName_RightChannel = Path.GetFileName(AudioPath);
+
+            using (WaveFileReader AudioReader = new WaveFileReader(AudioPath))
             {
-                AudioLibrary.DrawAudioWaves(WaveViewer, TemporalMusic, 0);
+                TemporalMusic.Channels_RightChannel = (byte)AudioReader.WaveFormat.Channels;
+                TemporalMusic.Frequency_RightChannel = (uint)AudioReader.WaveFormat.SampleRate;
+                TemporalMusic.RealSize_RightChannel = (uint)new FileInfo(AudioPath).Length;
+                TemporalMusic.Bits_RightChannel = (uint)AudioReader.WaveFormat.BitsPerSample;
+                TemporalMusic.Encoding_RightChannel = AudioReader.WaveFormat.Encoding.ToString();
+                TemporalMusic.Duration_RightChannel = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1);
+
+                //Get PCM Data Stereo
+                TemporalMusic.PCM_Data_RightChannel = new byte[AudioReader.Length];
+                AudioReader.Read(TemporalMusic.PCM_Data_RightChannel, 0, (int)AudioReader.Length);
+
+                //Get IMA ADPCM Data
+                TemporalMusic.IMA_ADPCM_DATA_RightChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_RightChannel), TemporalMusic.PCM_Data_RightChannel.Length / 2);
+                AudioReader.Close();
+            }
+
+            if (TemporalMusic != null && TemporalMusic.PCM_Data_RightChannel != null)
+            {
+                ShowAudioInfoRightChannel();
+            }
+            else
+            {
+                MessageBox.Show("Error reading this file, seems that is being used by another process", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void SaveAudio()
+        private void ShowAudioInfoLeftChannel()
         {
-            string SavePath;
+            Textbox_IMA_ADPCM_LeftChannel.Text = TemporalMusic.WAVFileName_LeftChannel;
+            Textbox_MD5_Hash_LeftChannel.Text = TemporalMusic.WAVFileMD5_LeftChannel;
+            Textbox_Bits_LeftChannel.Text = TemporalMusic.Bits_LeftChannel.ToString();
+            Textbox_Encoding_LeftChannel.Text = TemporalMusic.Encoding_LeftChannel.ToUpper();
+            Textbox_Channels_LeftChannel.Text = TemporalMusic.Channels_LeftChannel.ToString();
+            Textbox_Frequency_LeftChannel.Text = string.Join(" ", new string[] { TemporalMusic.Frequency_LeftChannel.ToString(), "Hz" });
+            Textbox_RealSize_LeftChannel.Text = string.Join(" ", new string[] { TemporalMusic.RealSize_LeftChannel.ToString(), "bytes" });
+        }
 
-            SavePath = GenericFunctions.SaveFileBrowser("WAV Files (*.wav)|*.wav", 0, true, TemporalMusic.WAVFileName);
-            if (!string.IsNullOrEmpty(SavePath))
-            {
-                AudioLibrary.CreateWavFile((int)TemporalMusic.Frequency, (int)TemporalMusic.Bits, (int)TemporalMusic.Channels, TemporalMusic.PCM_Data, SavePath);
-            }
+        private void ShowAudioInfoRightChannel()
+        {
+            Textbox_IMA_ADPCM_RightChannel.Text = TemporalMusic.WAVFileName_RightChannel;
+            Textbox_MD5_Hash_RightChannel.Text = TemporalMusic.WAVFileMD5_RightChannel;
+            Textbox_Bits_RightChannel.Text = TemporalMusic.Bits_RightChannel.ToString();
+            Textbox_Encoding_RightChannel.Text = TemporalMusic.Encoding_RightChannel.ToUpper();
+            Textbox_Channels_RightChannel.Text = TemporalMusic.Channels_RightChannel.ToString();
+            Textbox_Frequency_RightChannel.Text = string.Join(" ", new string[] { TemporalMusic.Frequency_RightChannel.ToString(), "Hz" });
+            Textbox_RealSize_RightChannel.Text = string.Join(" ", new string[] { TemporalMusic.RealSize_RightChannel.ToString(), "bytes" });
         }
     }
 }

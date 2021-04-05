@@ -48,6 +48,26 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             }
         }
 
+        internal void PlayAudioMultiplexing(WaveOut AudioPlayer, byte[] PCMDataLeft, byte[] PCMDataRight, int Frequency, int Bits, int Channels, decimal Volume)
+        {
+            if (Frequency != 0)
+            {
+                if (AudioPlayer.PlaybackState == PlaybackState.Stopped)
+                {
+                    AudioSample = new MemoryStream(PCMDataLeft);
+                    IWaveProvider providerLeft = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency, Bits, Channels));
+                    AudioSample = new MemoryStream(PCMDataRight);
+                    IWaveProvider providerRight = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency, Bits, Channels));
+
+                    MultiplexingWaveProvider waveProvider = new MultiplexingWaveProvider(new IWaveProvider[] { providerLeft, providerRight }, 2);
+                    AudioPlayer.DeviceNumber = GlobalPreferences.DefaultAudioDevice;
+                    AudioPlayer.Volume = (float)Volume;
+                    AudioPlayer.Init(waveProvider);
+                    AudioPlayer.Play();
+                }
+            }
+        }
+
         private int CalculateValidRate(int DefaultRate, int Pitch)
         {
             int NewPitch;
@@ -106,8 +126,8 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             }
             else if (SelectedSound.GetType() == typeof(EXMusic))
             {
-                EXMusic AudioObject = ((EXMusic)SelectedSound);
-                ControlToDraw.WaveStream = new RawSourceWaveStream(new MemoryStream(AudioObject.PCM_Data), new WaveFormat((int)AudioObject.Frequency, (int)AudioObject.Bits, AudioObject.Channels));
+                //EXMusic AudioObject = ((EXMusic)SelectedSound);
+                //ControlToDraw.WaveStream = new RawSourceWaveStream(new MemoryStream(AudioObject.PCM_Data_RightChannel), new WaveFormat((int)AudioObject.Frequency, (int)AudioObject.Bits, AudioObject.Channels));
             }
             ControlToDraw.InitControl();
         }
@@ -209,7 +229,7 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             }
         }
 
-        internal byte[] SplitChannels(byte[] PCM_Data, bool LeftChannel)
+        internal byte[] SplitChannels(byte[] PCM_Data, bool LeftChannel, int BytesPerSample)
         {
             byte[] ChannelData;
 
@@ -223,11 +243,11 @@ namespace EuroSound_Application.AudioFunctionsLibrary
                         {
                             if (LeftChannel)
                             {
-                                BWriter.Write(BReader.ReadUInt16());
+                                BWriter.Write(BReader.ReadBytes(2));
                             }
                             else
                             {
-                                BReader.ReadUInt16();
+                                BReader.BaseStream.Position += 2;
                             }
                             LeftChannel = !LeftChannel;
                         }

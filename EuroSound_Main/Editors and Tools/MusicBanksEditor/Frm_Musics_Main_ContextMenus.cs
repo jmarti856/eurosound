@@ -105,7 +105,7 @@ namespace EuroSound_Application.Musics
                 if (!string.IsNullOrEmpty(Name))
                 {
                     uint SoundID = GenericFunctions.GetNewObjectID(ProjectInfo);
-                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_MusicData.SelectedNode.Name, SoundID.ToString(), Name, 2, 2, "Sound", Color.Black, TreeView_MusicData);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_MusicData.SelectedNode.Name, SoundID.ToString(), Name, 2, 2, "Music", Color.Black, TreeView_MusicData);
 
                     //Add Empty Sound
                     EXMusic EmptyMusic = new EXMusic();

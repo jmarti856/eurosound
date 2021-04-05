@@ -12,30 +12,32 @@ namespace EuroSound_Application.Musics
         //Extra info (Not required for the output)
         public bool OutputThisSound = true;
 
-        public uint Frequency { get; set; }
-        public byte Channels { get; set; }
-        public uint Bits { get; set; }
-        public uint Duration { get; set; }
-        public uint RealSize { get; set; }
-        public string Encoding { get; set; } = string.Empty;
-        public string WAVFileMD5 { get; set; } = string.Empty;
-        public string WAVFileName { get; set; } = string.Empty;
-
         //*===============================================================================================
         //* LEFT CHANNEL
         //*===============================================================================================
+        public uint Frequency_LeftChannel { get; set; }
+        public byte Channels_LeftChannel { get; set; }
+        public uint Bits_LeftChannel { get; set; }
+        public uint Duration_LeftChannel { get; set; }
+        public uint RealSize_LeftChannel { get; set; }
+        public string Encoding_LeftChannel { get; set; } = string.Empty;
+        public string WAVFileMD5_LeftChannel { get; set; } = string.Empty;
+        public string WAVFileName_LeftChannel { get; set; } = string.Empty;
         public byte[] PCM_Data_LeftChannel { get; set; } = new byte[2];
         public byte[] IMA_ADPCM_DATA_LeftChannel { get; set; } = new byte[2];
 
         //*===============================================================================================
         //* RIGHT CHANNEL
         //*===============================================================================================
+        public uint Frequency_RightChannel { get; set; }
+        public byte Channels_RightChannel { get; set; }
+        public uint Bits_RightChannel { get; set; }
+        public uint Duration_RightChannel { get; set; }
+        public uint RealSize_RightChannel { get; set; }
+        public string Encoding_RightChannel { get; set; } = string.Empty;
+        public string WAVFileMD5_RightChannel { get; set; } = string.Empty;
+        public string WAVFileName_RightChannel { get; set; } = string.Empty;
         public byte[] PCM_Data_RightChannel { get; set; } = new byte[2];
         public byte[] IMA_ADPCM_DATA_RightChannel { get; set; } = new byte[2];
-
-        //*===============================================================================================
-        //* STEREO TRACK
-        //*===============================================================================================
-        public byte[] PCM_Data { get; set; } = new byte[2];
     }
 }

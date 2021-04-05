@@ -1,4 +1,5 @@
 ﻿using EuroSound_Application.FunctionsListView;
+using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
 using System;
@@ -51,6 +52,10 @@ namespace EuroSound_Application.CustomControls.SearcherForm
             else if (FormType == typeof(Frm_StreamSoundsEditorMain))
             {
                 Combobox_LookIn.Items.Add(new { Text = "Sounds", Value = 1 });
+            }
+            else if (FormType == typeof(Frm_Musics_Main))
+            {
+                Combobox_LookIn.Items.Add(new { Text = "Musics", Value = 1 });
             }
 
             //Show Data
@@ -131,7 +136,7 @@ namespace EuroSound_Application.CustomControls.SearcherForm
             Close();
         }
 
-        //edit
+        //-----Edit-----
         private void MenuItemEdit_SelectAll_Click(object sender, EventArgs e)
         {
             LVFunctions.SelectAllItems(ListViewResults);
@@ -147,7 +152,7 @@ namespace EuroSound_Application.CustomControls.SearcherForm
             LVFunctions.InvertSelection(ListViewResults);
         }
 
-        //-------Menu Object------
+        //-----Menu Object-----
         private void MenuItemObject_Edit_Click(object sender, EventArgs e)
         {
             OpenSelectedItem();
@@ -200,9 +205,15 @@ namespace EuroSound_Application.CustomControls.SearcherForm
                     Results = GetNodeCollection(((Frm_Soundbanks_Main)FormToSearch).TreeView_File.Nodes[ComboSelectedIndex].Nodes, ((Frm_Soundbanks_Main)FormToSearch).TreeView_File, Textbox_TextToSearch.Text.Trim(), RadioButton_MatchCase.Checked, e);
                 }
             }
+            //Stream Sounds
             else if (FormType == typeof(Frm_StreamSoundsEditorMain))
             {
                 Results = GetNodeCollection(((Frm_StreamSoundsEditorMain)FormToSearch).TreeView_StreamData.Nodes, ((Frm_StreamSoundsEditorMain)FormToSearch).TreeView_StreamData, Textbox_TextToSearch.Text.Trim(), RadioButton_MatchCase.Checked, e);
+            }
+            //Musics
+            else if (FormType == typeof(Frm_Musics_Main))
+            {
+                Results = GetNodeCollection(((Frm_Musics_Main)FormToSearch).TreeView_MusicData.Nodes, ((Frm_Musics_Main)FormToSearch).TreeView_MusicData, Textbox_TextToSearch.Text.Trim(), RadioButton_MatchCase.Checked, e);
             }
 
             //Print list
@@ -253,6 +264,13 @@ namespace EuroSound_Application.CustomControls.SearcherForm
                         if (ObjectType.Equals("Sound"))
                         {
                             ((Frm_StreamSoundsEditorMain)FormToSearch).OpenSoundPropertiesForm(NodeToOpen);
+                        }
+                    }
+                    else if (FormType == typeof(Frm_Musics_Main))
+                    {
+                        if (ObjectType.Equals("Music"))
+                        {
+                            ((Frm_Musics_Main)FormToSearch).OpenMusicPropertiesForm(NodeToOpen);
                         }
                     }
                 }
@@ -365,6 +383,7 @@ namespace EuroSound_Application.CustomControls.SearcherForm
                         }
                         ListViewResults.Items.Clear();
                         Textbox_TextToSearch.Clear();
+                        Label_Results.Text = "0 Items";
                     }
                 }
             }

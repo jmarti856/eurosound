@@ -301,7 +301,7 @@
       <DependentUpon>Frm_Sounbanks_DebugOutput.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\EuroSound Markers File\MarkerFiles_Loader.cs" />
-    <Compile Include="Editors and Tools\StreamSoundsEditor\Classes\MarkersFunctions.cs" />
+    <Compile Include="Editors and Tools\MarkersFunctions.cs" />
     <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSoundsDebugInfo.cs">
       <SubType>Form</SubType>
     </Compile>

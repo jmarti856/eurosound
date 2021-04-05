@@ -58,12 +58,12 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         private void Button_SaveAudio_Click(object sender, EventArgs e)
         {
-            SaveAudio();
+            GenericFunctions.SaveAudio(AudioLibrary, TemporalSound.WAVFileName, (int)TemporalSound.Frequency, (int)TemporalSound.Bits, TemporalSound.Channels, TemporalSound.PCM_Data);
         }
 
         private void ContextMenuAudioSave_Click(object sender, EventArgs e)
         {
-            SaveAudio();
+            GenericFunctions.SaveAudio(AudioLibrary, TemporalSound.WAVFileName, (int)TemporalSound.Frequency, (int)TemporalSound.Bits, TemporalSound.Channels, TemporalSound.PCM_Data);
         }
 
         private void Button_MarkersEditor_Click(object sender, EventArgs e)
@@ -85,7 +85,7 @@ namespace EuroSound_Application.StreamSounds
             string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0, true);
             if (!string.IsNullOrEmpty(AudioPath))
             {
-                if (GenericFunctions.AudioIsValid(AudioPath, 1, 22050))
+                if (GenericFunctions.AudioIsValid(AudioPath, 1, 32000))
                 {
                     LoadAudio(AudioPath);
                 }
@@ -223,17 +223,6 @@ namespace EuroSound_Application.StreamSounds
             else
             {
                 MessageBox.Show("Error reading this file, seems that is being used by another process", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void SaveAudio()
-        {
-            string SavePath;
-
-            SavePath = GenericFunctions.SaveFileBrowser("WAV Files (*.wav)|*.wav", 0, true, TemporalSound.WAVFileName);
-            if (!string.IsNullOrEmpty(SavePath))
-            {
-                AudioLibrary.CreateWavFile((int)TemporalSound.Frequency, (int)TemporalSound.Bits, (int)TemporalSound.Channels, TemporalSound.PCM_Data, SavePath);
             }
         }
     }
