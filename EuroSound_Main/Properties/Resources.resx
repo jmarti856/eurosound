@@ -169,13 +169,22 @@
     <value>Delete the unused stored audio data</value>
   </data>
   <data name="ContextMenuFolder_Rename" xml:space="preserve">
-    <value>Rename folder, not allowed to rename root folders (Audio Data, Sounds, Streamed Sounds)</value>
+    <value>Rename folder, not allowed to rename root folders (Audio Data, Sounds, Streamed Sounds, Musics)</value>
   </data>
   <data name="ContextMenuFolder_Sort" xml:space="preserve">
     <value>Sort items A-&gt;Z</value>
   </data>
   <data name="ContextMenuFolder_TextColor" xml:space="preserve">
     <value>Change the node label color for a custom one</value>
+  </data>
+  <data name="ContextMenuMusic_Properties" xml:space="preserve">
+    <value>Open properties form for the selected music</value>
+  </data>
+  <data name="ContextMenuMusic_Remove" xml:space="preserve">
+    <value>Delete the selected music</value>
+  </data>
+  <data name="ContextMenuMusic_Rename" xml:space="preserve">
+    <value>Rename the selected music</value>
   </data>
   <data name="ContextMenuSample_Properties" xml:space="preserve">
     <value>Open properties form for the selected sample</value>

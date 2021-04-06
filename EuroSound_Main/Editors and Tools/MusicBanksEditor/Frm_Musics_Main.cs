@@ -33,7 +33,7 @@ namespace EuroSound_Application.Musics
         private string LoadedFile = string.Empty;
 
         // The undo and redo history lists.
-        private Stack<object> UndoListSounds = new Stack<object>();
+        private Stack<object> UndoListMusics = new Stack<object>();
         private Stack<TreeNode> UndoListNodes = new Stack<TreeNode>();
 
         public Frm_Musics_Main(string Name, string FilePath, MostRecentFilesMenu RecentFiles)
@@ -48,7 +48,7 @@ namespace EuroSound_Application.Musics
             MenuItem_File_Save.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_Save")); };
             MenuItem_File_SaveAs.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_SaveAs")); };
             MenuItem_File_Export.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_Export")); };
-            MenuItemFile_ReadSound.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_ReadSound")); };
+            MenuItemFile_ReadMusic.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_ReadSound")); };
             MenuItemFile_ReadYml.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_ReadYml")); };
             MenuItemFile_ReadESIF.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_ImportESIF")); };
 
@@ -56,7 +56,7 @@ namespace EuroSound_Application.Musics
             MenuItem_File_Save.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItem_File_SaveAs.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItem_File_Export.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
-            MenuItemFile_ReadSound.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItemFile_ReadMusic.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItemFile_ReadYml.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItemFile_ReadESIF.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
 
@@ -73,6 +73,9 @@ namespace EuroSound_Application.Musics
             MenuItem_Edit_Search.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
 
             //Context Menu Folders
+            ContextMenuFolder_NewFolder.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolders_New")); };
+            ContextMenuFolder_Delete.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_Delete")); };
+            ContextMenuFolder_SortItems.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_Sort")); };
             ContextMenuFolder_ExpandAll.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_ExpandAll")); };
             ContextMenuFolder_CollapseAll.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_CollapseAll")); };
             ContextMenuFolder_AddSound.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_AddSound")); };
@@ -80,13 +83,13 @@ namespace EuroSound_Application.Musics
             ContextMenuFolder_TextColor.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_TextColor")); };
             ContextMenu_Folders.Closing += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
 
-            //Context Menu Sounds
-            ContextMenuSounds_Delete.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuSound_Remove")); };
-            ContextMenuSounds_Rename.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuSound_Rename")); };
-            ContextMenuSounds_Properties.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuSound_Properties")); };
-            ContextMenuSounds_TextColor.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_TextColor")); };
-            ContextMenuSounds_ExportESIF.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuSound_ExportESIF")); };
-            ContextMenu_Sounds.Closing += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+            //Context Menu Musics
+            ContextMenuMusics_Delete.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuMusic_Remove")); };
+            ContextMenuMusics_Rename.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuMusic_Rename")); };
+            ContextMenuMusics_Properties.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuMusic_Properties")); };
+            ContextMenuMusics_TextColor.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_TextColor")); };
+            ContextMenuMusics_ExportESIF.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuSound_ExportESIF")); };
+            ContextMenu_Musics.Closing += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
         }
 
         //*===============================================================================================
@@ -177,7 +180,11 @@ namespace EuroSound_Application.Musics
         {
             UpdateStatusBarLabels();
 
-            if (!(WindowState == FormWindowState.Maximized))
+            if (WindowState == FormWindowState.Maximized)
+            {
+                MdiParent.Text = "EuroSound";
+            }
+            else
             {
                 MdiParent.Text = "EuroSound - " + Text;
             }
@@ -197,6 +204,24 @@ namespace EuroSound_Application.Musics
 
         private void Frm_Musics_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //Update Status Bar
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_StoppingThreads"));
+
+            //Stop Threads
+            if (UpdateImaData != null)
+            {
+                UpdateImaData.Abort();
+            }
+            if (UpdateWavList != null)
+            {
+                UpdateWavList.Abort();
+            }
+
+            //Clear stack lists
+            UndoListMusics.Clear();
+            UndoListNodes.Clear();
+
+            //Check closing reason
             if (e.CloseReason == CloseReason.MdiFormClosing || e.CloseReason == CloseReason.UserClosing)
             {
                 //Ask user to save if file is modified
@@ -487,7 +512,7 @@ namespace EuroSound_Application.Musics
                 }
                 else if (SelectedNode.Tag.Equals("Music"))
                 {
-                    ContextMenu_Sounds.Show(Cursor.Position);
+                    ContextMenu_Musics.Show(Cursor.Position);
                 }
             }
         }
@@ -507,13 +532,13 @@ namespace EuroSound_Application.Musics
         private void MenuItem_Edit_Undo_Click(object sender, EventArgs e)
         {
             //Restore the first serialization from the undo list.
-            if (UndoListSounds.Count > 0)
+            if (UndoListMusics.Count > 0)
             {
-                if (UndoListSounds.Peek().GetType() == typeof(KeyValuePair<uint, EXMusic>))
+                if (UndoListMusics.Peek().GetType() == typeof(KeyValuePair<uint, EXMusic>))
                 {
                     //Get Objects
                     TreeNode NodeToAdd = UndoListNodes.Pop();
-                    KeyValuePair<uint, EXMusic> ItemToRestore = (KeyValuePair<uint, EXMusic>)UndoListSounds.Pop();
+                    KeyValuePair<uint, EXMusic> ItemToRestore = (KeyValuePair<uint, EXMusic>)UndoListMusics.Pop();
 
                     //Check that object does not exists
                     bool NodeToAddExists = TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_MusicData, NodeToAdd.Text);
@@ -672,11 +697,74 @@ namespace EuroSound_Application.Musics
 
         private void Button_Generate_Hashcodes_Click(object sender, EventArgs e)
         {
+            string MusicHashcodeLabel, MusicName;
+            string JumpHashcode, JumpHashcodeLabel = string.Empty;
+            int StartMarkersCount = 1;
+            uint LoopPos = 0;
+
             //Clear textbox
             Textbox_Hashcodes.Clear();
 
-            //Generate comment
-            Textbox_Hashcodes.Text += "// Music Jump Codes For Level " + Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, ProjectInfo.Hashcode);
+            foreach (EXMusic Music in MusicsList.Values)
+            {
+                if (Music.OutputThisSound)
+                {
+                    //Generate comment
+                    Textbox_Hashcodes.Text += "// Music Jump Codes For Level " + Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, ProjectInfo.Hashcode) + Environment.NewLine;
+
+                    //Get Music Name
+                    MusicHashcodeLabel = Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, ProjectInfo.Hashcode);
+                    if (MusicHashcodeLabel.StartsWith("MFX_"))
+                    {
+                        MusicName = MusicHashcodeLabel.Substring(4);
+                    }
+                    else
+                    {
+                        MusicName = MusicHashcodeLabel;
+                    }
+
+                    //Search Goto Loop Start Postition
+                    for (int j = 0; j < Music.Markers.Count; j++)
+                    {
+                        if (Music.Markers[j].MusicMakerType == 7)
+                        {
+                            LoopPos = Music.Markers[j].LoopStart;
+                        }
+                    }
+
+                    //Print Hashcodes
+                    for (int i = 0; i < Music.Markers.Count; i++)
+                    {
+                        if (Music.Markers[i].MusicMakerType == 7)
+                        {
+                            JumpHashcodeLabel = string.Join("", "JMP_GOTO_", MusicName, "_LOOP");
+                        }
+                        if (Music.Markers[i].MusicMakerType == 10 && Music.Markers[i].Position != LoopPos)
+                        {
+                            if (i == 0)
+                            {
+                                JumpHashcodeLabel = string.Join("", "JMP_", MusicName, "_START");
+                            }
+                            else
+                            {
+                                JumpHashcodeLabel = string.Join("", "JMP_", MusicName, "_Start" + StartMarkersCount);
+                                StartMarkersCount++;
+                            }
+                        }
+                        if (Music.Markers[i].MusicMakerType == 10 && Music.Markers[i].Position == LoopPos)
+                        {
+                            JumpHashcodeLabel = string.Join("", "JMP_", MusicName, "_LOOP");
+                        }
+                        JumpHashcode = string.Join("", "0x1BE", i.ToString().PadLeft(3, '0'), ProjectInfo.Hashcode.ToString("X8").Substring(6));
+
+                        if (!string.IsNullOrEmpty(JumpHashcodeLabel))
+                        {
+                            Textbox_Hashcodes.Text += string.Join(" ", "#define", JumpHashcodeLabel, JumpHashcode, Environment.NewLine);
+                            JumpHashcodeLabel = string.Empty;
+                        }
+                    }
+                }
+            }
         }
 
         private void MenuItem_Edit_Search_Click(object sender, EventArgs e)

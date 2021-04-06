@@ -182,7 +182,7 @@ namespace EngineXImaAdpcm
             return EncodedIMAData;
         }
 
-        public void DecodeIMA_ADPCM(byte[] ImaFileData, int numSamples, uint[] outdata, string Path)
+        public void DecodeIMA_ADPCM(byte[] ImaFileData, int numSamples, uint[] outdata)
         {
             int outp = 0;           /* output buffer pointer */
             uint inp;               /* Input buffer pointer */

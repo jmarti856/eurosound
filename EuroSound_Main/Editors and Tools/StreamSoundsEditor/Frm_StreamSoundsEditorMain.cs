@@ -193,7 +193,11 @@ namespace EuroSound_Application.StreamSounds
         {
             UpdateStatusBarLabels();
 
-            if (!(WindowState == FormWindowState.Maximized))
+            if (WindowState == FormWindowState.Maximized)
+            {
+                MdiParent.Text = "EuroSound";
+            }
+            else
             {
                 MdiParent.Text = "EuroSound - " + Text;
             }

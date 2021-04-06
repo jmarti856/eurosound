@@ -51,8 +51,8 @@ namespace EuroSound_Application.Musics
         {
             if (TreeView_MusicData.SelectedNode != null)
             {
-                EXMusic SoundtoSave = MusicsList[uint.Parse(SelectedNode.Name)];
-                SaveSnapshot(uint.Parse(SelectedNode.Name), SoundtoSave, SelectedNode);
+                EXMusic MusicToSave = MusicsList[uint.Parse(SelectedNode.Name)];
+                SaveSnapshot(uint.Parse(SelectedNode.Name), MusicToSave, SelectedNode);
 
                 EXMusicsFunctions.RemoveMusic(SelectedNode.Name, MusicsList);
                 TreeNodeFunctions.TreeNodeDeleteNode(TreeView_MusicData, SelectedNode, SelectedNode.Tag.ToString());
@@ -271,7 +271,7 @@ namespace EuroSound_Application.Musics
         private void SaveSnapshot(uint ItemKey, EXMusic MusicToSave, TreeNode NodeToSave)
         {
             //Save the snapshot.
-            UndoListSounds.Push(new KeyValuePair<uint, EXMusic>(ItemKey, MusicToSave));
+            UndoListMusics.Push(new KeyValuePair<uint, EXMusic>(ItemKey, MusicToSave));
             UndoListNodes.Push(NodeToSave);
 
             //Enable or disable the Undo and Redo menu items.
@@ -281,7 +281,7 @@ namespace EuroSound_Application.Musics
         //Enable or disable the Undo and Redo menu items.
         private void EnableUndo()
         {
-            MenuItem_Edit_Undo.Enabled = (UndoListSounds.Count > 0);
+            MenuItem_Edit_Undo.Enabled = (UndoListMusics.Count > 0);
         }
     }
 }

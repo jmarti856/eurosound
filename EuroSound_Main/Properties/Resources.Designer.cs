@@ -205,7 +205,7 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Rename folder, not allowed to rename root folders (Audio Data, Sounds, Streamed Sounds).
+        ///   Busca una cadena traducida similar a Rename folder, not allowed to rename root folders (Audio Data, Sounds, Streamed Sounds, Musics).
         /// </summary>
         internal static string ContextMenuFolder_Rename {
             get {
@@ -237,6 +237,33 @@ namespace EuroSound_Application.Properties {
         internal static string ContextMenuFolders_New {
             get {
                 return ResourceManager.GetString("ContextMenuFolders_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Open properties form for the selected music.
+        /// </summary>
+        internal static string ContextMenuMusic_Properties {
+            get {
+                return ResourceManager.GetString("ContextMenuMusic_Properties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Delete the selected music.
+        /// </summary>
+        internal static string ContextMenuMusic_Remove {
+            get {
+                return ResourceManager.GetString("ContextMenuMusic_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Rename the selected music.
+        /// </summary>
+        internal static string ContextMenuMusic_Rename {
+            get {
+                return ResourceManager.GetString("ContextMenuMusic_Rename", resourceCulture);
             }
         }
         

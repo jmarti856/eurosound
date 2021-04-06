@@ -168,11 +168,11 @@ namespace EuroSound_Application.StreamSounds
             uint MarkerType = (uint)(ComboBox_MarkerType.SelectedItem as dynamic).Value;
             uint[] IMA_States;
 
-            LoopStart = (uint)Numeric_MarkerLoopStart.Value * 2;
-            Position = (uint)Numeric_Position.Value * 2;
-
             if (MusicMode)
             {
+                LoopStart = (uint)Numeric_MarkerLoopStart.Value * 4;
+                Position = (uint)Numeric_Position.Value * 4;
+
                 v_MarkerName = TemporalSelectedMusic.StartMarkers.Count;
 
                 //End
@@ -180,9 +180,8 @@ namespace EuroSound_Application.StreamSounds
                 {
                     //--------------------------------------------------[Markers]---------------------------------------------------
                     //----Add End Marker----
-                    EXStreamMarker MarkerStart = MarkerFunctions.CreateMarker(TemporalSelectedMusic.Markers, -1, Position, MarkerType, (uint)TemporalSelectedMusic.StartMarkers.Count, 0, 0);
+                    EXStreamMarker MarkerStart = MarkerFunctions.CreateMarker(TemporalSelectedMusic.Markers, (TemporalSelectedMusic.StartMarkers.Count - 1), Position, MarkerType, (uint)TemporalSelectedMusic.StartMarkers.Count, 0, 0);
                     AddMarkerDataToListView(MarkerStart);
-
                 }
                 //Loop
                 else if (MarkerType == 6)
@@ -251,6 +250,9 @@ namespace EuroSound_Application.StreamSounds
             }
             else
             {
+                LoopStart = (uint)Numeric_MarkerLoopStart.Value * 2;
+                Position = (uint)Numeric_Position.Value * 2;
+
                 v_MarkerName = TemporalSelectedSound.StartMarkers.Count;
 
                 //End

@@ -51,7 +51,7 @@
             // Button_OK
             // 
             this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_OK.Location = new System.Drawing.Point(264, 203);
+            this.Button_OK.Location = new System.Drawing.Point(270, 207);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
             this.Button_OK.TabIndex = 4;
@@ -73,7 +73,7 @@
             // 
             this.PictureBox_IconRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PictureBox_IconRight.Image = ((System.Drawing.Image)(resources.GetObject("PictureBox_IconRight.Image")));
-            this.PictureBox_IconRight.Location = new System.Drawing.Point(307, 12);
+            this.PictureBox_IconRight.Location = new System.Drawing.Point(313, 12);
             this.PictureBox_IconRight.Name = "PictureBox_IconRight";
             this.PictureBox_IconRight.Size = new System.Drawing.Size(32, 32);
             this.PictureBox_IconRight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -100,7 +100,7 @@
             this.GroupBox_InvolvedPeople.Controls.Add(this.Label_Credits);
             this.GroupBox_InvolvedPeople.Location = new System.Drawing.Point(12, 47);
             this.GroupBox_InvolvedPeople.Name = "GroupBox_InvolvedPeople";
-            this.GroupBox_InvolvedPeople.Size = new System.Drawing.Size(327, 78);
+            this.GroupBox_InvolvedPeople.Size = new System.Drawing.Size(333, 78);
             this.GroupBox_InvolvedPeople.TabIndex = 1;
             this.GroupBox_InvolvedPeople.TabStop = false;
             this.GroupBox_InvolvedPeople.Text = "Developed by:";
@@ -122,9 +122,9 @@
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(6, 34);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(187, 13);
+            this.label2.Size = new System.Drawing.Size(323, 13);
             this.label2.TabIndex = 5;
-            this.label2.Text = "Programmer: Jordi Martínez (jmarti856)";
+            this.label2.Text = "Programmer: Jordi Martínez (jmarti856) and Ismael Ferreras (Swyter)";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Label_Title
@@ -148,7 +148,7 @@
             this.Groupbox_EuroSoundVersion.Controls.Add(this.Label_Release);
             this.Groupbox_EuroSoundVersion.Location = new System.Drawing.Point(12, 131);
             this.Groupbox_EuroSoundVersion.Name = "Groupbox_EuroSoundVersion";
-            this.Groupbox_EuroSoundVersion.Size = new System.Drawing.Size(327, 58);
+            this.Groupbox_EuroSoundVersion.Size = new System.Drawing.Size(333, 62);
             this.Groupbox_EuroSoundVersion.TabIndex = 2;
             this.Groupbox_EuroSoundVersion.TabStop = false;
             this.Groupbox_EuroSoundVersion.Text = "Version:";
@@ -192,7 +192,7 @@
             // Button_ReleaseInfo
             // 
             this.Button_ReleaseInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Button_ReleaseInfo.Location = new System.Drawing.Point(12, 203);
+            this.Button_ReleaseInfo.Location = new System.Drawing.Point(12, 207);
             this.Button_ReleaseInfo.Name = "Button_ReleaseInfo";
             this.Button_ReleaseInfo.Size = new System.Drawing.Size(94, 23);
             this.Button_ReleaseInfo.TabIndex = 3;
@@ -205,7 +205,7 @@
             this.AcceptButton = this.Button_OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(351, 238);
+            this.ClientSize = new System.Drawing.Size(357, 242);
             this.Controls.Add(this.Button_ReleaseInfo);
             this.Controls.Add(this.Groupbox_EuroSoundVersion);
             this.Controls.Add(this.Label_Title);

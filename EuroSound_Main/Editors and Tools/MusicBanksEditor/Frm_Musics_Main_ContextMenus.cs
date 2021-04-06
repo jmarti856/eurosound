@@ -12,19 +12,19 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         //* Context Menu Musics
         //*===============================================================================================
-        private void ContextMenuSounds_Rename_Click(object sender, EventArgs e)
+        private void ContextMenuMusics_Rename_Click(object sender, EventArgs e)
         {
             TreeNodeFunctions.EditNodeLabel(TreeView_MusicData, TreeView_MusicData.SelectedNode);
             ProjectInfo.FileHasBeenModified = true;
         }
 
-        private void ContextMenuSounds_Delete_Click(object sender, EventArgs e)
+        private void ContextMenuMusics_Delete_Click(object sender, EventArgs e)
         {
             RemoveMusicSelectedNode(TreeView_MusicData.SelectedNode);
             ProjectInfo.FileHasBeenModified = true;
         }
 
-        private void ContextMenuSounds_Properties_Click(object sender, EventArgs e)
+        private void ContextMenuMusics_Properties_Click(object sender, EventArgs e)
         {
             if (TreeView_MusicData.SelectedNode != null)
             {
@@ -32,12 +32,12 @@ namespace EuroSound_Application.Musics
             }
         }
 
-        private void ContextMenuSounds_ExportESIF_Click(object sender, EventArgs e)
+        private void ContextMenuMusics_ExportESIF_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void ContextMenuSounds_TextColor_Click(object sender, EventArgs e)
+        private void ContextMenuMusics_TextColor_Click(object sender, EventArgs e)
         {
             int SelectedColor;
 
@@ -107,7 +107,7 @@ namespace EuroSound_Application.Musics
                     uint SoundID = GenericFunctions.GetNewObjectID(ProjectInfo);
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_MusicData.SelectedNode.Name, SoundID.ToString(), Name, 2, 2, "Music", Color.Black, TreeView_MusicData);
 
-                    //Add Empty Sound
+                    //Add Empty Music
                     EXMusic EmptyMusic = new EXMusic();
 
                     if (!MusicsList.ContainsKey(SoundID))

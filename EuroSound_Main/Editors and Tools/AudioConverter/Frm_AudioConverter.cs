@@ -77,7 +77,11 @@ namespace EuroSound_Application.AudioConverter
 
         private void Frm_AudioConverter_Enter(object sender, EventArgs e)
         {
-            if (!(WindowState == FormWindowState.Maximized))
+            if (WindowState == FormWindowState.Maximized)
+            {
+                MdiParent.Text = "EuroSound";
+            }
+            else
             {
                 MdiParent.Text = "EuroSound - Audio Converter";
             }

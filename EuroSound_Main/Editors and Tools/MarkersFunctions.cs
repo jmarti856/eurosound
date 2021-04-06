@@ -58,7 +58,7 @@ namespace EuroSound_Application.MarkerFiles.StreamSoundsEditor.Classes
             //Calculate States
             SamplesToDecode = ImaADPCM_File.Length * 2;
             IMAStates = new uint[SamplesToDecode];
-            ImaADPCM.DecodeIMA_ADPCM(ImaADPCM_File, SamplesToDecode, IMAStates, @"C:\Users\Jordi Martinez\Desktop\music test\STATES.TXT");
+            ImaADPCM.DecodeIMA_ADPCM(ImaADPCM_File, SamplesToDecode, IMAStates);
 
             //Get states
             if (Pointer > 0 && Pointer <= IMAStates.Length)
@@ -73,33 +73,32 @@ namespace EuroSound_Application.MarkerFiles.StreamSoundsEditor.Classes
         internal uint[] GetEngineXMarkerStates_Stereo(byte[] ImaADPCM_FileLeftChannel, byte[] ImaADPCM_FileRightChannel, int Position)
         {
             ImaADPCM_Functions ImaADPCM = new ImaADPCM_Functions();
-            int Pointer, PointerF, SamplesToDecode_LeftChannel, SamplesToDecode_RightChannel;
+            int Pointer, SamplesToDecode_LeftChannel, SamplesToDecode_RightChannel;
             uint[] States, IMAStates_RightChannel, IMAStates_LeftChannel;
             States = new uint[2];
 
             Pointer = ((Position & -256) / 2) - 1;
-            PointerF = ((Pointer & -256) / 2) - 1;
 
             //Calculate States Left Channel
             SamplesToDecode_LeftChannel = ImaADPCM_FileLeftChannel.Length * 2;
             IMAStates_LeftChannel = new uint[SamplesToDecode_LeftChannel];
-            ImaADPCM.DecodeIMA_ADPCM(ImaADPCM_FileLeftChannel, SamplesToDecode_LeftChannel, IMAStates_LeftChannel, @"C:\Users\Jordi Martinez\Desktop\music test\L.TXT");
+            ImaADPCM.DecodeIMA_ADPCM(ImaADPCM_FileLeftChannel, SamplesToDecode_LeftChannel, IMAStates_LeftChannel);
 
             //Get states Left Channel
             if (Pointer > 0 && Pointer <= IMAStates_LeftChannel.Length)
             {
-                States[0] = IMAStates_LeftChannel[PointerF];
+                States[0] = IMAStates_LeftChannel[Pointer];
             }
 
             //Calculate States Right Channel
             SamplesToDecode_RightChannel = ImaADPCM_FileRightChannel.Length * 2;
             IMAStates_RightChannel = new uint[SamplesToDecode_RightChannel];
-            ImaADPCM.DecodeIMA_ADPCM(ImaADPCM_FileRightChannel, SamplesToDecode_RightChannel, IMAStates_RightChannel, @"C:\Users\Jordi Martinez\Desktop\music test\R.TXT");
+            ImaADPCM.DecodeIMA_ADPCM(ImaADPCM_FileRightChannel, SamplesToDecode_RightChannel, IMAStates_RightChannel);
 
             //Get states Right Channel
             if (Pointer > 0 && Pointer <= IMAStates_RightChannel.Length)
             {
-                States[1] = IMAStates_RightChannel[PointerF];
+                States[1] = IMAStates_RightChannel[Pointer];
             }
 
             return States;

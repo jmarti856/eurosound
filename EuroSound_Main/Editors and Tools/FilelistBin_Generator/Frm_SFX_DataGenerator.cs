@@ -30,6 +30,9 @@ namespace EuroSound_Application.SFXData
         //*===============================================================================================
         private void Frm_SFX_DataGenerator_Load(object sender, EventArgs e)
         {
+            // Fixes bug where loading form maximised in MDI window shows incorrect icon. 
+            Icon = Icon.Clone() as Icon;
+
             //Load Preferences
             using (RegistryKey WindowStateConfig = WRegFunctions.ReturnRegistryKey("WindowState"))
             {
@@ -42,8 +45,6 @@ namespace EuroSound_Application.SFXData
                 }
                 else if (IsMaximized)
                 {
-                    // Fixes bug where loading form maximised in MDI window shows incorrect icon. 
-                    Icon = Icon.Clone() as Icon;
                     WindowState = FormWindowState.Maximized;
                 }
                 else
@@ -65,6 +66,12 @@ namespace EuroSound_Application.SFXData
 
         private void Frm_SFX_DataGenerator_Shown(object sender, EventArgs e)
         {
+            //Update from title
+            if (WindowState != FormWindowState.Maximized)
+            {
+                MdiParent.Text = "EuroSound - SFX Data Table";
+            }
+
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
             Hashcodes.AddDataToCombobox(Combobox_LabelHashcodes, Hashcodes.SFX_Defines);
 
@@ -73,6 +80,31 @@ namespace EuroSound_Application.SFXData
                 IsBackground = true
             };
             LoadSfxDataTable.Start();
+        }
+
+        private void Frm_SFX_DataGenerator_Enter(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Maximized)
+            {
+                MdiParent.Text = "EuroSound";
+            }
+            else
+            {
+                MdiParent.Text = "EuroSound - SFX Data Table";
+            }
+        }
+
+
+        private void Frm_SFX_DataGenerator_SizeChanged(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Maximized)
+            {
+                MdiParent.Text = "EuroSound";
+            }
+            else
+            {
+                MdiParent.Text = "EuroSound - SFX Data Table";
+            }
         }
 
         private void Frm_SFX_DataGenerator_FormClosing(object sender, FormClosingEventArgs e)

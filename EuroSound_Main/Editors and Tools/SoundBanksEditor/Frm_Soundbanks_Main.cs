@@ -221,7 +221,11 @@ namespace EuroSound_Application.SoundBanksEditor
             //Update File name label
             UpdateStatusBarLabels();
 
-            if (!(WindowState == FormWindowState.Maximized))
+            if (WindowState == FormWindowState.Maximized)
+            {
+                MdiParent.Text = "EuroSound";
+            }
+            else
             {
                 MdiParent.Text = "EuroSound - " + Text;
             }

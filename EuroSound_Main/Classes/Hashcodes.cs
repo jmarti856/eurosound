@@ -51,7 +51,7 @@ namespace EuroSound_Application
 
         internal static string GetHashcodeLabel(Dictionary<uint, string> DataDict, uint Hashcode)
         {
-            string HashcodeHex = string.Empty;
+            string HashcodeHex = "HASHCODE NOT FOUND";
             foreach (KeyValuePair<uint, string> Entry in DataDict)
             {
                 if (Entry.Key == Hashcode)

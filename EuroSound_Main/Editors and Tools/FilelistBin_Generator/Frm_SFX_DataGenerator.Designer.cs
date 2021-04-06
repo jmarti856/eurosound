@@ -209,6 +209,8 @@ namespace EuroSound_Application.SFXData
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_SFX_DataGenerator_FormClosing);
             this.Load += new System.EventHandler(this.Frm_SFX_DataGenerator_Load);
             this.Shown += new System.EventHandler(this.Frm_SFX_DataGenerator_Shown);
+            this.SizeChanged += new System.EventHandler(this.Frm_SFX_DataGenerator_SizeChanged);
+            this.Enter += new System.EventHandler(this.Frm_SFX_DataGenerator_Enter);
             this.ResumeLayout(false);
             this.PerformLayout();
 

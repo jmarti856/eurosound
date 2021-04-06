@@ -20,11 +20,11 @@ namespace EuroSound_Application.Musics
         private string FileName;
         private int DebugFlags;
 
-        public Frm_BuildSFXMusicFile(ProjectFile FileProperties, string SoundBankFinalName, int CheckedDebugFlags)
+        public Frm_BuildSFXMusicFile(ProjectFile FileProperties, string MusicBankFinalName, int CheckedDebugFlags)
         {
             InitializeComponent();
             CurrentFileProperties = FileProperties;
-            FileName = SoundBankFinalName;
+            FileName = MusicBankFinalName;
             DebugFlags = CheckedDebugFlags;
         }
 
