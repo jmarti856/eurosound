@@ -442,7 +442,7 @@ namespace EuroSound_Application.Musics
             this.TabControl_MusicChannels.Name = "TabControl_MusicChannels";
             this.TabControl_MusicChannels.SelectedIndex = 0;
             this.TabControl_MusicChannels.Size = new System.Drawing.Size(496, 293);
-            this.TabControl_MusicChannels.TabIndex = 7;
+            this.TabControl_MusicChannels.TabIndex = 0;
             // 
             // Tab_LeftChannel
             // 
@@ -626,7 +626,7 @@ namespace EuroSound_Application.Musics
             this.Groupbox_MusicProps.Location = new System.Drawing.Point(12, 311);
             this.Groupbox_MusicProps.Name = "Groupbox_MusicProps";
             this.Groupbox_MusicProps.Size = new System.Drawing.Size(496, 57);
-            this.Groupbox_MusicProps.TabIndex = 13;
+            this.Groupbox_MusicProps.TabIndex = 1;
             this.Groupbox_MusicProps.TabStop = false;
             this.Groupbox_MusicProps.Text = "Music Properties";
             // 

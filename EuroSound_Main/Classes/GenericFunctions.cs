@@ -415,5 +415,15 @@ namespace EuroSound_Application
                 AudioLibrary.CreateWavFile(Frequency, Bits, Channels, PCM_Data, SavePath);
             }
         }
+
+        internal static void AppendTextToRichTextBox(string TextToAppend, Color TextColor, RichTextBox RichTextBoxControl)
+        {
+            RichTextBoxControl.SelectionStart = RichTextBoxControl.TextLength;
+            RichTextBoxControl.SelectionLength = 0;
+            RichTextBoxControl.SelectionColor = TextColor;
+            RichTextBoxControl.AppendText(TextToAppend);
+            RichTextBoxControl.SelectionColor = RichTextBoxControl.ForeColor;
+            RichTextBoxControl.ScrollToCaret();
+        }
     }
 }

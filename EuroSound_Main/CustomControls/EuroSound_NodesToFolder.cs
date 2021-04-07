@@ -12,13 +12,14 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
         //*===============================================================================================
         private Dictionary<string, string> SoundsDictionary = new Dictionary<string, string>();
         private TreeView ParentTreeViewControl;
-        private string CurrentLoadedData;
+        private string CurrentLoadedData, DestinationFolder;
 
-        public EuroSound_NodesToFolder(TreeView TreeViewControl, string Section)
+        public EuroSound_NodesToFolder(TreeView TreeViewControl, string Section, string Destination)
         {
             InitializeComponent();
             ParentTreeViewControl = TreeViewControl;
             CurrentLoadedData = Section;
+            DestinationFolder = Destination;
         }
 
         //*===============================================================================================
@@ -96,6 +97,7 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
             SoundsDictionary.Clear();
 
             Combobox_AvailableFolders.DataSource = GetAvailableFolders(ParentTreeViewControl, CurrentLoadedData);
+            Combobox_AvailableFolders.SelectedItem = DestinationFolder;
 
             /*Check for sounds*/
             if (Combobox_DataType.SelectedIndex > 0)

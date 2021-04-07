@@ -104,7 +104,7 @@
             0});
             this.Numeric_BaseVolume.Name = "Numeric_BaseVolume";
             this.Numeric_BaseVolume.Size = new System.Drawing.Size(94, 20);
-            this.Numeric_BaseVolume.TabIndex = 5;
+            this.Numeric_BaseVolume.TabIndex = 3;
             // 
             // Label_BaseVolume
             // 
@@ -112,7 +112,7 @@
             this.Label_BaseVolume.Location = new System.Drawing.Point(16, 47);
             this.Label_BaseVolume.Name = "Label_BaseVolume";
             this.Label_BaseVolume.Size = new System.Drawing.Size(72, 13);
-            this.Label_BaseVolume.TabIndex = 4;
+            this.Label_BaseVolume.TabIndex = 2;
             this.Label_BaseVolume.Text = "Base Volume:";
             // 
             // numeric_randomPitchOffset
@@ -130,7 +130,7 @@
             -2147483648});
             this.numeric_randomPitchOffset.Name = "numeric_randomPitchOffset";
             this.numeric_randomPitchOffset.Size = new System.Drawing.Size(94, 20);
-            this.numeric_randomPitchOffset.TabIndex = 3;
+            this.numeric_randomPitchOffset.TabIndex = 7;
             // 
             // Label_RandomPitchOffset
             // 
@@ -138,7 +138,7 @@
             this.Label_RandomPitchOffset.Location = new System.Drawing.Point(228, 21);
             this.Label_RandomPitchOffset.Name = "Label_RandomPitchOffset";
             this.Label_RandomPitchOffset.Size = new System.Drawing.Size(108, 13);
-            this.Label_RandomPitchOffset.TabIndex = 2;
+            this.Label_RandomPitchOffset.TabIndex = 6;
             this.Label_RandomPitchOffset.Text = "Random Pitch Offset:";
             // 
             // numeric_randompan
@@ -194,7 +194,7 @@
             -2147483648});
             this.numeric_pan.Name = "numeric_pan";
             this.numeric_pan.Size = new System.Drawing.Size(94, 20);
-            this.numeric_pan.TabIndex = 9;
+            this.numeric_pan.TabIndex = 5;
             // 
             // label_pan
             // 
@@ -202,7 +202,7 @@
             this.label_pan.Location = new System.Drawing.Point(59, 73);
             this.label_pan.Name = "label_pan";
             this.label_pan.Size = new System.Drawing.Size(29, 13);
-            this.label_pan.TabIndex = 8;
+            this.label_pan.TabIndex = 4;
             this.label_pan.Text = "Pan:";
             // 
             // numeric_randomvolumeoffset
@@ -221,7 +221,7 @@
             0});
             this.numeric_randomvolumeoffset.Name = "numeric_randomvolumeoffset";
             this.numeric_randomvolumeoffset.Size = new System.Drawing.Size(94, 20);
-            this.numeric_randomvolumeoffset.TabIndex = 7;
+            this.numeric_randomvolumeoffset.TabIndex = 9;
             // 
             // label_randomvolumeoffset
             // 
@@ -229,7 +229,7 @@
             this.label_randomvolumeoffset.Location = new System.Drawing.Point(217, 47);
             this.label_randomvolumeoffset.Name = "label_randomvolumeoffset";
             this.label_randomvolumeoffset.Size = new System.Drawing.Size(119, 13);
-            this.label_randomvolumeoffset.TabIndex = 6;
+            this.label_randomvolumeoffset.TabIndex = 8;
             this.label_randomvolumeoffset.Text = "Random Volume Offset:";
             // 
             // numeric_pitchoffset

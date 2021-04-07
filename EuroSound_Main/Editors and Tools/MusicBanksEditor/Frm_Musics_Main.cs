@@ -699,18 +699,20 @@ namespace EuroSound_Application.Musics
         {
             string MusicHashcodeLabel, MusicName;
             string JumpHashcode, JumpHashcodeLabel = string.Empty;
+            string Comment;
             int StartMarkersCount = 1;
             uint LoopPos = 0;
 
             //Clear textbox
-            Textbox_Hashcodes.Clear();
+            Rtbx_Jump_Music_Codes.Clear();
 
             foreach (EXMusic Music in MusicsList.Values)
             {
                 if (Music.OutputThisSound)
                 {
                     //Generate comment
-                    Textbox_Hashcodes.Text += "// Music Jump Codes For Level " + Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, ProjectInfo.Hashcode) + Environment.NewLine;
+                    Comment = "// Music Jump Codes For Level " + Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, ProjectInfo.Hashcode) + "\n";
+                    GenericFunctions.AppendTextToRichTextBox(Comment, Color.Green, Rtbx_Jump_Music_Codes);
 
                     //Get Music Name
                     MusicHashcodeLabel = Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, ProjectInfo.Hashcode);
@@ -759,7 +761,7 @@ namespace EuroSound_Application.Musics
 
                         if (!string.IsNullOrEmpty(JumpHashcodeLabel))
                         {
-                            Textbox_Hashcodes.Text += string.Join(" ", "#define", JumpHashcodeLabel, JumpHashcode, Environment.NewLine);
+                            GenericFunctions.AppendTextToRichTextBox("#define " + JumpHashcodeLabel + " " + JumpHashcode + "\n", Color.Brown, Rtbx_Jump_Music_Codes);
                             JumpHashcodeLabel = string.Empty;
                         }
                     }

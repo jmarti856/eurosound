@@ -138,5 +138,19 @@ namespace EuroSound_Application.Musics
                 ProjectInfo.FileHasBeenModified = true;
             }
         }
+
+        //*===============================================================================================
+        //* Context Menu Rich Text Box
+        //*===============================================================================================
+        private void RichTextBox_Copy_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(Rtbx_Jump_Music_Codes.SelectedText);
+        }
+
+        private void RichTextBox_SelectAll_Click(object sender, EventArgs e)
+        {
+            Rtbx_Jump_Music_Codes.Focus();
+            Rtbx_Jump_Music_Codes.SelectAll();
+        }
     }
 }

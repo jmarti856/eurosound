@@ -146,7 +146,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenu_Folders_Move_Click(object sender, System.EventArgs e)
         {
-            EuroSound_NodesToFolder SoundsToFolders = new EuroSound_NodesToFolder(TreeView_File, TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name)
+            EuroSound_NodesToFolder SoundsToFolders = new EuroSound_NodesToFolder(TreeView_File, TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name, TreeView_File.SelectedNode.Name)
             {
                 Owner = this
             };
