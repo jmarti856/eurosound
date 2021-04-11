@@ -531,6 +531,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 
                 TextFileWriter.WriteLine("*PROJECTSETTINGS {");
                 TextFileWriter.WriteLine("\t*FILENAME \"{0}\"", ProjectSettings.FileName);
+                TextFileWriter.WriteLine("\t*HASHCODE {0}", "0x" + ProjectSettings.Hashcode.ToString("X8"));
                 TextFileWriter.WriteLine("\t*MUSICOBJECTS {0}", MusicList.Count);
                 TextFileWriter.WriteLine("}");
                 TextFileWriter.WriteLine("");
