@@ -73,10 +73,8 @@ namespace EuroSound_Application.MarkerFiles.StreamSoundsEditor.Classes
         internal uint[] GetEngineXMarkerStates_Stereo(byte[] ImaADPCM_FileLeftChannel, byte[] ImaADPCM_FileRightChannel, int Position)
         {
             ImaADPCM_Functions ImaADPCM = new ImaADPCM_Functions();
-            int Pointer, SamplesToDecode_LeftChannel, SamplesToDecode_RightChannel, IndexLC, IndexRC;
+            int Pointer, SamplesToDecode_LeftChannel, SamplesToDecode_RightChannel;
             uint[] States, IMAStates_RightChannel, IMAStates_LeftChannel;
-            uint[] StereoTrackStates;
-            bool ChannelLeft;
             States = new uint[2];
 
             //Calculate States Left Channel
@@ -89,45 +87,14 @@ namespace EuroSound_Application.MarkerFiles.StreamSoundsEditor.Classes
             IMAStates_RightChannel = new uint[SamplesToDecode_RightChannel];
             ImaADPCM.DecodeIMA_ADPCM(ImaADPCM_FileRightChannel, SamplesToDecode_RightChannel, IMAStates_RightChannel);
 
-            //States Interleaving
-            ChannelLeft = true;
-            IndexLC = 0;
-            IndexRC = 0;
-            StereoTrackStates = new uint[IMAStates_LeftChannel.Length + IMAStates_RightChannel.Length];
-            for (int i = 0; i < StereoTrackStates.Length; i++)
-            {
-                if (ChannelLeft)
-                {
-                    StereoTrackStates[i] = IMAStates_LeftChannel[IndexLC];
-                    IndexLC++;
-                }
-                else
-                {
-                    StereoTrackStates[i] = IMAStates_RightChannel[IndexRC];
-                    IndexRC++;
-                }
-                ChannelLeft = !ChannelLeft;
-            }
-
-            Pointer = (((Position / 256) * 256) / 4);
+            Pointer = ((((Position / 256) * 256) / 4));
 
             //Get states
-            if (Pointer > 0 && Pointer <= StereoTrackStates.Length)
+            if (Pointer > 0 && Pointer <= IMAStates_LeftChannel.Length)
             {
-                States[0] = StereoTrackStates[Pointer];
-                States[1] = StereoTrackStates[Pointer + 1];
+                States[0] = IMAStates_LeftChannel[Pointer - 1];
+                States[1] = IMAStates_RightChannel[Pointer - 1];
             }
-
-            //Create Text File
-            /*
-            using (StreamWriter sw = File.CreateText(@"C:\Users\Jordi Martinez\Desktop\music test\MFX_Boss3\test.txt"))
-            {
-                for (int j = 0; j < StereoTrackStates.Length; j++)
-                {
-                    sw.WriteLine(StereoTrackStates[j].ToString("X8"));
-                }
-                sw.Close();
-            }*/
 
             return States;
         }

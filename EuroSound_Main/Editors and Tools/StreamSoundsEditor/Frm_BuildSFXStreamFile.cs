@@ -153,7 +153,7 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 SetLabelText(Label_CurrentTask, "Writting Markers");
 
                 //Write Data
-                SFXCreator.WriteStreamFile(BWriter, FinalSoundsDict, DebugFlags, DebugFileWritter, ProgressBar_CurrentTask);
+                SFXCreator.WriteStreamFile(BWriter, FinalSoundsDict, ProgressBar_CurrentTask);
 
                 //Update Total Progress
                 TotalProgress += 10;
@@ -182,7 +182,7 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 SetLabelText(Label_CurrentTask, "WrittingFinalOffsets");
 
                 //Write Offsets
-                SFXCreator.WriteFinalOffsets(BWriter, CurrentFileProperties.Hashcode, DebugFlags, DebugFileWritter, ProgressBar_CurrentTask);
+                SFXCreator.WriteFinalOffsets(BWriter, ProgressBar_CurrentTask);
 
                 //Close Writer
                 BWriter.Close();

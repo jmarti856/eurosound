@@ -48,7 +48,7 @@ namespace EuroSound_Application.StreamSounds
 
             if (MusicMode)
             {
-                //Temporal Musics
+                //Temporal Music
                 TemporalSelectedMusic = new EXMusic
                 {
                     StartMarkers = new List<EXStreamStartMarker>(SelectedMusic.StartMarkers),
@@ -59,15 +59,13 @@ namespace EuroSound_Application.StreamSounds
                 //Marker Pos
                 v_MarkerName = TemporalSelectedMusic.Markers.Count;
 
-                //PrintMarkers
-                PrintStartMarkers(TemporalSelectedMusic.StartMarkers);
-
                 //Print Markers
+                PrintStartMarkers(TemporalSelectedMusic.StartMarkers);
                 PrintMarkers(TemporalSelectedMusic.Markers);
             }
             else
             {
-                //Temporal Sounds
+                //Temporal Sound
                 TemporalSelectedSound = new EXSoundStream
                 {
                     StartMarkers = new List<EXStreamStartMarker>(SelectedSound.StartMarkers),
@@ -78,10 +76,8 @@ namespace EuroSound_Application.StreamSounds
                 //Marker Pos
                 v_MarkerName = TemporalSelectedSound.Markers.Count;
 
-                //PrintMarkers
-                PrintStartMarkers(TemporalSelectedSound.StartMarkers);
-
                 //Print Markers
+                PrintStartMarkers(TemporalSelectedSound.StartMarkers);
                 PrintMarkers(TemporalSelectedSound.Markers);
             }
         }
@@ -333,6 +329,7 @@ namespace EuroSound_Application.StreamSounds
 
         private void Button_Clear_Click(object sender, EventArgs e)
         {
+            //Clear Lists
             if (MusicMode)
             {
                 TemporalSelectedMusic.StartMarkers.Clear();
@@ -344,6 +341,8 @@ namespace EuroSound_Application.StreamSounds
                 TemporalSelectedSound.Markers.Clear();
             }
             v_MarkerName = 0;
+
+            //Clear List Views 
             ListView_Markers.Items.Clear();
             ListView_MarkerData.Items.Clear();
         }
@@ -376,7 +375,6 @@ namespace EuroSound_Application.StreamSounds
                 //Get Data
                 SelectedSound.Markers = TemporalSelectedSound.Markers;
             }
-
             Close();
         }
 

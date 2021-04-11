@@ -294,6 +294,7 @@
     <Compile Include="Editors and Tools\MusicBanksEditor\Frm_Musics_Properties.Designer.cs">
       <DependentUpon>Frm_Musics_Properties.cs</DependentUpon>
     </Compile>
+    <Compile Include="Editors and Tools\SoundBanksEditor\Debug_Writer\SoundBanks_DebugWriter.cs" />
     <Compile Include="Editors and Tools\SoundBanksEditor\Frm_Sounbanks_DebugOutput.cs">
       <SubType>Form</SubType>
     </Compile>

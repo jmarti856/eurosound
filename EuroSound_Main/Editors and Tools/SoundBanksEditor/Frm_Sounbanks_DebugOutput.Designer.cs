@@ -29,11 +29,9 @@ namespace EuroSound_Application.SoundBanksEditor
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Hashcodes Table");
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("SFX Elements");
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Sample Info");
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("Sample Data");
-            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("Header Info");
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("SFX elements");
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Sample info elements");
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Sample Data");
             this.Btn_SelectAllOptions = new System.Windows.Forms.Button();
             this.Btn_OK = new System.Windows.Forms.Button();
             this.Btn_Cancel = new System.Windows.Forms.Button();
@@ -85,17 +83,13 @@ namespace EuroSound_Application.SoundBanksEditor
             listViewItem1.StateImageIndex = 0;
             listViewItem2.StateImageIndex = 0;
             listViewItem3.StateImageIndex = 0;
-            listViewItem4.StateImageIndex = 0;
-            listViewItem5.StateImageIndex = 0;
             this.CheckListBox_DebugElements.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1,
             listViewItem2,
-            listViewItem3,
-            listViewItem4,
-            listViewItem5});
+            listViewItem3});
             this.CheckListBox_DebugElements.Location = new System.Drawing.Point(12, 12);
             this.CheckListBox_DebugElements.Name = "CheckListBox_DebugElements";
-            this.CheckListBox_DebugElements.Size = new System.Drawing.Size(219, 233);
+            this.CheckListBox_DebugElements.Size = new System.Drawing.Size(225, 233);
             this.CheckListBox_DebugElements.TabIndex = 0;
             this.CheckListBox_DebugElements.UseCompatibleStateImageBehavior = false;
             this.CheckListBox_DebugElements.View = System.Windows.Forms.View.List;

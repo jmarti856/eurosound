@@ -49,7 +49,7 @@ namespace EuroSound_Application.BashMode
                             //Type of stored data
                             TypeOfStoredData = BReader.ReadSByte();
 
-                            //Normal Soundbank
+                            //Soundbank
                             if (TypeOfStoredData == 0)
                             {
                                 uint SoundsListDataOffset, AudioDataOffset, File_Hashcode;
@@ -124,27 +124,28 @@ namespace EuroSound_Application.BashMode
 
                                         //--------------------------------------[SECTION SFX elements]--------------------------------------
                                         //Write Data
-                                        SFXGenerator.WriteSFXSection(BWriter, FinalSoundsDict, FinalAudioDataDict, 0, null, null, null);
+                                        SFXGenerator.WriteSFXSection(BWriter, FinalSoundsDict, FinalAudioDataDict, null, null);
 
                                         //--------------------------------------[SECTION Sample info elements]--------------------------------------
                                         //Write Data
-                                        SFXGenerator.WriteSampleInfoSection(BWriter, FinalAudioDataDict, 0, null, null, null);
+                                        SFXGenerator.WriteSampleInfoSection(BWriter, FinalAudioDataDict, null, null);
 
                                         //--------------------------------------[SECTION Sample data]--------------------------------------
                                         //Write Data
-                                        SFXGenerator.WriteSampleDataSection(BWriter, FinalAudioDataDict, 0, null, null, null);
+                                        SFXGenerator.WriteSampleDataSection(BWriter, FinalAudioDataDict, null, null);
 
                                         //*===============================================================================================
                                         //* STEP 4: WRITE FINAL OFFSETS
                                         //*===============================================================================================
                                         //Write Data
-                                        SFXGenerator.WriteFinalOffsets(BWriter, 0, null, File_Hashcode, null, null);
+                                        SFXGenerator.WriteFinalOffsets(BWriter, null, null);
 
                                         //Close File
                                         BWriter.Close();
                                     }
                                 }
                             }
+                            //Stream Soundbank
                             else if (TypeOfStoredData == 1)
                             {
                                 uint StreamSoundsDictionaryOffset, File_Hashcode;
@@ -202,15 +203,20 @@ namespace EuroSound_Application.BashMode
                                         SFXGenerator.WriteLookUptable(BWriter, FinalSoundsDict, null);
 
                                         //Write Data
-                                        SFXGenerator.WriteStreamFile(BWriter, FinalSoundsDict, 0, null, null);
+                                        SFXGenerator.WriteStreamFile(BWriter, FinalSoundsDict, null);
 
                                         //*===============================================================================================
                                         //* STEP 3: WRITE FINAL OFFSETS
                                         //*===============================================================================================                                //Write Offsets
-                                        SFXGenerator.WriteFinalOffsets(BWriter, File_Hashcode, 0, null, null);
+                                        SFXGenerator.WriteFinalOffsets(BWriter, null);
                                         BWriter.Close();
                                     }
                                 }
+                            }
+                            //MusicBank
+                            else if (TypeOfStoredData == 2)
+                            {
+
                             }
                         }
 

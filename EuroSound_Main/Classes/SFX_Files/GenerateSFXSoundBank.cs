@@ -82,16 +82,12 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             ProgressBarUpdate(Bar, 1);
         }
 
-        internal void WriteSFXSection(BinaryStream BWriter, Dictionary<uint, EXSound> FinalSoundsDict, Dictionary<string, EXAudio> FinalAudioDataDict, int DebugFlags, StreamWriter DebugFile, ProgressBar Bar, Label LabelInfo)
+        internal void WriteSFXSection(BinaryStream BWriter, Dictionary<uint, EXSound> FinalSoundsDict, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
         {
             int index = 0;
-            bool DebugSFXElements;
 
             ProgressBarReset(Bar);
             ProgressBarMaximum(Bar, FinalSoundsDict.Count());
-
-            //CheckFlag SFX Elements is checked
-            DebugSFXElements = Convert.ToBoolean((DebugFlags >> 1) & 1);
 
             //--[SFX entry count in this soundbank]--
             BWriter.WriteUInt32((uint)FinalSoundsDict.Count);
@@ -108,13 +104,6 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             }
 
             index = 0;
-
-            if (DebugSFXElements)
-            {
-                DebugFile.WriteLine(new String('/', 70));
-                DebugFile.WriteLine("// SFX Elements");
-                DebugFile.WriteLine(new String('/', 70) + "\n");
-            }
 
             //--[Align Bytes]--
             BWriter.Align(4, true);
@@ -142,53 +131,12 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                 BWriter.WriteInt16((short)Sound.Value.Samples.Count);
                 SetLabelText(LabelInfo, "WritingSFX Data");
 
-                //--[Write Debug File]--
-                if (DebugSFXElements)
-                {
-                    DebugFile.WriteLine(new String('/', 70));
-                    DebugFile.WriteLine("// SFX HashCode");
-                    DebugFile.WriteLine("\t0x" + Sound.Value.Hashcode.ToString("X8") + " -> " + (Sound.Value.Hashcode - 0x1A000000).ToString("X8"));
-                    DebugFile.WriteLine("// DuckerLenght");
-                    DebugFile.WriteLine("\t" + Sound.Value.DuckerLenght);
-                    DebugFile.WriteLine("// MinDelay");
-                    DebugFile.WriteLine("\t" + Sound.Value.MinDelay);
-                    DebugFile.WriteLine("// MaxDelay");
-                    DebugFile.WriteLine("\t" + Sound.Value.MaxDelay);
-                    DebugFile.WriteLine("// InnerRadiusReal");
-                    DebugFile.WriteLine("\t" + Sound.Value.InnerRadiusReal);
-                    DebugFile.WriteLine("// OuterRadiusReal");
-                    DebugFile.WriteLine("\t" + Sound.Value.OuterRadiusReal);
-                    DebugFile.WriteLine("// ReverbSend");
-                    DebugFile.WriteLine("\t" + Sound.Value.ReverbSend);
-                    DebugFile.WriteLine("// TrackingType");
-                    DebugFile.WriteLine("\t" + Sound.Value.TrackingType);
-                    DebugFile.WriteLine("// MaxVoices");
-                    DebugFile.WriteLine("\t" + Sound.Value.MaxVoices);
-                    DebugFile.WriteLine("// Priority");
-                    DebugFile.WriteLine("\t" + Sound.Value.Priority);
-                    DebugFile.WriteLine("// Ducker");
-                    DebugFile.WriteLine("\t" + Sound.Value.Ducker);
-                    DebugFile.WriteLine("// MasterVolume");
-                    DebugFile.WriteLine("\t" + Sound.Value.MasterVolume);
-                    DebugFile.WriteLine("// Flags");
-                    DebugFile.WriteLine("\t" + Sound.Value.Flags);
-                    DebugFile.WriteLine("// Samples Count");
-                    DebugFile.WriteLine("\t" + (short)Sound.Value.Samples.Count + "\n");
-                }
-
                 foreach (KeyValuePair<uint, EXSample> Sample in Sound.Value.Samples)
                 {
                     //--[FILE REFERENCE]--
                     if (Sample.Value.FileRef < 0)
                     {
                         BWriter.WriteInt16(Sample.Value.FileRef);
-
-                        //--[Write Debug File]--
-                        if (DebugSFXElements)
-                        {
-                            DebugFile.WriteLine("// File Reference");
-                            DebugFile.WriteLine("\t" + Sample.Value.FileRef);
-                        }
                     }
                     else
                     {
@@ -196,13 +144,6 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                         if (ItemIndex >= 0)
                         {
                             BWriter.WriteInt16((short)ItemIndex);
-
-                            //--[Write Debug File]--
-                            if (DebugSFXElements)
-                            {
-                                DebugFile.WriteLine("// File Reference");
-                                DebugFile.WriteLine("\t" + ItemIndex);
-                            }
                         }
                     }
 
@@ -216,23 +157,6 @@ namespace EuroSound_Application.GenerateSoundBankSFX
 
                     //--[Aligment Padding]--
                     AddPaddingBytes(2, BWriter);
-
-                    //--[Write Debug File]--
-                    if (DebugSFXElements)
-                    {
-                        DebugFile.WriteLine("// PitchOffset");
-                        DebugFile.WriteLine("\t" + Sample.Value.PitchOffset);
-                        DebugFile.WriteLine("// RandomPitchOffset");
-                        DebugFile.WriteLine("\t" + Sample.Value.RandomPitchOffset);
-                        DebugFile.WriteLine("// BaseVolume");
-                        DebugFile.WriteLine("\t" + Sample.Value.BaseVolume);
-                        DebugFile.WriteLine("// RandomVolumeOffset");
-                        DebugFile.WriteLine("\t" + Sample.Value.RandomVolumeOffset);
-                        DebugFile.WriteLine("// Pan");
-                        DebugFile.WriteLine("\t" + Sample.Value.Pan);
-                        DebugFile.WriteLine("// RandomPan");
-                        DebugFile.WriteLine("\t" + Sample.Value.RandomPan + "\n");
-                    }
                 }
                 ProgressBarUpdate(Bar, 1);
                 index++;
@@ -242,13 +166,8 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             SFXlength = BWriter.BaseStream.Position - SFXStartSection;
         }
 
-        internal void WriteSampleInfoSection(BinaryStream BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, int DebugFlags, StreamWriter DebugFile, ProgressBar Bar, Label LabelInfo)
+        internal void WriteSampleInfoSection(BinaryStream BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
         {
-            bool DebugSampleInfo;
-
-            //CheckFlag Sample Info is checked
-            DebugSampleInfo = Convert.ToBoolean((DebugFlags >> 2) & 1);
-
             //--[Align Bytes]--
             BWriter.Align(16, true);
 
@@ -257,16 +176,6 @@ namespace EuroSound_Application.GenerateSoundBankSFX
 
             //--[Start section offset]--
             SampleInfoStartOffset = (BWriter.BaseStream.Position);
-
-            //--[Debug File]--
-            if (DebugSampleInfo)
-            {
-                DebugFile.WriteLine(new String('/', 70));
-                DebugFile.WriteLine("// Sample Info Section");
-                DebugFile.WriteLine(new String('/', 70) + "\n");
-                DebugFile.WriteLine("// Number Of Samples");
-                DebugFile.WriteLine("\t" + FinalAudioDataDict.Keys.Count + "\n");
-            }
 
             //--[Write total number of samples]--
             BWriter.WriteUInt32((uint)FinalAudioDataDict.Keys.Count);
@@ -285,32 +194,6 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                 BWriter.WriteUInt32(entry.Value.LoopOffset * 2);
                 BWriter.WriteUInt32(entry.Value.Duration);
 
-                //--Write debug file
-                if (DebugSampleInfo)
-                {
-                    DebugFile.WriteLine(new String('/', 70));
-                    DebugFile.WriteLine("// File Name");
-                    DebugFile.WriteLine("\t" + entry.Value.LoadedFileName);
-                    DebugFile.WriteLine("// Flags");
-                    DebugFile.WriteLine("\t" + entry.Value.Flags);
-                    DebugFile.WriteLine("// DataSize");
-                    DebugFile.WriteLine("\t" + entry.Value.DataSize);
-                    DebugFile.WriteLine("// Frequency");
-                    DebugFile.WriteLine("\t" + entry.Value.Frequency);
-                    DebugFile.WriteLine("// Real Size");
-                    DebugFile.WriteLine("\t" + entry.Value.DataSize);
-                    DebugFile.WriteLine("// Channels");
-                    DebugFile.WriteLine("\t" + entry.Value.Channels);
-                    DebugFile.WriteLine("// Bits");
-                    DebugFile.WriteLine("\t" + entry.Value.Bits);
-                    DebugFile.WriteLine("// PSIsample");
-                    DebugFile.WriteLine("\t" + entry.Value.PSIsample);
-                    DebugFile.WriteLine("// LoopOffset");
-                    DebugFile.WriteLine("\t" + entry.Value.LoopOffset * 2);
-                    DebugFile.WriteLine("// Duration");
-                    DebugFile.WriteLine("\t" + entry.Value.Duration + "\n");
-                }
-
                 ProgressBarUpdate(Bar, 1);
                 SetLabelText(LabelInfo, "WritingSampleInfo: " + entry.Key);
             }
@@ -319,13 +202,8 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             SampleInfoLength = BWriter.BaseStream.Position - SampleInfoStartOffset;
         }
 
-        internal void WriteSampleDataSection(BinaryStream BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, int DebugFlags, StreamWriter DebugFile, ProgressBar Bar, Label LabelInfo)
+        internal void WriteSampleDataSection(BinaryStream BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
         {
-            bool DebugSampleDataSection;
-
-            //CheckFlag Sample Info is checked
-            DebugSampleDataSection = Convert.ToBoolean((DebugFlags >> 3) & 1);
-
             //Align Bytes
             BWriter.Align(16, true);
 
@@ -333,35 +211,10 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             ProgressBarReset(Bar);
             ProgressBarMaximum(Bar, FinalAudioDataDict.Count());
 
-            //DebugFile
-            if (DebugSampleDataSection)
-            {
-                DebugFile.WriteLine(new String('/', 70));
-                DebugFile.WriteLine("// Sample Data Section");
-                DebugFile.WriteLine(new String('/', 70) + "\n");
-            }
-
             //--[Start section offset]--
             SampleDataStartOffset = BWriter.BaseStream.Position;
             foreach (KeyValuePair<string, EXAudio> entry in FinalAudioDataDict)
             {
-                //--DebugFile--
-                if (DebugSampleDataSection)
-                {
-                    DebugFile.WriteLine(new String('/', 70));
-                    DebugFile.WriteLine("// Sample Name");
-                    DebugFile.WriteLine("\t" + entry.Value.LoadedFileName);
-                    DebugFile.WriteLine("// Position");
-                    DebugFile.WriteLine("\t" + BWriter.BaseStream.Position);
-                    DebugFile.WriteLine("// Relative Position");
-                    DebugFile.WriteLine("\t" + (BWriter.BaseStream.Position - SampleDataStartOffset));
-                    DebugFile.WriteLine("// PCM Data");
-                    DebugFile.WriteLine("\t" + entry.Value.PCMdata);
-                    DebugFile.WriteLine("// Aligment Bits");
-                    DebugFile.WriteLine("\t" + 4);
-                    DebugFile.WriteLine("\n");
-                }
-
                 //--Add Sample data offset to the list--
                 SampleDataOffsets.Add(BWriter.BaseStream.Position - SampleDataStartOffset);
 
@@ -385,10 +238,8 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             WholeFileSize = BWriter.BaseStream.Position;
         }
 
-        internal void WriteFinalOffsets(BinaryStream BWriter, int DebugFlags, StreamWriter DebugFile, uint FileHashcode, ProgressBar Bar, Label LabelInfo)
+        internal void WriteFinalOffsets(BinaryStream BWriter, ProgressBar Bar, Label LabelInfo)
         {
-            bool DebugHashcodesTable;
-
             //*===============================================================================================
             //* WRITE FINAL HEADER INFO
             //*===============================================================================================
@@ -423,64 +274,14 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             BWriter.WriteUInt32((uint)SampleDataLength);
             ProgressBarUpdate(Bar, 1);
 
-            //*--------------------[Write Debug Info]--------------------
-            //CheckFlag Header Info is checked
-            if (Convert.ToBoolean((DebugFlags >> 4) & 1))
-            {
-                DebugFile.WriteLine(new String('/', 70));
-                DebugFile.WriteLine("// Soundbank Header");
-                DebugFile.WriteLine(new String('/', 70) + "\n");
-                DebugFile.WriteLine("// 'MUSX' Marker");
-                DebugFile.WriteLine("\t4d555358");
-                DebugFile.WriteLine("// File HashCode");
-                DebugFile.WriteLine("\t0x" + FileHashcode.ToString("X8"));
-                DebugFile.WriteLine("// File Version");
-                DebugFile.WriteLine("\t000000c9");
-                DebugFile.WriteLine("// File Size");
-                DebugFile.WriteLine("\t" + WholeFileSize);
-                DebugFile.WriteLine("// Offset To SFX Section");
-                DebugFile.WriteLine("\t800h");
-                DebugFile.WriteLine("// SFX Section Length");
-                DebugFile.WriteLine("\t" + SFXlength);
-                DebugFile.WriteLine("// Offset To Sample Info Section");
-                DebugFile.WriteLine("\t" + SampleInfoStartOffset + "h");
-                DebugFile.WriteLine("// Sample Info Section Length");
-                DebugFile.WriteLine("\t" + SampleInfoLength);
-                DebugFile.WriteLine("// Offset To Special Sample Info Section");
-                DebugFile.WriteLine("\t" + SampleDataStartOffset + "h");
-                DebugFile.WriteLine("// Special Sample Info Section Length");
-                DebugFile.WriteLine("\t00000000");
-                DebugFile.WriteLine("// Offset To Sample Data Section");
-                DebugFile.WriteLine("\t" + SampleDataStartOffset + "h");
-                DebugFile.WriteLine("// Sample Data Section Length");
-                DebugFile.WriteLine("\t" + SampleDataLength + "\n");
-            }
-
             //*===============================================================================================
             //* WRITE HASHCODE REAL OFFSETS
             //*===============================================================================================
-            //CheckFlag Hashcodes Table is checked
-            DebugHashcodesTable = Convert.ToBoolean((DebugFlags >> 0) & 1);
-
-            if (DebugHashcodesTable)
-            {
-                DebugFile.WriteLine(new String('/', 70));
-                DebugFile.WriteLine("// HashCodes Offsets Table");
-                DebugFile.WriteLine(new String('/', 70) + "\n");
-            }
-
             BWriter.Seek(0x804, SeekOrigin.Begin);
             for (int i = 0; i < HashcodeOffsetM.GetLength(0); i++)
             {
                 BWriter.Seek(4, SeekOrigin.Current);
                 BWriter.WriteUInt32((uint)HashcodeOffsetM[i, 1]);
-
-                //Debug File
-                if (DebugHashcodesTable)
-                {
-                    DebugFile.WriteLine("// HashCode: 0x" + HashcodeOffsetM[i, 0].ToString("X8") + " -> 0x" + (HashcodeOffsetM[i, 0] - 0x1A000000).ToString("X8"));
-                    DebugFile.WriteLine("\t" + (uint)HashcodeOffsetM[i, 1] + "h");
-                }
 
                 //Update UI
                 ProgressBarUpdate(Bar, 1);
