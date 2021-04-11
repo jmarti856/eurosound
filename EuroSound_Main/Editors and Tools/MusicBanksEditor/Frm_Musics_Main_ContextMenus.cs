@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.SoundBanksEditor;
+﻿using EuroSound_Application.EuroSoundInterchangeFile;
+using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using EuroSound_Application.TreeViewSorter;
 using System;
@@ -34,7 +35,17 @@ namespace EuroSound_Application.Musics
 
         private void ContextMenuMusics_ExportESIF_Click(object sender, EventArgs e)
         {
+            TreeNode SelectedNode;
+            string ExportPath;
 
+            SelectedNode = TreeView_MusicData.SelectedNode;
+            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, SelectedNode.Text);
+
+            if (!string.IsNullOrEmpty(ExportPath))
+            {
+                ESIF_Exporter ESIF_Exp = new ESIF_Exporter();
+                ESIF_Exp.ExportMusicBank(ExportPath, uint.Parse(SelectedNode.Name), MusicsList, TreeView_MusicData);
+            }
         }
 
         private void ContextMenuMusics_TextColor_Click(object sender, EventArgs e)

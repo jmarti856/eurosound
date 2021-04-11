@@ -33,6 +33,9 @@ namespace EuroSound_Application.AudioConverter
         //*===============================================================================================
         private void Frm_AudioConverter_Load(object sender, EventArgs e)
         {
+            // Fixes bug where loading form maximised in MDI window shows incorrect icon. 
+            Icon = Icon.Clone() as Icon;
+
             //Load Preferences
             using (RegistryKey WindowStateConfig = WRegFunctions.ReturnRegistryKey("WindowState"))
             {
@@ -45,8 +48,6 @@ namespace EuroSound_Application.AudioConverter
                 }
                 else if (IsMaximized)
                 {
-                    // Fixes bug where loading form maximised in MDI window shows incorrect icon. 
-                    Icon = Icon.Clone() as Icon;
                     WindowState = FormWindowState.Maximized;
                 }
                 else

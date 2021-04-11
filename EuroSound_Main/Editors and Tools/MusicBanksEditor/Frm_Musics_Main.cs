@@ -5,6 +5,7 @@ using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls.ProjectSettings;
 using EuroSound_Application.CustomControls.SearcherForm;
 using EuroSound_Application.EuroSoundFilesFunctions;
+using EuroSound_Application.EuroSoundInterchangeFile;
 using EuroSound_Application.StreamSounds;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using Microsoft.Win32;
@@ -692,6 +693,34 @@ namespace EuroSound_Application.Musics
                 {
                     OpenMusicPropertiesForm(SelectedNode[0]);
                 }
+            }
+        }
+
+        private void Button_ExportInterchangeFile_Click(object sender, EventArgs e)
+        {
+            string ExportPath;
+
+            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, ProjectInfo.FileName);
+            if (!string.IsNullOrEmpty(ExportPath))
+            {
+                ESIF_Exporter ESIF_Exp = new ESIF_Exporter();
+                ESIF_Exp.ExportProjectMusic(ExportPath, ProjectInfo, MusicsList, TreeView_MusicData);
+            }
+        }
+
+        private void MenuItemFile_ReadESIF_Click(object sender, EventArgs e)
+        {
+            string FilePath = GenericFunctions.OpenFileBrowser("EuroSound Interchange File (*.ESIF)|*.esif", 0, true);
+            if (!string.IsNullOrEmpty(FilePath))
+            {
+                ESIF_Loader EuroSoundPropertiesFileLoader = new ESIF_Loader();
+                List<string> ImportResults = EuroSoundPropertiesFileLoader.LoadMusicBank_File(FilePath, ProjectInfo, MusicsList, TreeView_MusicData);
+                if (ImportResults.Count > 0)
+                {
+                    GenericFunctions.ShowErrorsAndWarningsList(ImportResults, "Import Results", this);
+                }
+
+                ProjectInfo.FileHasBeenModified = true;
             }
         }
 
