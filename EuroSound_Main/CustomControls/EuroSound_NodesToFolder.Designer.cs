@@ -50,6 +50,8 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
             // 
             // Combobox_DataType
             // 
+            this.Combobox_DataType.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.Combobox_DataType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.Combobox_DataType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Combobox_DataType.FormattingEnabled = true;
             this.Combobox_DataType.Items.AddRange(new object[] {
@@ -87,6 +89,8 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
             // 
             // Combobox_AvailableFolders
             // 
+            this.Combobox_AvailableFolders.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.Combobox_AvailableFolders.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.Combobox_AvailableFolders.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Combobox_AvailableFolders.FormattingEnabled = true;
             this.Combobox_AvailableFolders.Location = new System.Drawing.Point(90, 39);

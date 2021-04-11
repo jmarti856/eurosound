@@ -342,6 +342,8 @@
             // 
             // Combobox_SelectedAudio
             // 
+            this.Combobox_SelectedAudio.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.Combobox_SelectedAudio.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.Combobox_SelectedAudio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Combobox_SelectedAudio.FormattingEnabled = true;
             this.Combobox_SelectedAudio.Location = new System.Drawing.Point(49, 42);
@@ -367,7 +369,8 @@
             // 
             this.Combobox_Hashcode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Combobox_Hashcode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Combobox_Hashcode.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
+            this.Combobox_Hashcode.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.Combobox_Hashcode.Enabled = false;
             this.Combobox_Hashcode.FormattingEnabled = true;
             this.Combobox_Hashcode.Location = new System.Drawing.Point(71, 52);

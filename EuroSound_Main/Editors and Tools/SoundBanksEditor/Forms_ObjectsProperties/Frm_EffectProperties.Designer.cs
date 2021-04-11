@@ -199,6 +199,8 @@
             // 
             // cbx_trackingtype
             // 
+            this.cbx_trackingtype.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbx_trackingtype.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbx_trackingtype.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbx_trackingtype.FormattingEnabled = true;
             this.cbx_trackingtype.Items.AddRange(new object[] {
@@ -427,7 +429,8 @@
             // 
             // cbx_hashcode
             // 
-            this.cbx_hashcode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbx_hashcode.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
+            this.cbx_hashcode.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbx_hashcode.FormattingEnabled = true;
             this.cbx_hashcode.Location = new System.Drawing.Point(71, 19);
             this.cbx_hashcode.Name = "cbx_hashcode";

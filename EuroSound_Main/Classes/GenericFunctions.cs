@@ -279,7 +279,7 @@ namespace EuroSound_Application
             return Text;
         }
 
-        internal static bool AudioIsValid(string FilePath, int NumChannels, int frequency)
+        internal static bool AudioIsValid(string FilePath, int NumChannels, int Frequency)
         {
             bool AudioIsCorrect = false;
 
@@ -295,7 +295,7 @@ namespace EuroSound_Application
                     Encoding = AudioReader.WaveFormat.Encoding.ToString();
                     Channels = AudioReader.WaveFormat.Channels;
 
-                    if (Encoding.Equals("Pcm") && Bits == 16 && Rate == frequency && Channels == NumChannels)
+                    if (Encoding.Equals("Pcm") && Bits == 16 && Rate == Frequency && Channels == NumChannels)
                     {
                         AudioIsCorrect = true;
                     }

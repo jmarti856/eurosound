@@ -428,7 +428,6 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         }
         #endregion
 
-
         internal RegistryKey ReturnRegistryKey(string Name)
         {
             OpenEuroSoundKeys();

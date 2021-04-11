@@ -3,7 +3,7 @@
     internal static class GlobalPreferences
     {
         //*===============================================================================================
-        //* FINAL PROPERTIES
+        //* PERSISTENT PROPERTIES
         //*===============================================================================================
         //Frm_HashTablesConfig
         internal static string HT_SoundsPath;
@@ -38,7 +38,7 @@
         internal static int DefaultAudioDevice;
 
         //*===============================================================================================
-        //* OTHER TEMPORAL VARIABLES
+        //* TEMPORAL PROPERTIES
         //*===============================================================================================
         internal static bool ShowWarningMessagesBox = true;
         internal static bool StatusBar_ToolTipMode;

@@ -148,6 +148,7 @@ namespace EuroSound_Application
 
         private void Frm_EuroSound_Main_Resize(object sender, EventArgs e)
         {
+            //Minimize on System Tray
             if (GlobalPreferences.UseSystemTray)
             {
                 if (WindowState == FormWindowState.Minimized)
@@ -155,6 +156,16 @@ namespace EuroSound_Application
                     EuroSoundTrayIcon.Visible = true;
                     ShowInTaskbar = false;
                 }
+            }
+
+            //Hide Sizing Grip if maximized
+            if (WindowState == FormWindowState.Maximized)
+            {
+                MainStatusBar.SizingGrip = false;
+            }
+            else
+            {
+                MainStatusBar.SizingGrip = true;
             }
         }
 

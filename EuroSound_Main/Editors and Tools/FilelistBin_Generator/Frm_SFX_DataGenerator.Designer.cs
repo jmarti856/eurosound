@@ -106,7 +106,8 @@ namespace EuroSound_Application.SFXData
             // 
             this.Combobox_LabelHashcodes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Combobox_LabelHashcodes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Combobox_LabelHashcodes.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
+            this.Combobox_LabelHashcodes.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.Combobox_LabelHashcodes.FormattingEnabled = true;
             this.Combobox_LabelHashcodes.Location = new System.Drawing.Point(77, 38);
             this.Combobox_LabelHashcodes.Name = "Combobox_LabelHashcodes";
