@@ -13,10 +13,10 @@ namespace EuroSound_Application.SoundBanksEditor.Debug_Writer
             //* Global Variables
             //*===============================================================================================
             string FileName = Path.GetFileNameWithoutExtension(FilePath);
-            string Magic;
-            uint SFXStart, SampleInfoStart, SampleDataStart;
+            uint SFXStart, SampleInfoStart, SampleDataStart, SampleDataLength;
             uint SFXCount, SFXHashcode, SFXOffset;
             int SampleCount;
+            uint SFXSamplesCount;
             Dictionary<uint, uint> SFXElements = new Dictionary<uint, uint>();
 
             using (StreamWriter DebugFile = new StreamWriter(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".dbg"))
@@ -69,7 +69,8 @@ namespace EuroSound_Application.SoundBanksEditor.Debug_Writer
                     SampleDataStart = BReader.ReadUInt32();
                     DebugFile.WriteLine(string.Join(" ", "\tDD", SampleDataStart.ToString("X8") + "h"));
                     DebugFile.WriteLine(string.Join(" ", "//", "Sample data length"));
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                    SampleDataLength = BReader.ReadUInt32();
+                    DebugFile.WriteLine(string.Join(" ", "\tDD", SampleDataLength.ToString("X8") + "h"));
                     DebugFile.WriteLine("");
 
                     //Flag 0 = SFX elements
@@ -185,6 +186,77 @@ namespace EuroSound_Application.SoundBanksEditor.Debug_Writer
                             }
                             DebugFile.WriteLine("");
                         }
+                    }
+                    //Flag 1 = Sample info elements
+                    if (Convert.ToBoolean((DebugFlags >> 1) & 1))
+                    {
+                        //Write Header Section
+                        DebugFile.WriteLine(new String('/', 70));
+                        DebugFile.WriteLine(string.Join(" ", "//", "Sample info elements "));
+                        DebugFile.WriteLine(new String('/', 70));
+                        DebugFile.WriteLine("");
+
+                        BReader.BaseStream.Seek(SampleInfoStart, SeekOrigin.Begin);
+
+                        DebugFile.WriteLine(string.Join(" ", "//", "Sample info count"));
+                        SFXSamplesCount = BReader.ReadUInt32();
+                        DebugFile.WriteLine(string.Join(" ", "\tDD", SFXSamplesCount.ToString("X8") + "h"));
+
+                        for (int i = 0; i < SFXSamplesCount; i++)
+                        {
+                            DebugFile.WriteLine(new String('/', 70));
+                            DebugFile.WriteLine(string.Join(" ", "//", "Sample -", i));
+                            DebugFile.WriteLine("");
+                            DebugFile.WriteLine(string.Join(" ", "//", "Flags"));
+                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+
+                            DebugFile.WriteLine(string.Join(" ", "//", "Address"));
+                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+
+                            DebugFile.WriteLine(string.Join(" ", "//", "PCM data size"));
+                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+
+                            DebugFile.WriteLine(string.Join(" ", "//", "Frequency"));
+                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+
+                            DebugFile.WriteLine(string.Join(" ", "//", "Real size"));
+                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+
+                            DebugFile.WriteLine(string.Join(" ", "//", "Number of channels"));
+                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+
+                            DebugFile.WriteLine(string.Join(" ", "//", "Bits per sample"));
+                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+
+                            DebugFile.WriteLine(string.Join(" ", "//", "PSI sample header"));
+                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+
+                            DebugFile.WriteLine(string.Join(" ", "//", "Loop offset"));
+                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+
+                            DebugFile.WriteLine(string.Join(" ", "//", "Duration"));
+                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            DebugFile.WriteLine("");
+                        }
+                        DebugFile.WriteLine("");
+                    }
+                    //Flag 2 = Sampla Data
+                    if (Convert.ToBoolean((DebugFlags >> 2) & 1))
+                    {
+                        //Write Header Section
+                        DebugFile.WriteLine(new String('/', 70));
+                        DebugFile.WriteLine(string.Join(" ", "//", "Sample data"));
+                        DebugFile.WriteLine(new String('/', 70));
+                        DebugFile.WriteLine("");
+
+                        BReader.BaseStream.Seek(SampleDataStart, SeekOrigin.Begin);
+
+                        byte[] SampleDataSection = BReader.ReadBytes((int)SampleDataLength);
+                        for (int i = 0; i < SampleDataSection.Length; i++)
+                        {
+                            DebugFile.Write(SampleDataSection[i]);
+                        }
+                        DebugFile.WriteLine("");
                     }
                     BReader.Close();
                 }

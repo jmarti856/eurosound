@@ -64,7 +64,7 @@ namespace EuroSound_Application.MarkerFiles
 
         private void ReadSTRStartMarkersBlock(string[] FileLines, int CurrentIndex, string CurrentKeyWord, string[] KeyWordValues, EXSoundStream StreamSound)
         {
-            uint Position = 0, MarkerType = 0, MarkerPos = 0, StateA = 0, StateB = 0;
+            uint Position = 0, MarkerType = 0, MarkerPos = 0, LoopStart = 0, LoopMarkerCount = 0, StateA = 0, StateB = 0;
 
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
@@ -85,6 +85,12 @@ namespace EuroSound_Application.MarkerFiles
                                     break;
                                 case "TYPE":
                                     MarkerType = uint.Parse(KeyWordValues[0]);
+                                    break;
+                                case "LOOPSTART":
+                                    LoopStart = uint.Parse(KeyWordValues[0]);
+                                    break;
+                                case "LOOPMARKERCOUNT":
+                                    LoopMarkerCount = uint.Parse(KeyWordValues[0]);
                                     break;
                                 case "MARKERPOS":
                                     MarkerPos = uint.Parse(KeyWordValues[0]);
@@ -107,7 +113,7 @@ namespace EuroSound_Application.MarkerFiles
                         }
                         CurrentIndex++;
                     }
-                    MKFunctions.CreateStartMarker(StreamSound.StartMarkers, Position, MarkerType, MarkerPos, StateA, StateB);
+                    MKFunctions.CreateStartMarker(StreamSound.StartMarkers, Position, MarkerType, 2, LoopStart, LoopMarkerCount, MarkerPos, StateA, StateB);
                     CurrentIndex++;
                 }
             }
@@ -162,7 +168,7 @@ namespace EuroSound_Application.MarkerFiles
                         }
                         CurrentIndex++;
                     }
-                    MKFunctions.CreateMarker(StreamSound.Markers, Name, Position, MarkerType, MarkerCount, LoopStart, LoopMarkerCount);
+                    MKFunctions.CreateMarker(StreamSound.Markers, Name, Position, MarkerType, 2, MarkerCount, LoopStart, LoopMarkerCount);
                     CurrentIndex++;
                 }
             }

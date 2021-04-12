@@ -569,7 +569,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     }
                     if (CurrentKeyWord.Equals("STARTMARKERS"))
                     {
-                        uint Position = 0, MarkerType = 0, MarkerPos = 0, StateA = 0, StateB = 0;
+                        uint Position = 0, MarkerType = 0, MarkerPos = 0, LoopStart = 0, LoopMarkerCount = 0, StateA = 0, StateB = 0;
 
                         CurrentIndex++;
                         while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
@@ -592,6 +592,12 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                             case "MUSICMARKERTYPE":
                                                 MarkerType = uint.Parse(KeyWordValues[0]);
                                                 break;
+                                            case "LOOPSTART":
+                                                LoopStart = uint.Parse(KeyWordValues[0]);
+                                                break;
+                                            case "LOOPMARKERCOUNT":
+                                                LoopMarkerCount = uint.Parse(KeyWordValues[0]);
+                                                break;
                                             case "MARKERPOS":
                                                 MarkerPos = uint.Parse(KeyWordValues[0]);
                                                 break;
@@ -613,7 +619,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     }
                                     CurrentIndex++;
                                 }
-                                MarkerFunctionsClass.CreateStartMarker(NewSSound.StartMarkers, Position, MarkerType, MarkerPos, StateA, StateB);
+                                MarkerFunctionsClass.CreateStartMarker(NewSSound.StartMarkers, Position, MarkerType, 2, LoopStart, LoopMarkerCount, MarkerPos, StateA, StateB);
                                 CurrentIndex++;
                             }
                         }
@@ -668,7 +674,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     }
                                     CurrentIndex++;
                                 }
-                                MarkerFunctionsClass.CreateMarker(NewSSound.Markers, Name, Position, MarkerType, MarkerCount, LoopStart, LoopMarkerCount);
+                                MarkerFunctionsClass.CreateMarker(NewSSound.Markers, Name, Position, MarkerType, 2, MarkerCount, LoopStart, LoopMarkerCount);
                                 CurrentIndex++;
                             }
                         }
@@ -863,7 +869,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     }
                     if (CurrentKeyWord.Equals("STARTMARKERS"))
                     {
-                        uint Position = 0, MarkerType = 0, MarkerPos = 0, StateA = 0, StateB = 0;
+                        uint Position = 0, MarkerType = 0, LoopStart = 0, LoopMarkerCount = 0, MarkerPos = 0, StateA = 0, StateB = 0;
 
                         CurrentIndex++;
                         while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
@@ -886,6 +892,12 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                             case "MUSICMARKERTYPE":
                                                 MarkerType = uint.Parse(KeyWordValues[0]);
                                                 break;
+                                            case "LOOPSTART":
+                                                LoopStart = uint.Parse(KeyWordValues[0]);
+                                                break;
+                                            case "LOOPMARKERCOUNT":
+                                                LoopMarkerCount = uint.Parse(KeyWordValues[0]);
+                                                break;
                                             case "MARKERPOS":
                                                 MarkerPos = uint.Parse(KeyWordValues[0]);
                                                 break;
@@ -907,7 +919,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     }
                                     CurrentIndex++;
                                 }
-                                MarkerFunctionsClass.CreateStartMarker(NewMusicBank.StartMarkers, Position, MarkerType, MarkerPos, StateA, StateB);
+                                MarkerFunctionsClass.CreateStartMarker(NewMusicBank.StartMarkers, Position, MarkerType, 0, LoopStart, LoopMarkerCount, MarkerPos, StateA, StateB);
                                 CurrentIndex++;
                             }
                         }
@@ -962,7 +974,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     }
                                     CurrentIndex++;
                                 }
-                                MarkerFunctionsClass.CreateMarker(NewMusicBank.Markers, Name, Position, MarkerType, MarkerCount, LoopStart, LoopMarkerCount);
+                                MarkerFunctionsClass.CreateMarker(NewMusicBank.Markers, Name, Position, MarkerType, 0, MarkerCount, LoopStart, LoopMarkerCount);
                                 CurrentIndex++;
                             }
                         }

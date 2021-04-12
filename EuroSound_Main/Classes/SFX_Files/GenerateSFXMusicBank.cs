@@ -1,6 +1,4 @@
-﻿using EngineXImaAdpcm;
-using Syroot.BinaryData;
-using System;
+﻿using Syroot.BinaryData;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,7 +10,6 @@ namespace EuroSound_Application.Musics
 {
     internal class GenerateSFXMusicBank
     {
-        private ImaADPCM_Functions IMA_Functions = new ImaADPCM_Functions();
         private List<long> MarkersStartList = new List<long>();
         long FileLength1, FileLength2, FullFileLength;
 
@@ -80,22 +77,10 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         //* FILE SECTION 1
         //*===============================================================================================
-        public void WriteFileSection1(BinaryStream BWriter, Dictionary<uint, EXMusic> MusicsDictionary, int DebugFlags, StreamWriter DebugFile, ProgressBar Bar)
+        public void WriteFileSection1(BinaryStream BWriter, Dictionary<uint, EXMusic> MusicsDictionary, ProgressBar Bar)
         {
-            long StartMarkerOffset, MarkerSizeStartOffset;
-            long AlignOffset;
+            long StartMarkerOffset, MarkerSizeStartOffset, PrevPos;
             uint SoundStartOffset, MarkerDataOffset;
-            bool DebugMarkersData;
-
-            //CheckFlag Stream Data is checked
-            DebugMarkersData = Convert.ToBoolean((DebugFlags >> 1) & 1);
-
-            if (DebugMarkersData)
-            {
-                DebugFile.WriteLine(new String('/', 70));
-                DebugFile.WriteLine("// Stream Sounds Data");
-                DebugFile.WriteLine(new String('/', 70) + "\n");
-            }
 
             //Update GUI
             ProgressBarReset(Bar);
@@ -103,149 +88,68 @@ namespace EuroSound_Application.Musics
 
             BWriter.Seek((int)FileStart1, SeekOrigin.Begin);
 
-            SoundStartOffset = (uint)BWriter.BaseStream.Position;
-            MarkersStartList.Add(SoundStartOffset - FileStart2);
-
-            foreach (EXMusic MusicToExport in MusicsDictionary.Values)
+            foreach (KeyValuePair<uint, EXMusic> MusicToExport in MusicsDictionary)
             {
+                SoundStartOffset = (uint)BWriter.BaseStream.Position;
+                MarkersStartList.Add(SoundStartOffset - FileStart2);
+
                 //Start marker count
-                BWriter.WriteUInt32((uint)MusicToExport.StartMarkers.Count);
+                BWriter.WriteUInt32((uint)MusicToExport.Value.StartMarkers.Count);
                 //Marker count
-                BWriter.WriteUInt32((uint)MusicToExport.Markers.Count);
+                BWriter.WriteUInt32((uint)MusicToExport.Value.Markers.Count);
                 //Start marker offset
-                StartMarkerOffset = BWriter.BaseStream.Position - SoundStartOffset;
-                BWriter.WriteUInt32((uint)StartMarkerOffset);
+                BWriter.WriteUInt32((uint)00000000);
                 //Marker offset
                 BWriter.WriteUInt32(00000000);
                 //Base volume
-                BWriter.WriteUInt32(MusicToExport.BaseVolume);
+                BWriter.WriteUInt32(MusicToExport.Value.BaseVolume);
 
-                //--[Write Debug File]--
-                if (DebugMarkersData)
-                {
-                    DebugFile.WriteLine(new String('/', 70));
-                    DebugFile.WriteLine("// Wav File Name");
-                    DebugFile.WriteLine("\t" + MusicToExport.WAVFileMD5_LeftChannel);
-                    DebugFile.WriteLine("// Start marker count");
-                    DebugFile.WriteLine("\t" + (uint)MusicToExport.StartMarkers.Count);
-                    DebugFile.WriteLine("// Marker count");
-                    DebugFile.WriteLine("\t" + (uint)MusicToExport.Markers.Count);
-                    DebugFile.WriteLine("// Start marker offset");
-                    DebugFile.WriteLine("\t" + (uint)StartMarkerOffset);
-                    DebugFile.WriteLine("// Marker offset");
-                    DebugFile.WriteLine("\t" + (uint)00000000);
-                    DebugFile.WriteLine("// Base volume");
-                    DebugFile.WriteLine("\t" + MusicToExport.BaseVolume + "\n");
-                }
-
+                StartMarkerOffset = BWriter.BaseStream.Position - SoundStartOffset;
                 MarkerSizeStartOffset = BWriter.BaseStream.Position;
+
                 //Start Markers Data
-                for (int i = 0; i < MusicToExport.StartMarkers.Count; i++)
+                for (int i = 0; i < MusicToExport.Value.StartMarkers.Count; i++)
                 {
-                    BWriter.WriteUInt32(MusicToExport.StartMarkers[i].Name);
-                    BWriter.WriteUInt32(MusicToExport.StartMarkers[i].Position);
-                    BWriter.WriteUInt32(MusicToExport.StartMarkers[i].MusicMakerType);
-                    BWriter.WriteUInt32(MusicToExport.StartMarkers[i].Flags);
-                    BWriter.WriteUInt32(MusicToExport.StartMarkers[i].Extra);
-                    BWriter.WriteUInt32(MusicToExport.StartMarkers[i].LoopStart);
-                    BWriter.WriteUInt32(MusicToExport.StartMarkers[i].MarkerCount);
-                    BWriter.WriteUInt32(MusicToExport.StartMarkers[i].LoopMarkerCount);
-                    BWriter.WriteUInt32(MusicToExport.StartMarkers[i].MarkerPos);
-                    BWriter.WriteUInt32(MusicToExport.StartMarkers[i].IsInstant);
-                    BWriter.WriteUInt32(MusicToExport.StartMarkers[i].InstantBuffer);
-                    BWriter.WriteUInt32(MusicToExport.StartMarkers[i].StateA);
-                    BWriter.WriteUInt32(MusicToExport.StartMarkers[i].StateB);
+                    BWriter.WriteUInt32(MusicToExport.Value.StartMarkers[i].Name);
+                    BWriter.WriteUInt32(MusicToExport.Value.StartMarkers[i].Position);
+                    BWriter.WriteUInt32(MusicToExport.Value.StartMarkers[i].MusicMakerType);
+                    BWriter.WriteUInt32(MusicToExport.Value.StartMarkers[i].Flags);
+                    BWriter.WriteUInt32(MusicToExport.Value.StartMarkers[i].Extra);
+                    BWriter.WriteUInt32(MusicToExport.Value.StartMarkers[i].LoopStart);
+                    BWriter.WriteUInt32(MusicToExport.Value.StartMarkers[i].MarkerCount);
+                    BWriter.WriteUInt32(MusicToExport.Value.StartMarkers[i].LoopMarkerCount);
+                    BWriter.WriteUInt32(MusicToExport.Value.StartMarkers[i].MarkerPos);
+                    BWriter.WriteUInt32(MusicToExport.Value.StartMarkers[i].IsInstant);
+                    BWriter.WriteUInt32(MusicToExport.Value.StartMarkers[i].InstantBuffer);
+                    BWriter.WriteUInt32(MusicToExport.Value.StartMarkers[i].StateA);
+                    BWriter.WriteUInt32(MusicToExport.Value.StartMarkers[i].StateB);
                 }
 
-                //--[Write Debug File]--
-                if (DebugMarkersData)
-                {
-                    for (int i = 0; i < MusicToExport.StartMarkers.Count; i++)
-                    {
-                        DebugFile.WriteLine("// ----Start Markers Data----" + "\n");
-                        DebugFile.WriteLine("// Name");
-                        DebugFile.WriteLine("\t" + MusicToExport.StartMarkers[i].Name);
-                        DebugFile.WriteLine("// Position");
-                        DebugFile.WriteLine("\t" + MusicToExport.StartMarkers[i].Position);
-                        DebugFile.WriteLine("// Music Maker Type");
-                        DebugFile.WriteLine("\t" + MusicToExport.StartMarkers[i].MusicMakerType);
-                        DebugFile.WriteLine("// Flags");
-                        DebugFile.WriteLine("\t" + MusicToExport.StartMarkers[i].Flags);
-                        DebugFile.WriteLine("// Extra");
-                        DebugFile.WriteLine("\t" + MusicToExport.StartMarkers[i].Extra);
-                        DebugFile.WriteLine("// Loop Start");
-                        DebugFile.WriteLine("\t" + MusicToExport.StartMarkers[i].LoopStart);
-                        DebugFile.WriteLine("// Marker Count");
-                        DebugFile.WriteLine("\t" + MusicToExport.StartMarkers[i].MarkerCount);
-                        DebugFile.WriteLine("// Loop Marker Count");
-                        DebugFile.WriteLine("\t" + MusicToExport.StartMarkers[i].LoopMarkerCount);
-                        DebugFile.WriteLine("// Marker Pos");
-                        DebugFile.WriteLine("\t" + MusicToExport.StartMarkers[i].MarkerPos);
-                        DebugFile.WriteLine("// Is Instant");
-                        DebugFile.WriteLine("\t" + MusicToExport.StartMarkers[i].IsInstant);
-                        DebugFile.WriteLine("// Instant Buffer");
-                        DebugFile.WriteLine("\t" + MusicToExport.StartMarkers[i].InstantBuffer);
-                        DebugFile.WriteLine("// StateA");
-                        DebugFile.WriteLine("\t" + MusicToExport.StartMarkers[i].StateA);
-                        DebugFile.WriteLine("// StateB");
-                        DebugFile.WriteLine("\t" + MusicToExport.StartMarkers[i].StateB);
-                    }
-                }
-                MarkerDataOffset = (uint)(BWriter.BaseStream.Position - MarkerSizeStartOffset);
-
+                MarkerDataOffset = (uint)(BWriter.BaseStream.Position - SoundStartOffset);
                 //Markers
-                for (int j = 0; j < MusicToExport.Markers.Count; j++)
+                for (int j = 0; j < MusicToExport.Value.Markers.Count; j++)
                 {
-                    BWriter.WriteInt32(MusicToExport.Markers[j].Name);
-                    BWriter.WriteUInt32(MusicToExport.Markers[j].Position);
-                    BWriter.WriteUInt32(MusicToExport.Markers[j].MusicMakerType);
-                    BWriter.WriteUInt32(MusicToExport.Markers[j].Flags);
-                    BWriter.WriteUInt32(MusicToExport.Markers[j].Extra);
-                    BWriter.WriteUInt32(MusicToExport.Markers[j].LoopStart);
-                    BWriter.WriteUInt32(MusicToExport.Markers[j].MarkerCount);
-                    BWriter.WriteUInt32(MusicToExport.Markers[j].LoopMarkerCount);
-                }
-
-                //--[Write Debug File]--
-                if (DebugMarkersData)
-                {
-                    for (int j = 0; j < MusicToExport.Markers.Count; j++)
-                    {
-                        DebugFile.WriteLine("// ----Markers Data----" + "\n");
-                        DebugFile.WriteLine("// Name");
-                        DebugFile.WriteLine("\t" + MusicToExport.Markers[j].Name);
-                        DebugFile.WriteLine("// Position");
-                        DebugFile.WriteLine("\t" + MusicToExport.Markers[j].Position);
-                        DebugFile.WriteLine("// Music Maker Type");
-                        DebugFile.WriteLine("\t" + MusicToExport.Markers[j].MusicMakerType);
-                        DebugFile.WriteLine("// Flags");
-                        DebugFile.WriteLine("\t" + MusicToExport.Markers[j].Flags);
-                        DebugFile.WriteLine("// Extra");
-                        DebugFile.WriteLine("\t" + MusicToExport.Markers[j].Extra);
-                        DebugFile.WriteLine("// Loop Start");
-                        DebugFile.WriteLine("\t" + MusicToExport.Markers[j].LoopStart);
-                        DebugFile.WriteLine("// Marker Count");
-                        DebugFile.WriteLine("\t" + MusicToExport.Markers[j].MarkerCount);
-                        DebugFile.WriteLine("// Loop Marker Count");
-                        DebugFile.WriteLine("\t" + MusicToExport.Markers[j].LoopMarkerCount + "\n");
-                    }
+                    BWriter.WriteInt32(MusicToExport.Value.Markers[j].Name);
+                    BWriter.WriteUInt32(MusicToExport.Value.Markers[j].Position);
+                    BWriter.WriteUInt32(MusicToExport.Value.Markers[j].MusicMakerType);
+                    BWriter.WriteUInt32(MusicToExport.Value.Markers[j].Flags);
+                    BWriter.WriteUInt32(MusicToExport.Value.Markers[j].Extra);
+                    BWriter.WriteUInt32(MusicToExport.Value.Markers[j].LoopStart);
+                    BWriter.WriteUInt32(MusicToExport.Value.Markers[j].MarkerCount);
+                    BWriter.WriteUInt32(MusicToExport.Value.Markers[j].LoopMarkerCount);
                 }
 
                 //Write Marker Data Offset
+                PrevPos = BWriter.BaseStream.Position;
                 BWriter.Seek((int)SoundStartOffset, SeekOrigin.Begin);
                 BWriter.Seek(8, SeekOrigin.Current);
-                BWriter.WriteUInt32((uint)(MarkerDataOffset + StartMarkerOffset));
-
-                //Align Bytes
-                AlignOffset = (BWriter.BaseStream.Position + FileStart2) & (FileStart2 - 1);
-                BWriter.Seek(AlignOffset, SeekOrigin.Current);
-
-                BWriter.Align(16);
+                BWriter.WriteUInt32((uint)StartMarkerOffset);
+                BWriter.WriteUInt32((uint)MarkerDataOffset);
+                BWriter.BaseStream.Seek(PrevPos, SeekOrigin.Begin);
 
                 //Update GUI
                 ProgressBarUpdate(Bar, 1);
             }
-
             FileLength1 = BWriter.BaseStream.Position - FileStart1;
         }
 
@@ -254,15 +158,38 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         public void WriteFileSection2(BinaryStream BWriter, Dictionary<uint, EXMusic> MusicsDictionary)
         {
+            int IndexLC, IndexRC;
+            int TotalLength;
+            bool StereoInterleaving;
+
             //Write ADPCM Data
             BWriter.Seek((int)FileStart2, SeekOrigin.Begin);
 
-            foreach (EXMusic MusicToExport in MusicsDictionary.Values)
+            foreach (KeyValuePair<uint, EXMusic> MusicToExport in MusicsDictionary)
             {
-                byte[] MusicData = IMA_Functions.InterleaveStereo(MusicToExport.IMA_ADPCM_DATA_LeftChannel, MusicToExport.IMA_ADPCM_DATA_RightChannel);
-                BWriter.Write(MusicData);
+                //Initialize variables
+                IndexLC = 0;
+                IndexRC = 0;
+                StereoInterleaving = true;
+                TotalLength = MusicToExport.Value.IMA_ADPCM_DATA_LeftChannel.Length + MusicToExport.Value.IMA_ADPCM_DATA_RightChannel.Length;
 
-                FileLength2 = BWriter.BaseStream.Position - FileStart2;
+                //Write ima data
+                for (int i = 0; i < TotalLength; i++)
+                {
+                    if (StereoInterleaving)
+                    {
+                        BWriter.Write(MusicToExport.Value.IMA_ADPCM_DATA_LeftChannel[IndexLC]);
+                        IndexLC++;
+                    }
+                    else
+                    {
+                        BWriter.Write(MusicToExport.Value.IMA_ADPCM_DATA_RightChannel[IndexRC]);
+                        IndexRC++;
+                    }
+                    StereoInterleaving = !StereoInterleaving;
+                }
+
+                FileLength2 = TotalLength;
                 FullFileLength = BWriter.BaseStream.Position;
             }
         }
@@ -270,7 +197,7 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         //* FINAL OFFSETS
         //*===============================================================================================
-        public void WriteFinalOffsets(BinaryStream BWriter, uint FileHashcode, int DebugFlags, StreamWriter DebugFile, ProgressBar Bar)
+        public void WriteFinalOffsets(BinaryStream BWriter, ProgressBar Bar)
         {
             //Update GUI
             ProgressBarReset(Bar);
@@ -287,35 +214,6 @@ namespace EuroSound_Application.Musics
             //File length 2
             BWriter.BaseStream.Seek(0x1C, SeekOrigin.Begin);
             BWriter.WriteUInt32((uint)FileLength2);
-
-
-            //CheckFlag Header Info is checked
-            if (Convert.ToBoolean((DebugFlags >> 2) & 1))
-            {
-                DebugFile.WriteLine(new String('/', 70));
-                DebugFile.WriteLine("// Stream File Header");
-                DebugFile.WriteLine(new String('/', 70) + "\n");
-                DebugFile.WriteLine("// 'MUSX' Marker");
-                DebugFile.WriteLine("\t4d555358");
-                DebugFile.WriteLine("// File HashCode");
-                DebugFile.WriteLine("\t0x" + FileHashcode.ToString("X8"));
-                DebugFile.WriteLine("// File Version");
-                DebugFile.WriteLine("\t000000c9");
-                DebugFile.WriteLine("// File Size");
-                DebugFile.WriteLine("\t" + FullFileLength);
-                DebugFile.WriteLine("// Offset To File Start 1");
-                DebugFile.WriteLine("\t800h");
-                DebugFile.WriteLine("// File Start 1 Length");
-                DebugFile.WriteLine("\t" + FileLength1);
-                DebugFile.WriteLine("// Offset To File Start 2");
-                DebugFile.WriteLine("\t1000h");
-                DebugFile.WriteLine("// File Start 2 Length");
-                DebugFile.WriteLine("\t" + FileLength2);
-                DebugFile.WriteLine("// Offset To File Start 3");
-                DebugFile.WriteLine("\t0");
-                DebugFile.WriteLine("// File Start 3 Length");
-                DebugFile.WriteLine("\t0" + "\n");
-            }
         }
 
         //*===============================================================================================

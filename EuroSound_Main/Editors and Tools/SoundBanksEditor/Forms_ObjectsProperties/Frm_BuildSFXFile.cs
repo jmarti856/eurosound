@@ -14,6 +14,9 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
 {
     public partial class Frm_BuildSFXFile : Form
     {
+        //*===============================================================================================
+        //* GLOBAL VARS
+        //*===============================================================================================
         private BinaryStream BWriter;
         private ProjectFile CurrentFileProperties;
         private List<string> Reports = new List<string>();
@@ -72,9 +75,8 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 Dictionary<uint, EXSound> FinalSoundsDict;
                 Dictionary<string, EXAudio> FinalAudioDataDict;
                 GenerateSFXSoundBank SFXCreator = new GenerateSFXSoundBank();
-                StreamWriter DebugFileWritter = null;
-
                 Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
+
                 int TotalProgress = 1;
 
                 BWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
@@ -83,10 +85,6 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 {
                     BWriter.Close();
                     BWriter.Dispose();
-                    if (DebugFileWritter != null)
-                    {
-                        DebugFileWritter.Close();
-                    }
                     e.Cancel = true;
                 }
 
@@ -134,10 +132,6 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 {
                     BWriter.Close();
                     BWriter.Dispose();
-                    if (DebugFileWritter != null)
-                    {
-                        DebugFileWritter.Close();
-                    }
                     e.Cancel = true;
                 }
 
@@ -198,10 +192,6 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 {
                     BWriter.Close();
                     BWriter.Dispose();
-                    if (DebugFileWritter != null)
-                    {
-                        DebugFileWritter.Close();
-                    }
                     e.Cancel = true;
                 }
 
@@ -214,13 +204,6 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 //Close Binary Writter
                 BWriter.Close();
                 BWriter.Dispose();
-
-                //Close Text Writer
-                if (DebugFileWritter != null)
-                {
-                    DebugFileWritter.Close();
-                    DebugFileWritter.Dispose();
-                }
 
                 //Clear Temporal Dictionaries
                 FinalSoundsDict.Clear();

@@ -267,44 +267,5 @@ namespace EngineXImaAdpcm
             state.valprev = valpred;
             state.index = index;
         }
-
-        public byte[] InterleaveStereo(byte[] LeftChannel, byte[] RightChannel)
-        {
-            int IndexLC, IndexRC;
-            int TotalLength;
-            bool StereoInterleaving;
-            byte[] InterleavingStereoData;
-
-            //Initialize variables
-            IndexLC = 0;
-            IndexRC = 0;
-            StereoInterleaving = true;
-            TotalLength = LeftChannel.Length + RightChannel.Length;
-
-            using (MemoryStream InterleavedStereo = new MemoryStream())
-            {
-                using (BinaryWriter BWriter = new BinaryWriter(InterleavedStereo))
-                {
-                    //Write ima data
-                    for (int i = 0; i < TotalLength; i++)
-                    {
-                        if (StereoInterleaving)
-                        {
-                            BWriter.Write(LeftChannel[IndexLC]);
-                            IndexLC++;
-                        }
-                        else
-                        {
-                            BWriter.Write(RightChannel[IndexRC]);
-                            IndexRC++;
-                        }
-                        StereoInterleaving = !StereoInterleaving;
-                    }
-                }
-                InterleavingStereoData = InterleavedStereo.ToArray();
-            }
-
-            return InterleavingStereoData;
-        }
     }
 }

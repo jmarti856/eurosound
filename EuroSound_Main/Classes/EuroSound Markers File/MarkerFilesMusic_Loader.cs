@@ -46,7 +46,7 @@ namespace EuroSound_Application.MarkerFiles
                         {
                             i++;
                             MusicToModify.Markers.Clear();
-                            ReadSTRMarkersBlock(FileLines, i, CurrentKeyWord, KeyWordValues, MusicToModify);
+                            ReadMusicMarkersBlock(FileLines, i, CurrentKeyWord, KeyWordValues, MusicToModify);
                         }
                     }
                 }
@@ -64,7 +64,7 @@ namespace EuroSound_Application.MarkerFiles
 
         private void ReadSTRStartMarkersBlock(string[] FileLines, int CurrentIndex, string CurrentKeyWord, string[] KeyWordValues, EXMusic Music)
         {
-            uint Position = 0, MarkerType = 0, MarkerPos = 0, StateA = 0, StateB = 0;
+            uint Position = 0, MarkerType = 0, MarkerPos = 0, LoopStart = 0, LoopMarkerCount = 0, StateA = 0, StateB = 0;
 
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
@@ -85,6 +85,12 @@ namespace EuroSound_Application.MarkerFiles
                                     break;
                                 case "TYPE":
                                     MarkerType = uint.Parse(KeyWordValues[0]);
+                                    break;
+                                case "LOOPSTART":
+                                    LoopStart = uint.Parse(KeyWordValues[0]);
+                                    break;
+                                case "LOOPMARKERCOUNT":
+                                    LoopMarkerCount = uint.Parse(KeyWordValues[0]);
                                     break;
                                 case "MARKERPOS":
                                     MarkerPos = uint.Parse(KeyWordValues[0]);
@@ -107,13 +113,13 @@ namespace EuroSound_Application.MarkerFiles
                         }
                         CurrentIndex++;
                     }
-                    MKFunctions.CreateStartMarker(Music.StartMarkers, Position, MarkerType, MarkerPos, StateA, StateB);
+                    MKFunctions.CreateStartMarker(Music.StartMarkers, Position, MarkerType, 0, LoopStart, LoopMarkerCount, MarkerPos, StateA, StateB);
                     CurrentIndex++;
                 }
             }
         }
 
-        private void ReadSTRMarkersBlock(string[] FileLines, int CurrentIndex, string CurrentKeyWord, string[] KeyWordValues, EXMusic Music)
+        private void ReadMusicMarkersBlock(string[] FileLines, int CurrentIndex, string CurrentKeyWord, string[] KeyWordValues, EXMusic Music)
         {
             int Name = 0;
             uint Position = 0, MarkerType = 0, MarkerCount = 0, LoopStart = 0, LoopMarkerCount = 0;
@@ -162,7 +168,7 @@ namespace EuroSound_Application.MarkerFiles
                         }
                         CurrentIndex++;
                     }
-                    MKFunctions.CreateMarker(Music.Markers, Name, Position, MarkerType, MarkerCount, LoopStart, LoopMarkerCount);
+                    MKFunctions.CreateMarker(Music.Markers, Name, Position, MarkerType, 0, MarkerCount, LoopStart, LoopMarkerCount);
                     CurrentIndex++;
                 }
             }

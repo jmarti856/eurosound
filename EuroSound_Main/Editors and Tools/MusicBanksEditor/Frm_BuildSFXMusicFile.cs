@@ -15,6 +15,7 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         //* GLOBAL VARS
         //*===============================================================================================
+        private BinaryStream BWriter;
         private ProjectFile CurrentFileProperties;
         private List<string> Reports = new List<string>();
         private string FileName;
@@ -50,36 +51,20 @@ namespace EuroSound_Application.Musics
             {
                 Dictionary<uint, EXMusic> FinalMusicsDict;
                 GenerateSFXMusicBank SFXCreator = new GenerateSFXMusicBank();
-                BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.MusicOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
-                StreamWriter DebugFileWritter = null;
-
                 Form ParentForm = GenericFunctions.GetFormByName("Frm_Musics_Main", Tag.ToString());
+
                 int TotalProgress = 1;
+
+                BWriter = new BinaryStream(File.Open(GlobalPreferences.MusicOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
 
                 //Check For Cancelation;
                 if (BackgroundWorker_BuildSFX.CancellationPending == true)
                 {
                     BWriter.Close();
                     BWriter.Dispose();
-                    if (DebugFileWritter != null)
-                    {
-                        DebugFileWritter.Close();
-                    }
                     e.Cancel = true;
                 }
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
-
-                //Check if user wants a debug file
-                if (DebugFlags != 0)
-                {
-                    DebugFileWritter = new StreamWriter(GlobalPreferences.MusicOutputPath + "\\" + FileName + ".dbg");
-                    DebugFileWritter.WriteLine(new String('/', 70));
-                    DebugFileWritter.WriteLine("// EngineX Output: " + GlobalPreferences.MusicOutputPath + "\\" + FileName + ".SFX");
-                    DebugFileWritter.WriteLine("// Soundbank: " + CurrentFileProperties.FileName);
-                    DebugFileWritter.WriteLine("// Output By: " + Environment.UserName);
-                    DebugFileWritter.WriteLine("// Output Date: " + DateTime.Now);
-                    DebugFileWritter.WriteLine(new String('/', 70) + "\n");
-                }
 
                 //*===============================================================================================
                 //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED (20%)
@@ -108,10 +93,6 @@ namespace EuroSound_Application.Musics
                     {
                         BWriter.Close();
                         BWriter.Dispose();
-                        if (DebugFileWritter != null)
-                        {
-                            DebugFileWritter.Close();
-                        }
                         e.Cancel = true;
                     }
 
@@ -144,7 +125,7 @@ namespace EuroSound_Application.Musics
                     SetLabelText(Label_CurrentTask, "Writting Markers");
 
                     //Write Table
-                    SFXCreator.WriteFileSection1(BWriter, FinalMusicsDict, DebugFlags, DebugFileWritter, ProgressBar_CurrentTask);
+                    SFXCreator.WriteFileSection1(BWriter, FinalMusicsDict, ProgressBar_CurrentTask);
 
                     //Update Total Progress
                     TotalProgress += 10;
@@ -173,10 +154,6 @@ namespace EuroSound_Application.Musics
                     {
                         BWriter.Close();
                         BWriter.Dispose();
-                        if (DebugFileWritter != null)
-                        {
-                            DebugFileWritter.Close();
-                        }
                         e.Cancel = true;
                     }
 
@@ -184,17 +161,11 @@ namespace EuroSound_Application.Musics
                     SetLabelText(Label_CurrentTask, "WrittingFinalOffsets");
 
                     //Write Offsets
-                    SFXCreator.WriteFinalOffsets(BWriter, CurrentFileProperties.Hashcode, DebugFlags, DebugFileWritter, ProgressBar_CurrentTask);
+                    SFXCreator.WriteFinalOffsets(BWriter, ProgressBar_CurrentTask);
 
                     //Close Writer
                     BWriter.Close();
                     BWriter.Dispose();
-
-                    //Close DebugFile
-                    if (DebugFileWritter != null)
-                    {
-                        DebugFileWritter.Close();
-                    }
 
                     //*===============================================================================================
                     //* STEP 5: BUILD FILELIST
@@ -203,6 +174,20 @@ namespace EuroSound_Application.Musics
                     SetLabelText(Label_CurrentTask, "Building Filelist");
 
                     GenericFunctions.BuildSphinxFilelist();
+
+                    //*===============================================================================================
+                    //* STEP 6: CREATE DEBUG FILE IF REQUIRED
+                    //*===============================================================================================
+                    if (DebugFlags > 0)
+                    {
+                        MusicBanks_DebugWriter DBGWritter = new MusicBanks_DebugWriter();
+
+                        //Update Label
+                        SetLabelText(Label_CurrentTask, "Creating debug file");
+
+                        //Create file
+                        DBGWritter.CreateDebugFile(GlobalPreferences.MusicOutputPath + "\\" + FileName + ".SFX", DebugFlags);
+                    }
 
                     //Update Label
                     SetLabelText(Label_CurrentTask, "Output Completed");

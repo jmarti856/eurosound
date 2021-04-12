@@ -6,16 +6,19 @@ namespace EuroSound_Application.MarkerFiles.StreamSoundsEditor.Classes
 {
     class MarkersFunctions
     {
-        internal EXStreamStartMarker CreateStartMarker(List<EXStreamStartMarker> MarkersList, uint v_pos, uint v_type, uint v_mkrpos, uint v_stateA, uint v_stateB)
+        internal EXStreamStartMarker CreateStartMarker(List<EXStreamStartMarker> MarkersList, uint v_pos, uint v_type, uint v_flags, uint v_loopstart, uint v_loopmarkercount, uint v_mkrpos, uint v_stateA, uint v_stateB)
         {
             //Create Start Marker
             EXStreamStartMarker NewStartMarker = new EXStreamStartMarker
             {
+                Name = (uint)MarkersList.Count,
                 Position = v_pos,
                 MusicMakerType = v_type,
-                Flags = 2,
+                Flags = v_flags,
                 Extra = 0,
+                LoopStart = v_loopstart,
                 MarkerCount = (uint)MarkersList.Count,
+                LoopMarkerCount = v_loopmarkercount,
                 MarkerPos = v_mkrpos,
                 StateA = v_stateA,
                 StateB = v_stateB
@@ -27,7 +30,7 @@ namespace EuroSound_Application.MarkerFiles.StreamSoundsEditor.Classes
             return NewStartMarker;
         }
 
-        internal EXStreamMarker CreateMarker(List<EXStreamMarker> MarkersDataList, int v_name, uint v_position, uint v_type, uint v_markercount, uint v_loopstart, uint v_loopmarkercount)
+        internal EXStreamMarker CreateMarker(List<EXStreamMarker> MarkersDataList, int v_name, uint v_position, uint v_type, uint v_flags, uint v_markercount, uint v_loopstart, uint v_loopmarkercount)
         {
             //Create Marker
             EXStreamMarker NewMarker = new EXStreamMarker
@@ -35,6 +38,7 @@ namespace EuroSound_Application.MarkerFiles.StreamSoundsEditor.Classes
                 Name = v_name,
                 Position = v_position,
                 MusicMakerType = v_type,
+                Flags = v_flags,
                 MarkerCount = v_markercount,
                 LoopStart = v_loopstart,
                 LoopMarkerCount = v_loopmarkercount

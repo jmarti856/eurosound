@@ -6,7 +6,6 @@ using EuroSound_Application.CustomControls.ProjectSettings;
 using EuroSound_Application.CustomControls.SearcherForm;
 using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.EuroSoundInterchangeFile;
-using EuroSound_Application.StreamSounds;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using Microsoft.Win32;
 using System;
@@ -360,8 +359,11 @@ namespace EuroSound_Application.Musics
                 //---[Output with debug options
                 if ((ModifierKeys & Keys.Control) == Keys.Control)
                 {
-                    using (Frm_StreamSoundsDebugInfo DebugOpts = new Frm_StreamSoundsDebugInfo())
+                    using (Frm_Musics_DebugOptions DebugOpts = new Frm_Musics_DebugOptions())
                     {
+                        DebugOpts.Owner = this.Owner;
+                        DebugOpts.ShowInTaskbar = false;
+
                         if (DebugOpts.ShowDialog() == DialogResult.OK)
                         {
                             BuildSfxForm(FileName, DebugOpts.CheckedOptions);
