@@ -266,7 +266,7 @@ namespace EuroSound_Application.StreamSounds
                     IMA_States = MarkerFunctions.GetEngineXMarkerStates_Mono(TemporalSelectedSound.IMA_ADPCM_DATA, (int)LoopStart);
 
                     //--------------------------------------------------[Start Markers]--------------------------------------------------
-                    EXStreamStartMarker MarkerStartData = MarkerFunctions.CreateStartMarker(TemporalSelectedSound.StartMarkers, Position, 10, 2, 0, 0, (uint)TemporalSelectedSound.Markers.Count, IMA_States[0], IMA_States[1]);
+                    EXStreamStartMarker MarkerStartData = MarkerFunctions.CreateStartMarker(TemporalSelectedSound.StartMarkers, LoopStart, 10, 2, 0, 0, (uint)TemporalSelectedSound.Markers.Count, IMA_States[0], IMA_States[1]);
                     AddMarkerStartToListView(MarkerStartData);
 
                     //-----------------------------------------------------[Markers Start Loop]------------------------------------------
@@ -284,7 +284,7 @@ namespace EuroSound_Application.StreamSounds
 
                     v_MarkerName = TemporalSelectedSound.StartMarkers.Count;
                     //--------------------------------------------------[Start Markers]--------------------------------------------------
-                    EXStreamStartMarker MarkerStart = MarkerFunctions.CreateStartMarker(TemporalSelectedSound.StartMarkers, Position, MarkerType, 2, 0, 0, (uint)TemporalSelectedSound.Markers.Count, IMA_States[0], IMA_States[1]);
+                    EXStreamStartMarker MarkerStart = MarkerFunctions.CreateStartMarker(TemporalSelectedSound.StartMarkers, Position, 10, 2, 0, 0, (uint)TemporalSelectedSound.Markers.Count, IMA_States[0], IMA_States[1]);
                     AddMarkerStartToListView(MarkerStart);
 
                     //-----------------------------------------------------[Markers]-----------------------------------------------------

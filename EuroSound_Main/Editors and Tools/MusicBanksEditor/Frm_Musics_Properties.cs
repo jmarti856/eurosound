@@ -73,7 +73,7 @@ namespace EuroSound_Application.Musics
                     DialogResult TryToReload = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrectMusicsMono"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (TryToReload == DialogResult.Yes)
                     {
-                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), 22050, 2, 16);
+                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), 32000, 1, 16);
                         if (!string.IsNullOrEmpty(FileTempFile))
                         {
                             LoadDataLeftChannel(FileTempFile);
@@ -102,7 +102,7 @@ namespace EuroSound_Application.Musics
                     DialogResult TryToReload = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrectMusicsMono"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (TryToReload == DialogResult.Yes)
                     {
-                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), 22050, 2, 16);
+                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), 32000, 1, 16);
                         if (!string.IsNullOrEmpty(FileTempFile))
                         {
                             LoadDataRightChannel(FileTempFile);
