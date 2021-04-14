@@ -1,4 +1,5 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.Classes.SFX_Files;
 using EuroSound_Application.CurrentProjectFunctions;
 using Syroot.BinaryData;
 using System;
@@ -52,7 +53,9 @@ namespace EuroSound_Application.Musics
                 Dictionary<uint, EXMusic> FinalMusicsDict;
                 GenerateSFXMusicBank SFXCreator = new GenerateSFXMusicBank();
                 Form ParentForm = GenericFunctions.GetFormByName("Frm_Musics_Main", Tag.ToString());
-
+                SFX_ChecksBeforeGeneration SFX_Check = new SFX_ChecksBeforeGeneration();
+                bool CanOutputFile = true;
+                string CurrentObjectName;
                 int TotalProgress = 1;
 
                 BWriter = new BinaryStream(File.Open(GlobalPreferences.MusicOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
@@ -69,128 +72,168 @@ namespace EuroSound_Application.Musics
                 //*===============================================================================================
                 //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED (20%)
                 //*===============================================================================================
-                ProgressBarValue(ProgressBar_CurrentTask, 0);
+                GenericFunctions.ProgressBarValue(ProgressBar_CurrentTask, 0);
 
                 //Update Label
-                SetLabelText(Label_CurrentTask, "Getting SFX To export");
+                GenericFunctions.SetLabelText(Label_CurrentTask, "Getting SFX To export");
 
                 //Update Progress Bar
-                ProgressBarSetMaximum(ProgressBar_CurrentTask, ((Frm_Musics_Main)ParentForm).MusicsList.Keys.Count);
+                GenericFunctions.ProgressBarSetMaximum(ProgressBar_CurrentTask, ((Frm_Musics_Main)ParentForm).MusicsList.Keys.Count);
 
                 //Discard SFXs that has checked as "no output"
                 FinalMusicsDict = SFXCreator.GetFinalMusicsDictionary(((Frm_Musics_Main)ParentForm).MusicsList, ProgressBar_CurrentTask, Label_CurrentTask);
 
-                if (FinalMusicsDict.Count == 1)
+                //*===============================================================================================
+                //* STEP 2: CHECK DATA THAT WILL BE OUTPUTED (30%)
+                //*===============================================================================================
+                //Update Label
+                GenericFunctions.SetLabelText(Label_CurrentTask, "Checking data");
+
+                //Update Progress Bar
+                GenericFunctions.ProgressBarSetMaximum(ProgressBar_CurrentTask, FinalMusicsDict.Count);
+                GenericFunctions.ProgressBarValue(ProgressBar_CurrentTask, 0);
+
+                //Check Data
+                foreach (KeyValuePair<uint, EXMusic> MusicToCheck in FinalMusicsDict)
                 {
-                    TotalProgress += 20;
-                    BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
-
-                    //*===============================================================================================
-                    //* STEP 3: START WRITTING (80%)
-                    //*===============================================================================================
-                    //Check For Cancelation;
-                    if (BackgroundWorker_BuildSFX.CancellationPending == true)
+                    CurrentObjectName = ((Frm_Musics_Main)ParentForm).TreeView_MusicData.Nodes.Find(MusicToCheck.Key.ToString(), true)[0].Text;
+                    CanOutputFile = SFX_Check.ValidateMusics(MusicToCheck.Value, CurrentObjectName, Reports);
+                    if (CanOutputFile == false)
                     {
-                        BWriter.Close();
-                        BWriter.Dispose();
-                        e.Cancel = true;
+                        break;
                     }
-
-                    //--------------------------------------[WRITE FILE HEADER]--------------------------------------
-                    //Update Label
-                    SetLabelText(Label_CurrentTask, "Writting File Header");
-
-                    //Write Header
-                    SFXCreator.WriteFileHeader(BWriter, CurrentFileProperties.Hashcode, ProgressBar_CurrentTask);
-
-                    //Update Total Progress
-                    TotalProgress += 10;
-                    BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
-
-
-                    //--------------------------------------[Write SECTIONS]--------------------------------------
-                    //Update Label
-                    SetLabelText(Label_CurrentTask, "Writting File Sections");
-
-                    //Write Sections
-                    SFXCreator.WriteFileSections(BWriter, ProgressBar_CurrentTask);
-
-                    //Update Total Progress
-                    TotalProgress += 10;
-                    BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
-
-
-                    //--------------------------------------[SECTION File Section 1]--------------------------------------
-                    //Update Label
-                    SetLabelText(Label_CurrentTask, "Writting Markers");
-
-                    //Write Table
-                    SFXCreator.WriteFileSection1(BWriter, FinalMusicsDict, ProgressBar_CurrentTask);
-
-                    //Update Total Progress
-                    TotalProgress += 10;
-                    BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
-
-                    //--------------------------------------[SECTION File Section 2]--------------------------------------
-                    //Update Label
-                    SetLabelText(Label_CurrentTask, "Writting IMA ADPCM Data");
-
-                    //Write Data
-                    SFXCreator.WriteFileSection2(BWriter, FinalMusicsDict);
-
-                    //Update Total Progress
-                    TotalProgress += 10;
-                    BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
-
-                    //Update Total Progress
-                    TotalProgress += 10;
-                    BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
-
-                    //*===============================================================================================
-                    //* STEP 4: WRITE FINAL DATA (80%)
-                    //*===============================================================================================
-                    //Check For Cancelation
-                    if (BackgroundWorker_BuildSFX.CancellationPending == true)
+                    else
                     {
-                        BWriter.Close();
-                        BWriter.Dispose();
-                        e.Cancel = true;
+                        CanOutputFile = SFX_Check.ValidateMarkers(MusicToCheck.Value.Markers, CurrentObjectName, Reports);
+                        if (CanOutputFile == false)
+                        {
+                            break;
+                        }
                     }
+                    GenericFunctions.ProgressBarAddValue(ProgressBar_CurrentTask, 1);
+                }
 
-                    //Update Label
-                    SetLabelText(Label_CurrentTask, "WrittingFinalOffsets");
+                //Update Total Progress
+                TotalProgress += 10;
+                BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
 
-                    //Write Offsets
-                    SFXCreator.WriteFinalOffsets(BWriter, ProgressBar_CurrentTask);
+                //*===============================================================================================
+                //* STEP 3: START WRITTING (70%)
+                //*===============================================================================================
+                if (CanOutputFile)
+                {
+                    if (FinalMusicsDict.Count == 1)
+                    {
+                        TotalProgress += 20;
+                        BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+
+                        //Check For Cancelation;
+                        if (BackgroundWorker_BuildSFX.CancellationPending == true)
+                        {
+                            BWriter.Close();
+                            BWriter.Dispose();
+                            e.Cancel = true;
+                        }
+
+                        //--------------------------------------[WRITE FILE HEADER]--------------------------------------
+                        //Update Label
+                        GenericFunctions.SetLabelText(Label_CurrentTask, "Writting File Header");
+
+                        //Write Header
+                        SFXCreator.WriteFileHeader(BWriter, CurrentFileProperties.Hashcode, ProgressBar_CurrentTask);
+
+                        //Update Total Progress
+                        TotalProgress += 10;
+                        BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+
+
+                        //--------------------------------------[Write SECTIONS]--------------------------------------
+                        //Update Label
+                        GenericFunctions.SetLabelText(Label_CurrentTask, "Writting File Sections");
+
+                        //Write Sections
+                        SFXCreator.WriteFileSections(BWriter, ProgressBar_CurrentTask);
+
+                        //Update Total Progress
+                        TotalProgress += 10;
+                        BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+
+
+                        //--------------------------------------[SECTION File Section 1]--------------------------------------
+                        //Update Label
+                        GenericFunctions.SetLabelText(Label_CurrentTask, "Writting Markers");
+
+                        //Write Table
+                        SFXCreator.WriteFileSection1(BWriter, FinalMusicsDict, ProgressBar_CurrentTask);
+
+                        //Update Total Progress
+                        TotalProgress += 10;
+                        BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+
+                        //--------------------------------------[SECTION File Section 2]--------------------------------------
+                        //Update Label
+                        GenericFunctions.SetLabelText(Label_CurrentTask, "Writting IMA ADPCM Data");
+
+                        //Write Data
+                        SFXCreator.WriteFileSection2(BWriter, FinalMusicsDict);
+
+                        //Update Total Progress
+                        TotalProgress += 5;
+                        BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+
+                        //Update Total Progress
+                        TotalProgress += 5;
+                        BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+
+                        //*===============================================================================================
+                        //* STEP 4: WRITE FINAL DATA (80%)
+                        //*===============================================================================================
+                        //Check For Cancelation
+                        if (BackgroundWorker_BuildSFX.CancellationPending == true)
+                        {
+                            BWriter.Close();
+                            BWriter.Dispose();
+                            e.Cancel = true;
+                        }
+
+                        //Update Label
+                        GenericFunctions.SetLabelText(Label_CurrentTask, "WrittingFinalOffsets");
+
+                        //Write Offsets
+                        SFXCreator.WriteFinalOffsets(BWriter, ProgressBar_CurrentTask);
+                    }
 
                     //Close Writer
                     BWriter.Close();
                     BWriter.Dispose();
 
                     //*===============================================================================================
-                    //* STEP 5: BUILD FILELIST
+                    //* STEP 5: CREATE DEBUG FILE IF REQUIRED
+                    //*===============================================================================================
+                    if (CanOutputFile)
+                    {
+                        if (DebugFlags > 0)
+                        {
+                            MusicBanks_DebugWriter DBGWritter = new MusicBanks_DebugWriter();
+
+                            //Update Label
+                            GenericFunctions.SetLabelText(Label_CurrentTask, "Creating debug file");
+
+                            //Create file
+                            DBGWritter.CreateDebugFile(GlobalPreferences.MusicOutputPath + "\\" + FileName + ".SFX", DebugFlags);
+                        }
+                    }
+
+                    //*===============================================================================================
+                    //* STEP 6: BUILD FILELIST
                     //*===============================================================================================
                     //Update Label
-                    SetLabelText(Label_CurrentTask, "Building Filelist");
+                    GenericFunctions.SetLabelText(Label_CurrentTask, "Building Filelist");
 
                     GenericFunctions.BuildSphinxFilelist();
 
-                    //*===============================================================================================
-                    //* STEP 6: CREATE DEBUG FILE IF REQUIRED
-                    //*===============================================================================================
-                    if (DebugFlags > 0)
-                    {
-                        MusicBanks_DebugWriter DBGWritter = new MusicBanks_DebugWriter();
-
-                        //Update Label
-                        SetLabelText(Label_CurrentTask, "Creating debug file");
-
-                        //Create file
-                        DBGWritter.CreateDebugFile(GlobalPreferences.MusicOutputPath + "\\" + FileName + ".SFX", DebugFlags);
-                    }
-
                     //Update Label
-                    SetLabelText(Label_CurrentTask, "Output Completed");
+                    GenericFunctions.SetLabelText(Label_CurrentTask, "Output Completed");
 
                     //Update Total Progress
                     TotalProgress += 9;
@@ -239,33 +282,6 @@ namespace EuroSound_Application.Musics
         private void Button_Abort_Click(object sender, EventArgs e)
         {
             BackgroundWorker_BuildSFX.CancelAsync();
-        }
-
-        //*===============================================================================================
-        //* FUNCTIONS
-        //*===============================================================================================
-        private void ProgressBarSetMaximum(ProgressBar BarToChange, int Maximum)
-        {
-            BarToChange.Invoke((MethodInvoker)delegate
-            {
-                BarToChange.Maximum = Maximum;
-            });
-        }
-
-        private void ProgressBarValue(ProgressBar BarToChange, int value)
-        {
-            BarToChange.Invoke((MethodInvoker)delegate
-            {
-                BarToChange.Value = value;
-            });
-        }
-
-        private void SetLabelText(Label LabelToChange, string TextToShow)
-        {
-            LabelToChange.Invoke((MethodInvoker)delegate
-            {
-                LabelToChange.Text = TextToShow;
-            });
         }
     }
 }

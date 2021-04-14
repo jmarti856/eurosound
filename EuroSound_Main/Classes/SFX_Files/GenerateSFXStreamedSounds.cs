@@ -23,23 +23,23 @@ namespace EuroSound_Application.StreamSounds
         internal void WriteFileHeader(BinaryStream BWriter, uint FileHashcode, ProgressBar Bar)
         {
             ProgressBarReset(Bar);
-            ProgressBarMaximum(Bar, 4);
+            GenericFunctions.ProgressBarSetMaximum(Bar, 4);
 
             //--magic[magic value]--
             BWriter.Write(Encoding.ASCII.GetBytes("MUSX"));
-            ProgressBarUpdate(Bar, 1);
+            ProgressBarAddValue(Bar, 1);
 
             //--hashc[Hashcode for the current soundbank without the section prefix]--
             BWriter.WriteUInt32(FileHashcode);
-            ProgressBarUpdate(Bar, 1);
+            ProgressBarAddValue(Bar, 1);
 
             //--offst[Constant offset to the next section,]--
             BWriter.WriteUInt32(0xC9);
-            ProgressBarUpdate(Bar, 1);
+            ProgressBarAddValue(Bar, 1);
 
             //--fulls[Size of the whole file, in bytes. Unused. ]--
             BWriter.WriteUInt32(00000000);
-            ProgressBarUpdate(Bar, 1);
+            ProgressBarAddValue(Bar, 1);
         }
 
         //*===============================================================================================
@@ -48,28 +48,28 @@ namespace EuroSound_Application.StreamSounds
         internal void WriteFileSections(BinaryStream BWriter, ProgressBar Bar)
         {
             ProgressBarReset(Bar);
-            ProgressBarMaximum(Bar, 6);
+            GenericFunctions.ProgressBarSetMaximum(Bar, 6);
 
             //--File start 1[an offset that points to the stream look-up file details, always 0x800]--
             BWriter.WriteUInt32(FileStart1);
-            ProgressBarUpdate(Bar, 1);
+            ProgressBarAddValue(Bar, 1);
             //--File length 1[size of the first section, in bytes]--
             BWriter.WriteUInt32(00000000);
-            ProgressBarUpdate(Bar, 1);
+            ProgressBarAddValue(Bar, 1);
 
             //--File start 2[offset to the second section with the sample data]--
             BWriter.WriteUInt32(FileStart2);
-            ProgressBarUpdate(Bar, 1);
+            ProgressBarAddValue(Bar, 1);
             //--File length 2[size of the second section, in bytes]--
             BWriter.WriteUInt32(00000000);
-            ProgressBarUpdate(Bar, 1);
+            ProgressBarAddValue(Bar, 1);
 
             //--File start 3[unused and uses the same sample data offset as dummy for some reason]--
             BWriter.WriteUInt32(00000000);
-            ProgressBarUpdate(Bar, 1);
+            ProgressBarAddValue(Bar, 1);
             //--File length 3[unused and set to zero]--
             BWriter.WriteUInt32(00000000);
-            ProgressBarUpdate(Bar, 1);
+            ProgressBarAddValue(Bar, 1);
         }
 
         //*===============================================================================================
@@ -78,13 +78,13 @@ namespace EuroSound_Application.StreamSounds
         public void WriteLookUptable(BinaryStream BWriter, Dictionary<uint, EXSoundStream> StreamSoundsList, ProgressBar Bar)
         {
             ProgressBarReset(Bar);
-            ProgressBarMaximum(Bar, StreamSoundsList.Keys.Count);
+            GenericFunctions.ProgressBarSetMaximum(Bar, StreamSoundsList.Keys.Count);
 
             BWriter.Seek((int)FileStart1, SeekOrigin.Begin);
             for (int i = 0; i < StreamSoundsList.Count; i++)
             {
                 BWriter.WriteUInt32(Convert.ToUInt32(00000000));
-                ProgressBarUpdate(Bar, 1);
+                ProgressBarAddValue(Bar, 1);
             }
 
             FileLength1 = BWriter.BaseStream.Position - FileStart1;
@@ -101,7 +101,7 @@ namespace EuroSound_Application.StreamSounds
 
             //Update GUI
             ProgressBarReset(Bar);
-            ProgressBarMaximum(Bar, StreamSoundsList.Keys.Count);
+            GenericFunctions.ProgressBarSetMaximum(Bar, StreamSoundsList.Keys.Count);
 
             BWriter.Seek((int)FileStart2, SeekOrigin.Begin);
             foreach (KeyValuePair<uint, EXSoundStream> SoundToWrtie in StreamSoundsList)
@@ -182,7 +182,7 @@ namespace EuroSound_Application.StreamSounds
                 BWriter.Align(16);
 
                 //Update GUI
-                ProgressBarUpdate(Bar, 1);
+                ProgressBarAddValue(Bar, 1);
             }
             FileLength2 = BWriter.BaseStream.Position - FileStart2;
 
@@ -196,7 +196,7 @@ namespace EuroSound_Application.StreamSounds
         {
             //Update GUI
             ProgressBarReset(Bar);
-            ProgressBarMaximum(Bar, MarkersStartList.Count);
+            GenericFunctions.ProgressBarSetMaximum(Bar, MarkersStartList.Count);
 
             //File Full Size
             BWriter.BaseStream.Seek(0xC, SeekOrigin.Begin);
@@ -214,7 +214,7 @@ namespace EuroSound_Application.StreamSounds
             foreach (long Offset in MarkersStartList)
             {
                 BWriter.WriteUInt32((uint)Offset);
-                ProgressBarUpdate(Bar, 1);
+                ProgressBarAddValue(Bar, 1);
             }
         }
 
@@ -227,7 +227,7 @@ namespace EuroSound_Application.StreamSounds
             Dictionary<uint, EXSoundStream> FinalSoundsDict = new Dictionary<uint, EXSoundStream>();
 
             ProgressBarReset(Bar);
-            ProgressBarMaximum(Bar, SoundsList.Count());
+            GenericFunctions.ProgressBarSetMaximum(Bar, SoundsList.Count());
 
             //Discard SFXs that has checked as "no output"
             foreach (KeyValuePair<uint, EXSoundStream> SoundToCheck in SoundsList)
@@ -236,8 +236,8 @@ namespace EuroSound_Application.StreamSounds
                 {
                     FinalSoundsDict.Add(SoundToCheck.Key, SoundToCheck.Value);
                 }
-                SetLabelText(LabelInfo, "Checking Stream Data");
-                ProgressBarUpdate(Bar, 1);
+                GenericFunctions.SetLabelText(LabelInfo, "Checking Stream Data");
+                ProgressBarAddValue(Bar, 1);
             }
 
             return FinalSoundsDict;
@@ -255,7 +255,7 @@ namespace EuroSound_Application.StreamSounds
             }
         }
 
-        private void ProgressBarUpdate(ProgressBar BarToUpdate, int ValueToAdd)
+        private void ProgressBarAddValue(ProgressBar BarToUpdate, int ValueToAdd)
         {
             //Update Progress Bar
             if (BarToUpdate != null)
@@ -265,29 +265,6 @@ namespace EuroSound_Application.StreamSounds
                     BarToUpdate.Value += ValueToAdd;
                 });
                 Thread.Sleep(1);
-            }
-        }
-
-        private void ProgressBarMaximum(ProgressBar BarToChange, int Maximum)
-        {
-            if (BarToChange != null)
-            {
-                //Update Progress Bar
-                BarToChange.Invoke((MethodInvoker)delegate
-                {
-                    BarToChange.Maximum = Maximum;
-                });
-            }
-        }
-
-        private void SetLabelText(Label LabelToChange, string TextToShow)
-        {
-            if (LabelToChange != null)
-            {
-                LabelToChange.Invoke((MethodInvoker)delegate
-                {
-                    LabelToChange.Text = TextToShow;
-                });
             }
         }
     }

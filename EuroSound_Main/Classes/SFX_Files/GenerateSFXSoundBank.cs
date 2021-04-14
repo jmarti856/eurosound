@@ -26,7 +26,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             //* HEADER
             //*===============================================================================================
             ProgressBarReset(Bar);
-            ProgressBarMaximum(Bar, 4);
+            GenericFunctions.ProgressBarSetMaximum(Bar, 4);
 
             //--magic[magic value]--
             BWriter.Write(Encoding.ASCII.GetBytes("MUSX"));
@@ -48,7 +48,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
         internal void WriteFileSections(BinaryStream BWriter, int NumberOfSamples, ProgressBar Bar)
         {
             ProgressBarReset(Bar);
-            ProgressBarMaximum(Bar, 9);
+            GenericFunctions.ProgressBarSetMaximum(Bar, 9);
 
             //--sfxstart[an offset that points to the section where soundbanks are stored, always 0x800]--
             BWriter.WriteUInt32(SFXStartSection);
@@ -87,7 +87,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             int index = 0;
 
             ProgressBarReset(Bar);
-            ProgressBarMaximum(Bar, FinalSoundsDict.Count());
+            GenericFunctions.ProgressBarSetMaximum(Bar, FinalSoundsDict.Count());
 
             //--[SFX entry count in this soundbank]--
             BWriter.WriteUInt32((uint)FinalSoundsDict.Count);
@@ -129,7 +129,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                 BWriter.WriteUInt16(Sound.Value.Flags);
 
                 BWriter.WriteInt16((short)Sound.Value.Samples.Count);
-                SetLabelText(LabelInfo, "WritingSFX Data");
+                GenericFunctions.SetLabelText(LabelInfo, "WritingSFX Data");
 
                 foreach (KeyValuePair<uint, EXSample> Sample in Sound.Value.Samples)
                 {
@@ -172,7 +172,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             BWriter.Align(16, true);
 
             ProgressBarReset(Bar);
-            ProgressBarMaximum(Bar, FinalAudioDataDict.Count());
+            GenericFunctions.ProgressBarSetMaximum(Bar, FinalAudioDataDict.Count());
 
             //--[Start section offset]--
             SampleInfoStartOffset = (BWriter.BaseStream.Position);
@@ -195,7 +195,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                 BWriter.WriteUInt32(entry.Value.Duration);
 
                 ProgressBarUpdate(Bar, 1);
-                SetLabelText(LabelInfo, "WritingSampleInfo: " + entry.Key);
+                GenericFunctions.SetLabelText(LabelInfo, "WritingSampleInfo: " + entry.Key);
             }
 
             //--[Section length, current position - start position]--
@@ -209,7 +209,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
 
             //Update UI
             ProgressBarReset(Bar);
-            ProgressBarMaximum(Bar, FinalAudioDataDict.Count());
+            GenericFunctions.ProgressBarSetMaximum(Bar, FinalAudioDataDict.Count());
 
             //--[Start section offset]--
             SampleDataStartOffset = BWriter.BaseStream.Position;
@@ -226,7 +226,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
 
                 //--Update UI--
                 ProgressBarUpdate(Bar, 1);
-                SetLabelText(LabelInfo, "WrittingSampleData: " + entry.Key);
+                GenericFunctions.SetLabelText(LabelInfo, "WrittingSampleData: " + entry.Key);
             }
             //--Trim list--
             SampleDataOffsets.TrimExcess();
@@ -244,7 +244,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             //* WRITE FINAL HEADER INFO
             //*===============================================================================================
             ProgressBarReset(Bar);
-            ProgressBarMaximum(Bar, HashcodeOffsetM.Length + SampleDataOffsets.Count() + 5);
+            GenericFunctions.ProgressBarSetMaximum(Bar, HashcodeOffsetM.Length + SampleDataOffsets.Count() + 5);
 
             //--Size of the whole file--
             BWriter.BaseStream.Seek(0xC, SeekOrigin.Begin);
@@ -285,7 +285,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
 
                 //Update UI
                 ProgressBarUpdate(Bar, 1);
-                SetLabelText(LabelInfo, "WrittingFinalOffsets: " + HashcodeOffsetM[i, 1]);
+                GenericFunctions.SetLabelText(LabelInfo, "WrittingFinalOffsets: " + HashcodeOffsetM[i, 1]);
             }
 
             //*===============================================================================================
@@ -304,7 +304,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                 BWriter.BaseStream.Seek(BWriter.BaseStream.Position + 32, SeekOrigin.Begin);
 
                 ProgressBarUpdate(Bar, 1);
-                SetLabelText(LabelInfo, "WrittingFinalOffsets: " + item);
+                GenericFunctions.SetLabelText(LabelInfo, "WrittingFinalOffsets: " + item);
             }
         }
 
@@ -314,7 +314,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
 
             //Update UI
             ProgressBarReset(Bar);
-            ProgressBarMaximum(Bar, SoundsList.Count());
+            GenericFunctions.ProgressBarSetMaximum(Bar, SoundsList.Count());
 
             //Discard SFXs that are checked as "no output" and sort
             foreach (KeyValuePair<uint, string> HashCode in Hashcodes.SFX_Defines)
@@ -330,7 +330,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                                 FinalSortedDict.Add(Sound.Key, Sound.Value);
                             }
                         }
-                        SetLabelText(LabelInfo, "Checking SFX Data");
+                        GenericFunctions.SetLabelText(LabelInfo, "Checking SFX Data");
                         ProgressBarUpdate(Bar, 1);
                         break;
                     }
@@ -346,7 +346,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
 
             //Update UI
             ProgressBarReset(Bar);
-            ProgressBarMaximum(Bar, UsedAudios.Count());
+            GenericFunctions.ProgressBarSetMaximum(Bar, UsedAudios.Count());
 
             //Add Data
             using (IEnumerator<string> enumerator = UsedAudios.GetEnumerator())
@@ -415,27 +415,6 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                     {
                         BarToUpdate.Value += ValueToAdd;
                     }
-                });
-            }
-        }
-
-        private void ProgressBarMaximum(ProgressBar BarToChange, int Maximum)
-        {
-            if (BarToChange != null)
-            {
-                BarToChange.Invoke((MethodInvoker)delegate
-                {
-                    BarToChange.Maximum = Maximum;
-                });
-            }
-        }
-        private void SetLabelText(Label LabelToChange, string TextToShow)
-        {
-            if (LabelToChange != null)
-            {
-                LabelToChange.Invoke((MethodInvoker)delegate
-                {
-                    LabelToChange.Text = TextToShow;
                 });
             }
         }

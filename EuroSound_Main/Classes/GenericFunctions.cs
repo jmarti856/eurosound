@@ -425,5 +425,37 @@ namespace EuroSound_Application
             RichTextBoxControl.SelectionColor = RichTextBoxControl.ForeColor;
             RichTextBoxControl.ScrollToCaret();
         }
+
+        internal static void ProgressBarSetMaximum(ProgressBar BarToChange, int Maximum)
+        {
+            BarToChange.Invoke((MethodInvoker)delegate
+            {
+                BarToChange.Maximum = Maximum;
+            });
+        }
+
+        internal static void ProgressBarValue(ProgressBar BarToChange, int value)
+        {
+            BarToChange.Invoke((MethodInvoker)delegate
+            {
+                BarToChange.Value = value;
+            });
+        }
+
+        internal static void ProgressBarAddValue(ProgressBar BarToChange, int value)
+        {
+            BarToChange.Invoke((MethodInvoker)delegate
+            {
+                BarToChange.Value += value;
+            });
+        }
+
+        internal static void SetLabelText(Label LabelToChange, string TextToShow)
+        {
+            LabelToChange.Invoke((MethodInvoker)delegate
+            {
+                LabelToChange.Text = TextToShow;
+            });
+        }
     }
 }

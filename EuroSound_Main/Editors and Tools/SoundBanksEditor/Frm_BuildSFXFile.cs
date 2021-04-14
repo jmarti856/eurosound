@@ -97,13 +97,13 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 //*===============================================================================================
                 //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED (20%)
                 //*===============================================================================================
-                ProgressBarValue(ProgressBar_CurrentTask, 0);
+                GenericFunctions.ProgressBarValue(ProgressBar_CurrentTask, 0);
 
                 //Update Label
-                SetLabelText(Label_CurrentTask, "Getting SFX To export");
+                GenericFunctions.SetLabelText(Label_CurrentTask, "Getting SFX To export");
 
                 //Update Progress Bar
-                ProgressBarSetMaximum(ProgressBar_CurrentTask, ((Frm_Soundbanks_Main)ParentForm).SoundsList.Keys.Count);
+                GenericFunctions.ProgressBarSetMaximum(ProgressBar_CurrentTask, ((Frm_Soundbanks_Main)ParentForm).SoundsList.Keys.Count);
 
                 //Discard SFXs that has checked as "no output"
                 FinalSoundsDict = SFXCreator.GetFinalSoundsDictionary(((Frm_Soundbanks_Main)ParentForm).SoundsList, ProgressBar_CurrentTask, Label_CurrentTask);
@@ -115,10 +115,10 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 //* STEP 2: DISCARD AUDIO DATA THAT SHOULD HAVE BEEN PURGED (40%)
                 //*===============================================================================================
                 //Get Final Audios To Export
-                ProgressBarValue(ProgressBar_CurrentTask, 0);
+                GenericFunctions.ProgressBarValue(ProgressBar_CurrentTask, 0);
 
                 //Update Label
-                SetLabelText(Label_CurrentTask, "Getting Audio Data To export");
+                GenericFunctions.SetLabelText(Label_CurrentTask, "Getting Audio Data To export");
                 IEnumerable<string> UsedAudios = EXSoundbanksFunctions.GetAudiosToExport(FinalSoundsDict);
 
                 //Add data
@@ -132,11 +132,11 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 //* STEP 3: CHECK DATA THAT WILL BE OUTPUTED (50%)
                 //*===============================================================================================
                 //Update Label
-                SetLabelText(Label_CurrentTask, "Checking data");
+                GenericFunctions.SetLabelText(Label_CurrentTask, "Checking data");
 
                 //Update Progress Bar
-                ProgressBarSetMaximum(ProgressBar_CurrentTask, FinalSoundsDict.Count + FinalAudioDataDict.Count);
-                ProgressBarValue(ProgressBar_CurrentTask, 0);
+                GenericFunctions.ProgressBarSetMaximum(ProgressBar_CurrentTask, FinalSoundsDict.Count + FinalAudioDataDict.Count);
+                GenericFunctions.ProgressBarValue(ProgressBar_CurrentTask, 0);
 
                 //Check Data
                 foreach (KeyValuePair<uint, EXSound> SoundToCheck in FinalSoundsDict)
@@ -146,7 +146,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                     {
                         break;
                     }
-                    ProgressAddValue(ProgressBar_CurrentTask, 1);
+                    GenericFunctions.ProgressBarAddValue(ProgressBar_CurrentTask, 1);
                 }
                 
                 if (CanOutputFile)
@@ -158,7 +158,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                         {
                             break;
                         }
-                        ProgressAddValue(ProgressBar_CurrentTask, 1);
+                        GenericFunctions.ProgressBarAddValue(ProgressBar_CurrentTask, 1);
                     }
                 }
 
@@ -181,7 +181,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
 
                     //--------------------------------------[WRITE FILE HEADER]--------------------------------------
                     //Update Label
-                    SetLabelText(Label_CurrentTask, "Writting File Header");
+                    GenericFunctions.SetLabelText(Label_CurrentTask, "Writting File Header");
 
                     //Write Data
                     SFXCreator.WriteFileHeader(BWriter, CurrentFileProperties.Hashcode, ProgressBar_CurrentTask);
@@ -193,7 +193,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
 
                     //--------------------------------------[Write SECTIONS]--------------------------------------
                     //Update Label
-                    SetLabelText(Label_CurrentTask, "Writting File Sections");
+                    GenericFunctions.SetLabelText(Label_CurrentTask, "Writting File Sections");
 
                     //Write Data
                     SFXCreator.WriteFileSections(BWriter, GenericFunctions.CountNumberOfSamples(FinalSoundsDict), ProgressBar_CurrentTask);
@@ -241,7 +241,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                     }
 
                     //Update Label
-                    SetLabelText(Label_CurrentTask, "WrittingFinalOffsets");
+                    GenericFunctions.SetLabelText(Label_CurrentTask, "WrittingFinalOffsets");
 
                     //Write Data
                     SFXCreator.WriteFinalOffsets(BWriter, ProgressBar_CurrentTask, Label_CurrentTask);
@@ -265,7 +265,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                         SoundBanks_DebugWriter DBGWritter = new SoundBanks_DebugWriter();
 
                         //Update Label
-                        SetLabelText(Label_CurrentTask, "Creating debug file");
+                        GenericFunctions.SetLabelText(Label_CurrentTask, "Creating debug file");
 
                         //Create file
                         DBGWritter.CreateDebugFile(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", DebugFlags);
@@ -276,12 +276,12 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 //* STEP 7: BUILD FILELIST (100%)
                 //*===============================================================================================
                 //Update Label
-                SetLabelText(Label_CurrentTask, "Building Filelist");
+                GenericFunctions.SetLabelText(Label_CurrentTask, "Building Filelist");
 
                 GenericFunctions.BuildSphinxFilelist();
 
                 //Update Label
-                SetLabelText(Label_CurrentTask, "Output Completed");
+                GenericFunctions.SetLabelText(Label_CurrentTask, "Output Completed");
 
                 //Update Total Progress
                 TotalProgress += 9;
@@ -318,41 +318,6 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
             //Close Form
             Close();
             Dispose();
-        }
-
-        //*===============================================================================================
-        //* FUNCTIONS
-        //*===============================================================================================
-        private void ProgressBarSetMaximum(ProgressBar BarToChange, int Maximum)
-        {
-            BarToChange.Invoke((MethodInvoker)delegate
-            {
-                BarToChange.Maximum = Maximum;
-            });
-        }
-
-        private void ProgressBarValue(ProgressBar BarToChange, int value)
-        {
-            BarToChange.Invoke((MethodInvoker)delegate
-            {
-                BarToChange.Value = value;
-            });
-        }
-
-        private void SetLabelText(Label LabelToChange, string TextToShow)
-        {
-            LabelToChange.Invoke((MethodInvoker)delegate
-            {
-                LabelToChange.Text = TextToShow;
-            });
-        }
-
-        private void ProgressAddValue(ProgressBar BarToChange, int value)
-        {
-            BarToChange.Invoke((MethodInvoker)delegate
-            {
-                BarToChange.Value += value;
-            });
         }
     }
 }
