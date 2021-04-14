@@ -40,6 +40,12 @@ namespace EuroSound_Application.SoundBanksEditor
                     ListBox_StreamSounds.SelectedIndex = StreamIndex;
                 }
             }
+
+            //Ensure that this boolean is correctly stated
+            if (!SelectedSample.IsStreamed)
+            {
+                SelectedSample.IsStreamed = true;
+            }
         }
 
         private void Button_OK_Click(object sender, EventArgs e)

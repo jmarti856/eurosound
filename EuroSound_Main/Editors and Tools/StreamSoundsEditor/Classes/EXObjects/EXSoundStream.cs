@@ -12,7 +12,7 @@ namespace EuroSound_Application.StreamSounds
         public bool OutputThisSound = true;
 
         //WAV File
-        public byte[] PCM_Data { get; set; } = new byte[2];
+        public byte[] PCM_Data { get; set; } = new byte[0];
         public uint Frequency { get; set; }
         public byte Channels { get; set; }
         public uint Bits { get; set; }
@@ -23,6 +23,6 @@ namespace EuroSound_Application.StreamSounds
         public string WAVFileName { get; set; } = string.Empty;
 
         //IMA ADPCM
-        public byte[] IMA_ADPCM_DATA { get; set; } = new byte[2];
+        public byte[] IMA_ADPCM_DATA { get; set; } = new byte[0];
     }
 }

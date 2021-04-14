@@ -23,8 +23,8 @@ namespace EuroSound_Application.Musics
         public string Encoding_LeftChannel { get; set; } = string.Empty;
         public string WAVFileMD5_LeftChannel { get; set; } = string.Empty;
         public string WAVFileName_LeftChannel { get; set; } = string.Empty;
-        public byte[] PCM_Data_LeftChannel { get; set; } = new byte[2];
-        public byte[] IMA_ADPCM_DATA_LeftChannel { get; set; } = new byte[2];
+        public byte[] PCM_Data_LeftChannel { get; set; } = new byte[0];
+        public byte[] IMA_ADPCM_DATA_LeftChannel { get; set; } = new byte[0];
 
         //*===============================================================================================
         //* RIGHT CHANNEL
@@ -37,7 +37,7 @@ namespace EuroSound_Application.Musics
         public string Encoding_RightChannel { get; set; } = string.Empty;
         public string WAVFileMD5_RightChannel { get; set; } = string.Empty;
         public string WAVFileName_RightChannel { get; set; } = string.Empty;
-        public byte[] PCM_Data_RightChannel { get; set; } = new byte[2];
-        public byte[] IMA_ADPCM_DATA_RightChannel { get; set; } = new byte[2];
+        public byte[] PCM_Data_RightChannel { get; set; } = new byte[0];
+        public byte[] IMA_ADPCM_DATA_RightChannel { get; set; } = new byte[0];
     }
 }

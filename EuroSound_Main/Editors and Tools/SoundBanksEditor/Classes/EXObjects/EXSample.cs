@@ -8,7 +8,7 @@ namespace EuroSound_Application.SoundBanksEditor
         public string ComboboxSelectedAudio = string.Empty;
         public short FileRef;
         public uint HashcodeSubSFX;
-        public bool IsStreamed;
+        public bool IsStreamed = false;
         //---ENGINE X Required---
         public sbyte Pan;
         public short PitchOffset;

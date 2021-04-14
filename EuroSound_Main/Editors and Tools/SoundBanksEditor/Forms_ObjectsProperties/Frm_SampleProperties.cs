@@ -54,6 +54,12 @@ namespace EuroSound_Application.SoundBanksEditor
             numeric_pan.Value = decimal.Divide(SelectedSample.Pan, 100);
             numeric_randompan.Value = decimal.Divide(SelectedSample.RandomPan, 100);
 
+            //Ensure that this boolean is correctly stated
+            if (SelectedSample.IsStreamed)
+            {
+                SelectedSample.IsStreamed = false;
+            }
+
             //---Put the selected audio in case is not null---
             EnableOrDisableSubSFXSection(IsSubSFX);
         }

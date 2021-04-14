@@ -178,6 +178,7 @@
     <Compile Include="Classes\ListViewFunctions.cs" />
     <Compile Include="Classes\EuroSound Markers File\MarkerFiles_Exporter.cs" />
     <Compile Include="Classes\SFX_Files\GenerateSFXMusicBank.cs" />
+    <Compile Include="Classes\SFX_Files\SFX_ChecksBeforeGeneration.cs" />
     <Compile Include="CustomControls\EuroSound_DebugTypes.cs">
       <SubType>Form</SubType>
     </Compile>
