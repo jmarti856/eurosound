@@ -269,6 +269,8 @@ namespace EuroSound_Application.Musics
                 //Get IMA ADPCM Data
                 TemporalMusic.IMA_ADPCM_DATA_LeftChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_LeftChannel), TemporalMusic.PCM_Data_LeftChannel.Length / 2);
                 AudioReader.Close();
+
+                File.WriteAllBytes(@"C:\Users\Jordi Martinez\Desktop\Music\PCM_Data_LeftChannelSplitedInput.TXT", TemporalMusic.PCM_Data_LeftChannel);
             }
 
             if (TemporalMusic != null && TemporalMusic.PCM_Data_LeftChannel != null)

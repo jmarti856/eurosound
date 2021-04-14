@@ -1,7 +1,7 @@
 ﻿
-namespace EuroSound_Application.StreamSounds
+namespace EuroSound_Application.CustomControls.DebugTypes
 {
-    partial class Frm_StreamSoundsDebugInfo
+    partial class EuroSound_DebugTypes
     {
         /// <summary>
         /// Required designer variable.
@@ -29,9 +29,6 @@ namespace EuroSound_Application.StreamSounds
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Lookup Table");
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Stream Data");
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Header Info");
             this.CheckListBox_DebugElements = new System.Windows.Forms.ListView();
             this.Btn_Cancel = new System.Windows.Forms.Button();
             this.Btn_OK = new System.Windows.Forms.Button();
@@ -46,16 +43,9 @@ namespace EuroSound_Application.StreamSounds
             this.CheckListBox_DebugElements.CheckBoxes = true;
             this.CheckListBox_DebugElements.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.CheckListBox_DebugElements.HideSelection = false;
-            listViewItem1.StateImageIndex = 0;
-            listViewItem2.StateImageIndex = 0;
-            listViewItem3.StateImageIndex = 0;
-            this.CheckListBox_DebugElements.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2,
-            listViewItem3});
             this.CheckListBox_DebugElements.Location = new System.Drawing.Point(12, 12);
             this.CheckListBox_DebugElements.Name = "CheckListBox_DebugElements";
-            this.CheckListBox_DebugElements.Size = new System.Drawing.Size(219, 233);
+            this.CheckListBox_DebugElements.Size = new System.Drawing.Size(225, 233);
             this.CheckListBox_DebugElements.TabIndex = 4;
             this.CheckListBox_DebugElements.UseCompatibleStateImageBehavior = false;
             this.CheckListBox_DebugElements.View = System.Windows.Forms.View.List;
@@ -94,7 +84,7 @@ namespace EuroSound_Application.StreamSounds
             this.Btn_SelectAllOptions.UseVisualStyleBackColor = true;
             this.Btn_SelectAllOptions.Click += new System.EventHandler(this.Btn_SelectAllOptions_Click);
             // 
-            // Frm_StreamSoundsDebugInfo
+            // EuroSound_DebugTypes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -106,9 +96,12 @@ namespace EuroSound_Application.StreamSounds
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Frm_StreamSoundsDebugInfo";
+            this.Name = "EuroSound_DebugTypes";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Select Debug Types";
+            this.Load += new System.EventHandler(this.EuroSound_DebugTypes_Load);
             this.ResumeLayout(false);
 
         }

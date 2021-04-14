@@ -2,6 +2,7 @@
 using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.CustomControls.DebugTypes;
 using EuroSound_Application.CustomControls.ProjectSettings;
 using EuroSound_Application.CustomControls.SearcherForm;
 using EuroSound_Application.EuroSoundFilesFunctions;
@@ -624,8 +625,9 @@ namespace EuroSound_Application.SoundBanksEditor
                 //---[Output with debug options
                 if ((ModifierKeys & Keys.Control) == Keys.Control)
                 {
-                    using (Frm_Sounbanks_DebugOutput DebugOpts = new Frm_Sounbanks_DebugOutput())
+                    using (EuroSound_DebugTypes DebugOpts = new EuroSound_DebugTypes(new string[] { "SFX Elements", "Sample info elements", "Sample Data" }))
                     {
+                        DebugOpts.Owner = this.Owner;
                         if (DebugOpts.ShowDialog() == DialogResult.OK)
                         {
                             BuildSfxForm(FileName, DebugOpts.CheckedOptions);

@@ -1,15 +1,24 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace EuroSound_Application.StreamSounds
+namespace EuroSound_Application.CustomControls.DebugTypes
 {
-    public partial class Frm_StreamSoundsDebugInfo : Form
+    public partial class EuroSound_DebugTypes : Form
     {
         public int CheckedOptions { get; set; }
+        public string[] FlagItems;
 
-        public Frm_StreamSoundsDebugInfo()
+        public EuroSound_DebugTypes(string[] FlagsToAdd)
         {
             InitializeComponent();
+            FlagItems = FlagsToAdd;
+        }
+        private void EuroSound_DebugTypes_Load(object sender, EventArgs e)
+        {
+            for (int i = 0; i < FlagItems.Length; i++)
+            {
+                CheckListBox_DebugElements.Items.Add(FlagItems[i]);
+            }
         }
 
         private void Btn_SelectAllOptions_Click(object sender, EventArgs e)

@@ -2,6 +2,7 @@
 using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.CustomControls.DebugTypes;
 using EuroSound_Application.CustomControls.ProjectSettings;
 using EuroSound_Application.CustomControls.SearcherForm;
 using EuroSound_Application.EuroSoundFilesFunctions;
@@ -359,11 +360,9 @@ namespace EuroSound_Application.Musics
                 //---[Output with debug options
                 if ((ModifierKeys & Keys.Control) == Keys.Control)
                 {
-                    using (Frm_Musics_DebugOptions DebugOpts = new Frm_Musics_DebugOptions())
+                    using (EuroSound_DebugTypes DebugOpts = new EuroSound_DebugTypes(new string[] { "File start 1", "File start 2" }))
                     {
                         DebugOpts.Owner = this.Owner;
-                        DebugOpts.ShowInTaskbar = false;
-
                         if (DebugOpts.ShowDialog() == DialogResult.OK)
                         {
                             BuildSfxForm(FileName, DebugOpts.CheckedOptions);

@@ -228,5 +228,34 @@ namespace EuroSound_Application.AudioFunctionsLibrary
                 WavFile.Close();
             }
         }
+
+        internal byte[] SplitChannels(byte[] PCM_Data, bool LeftChannel)
+        {
+            byte[] ChannelData;
+
+            using (BinaryReader BReader = new BinaryReader(new MemoryStream(PCM_Data)))
+            {
+                using (MemoryStream MS_ChannelData = new MemoryStream())
+                {
+                    using (BinaryWriter BWriter = new BinaryWriter(MS_ChannelData))
+                    {
+                        while (BReader.BaseStream.Position != BReader.BaseStream.Length)
+                        {
+                            if (LeftChannel)
+                            {
+                                BWriter.Write(BReader.ReadBytes(2));
+                            }
+                            else
+                            {
+                                BReader.ReadBytes(2);
+                            }
+                            LeftChannel = !LeftChannel;
+                        }
+                    }
+                    ChannelData = MS_ChannelData.ToArray();
+                }
+            }
+            return ChannelData;
+        }
     }
 }

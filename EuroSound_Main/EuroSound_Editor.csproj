@@ -178,6 +178,12 @@
     <Compile Include="Classes\ListViewFunctions.cs" />
     <Compile Include="Classes\EuroSound Markers File\MarkerFiles_Exporter.cs" />
     <Compile Include="Classes\SFX_Files\GenerateSFXMusicBank.cs" />
+    <Compile Include="CustomControls\EuroSound_DebugTypes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomControls\EuroSound_DebugTypes.Designer.cs">
+      <DependentUpon>EuroSound_DebugTypes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Editors and Tools\AudioConverter\Frm_AudioConverter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -277,12 +283,6 @@
     <Compile Include="Editors and Tools\MusicBanksEditor\Frm_BuildSFXMusicFile.Designer.cs">
       <DependentUpon>Frm_BuildSFXMusicFile.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editors and Tools\MusicBanksEditor\Frm_Musics_DebugOptions.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Editors and Tools\MusicBanksEditor\Frm_Musics_DebugOptions.Designer.cs">
-      <DependentUpon>Frm_Musics_DebugOptions.cs</DependentUpon>
-    </Compile>
     <Compile Include="Editors and Tools\MusicBanksEditor\Frm_Musics_Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -302,20 +302,9 @@
       <DependentUpon>Frm_Musics_Properties.cs</DependentUpon>
     </Compile>
     <Compile Include="Editors and Tools\SoundBanksEditor\Debug_Writer\SoundBanks_DebugWriter.cs" />
-    <Compile Include="Editors and Tools\SoundBanksEditor\Frm_Sounbanks_DebugOutput.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Editors and Tools\SoundBanksEditor\Frm_Sounbanks_DebugOutput.Designer.cs">
-      <DependentUpon>Frm_Sounbanks_DebugOutput.cs</DependentUpon>
-    </Compile>
     <Compile Include="Classes\EuroSound Markers File\MarkerFiles_Loader.cs" />
     <Compile Include="Editors and Tools\MarkersFunctions.cs" />
-    <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSoundsDebugInfo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSoundsDebugInfo.Designer.cs">
-      <DependentUpon>Frm_StreamSoundsDebugInfo.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Editors and Tools\StreamSoundsEditor\Debug_Writer\StreamSounds_DebugWriter.cs" />
     <Compile Include="MainFrame\Frm_AboutEuroSound.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -380,10 +369,10 @@
     <Compile Include="Editors and Tools\SoundBanksEditor\Forms_ObjectsProperties\Frm_SampleProperties.Designer.cs">
       <DependentUpon>Frm_SampleProperties.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editors and Tools\SoundBanksEditor\Forms_ObjectsProperties\Frm_BuildSFXFile.cs">
+    <Compile Include="Editors and Tools\SoundBanksEditor\Frm_BuildSFXFile.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Editors and Tools\SoundBanksEditor\Forms_ObjectsProperties\Frm_BuildSFXFile.Designer.cs">
+    <Compile Include="Editors and Tools\SoundBanksEditor\Frm_BuildSFXFile.Designer.cs">
       <DependentUpon>Frm_BuildSFXFile.cs</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\EuroSound_ProjectSettings.cs">
@@ -465,6 +454,9 @@
     <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_TreeViewPrefs.resx">
       <DependentUpon>Frm_TreeViewPrefs.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CustomControls\EuroSound_DebugTypes.resx">
+      <DependentUpon>EuroSound_DebugTypes.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Editors and Tools\AudioConverter\Frm_AudioConverter.resx">
       <DependentUpon>Frm_AudioConverter.cs</DependentUpon>
     </EmbeddedResource>
@@ -504,20 +496,11 @@
     <EmbeddedResource Include="Editors and Tools\MusicBanksEditor\Frm_BuildSFXMusicFile.resx">
       <DependentUpon>Frm_BuildSFXMusicFile.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Editors and Tools\MusicBanksEditor\Frm_Musics_DebugOptions.resx">
-      <DependentUpon>Frm_Musics_DebugOptions.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Editors and Tools\MusicBanksEditor\Frm_Musics_Main.resx">
       <DependentUpon>Frm_Musics_Main.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editors and Tools\MusicBanksEditor\Frm_Musics_Properties.resx">
       <DependentUpon>Frm_Musics_Properties.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Editors and Tools\SoundBanksEditor\Frm_Sounbanks_DebugOutput.resx">
-      <DependentUpon>Frm_Sounbanks_DebugOutput.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSoundsDebugInfo.resx">
-      <DependentUpon>Frm_StreamSoundsDebugInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainFrame\Frm_AboutEuroSound.resx">
       <DependentUpon>Frm_AboutEuroSound.cs</DependentUpon>
@@ -553,7 +536,7 @@
     <EmbeddedResource Include="Editors and Tools\SoundBanksEditor\Forms_ObjectsProperties\Frm_SampleProperties.resx">
       <DependentUpon>Frm_SampleProperties.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Editors and Tools\SoundBanksEditor\Forms_ObjectsProperties\Frm_BuildSFXFile.resx">
+    <EmbeddedResource Include="Editors and Tools\SoundBanksEditor\Frm_BuildSFXFile.resx">
       <DependentUpon>Frm_BuildSFXFile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\EuroSound_ProjectSettings.resx">

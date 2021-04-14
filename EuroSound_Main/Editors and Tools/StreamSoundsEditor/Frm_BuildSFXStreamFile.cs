@@ -1,5 +1,6 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.Editors_and_Tools.StreamSoundsEditor.Debug_Writer;
 using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
@@ -51,7 +52,6 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 Dictionary<uint, EXSoundStream> FinalSoundsDict;
                 GenerateSFXStreamedSounds SFXCreator = new GenerateSFXStreamedSounds();
                 BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
-                StreamWriter DebugFileWritter = null;
 
                 Form ParentForm = GenericFunctions.GetFormByName("Frm_StreamSoundsEditorMain", Tag.ToString());
                 int TotalProgress = 1;
@@ -61,25 +61,9 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 {
                     BWriter.Close();
                     BWriter.Dispose();
-                    if (DebugFileWritter != null)
-                    {
-                        DebugFileWritter.Close();
-                    }
                     e.Cancel = true;
                 }
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
-
-                //Check if user wants a debug file
-                if (DebugFlags != 0)
-                {
-                    DebugFileWritter = new StreamWriter(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".dbg");
-                    DebugFileWritter.WriteLine(new String('/', 70));
-                    DebugFileWritter.WriteLine("// EngineX Output: " + GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX");
-                    DebugFileWritter.WriteLine("// Soundbank: " + CurrentFileProperties.FileName);
-                    DebugFileWritter.WriteLine("// Output By: " + Environment.UserName);
-                    DebugFileWritter.WriteLine("// Output Date: " + DateTime.Now);
-                    DebugFileWritter.WriteLine(new String('/', 70) + "\n");
-                }
 
                 //*===============================================================================================
                 //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED (20%)
@@ -106,10 +90,6 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 {
                     BWriter.Close();
                     BWriter.Dispose();
-                    if (DebugFileWritter != null)
-                    {
-                        DebugFileWritter.Close();
-                    }
                     e.Cancel = true;
                 }
 
@@ -171,10 +151,6 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 {
                     BWriter.Close();
                     BWriter.Dispose();
-                    if (DebugFileWritter != null)
-                    {
-                        DebugFileWritter.Close();
-                    }
                     e.Cancel = true;
                 }
 
@@ -188,12 +164,6 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 BWriter.Close();
                 BWriter.Dispose();
 
-                //Close DebugFile
-                if (DebugFileWritter != null)
-                {
-                    DebugFileWritter.Close();
-                }
-
                 //Clear Temporal Dictionary
                 FinalSoundsDict.Clear();
 
@@ -204,6 +174,20 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 SetLabelText(Label_CurrentTask, "Building Filelist");
 
                 GenericFunctions.BuildSphinxFilelist();
+
+                //*===============================================================================================
+                //* STEP 6: CREATE DEBUG FILE IF REQUIRED
+                //*===============================================================================================
+                if (DebugFlags > 0)
+                {
+                    StreamSounds_DebugWriter DBGWritter = new StreamSounds_DebugWriter();
+
+                    //Update Label
+                    SetLabelText(Label_CurrentTask, "Creating debug file");
+
+                    //Create file
+                    DBGWritter.CreateDebugFile(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", DebugFlags);
+                }
 
                 //Update Label
                 SetLabelText(Label_CurrentTask, "Output Completed");
