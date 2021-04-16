@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.CustomControls.MoveMultiplesNodesForm;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.CustomControls.MoveMultiplesNodesForm;
 using EuroSound_Application.CustomControls.ObjectInstancesForm;
 using EuroSound_Application.EuroSoundInterchangeFile;
 using EuroSound_Application.TreeViewLibraryFunctions;
@@ -41,7 +42,7 @@ namespace EuroSound_Application.SoundBanksEditor
                             DialogResult TryToReload = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrect"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                             if (TryToReload == DialogResult.Yes)
                             {
-                                string FileTempFile = AudioFunctionsLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), 22050, 1, 16);
+                                string FileTempFile = AudioFunctionsLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), (uint)GlobalPreferences.SoundbankChannels, (ushort)GlobalPreferences.SoundbankFrequency, GlobalPreferences.SoundbankBits);
                                 if (!string.IsNullOrEmpty(FileTempFile))
                                 {
                                     LoadAudio(FileTempFile, NodeName);

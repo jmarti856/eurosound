@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.CurrentProjectFunctions;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.SoundBanksEditor;
 using Syroot.BinaryData;
 using System;
@@ -28,6 +29,10 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
             BWriter.Write(Convert.ToUInt32(00000000));
             //File Name
             BWriter.Write(FileProperties.FileName);
+            //Associated Profile
+            BWriter.Write(GlobalPreferences.SelectedProfile);
+
+            //Go to section
             BWriter.Seek(2048, SeekOrigin.Current);
 
             //*===============================================================================================

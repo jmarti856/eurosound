@@ -400,6 +400,7 @@ namespace EuroSound_Application
             this.MainMenuStrip = this.MenuStrip_MainMenu;
             this.Name = "Frm_EuroSound_Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Tag = "Main";
             this.Text = "EuroSound";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Frm_EuroSound_Main_FormClosed);
             this.Load += new System.EventHandler(this.Frm_EuroSound_Main_Load);

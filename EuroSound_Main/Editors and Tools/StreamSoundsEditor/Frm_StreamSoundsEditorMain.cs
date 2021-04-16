@@ -140,7 +140,7 @@ namespace EuroSound_Application.StreamSounds
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
 
                 //Load Data
-                Thread LoadHashcodeData = new Thread(() => Hashcodes.LoadSoundDataFile())
+                Thread LoadHashcodeData = new Thread(() => Hashcodes.LoadSoundDataFile(GlobalPreferences.HT_SoundsDataPath))
                 {
                     IsBackground = true
                 };
@@ -184,10 +184,11 @@ namespace EuroSound_Application.StreamSounds
 
             //Apply User Preferences
             FontConverter cvt = new FontConverter();
-            TreeView_StreamData.Indent = GlobalPreferences.TreeViewIndent;
-            TreeView_StreamData.Font = cvt.ConvertFromString(GlobalPreferences.SelectedFont) as Font;
-            TreeView_StreamData.ShowLines = GlobalPreferences.ShowLines;
-            TreeView_StreamData.ShowRootLines = GlobalPreferences.ShowRootLines;
+            TreeView_StreamData.Indent = GlobalPreferences.TV_Indent;
+            TreeView_StreamData.ItemHeight = GlobalPreferences.TV_ItemHeight;
+            TreeView_StreamData.Font = cvt.ConvertFromString(GlobalPreferences.TV_SelectedFont) as Font;
+            TreeView_StreamData.ShowLines = GlobalPreferences.TV_ShowLines;
+            TreeView_StreamData.ShowRootLines = GlobalPreferences.TV_ShowRootLines;
         }
 
         private void Frm_StreamSoundsEditorMain_Enter(object sender, System.EventArgs e)

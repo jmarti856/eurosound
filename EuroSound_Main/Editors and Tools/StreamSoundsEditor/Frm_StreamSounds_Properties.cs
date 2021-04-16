@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.AudioFunctionsLibrary;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using NAudio.Wave;
 using System;
@@ -94,7 +95,7 @@ namespace EuroSound_Application.StreamSounds
                     DialogResult TryToReload = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrect"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (TryToReload == DialogResult.Yes)
                     {
-                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), 22050, 1, 16);
+                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), (uint)GlobalPreferences.StreambankFrequency, (ushort)GlobalPreferences.StreambankChannels, GlobalPreferences.StreambankBits);
                         if (!string.IsNullOrEmpty(FileTempFile))
                         {
                             LoadAudio(FileTempFile);

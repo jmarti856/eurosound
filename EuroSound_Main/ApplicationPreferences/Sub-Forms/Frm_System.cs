@@ -7,6 +7,9 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 {
     public partial class Frm_System : Form
     {
+        //*===============================================================================================
+        //* GLOBAL VARIABLES
+        //*===============================================================================================
         private Form OpenForm;
         [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
@@ -16,6 +19,9 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             InitializeComponent();
         }
 
+        //*===============================================================================================
+        //* FORM EVENTS
+        //*===============================================================================================
         private void Frm_System_Load(object sender, EventArgs e)
         {
             OpenForm = GenericFunctions.GetFormByName("Frm_MainPreferences", Tag.ToString());
@@ -27,6 +33,9 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             ((Frm_MainPreferences)OpenForm).UseSystemTrayTEMPORAL = CheckBox_UseSystemTray.Checked;
         }
 
+        //*===============================================================================================
+        //* FORM CONTROLS EVENTS
+        //*===============================================================================================
         private void ButtonRegister_FileTypes_Click(object sender, EventArgs e)
         {
             try
@@ -40,6 +49,9 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             }
         }
 
+        //*===============================================================================================
+        //* FUNCTIONS
+        //*===============================================================================================
         public static void SetAssociation(string Extension, string KeyName, string OpenWith)
         {
             using (RegistryKey FileReg = Registry.CurrentUser.CreateSubKey("Software\\Classes\\" + Extension, RegistryKeyPermissionCheck.ReadWriteSubTree))

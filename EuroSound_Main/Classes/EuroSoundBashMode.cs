@@ -27,7 +27,6 @@ namespace EuroSound_Application.BashMode
                 if (File.Exists(Commands[1]))
                 {
                     EuroSoundFiles FileReader = new EuroSoundFiles();
-                    string[] HashTable_Sounds;
 
                     using (BinaryReader BReader = new BinaryReader(File.Open(Commands[1], FileMode.Open, FileAccess.Read), Encoding.ASCII))
                     {
@@ -39,11 +38,10 @@ namespace EuroSound_Application.BashMode
                             //* LOAD HASTABLES AND NEEDED PREFERENCES
                             //*===============================================================================================
                             WindowsRegistryFunctions WRegistryFunctions = new WindowsRegistryFunctions();
-                            GlobalPreferences.SFXOutputPath = WRegistryFunctions.LoadGeneralPreferences()[0];
+                            GlobalPreferences.SFXOutputPath = WRegistryFunctions.LoadOutputFolders("SoundsOutputDirectory", "Path");
 
-                            HashTable_Sounds = WRegistryFunctions.LoadHashTablePathAndMD5("Sounds");
-                            GlobalPreferences.HT_SoundsPath = HashTable_Sounds[0];
-                            GlobalPreferences.HT_SoundsMD5 = HashTable_Sounds[1];
+                            GlobalPreferences.HT_SoundsPath = WRegistryFunctions.LoadHashtablesFiles("HT_Sound", "Path");
+                            GlobalPreferences.HT_SoundsMD5 = WRegistryFunctions.LoadHashtablesFiles("HT_Sound", "MD5");
                             Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
 
                             //Type of stored data

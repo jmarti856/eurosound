@@ -135,7 +135,7 @@ namespace EuroSound_Application.Musics
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
 
                 //Load Data
-                Thread LoadHashcodes = new Thread(() => Hashcodes.LoadMusicHashcodes())
+                Thread LoadHashcodes = new Thread(() => Hashcodes.LoadMusicHashcodes(GlobalPreferences.HT_MusicPath))
                 {
                     IsBackground = true
                 };
@@ -171,10 +171,11 @@ namespace EuroSound_Application.Musics
 
             //Apply User Preferences
             FontConverter cvt = new FontConverter();
-            TreeView_MusicData.Indent = GlobalPreferences.TreeViewIndent;
-            TreeView_MusicData.Font = cvt.ConvertFromString(GlobalPreferences.SelectedFont) as Font;
-            TreeView_MusicData.ShowLines = GlobalPreferences.ShowLines;
-            TreeView_MusicData.ShowRootLines = GlobalPreferences.ShowRootLines;
+            TreeView_MusicData.Indent = GlobalPreferences.TV_Indent;
+            TreeView_MusicData.ItemHeight = GlobalPreferences.TV_ItemHeight;
+            TreeView_MusicData.Font = cvt.ConvertFromString(GlobalPreferences.TV_SelectedFont) as Font;
+            TreeView_MusicData.ShowLines = GlobalPreferences.TV_ShowLines;
+            TreeView_MusicData.ShowRootLines = GlobalPreferences.TV_ShowRootLines;
         }
 
         private void Frm_Musics_Main_Enter(object sender, System.EventArgs e)

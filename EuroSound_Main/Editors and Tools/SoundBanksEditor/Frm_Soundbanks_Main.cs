@@ -168,7 +168,7 @@ namespace EuroSound_Application.SoundBanksEditor
             if (Hashcodes.SFX_Defines.Keys.Count == 0 || Hashcodes.SFX_Data.Keys.Count == 0)
             {
                 //Load Data
-                Thread LoadHashcodeData = new Thread(() => Hashcodes.LoadSoundDataFile())
+                Thread LoadHashcodeData = new Thread(() => Hashcodes.LoadSoundDataFile(GlobalPreferences.HT_SoundsDataPath))
                 {
                     IsBackground = true
                 };
@@ -211,10 +211,11 @@ namespace EuroSound_Application.SoundBanksEditor
 
             //Apply User Preferences
             FontConverter cvt = new FontConverter();
-            TreeView_File.Indent = GlobalPreferences.TreeViewIndent;
-            TreeView_File.Font = cvt.ConvertFromString(GlobalPreferences.SelectedFont) as Font;
-            TreeView_File.ShowLines = GlobalPreferences.ShowLines;
-            TreeView_File.ShowRootLines = GlobalPreferences.ShowRootLines;
+            TreeView_File.Indent = GlobalPreferences.TV_Indent;
+            TreeView_File.ItemHeight = GlobalPreferences.TV_ItemHeight;
+            TreeView_File.Font = cvt.ConvertFromString(GlobalPreferences.TV_SelectedFont) as Font;
+            TreeView_File.ShowLines = GlobalPreferences.TV_ShowLines;
+            TreeView_File.ShowRootLines = GlobalPreferences.TV_ShowRootLines;
         }
 
         private void Frm_Soundbanks_Main_Enter(object sender, EventArgs e)

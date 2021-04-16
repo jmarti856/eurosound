@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.CurrentProjectFunctions;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
 using System.Collections.Generic;
@@ -385,7 +386,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
 
         private void LoadAudio(string AudioPath, int[] AudioProps, string SoundName, string SampleName, TreeView TreeViewControl, Dictionary<string, EXAudio> AudioDict, EXSample NewSample, string FilePath, int SampleKey, string MD5Hash)
         {
-            if (GenericFunctions.AudioIsValid(AudioPath, 1, 22050))
+            if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.SoundbankChannels, GlobalPreferences.SoundbankFrequency))
             {
                 string AudioPropertiesPath = GetAudioFilePath(FilePath, SampleKey, 1);
                 if (File.Exists(AudioPropertiesPath))

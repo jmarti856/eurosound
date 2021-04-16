@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.AudioFunctionsLibrary;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using NAudio.Wave;
@@ -99,13 +100,13 @@ namespace EuroSound_Application.StreamSounds.YMLReader
                     };
 
                     //------------------READ WAV FILE----------------------
-                    if (GenericFunctions.AudioIsValid(WavDataPath, 1, 22050))
+                    if (GenericFunctions.AudioIsValid(WavDataPath, GlobalPreferences.StreambankChannels, GlobalPreferences.StreambankFrequency))
                     {
                         LoadAudio(WavDataPath, SoundToAdd);
                     }
                     else
                     {
-                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(WavDataPath, Path.GetFileNameWithoutExtension(WavDataPath), 22050, 1, 16);
+                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(WavDataPath, Path.GetFileNameWithoutExtension(WavDataPath), (uint)GlobalPreferences.StreambankFrequency, (ushort)GlobalPreferences.StreambankChannels, GlobalPreferences.StreambankBits);
                         if (!string.IsNullOrEmpty(FileTempFile))
                         {
                             LoadAudio(WavDataPath, SoundToAdd);

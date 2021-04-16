@@ -148,7 +148,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                     }
                     GenericFunctions.ProgressBarAddValue(ProgressBar_CurrentTask, 1);
                 }
-                
+
                 if (CanOutputFile)
                 {
                     foreach (KeyValuePair<string, EXAudio> AudioToCheck in FinalAudioDataDict)

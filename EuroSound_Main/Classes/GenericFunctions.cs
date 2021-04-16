@@ -1,4 +1,6 @@
 ﻿using CustomStatusBar;
+using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationPreferences.EuroSound_Profiles;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.CurrentProjectFunctions;
@@ -96,7 +98,7 @@ namespace EuroSound_Application
                 ColorDiag.Color = SelectedUserColor;
                 ColorDiag.AllowFullOpen = true;
                 ColorDiag.FullOpen = true;
-                ColorDiag.CustomColors = WRegistryFunctions.SetCustomColors();
+                ColorDiag.CustomColors = WRegistryFunctions.LoadCustomColors();
                 if (ColorDiag.ShowDialog() == DialogResult.OK)
                 {
                     SelectedColor = ColorDiag.Color.ToArgb();
@@ -215,7 +217,7 @@ namespace EuroSound_Application
 
             using (FolderBrowserDialog OpenFolder = new FolderBrowserDialog())
             {
-                OpenFolder.SelectedPath = WRegistryFunctions.GetFolderBrowserLastPath();
+                OpenFolder.SelectedPath = WRegistryFunctions.LoadFolderBrowserLastPath();
                 if (OpenFolder.ShowDialog() == DialogResult.OK)
                 {
                     SelectedPath = OpenFolder.SelectedPath;
@@ -426,6 +428,17 @@ namespace EuroSound_Application
             RichTextBoxControl.ScrollToCaret();
         }
 
+        internal static void SetLabelText(Label LabelToChange, string TextToShow)
+        {
+            LabelToChange.Invoke((MethodInvoker)delegate
+            {
+                LabelToChange.Text = TextToShow;
+            });
+        }
+
+        //*===============================================================================================
+        //* PROGRESS BAR FUNCTIONS
+        //*===============================================================================================
         internal static void ProgressBarSetMaximum(ProgressBar BarToChange, int Maximum)
         {
             BarToChange.Invoke((MethodInvoker)delegate
@@ -450,12 +463,40 @@ namespace EuroSound_Application
             });
         }
 
-        internal static void SetLabelText(Label LabelToChange, string TextToShow)
+        //*===============================================================================================
+        //* PROFILES FUNCTIONS
+        //*===============================================================================================
+        internal static int NumberOfChildForms()
         {
-            LabelToChange.Invoke((MethodInvoker)delegate
+            int NumberOfChildForms;
+
+            Form OpenForm = GetFormByName("Frm_EuroSound_Main", "Main");
+            NumberOfChildForms = ((Frm_EuroSound_Main)OpenForm).MdiChildren.Length;
+
+            return NumberOfChildForms;
+        }
+
+        internal static void CheckProfiles(string ProfileSavedInESF)
+        {
+            ProfilesFunctions ProfilesLoader = new ProfilesFunctions();
+
+            //There's a file loaded that uses another profile
+            if (!Path.GetFileName(ProfileSavedInESF).Equals(Path.GetFileName(GlobalPreferences.SelectedProfile)) && NumberOfChildForms() > 0)
             {
-                LabelToChange.Text = TextToShow;
-            });
+                MessageBox.Show("Can't open two files with different profiles. Current profile: " + GlobalPreferences.SelectedProfile + " File profile: " + ProfileSavedInESF, "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            //No files loaded but there's a diferent profile
+            else if (NumberOfChildForms() == 0 && !Path.GetFileName(ProfileSavedInESF).Equals(Path.GetFileName(GlobalPreferences.SelectedProfile)))
+            {
+                if (File.Exists(ProfileSavedInESF))
+                {
+                    ProfilesLoader.ApplyProfile(ProfileSavedInESF);
+                }
+                else
+                {
+                    MessageBox.Show("Unable to load file: " + ProfileSavedInESF, "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }

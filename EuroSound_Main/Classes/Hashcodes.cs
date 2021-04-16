@@ -64,13 +64,13 @@ namespace EuroSound_Application
             return HashcodeHex;
         }
 
-        internal static void LoadSoundDataFile()
+        internal static void LoadSoundDataFile(string FilePath)
         {
-            if (File.Exists(GlobalPreferences.HT_SoundsDataPath))
+            if (File.Exists(FilePath))
             {
                 //Read Data
                 ReadSFXData();
-                GlobalPreferences.HT_SoundsDataMD5 = GenericFunctions.CalculateMD5(GlobalPreferences.HT_SoundsDataPath);
+                GlobalPreferences.HT_SoundsDataMD5 = GenericFunctions.CalculateMD5(FilePath);
             }
             else
             {
@@ -78,13 +78,13 @@ namespace EuroSound_Application
             }
         }
 
-        internal static void LoadMusicHashcodes()
+        internal static void LoadMusicHashcodes(string FilePath)
         {
-            if (File.Exists(GlobalPreferences.HT_MusicPath))
+            if (File.Exists(FilePath))
             {
                 //Read Data
                 ReadMusicHashcodes();
-                GlobalPreferences.HT_MusicMD5 = GenericFunctions.CalculateMD5(GlobalPreferences.HT_MusicPath);
+                GlobalPreferences.HT_MusicMD5 = GenericFunctions.CalculateMD5(FilePath);
             }
             else
             {

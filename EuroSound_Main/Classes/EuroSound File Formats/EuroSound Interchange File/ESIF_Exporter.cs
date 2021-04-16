@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.AudioFunctionsLibrary;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;
@@ -45,7 +46,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                         //Export Audio if Not Exists
                         if (!File.Exists(AudioPath))
                         {
-                            AudioF.CreateWavFile(22050, 16, 1, SampleAudio.PCMdata, AudioPath);
+                            AudioF.CreateWavFile(GlobalPreferences.SoundbankFrequency, GlobalPreferences.SoundbankBits, GlobalPreferences.SoundbankChannels, SampleAudio.PCMdata, AudioPath);
                         }
 
                         //Add "FileRef to the list"
@@ -148,7 +149,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     //Export Audio if Not Exists
                     if (!File.Exists(AudioPath))
                     {
-                        AudioF.CreateWavFile(22050, 16, 1, SampleAudio.Value.PCMdata, AudioPath);
+                        AudioF.CreateWavFile(GlobalPreferences.SoundbankFrequency, GlobalPreferences.SoundbankBits, GlobalPreferences.SoundbankChannels, SampleAudio.Value.PCMdata, AudioPath);
                     }
 
                     TextFileWriter.WriteLine("\t*AUDIO " + AudioIndex + " {");
@@ -294,7 +295,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                 //Export Audio if Not Exists
                 if (!File.Exists(AudioPath))
                 {
-                    AudioF.CreateWavFile(22050, 16, 1, StreamObject.PCM_Data, AudioPath);
+                    AudioF.CreateWavFile(GlobalPreferences.StreambankFrequency, GlobalPreferences.StreambankBits, GlobalPreferences.StreambankChannels, StreamObject.PCM_Data, AudioPath);
                 }
 
                 //Header
@@ -379,7 +380,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     //Export Audio if Not Exists
                     if (!File.Exists(AudioPath))
                     {
-                        AudioF.CreateWavFile(22050, 16, 1, StreamFileObject.Value.PCM_Data, AudioPath);
+                        AudioF.CreateWavFile(GlobalPreferences.StreambankFrequency, GlobalPreferences.StreambankBits, GlobalPreferences.StreambankChannels, StreamFileObject.Value.PCM_Data, AudioPath);
                     }
 
                     //Write Object Data

@@ -275,7 +275,7 @@ namespace EuroSound_Application.SFXData
             //--Load Sound Data Hashcodes--
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Loading Hashcodes Sounds Data");
 
-            Hashcodes.LoadSoundDataFile();
+            Hashcodes.LoadSoundDataFile(GlobalPreferences.HT_SoundsDataPath);
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));

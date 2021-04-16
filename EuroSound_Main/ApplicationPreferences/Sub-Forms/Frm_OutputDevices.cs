@@ -4,15 +4,21 @@ using System.Windows.Forms;
 
 namespace EuroSound_Application.ApplicationPreferencesForms
 {
-    public partial class Frm_OutputDevicecs : Form
+    public partial class Frm_OutputDevices : Form
     {
+        //*===============================================================================================
+        //* GLOBAL VARIABLES
+        //*===============================================================================================
         private Form OpenForm;
 
-        public Frm_OutputDevicecs()
+        public Frm_OutputDevices()
         {
             InitializeComponent();
         }
 
+        //*===============================================================================================
+        //* FORM EVENTS
+        //*===============================================================================================
         private void Frm_OutputDevicecs_Load(object sender, EventArgs e)
         {
             int AudioDeviceNumber;

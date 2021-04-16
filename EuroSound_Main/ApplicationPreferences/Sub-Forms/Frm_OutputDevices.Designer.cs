@@ -1,7 +1,7 @@
 ﻿
 namespace EuroSound_Application.ApplicationPreferencesForms
 {
-    partial class Frm_OutputDevicecs
+    partial class Frm_OutputDevices
     {
         /// <summary>
         /// Required designer variable.

@@ -29,7 +29,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 NumberOfSubKeys = (uint)EuroSoundKey.SubKeyCount;
                 BWriter.Write(NumberOfSubKeys);
                 //Write SubKeys Names
-                foreach (var value in EuroSoundKey.GetSubKeyNames())
+                foreach (string value in EuroSoundKey.GetSubKeyNames())
                 {
                     //Subkey Name
                     BWriter.Write(value);

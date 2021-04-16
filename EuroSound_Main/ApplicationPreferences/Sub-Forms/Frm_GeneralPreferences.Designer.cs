@@ -32,23 +32,17 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Panel_Title = new System.Windows.Forms.Panel();
             this.Label_Title = new System.Windows.Forms.Label();
             this.FontDialogTreeView = new System.Windows.Forms.FontDialog();
-            this.GroupBox_Output = new System.Windows.Forms.GroupBox();
-            this.Button_ChooseSFX_OutputPath = new System.Windows.Forms.Button();
-            this.Textbox_SFX_OutputPath = new System.Windows.Forms.TextBox();
-            this.Label_SFXOutputPath = new System.Windows.Forms.Label();
-            this.GroupBox_MusicOutputPath = new System.Windows.Forms.GroupBox();
-            this.Button_MusicOutputPath = new System.Windows.Forms.Button();
-            this.Textbox_MusicOutputPath = new System.Windows.Forms.TextBox();
-            this.Label_MusicOutputPath = new System.Windows.Forms.Label();
             this.Groupbox_Waves = new System.Windows.Forms.GroupBox();
             this.Button_WavesBackColor = new System.Windows.Forms.Button();
             this.Label_ColorBackground = new System.Windows.Forms.Label();
             this.Button_WavesColorControl = new System.Windows.Forms.Button();
             this.Label_ColorWaves = new System.Windows.Forms.Label();
+            this.GroupBox_LoadingOptions = new System.Windows.Forms.GroupBox();
+            this.CheckBox_ReloadLastESF = new System.Windows.Forms.CheckBox();
+            this.CheckBox_IgnoreLookTree = new System.Windows.Forms.CheckBox();
             this.Panel_Title.SuspendLayout();
-            this.GroupBox_Output.SuspendLayout();
-            this.GroupBox_MusicOutputPath.SuspendLayout();
             this.Groupbox_Waves.SuspendLayout();
+            this.GroupBox_LoadingOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // Panel_Title
@@ -71,96 +65,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Label_Title.TabIndex = 1;
             this.Label_Title.Text = "General Configuration";
             // 
-            // GroupBox_Output
-            // 
-            this.GroupBox_Output.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.GroupBox_Output.Controls.Add(this.Button_ChooseSFX_OutputPath);
-            this.GroupBox_Output.Controls.Add(this.Textbox_SFX_OutputPath);
-            this.GroupBox_Output.Controls.Add(this.Label_SFXOutputPath);
-            this.GroupBox_Output.Location = new System.Drawing.Point(12, 123);
-            this.GroupBox_Output.Name = "GroupBox_Output";
-            this.GroupBox_Output.Size = new System.Drawing.Size(467, 52);
-            this.GroupBox_Output.TabIndex = 1;
-            this.GroupBox_Output.TabStop = false;
-            this.GroupBox_Output.Text = "SFX Output Directory:";
-            // 
-            // Button_ChooseSFX_OutputPath
-            // 
-            this.Button_ChooseSFX_OutputPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_ChooseSFX_OutputPath.Location = new System.Drawing.Point(437, 19);
-            this.Button_ChooseSFX_OutputPath.Name = "Button_ChooseSFX_OutputPath";
-            this.Button_ChooseSFX_OutputPath.Size = new System.Drawing.Size(24, 20);
-            this.Button_ChooseSFX_OutputPath.TabIndex = 2;
-            this.Button_ChooseSFX_OutputPath.Text = "...";
-            this.Button_ChooseSFX_OutputPath.UseVisualStyleBackColor = true;
-            this.Button_ChooseSFX_OutputPath.Click += new System.EventHandler(this.Button_ChooseSFX_OutputPath_Click);
-            // 
-            // Textbox_SFX_OutputPath
-            // 
-            this.Textbox_SFX_OutputPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_SFX_OutputPath.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Textbox_SFX_OutputPath.Location = new System.Drawing.Point(79, 19);
-            this.Textbox_SFX_OutputPath.Name = "Textbox_SFX_OutputPath";
-            this.Textbox_SFX_OutputPath.ReadOnly = true;
-            this.Textbox_SFX_OutputPath.Size = new System.Drawing.Size(352, 20);
-            this.Textbox_SFX_OutputPath.TabIndex = 1;
-            // 
-            // Label_SFXOutputPath
-            // 
-            this.Label_SFXOutputPath.AutoSize = true;
-            this.Label_SFXOutputPath.Location = new System.Drawing.Point(6, 22);
-            this.Label_SFXOutputPath.Name = "Label_SFXOutputPath";
-            this.Label_SFXOutputPath.Size = new System.Drawing.Size(67, 13);
-            this.Label_SFXOutputPath.TabIndex = 0;
-            this.Label_SFXOutputPath.Text = "Output Path:";
-            // 
-            // GroupBox_MusicOutputPath
-            // 
-            this.GroupBox_MusicOutputPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.GroupBox_MusicOutputPath.Controls.Add(this.Button_MusicOutputPath);
-            this.GroupBox_MusicOutputPath.Controls.Add(this.Textbox_MusicOutputPath);
-            this.GroupBox_MusicOutputPath.Controls.Add(this.Label_MusicOutputPath);
-            this.GroupBox_MusicOutputPath.Location = new System.Drawing.Point(12, 65);
-            this.GroupBox_MusicOutputPath.Name = "GroupBox_MusicOutputPath";
-            this.GroupBox_MusicOutputPath.Size = new System.Drawing.Size(467, 52);
-            this.GroupBox_MusicOutputPath.TabIndex = 0;
-            this.GroupBox_MusicOutputPath.TabStop = false;
-            this.GroupBox_MusicOutputPath.Text = "Music Output Directory:";
-            // 
-            // Button_MusicOutputPath
-            // 
-            this.Button_MusicOutputPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_MusicOutputPath.Location = new System.Drawing.Point(437, 18);
-            this.Button_MusicOutputPath.Name = "Button_MusicOutputPath";
-            this.Button_MusicOutputPath.Size = new System.Drawing.Size(24, 20);
-            this.Button_MusicOutputPath.TabIndex = 2;
-            this.Button_MusicOutputPath.Text = "...";
-            this.Button_MusicOutputPath.UseVisualStyleBackColor = true;
-            this.Button_MusicOutputPath.Click += new System.EventHandler(this.Button_MusicOutputPath_Click);
-            // 
-            // Textbox_MusicOutputPath
-            // 
-            this.Textbox_MusicOutputPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_MusicOutputPath.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Textbox_MusicOutputPath.Location = new System.Drawing.Point(79, 19);
-            this.Textbox_MusicOutputPath.Name = "Textbox_MusicOutputPath";
-            this.Textbox_MusicOutputPath.ReadOnly = true;
-            this.Textbox_MusicOutputPath.Size = new System.Drawing.Size(352, 20);
-            this.Textbox_MusicOutputPath.TabIndex = 1;
-            // 
-            // Label_MusicOutputPath
-            // 
-            this.Label_MusicOutputPath.AutoSize = true;
-            this.Label_MusicOutputPath.Location = new System.Drawing.Point(6, 21);
-            this.Label_MusicOutputPath.Name = "Label_MusicOutputPath";
-            this.Label_MusicOutputPath.Size = new System.Drawing.Size(67, 13);
-            this.Label_MusicOutputPath.TabIndex = 0;
-            this.Label_MusicOutputPath.Text = "Output Path:";
-            // 
             // Groupbox_Waves
             // 
             this.Groupbox_Waves.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -169,9 +73,9 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Groupbox_Waves.Controls.Add(this.Label_ColorBackground);
             this.Groupbox_Waves.Controls.Add(this.Button_WavesColorControl);
             this.Groupbox_Waves.Controls.Add(this.Label_ColorWaves);
-            this.Groupbox_Waves.Location = new System.Drawing.Point(12, 181);
+            this.Groupbox_Waves.Location = new System.Drawing.Point(12, 161);
             this.Groupbox_Waves.Name = "Groupbox_Waves";
-            this.Groupbox_Waves.Size = new System.Drawing.Size(467, 98);
+            this.Groupbox_Waves.Size = new System.Drawing.Size(467, 120);
             this.Groupbox_Waves.TabIndex = 3;
             this.Groupbox_Waves.TabStop = false;
             this.Groupbox_Waves.Text = "Audio Waves Viewer:";
@@ -218,14 +122,46 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Label_ColorWaves.TabIndex = 0;
             this.Label_ColorWaves.Text = "Waves color:";
             // 
+            // GroupBox_LoadingOptions
+            // 
+            this.GroupBox_LoadingOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox_LoadingOptions.Controls.Add(this.CheckBox_IgnoreLookTree);
+            this.GroupBox_LoadingOptions.Controls.Add(this.CheckBox_ReloadLastESF);
+            this.GroupBox_LoadingOptions.Location = new System.Drawing.Point(12, 70);
+            this.GroupBox_LoadingOptions.Name = "GroupBox_LoadingOptions";
+            this.GroupBox_LoadingOptions.Size = new System.Drawing.Size(467, 85);
+            this.GroupBox_LoadingOptions.TabIndex = 4;
+            this.GroupBox_LoadingOptions.TabStop = false;
+            this.GroupBox_LoadingOptions.Text = "Loading Options:";
+            // 
+            // CheckBox_ReloadLastESF
+            // 
+            this.CheckBox_ReloadLastESF.AutoSize = true;
+            this.CheckBox_ReloadLastESF.Location = new System.Drawing.Point(22, 19);
+            this.CheckBox_ReloadLastESF.Name = "CheckBox_ReloadLastESF";
+            this.CheckBox_ReloadLastESF.Size = new System.Drawing.Size(181, 17);
+            this.CheckBox_ReloadLastESF.TabIndex = 0;
+            this.CheckBox_ReloadLastESF.Text = "Automatically reload last ESF file.";
+            this.CheckBox_ReloadLastESF.UseVisualStyleBackColor = true;
+            // 
+            // CheckBox_IgnoreLookTree
+            // 
+            this.CheckBox_IgnoreLookTree.AutoSize = true;
+            this.CheckBox_IgnoreLookTree.Location = new System.Drawing.Point(22, 42);
+            this.CheckBox_IgnoreLookTree.Name = "CheckBox_IgnoreLookTree";
+            this.CheckBox_IgnoreLookTree.Size = new System.Drawing.Size(357, 17);
+            this.CheckBox_IgnoreLookTree.TabIndex = 1;
+            this.CheckBox_IgnoreLookTree.Text = "Ignore data stored in the ESF describing the look and state of the tree.";
+            this.CheckBox_IgnoreLookTree.UseVisualStyleBackColor = true;
+            // 
             // Frm_General
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(491, 339);
+            this.Controls.Add(this.GroupBox_LoadingOptions);
             this.Controls.Add(this.Groupbox_Waves);
-            this.Controls.Add(this.GroupBox_MusicOutputPath);
-            this.Controls.Add(this.GroupBox_Output);
             this.Controls.Add(this.Panel_Title);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Frm_General";
@@ -234,12 +170,10 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Load += new System.EventHandler(this.Frm_TreeViewPrefs_Load);
             this.Panel_Title.ResumeLayout(false);
             this.Panel_Title.PerformLayout();
-            this.GroupBox_Output.ResumeLayout(false);
-            this.GroupBox_Output.PerformLayout();
-            this.GroupBox_MusicOutputPath.ResumeLayout(false);
-            this.GroupBox_MusicOutputPath.PerformLayout();
             this.Groupbox_Waves.ResumeLayout(false);
             this.Groupbox_Waves.PerformLayout();
+            this.GroupBox_LoadingOptions.ResumeLayout(false);
+            this.GroupBox_LoadingOptions.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -249,18 +183,13 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         private System.Windows.Forms.Panel Panel_Title;
         private System.Windows.Forms.Label Label_Title;
         private System.Windows.Forms.FontDialog FontDialogTreeView;
-        private System.Windows.Forms.GroupBox GroupBox_Output;
-        private System.Windows.Forms.Button Button_ChooseSFX_OutputPath;
-        private System.Windows.Forms.TextBox Textbox_SFX_OutputPath;
-        private System.Windows.Forms.Label Label_SFXOutputPath;
-        private System.Windows.Forms.GroupBox GroupBox_MusicOutputPath;
-        private System.Windows.Forms.Button Button_MusicOutputPath;
-        private System.Windows.Forms.TextBox Textbox_MusicOutputPath;
-        private System.Windows.Forms.Label Label_MusicOutputPath;
         private System.Windows.Forms.GroupBox Groupbox_Waves;
         private System.Windows.Forms.Label Label_ColorWaves;
         private System.Windows.Forms.Button Button_WavesColorControl;
         private System.Windows.Forms.Button Button_WavesBackColor;
         private System.Windows.Forms.Label Label_ColorBackground;
+        private System.Windows.Forms.GroupBox GroupBox_LoadingOptions;
+        private System.Windows.Forms.CheckBox CheckBox_ReloadLastESF;
+        private System.Windows.Forms.CheckBox CheckBox_IgnoreLookTree;
     }
 }

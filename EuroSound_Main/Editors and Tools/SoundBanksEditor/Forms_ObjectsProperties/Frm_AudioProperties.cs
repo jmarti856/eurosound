@@ -33,7 +33,7 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         private void Frm_AudioProperties_Load(object sender, EventArgs e)
         {
-            euroSound_WaveViewer1.BackColor = Color.FromArgb(GlobalPreferences.BackColorWavesControl);
+            euroSound_WaveViewer1.BackColor = Color.FromArgb(GlobalPreferences.WavesViewerControl_BackgroundColor);
             AudioFunctionsLibrary = new AudioFunctions();
 
             TemporalAudio = new EXAudio();
@@ -70,7 +70,7 @@ namespace EuroSound_Application.SoundBanksEditor
             string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0, true);
             if (!string.IsNullOrEmpty(AudioPath))
             {
-                if (GenericFunctions.AudioIsValid(AudioPath, 1, 22050))
+                if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.SoundbankChannels, GlobalPreferences.SoundbankFrequency))
                 {
                     LoadAudio(AudioPath);
                 }
@@ -79,7 +79,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     DialogResult TryToReload = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrect"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (TryToReload == DialogResult.Yes)
                     {
-                        string FileTempFile = AudioFunctionsLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), 22050, 1, 16);
+                        string FileTempFile = AudioFunctionsLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), (uint)GlobalPreferences.SoundbankChannels, (ushort)GlobalPreferences.SoundbankFrequency, GlobalPreferences.SoundbankBits);
                         if (!string.IsNullOrEmpty(FileTempFile))
                         {
                             LoadAudio(FileTempFile);
@@ -157,7 +157,7 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 using (Graphics gr = euroSound_WaveViewer1.CreateGraphics())
                 {
-                    using (Pen linePen = new Pen(Color.FromArgb(GlobalPreferences.ColorWavesControl), 1))
+                    using (Pen linePen = new Pen(Color.FromArgb(GlobalPreferences.WavesViewerControl_WavesColor), 1))
                     {
                         gr.DrawLine(linePen, point1, point2);
                     }

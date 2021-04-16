@@ -36,7 +36,7 @@ namespace EuroSound_Application.SoundBanksEditor
             //Sound Data defines
             if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsDataMD5, GlobalPreferences.HT_SoundsDataPath))
             {
-                Hashcodes.LoadSoundDataFile();
+                Hashcodes.LoadSoundDataFile(GlobalPreferences.HT_SoundsDataPath);
             }
 
             //Sound defines
@@ -165,7 +165,7 @@ namespace EuroSound_Application.SoundBanksEditor
             //Sound Data defines
             if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsDataMD5, GlobalPreferences.HT_SoundsDataPath))
             {
-                Hashcodes.LoadSoundDataFile();
+                Hashcodes.LoadSoundDataFile(GlobalPreferences.HT_SoundsDataPath);
             }
         }
 
@@ -200,7 +200,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void Textbox_flags_Click(object sender, EventArgs e)
         {
-            using (EuroSound_FlagsForm FormFlags = new EuroSound_FlagsForm(int.Parse(textbox_flags.Text), "SFXFlags", 16))
+            using (EuroSound_FlagsForm FormFlags = new EuroSound_FlagsForm(int.Parse(textbox_flags.Text), "SoundFlags", 16))
             {
                 FormFlags.Text = "Sound Flags";
                 FormFlags.Tag = Tag;

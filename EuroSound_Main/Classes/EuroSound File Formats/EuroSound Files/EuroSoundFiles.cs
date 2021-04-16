@@ -68,6 +68,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
         {
             using (BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read), null, Encoding.ASCII))
             {
+
                 //*===============================================================================================
                 //* HEADER
                 //*===============================================================================================
@@ -90,6 +91,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
         internal void LoadStreamSoundsDocument(TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, string FilePath, ProjectFile FileProperties, ResourceManager ResxM)
         {
             sbyte TypeOfStoredData;
+
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_ReadingESFFile"));
 
@@ -158,6 +160,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
         internal void LoadMusicsDocument(TreeView TreeViewControl, Dictionary<uint, EXMusic> MusicsList, string FilePath, ProjectFile FileProperties, ResourceManager ResxM)
         {
             sbyte TypeOfStoredData;
+
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_ReadingESFFile"));
 

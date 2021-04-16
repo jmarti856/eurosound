@@ -1,4 +1,5 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationPreferences.EuroSound_Profiles;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using System;
 using System.Windows.Forms;
@@ -18,6 +19,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         //Frm_TreeViewPrefs
         internal string SelectedFontTEMPORAL;
         internal int TreeViewIndentTEMPORAL;
+        internal int TreeViewItemHeightTEMPORAL;
         internal bool ShowLinesTEMPORAL;
         internal bool ShowRootLinesTEMPORAL;
 
@@ -39,18 +41,22 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         //Frm_OutputDevicecs
         internal int DefaultAudioDeviceTEMPORAL;
 
+        //Frm_Profiles
+        internal string SelectedProfileTEMPORAL;
+
         //*===============================================================================================
         //* GLOBAL VARS
         //*===============================================================================================
-        private Frm_HashTablesConfig GeneralHashTable;
         private Frm_General GeneralPreferences;
         private Frm_TreeViewPrefs TreeViewPrefs;
-        private Frm_StreamFile ExternalFile;
         private Frm_SoxPrefs SoXPreferences;
         private Frm_System SystemPreferences;
-        private Frm_OutputDevicecs AudioDevices;
+        private Frm_OutputDevices AudioDevices;
+        private Frm_Profiles ProfilesForm;
         private bool SystemFormOpened = false;
         private bool AudioDevicesOpened = false;
+        private bool ProfilesFormOpened = false;
+        private bool GeneralPrefsOpened = false;
 
         public Frm_MainPreferences()
         {
@@ -62,20 +68,22 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         //*===============================================================================================
         private void Frm_MainPreferences_Load(object sender, EventArgs e)
         {
-            BackColorWavesControlTEMPORAL = GlobalPreferences.BackColorWavesControl;
-            ColorWavesControlTEMPORAL = GlobalPreferences.ColorWavesControl;
+            BackColorWavesControlTEMPORAL = GlobalPreferences.WavesViewerControl_BackgroundColor;
+            ColorWavesControlTEMPORAL = GlobalPreferences.WavesViewerControl_WavesColor;
             HT_MusicPathTEMPORAL = GlobalPreferences.HT_MusicPath;
             HT_SoundsDataPathTEMPORAL = GlobalPreferences.HT_SoundsDataPath;
             HT_SoundsPathTEMPORAL = GlobalPreferences.HT_SoundsPath;
             MusicOutputPathTEMPORAL = GlobalPreferences.MusicOutputPath;
-            SelectedFontTEMPORAL = GlobalPreferences.SelectedFont;
+            SelectedFontTEMPORAL = GlobalPreferences.TV_SelectedFont;
             SFXOutputPathTEMPORAL = GlobalPreferences.SFXOutputPath;
-            ShowLinesTEMPORAL = GlobalPreferences.ShowLines;
-            ShowRootLinesTEMPORAL = GlobalPreferences.ShowRootLines;
+            ShowLinesTEMPORAL = GlobalPreferences.TV_ShowLines;
+            ShowRootLinesTEMPORAL = GlobalPreferences.TV_ShowRootLines;
             SoXPathTEMPORAL = GlobalPreferences.SoXPath;
             StreamFilePathTEMPORAL = GlobalPreferences.StreamFilePath;
-            TreeViewIndentTEMPORAL = GlobalPreferences.TreeViewIndent;
+            TreeViewIndentTEMPORAL = GlobalPreferences.TV_Indent;
+            TreeViewItemHeightTEMPORAL = GlobalPreferences.TV_ItemHeight;
             UseSystemTrayTEMPORAL = GlobalPreferences.UseSystemTray;
+            SelectedProfileTEMPORAL = GlobalPreferences.SelectedProfile;
 
             TreeViewPreferences.ExpandAll();
         }
@@ -93,50 +101,27 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             WindowsRegistryFunctions WRegistryFunctions = new WindowsRegistryFunctions();
             RemoveAllFormsInsidePanel(Panel_SecondaryForms);
 
-            //-----------------[Frm_HashTablesConfig]-----------------
-            if (!string.IsNullOrEmpty(HT_SoundsPathTEMPORAL))
-            {
-                GlobalPreferences.HT_SoundsPath = HT_SoundsPathTEMPORAL;
-                GlobalPreferences.HT_SoundsDataPath = HT_SoundsDataPathTEMPORAL;
-                GlobalPreferences.HT_MusicPath = HT_MusicPathTEMPORAL;
-
-                //SaveConfigs in Registry
-                WRegistryFunctions.SaveHashTablePathAndMD5("Sounds", GlobalPreferences.HT_SoundsPath, GenericFunctions.CalculateMD5(GlobalPreferences.HT_SoundsPath));
-                WRegistryFunctions.SaveHashTablePathAndMD5("SoundsData", GlobalPreferences.HT_SoundsDataPath, GenericFunctions.CalculateMD5(GlobalPreferences.HT_SoundsDataPath));
-                WRegistryFunctions.SaveHashTablePathAndMD5("Musics", GlobalPreferences.HT_MusicPath, GenericFunctions.CalculateMD5(GlobalPreferences.HT_MusicPath));
-            }
-
             //-----------------[Frm_TreeViewPrefs]-----------------
             if (!string.IsNullOrEmpty(SelectedFontTEMPORAL))
             {
-                GlobalPreferences.SelectedFont = SelectedFontTEMPORAL;
-                GlobalPreferences.TreeViewIndent = TreeViewIndentTEMPORAL;
-                GlobalPreferences.ShowLines = ShowLinesTEMPORAL;
-                GlobalPreferences.ShowRootLines = ShowRootLinesTEMPORAL;
+                GlobalPreferences.TV_SelectedFont = SelectedFontTEMPORAL;
+                GlobalPreferences.TV_Indent = TreeViewIndentTEMPORAL;
+                GlobalPreferences.TV_ItemHeight = TreeViewItemHeightTEMPORAL;
+                GlobalPreferences.TV_ShowLines = ShowLinesTEMPORAL;
+                GlobalPreferences.TV_ShowRootLines = ShowRootLinesTEMPORAL;
 
                 //SaveConfig in Registry
                 WRegistryFunctions.SaveTreeViewPreferences();
             }
 
             //-----------------[Frm_GeneralPreferences]-----------------
-            if (!string.IsNullOrEmpty(SFXOutputPathTEMPORAL))
+            if (GeneralPrefsOpened)
             {
-                GlobalPreferences.SFXOutputPath = SFXOutputPathTEMPORAL;
-                GlobalPreferences.MusicOutputPath = MusicOutputPathTEMPORAL;
-                GlobalPreferences.ColorWavesControl = ColorWavesControlTEMPORAL;
-                GlobalPreferences.BackColorWavesControl = BackColorWavesControlTEMPORAL;
+                GlobalPreferences.WavesViewerControl_WavesColor = ColorWavesControlTEMPORAL;
+                GlobalPreferences.WavesViewerControl_BackgroundColor = BackColorWavesControlTEMPORAL;
 
                 //SaveConfig in Registry
-                WRegistryFunctions.SaveGeneralPreferences();
-            }
-
-            //-----------------[Frm_StreamFile]-----------------
-            if (!string.IsNullOrEmpty(StreamFilePathTEMPORAL))
-            {
-                GlobalPreferences.StreamFilePath = StreamFilePathTEMPORAL;
-
-                //SaveConfig in Registry
-                WRegistryFunctions.SaveExternalFilePath();
+                WRegistryFunctions.SaveWavesControlColors();
             }
 
             //-----------------[Frm_SoxPrefs]-----------------
@@ -157,7 +142,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 WRegistryFunctions.SaveSystemConfig();
             }
 
-            //-----------------[Frm_OutputDevicecs]-----------------
+            //-----------------[Frm_OutputDevices]-----------------
             if (AudioDevicesOpened)
             {
                 GlobalPreferences.DefaultAudioDevice = DefaultAudioDeviceTEMPORAL;
@@ -165,31 +150,26 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 //SaveConfig in Registry
                 WRegistryFunctions.SaveDefaultAudioDevice();
             }
+
+            //-----------------[Frm_Profiles]-----------------
+            if (ProfilesFormOpened)
+            {
+                ProfilesFunctions PFunctions = new ProfilesFunctions();
+                GlobalPreferences.SelectedProfile = SelectedProfileTEMPORAL;
+
+                //Save config in Registry
+                WRegistryFunctions.SaveCurrentProfile(GlobalPreferences.SelectedProfile);
+
+                //Apply the selected profile
+                PFunctions.ApplyProfile(GlobalPreferences.SelectedProfile);
+            }
             Close();
         }
 
         private void TreeViewPreferences_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            //Open Sub-form "Frm_HashTablesConfig"
-            if (string.Equals(e.Node.Name, "HashTables"))
-            {
-                if (!Panel_SecondaryForms.Controls.Contains(GeneralHashTable))
-                {
-                    RemoveAllFormsInsidePanel(Panel_SecondaryForms);
-
-                    GeneralHashTable = new Frm_HashTablesConfig
-                    {
-                        TopLevel = false,
-                        AutoScroll = true,
-                        Tag = Tag
-                    };
-                    Panel_SecondaryForms.Controls.Add(GeneralHashTable);
-                    GeneralHashTable.Dock = DockStyle.Fill;
-                    GeneralHashTable.Show();
-                }
-            }
             //Open Sub-Form "Frm_TreeViewPrefs"
-            else if (string.Equals(e.Node.Name, "ESFTree"))
+            if (string.Equals(e.Node.Name, "ESFTree"))
             {
                 if (!Panel_SecondaryForms.Controls.Contains(TreeViewPrefs))
                 {
@@ -222,24 +202,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                     Panel_SecondaryForms.Controls.Add(GeneralPreferences);
                     GeneralPreferences.Dock = DockStyle.Fill;
                     GeneralPreferences.Show();
-                }
-            }
-            //Open Sub-Form "Frm_StreamFile"
-            else if (string.Equals(e.Node.Name, "StreamFile"))
-            {
-                if (!Panel_SecondaryForms.Controls.Contains(ExternalFile))
-                {
-                    RemoveAllFormsInsidePanel(Panel_SecondaryForms);
-
-                    ExternalFile = new Frm_StreamFile
-                    {
-                        TopLevel = false,
-                        AutoScroll = true,
-                        Tag = Tag
-                    };
-                    Panel_SecondaryForms.Controls.Add(ExternalFile);
-                    ExternalFile.Dock = DockStyle.Fill;
-                    ExternalFile.Show();
+                    GeneralPrefsOpened = true;
                 }
             }
             //Open Sub-Form "Frm_SoxPrefs"
@@ -279,13 +242,14 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                     SystemFormOpened = true;
                 }
             }
+            //Open Sub-Form "Frm_OutputDevices"
             else if (string.Equals(e.Node.Name, "AudioDevices"))
             {
                 if (!Panel_SecondaryForms.Controls.Contains(AudioDevices))
                 {
                     RemoveAllFormsInsidePanel(Panel_SecondaryForms);
 
-                    AudioDevices = new Frm_OutputDevicecs
+                    AudioDevices = new Frm_OutputDevices
                     {
                         TopLevel = false,
                         AutoScroll = true,
@@ -296,6 +260,22 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                     AudioDevices.Show();
                     AudioDevicesOpened = true;
                 }
+            }
+            //Open Sub-Form "Frm_Profiles"
+            else if (string.Equals(e.Node.Name, "Profile"))
+            {
+                RemoveAllFormsInsidePanel(Panel_SecondaryForms);
+
+                ProfilesForm = new Frm_Profiles
+                {
+                    TopLevel = false,
+                    AutoScroll = true,
+                    Tag = Tag
+                };
+                Panel_SecondaryForms.Controls.Add(ProfilesForm);
+                ProfilesForm.Dock = DockStyle.Fill;
+                ProfilesForm.Show();
+                ProfilesFormOpened = true;
             }
         }
 

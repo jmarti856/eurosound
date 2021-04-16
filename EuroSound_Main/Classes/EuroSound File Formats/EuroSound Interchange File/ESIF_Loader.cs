@@ -1,4 +1,5 @@
 ﻿using EngineXImaAdpcm;
+using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.MarkerFiles.StreamSoundsEditor.Classes;
@@ -116,7 +117,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     AudioPath = RemoveCharactersFromPathString.Replace(KeyWordValues[0], "");
                                     if (File.Exists(AudioPath))
                                     {
-                                        if (GenericFunctions.AudioIsValid(AudioPath, 1, 22050))
+                                        if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.SoundbankChannels, GlobalPreferences.SoundbankFrequency))
                                         {
                                             MD5AudioFilehash = GenericFunctions.CalculateMD5(AudioPath);
                                             NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);
@@ -528,7 +529,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                         AudioPath = RemoveCharactersFromPathString.Replace(KeyWordValues[0], "");
                         if (File.Exists(AudioPath))
                         {
-                            if (GenericFunctions.AudioIsValid(AudioPath, 1, 22050))
+                            if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.StreambankChannels, GlobalPreferences.StreambankFrequency))
                             {
                                 using (WaveFileReader AudioReader = new WaveFileReader(AudioPath))
                                 {

@@ -135,12 +135,12 @@ namespace EuroSound_Application.CustomControls.WavesViewerForm
 
             for (int y = 0; y < numOfCells; ++y)
             {
-                gfx.DrawLine(new Pen(Color.FromArgb(GlobalPreferences.BackColorWavesControl), 1), 0, y * cellSize, numOfCells * cellSize, y * cellSize);
+                gfx.DrawLine(new Pen(Color.FromArgb(GlobalPreferences.WavesViewerControl_BackgroundColor), 1), 0, y * cellSize, numOfCells * cellSize, y * cellSize);
             }
 
             for (int x = 0; x < numOfCells; ++x)
             {
-                gfx.DrawLine(new Pen(Color.FromArgb(GlobalPreferences.BackColorWavesControl), 1), x * cellSize, 0, x * cellSize, numOfCells * cellSize);
+                gfx.DrawLine(new Pen(Color.FromArgb(GlobalPreferences.WavesViewerControl_BackgroundColor), 1), x * cellSize, 0, x * cellSize, numOfCells * cellSize);
             }
         }
 
@@ -272,7 +272,7 @@ namespace EuroSound_Application.CustomControls.WavesViewerForm
             //
             // CustomWaveViewer
             //
-            BackColor = Color.FromArgb(GlobalPreferences.BackColorWavesControl);
+            BackColor = Color.FromArgb(GlobalPreferences.WavesViewerControl_BackgroundColor);
             Name = "CustomWaveViewer";
             Size = new Size(569, 183);
             ResumeLayout(false);

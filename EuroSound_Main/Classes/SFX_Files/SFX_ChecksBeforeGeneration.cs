@@ -18,7 +18,7 @@ namespace EuroSound_Application.Classes.SFX_Files
             LoopMarkers = 0;
 
             //Count Markers
-            for (int i = 0; i < MarkersList.Count; i ++)
+            for (int i = 0; i < MarkersList.Count; i++)
             {
                 if (MarkersList[i].MusicMakerType == 10)
                 {
@@ -75,7 +75,7 @@ namespace EuroSound_Application.Classes.SFX_Files
         }
 
         internal bool ValidateMusics(EXMusic MusicToOutput, string ObjectName, List<string> Reports)
-        { 
+        {
             bool MusicIsCorrect = true;
 
             if (MusicToOutput.PCM_Data_LeftChannel.Length == 0)

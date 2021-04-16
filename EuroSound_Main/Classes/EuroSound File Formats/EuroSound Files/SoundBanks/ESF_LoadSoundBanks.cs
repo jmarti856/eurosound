@@ -13,6 +13,8 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
         internal void ReadEuroSoundFile11(ProjectFile FileProperties, BinaryReader BReader, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
         {
             uint TreeViewDataOffset, SoundsListDataOffset, AudioDataOffset;
+            string ProfileSelected;
+
             //File Hashcode
             FileProperties.Hashcode = BReader.ReadUInt32();
             //Latest SoundID value
@@ -27,6 +29,10 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
             BReader.BaseStream.Position += 4;
             //File Name
             FileProperties.FileName = BReader.ReadString();
+            //Profile
+            ProfileSelected = BReader.ReadString();
+
+            GenericFunctions.CheckProfiles(ProfileSelected);
 
             //*===============================================================================================
             //* TreeView
