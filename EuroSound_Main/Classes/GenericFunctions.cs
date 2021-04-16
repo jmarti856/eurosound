@@ -398,13 +398,13 @@ namespace EuroSound_Application
 
         internal static void BuildSphinxFilelist()
         {
-            if (File.Exists(@"x:\EngineX\Utils\Batch\MkFileList.bat"))
+            if (File.Exists(GlobalPreferences.MkFileListPath))
             {
-                ExecuteCMDCommand(@"/C x:\EngineX\Utils\Batch\MkFileList.bat Sphinx PC");
+                ExecuteCMDCommand(@"/C " + GlobalPreferences.MkFileListPath + " " + GlobalPreferences.SelectedProfileName + " PC");
             }
-            if (File.Exists(@"x:\EngineX\Utils\Batch\MkFileList2.bat"))
+            if (File.Exists(GlobalPreferences.MkFileList2Path))
             {
-                ExecuteCMDCommand(@"/C x:\EngineX\Utils\Batch\MkFileList2.bat Sphinx PC");
+                ExecuteCMDCommand(@"/C " + GlobalPreferences.MkFileList2Path + " " + GlobalPreferences.SelectedProfileName + " PC");
             }
         }
 

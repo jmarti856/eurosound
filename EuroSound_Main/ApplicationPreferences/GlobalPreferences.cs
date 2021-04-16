@@ -38,6 +38,8 @@
         //[ExternalFiles]
         internal static string StreamFilePath;
         internal static string SoXPath;
+        internal static string MkFileListPath;
+        internal static string MkFileList2Path;
 
         //[OutputFolders]
         internal static string SFXOutputPath;

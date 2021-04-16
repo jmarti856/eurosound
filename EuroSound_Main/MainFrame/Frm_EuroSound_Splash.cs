@@ -90,6 +90,8 @@ namespace EuroSound_Application.SplashForm
                 //[ExternalFiles]
                 Label_Status.Text = "Loading External File Path, please wait...";
                 GlobalPreferences.StreamFilePath = WRegistryFunctions.LoadExternalFiles("StreamFile", "Path");
+                GlobalPreferences.MkFileListPath = WRegistryFunctions.LoadExternalFiles("MkFileList", "Path");
+                GlobalPreferences.MkFileList2Path = WRegistryFunctions.LoadExternalFiles("MkFileList2", "Path");
                 await Task.Delay(RandomNumber.Next(25, 43));
 
                 //[OutputFolders]

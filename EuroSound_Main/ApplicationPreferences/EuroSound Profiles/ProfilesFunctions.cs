@@ -85,11 +85,15 @@ namespace EuroSound_Application.ApplicationPreferences.EuroSound_Profiles
                 //* [ExternalFiles]
                 //*===============================================================================================
                 //Load Data
-                SectionData = ProfilesLoader.ReadSection("ExternalFiles", 1, FileLines);
+                SectionData = ProfilesLoader.ReadSection("ExternalFiles", 3, FileLines);
                 GlobalPreferences.StreamFilePath = SectionData[0];
+                GlobalPreferences.MkFileListPath = SectionData[1];
+                GlobalPreferences.MkFileList2Path = SectionData[2];
 
                 //Save Data
                 RegistryFunctions.SaveExternalFiles("StreamFile", "Path", GlobalPreferences.StreamFilePath);
+                RegistryFunctions.SaveExternalFiles("MkFileList", "Path", GlobalPreferences.MkFileListPath);
+                RegistryFunctions.SaveExternalFiles("MkFileList2", "Path", GlobalPreferences.MkFileList2Path);
 
                 //*===============================================================================================
                 //* [OutputFolders]
