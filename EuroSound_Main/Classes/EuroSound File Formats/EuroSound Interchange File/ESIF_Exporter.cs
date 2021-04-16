@@ -456,11 +456,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                 //Export Audio if Not Exists
                 if (!File.Exists(AudioPathLeft))
                 {
-                    AudioF.CreateWavFile(32000, 16, 1, MusicObject.PCM_Data_LeftChannel, AudioPathLeft);
+                    AudioF.CreateWavFile(GlobalPreferences.MusicbankFrequency, GlobalPreferences.MusicbankBits, GlobalPreferences.MusicbankChannels, MusicObject.PCM_Data_LeftChannel, AudioPathLeft);
                 }
                 if (!File.Exists(AudioPathRight))
                 {
-                    AudioF.CreateWavFile(32000, 16, 1, MusicObject.PCM_Data_RightChannel, AudioPathRight);
+                    AudioF.CreateWavFile(GlobalPreferences.MusicbankFrequency, GlobalPreferences.MusicbankBits, GlobalPreferences.MusicbankChannels, MusicObject.PCM_Data_RightChannel, AudioPathRight);
                 }
 
                 //Header
@@ -548,11 +548,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     //Export Audio if Not Exists
                     if (!File.Exists(AudioPathLeft))
                     {
-                        AudioF.CreateWavFile(32000, 16, 1, StreamFileObject.Value.PCM_Data_LeftChannel, AudioPathLeft);
+                        AudioF.CreateWavFile(GlobalPreferences.MusicbankFrequency, GlobalPreferences.MusicbankBits, GlobalPreferences.MusicbankChannels, StreamFileObject.Value.PCM_Data_LeftChannel, AudioPathLeft);
                     }
                     if (!File.Exists(AudioPathRight))
                     {
-                        AudioF.CreateWavFile(32000, 16, 1, StreamFileObject.Value.PCM_Data_RightChannel, AudioPathRight);
+                        AudioF.CreateWavFile(GlobalPreferences.MusicbankFrequency, GlobalPreferences.MusicbankBits, GlobalPreferences.MusicbankChannels, StreamFileObject.Value.PCM_Data_RightChannel, AudioPathRight);
                     }
 
                     //Write Object Data

@@ -7,6 +7,7 @@
         //*===============================================================================================
         //Profile
         internal static string SelectedProfile;
+        internal static string SelectedProfileName;
 
         //[SoundbanksSettings]
         internal static int SoundbankFrequency;
@@ -49,6 +50,7 @@
         internal static int TV_ItemHeight = 16;
         internal static bool TV_ShowLines = true;
         internal static bool TV_ShowRootLines = true;
+        internal static bool TV_IgnoreStlyesFromESF = false;
 
         //User Settings -> Waves Control
         internal static int WavesViewerControl_WavesColor = -16777077;

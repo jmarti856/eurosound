@@ -62,18 +62,19 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* Current Profile
         //*===============================================================================================
-        internal void SaveCurrentProfile(string CurrentProfile)
+        internal void SaveCurrentProfile(string CurrentProfile, string CurrentProfileName)
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("Profile", true);
             using (RegistryKey SaveProfile = EuroSoundKey.OpenSubKey("Profile", true))
             {
                 SaveProfile.SetValue("CurrentProfile", CurrentProfile, RegistryValueKind.String);
+                SaveProfile.SetValue("CurrentProfileName", CurrentProfileName, RegistryValueKind.String);
                 SaveProfile.Close();
             }
         }
 
-        internal string LoadCurrentProfie()
+        internal string LoadCurrentProfie(string KeyName)
         {
             string CurrentProfile = string.Empty;
 
@@ -81,7 +82,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             CreateEuroSoundSubkeyIfNotExists("Profile", true);
             using (RegistryKey LoadProfile = EuroSoundKey.OpenSubKey("Profile", true))
             {
-                CurrentProfile = LoadProfile.GetValue("CurrentProfile", string.Empty).ToString();
+                CurrentProfile = LoadProfile.GetValue(KeyName, string.Empty).ToString();
                 LoadProfile.Close();
             }
 
@@ -290,6 +291,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 TreeViewPrefs.SetValue("TV_ItemHeight", GlobalPreferences.TV_ItemHeight, RegistryValueKind.DWord);
                 TreeViewPrefs.SetValue("TV_ShowLines", GlobalPreferences.TV_ShowLines, RegistryValueKind.DWord);
                 TreeViewPrefs.SetValue("TV_ShowRootLines", GlobalPreferences.TV_ShowRootLines, RegistryValueKind.DWord);
+                TreeViewPrefs.SetValue("TV_IgnoreStlyesFromESF", GlobalPreferences.TV_IgnoreStlyesFromESF, RegistryValueKind.DWord);
                 TreeViewPrefs.Close();
             }
         }
@@ -328,6 +330,10 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 else if (ValueName.Equals("TV_SelectedFont"))
                 {
                     RequestValue = "Microsoft Sans Serif; 8,25pt";
+                }
+                else if (ValueName.Equals("TV_IgnoreStlyesFromESF"))
+                {
+                    RequestValue = "0";
                 }
             }
             return RequestValue;

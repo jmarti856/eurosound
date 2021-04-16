@@ -76,7 +76,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
                 else
                 {
-                    DialogResult TryToReload = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrect"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                    DialogResult TryToReload = MessageBox.Show("Error, this audio file is not correct, the specifies are: " + GlobalPreferences.SoundbankChannels + " channels, the rate must be " + GlobalPreferences.SoundbankFrequency + "Hz, must have " + GlobalPreferences.SoundbankBits + " bits per sample and encoded in " + GlobalPreferences.SoundbankEncoding + ".", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (TryToReload == DialogResult.Yes)
                     {
                         string FileTempFile = AudioFunctionsLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), (uint)GlobalPreferences.SoundbankChannels, (ushort)GlobalPreferences.SoundbankFrequency, GlobalPreferences.SoundbankBits);

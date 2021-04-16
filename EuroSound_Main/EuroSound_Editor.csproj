@@ -120,48 +120,49 @@
     <Compile Include="ApplicationPreferences\BackupAndRestoreSettings\BackupSettings.cs" />
     <Compile Include="ApplicationPreferences\BackupAndRestoreSettings\RestoreSettings.cs" />
     <Compile Include="ApplicationPreferences\EuroSound Profiles\ProfilesFunctions.cs" />
-    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_Profiles.cs">
+    <Compile Include="ApplicationPreferences\Ini File\IniFile_Functions.cs" />
+    <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_Profiles.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_Profiles.Designer.cs">
+    <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_Profiles.Designer.cs">
       <DependentUpon>Frm_Profiles.cs</DependentUpon>
     </Compile>
-    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_GeneralPreferences.cs">
+    <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_GeneralPreferences.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_GeneralPreferences.Designer.cs">
+    <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_GeneralPreferences.Designer.cs">
       <DependentUpon>Frm_GeneralPreferences.cs</DependentUpon>
     </Compile>
-    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_OutputDevices.cs">
+    <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_OutputDevices.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_OutputDevices.Designer.cs">
+    <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_OutputDevices.Designer.cs">
       <DependentUpon>Frm_OutputDevices.cs</DependentUpon>
     </Compile>
-    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_SoxPrefs.cs">
+    <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_SoxPrefs.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_SoxPrefs.Designer.cs">
+    <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_SoxPrefs.Designer.cs">
       <DependentUpon>Frm_SoxPrefs.cs</DependentUpon>
     </Compile>
-    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_System.cs">
+    <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_System.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_System.Designer.cs">
+    <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_System.Designer.cs">
       <DependentUpon>Frm_System.cs</DependentUpon>
     </Compile>
-    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_TreeViewPrefs.cs">
+    <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_TreeViewPrefs.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ApplicationPreferences\Sub-Forms\Frm_TreeViewPrefs.Designer.cs">
+    <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_TreeViewPrefs.Designer.cs">
       <DependentUpon>Frm_TreeViewPrefs.cs</DependentUpon>
     </Compile>
     <Compile Include="ApplicationPreferences\GlobalPreferences.cs" />
     <Compile Include="ApplicationPreferences\WindowsRegistryFunctions.cs" />
-    <Compile Include="ApplicationPreferences\Frm_MainPreferences.cs">
+    <Compile Include="ApplicationPreferences\Preferences Forms\Frm_MainPreferences.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ApplicationPreferences\Frm_MainPreferences.Designer.cs">
+    <Compile Include="ApplicationPreferences\Preferences Forms\Frm_MainPreferences.Designer.cs">
       <DependentUpon>Frm_MainPreferences.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\Musics\ESF_LoadMusics.cs" />
@@ -425,26 +426,26 @@
     <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSounds_Properties.Designer.cs">
       <DependentUpon>Frm_StreamSounds_Properties.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_Profiles.resx">
+    <EmbeddedResource Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_Profiles.resx">
       <DependentUpon>Frm_Profiles.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ApplicationPreferences\Frm_MainPreferences.resx">
+    <EmbeddedResource Include="ApplicationPreferences\Preferences Forms\Frm_MainPreferences.resx">
       <DependentUpon>Frm_MainPreferences.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_GeneralPreferences.resx">
+    <EmbeddedResource Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_GeneralPreferences.resx">
       <DependentUpon>Frm_GeneralPreferences.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_OutputDevices.resx">
+    <EmbeddedResource Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_OutputDevices.resx">
       <DependentUpon>Frm_OutputDevices.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_SoxPrefs.resx">
+    <EmbeddedResource Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_SoxPrefs.resx">
       <DependentUpon>Frm_SoxPrefs.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_System.resx">
+    <EmbeddedResource Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_System.resx">
       <DependentUpon>Frm_System.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ApplicationPreferences\Sub-Forms\Frm_TreeViewPrefs.resx">
+    <EmbeddedResource Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_TreeViewPrefs.resx">
       <DependentUpon>Frm_TreeViewPrefs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\EuroSound_DebugTypes.resx">

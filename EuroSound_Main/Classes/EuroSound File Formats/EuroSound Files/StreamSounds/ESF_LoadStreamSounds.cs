@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.CurrentProjectFunctions;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.StreamSounds;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using System.Collections.Generic;
@@ -10,10 +11,10 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
 {
     public class ESF_LoadStreamSounds
     {
-        internal void ReadEuroSoundFile11(ProjectFile FileProperties, BinaryReader BReader, TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList)
+        internal string ReadEuroSoundStreamFile(ProjectFile FileProperties, BinaryReader BReader, TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList)
         {
             uint TreeViewDataOffset, StreamSoundsDictionaryOffset;
-            string ProfileSelected;
+            string ProfileSelected, ProfileSelectedName;
 
             //File Hashcode
             FileProperties.Hashcode = BReader.ReadUInt32();
@@ -29,10 +30,12 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
             BReader.BaseStream.Position += 4;
             //File Name
             FileProperties.FileName = BReader.ReadString();
-            //Profile
+            //Profile Path
             ProfileSelected = BReader.ReadString();
+            //Profile Name
+            ProfileSelectedName = BReader.ReadString();
 
-            GenericFunctions.CheckProfiles(ProfileSelected);
+            GenericFunctions.CheckProfiles(ProfileSelected, ProfileSelectedName);
 
             //*===============================================================================================
             //* TreeView
@@ -48,6 +51,8 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
 
             //Close Reader
             BReader.Close();
+
+            return ProfileSelectedName;
         }
 
         internal void ReadDictionaryData(BinaryReader BReader, Dictionary<uint, EXSoundStream> DictionaryData)
@@ -146,6 +151,11 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
                 Tag = BReader.ReadString();
                 NodeColor = Color.FromArgb(BReader.ReadInt32());
                 BReader.ReadBoolean();
+
+                if (GlobalPreferences.TV_IgnoreStlyesFromESF)
+                {
+                    NodeColor = Color.Black;
+                }
 
                 TreeNodeFunctions.TreeNodeAddNewNode(ParentNode, NodeName, DisplayName, SelectedImageIndex, ImageIndex, Tag, NodeColor, TreeViewControl);
             }

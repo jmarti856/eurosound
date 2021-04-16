@@ -31,6 +31,8 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
             BWriter.Write(FileProperties.FileName);
             //Associated Profile
             BWriter.Write(GlobalPreferences.SelectedProfile);
+            //Associated Profile Name
+            BWriter.Write(GlobalPreferences.SelectedProfileName);
 
             BWriter.Seek(2048, SeekOrigin.Current);
 

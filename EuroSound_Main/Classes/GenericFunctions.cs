@@ -27,6 +27,7 @@ namespace EuroSound_Application
     {
         internal static ResourceManager ResourcesManager;
         internal static StatusBarToolTips ParentFormStatusBar;
+        internal static Dictionary<string, string> AvailableProfiles = new Dictionary<string, string>();
 
         internal static string TruncateLongString(string str, int maxLenght)
         {
@@ -476,25 +477,47 @@ namespace EuroSound_Application
             return NumberOfChildForms;
         }
 
-        internal static void CheckProfiles(string ProfileSavedInESF)
+        internal static void CheckProfiles(string ProfileSavedInESF, string ProfileNameSavedInESF)
         {
             ProfilesFunctions ProfilesLoader = new ProfilesFunctions();
+            string ProfilePath = string.Empty;
+            string ProfileName = string.Empty;
 
             //There's a file loaded that uses another profile
-            if (!Path.GetFileName(ProfileSavedInESF).Equals(Path.GetFileName(GlobalPreferences.SelectedProfile)) && NumberOfChildForms() > 0)
+            if (!ProfileNameSavedInESF.Equals(GlobalPreferences.SelectedProfileName) && NumberOfChildForms() > 1)
             {
                 MessageBox.Show("Can't open two files with different profiles. Current profile: " + GlobalPreferences.SelectedProfile + " File profile: " + ProfileSavedInESF, "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             //No files loaded but there's a diferent profile
-            else if (NumberOfChildForms() == 0 && !Path.GetFileName(ProfileSavedInESF).Equals(Path.GetFileName(GlobalPreferences.SelectedProfile)))
+            else if (NumberOfChildForms() == 1 && !ProfileNameSavedInESF.Equals(GlobalPreferences.SelectedProfileName))
             {
-                if (File.Exists(ProfileSavedInESF))
+                //Get path of the profile file in the ini file.
+                foreach (KeyValuePair<string, string> ProfileItem in AvailableProfiles)
                 {
-                    ProfilesLoader.ApplyProfile(ProfileSavedInESF);
+                    if (ProfileItem.Key.Equals(ProfileNameSavedInESF))
+                    {
+                        ProfileName = ProfileItem.Key;
+                        ProfilePath = ProfileItem.Value;
+                        break;
+                    }
+                }
+
+                //Apply profile from ini file
+                if (File.Exists(ProfilePath))
+                {
+                    ProfilesLoader.ApplyProfile(ProfilePath, ProfileName, true);
                 }
                 else
                 {
-                    MessageBox.Show("Unable to load file: " + ProfileSavedInESF, "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //Apply profile saved in the ESF
+                    if (File.Exists(ProfileSavedInESF))
+                    {
+                        ProfilesLoader.ApplyProfile(ProfileSavedInESF, ProfileNameSavedInESF, true);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Unable to load file: " + ProfileSavedInESF + "\n" + "(Also tried to search for local copies in the overriden UseESP path from Esound.ini: <<" + ProfilePath + ">>)", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }

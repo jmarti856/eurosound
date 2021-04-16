@@ -1,4 +1,5 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationPreferences.Ini_File;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using System;
 using System.IO;
@@ -24,17 +25,28 @@ namespace EuroSound_Application.SplashForm
         //*===============================================================================================
         private async void Frm_EuroSound_Splash_Shown(object sender, EventArgs e)
         {
+            //*===============================================================================================
+            //* Variables
+            //*===============================================================================================
             Random RandomNumber = new Random();
-
-            //-----------------------------------------[Variables Declaration]----------------------------------------
+            IniFile_Functions ProfilesReader = new IniFile_Functions();
             WindowsRegistryFunctions WRegistryFunctions = new WindowsRegistryFunctions();
             GenericFunctions.ResourcesManager = new ResourceManager(typeof(Properties.Resources));
             Label_EuroSoundVersion.Text = string.Join(" ", new string[] { AssemblyDescription, "Version", GenericFunctions.GetEuroSoundVersion()[0].ToString() });
 
             //*===============================================================================================
+            //* Load INI FIle
+            //*===============================================================================================
+            Label_Status.Text = "Loading ESound.ini, please wait...";
+            //Get Profiles List
+            GenericFunctions.AvailableProfiles = ProfilesReader.GetAvailableProfiles(Application.StartupPath + "\\Esound.ini");
+            await Task.Delay(RandomNumber.Next(150, 250));
+
+            //*===============================================================================================
             //* Load Profile Settings
             //*===============================================================================================
-            GlobalPreferences.SelectedProfile = WRegistryFunctions.LoadCurrentProfie();
+            GlobalPreferences.SelectedProfileName = WRegistryFunctions.LoadCurrentProfie("CurrentProfileName");
+            GlobalPreferences.SelectedProfile = WRegistryFunctions.LoadCurrentProfie("CurrentProfile");
             if (!string.IsNullOrEmpty(GlobalPreferences.SelectedProfile))
             {
                 //[SoundbanksSettings]
@@ -97,6 +109,7 @@ namespace EuroSound_Application.SplashForm
             GlobalPreferences.TV_ShowRootLines = Convert.ToBoolean(int.Parse(WRegistryFunctions.LoadTreeViewPreferences("TV_ShowRootLines")));
             GlobalPreferences.TV_Indent = int.Parse(WRegistryFunctions.LoadTreeViewPreferences("TV_Indent"));
             GlobalPreferences.TV_ItemHeight = int.Parse(WRegistryFunctions.LoadTreeViewPreferences("TV_ItemHeight"));
+            GlobalPreferences.TV_IgnoreStlyesFromESF = Convert.ToBoolean(int.Parse(WRegistryFunctions.LoadTreeViewPreferences("TV_IgnoreStlyesFromESF")));
             await Task.Delay(RandomNumber.Next(1, 50));
 
             GlobalPreferences.WavesViewerControl_WavesColor = WRegistryFunctions.LoadWavesControlColors("WavesColors");
@@ -108,17 +121,40 @@ namespace EuroSound_Application.SplashForm
 
             //-----------------------------------------[Sound Data]----------------------------------------
             Label_Status.Text = "Loading sounds data hashtable, please wait...";
-            Hashcodes.LoadSoundDataFile(GlobalPreferences.HT_SoundsDataPath);
+            if (File.Exists(GlobalPreferences.HT_SoundsDataPath))
+            {
+                Hashcodes.LoadSoundDataFile(GlobalPreferences.HT_SoundsDataPath);
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Hashcodes_SFXData_NotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
             await Task.Delay(RandomNumber.Next(30, 120));
 
             //-----------------------------------------[Sound Defines]----------------------------------------
             Label_Status.Text = "Loading sounds hashtable, please wait...";
-            Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
+            if (File.Exists(GlobalPreferences.HT_SoundsPath))
+            {
+                Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Hashcodes_SFXDefines_NotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
             await Task.Delay(RandomNumber.Next(80, 100));
 
             //-----------------------------------------[Music Defines]----------------------------------------
             Label_Status.Text = "Loading musics hashtable, please wait...";
-            Hashcodes.LoadMusicHashcodes(GlobalPreferences.HT_MusicPath);
+            if (File.Exists(GlobalPreferences.HT_MusicPath))
+            {
+                Hashcodes.LoadMusicHashcodes(GlobalPreferences.HT_MusicPath);
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Hashcodes_SFXData_NotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             await Task.Delay(RandomNumber.Next(30, 120));
 
             //-----------------------------------------[SoX Executable]----------------------------------------

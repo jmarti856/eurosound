@@ -216,15 +216,6 @@
   <data name="ErrorReadingFileIsUsedByAnotherProcess" xml:space="preserve">
     <value>Error reading this file, seems that is being used by another process.</value>
   </data>
-  <data name="ErrorWavFileIncorrect" xml:space="preserve">
-    <value>Error, the audio file is not correct, the frequency must be in mono, have 22050hz, encoded in PCM and have 16 bits per sample. Do you want that EuroSound tries to convert it with the correct config?</value>
-  </data>
-  <data name="ErrorWavFileIncorrectMusicsMono" xml:space="preserve">
-    <value>Error, the audio file is not correct, the frequency must be in mono, have 32000hz, encoded in PCM and have 16 bits per sample. Do you want that EuroSound tries to convert it with the correct config?</value>
-  </data>
-  <data name="ErrorWavFileIncorrectMusicsStereo" xml:space="preserve">
-    <value>Error, the audio file is not correct, the frequency must be in stereo, have 32000hz, encoded in PCM and have 16 bits per sample. Do you want that EuroSound tries to convert it with the correct config?</value>
-  </data>
   <data name="Error_Adding_AlreadyExists" xml:space="preserve">
     <value>Sorry, cannot add an item with this name, an item with this name already exists</value>
   </data>
@@ -386,6 +377,9 @@
   </data>
   <data name="ProjectSettings_ErrorHashcode" xml:space="preserve">
     <value>You can't assign the selected hashcode to this project, the changes will not be applied</value>
+  </data>
+  <data name="ReloadProfileAgain" xml:space="preserve">
+    <value>The selected profile is currently loaded, do you want to reload again?</value>
   </data>
   <data name="SearcherInfoClearButton" xml:space="preserve">
     <value>This will clear your current search</value>

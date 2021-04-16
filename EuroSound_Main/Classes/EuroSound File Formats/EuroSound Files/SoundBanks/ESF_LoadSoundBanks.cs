@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.CurrentProjectFunctions;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using System.Collections.Generic;
@@ -10,10 +11,10 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
 {
     internal class ESF_LoadSoundBanks
     {
-        internal void ReadEuroSoundFile11(ProjectFile FileProperties, BinaryReader BReader, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
+        internal string ReadEuroSoundSoundBankFile(ProjectFile FileProperties, BinaryReader BReader, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
         {
             uint TreeViewDataOffset, SoundsListDataOffset, AudioDataOffset;
-            string ProfileSelected;
+            string ProfileSelected, ProfileSelectedName;
 
             //File Hashcode
             FileProperties.Hashcode = BReader.ReadUInt32();
@@ -29,10 +30,12 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
             BReader.BaseStream.Position += 4;
             //File Name
             FileProperties.FileName = BReader.ReadString();
-            //Profile
+            //Profile Path
             ProfileSelected = BReader.ReadString();
+            //Profile Name
+            ProfileSelectedName = BReader.ReadString();
 
-            GenericFunctions.CheckProfiles(ProfileSelected);
+            GenericFunctions.CheckProfiles(ProfileSelected, ProfileSelectedName);
 
             //*===============================================================================================
             //* TreeView
@@ -54,6 +57,8 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
 
             //Close Reader
             BReader.Close();
+
+            return ProfileSelectedName;
         }
 
         internal void ReadAudioDataDictionary(BinaryReader BReader, Dictionary<string, EXAudio> AudiosList)
@@ -161,6 +166,11 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
                 Tag = BReader.ReadString();
                 NodeColor = Color.FromArgb(BReader.ReadInt32());
                 BReader.ReadBoolean();
+
+                if (GlobalPreferences.TV_IgnoreStlyesFromESF)
+                {
+                    NodeColor = Color.Black;
+                }
 
                 TreeNodeFunctions.TreeNodeAddNewNode(ParentNode, NodeName, DisplayName, SelectedImageIndex, ImageIndex, Tag, NodeColor, TreeViewControl);
             }

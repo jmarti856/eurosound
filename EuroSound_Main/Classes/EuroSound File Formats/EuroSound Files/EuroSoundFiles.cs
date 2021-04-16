@@ -18,8 +18,9 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 {
     internal class EuroSoundFiles
     {
-        internal void LoadSoundBanksDocument(TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
+        internal string LoadSoundBanksDocument(TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
         {
+            string ProfileName = string.Empty;
             sbyte TypeOfStoredData;
 
             //Update Status Bar
@@ -40,7 +41,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                         if (TypeOfStoredData == 0)
                         {
                             ESF_LoadSoundBanks Version11Reader = new ESF_LoadSoundBanks();
-                            Version11Reader.ReadEuroSoundFile11(FileProperties, BReader, SoundsList, AudiosList, TreeViewControl);
+                            ProfileName = Version11Reader.ReadEuroSoundSoundBankFile(FileProperties, BReader, SoundsList, AudiosList, TreeViewControl);
                         }
                     }
                     BReader.Close();
@@ -62,6 +63,8 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+
+            return ProfileName;
         }
 
         internal string SaveSoundBanksDocument(TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
@@ -88,8 +91,9 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             return FilePath;
         }
 
-        internal void LoadStreamSoundsDocument(TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, string FilePath, ProjectFile FileProperties, ResourceManager ResxM)
+        internal string LoadStreamSoundsDocument(TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, string FilePath, ProjectFile FileProperties, ResourceManager ResxM)
         {
+            string ProfileName = string.Empty;
             sbyte TypeOfStoredData;
 
             //Update Status Bar
@@ -110,7 +114,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                         if (TypeOfStoredData == 1)
                         {
                             ESF_LoadStreamSounds Version11Reader = new ESF_LoadStreamSounds();
-                            Version11Reader.ReadEuroSoundFile11(FileProperties, BReader, TreeViewControl, StreamSoundsList);
+                            ProfileName = Version11Reader.ReadEuroSoundStreamFile(FileProperties, BReader, TreeViewControl, StreamSoundsList);
                         }
                     }
                     BReader.Close();
@@ -133,6 +137,8 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_Status_Ready"));
+
+            return ProfileName;
         }
 
         internal string SaveStreamedSoundsBank(TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, string FilePath, ProjectFile FileProperties)
@@ -157,9 +163,10 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             return FilePath;
         }
 
-        internal void LoadMusicsDocument(TreeView TreeViewControl, Dictionary<uint, EXMusic> MusicsList, string FilePath, ProjectFile FileProperties, ResourceManager ResxM)
+        internal string LoadMusicsDocument(TreeView TreeViewControl, Dictionary<uint, EXMusic> MusicsList, string FilePath, ProjectFile FileProperties, ResourceManager ResxM)
         {
             sbyte TypeOfStoredData;
+            string ProfileName = string.Empty;
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_ReadingESFFile"));
@@ -179,7 +186,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                         if (TypeOfStoredData == 2)
                         {
                             ESF_LoadMusics Version11Reader = new ESF_LoadMusics();
-                            Version11Reader.ReadEuroSoundFile11(FileProperties, BReader, TreeViewControl, MusicsList);
+                            ProfileName = Version11Reader.ReadEuroSoundMusicFile(FileProperties, BReader, TreeViewControl, MusicsList);
                         }
                     }
                     BReader.Close();
@@ -202,6 +209,8 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_Status_Ready"));
+
+            return ProfileName;
         }
 
         internal string SaveMusics(TreeView TreeViewControl, Dictionary<uint, EXMusic> StreamSoundsList, string FilePath, ProjectFile FileProperties)

@@ -72,10 +72,6 @@ namespace EuroSound_Application
                 ReadSFXData();
                 GlobalPreferences.HT_SoundsDataMD5 = GenericFunctions.CalculateMD5(FilePath);
             }
-            else
-            {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Hashcodes_SFXData_NotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         internal static void LoadMusicHashcodes(string FilePath)
@@ -86,10 +82,6 @@ namespace EuroSound_Application
                 ReadMusicHashcodes();
                 GlobalPreferences.HT_MusicMD5 = GenericFunctions.CalculateMD5(FilePath);
             }
-            else
-            {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Hashcodes_SFXData_NotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         internal static void LoadSoundHashcodes(string SoundHashcodesPath)
@@ -99,10 +91,6 @@ namespace EuroSound_Application
                 //Read Data
                 ReadHashcodes(SoundHashcodesPath);
                 GlobalPreferences.HT_SoundsMD5 = GenericFunctions.CalculateMD5(SoundHashcodesPath);
-            }
-            else
-            {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Hashcodes_SFXDefines_NotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -181,8 +169,7 @@ namespace EuroSound_Application
             string HexLabel;
 
             //Clear dictionaries
-            SFX_Defines.Clear();
-            SB_Defines.Clear();
+            MFX_Defines.Clear();
 
             //Regex FindHexNumber = new Regex(@"(0[xX][A-Fa-f0-9]+;?)+$");
             Regex FindHashcodeLabel = new Regex(@"\s+(\w+)");
@@ -268,7 +255,10 @@ namespace EuroSound_Application
                                     ArrayOfValues[6] = GenericFunctions.StringFloatToDouble(SplitedLine[6]);
                                     ArrayOfValues[7] = GenericFunctions.StringFloatToDouble(SplitedLine[7]);
 
-                                    SFX_Data.Add(ItemKey, ArrayOfValues);
+                                    if (!SFX_Data.ContainsKey(ItemKey))
+                                    {
+                                        SFX_Data.Add(ItemKey, ArrayOfValues);
+                                    }
                                 }
                             }
 

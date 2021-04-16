@@ -39,6 +39,7 @@ namespace EuroSound_Application.SoundBanksEditor
         private MostRecentFilesMenu RecentFilesMenu;
         private string FileToLoadArg, ProjectName;
         private string LoadedFile = string.Empty;
+        private bool FormMustBeClosed = false;
 
         //The undo and redo history lists.
         private Stack<object> UndoListSounds = new Stack<object>();
@@ -137,6 +138,8 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         private void Frm_Soundbanks_Main_Load(object sender, EventArgs e)
         {
+            string ProfileName;
+
             // Fixes bug where loading form maximised in MDI window shows incorrect icon. 
             Icon = Icon.Clone() as Icon;
 
@@ -189,33 +192,49 @@ namespace EuroSound_Application.SoundBanksEditor
             else
             {
                 LoadedFile = FileToLoadArg;
-                EuroSoundFilesFunctions.LoadSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, FileToLoadArg, ProjectInfo);
-                TreeView_File.CollapseAll();
+                ProfileName = EuroSoundFilesFunctions.LoadSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, FileToLoadArg, ProjectInfo);
+
+                //Check that the profile name matches with the current one
+                if (ProfileName.Equals(GlobalPreferences.SelectedProfileName))
+                {
+                    TreeView_File.ExpandAll();
+                }
+                else
+                {
+                    FormMustBeClosed = true;
+                }
             }
         }
 
         private void Frm_Soundbanks_Main_Shown(object sender, EventArgs e)
         {
-            //Update from title
-            Text = GenericFunctions.UpdateProjectFormText(LoadedFile, ProjectInfo.FileName);
-            if (WindowState != FormWindowState.Maximized)
+            if (FormMustBeClosed)
             {
-                MdiParent.Text = "EuroSound - " + Text;
+                Close();
             }
+            else
+            {
+                //Update from title
+                Text = GenericFunctions.UpdateProjectFormText(LoadedFile, ProjectInfo.FileName);
+                if (WindowState != FormWindowState.Maximized)
+                {
+                    MdiParent.Text = "EuroSound - " + Text;
+                }
 
-            //Set Program status
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                //Set Program status
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
-            //Update File name label
-            UpdateStatusBarLabels();
+                //Update File name label
+                UpdateStatusBarLabels();
 
-            //Apply User Preferences
-            FontConverter cvt = new FontConverter();
-            TreeView_File.Indent = GlobalPreferences.TV_Indent;
-            TreeView_File.ItemHeight = GlobalPreferences.TV_ItemHeight;
-            TreeView_File.Font = cvt.ConvertFromString(GlobalPreferences.TV_SelectedFont) as Font;
-            TreeView_File.ShowLines = GlobalPreferences.TV_ShowLines;
-            TreeView_File.ShowRootLines = GlobalPreferences.TV_ShowRootLines;
+                //Apply User Preferences
+                FontConverter cvt = new FontConverter();
+                TreeView_File.Indent = GlobalPreferences.TV_Indent;
+                TreeView_File.ItemHeight = GlobalPreferences.TV_ItemHeight;
+                TreeView_File.Font = cvt.ConvertFromString(GlobalPreferences.TV_SelectedFont) as Font;
+                TreeView_File.ShowLines = GlobalPreferences.TV_ShowLines;
+                TreeView_File.ShowRootLines = GlobalPreferences.TV_ShowRootLines;
+            }
         }
 
         private void Frm_Soundbanks_Main_Enter(object sender, EventArgs e)

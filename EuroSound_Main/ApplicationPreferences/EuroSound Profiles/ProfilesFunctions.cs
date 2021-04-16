@@ -12,13 +12,22 @@ namespace EuroSound_Application.ApplicationPreferences.EuroSound_Profiles
         ESP_Loader ProfilesLoader = new ESP_Loader();
         WindowsRegistryFunctions RegistryFunctions = new WindowsRegistryFunctions();
 
-        internal void ApplyProfile(string ProfileFilePath)
+        internal void ApplyProfile(string ProfileFilePath, string ProfileFileName, bool ReloadHashTables)
         {
             string[] FileLines = File.ReadAllLines(ProfileFilePath);
             string[] SectionData;
 
             if (ProfilesLoader.FileIsValid(FileLines))
             {
+                //*===============================================================================================
+                //* Refresh Variables
+                //*===============================================================================================
+                GlobalPreferences.SelectedProfile = ProfileFilePath;
+                GlobalPreferences.SelectedProfileName = ProfileFileName;
+
+                //Save config in Registry
+                RegistryFunctions.SaveCurrentProfile(GlobalPreferences.SelectedProfile, GlobalPreferences.SelectedProfileName);
+
                 //*===============================================================================================
                 //* [SoundbanksSettings]
                 //*===============================================================================================
@@ -115,11 +124,22 @@ namespace EuroSound_Application.ApplicationPreferences.EuroSound_Profiles
                 RegistryFunctions.SaveFlags(SectionData, "AudioFlags");
 
                 //*===============================================================================================
+                //* Clear Current HashTables
+                //*===============================================================================================
+                Hashcodes.SFX_Data.Clear();
+                Hashcodes.SFX_Defines.Clear();
+                Hashcodes.MFX_Defines.Clear();
+                Hashcodes.SB_Defines.Clear();
+
+                //*===============================================================================================
                 //* READ HASHTABLES
                 //*===============================================================================================
-                Hashcodes.LoadSoundDataFile(GlobalPreferences.HT_SoundsDataPath);
-                Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
-                Hashcodes.LoadMusicHashcodes(GlobalPreferences.HT_MusicPath);
+                if (ReloadHashTables)
+                {
+                    Hashcodes.LoadSoundDataFile(GlobalPreferences.HT_SoundsDataPath);
+                    Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
+                    Hashcodes.LoadMusicHashcodes(GlobalPreferences.HT_MusicPath);
+                }
             }
         }
     }

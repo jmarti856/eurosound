@@ -24,12 +24,14 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             OpenForm = GenericFunctions.GetFormByName("Frm_MainPreferences", Tag.ToString());
             Button_WavesColorControl.BackColor = Color.FromArgb(((Frm_MainPreferences)OpenForm).ColorWavesControlTEMPORAL);
             Button_WavesBackColor.BackColor = Color.FromArgb(((Frm_MainPreferences)OpenForm).BackColorWavesControlTEMPORAL);
+            CheckBox_IgnoreLookTree.Checked = ((Frm_MainPreferences)OpenForm).TV_IgnoreStlyesFromESFTEMPORAL;
         }
 
         private void Frm_TreeViewPrefs_FormClosing(object sender, FormClosingEventArgs e)
         {
             ((Frm_MainPreferences)OpenForm).ColorWavesControlTEMPORAL = Button_WavesColorControl.BackColor.ToArgb();
             ((Frm_MainPreferences)OpenForm).BackColorWavesControlTEMPORAL = Button_WavesBackColor.BackColor.ToArgb();
+            ((Frm_MainPreferences)OpenForm).TV_IgnoreStlyesFromESFTEMPORAL = CheckBox_IgnoreLookTree.Checked;
         }
 
         //*===============================================================================================

@@ -22,6 +22,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         internal int TreeViewItemHeightTEMPORAL;
         internal bool ShowLinesTEMPORAL;
         internal bool ShowRootLinesTEMPORAL;
+        internal bool TV_IgnoreStlyesFromESFTEMPORAL;
 
         //Frm_GeneralPreferences
         internal string SFXOutputPathTEMPORAL;
@@ -43,6 +44,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
         //Frm_Profiles
         internal string SelectedProfileTEMPORAL;
+        internal string SelectedProfileNameTEMPORAL;
 
         //*===============================================================================================
         //* GLOBAL VARS
@@ -84,6 +86,8 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             TreeViewItemHeightTEMPORAL = GlobalPreferences.TV_ItemHeight;
             UseSystemTrayTEMPORAL = GlobalPreferences.UseSystemTray;
             SelectedProfileTEMPORAL = GlobalPreferences.SelectedProfile;
+            SelectedProfileNameTEMPORAL = GlobalPreferences.SelectedProfileName;
+            TV_IgnoreStlyesFromESFTEMPORAL = GlobalPreferences.TV_IgnoreStlyesFromESF;
 
             TreeViewPreferences.ExpandAll();
         }
@@ -109,6 +113,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 GlobalPreferences.TV_ItemHeight = TreeViewItemHeightTEMPORAL;
                 GlobalPreferences.TV_ShowLines = ShowLinesTEMPORAL;
                 GlobalPreferences.TV_ShowRootLines = ShowRootLinesTEMPORAL;
+                GlobalPreferences.TV_IgnoreStlyesFromESF = TV_IgnoreStlyesFromESFTEMPORAL;
 
                 //SaveConfig in Registry
                 WRegistryFunctions.SaveTreeViewPreferences();
@@ -155,13 +160,28 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             if (ProfilesFormOpened)
             {
                 ProfilesFunctions PFunctions = new ProfilesFunctions();
-                GlobalPreferences.SelectedProfile = SelectedProfileTEMPORAL;
-
-                //Save config in Registry
-                WRegistryFunctions.SaveCurrentProfile(GlobalPreferences.SelectedProfile);
 
                 //Apply the selected profile
-                PFunctions.ApplyProfile(GlobalPreferences.SelectedProfile);
+                if (!GlobalPreferences.SelectedProfileName.Equals(SelectedProfileNameTEMPORAL))
+                {
+                    PFunctions.ApplyProfile(GlobalPreferences.SelectedProfile, GlobalPreferences.SelectedProfileName, true);
+                }
+                //Ask user if wants to reload the profile
+                else
+                {
+                    DialogResult Answer = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ReloadProfileAgain"), "EuroSound", MessageBoxButtons.YesNo);
+                    if (Answer == DialogResult.Yes)
+                    {
+                        PFunctions.ApplyProfile(SelectedProfileTEMPORAL, SelectedProfileNameTEMPORAL, true);
+                    }
+                }
+
+                //Update Variables
+                GlobalPreferences.SelectedProfile = SelectedProfileTEMPORAL;
+                GlobalPreferences.SelectedProfileName = SelectedProfileNameTEMPORAL;
+
+                //Save config in Registry
+                WRegistryFunctions.SaveCurrentProfile(GlobalPreferences.SelectedProfile, GlobalPreferences.SelectedProfileName);
             }
             Close();
         }

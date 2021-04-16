@@ -35,6 +35,7 @@ namespace EuroSound_Application.StreamSounds
         private MostRecentFilesMenu RecentFilesMenu;
         private string FileToLoadArg, ProjectName;
         private string LoadedFile = string.Empty;
+        private bool FormMustBeClosed = false;
 
         // The undo and redo history lists.
         private Stack<object> UndoListSounds = new Stack<object>();
@@ -104,6 +105,8 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         private void Frm_StreamSoundsEditorMain_Load(object sender, EventArgs e)
         {
+            string ProfileName;
+
             // Fixes bug where loading form maximised in MDI window shows incorrect icon. 
             Icon = Icon.Clone() as Icon;
 
@@ -161,8 +164,17 @@ namespace EuroSound_Application.StreamSounds
             else
             {
                 LoadedFile = FileToLoadArg;
-                SerializeInfo.LoadStreamSoundsDocument(TreeView_StreamData, StreamSoundsList, FileToLoadArg, ProjectInfo, GenericFunctions.ResourcesManager);
-                TreeView_StreamData.ExpandAll();
+                ProfileName = SerializeInfo.LoadStreamSoundsDocument(TreeView_StreamData, StreamSoundsList, FileToLoadArg, ProjectInfo, GenericFunctions.ResourcesManager);
+
+                //Check that the profile name matches with the current one
+                if (ProfileName.Equals(GlobalPreferences.SelectedProfileName))
+                {
+                    TreeView_StreamData.ExpandAll();
+                }
+                else
+                {
+                    FormMustBeClosed = true;
+                }
             }
 
             ProjectInfo.Hashcode = 65535;
@@ -170,25 +182,32 @@ namespace EuroSound_Application.StreamSounds
 
         private void Frm_StreamSoundsEditorMain_Shown(object sender, EventArgs e)
         {
-            //Update from title
-            Text = GenericFunctions.UpdateProjectFormText(LoadedFile, ProjectInfo.FileName);
-            if (WindowState != FormWindowState.Maximized)
+            if (FormMustBeClosed)
             {
-                MdiParent.Text = "EuroSound - " + Text;
+                Close();
             }
+            else
+            {
+                //Update from title
+                Text = GenericFunctions.UpdateProjectFormText(LoadedFile, ProjectInfo.FileName);
+                if (WindowState != FormWindowState.Maximized)
+                {
+                    MdiParent.Text = "EuroSound - " + Text;
+                }
 
-            //Set Program status
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                //Set Program status
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
-            UpdateStatusBarLabels();
+                UpdateStatusBarLabels();
 
-            //Apply User Preferences
-            FontConverter cvt = new FontConverter();
-            TreeView_StreamData.Indent = GlobalPreferences.TV_Indent;
-            TreeView_StreamData.ItemHeight = GlobalPreferences.TV_ItemHeight;
-            TreeView_StreamData.Font = cvt.ConvertFromString(GlobalPreferences.TV_SelectedFont) as Font;
-            TreeView_StreamData.ShowLines = GlobalPreferences.TV_ShowLines;
-            TreeView_StreamData.ShowRootLines = GlobalPreferences.TV_ShowRootLines;
+                //Apply User Preferences
+                FontConverter cvt = new FontConverter();
+                TreeView_StreamData.Indent = GlobalPreferences.TV_Indent;
+                TreeView_StreamData.ItemHeight = GlobalPreferences.TV_ItemHeight;
+                TreeView_StreamData.Font = cvt.ConvertFromString(GlobalPreferences.TV_SelectedFont) as Font;
+                TreeView_StreamData.ShowLines = GlobalPreferences.TV_ShowLines;
+                TreeView_StreamData.ShowRootLines = GlobalPreferences.TV_ShowRootLines;
+            }
         }
 
         private void Frm_StreamSoundsEditorMain_Enter(object sender, System.EventArgs e)

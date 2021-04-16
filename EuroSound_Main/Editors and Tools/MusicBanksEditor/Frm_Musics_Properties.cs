@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.AudioFunctionsLibrary;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.StreamSounds;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using NAudio.Wave;
@@ -64,16 +65,16 @@ namespace EuroSound_Application.Musics
             string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0, true);
             if (!string.IsNullOrEmpty(AudioPath))
             {
-                if (GenericFunctions.AudioIsValid(AudioPath, 1, 32000))
+                if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.MusicbankChannels, GlobalPreferences.MusicbankFrequency))
                 {
                     LoadDataLeftChannel(AudioPath);
                 }
                 else
                 {
-                    DialogResult TryToReload = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrectMusicsMono"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                    DialogResult TryToReload = MessageBox.Show("Error, this audio file is not correct, the specifies are: " + GlobalPreferences.MusicbankChannels + " channels, the rate must be " + GlobalPreferences.MusicbankFrequency + "Hz, must have " + GlobalPreferences.MusicbankBits + " bits per sample and encoded in " + GlobalPreferences.MusicbankEncoding + ".", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (TryToReload == DialogResult.Yes)
                     {
-                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), 32000, 1, 16);
+                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), (uint)GlobalPreferences.MusicbankFrequency, (ushort)GlobalPreferences.MusicbankChannels, GlobalPreferences.MusicbankBits);
                         if (!string.IsNullOrEmpty(FileTempFile))
                         {
                             LoadDataLeftChannel(FileTempFile);
@@ -93,16 +94,16 @@ namespace EuroSound_Application.Musics
             string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0, true);
             if (!string.IsNullOrEmpty(AudioPath))
             {
-                if (GenericFunctions.AudioIsValid(AudioPath, 1, 32000))
+                if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.MusicbankChannels, GlobalPreferences.MusicbankFrequency))
                 {
                     LoadDataRightChannel(AudioPath);
                 }
                 else
                 {
-                    DialogResult TryToReload = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrectMusicsMono"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                    DialogResult TryToReload = MessageBox.Show("Error, this audio file is not correct, the specifies are: " + GlobalPreferences.MusicbankChannels + " channels, the rate must be " + GlobalPreferences.MusicbankFrequency + "Hz, must have " + GlobalPreferences.MusicbankBits + " bits per sample and encoded in " + GlobalPreferences.MusicbankEncoding + ".", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (TryToReload == DialogResult.Yes)
                     {
-                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), 32000, 1, 16);
+                        string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), (uint)GlobalPreferences.MusicbankFrequency, (ushort)GlobalPreferences.MusicbankChannels, GlobalPreferences.MusicbankBits);
                         if (!string.IsNullOrEmpty(FileTempFile))
                         {
                             LoadDataRightChannel(FileTempFile);
@@ -135,7 +136,7 @@ namespace EuroSound_Application.Musics
         {
             if (TemporalMusic.PCM_Data_LeftChannel != null)
             {
-                AudioLibrary.PlayAudio(_waveOut, TemporalMusic.PCM_Data_LeftChannel, (int)TemporalMusic.Frequency_LeftChannel, 1, (int)TemporalMusic.Bits_LeftChannel, TemporalMusic.Channels_LeftChannel, 0, Numeric_BaseVolume.Value);
+                AudioLibrary.PlayAudio(_waveOut, TemporalMusic.PCM_Data_LeftChannel, (int)TemporalMusic.Frequency_LeftChannel, GlobalPreferences.MusicbankChannels, (int)TemporalMusic.Bits_LeftChannel, TemporalMusic.Channels_LeftChannel, 0, Numeric_BaseVolume.Value);
             }
             else
             {
@@ -152,7 +153,7 @@ namespace EuroSound_Application.Musics
         {
             if (TemporalMusic.PCM_Data_RightChannel != null)
             {
-                AudioLibrary.PlayAudio(_waveOut, TemporalMusic.PCM_Data_RightChannel, (int)TemporalMusic.Frequency_RightChannel, 1, (int)TemporalMusic.Bits_RightChannel, TemporalMusic.Channels_RightChannel, 0, Numeric_BaseVolume.Value);
+                AudioLibrary.PlayAudio(_waveOut, TemporalMusic.PCM_Data_RightChannel, (int)TemporalMusic.Frequency_RightChannel, GlobalPreferences.MusicbankChannels, (int)TemporalMusic.Bits_RightChannel, TemporalMusic.Channels_RightChannel, 0, Numeric_BaseVolume.Value);
             }
             else
             {
@@ -167,7 +168,7 @@ namespace EuroSound_Application.Musics
 
         private void Button_Play_Click(object sender, EventArgs e)
         {
-            AudioLibrary.PlayAudioMultiplexing(_waveOut, TemporalMusic.PCM_Data_LeftChannel, TemporalMusic.PCM_Data_RightChannel, (int)TemporalMusic.Frequency_LeftChannel, (int)TemporalMusic.Bits_LeftChannel, 1, Numeric_BaseVolume.Value);
+            AudioLibrary.PlayAudioMultiplexing(_waveOut, TemporalMusic.PCM_Data_LeftChannel, TemporalMusic.PCM_Data_RightChannel, (int)TemporalMusic.Frequency_LeftChannel, (int)TemporalMusic.Bits_LeftChannel, GlobalPreferences.MusicbankChannels, Numeric_BaseVolume.Value);
         }
 
         private void Button_Stop_Click(object sender, EventArgs e)

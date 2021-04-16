@@ -789,7 +789,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                         AudioPath = RemoveCharactersFromPathString.Replace(KeyWordValues[0], "");
                         if (File.Exists(AudioPath))
                         {
-                            if (GenericFunctions.AudioIsValid(AudioPath, 1, 32000))
+                            if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.MusicbankChannels, GlobalPreferences.MusicbankFrequency))
                             {
                                 using (WaveFileReader AudioReader = new WaveFileReader(AudioPath))
                                 {
@@ -829,7 +829,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                         AudioPath = RemoveCharactersFromPathString.Replace(KeyWordValues[0], "");
                         if (File.Exists(AudioPath))
                         {
-                            if (GenericFunctions.AudioIsValid(AudioPath, 1, 32000))
+                            if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.MusicbankChannels, GlobalPreferences.MusicbankFrequency))
                             {
                                 using (WaveFileReader AudioReader = new WaveFileReader(AudioPath))
                                 {

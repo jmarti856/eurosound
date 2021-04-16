@@ -86,13 +86,13 @@ namespace EuroSound_Application.StreamSounds
             string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0, true);
             if (!string.IsNullOrEmpty(AudioPath))
             {
-                if (GenericFunctions.AudioIsValid(AudioPath, 1, 32000))
+                if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.StreambankChannels, GlobalPreferences.StreambankFrequency))
                 {
                     LoadAudio(AudioPath);
                 }
                 else
                 {
-                    DialogResult TryToReload = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorWavFileIncorrect"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                    DialogResult TryToReload = MessageBox.Show("Error, this audio file is not correct, the specifies are: " + GlobalPreferences.StreambankChannels + " channels, the rate must be " + GlobalPreferences.StreambankFrequency + "Hz, must have " + GlobalPreferences.StreambankBits + " bits per sample and encoded in " + GlobalPreferences.StreambankEncoding + ".", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (TryToReload == DialogResult.Yes)
                     {
                         string FileTempFile = AudioLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), (uint)GlobalPreferences.StreambankFrequency, (ushort)GlobalPreferences.StreambankChannels, GlobalPreferences.StreambankBits);

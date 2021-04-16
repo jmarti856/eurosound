@@ -394,33 +394,6 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Error, the audio file is not correct, the frequency must be in mono, have 22050hz, encoded in PCM and have 16 bits per sample. Do you want that EuroSound tries to convert it with the correct config?.
-        /// </summary>
-        internal static string ErrorWavFileIncorrect {
-            get {
-                return ResourceManager.GetString("ErrorWavFileIncorrect", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a Error, the audio file is not correct, the frequency must be in mono, have 32000hz, encoded in PCM and have 16 bits per sample. Do you want that EuroSound tries to convert it with the correct config?.
-        /// </summary>
-        internal static string ErrorWavFileIncorrectMusicsMono {
-            get {
-                return ResourceManager.GetString("ErrorWavFileIncorrectMusicsMono", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a Error, the audio file is not correct, the frequency must be in stereo, have 32000hz, encoded in PCM and have 16 bits per sample. Do you want that EuroSound tries to convert it with the correct config?.
-        /// </summary>
-        internal static string ErrorWavFileIncorrectMusicsStereo {
-            get {
-                return ResourceManager.GetString("ErrorWavFileIncorrectMusicsStereo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Busca una cadena traducida similar a An error occurred registering EuroSound File-Types with the shell.
         /// </summary>
         internal static string EuroSoundFile_TypesRegisterdError {
@@ -867,6 +840,15 @@ namespace EuroSound_Application.Properties {
         internal static string ProjectSettings_ErrorHashcode {
             get {
                 return ResourceManager.GetString("ProjectSettings_ErrorHashcode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The selected profile is currently loaded, do you want to reload again?.
+        /// </summary>
+        internal static string ReloadProfileAgain {
+            get {
+                return ResourceManager.GetString("ReloadProfileAgain", resourceCulture);
             }
         }
         
