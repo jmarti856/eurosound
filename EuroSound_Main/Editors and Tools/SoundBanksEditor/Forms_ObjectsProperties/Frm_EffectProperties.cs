@@ -1,5 +1,6 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.CustomControls.FlagsForm;
+using EuroSound_Application.HashCodesFunctions;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,8 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         private Form OpenForm;
         private EXSound SelectedSound;
-        private string TreeNodeSoundName, SoundSection;
         private Thread DataToCombobox;
+        private string TreeNodeSoundName, SoundSection;
 
         public Frm_EffectProperties(EXSound SoundToCheck, string SoundName, string Section)
         {

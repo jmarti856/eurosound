@@ -34,6 +34,7 @@
             this.Combobox_FileHashcode = new System.Windows.Forms.ComboBox();
             this.Label_HashTableEntry = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.Label_Hashcodes = new System.Windows.Forms.Label();
             this.Textbox_Musics_Path = new System.Windows.Forms.TextBox();
             this.Label_MusicEvents_Path = new System.Windows.Forms.Label();
             this.Label_SectionMusic = new System.Windows.Forms.Label();
@@ -47,7 +48,6 @@
             this.Button_Cancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.Combobox_TypeOfData = new System.Windows.Forms.ComboBox();
-            this.Label_Hashcodes = new System.Windows.Forms.Label();
             this.GroupBox_HashTable.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -65,10 +65,10 @@
             // 
             this.Textbox_FileName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_FileName.Location = new System.Drawing.Point(72, 12);
+            this.Textbox_FileName.Location = new System.Drawing.Point(75, 12);
             this.Textbox_FileName.MaxLength = 300;
             this.Textbox_FileName.Name = "Textbox_FileName";
-            this.Textbox_FileName.Size = new System.Drawing.Size(427, 20);
+            this.Textbox_FileName.Size = new System.Drawing.Size(401, 20);
             this.Textbox_FileName.TabIndex = 1;
             // 
             // GroupBox_HashTable
@@ -79,7 +79,7 @@
             this.GroupBox_HashTable.Controls.Add(this.Label_HashTableEntry);
             this.GroupBox_HashTable.Location = new System.Drawing.Point(12, 294);
             this.GroupBox_HashTable.Name = "GroupBox_HashTable";
-            this.GroupBox_HashTable.Size = new System.Drawing.Size(487, 61);
+            this.GroupBox_HashTable.Size = new System.Drawing.Size(464, 61);
             this.GroupBox_HashTable.TabIndex = 5;
             this.GroupBox_HashTable.TabStop = false;
             this.GroupBox_HashTable.Text = "An entry for this ESF file can be placed in this hash table:";
@@ -93,7 +93,7 @@
             this.Combobox_FileHashcode.FormattingEnabled = true;
             this.Combobox_FileHashcode.Location = new System.Drawing.Point(99, 19);
             this.Combobox_FileHashcode.Name = "Combobox_FileHashcode";
-            this.Combobox_FileHashcode.Size = new System.Drawing.Size(382, 21);
+            this.Combobox_FileHashcode.Size = new System.Drawing.Size(359, 21);
             this.Combobox_FileHashcode.TabIndex = 1;
             this.Combobox_FileHashcode.Click += new System.EventHandler(this.Combobox_FileHashcode_Click);
             // 
@@ -122,10 +122,23 @@
             this.groupBox1.Controls.Add(this.Label_HT_Sound);
             this.groupBox1.Location = new System.Drawing.Point(12, 71);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(487, 217);
+            this.groupBox1.Size = new System.Drawing.Size(464, 217);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Hash Table Configuration:";
+            // 
+            // Label_Hashcodes
+            // 
+            this.Label_Hashcodes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Hashcodes.Location = new System.Drawing.Point(6, 16);
+            this.Label_Hashcodes.MaximumSize = new System.Drawing.Size(500, 0);
+            this.Label_Hashcodes.Name = "Label_Hashcodes";
+            this.Label_Hashcodes.Size = new System.Drawing.Size(452, 38);
+            this.Label_Hashcodes.TabIndex = 8;
+            this.Label_Hashcodes.Text = "A project can use a shared header file to record all item identities, with unique" +
+    " identifier values being assigned by Eurosound to each item.";
             // 
             // Textbox_Musics_Path
             // 
@@ -135,7 +148,7 @@
             this.Textbox_Musics_Path.Location = new System.Drawing.Point(44, 179);
             this.Textbox_Musics_Path.Name = "Textbox_Musics_Path";
             this.Textbox_Musics_Path.ReadOnly = true;
-            this.Textbox_Musics_Path.Size = new System.Drawing.Size(437, 20);
+            this.Textbox_Musics_Path.Size = new System.Drawing.Size(414, 20);
             this.Textbox_Musics_Path.TabIndex = 9;
             // 
             // Label_MusicEvents_Path
@@ -164,7 +177,7 @@
             this.Textbox_SFXData_Path.Location = new System.Drawing.Point(44, 124);
             this.Textbox_SFXData_Path.Name = "Textbox_SFXData_Path";
             this.Textbox_SFXData_Path.ReadOnly = true;
-            this.Textbox_SFXData_Path.Size = new System.Drawing.Size(437, 20);
+            this.Textbox_SFXData_Path.Size = new System.Drawing.Size(414, 20);
             this.Textbox_SFXData_Path.TabIndex = 6;
             // 
             // Label_SFXData_Path
@@ -193,7 +206,7 @@
             this.Textbox_Sounds_Path.Location = new System.Drawing.Point(44, 70);
             this.Textbox_Sounds_Path.Name = "Textbox_Sounds_Path";
             this.Textbox_Sounds_Path.ReadOnly = true;
-            this.Textbox_Sounds_Path.Size = new System.Drawing.Size(437, 20);
+            this.Textbox_Sounds_Path.Size = new System.Drawing.Size(414, 20);
             this.Textbox_Sounds_Path.TabIndex = 2;
             // 
             // Label_sfx_path
@@ -217,7 +230,7 @@
             // Button_OK
             // 
             this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_OK.Location = new System.Drawing.Point(343, 371);
+            this.Button_OK.Location = new System.Drawing.Point(320, 367);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
             this.Button_OK.TabIndex = 6;
@@ -229,7 +242,7 @@
             // 
             this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_Cancel.Location = new System.Drawing.Point(424, 371);
+            this.Button_Cancel.Location = new System.Drawing.Point(401, 367);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.Button_Cancel.TabIndex = 7;
@@ -259,19 +272,8 @@
             "Music tracks"});
             this.Combobox_TypeOfData.Location = new System.Drawing.Point(112, 38);
             this.Combobox_TypeOfData.Name = "Combobox_TypeOfData";
-            this.Combobox_TypeOfData.Size = new System.Drawing.Size(386, 21);
+            this.Combobox_TypeOfData.Size = new System.Drawing.Size(363, 21);
             this.Combobox_TypeOfData.TabIndex = 3;
-            // 
-            // Label_Hashcodes
-            // 
-            this.Label_Hashcodes.AutoSize = true;
-            this.Label_Hashcodes.Location = new System.Drawing.Point(6, 16);
-            this.Label_Hashcodes.MaximumSize = new System.Drawing.Size(500, 0);
-            this.Label_Hashcodes.Name = "Label_Hashcodes";
-            this.Label_Hashcodes.Size = new System.Drawing.Size(478, 26);
-            this.Label_Hashcodes.TabIndex = 8;
-            this.Label_Hashcodes.Text = "A project can use a shared header file to record all item identities, with unique" +
-    " identifier values being assigned by Eurosound to each item.";
             // 
             // Frm_FileProperties
             // 
@@ -279,7 +281,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Button_Cancel;
-            this.ClientSize = new System.Drawing.Size(511, 411);
+            this.ClientSize = new System.Drawing.Size(488, 407);
             this.Controls.Add(this.Combobox_TypeOfData);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Button_Cancel);

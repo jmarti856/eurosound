@@ -1,5 +1,6 @@
 ﻿using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.EuroSound_Profiles;
+using EuroSound_Application.HashCodesFunctions;
 using System.IO;
 
 namespace EuroSound_Application.ApplicationPreferences.EuroSound_Profiles

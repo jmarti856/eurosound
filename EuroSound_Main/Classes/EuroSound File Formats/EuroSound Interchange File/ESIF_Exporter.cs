@@ -1,5 +1,6 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.AudioFunctionsLibrary;
+using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;
@@ -22,7 +23,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         internal void ExportSingleSFX(string FilePath, uint SoundKey, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
         {
             string AudioPath;
-            string MediaFolder = GenericFunctions.OpenFolderBrowser();
+            string MediaFolder = BrowsersAndDialogs.OpenFolderBrowser();
 
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
             {
@@ -123,7 +124,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         {
             int AudioIndex = 0;
             string AudioPath;
-            string MediaFolder = GenericFunctions.OpenFolderBrowser();
+            string MediaFolder = BrowsersAndDialogs.OpenFolderBrowser();
 
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
             {
@@ -282,7 +283,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         internal void ExportStreamSoundbank(string FilePath, uint SoundKey, Dictionary<uint, EXSoundStream> SoundsList, TreeView TreeViewControl)
         {
             string AudioPath;
-            string MediaFolder = GenericFunctions.OpenFolderBrowser();
+            string MediaFolder = BrowsersAndDialogs.OpenFolderBrowser();
 
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
             {
@@ -357,7 +358,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         internal void ExportProjectStream(string FilePath, ProjectFile ProjectSettings, Dictionary<uint, EXSoundStream> SoundsList, TreeView TreeViewControl)
         {
             string AudioPath;
-            string MediaFolder = GenericFunctions.OpenFolderBrowser();
+            string MediaFolder = BrowsersAndDialogs.OpenFolderBrowser();
 
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
             {
@@ -442,7 +443,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         internal void ExportMusicBank(string FilePath, uint MusicKey, Dictionary<uint, EXMusic> MusicList, TreeView TreeViewControl)
         {
             string AudioPathLeft, AudioPathRight;
-            string MediaFolder = GenericFunctions.OpenFolderBrowser();
+            string MediaFolder = BrowsersAndDialogs.OpenFolderBrowser();
 
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
             {
@@ -523,7 +524,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         internal void ExportProjectMusic(string FilePath, ProjectFile ProjectSettings, Dictionary<uint, EXMusic> MusicList, TreeView TreeViewControl)
         {
             string AudioPathLeft, AudioPathRight;
-            string MediaFolder = GenericFunctions.OpenFolderBrowser();
+            string MediaFolder = BrowsersAndDialogs.OpenFolderBrowser();
 
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
             {

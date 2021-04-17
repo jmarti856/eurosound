@@ -20,21 +20,20 @@ namespace EuroSound_Application.Classes.SFX_Files
             //Count Markers
             for (int i = 0; i < MarkersList.Count; i++)
             {
-                if (MarkersList[i].MusicMakerType == (int)GenericFunctions.ESoundMarkers.Start)
+                switch (MarkersList[i].MusicMakerType)
                 {
-                    StartMarkers++;
-                }
-                if (MarkersList[i].MusicMakerType == (int)GenericFunctions.ESoundMarkers.End)
-                {
-                    EndMarkers++;
-                }
-                if (MarkersList[i].MusicMakerType == (int)GenericFunctions.ESoundMarkers.Goto)
-                {
-                    GotoMarkers++;
-                }
-                if (MarkersList[i].MusicMakerType == (int)GenericFunctions.ESoundMarkers.Loop)
-                {
-                    LoopMarkers++;
+                    case (int)GenericFunctions.ESoundMarkers.Start:
+                        StartMarkers++;
+                        break;
+                    case (int)GenericFunctions.ESoundMarkers.End:
+                        EndMarkers++;
+                        break;
+                    case (int)GenericFunctions.ESoundMarkers.Goto:
+                        GotoMarkers++;
+                        break;
+                    case (int)GenericFunctions.ESoundMarkers.Loop:
+                        LoopMarkers++;
+                        break;
                 }
             }
 

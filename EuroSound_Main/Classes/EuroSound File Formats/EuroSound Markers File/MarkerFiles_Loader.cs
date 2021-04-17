@@ -9,6 +9,9 @@ namespace EuroSound_Application.MarkerFiles
 {
     class MarkerFiles_Loader
     {
+        //*===============================================================================================
+        //* Global Variables
+        //*===============================================================================================
         private List<string> ImportResults = new List<string>();
         MarkersFunctions MKFunctions = new MarkersFunctions();
 

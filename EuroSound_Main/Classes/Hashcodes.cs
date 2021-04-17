@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace EuroSound_Application
+namespace EuroSound_Application.HashCodesFunctions
 {
     internal static class Hashcodes
     {

@@ -1,12 +1,14 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.AudioFunctionsLibrary;
+using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls.DebugTypes;
 using EuroSound_Application.CustomControls.ProjectSettings;
 using EuroSound_Application.CustomControls.SearcherForm;
 using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.EuroSoundInterchangeFile;
+using EuroSound_Application.HashCodesFunctions;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using Microsoft.Win32;
 using System;
@@ -737,7 +739,7 @@ namespace EuroSound_Application.Musics
         {
             string ExportPath;
 
-            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, ProjectInfo.FileName);
+            ExportPath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, ProjectInfo.FileName);
             if (!string.IsNullOrEmpty(ExportPath))
             {
                 ESIF_Exporter ESIF_Exp = new ESIF_Exporter();
@@ -747,7 +749,7 @@ namespace EuroSound_Application.Musics
 
         private void MenuItemFile_ReadESIF_Click(object sender, EventArgs e)
         {
-            string FilePath = GenericFunctions.OpenFileBrowser("EuroSound Interchange File (*.ESIF)|*.esif", 0, true);
+            string FilePath = BrowsersAndDialogs.FileBrowserDialog("EuroSound Interchange File (*.ESIF)|*.esif", 0, true);
             if (!string.IsNullOrEmpty(FilePath))
             {
                 ESIF_Loader EuroSoundPropertiesFileLoader = new ESIF_Loader();

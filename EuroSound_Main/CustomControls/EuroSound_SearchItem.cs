@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.FunctionsListView;
+﻿using EuroSound_Application.Clases;
+using EuroSound_Application.FunctionsListView;
 using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
@@ -113,7 +114,7 @@ namespace EuroSound_Application.CustomControls.SearcherForm
 
         private void MenuItemFile_SaveAs_Click(object sender, EventArgs e)
         {
-            string PathToSave = GenericFunctions.SaveFileBrowser("Text File (*.txt)|*.txt", 0, true, "");
+            string PathToSave = BrowsersAndDialogs.SaveFileBrowser("Text File (*.txt)|*.txt", 0, true, "");
             if (!string.IsNullOrEmpty(PathToSave))
             {
                 using (StreamWriter sw = File.CreateText(PathToSave))
@@ -168,7 +169,7 @@ namespace EuroSound_Application.CustomControls.SearcherForm
                     TreeNode NodeToChange = Results[(ListViewResults.SelectedItems[0].Index)];
 
                     //Apply color
-                    Color NewColor = Color.FromArgb(GenericFunctions.GetColorFromColorPicker(NodeToChange.ForeColor));
+                    Color NewColor = Color.FromArgb(BrowsersAndDialogs.ColorPickerDialog(NodeToChange.ForeColor));
                     NodeToChange.ForeColor = NewColor;
 
                     //Update cell color from the list view item

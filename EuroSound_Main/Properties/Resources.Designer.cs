@@ -178,6 +178,42 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Delete the selected audio..
+        /// </summary>
+        internal static string ContextMenuAudio_Delete {
+            get {
+                return ResourceManager.GetString("ContextMenuAudio_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Open properties form for the selected audio..
+        /// </summary>
+        internal static string ContextMenuAudio_OpenProperties {
+            get {
+                return ResourceManager.GetString("ContextMenuAudio_OpenProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Rename the selected audio..
+        /// </summary>
+        internal static string ContextMenuAudio_Rename {
+            get {
+                return ResourceManager.GetString("ContextMenuAudio_Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a List all project objects wich use this audio..
+        /// </summary>
+        internal static string ContextMenuAudio_Usage {
+            get {
+                return ResourceManager.GetString("ContextMenuAudio_Usage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Adds a new audio.
         /// </summary>
         internal static string ContextMenuFolder_AddAudio {
@@ -372,6 +408,24 @@ namespace EuroSound_Application.Properties {
         internal static string ContextMenuSound_Rename {
             get {
                 return ResourceManager.GetString("ContextMenuSound_Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Move one level down the selected item..
+        /// </summary>
+        internal static string ContextMenuStreamSound_MoveDown {
+            get {
+                return ResourceManager.GetString("ContextMenuStreamSound_MoveDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Move one level up the selected item..
+        /// </summary>
+        internal static string ContextMenuStreamSound_MoveUp {
+            get {
+                return ResourceManager.GetString("ContextMenuStreamSound_MoveUp", resourceCulture);
             }
         }
         

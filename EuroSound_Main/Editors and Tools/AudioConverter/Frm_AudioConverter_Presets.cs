@@ -5,6 +5,9 @@ namespace EuroSound_Application.AudioConverter
 {
     public partial class Frm_AudioConverter_Presets : Form
     {
+        //*===============================================================================================
+        //* Global Variables
+        //*===============================================================================================
         bool CancelExit = false;
 
         public Frm_AudioConverter_Presets()

@@ -1,12 +1,14 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.AudioFunctionsLibrary;
+using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls.DebugTypes;
 using EuroSound_Application.CustomControls.ProjectSettings;
 using EuroSound_Application.CustomControls.SearcherForm;
 using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.EuroSoundInterchangeFile;
+using EuroSound_Application.HashCodesFunctions;
 using EuroSound_Application.StreamSounds.BuildSFX;
 using EuroSound_Application.StreamSounds.YMLReader;
 using EuroSound_Application.TreeViewLibraryFunctions;
@@ -105,6 +107,8 @@ namespace EuroSound_Application.StreamSounds
             ContextMenuSounds_Properties.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuSound_Properties")); };
             ContextMenuSounds_TextColor.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuFolder_TextColor")); };
             ContextMenuSounds_ExportESIF.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuSound_ExportESIF")); };
+            ContextMenuSounds_MoveDown.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuStreamSound_MoveDown")); };
+            ContextMenuSounds_MoveUp.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ContextMenuStreamSound_MoveUp")); };
             ContextMenu_Sounds.Closing += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
 
         }
@@ -315,7 +319,7 @@ namespace EuroSound_Application.StreamSounds
         {
             string ExportPath;
 
-            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, ProjectInfo.FileName);
+            ExportPath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, ProjectInfo.FileName);
             if (!string.IsNullOrEmpty(ExportPath))
             {
                 ESIF_Exporter ESIF_Exp = new ESIF_Exporter();
@@ -554,7 +558,7 @@ namespace EuroSound_Application.StreamSounds
 
         private void MenuItemFile_ReadESIF_Click(object sender, EventArgs e)
         {
-            string FilePath = GenericFunctions.OpenFileBrowser("EuroSound Interchange File (*.ESIF)|*.esif", 0, true);
+            string FilePath = BrowsersAndDialogs.FileBrowserDialog("EuroSound Interchange File (*.ESIF)|*.esif", 0, true);
             if (!string.IsNullOrEmpty(FilePath))
             {
                 ESIF_Loader EuroSoundPropertiesFileLoader = new ESIF_Loader();
@@ -570,7 +574,7 @@ namespace EuroSound_Application.StreamSounds
 
         private void MenuItemFile_ReadYml_Click(object sender, EventArgs e)
         {
-            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0, true);
+            string FilePath = BrowsersAndDialogs.FileBrowserDialog("YML Files (*.yml)|*.yml", 0, true);
             if (!string.IsNullOrEmpty(FilePath))
             {
                 //--Ask user for a fully reimport--
@@ -596,7 +600,7 @@ namespace EuroSound_Application.StreamSounds
         {
             string SoundName;
 
-            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0, true);
+            string FilePath = BrowsersAndDialogs.FileBrowserDialog("YML Files (*.yml)|*.yml", 0, true);
             if (!string.IsNullOrEmpty(FilePath))
             {
                 SoundName = Path.GetFileNameWithoutExtension(FilePath);

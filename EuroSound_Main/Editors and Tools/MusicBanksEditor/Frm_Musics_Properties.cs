@@ -1,5 +1,6 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.AudioFunctionsLibrary;
+using EuroSound_Application.Clases;
 using EuroSound_Application.StreamSounds;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using NAudio.Wave;
@@ -15,10 +16,10 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
+        private AudioFunctions AudioLibrary = new AudioFunctions();
         private WaveOut _waveOut = new WaveOut();
         private EXMusic SelectedMusic, TemporalMusic;
         private string SelectedMusicKey, MusicName;
-        private AudioFunctions AudioLibrary = new AudioFunctions();
 
         public Frm_Musics_Properties(EXMusic MusicToCheck, string MusicKey, string CurrentMusicName)
         {
@@ -62,7 +63,7 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         private void Button_ReplaceAudio_LeftChannel_Click(object sender, System.EventArgs e)
         {
-            string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0, true);
+            string AudioPath = BrowsersAndDialogs.FileBrowserDialog("WAV Files (*.wav)|*.wav", 0, true);
             if (!string.IsNullOrEmpty(AudioPath))
             {
                 if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.MusicbankChannels, GlobalPreferences.MusicbankFrequency))
@@ -91,7 +92,7 @@ namespace EuroSound_Application.Musics
 
         private void Button_ReplaceAudio_RightChannel_Click(object sender, EventArgs e)
         {
-            string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0, true);
+            string AudioPath = BrowsersAndDialogs.FileBrowserDialog("WAV Files (*.wav)|*.wav", 0, true);
             if (!string.IsNullOrEmpty(AudioPath))
             {
                 if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.MusicbankChannels, GlobalPreferences.MusicbankFrequency))

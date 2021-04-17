@@ -3,6 +3,7 @@ using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationPreferencesForms;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.AudioConverter;
+using EuroSound_Application.Clases;
 using EuroSound_Application.CustomControls.NewProjectForm;
 using EuroSound_Application.SFXData;
 using Microsoft.Win32;
@@ -248,7 +249,7 @@ namespace EuroSound_Application
         private void MenuItemFile_OpenESF_Click(object sender, EventArgs e)
         {
             GlobalPreferences.StatusBar_ToolTipMode = false;
-            ArgumentFromSplash = GenericFunctions.OpenFileBrowser("Eurosound Files (*.esf)|*.esf", 0, false);
+            ArgumentFromSplash = BrowsersAndDialogs.FileBrowserDialog("Eurosound Files (*.esf)|*.esf", 0, false);
             if (!string.IsNullOrEmpty(ArgumentFromSplash))
             {
                 OpenFormsWithFileToLoad(ArgumentFromSplash);
@@ -340,7 +341,7 @@ namespace EuroSound_Application
 
         private void MainMenuTools_BackupSettings_Click(object sender, EventArgs e)
         {
-            string SavePath = GenericFunctions.SaveFileBrowser("Eurosound Registry Files (*.esrf)|*.esrf", 1, true, null);
+            string SavePath = BrowsersAndDialogs.SaveFileBrowser("Eurosound Registry Files (*.esrf)|*.esrf", 1, true, null);
             if (!string.IsNullOrEmpty(SavePath))
             {
                 BackupReloadSettings SettingsFunctions = new BackupReloadSettings();
@@ -350,7 +351,7 @@ namespace EuroSound_Application
 
         private void MainMenuTools_RestoreSettings_Click(object sender, EventArgs e)
         {
-            string FileToLoad = GenericFunctions.OpenFileBrowser("Eurosound Registry Files (*.esrf)|*.esrf", 0, false);
+            string FileToLoad = BrowsersAndDialogs.FileBrowserDialog("Eurosound Registry Files (*.esrf)|*.esrf", 0, false);
             if (!string.IsNullOrEmpty(FileToLoad))
             {
                 BackupReloadSettings SettingsFunctions = new BackupReloadSettings();

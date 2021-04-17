@@ -1,4 +1,5 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.HashCodesFunctions;
 using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;

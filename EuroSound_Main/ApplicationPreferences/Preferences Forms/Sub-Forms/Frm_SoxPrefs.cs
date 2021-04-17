@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EuroSound_Application.Clases;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
@@ -36,7 +37,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         //*===============================================================================================
         private void Button_Search_Click(object sender, EventArgs e)
         {
-            string SoXPath = GenericFunctions.OpenFileBrowser("Executable Files (*.exe)|*.exe", 0, true);
+            string SoXPath = BrowsersAndDialogs.FileBrowserDialog("Executable Files (*.exe)|*.exe", 0, true);
 
             if (!string.IsNullOrEmpty(SoXPath))
             {

@@ -2,6 +2,7 @@
 using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.HashCodesFunctions;
 using EuroSound_Application.MarkerFiles.StreamSoundsEditor.Classes;
 using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;

@@ -165,6 +165,7 @@
     <Compile Include="ApplicationPreferences\Preferences Forms\Frm_MainPreferences.Designer.cs">
       <DependentUpon>Frm_MainPreferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="Classes\BrowsersAndDialogs.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\Musics\ESF_LoadMusics.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\Musics\ESF_SaveMusics.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Interchange File\ESIF_Exporter.cs" />

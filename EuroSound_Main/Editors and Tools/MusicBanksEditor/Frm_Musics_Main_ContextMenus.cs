@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.EuroSoundInterchangeFile;
+﻿using EuroSound_Application.Clases;
+using EuroSound_Application.EuroSoundInterchangeFile;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using EuroSound_Application.TreeViewSorter;
@@ -39,7 +40,7 @@ namespace EuroSound_Application.Musics
             string ExportPath;
 
             SelectedNode = TreeView_MusicData.SelectedNode;
-            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, SelectedNode.Text);
+            ExportPath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, SelectedNode.Text);
 
             if (!string.IsNullOrEmpty(ExportPath))
             {
@@ -54,7 +55,7 @@ namespace EuroSound_Application.Musics
 
             TreeNode SelectedNode = TreeView_MusicData.SelectedNode;
 
-            SelectedColor = GenericFunctions.GetColorFromColorPicker(SelectedNode.ForeColor);
+            SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
                 SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
@@ -67,7 +68,7 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         private void ContextMenuFolder_NewFolder_Click(object sender, EventArgs e)
         {
-            string Name = GenericFunctions.OpenInputBox("Enter a name for new folder.", "New Folder");
+            string Name = BrowsersAndDialogs.InputBoxDialog("Enter a name for new folder.", "New Folder");
             if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_MusicData, Name))
             {
                 MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -106,7 +107,7 @@ namespace EuroSound_Application.Musics
 
         private void ContextMenuFolder_AddSound_Click(object sender, EventArgs e)
         {
-            string Name = GenericFunctions.OpenInputBox("Enter a name for new a new music.", "New Music");
+            string Name = BrowsersAndDialogs.InputBoxDialog("Enter a name for new a new music.", "New Music");
             if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_MusicData, Name))
             {
                 MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -142,7 +143,7 @@ namespace EuroSound_Application.Musics
             int SelectedColor;
 
             TreeNode SelectedNode = TreeView_MusicData.SelectedNode;
-            SelectedColor = GenericFunctions.GetColorFromColorPicker(SelectedNode.ForeColor);
+            SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
                 SelectedNode.ForeColor = Color.FromArgb(SelectedColor);

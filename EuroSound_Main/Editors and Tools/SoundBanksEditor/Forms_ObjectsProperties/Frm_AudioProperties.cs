@@ -1,5 +1,6 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.AudioFunctionsLibrary;
+using EuroSound_Application.Clases;
 using EuroSound_Application.CustomControls.FlagsForm;
 using NAudio.Wave;
 using System;
@@ -17,8 +18,8 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         private WaveOut _waveOut = new WaveOut();
         private EXAudio SelectedAudio, TemporalAudio;
-        private string SelectedAudioMD5Hash, TemporalAudioHash;
         private AudioFunctions AudioFunctionsLibrary;
+        private string SelectedAudioMD5Hash, TemporalAudioHash;
 
         public Frm_AudioProperties(EXAudio AudioToCheck, string AudioKey)
         {
@@ -67,7 +68,7 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         private void Button_ReplaceAudio_Click(object sender, EventArgs e)
         {
-            string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0, true);
+            string AudioPath = BrowsersAndDialogs.FileBrowserDialog("WAV Files (*.wav)|*.wav", 0, true);
             if (!string.IsNullOrEmpty(AudioPath))
             {
                 if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.SoundbankChannels, GlobalPreferences.SoundbankFrequency))

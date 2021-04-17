@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.SoundBanksEditor;
+﻿using EuroSound_Application.HashCodesFunctions;
+using EuroSound_Application.SoundBanksEditor;
 using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;

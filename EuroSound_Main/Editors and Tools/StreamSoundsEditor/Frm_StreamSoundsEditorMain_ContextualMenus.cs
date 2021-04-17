@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.EuroSoundInterchangeFile;
+﻿using EuroSound_Application.Clases;
+using EuroSound_Application.EuroSoundInterchangeFile;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
 using System.Drawing;
@@ -23,7 +24,7 @@ namespace EuroSound_Application.StreamSounds
 
         private void ContextMenuMain_AddSound_Click(object sender, EventArgs e)
         {
-            string Name = GenericFunctions.OpenInputBox("Enter a name for new a new streaming sound.", "New Streaming Sound");
+            string Name = BrowsersAndDialogs.InputBoxDialog("Enter a name for new a new streaming sound.", "New Streaming Sound");
             if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_StreamData, Name))
             {
                 MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -58,7 +59,7 @@ namespace EuroSound_Application.StreamSounds
             int SelectedColor;
 
             TreeNode SelectedNode = TreeView_StreamData.SelectedNode;
-            SelectedColor = GenericFunctions.GetColorFromColorPicker(SelectedNode.ForeColor);
+            SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
                 SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
@@ -95,7 +96,7 @@ namespace EuroSound_Application.StreamSounds
             string ExportPath;
 
             SelectedNode = TreeView_StreamData.SelectedNode;
-            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, SelectedNode.Text);
+            ExportPath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, SelectedNode.Text);
 
             if (!string.IsNullOrEmpty(ExportPath))
             {
@@ -120,7 +121,7 @@ namespace EuroSound_Application.StreamSounds
 
             TreeNode SelectedNode = TreeView_StreamData.SelectedNode;
 
-            SelectedColor = GenericFunctions.GetColorFromColorPicker(SelectedNode.ForeColor);
+            SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
                 SelectedNode.ForeColor = Color.FromArgb(SelectedColor);

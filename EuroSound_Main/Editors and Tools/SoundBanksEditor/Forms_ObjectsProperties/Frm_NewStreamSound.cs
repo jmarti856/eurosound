@@ -9,6 +9,9 @@ namespace EuroSound_Application.SoundBanksEditor
 {
     public partial class Frm_NewStreamSound : Form
     {
+        //*===============================================================================================
+        //* Global Variables
+        //*===============================================================================================
         public int SelectedSound { get; set; } = 0;
         private EXSample SelectedSample;
 
@@ -18,6 +21,9 @@ namespace EuroSound_Application.SoundBanksEditor
             SelectedSample = Sample;
         }
 
+        //*===============================================================================================
+        //* Form Events
+        //*===============================================================================================
         private void Frm_NewStreamSound_Load(object sender, EventArgs e)
         {
             int StreamIndex;
@@ -48,6 +54,9 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
+        //*===============================================================================================
+        //* Control Events
+        //*===============================================================================================
         private void Button_OK_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
@@ -72,6 +81,9 @@ namespace EuroSound_Application.SoundBanksEditor
             ReadSoundsList();
         }
 
+        //*===============================================================================================
+        //* Functions
+        //*===============================================================================================
         private void ReadSoundsList()
         {
             sbyte TypeOfStoredData;

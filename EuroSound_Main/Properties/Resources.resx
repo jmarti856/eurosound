@@ -156,6 +156,18 @@
   <data name="ColorDialogRemoveColor" xml:space="preserve">
     <value>Remove color from item?</value>
   </data>
+  <data name="ContextMenuAudio_Delete" xml:space="preserve">
+    <value>Delete the selected audio.</value>
+  </data>
+  <data name="ContextMenuAudio_OpenProperties" xml:space="preserve">
+    <value>Open properties form for the selected audio.</value>
+  </data>
+  <data name="ContextMenuAudio_Rename" xml:space="preserve">
+    <value>Rename the selected audio.</value>
+  </data>
+  <data name="ContextMenuAudio_Usage" xml:space="preserve">
+    <value>List all project objects wich use this audio.</value>
+  </data>
   <data name="ContextMenuFolders_New" xml:space="preserve">
     <value>Creates a new folder</value>
   </data>
@@ -221,6 +233,12 @@
   </data>
   <data name="ContextMenuSound_Rename" xml:space="preserve">
     <value>Rename the selected sound</value>
+  </data>
+  <data name="ContextMenuStreamSound_MoveDown" xml:space="preserve">
+    <value>Move one level down the selected item.</value>
+  </data>
+  <data name="ContextMenuStreamSound_MoveUp" xml:space="preserve">
+    <value>Move one level up the selected item.</value>
   </data>
   <data name="ErrorLoopOffsetNoValid" xml:space="preserve">
     <value>The entered loop offset value is not valid.</value>

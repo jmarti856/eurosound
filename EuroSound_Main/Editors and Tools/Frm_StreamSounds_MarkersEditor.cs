@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.MarkerFiles;
+﻿using EuroSound_Application.Clases;
+using EuroSound_Application.MarkerFiles;
 using EuroSound_Application.MarkerFiles.StreamSoundsEditor.Classes;
 using EuroSound_Application.Musics;
 using System;
@@ -87,7 +88,7 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         private void Button_LoadFile_Click(object sender, EventArgs e)
         {
-            string FilePath = GenericFunctions.OpenFileBrowser("EuroSound Markers Files|*.mrk", 0, true);
+            string FilePath = BrowsersAndDialogs.FileBrowserDialog("EuroSound Markers Files|*.mrk", 0, true);
 
             if (!string.IsNullOrEmpty(FilePath))
             {
@@ -138,7 +139,7 @@ namespace EuroSound_Application.StreamSounds
             {
                 MarkerFilesMusic_Exporter MKExporter = new MarkerFilesMusic_Exporter();
                 string SoundName = Path.GetFileNameWithoutExtension(TemporalSelectedMusic.WAVFileMD5_LeftChannel);
-                string FilePath = GenericFunctions.SaveFileBrowser("EuroSound Markers Files|*.mrk", 0, true, SoundName);
+                string FilePath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Markers Files|*.mrk", 0, true, SoundName);
 
                 if (!string.IsNullOrEmpty(FilePath))
                 {
@@ -149,7 +150,7 @@ namespace EuroSound_Application.StreamSounds
             {
                 MarkerFiles_Exporter MKExporter = new MarkerFiles_Exporter();
                 string SoundName = Path.GetFileNameWithoutExtension(TemporalSelectedSound.WAVFileName);
-                string FilePath = GenericFunctions.SaveFileBrowser("EuroSound Markers Files|*.mrk", 0, true, SoundName);
+                string FilePath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Markers Files|*.mrk", 0, true, SoundName);
 
                 if (!string.IsNullOrEmpty(FilePath))
                 {

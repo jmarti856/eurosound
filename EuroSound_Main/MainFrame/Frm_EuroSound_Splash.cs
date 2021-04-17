@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationPreferences.Ini_File;
 using EuroSound_Application.ApplicationRegistryFunctions;
+using EuroSound_Application.HashCodesFunctions;
 using System;
 using System.IO;
 using System.Reflection;

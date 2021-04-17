@@ -1,5 +1,6 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
+using EuroSound_Application.Clases;
 using EuroSound_Application.FunctionsListView;
 using Microsoft.Win32;
 using SoxSharp;
@@ -135,7 +136,7 @@ namespace EuroSound_Application.AudioConverter
         {
             string OutputPath;
 
-            OutputPath = GenericFunctions.OpenFolderBrowser();
+            OutputPath = BrowsersAndDialogs.OpenFolderBrowser();
             if (!string.IsNullOrEmpty(OutputPath))
             {
                 Textbox_OutputFolder.Text = OutputPath;
@@ -322,7 +323,7 @@ namespace EuroSound_Application.AudioConverter
         //*===============================================================================================
         private void MenuItemFile_ImportFolders_Click(object sender, EventArgs e)
         {
-            string FolderToOpen = GenericFunctions.OpenFolderBrowser();
+            string FolderToOpen = BrowsersAndDialogs.OpenFolderBrowser();
             if (Directory.Exists(FolderToOpen))
             {
                 FilesCollection = Directory.GetFiles(FolderToOpen, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".mp3") || s.EndsWith(".wav") || s.EndsWith(".flac") || s.EndsWith(".wma") || s.EndsWith(".aac")).ToArray();
@@ -332,7 +333,7 @@ namespace EuroSound_Application.AudioConverter
 
         private void MenuItemFile_ImportFiles_Click(object sender, EventArgs e)
         {
-            string FileToOpen = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav|MP3 Files (*.mp3)|*.mp3|FLAC Files (*.flac)|.flac|WMA Files (*.wma)|.wma|AAC Files (*.aac)|.aac", 0, true);
+            string FileToOpen = BrowsersAndDialogs.FileBrowserDialog("WAV Files (*.wav)|*.wav|MP3 Files (*.mp3)|*.mp3|FLAC Files (*.flac)|.flac|WMA Files (*.wma)|.wma|AAC Files (*.aac)|.aac", 0, true);
             if (!string.IsNullOrEmpty(FileToOpen))
             {
                 AddFileToListView(Path.GetFileName(FileToOpen), Path.GetDirectoryName(FileToOpen), Path.GetExtension(FileToOpen), new FileInfo(FileToOpen).Length.ToString() + " bytes");

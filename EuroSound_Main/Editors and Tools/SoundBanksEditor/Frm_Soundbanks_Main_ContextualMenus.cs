@@ -1,4 +1,5 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.Clases;
 using EuroSound_Application.CustomControls.MoveMultiplesNodesForm;
 using EuroSound_Application.CustomControls.ObjectInstancesForm;
 using EuroSound_Application.EuroSoundInterchangeFile;
@@ -18,10 +19,9 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         //* ContextMenu_Folders
         //*===============================================================================================
-        #region ContextMenu_Folders_EVENTS
         private void ContextMenu_Folders_AddAudio_Click(object sender, System.EventArgs e)
         {
-            string NodeName = GenericFunctions.OpenInputBox("Enter a name for new a new audio.", "New Audio");
+            string NodeName = BrowsersAndDialogs.InputBoxDialog("Enter a name for new a new audio.", "New Audio");
             if (!string.IsNullOrEmpty(NodeName))
             {
                 if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, NodeName))
@@ -30,7 +30,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
                 else
                 {
-                    string AudioPath = GenericFunctions.OpenFileBrowser("WAV Files (*.wav)|*.wav", 0, true);
+                    string AudioPath = BrowsersAndDialogs.FileBrowserDialog("WAV Files (*.wav)|*.wav", 0, true);
                     if (!string.IsNullOrEmpty(AudioPath))
                     {
                         if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.SoundbankChannels, GlobalPreferences.SoundbankFrequency))
@@ -77,7 +77,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenu_Folders_AddSample_Click(object sender, System.EventArgs e)
         {
-            string Name = GenericFunctions.OpenInputBox("Enter a name for new a new sample.", "New Sample");
+            string Name = BrowsersAndDialogs.InputBoxDialog("Enter a name for new a new sample.", "New Sample");
             if (!string.IsNullOrEmpty(Name))
             {
                 if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, Name))
@@ -104,7 +104,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenu_Folders_AddSound_Click(object sender, System.EventArgs e)
         {
-            string Name = GenericFunctions.OpenInputBox("Enter a name for new sound.", "New Sound");
+            string Name = BrowsersAndDialogs.InputBoxDialog("Enter a name for new sound.", "New Sound");
             if (!string.IsNullOrEmpty(Name))
             {
                 if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, Name))
@@ -158,7 +158,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenu_Folders_New_Click(object sender, System.EventArgs e)
         {
-            string Name = GenericFunctions.OpenInputBox("Enter a name for new folder.", "New Folder");
+            string Name = BrowsersAndDialogs.InputBoxDialog("Enter a name for new folder.", "New Folder");
             if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, Name))
             {
                 MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -218,7 +218,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
             TreeNode SelectedNode = TreeView_File.SelectedNode;
 
-            SelectedColor = GenericFunctions.GetColorFromColorPicker(SelectedNode.ForeColor);
+            SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
                 SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
@@ -230,7 +230,7 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             string ExportPath;
 
-            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, "");
+            ExportPath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, "");
 
             if (!string.IsNullOrEmpty(ExportPath))
             {
@@ -242,12 +242,9 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
-        #endregion ContextMenu_Folders_EVENTS
-
         //*===============================================================================================
         //* ContextMenu_Sound
         //*===============================================================================================
-        #region ContextMenu_Sound_EVENTS
         private void ContextMenu_Sound_Properties_Click(object sender, EventArgs e)
         {
             OpenSelectedNodeSampleProperties(TreeView_File.SelectedNode);
@@ -272,7 +269,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
             TreeNode SelectedNode = TreeView_File.SelectedNode;
 
-            SelectedColor = GenericFunctions.GetColorFromColorPicker(SelectedNode.ForeColor);
+            SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
                 SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
@@ -286,7 +283,7 @@ namespace EuroSound_Application.SoundBanksEditor
             string ExportPath;
 
             SelectedNode = TreeView_File.SelectedNode;
-            ExportPath = GenericFunctions.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, SelectedNode.Text);
+            ExportPath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, SelectedNode.Text);
 
             if (!string.IsNullOrEmpty(ExportPath))
             {
@@ -295,12 +292,9 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
-        #endregion ContextMenu_Sound_EVENTS
-
         //*===============================================================================================
         //* ContextMenu_Sample
         //*===============================================================================================
-        #region ContextMenu_Sample_EVENTS
         private void ContextMenu_Sample_Properties_Click(object sender, System.EventArgs e)
         {
             OpenSelectedNodeSampleProperties(TreeView_File.SelectedNode);
@@ -324,7 +318,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
             TreeNode SelectedNode = TreeView_File.SelectedNode;
 
-            SelectedColor = GenericFunctions.GetColorFromColorPicker(SelectedNode.ForeColor);
+            SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
                 SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
@@ -332,12 +326,9 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
-        #endregion ContextMenu_Sample_EVENTS
-
         //*===============================================================================================
         //* ContextMenu_Audio
         //*===============================================================================================
-        #region ContextMenu_Audio_EVENTS
         private void ContextMenuAudio_Properties_Click(object sender, EventArgs e)
         {
             OpenAudioProperties(TreeView_File.SelectedNode);
@@ -362,7 +353,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
             TreeNode SelectedNode = TreeView_File.SelectedNode;
 
-            SelectedColor = GenericFunctions.GetColorFromColorPicker(SelectedNode.ForeColor);
+            SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
                 SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
@@ -388,12 +379,10 @@ namespace EuroSound_Application.SoundBanksEditor
                 MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ItemHasNoDependencies"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-        #endregion ContextMenu_Audio_EVENTS
 
         //*===============================================================================================
         //* ContextMenu_HashcodesList
         //*===============================================================================================
-        #region ContextMenu_HashcodesList
         private void MenuItem_CopyHashcode_Click(object sender, EventArgs e)
         {
             if (ListView_Hashcodes.SelectedItems.Count > 0)
@@ -411,6 +400,5 @@ namespace EuroSound_Application.SoundBanksEditor
                 Clipboard.SetText(ListView_Hashcodes.SelectedItems[0].SubItems[2].Text);
             }
         }
-        #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.GenerateDataBinaryFile;
+using EuroSound_Application.HashCodesFunctions;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
