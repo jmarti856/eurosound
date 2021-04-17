@@ -126,6 +126,9 @@
   <data name="AudioProperties_FileCorrupt" xml:space="preserve">
     <value>This audio seems to be corrupt, please load it again</value>
   </data>
+  <data name="ButtonCalculateJumpCodes" xml:space="preserve">
+    <value>Calculates the Jump Codes for each music in this project.</value>
+  </data>
   <data name="ButtonGenerateSoundsList" xml:space="preserve">
     <value>Generates an YML file with the hashcodes that this soundbanks uses</value>
   </data>
@@ -140,6 +143,15 @@
   </data>
   <data name="ButtonSoundsBankSearch" xml:space="preserve">
     <value>Search for the specified text</value>
+  </data>
+  <data name="ButtonStopListUpdate" xml:space="preserve">
+    <value>Stops and clears the update of the list.</value>
+  </data>
+  <data name="ButtonUpdateIMAData" xml:space="preserve">
+    <value>Clears and generates again the IMA ADPCM data from each object in the project.</value>
+  </data>
+  <data name="Button_ExportInterchangeFile" xml:space="preserve">
+    <value>Exports the current project as an EuroSound interchange file, including the project hashcode and name</value>
   </data>
   <data name="ColorDialogRemoveColor" xml:space="preserve">
     <value>Remove color from item?</value>
@@ -211,7 +223,7 @@
     <value>Rename the selected sound</value>
   </data>
   <data name="ErrorLoopOffsetNoValid" xml:space="preserve">
-    <value>This loop offset is not valid, should be get it from a hi-res source (44100Hz)</value>
+    <value>The entered loop offset value is not valid.</value>
   </data>
   <data name="ErrorReadingFileIsUsedByAnotherProcess" xml:space="preserve">
     <value>Error reading this file, seems that is being used by another process.</value>

@@ -88,6 +88,24 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Exports the current project as an EuroSound interchange file, including the project hashcode and name.
+        /// </summary>
+        internal static string Button_ExportInterchangeFile {
+            get {
+                return ResourceManager.GetString("Button_ExportInterchangeFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Calculates the Jump Codes for each music in this project..
+        /// </summary>
+        internal static string ButtonCalculateJumpCodes {
+            get {
+                return ResourceManager.GetString("ButtonCalculateJumpCodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Generates an YML file with the hashcodes that this soundbanks uses.
         /// </summary>
         internal static string ButtonGenerateSoundsList {
@@ -129,6 +147,24 @@ namespace EuroSound_Application.Properties {
         internal static string ButtonSoundsBankSearch {
             get {
                 return ResourceManager.GetString("ButtonSoundsBankSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Stops and clears the update of the list..
+        /// </summary>
+        internal static string ButtonStopListUpdate {
+            get {
+                return ResourceManager.GetString("ButtonStopListUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Clears and generates again the IMA ADPCM data from each object in the project..
+        /// </summary>
+        internal static string ButtonUpdateIMAData {
+            get {
+                return ResourceManager.GetString("ButtonUpdateIMAData", resourceCulture);
             }
         }
         
@@ -376,7 +412,7 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a This loop offset is not valid, should be get it from a hi-res source (44100Hz).
+        ///   Busca una cadena traducida similar a The entered loop offset value is not valid..
         /// </summary>
         internal static string ErrorLoopOffsetNoValid {
             get {
