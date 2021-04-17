@@ -78,7 +78,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 //MAGIC
                 BWriter.Write(Encoding.ASCII.GetBytes("ESF"));
                 //FileVersion
-                BWriter.Write(Convert.ToUInt32(11));
+                BWriter.Write(Convert.ToUInt32(int.Parse(GenericFunctions.GetEuroSoundVersion().Replace(".", ""))));
                 //Type of stored data
                 BWriter.Write(Convert.ToSByte(FileProperties.TypeOfData));
 
@@ -150,7 +150,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             //MAGIC
             BWriter.Write(Encoding.ASCII.GetBytes("ESF"));
             //FileVersion
-            BWriter.Write(Convert.ToUInt32(11));
+            BWriter.Write(Convert.ToUInt32(int.Parse(GenericFunctions.GetEuroSoundVersion().Replace(".", ""))));
             //Type of stored data
             BWriter.Write(Convert.ToSByte(FileProperties.TypeOfData));
 
@@ -222,7 +222,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             //MAGIC
             BWriter.Write(Encoding.ASCII.GetBytes("ESF"));
             //FileVersion
-            BWriter.Write(Convert.ToUInt32(11));
+            BWriter.Write(Convert.ToUInt32(int.Parse(GenericFunctions.GetEuroSoundVersion().Replace(".", ""))));
             //Type of stored data
             BWriter.Write(Convert.ToSByte(FileProperties.TypeOfData));
 
@@ -247,13 +247,13 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             {
                 //FileVersion
                 Version = BReader.ReadUInt32();
-                if (Version == 11)
+                if (Version <= int.Parse(GenericFunctions.GetEuroSoundVersion().Replace(".", "")))
                 {
                     FileCorrect = true;
                 }
                 else
                 {
-                    MessageBox.Show("This file was written by Eurosound v" + Version + " and cannot be read by v1.1 or lower.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("This file was written by Eurosound v" + Version + " and cannot be read by v" + GenericFunctions.GetEuroSoundVersion().Replace(".", "") + " or lower.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
