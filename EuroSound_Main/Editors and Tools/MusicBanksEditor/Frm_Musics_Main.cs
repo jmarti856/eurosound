@@ -794,7 +794,7 @@ namespace EuroSound_Application.Musics
                     //Search Goto Loop Start Postition
                     for (int j = 0; j < Music.Markers.Count; j++)
                     {
-                        if (Music.Markers[j].MusicMakerType == 7)
+                        if (Music.Markers[j].MusicMakerType == (int)GenericFunctions.ESoundMarkers.Goto)
                         {
                             LoopPos = Music.Markers[j].LoopStart;
                         }
@@ -803,11 +803,11 @@ namespace EuroSound_Application.Musics
                     //Print Hashcodes
                     for (int i = 0; i < Music.Markers.Count; i++)
                     {
-                        if (Music.Markers[i].MusicMakerType == 7)
+                        if (Music.Markers[i].MusicMakerType == (int)GenericFunctions.ESoundMarkers.Goto)
                         {
                             JumpHashcodeLabel = string.Join("", "JMP_GOTO_", MusicName, "_LOOP");
                         }
-                        if (Music.Markers[i].MusicMakerType == 10 && Music.Markers[i].Position != LoopPos)
+                        if (Music.Markers[i].MusicMakerType == (int)GenericFunctions.ESoundMarkers.Start && Music.Markers[i].Position != LoopPos)
                         {
                             if (i == 0)
                             {
@@ -819,7 +819,7 @@ namespace EuroSound_Application.Musics
                                 StartMarkersCount++;
                             }
                         }
-                        if (Music.Markers[i].MusicMakerType == 10 && Music.Markers[i].Position == LoopPos)
+                        if (Music.Markers[i].MusicMakerType == (int)GenericFunctions.ESoundMarkers.Start && Music.Markers[i].Position == LoopPos)
                         {
                             JumpHashcodeLabel = string.Join("", "JMP_", MusicName, "_LOOP");
                         }

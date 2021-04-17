@@ -28,6 +28,15 @@ namespace EuroSound_Application
         internal static ResourceManager ResourcesManager;
         internal static StatusBarToolTips ParentFormStatusBar;
         internal static Dictionary<string, string> AvailableProfiles = new Dictionary<string, string>();
+        internal enum ESoundMarkers : uint
+        {
+            Start = 10,
+            End = 9,
+            Goto = 7,
+            Loop = 6,
+            Pause = 5,
+            Jump = 0
+        }
 
         internal static string TruncateLongString(string str, int maxLenght)
         {

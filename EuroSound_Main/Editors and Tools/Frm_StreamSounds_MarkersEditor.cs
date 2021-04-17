@@ -37,12 +37,12 @@ namespace EuroSound_Application.StreamSounds
             ComboBox_MarkerType.DisplayMember = "Text";
             ComboBox_MarkerType.ValueMember = "Value";
 
-            ComboBox_MarkerType.Items.Add(new { Text = "Stream Start Marker", Value = 10 });
-            ComboBox_MarkerType.Items.Add(new { Text = "Stream End Marker", Value = 9 });
-            ComboBox_MarkerType.Items.Add(new { Text = "Stream Goto Marker", Value = 7 });
-            ComboBox_MarkerType.Items.Add(new { Text = "Stream Start Loop", Value = 6 });
-            ComboBox_MarkerType.Items.Add(new { Text = "Stream Pause Marker", Value = 5 });
-            ComboBox_MarkerType.Items.Add(new { Text = "Stream Jump Marker", Value = 0 });
+            ComboBox_MarkerType.Items.Add(new { Text = "Stream Start Marker", Value = (int)GenericFunctions.ESoundMarkers.Start });
+            ComboBox_MarkerType.Items.Add(new { Text = "Stream End Marker", Value = (int)GenericFunctions.ESoundMarkers.End });
+            ComboBox_MarkerType.Items.Add(new { Text = "Stream Goto Marker", Value = (int)GenericFunctions.ESoundMarkers.Goto });
+            ComboBox_MarkerType.Items.Add(new { Text = "Stream Start Loop", Value = (int)GenericFunctions.ESoundMarkers.Loop });
+            ComboBox_MarkerType.Items.Add(new { Text = "Stream Pause Marker", Value = (int)GenericFunctions.ESoundMarkers.Pause });
+            ComboBox_MarkerType.Items.Add(new { Text = "Stream Jump Marker", Value = (int)GenericFunctions.ESoundMarkers.Jump });
 
             ComboBox_MarkerType.SelectedIndex = 0;
 
@@ -170,16 +170,14 @@ namespace EuroSound_Application.StreamSounds
                 Position = (uint)Numeric_Position.Value * 4;
                 v_MarkerName = TemporalSelectedMusic.StartMarkers.Count;
 
-                //End
-                if (MarkerType == 9)
+                if (MarkerType == (int)GenericFunctions.ESoundMarkers.End)
                 {
                     //--------------------------------------------------[Markers]---------------------------------------------------
                     //----Add End Marker----
                     EXStreamMarker MarkerStart = MarkerFunctions.CreateMarker(TemporalSelectedMusic.Markers, (TemporalSelectedMusic.StartMarkers.Count - 1), Position, MarkerType, 0, (uint)TemporalSelectedMusic.StartMarkers.Count, 0, 0);
                     AddMarkerDataToListView(MarkerStart);
                 }
-                //Loop
-                else if (MarkerType == 6)
+                else if (MarkerType == (int)GenericFunctions.ESoundMarkers.Loop)
                 {
                     //Calculate States --Loop Start Control--
                     IMA_States = MarkerFunctions.GetEngineXMarkerStates_Stereo(TemporalSelectedMusic.IMA_ADPCM_DATA_LeftChannel, TemporalSelectedMusic.IMA_ADPCM_DATA_RightChannel, (int)LoopStart);
@@ -215,8 +213,7 @@ namespace EuroSound_Application.StreamSounds
                     Numeric_Position.Value = 0;
                     Numeric_MarkerLoopStart.Value = 0;
                 }
-                //Goto
-                else if (MarkerType == 7)
+                else if (MarkerType == (int)GenericFunctions.ESoundMarkers.Goto)
                 {
                     //Calculate States --Position Control--
                     IMA_States = MarkerFunctions.GetEngineXMarkerStates_Stereo(TemporalSelectedMusic.IMA_ADPCM_DATA_LeftChannel, TemporalSelectedMusic.IMA_ADPCM_DATA_RightChannel, (int)Position);
@@ -250,8 +247,7 @@ namespace EuroSound_Application.StreamSounds
 
                 v_MarkerName = TemporalSelectedSound.StartMarkers.Count;
 
-                //End
-                if (MarkerType == 9)
+                if (MarkerType == (int)GenericFunctions.ESoundMarkers.End)
                 {
                     //--------------------------------------------------[Markers]--------------------------------------------------------
                     //----Add End Marker----
@@ -259,8 +255,7 @@ namespace EuroSound_Application.StreamSounds
                     AddMarkerDataToListView(MarkerStart);
 
                 }
-                //Loop
-                else if (MarkerType == 6)
+                else if (MarkerType == (int)GenericFunctions.ESoundMarkers.Loop)
                 {
                     //Calculate States --Loop Start Control--
                     IMA_States = MarkerFunctions.GetEngineXMarkerStates_Mono(TemporalSelectedSound.IMA_ADPCM_DATA, (int)LoopStart);
@@ -296,8 +291,7 @@ namespace EuroSound_Application.StreamSounds
                     Numeric_Position.Value = 0;
                     Numeric_MarkerLoopStart.Value = 0;
                 }
-                //Goto
-                else if (MarkerType == 7)
+                else if (MarkerType == (int)GenericFunctions.ESoundMarkers.Goto)
                 {
                     //Calculate States --Position Control--
                     IMA_States = MarkerFunctions.GetEngineXMarkerStates_Mono(TemporalSelectedSound.IMA_ADPCM_DATA, (int)LoopStart);
