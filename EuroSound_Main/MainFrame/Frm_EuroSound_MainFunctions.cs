@@ -14,56 +14,68 @@ namespace EuroSound_Application
         {
             int TypeOfFileToLoad;
 
-            //Check File Type
-            TypeOfFileToLoad = TypeOfEuroSoundFile(FileToLoad);
-            if (TypeOfFileToLoad == 0)
+            if (!string.IsNullOrEmpty(FileToLoad))
             {
-                //Add file to recent list
-                RecentFilesMenu.AddFile(FileToLoad);
-
-                //Open Form
-                Frm_Soundbanks_Main SoundBanksForm = new Frm_Soundbanks_Main(string.Empty, FileToLoad, RecentFilesMenu)
+                //Check File Type
+                TypeOfFileToLoad = TypeOfEuroSoundFile(FileToLoad);
+                if (TypeOfFileToLoad == 0)
                 {
-                    Owner = this,
-                    MdiParent = this,
-                    Tag = FormID.ToString()
-                };
-                SoundBanksForm.Show();
-                FormID++;
-            }
-            else if (TypeOfFileToLoad == 1)
-            {
-                //Add file to recent list
-                RecentFilesMenu.AddFile(FileToLoad);
+                    //Add file to recent list
+                    RecentFilesMenu.AddFile(FileToLoad);
 
-                //Open Form
-                Frm_StreamSoundsEditorMain StreamSoundsForm = new Frm_StreamSoundsEditorMain(string.Empty, FileToLoad, RecentFilesMenu)
-                {
-                    Owner = this,
-                    MdiParent = this,
-                    Tag = FormID.ToString()
-                };
-                StreamSoundsForm.Show();
-                FormID++;
-            }
-            else if (TypeOfFileToLoad == 2)
-            {
-                //Add file to recent list
-                RecentFilesMenu.AddFile(FileToLoad);
+                    //Save Active Document
+                    WRegFunctions.SaveActiveDocument(FileToLoad);
 
-                //Open Form
-                Frm_Musics_Main MusicsForm = new Frm_Musics_Main(string.Empty, FileToLoad, RecentFilesMenu)
+                    //Open Form
+                    Frm_Soundbanks_Main SoundBanksForm = new Frm_Soundbanks_Main(string.Empty, FileToLoad, RecentFilesMenu)
+                    {
+                        Owner = this,
+                        MdiParent = this,
+                        Tag = FormID.ToString()
+                    };
+                    SoundBanksForm.Show();
+                    FormID++;
+                }
+                else if (TypeOfFileToLoad == 1)
                 {
-                    Owner = this,
-                    MdiParent = this,
-                    Tag = FormID.ToString()
-                };
-                MusicsForm.Show();
-                FormID++;
-            }
-            else
-            {
-                MessageBox.Show(string.Join(" ", "Loading file:", FileToLoad, "\n\n", "Error:", FileToLoad, "has a bad format"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    //Add file to recent list
+                    RecentFilesMenu.AddFile(FileToLoad);
+
+                    //Save Active Document
+                    WRegFunctions.SaveActiveDocument(FileToLoad);
+
+                    //Open Form
+                    Frm_StreamSoundsEditorMain StreamSoundsForm = new Frm_StreamSoundsEditorMain(string.Empty, FileToLoad, RecentFilesMenu)
+                    {
+                        Owner = this,
+                        MdiParent = this,
+                        Tag = FormID.ToString()
+                    };
+                    StreamSoundsForm.Show();
+                    FormID++;
+                }
+                else if (TypeOfFileToLoad == 2)
+                {
+                    //Add file to recent list
+                    RecentFilesMenu.AddFile(FileToLoad);
+
+                    //Save Active Document
+                    WRegFunctions.SaveActiveDocument(FileToLoad);
+
+                    //Open Form
+                    Frm_Musics_Main MusicsForm = new Frm_Musics_Main(string.Empty, FileToLoad, RecentFilesMenu)
+                    {
+                        Owner = this,
+                        MdiParent = this,
+                        Tag = FormID.ToString()
+                    };
+                    MusicsForm.Show();
+                    FormID++;
+                }
+                else
+                {
+                    MessageBox.Show(string.Join(" ", "Loading file:", FileToLoad, "\n\n", "Error:", FileToLoad, "has a bad format"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 

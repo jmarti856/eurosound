@@ -111,11 +111,12 @@ namespace EuroSound_Application.SplashForm
             GlobalPreferences.TV_ShowRootLines = Convert.ToBoolean(int.Parse(WRegistryFunctions.LoadTreeViewPreferences("TV_ShowRootLines")));
             GlobalPreferences.TV_Indent = int.Parse(WRegistryFunctions.LoadTreeViewPreferences("TV_Indent"));
             GlobalPreferences.TV_ItemHeight = int.Parse(WRegistryFunctions.LoadTreeViewPreferences("TV_ItemHeight"));
-            GlobalPreferences.TV_IgnoreStlyesFromESF = Convert.ToBoolean(int.Parse(WRegistryFunctions.LoadTreeViewPreferences("TV_IgnoreStlyesFromESF")));
             await Task.Delay(RandomNumber.Next(1, 50));
 
             GlobalPreferences.WavesViewerControl_WavesColor = WRegistryFunctions.LoadWavesControlColors("WavesColors");
             GlobalPreferences.WavesViewerControl_BackgroundColor = WRegistryFunctions.LoadWavesControlColors("BackgroundColor");
+            GlobalPreferences.LoadLastLoadedESF = WRegistryFunctions.LoadAutomaticalyLoadLastESF("AutomaticalyLoadLastESF");
+            GlobalPreferences.TV_IgnoreStlyesFromESF = WRegistryFunctions.LoadAutomaticalyLoadLastESF("TV_IgnoreStlyesFromESF"); ;
             await Task.Delay(RandomNumber.Next(5, 10));
 
             GlobalPreferences.UseSystemTray = Convert.ToBoolean(WRegistryFunctions.GetSystemConfig("UseSysTray"));

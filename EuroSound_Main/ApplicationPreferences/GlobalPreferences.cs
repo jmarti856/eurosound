@@ -44,7 +44,7 @@
         //[OutputFolders]
         internal static string SFXOutputPath;
         internal static string MusicOutputPath;
-        internal static string StreamFileOutputPath; //Not Implemented yet
+        internal static string StreamFileOutputPath;
 
         //User Settings -> Tree View
         internal static string TV_SelectedFont = "Microsoft Sans Serif; 8,25pt";
@@ -63,6 +63,9 @@
 
         //User Settings -> Output Device
         internal static int DefaultAudioDevice = 0;
+
+        //User Settings -> General
+        internal static bool LoadLastLoadedESF = false;
 
         //*===============================================================================================
         //* TEMPORAL PROPERTIES

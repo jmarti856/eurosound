@@ -107,6 +107,8 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void Frm_EuroSound_Main_Load(object sender, EventArgs e)
         {
+            string LastActiveDocument = string.Empty;
+
             using (RegistryKey WindowStateConfig = WRegFunctions.ReturnRegistryKey("WindowState"))
             {
                 bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("MainFrame_IsIconic", 0));
@@ -139,10 +141,18 @@ namespace EuroSound_Application
             RecentFilesMenu = new MruStripMenuInline(MainMenu_File, MenuItemFile_RecentFiles, new MostRecentFilesMenu.ClickedHandler(RecentFile_click), RecentFilesMenuRegKey, 8);
             RecentFilesMenu.LoadFromRegistry();
 
-            //This means we loaded a soundbank file
+            //This means we have an argument to read
             if (!string.IsNullOrEmpty(ArgumentFromSplash))
             {
                 OpenFormsWithFileToLoad(ArgumentFromSplash);
+            }
+            else
+            {
+                if (GlobalPreferences.LoadLastLoadedESF)
+                {
+                    LastActiveDocument = WRegFunctions.LoadActiveDocument();
+                    OpenFormsWithFileToLoad(LastActiveDocument);
+                }
             }
         }
 
@@ -193,8 +203,19 @@ namespace EuroSound_Application
 
         private void Frm_EuroSound_Main_FormClosed(object sender, FormClosedEventArgs e)
         {
+            //Save Active Document
+            if (MdiChildren.Length == 0)
+            {
+                WRegFunctions.SaveActiveDocument("");
+            }
+
+            //Save Window position
             WRegFunctions.SaveWindowState("MainFrame", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
+
+            //Save Recent Files
             RecentFilesMenu.SaveToRegistry();
+
+            //Clear temporal folder
             ClearTemporalFiles();
         }
 

@@ -1,5 +1,6 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using Microsoft.Win32;
+using System;
 
 namespace EuroSound_Application.ApplicationRegistryFunctions
 {
@@ -57,6 +58,34 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             RegistryKey KeyToReturn = EuroSoundKey.OpenSubKey(Name, true);
 
             return KeyToReturn;
+        }
+        //*===============================================================================================
+        //* Active Document
+        //*===============================================================================================
+        internal void SaveActiveDocument(string CurrentDocument)
+        {
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("ActiveDocument", true);
+            using (RegistryKey ActiveDocument = EuroSoundKey.OpenSubKey("ActiveDocument", true))
+            {
+                ActiveDocument.SetValue("Pathname", CurrentDocument, RegistryValueKind.String);
+                ActiveDocument.Close();
+            }
+        }
+
+        internal string LoadActiveDocument()
+        {
+            string ActiveDocument = string.Empty;
+
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("ActiveDocument", true);
+            using (RegistryKey ActiveDocumentKey = EuroSoundKey.OpenSubKey("ActiveDocument", true))
+            {
+                ActiveDocument = ActiveDocumentKey.GetValue("Pathname", string.Empty).ToString();
+                ActiveDocumentKey.Close();
+            }
+
+            return ActiveDocument;
         }
 
         //*===============================================================================================
@@ -291,7 +320,6 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 TreeViewPrefs.SetValue("TV_ItemHeight", GlobalPreferences.TV_ItemHeight, RegistryValueKind.DWord);
                 TreeViewPrefs.SetValue("TV_ShowLines", GlobalPreferences.TV_ShowLines, RegistryValueKind.DWord);
                 TreeViewPrefs.SetValue("TV_ShowRootLines", GlobalPreferences.TV_ShowRootLines, RegistryValueKind.DWord);
-                TreeViewPrefs.SetValue("TV_IgnoreStlyesFromESF", GlobalPreferences.TV_IgnoreStlyesFromESF, RegistryValueKind.DWord);
                 TreeViewPrefs.Close();
             }
         }
@@ -468,6 +496,36 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
 
             return LastPath;
+        }
+
+        //*===============================================================================================
+        //* USER SETTINGS -> Load Last ESF And IgnoreStyles
+        //*===============================================================================================
+        internal void SaveAutomaticalyLoadLastESF()
+        {
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
+            using (RegistryKey LoadLastESF = EuroSoundKey.OpenSubKey("UserSettings", true))
+            {
+                //Save Values
+                LoadLastESF.SetValue("AutomaticalyLoadLastESF", GlobalPreferences.LoadLastLoadedESF, RegistryValueKind.DWord);
+                LoadLastESF.SetValue("TV_IgnoreStlyesFromESF", GlobalPreferences.TV_IgnoreStlyesFromESF, RegistryValueKind.DWord);
+                LoadLastESF.Close();
+            }
+        }
+
+        internal bool LoadAutomaticalyLoadLastESF(string KeyWord)
+        {
+            bool LoadLastESFChecked = false;
+
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
+            using (RegistryKey LoadLastESF = EuroSoundKey.OpenSubKey("UserSettings", true))
+            {
+                LoadLastESFChecked = Convert.ToBoolean(int.Parse(LoadLastESF.GetValue(KeyWord, "0").ToString()));
+                LoadLastESF.Close();
+            }
+            return LoadLastESFChecked;
         }
 
         //*===============================================================================================

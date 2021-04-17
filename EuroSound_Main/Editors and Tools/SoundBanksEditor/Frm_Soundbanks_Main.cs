@@ -184,7 +184,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 LoadHashcodeData.Start();
             }
 
-            //Load esf file if nedded
+            //Load ESF file if nedded
             if (string.IsNullOrEmpty(FileToLoadArg))
             {
                 ProjectInfo.FileName = ProjectName;

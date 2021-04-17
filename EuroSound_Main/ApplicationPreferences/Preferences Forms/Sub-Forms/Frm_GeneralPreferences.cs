@@ -25,6 +25,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             Button_WavesColorControl.BackColor = Color.FromArgb(((Frm_MainPreferences)OpenForm).ColorWavesControlTEMPORAL);
             Button_WavesBackColor.BackColor = Color.FromArgb(((Frm_MainPreferences)OpenForm).BackColorWavesControlTEMPORAL);
             CheckBox_IgnoreLookTree.Checked = ((Frm_MainPreferences)OpenForm).TV_IgnoreStlyesFromESFTEMPORAL;
+            CheckBox_ReloadLastESF.Checked = ((Frm_MainPreferences)OpenForm).LoadLastLoadedESFTEMPORAL;
         }
 
         private void Frm_TreeViewPrefs_FormClosing(object sender, FormClosingEventArgs e)
@@ -32,6 +33,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             ((Frm_MainPreferences)OpenForm).ColorWavesControlTEMPORAL = Button_WavesColorControl.BackColor.ToArgb();
             ((Frm_MainPreferences)OpenForm).BackColorWavesControlTEMPORAL = Button_WavesBackColor.BackColor.ToArgb();
             ((Frm_MainPreferences)OpenForm).TV_IgnoreStlyesFromESFTEMPORAL = CheckBox_IgnoreLookTree.Checked;
+            ((Frm_MainPreferences)OpenForm).LoadLastLoadedESFTEMPORAL = CheckBox_ReloadLastESF.Checked;
         }
 
         //*===============================================================================================
