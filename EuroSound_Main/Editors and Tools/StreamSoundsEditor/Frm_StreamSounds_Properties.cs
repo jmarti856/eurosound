@@ -181,6 +181,7 @@ namespace EuroSound_Application.StreamSounds
             Textbox_Channels.Text = TemporalSound.Channels.ToString();
             Textbox_Frequency.Text = string.Join(" ", new string[] { TemporalSound.Frequency.ToString(), "Hz" });
             Textbox_RealSize.Text = string.Join(" ", new string[] { TemporalSound.RealSize.ToString(), "bytes" });
+            Textbox_Duration.Text = string.Join(" ", new string[] { TemporalSound.Duration.ToString(), "ms" });
             Textbox_IMA_ADPCM.Text = TemporalSound.WAVFileName;
             Textbox_MD5_Hash.Text = TemporalSound.WAVFileMD5;
 

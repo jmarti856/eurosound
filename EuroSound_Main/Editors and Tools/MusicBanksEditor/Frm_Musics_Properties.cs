@@ -326,6 +326,7 @@ namespace EuroSound_Application.Musics
             Textbox_Channels_LeftChannel.Text = TemporalMusic.Channels_LeftChannel.ToString();
             Textbox_Frequency_LeftChannel.Text = string.Join(" ", new string[] { TemporalMusic.Frequency_LeftChannel.ToString(), "Hz" });
             Textbox_RealSize_LeftChannel.Text = string.Join(" ", new string[] { TemporalMusic.RealSize_LeftChannel.ToString(), "bytes" });
+            Textbox_Duration_LeftChannel.Text = string.Join(" ", new string[] { TemporalMusic.Duration_LeftChannel.ToString(), "ms" });
         }
 
         private void ShowAudioInfoRightChannel()
@@ -337,6 +338,7 @@ namespace EuroSound_Application.Musics
             Textbox_Channels_RightChannel.Text = TemporalMusic.Channels_RightChannel.ToString();
             Textbox_Frequency_RightChannel.Text = string.Join(" ", new string[] { TemporalMusic.Frequency_RightChannel.ToString(), "Hz" });
             Textbox_RealSize_RightChannel.Text = string.Join(" ", new string[] { TemporalMusic.RealSize_RightChannel.ToString(), "bytes" });
+            Textbox_Duration_RightChannel.Text = string.Join(" ", new string[] { TemporalMusic.Duration_RightChannel.ToString(), "ms" });
         }
     }
 }
