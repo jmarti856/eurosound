@@ -91,13 +91,13 @@ namespace EuroSound_Application.SoundBanksEditor
                     {
                         TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SampleID.ToString(), Name, 4, 4, "Sample", Color.Black, TreeView_File);
                         EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(TreeView_File.SelectedNode.Name), SoundsList), SampleID, true);
-                        ProjectInfo.FileHasBeenModified = true;
                     }
                     else
                     {
                         TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SampleID.ToString(), Name, 4, 4, "Sample", Color.Black, TreeView_File);
                         EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(TreeView_File.SelectedNode.Name), SoundsList), SampleID, true);
                     }
+                    ProjectInfo.FileHasBeenModified = true;
                 }
             }
         }

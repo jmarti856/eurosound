@@ -677,57 +677,6 @@ namespace EuroSound_Application.SoundBanksEditor
             BuildFile.ShowDialog();
         }
 
-        private void MenuItemFile_ReadSound_Click(object sender, EventArgs e)
-        {
-            string SoundName;
-            uint SoundHashcode;
-
-            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0, true);
-            if (!string.IsNullOrEmpty(FilePath))
-            {
-                SoundName = new DirectoryInfo(Path.GetDirectoryName(FilePath)).Name;
-                SoundHashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SFX_Defines, SoundName);
-                LibYamlReader.ReadYmlFile(SoundsList, AudioDataDict, TreeView_File, FilePath, SoundName, SoundHashcode, true, ProjectInfo);
-                ProjectInfo.FileHasBeenModified = true;
-            }
-        }
-
-        private void MenuItemFile_ReadYml_Click(object sender, EventArgs e)
-        {
-            string FilePath = GenericFunctions.OpenFileBrowser("YML Files (*.yml)|*.yml", 0, true);
-            if (!string.IsNullOrEmpty(FilePath))
-            {
-                //Ask user for a fully reimport
-                DialogResult ReimportQuestion = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("MenuItem_File_LoadListCleanData"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (ReimportQuestion == DialogResult.Yes)
-                {
-                    //Clear Data
-                    ProjectInfo.ClearSoundBankStoredData(SoundsList, AudioDataDict, TreeView_File);
-
-                    //Clear stack lists
-                    UndoListSounds.Clear();
-                    UndoListNodes.Clear();
-                }
-
-                //Update file Hashcode
-                DialogResult QuestionAnswer = MessageBox.Show("Do you want to use the hashcode of the loaded file?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (QuestionAnswer == DialogResult.Yes)
-                {
-                    ProjectInfo.Hashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SB_Defines, Path.GetFileNameWithoutExtension(FilePath));
-                    GenericFunctions.SetCurrentFileLabel(Path.GetFileNameWithoutExtension(FilePath), "Hashcode");
-                }
-
-                //Load New data
-                LoadYamlFile = new Thread(() => LibYamlReader.LoadDataFromSwyterUnpacker(SoundsList, AudioDataDict, TreeView_File, FilePath, ProjectInfo))
-                {
-                    IsBackground = true
-                };
-                LoadYamlFile.Start();
-
-                ProjectInfo.FileHasBeenModified = true;
-            }
-        }
-
         //*===============================================================================================
         //* TREE VIEW EVENTS
         //*===============================================================================================
