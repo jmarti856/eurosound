@@ -764,10 +764,10 @@ namespace EuroSound_Application.Musics
         private void Button_Generate_Hashcodes_Click(object sender, EventArgs e)
         {
             string MusicHashcodeLabel, MusicName;
-            string JumpHashcode, JumpHashcodeLabel = string.Empty;
+            string JumpHashcodeLabel = string.Empty;
             string Comment;
             int StartMarkersCount = 1;
-            uint LoopPos = 0;
+            uint LoopPos = 0, JumpHashcode;
 
             //Clear textbox
             Rtbx_Jump_Music_Codes.Clear();
@@ -823,11 +823,12 @@ namespace EuroSound_Application.Musics
                         {
                             JumpHashcodeLabel = string.Join("", "JMP_", MusicName, "_LOOP");
                         }
-                        JumpHashcode = string.Join("", "0x1BE", i.ToString().PadLeft(3, '0'), ProjectInfo.Hashcode.ToString("X8").Substring(6));
 
+                        //Calculate Jump HashCode
+                        JumpHashcode = Convert.ToUInt32(0x1BE00000 | ((i & 0xFF) << 8) | (((int)ProjectInfo.Hashcode & 0xFF << 0)));
                         if (!string.IsNullOrEmpty(JumpHashcodeLabel))
                         {
-                            GenericFunctions.AppendTextToRichTextBox("#define " + JumpHashcodeLabel + " " + JumpHashcode + "\n", Color.Brown, Rtbx_Jump_Music_Codes);
+                            GenericFunctions.AppendTextToRichTextBox("#define " + JumpHashcodeLabel + " 0x" + JumpHashcode.ToString("X8") + "\n", Color.Brown, Rtbx_Jump_Music_Codes);
                             JumpHashcodeLabel = string.Empty;
                         }
                     }
