@@ -9,17 +9,16 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         public void Restore(BinaryReader BReader, RegistryKey EuroSoundKey)
         {
             Dictionary<uint, string> SubKeysToRestore = new Dictionary<uint, string>();
-            byte ValueKind;
-            uint NumberOfSubKeys, SubkeyOffset, SubkeyItems;
+            uint NumberOfSubKeys;
             int NumericSubKeyValue;
-            string KeyName, SubKeyName, SubKeyValue;
+            string SubKeyValue;
 
             NumberOfSubKeys = BReader.ReadUInt32();
 
             for (int i = 0; i < NumberOfSubKeys; i++)
             {
-                KeyName = BReader.ReadString();
-                SubkeyOffset = BReader.ReadUInt32();
+                string KeyName = BReader.ReadString();
+                uint SubkeyOffset = BReader.ReadUInt32();
 
                 SubKeysToRestore.Add(SubkeyOffset, KeyName);
             }
@@ -27,7 +26,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             foreach (KeyValuePair<uint, string> SubKeyInfo in SubKeysToRestore)
             {
                 BReader.BaseStream.Seek(SubKeyInfo.Key, SeekOrigin.Begin);
-                SubkeyItems = BReader.ReadUInt32();
+                uint SubkeyItems = BReader.ReadUInt32();
 
                 //CreateFolder
                 CreateSubKeyIfNotExists(SubKeyInfo.Value, EuroSoundKey);
@@ -36,8 +35,9 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                     //CreateValues
                     for (int i = 0; i < SubkeyItems; i++)
                     {
-                        SubKeyName = BReader.ReadString();
-                        ValueKind = BReader.ReadByte();
+                        string SubKeyName = BReader.ReadString();
+                        byte ValueKind = BReader.ReadByte();
+
                         if (ValueKind == 1)
                         {
                             NumericSubKeyValue = BReader.ReadInt32();
@@ -49,7 +49,6 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                             KeyToCreate.SetValue(SubKeyName, SubKeyValue, RegistryValueKind.String);
                         }
                     }
-
                     KeyToCreate.Close();
                 }
             }

@@ -23,12 +23,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         {
             foreach (KeyValuePair<string, string> ProjectName in GenericFunctions.AvailableProfiles)
             {
-                ListViewItem NewProfile = new ListViewItem
-                {
-                    Text = ProjectName.Key,
-                    Tag = ProjectName.Value
-                };
-                ListView_Profiles.Items.Add(NewProfile);
+                ListView_Profiles.Items.Add(new ListViewItem { Text = ProjectName.Key, Tag = ProjectName.Value });
             }
 
             //Get Last Selected Profile

@@ -26,13 +26,12 @@ namespace EuroSound_Application.CustomControls.WarningsList
         //*===============================================================================================
         private void EuroSound_ImportResultsList_Load(object sender, EventArgs e)
         {
-            ListViewItem Item;
             char MessageType;
 
             foreach (string item in ErrorsAndWarningsListToPrint)
             {
                 MessageType = item[0];
-                Item = new ListViewItem(new[] { "", item.Substring(1) });
+                ListViewItem Item = new ListViewItem(new[] { "", item.Substring(1) });
 
                 if (MessageType == '0')
                 {
@@ -59,16 +58,17 @@ namespace EuroSound_Application.CustomControls.WarningsList
         //*===============================================================================================
         private void Button_Copy_Click(object sender, EventArgs e)
         {
-            string FinalFile = string.Empty;
-            string MessageStatus;
-
             Thread CopyDataToClipboard = new Thread(() =>
             {
+                string FinalFile = string.Empty;
                 Clipboard.Clear();
+
                 ListView_Reports.Invoke((MethodInvoker)delegate
                 {
                     foreach (ListViewItem lvItem in ListView_Reports.Items)
                     {
+                        string MessageStatus;
+
                         if (lvItem.ImageIndex == 0)
                         {
                             MessageStatus = "Error:";
@@ -117,12 +117,11 @@ namespace EuroSound_Application.CustomControls.WarningsList
         //*===============================================================================================
         private void PrintDocument_DocumentToPrint_PrintPage(object sender, PrintPageEventArgs e)
         {
-            //Variables
-            string MessageStatus;
-
             //Get document to string
             foreach (ListViewItem lvItem in ListView_Reports.Items)
             {
+                string MessageStatus;
+
                 if (lvItem.ImageIndex == 0)
                 {
                     MessageStatus = "Error:";

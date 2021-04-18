@@ -8,11 +8,6 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
 {
     public partial class Frm_FileProperties : Form
     {
-        /*====================[Available Types Of Data]====================
-         0 = Soundbanks
-         1 = Stream Sounds
-         2 = Musics --NOT IMPLEMENTED YET--
-        */
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
@@ -39,7 +34,7 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
         private void Frm_FileProperties_Shown(object sender, EventArgs e)
         {
             //Datasource Combobox
-            if (CurrentFileProperties.TypeOfData != 2)
+            if (CurrentFileProperties.TypeOfData != (int)GenericFunctions.ESoundFileType.MusicBanks)
             {
                 Hashcodes.AddDataToCombobox(Combobox_FileHashcode, Hashcodes.SB_Defines);
             }
@@ -85,7 +80,7 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
                 SelectedHashcode = Convert.ToUInt32(Combobox_FileHashcode.SelectedValue.ToString());
 
                 //Soundbanks and Music project types can't have the hashcode 0x0000FFFF
-                if (CurrentFileProperties.TypeOfData != 1)
+                if (CurrentFileProperties.TypeOfData != (int)GenericFunctions.ESoundFileType.StreamSounds)
                 {
                     if (SelectedHashcode == 0x0000FFFF)
                     {
@@ -97,7 +92,7 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
                         CurrentFileProperties.Hashcode = SelectedHashcode;
 
                         //Update Hashcode File Label
-                        if (CurrentFileProperties.TypeOfData == 2)
+                        if (CurrentFileProperties.TypeOfData == (int)GenericFunctions.ESoundFileType.MusicBanks)
                         {
                             GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, CurrentFileProperties.Hashcode), "Hashcode");
                         }

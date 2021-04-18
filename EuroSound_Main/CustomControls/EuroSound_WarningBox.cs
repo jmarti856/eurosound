@@ -4,6 +4,8 @@ namespace EuroSound_Application.CustomControls.WarningsForm
 {
     public partial class EuroSound_WarningBox : Form
     {
+        public bool ShowWarningAgain { get; set; }
+
         public EuroSound_WarningBox(string LabelText, string Title, bool ShowWarningAgainCheckbox)
         {
             InitializeComponent();
@@ -13,7 +15,6 @@ namespace EuroSound_Application.CustomControls.WarningsForm
             Checkbox_ShowAgain.Visible = ShowWarningAgainCheckbox;
         }
 
-        public bool ShowWarningAgain { get; set; }
         private void Button_Cancel_Click(object sender, System.EventArgs e)
         {
             ShowWarningAgain = Checkbox_ShowAgain.Checked = !Checkbox_ShowAgain.Checked;

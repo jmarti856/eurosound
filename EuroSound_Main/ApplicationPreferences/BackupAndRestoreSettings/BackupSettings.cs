@@ -28,6 +28,8 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 //--WirteNumberOfSubKeys
                 NumberOfSubKeys = (uint)EuroSoundKey.SubKeyCount;
                 BWriter.Write(NumberOfSubKeys);
+
+
                 //Write SubKeys Names
                 foreach (string value in EuroSoundKey.GetSubKeyNames())
                 {
@@ -40,6 +42,8 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                     //SubKey Offset
                     BWriter.Write(Convert.ToUInt32(00000000));
                 }
+
+
                 //Align Bytes
                 AlignOffset = (BWriter.BaseStream.Position + 512) & (512 - 1);
                 BWriter.Seek(AlignOffset, SeekOrigin.Current);

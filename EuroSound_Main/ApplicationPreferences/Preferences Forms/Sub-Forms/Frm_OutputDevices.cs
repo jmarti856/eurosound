@@ -32,7 +32,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             {
                 WaveOutCapabilities WOC = WaveOut.GetCapabilities(i);
                 Combobox_AvailableDevices.Items.Add(WOC.ProductName);
-
             }
 
             //Select Default Device

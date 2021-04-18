@@ -10,10 +10,8 @@ namespace EuroSound_Application.ApplicationPreferences.Ini_File
         {
             Regex RemoveCharactersFromPathString = new Regex(@"[\p{Cc}\p{Cf}\p{Mn}\p{Me}\p{Zl}\p{Zp}]");
             Regex PatternForProjects = new Regex(@"(?<=\[).+?(?=\])");
-            MatchCollection RegexMatches;
             Dictionary<string, string> ProfilesDictionary = new Dictionary<string, string>();
-            string[] LineData;
-            string ProjectName = string.Empty, ESP = string.Empty;
+            string ProjectName = string.Empty, ProjectFilePath = string.Empty;
 
             IEnumerable<string> lines = File.ReadLines(Path);
             foreach (string line in lines)
@@ -27,7 +25,7 @@ namespace EuroSound_Application.ApplicationPreferences.Ini_File
                     //Get project name
                     if (line.Trim().StartsWith("["))
                     {
-                        RegexMatches = PatternForProjects.Matches(line);
+                        MatchCollection RegexMatches = PatternForProjects.Matches(line);
                         if (RegexMatches.Count > 0)
                         {
                             ProjectName = RegexMatches[0].ToString();
@@ -37,20 +35,20 @@ namespace EuroSound_Application.ApplicationPreferences.Ini_File
                     //Get path
                     if (line.Trim().StartsWith("UseESP"))
                     {
-                        LineData = line.Split('=');
+                        string[] LineData = line.Split('=');
                         if (LineData.Length > 1)
                         {
-                            ESP = LineData[1];
+                            ProjectFilePath = LineData[1];
                         }
                     }
 
                     //Add data if not contains
-                    if (!string.IsNullOrEmpty(ProjectName) && !string.IsNullOrEmpty(ESP))
+                    if (!string.IsNullOrEmpty(ProjectName) && !string.IsNullOrEmpty(ProjectFilePath))
                     {
                         if (!ProfilesDictionary.ContainsKey(ProjectName))
                         {
-                            ProfilesDictionary.Add(ProjectName, RemoveCharactersFromPathString.Replace(ESP, ""));
-                            ESP = string.Empty;
+                            ProfilesDictionary.Add(ProjectName, RemoveCharactersFromPathString.Replace(ProjectFilePath, ""));
+                            ProjectFilePath = string.Empty;
                             ProjectName = string.Empty;
                         }
                     }

@@ -7,11 +7,6 @@ namespace EuroSound_Application.CurrentProjectFunctions
 {
     public class ProjectFile
     {
-        /*====================[Available Types Of Data]====================
-         0 = Soundbanks
-         1 = Stream Sounds
-         2 = Musics --NOT IMPLEMENTED YET--
-        */
         public string FileName = "Unnamed";
         public sbyte TypeOfData = 0;
         public uint Hashcode = 0x00000000;

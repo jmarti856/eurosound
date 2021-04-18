@@ -146,7 +146,7 @@ namespace EuroSound_Application.StreamSounds
                 WindowStateConfig.Close();
             }
 
-            ProjectInfo.TypeOfData = 1;
+            ProjectInfo.TypeOfData = (int)GenericFunctions.ESoundFileType.StreamSounds;
 
             //Check Hashcodes are not null
             //Load Hashcodes

@@ -81,10 +81,7 @@ namespace EuroSound_Application
 
         private void OpenEmptyForms(string ProjectName, int TypeOfdata)
         {
-            /*--[COMBOBOX FILE PROJECT SELECTED VALUES]--
-            0 = Soundbanks; 1 = Streamed sounds; 2 = Music tracks*/
-
-            if (TypeOfdata == 0)
+            if (TypeOfdata == (int)GenericFunctions.ESoundFileType.SoundBanks)
             {
                 Frm_Soundbanks_Main SoundBanksForms = new Frm_Soundbanks_Main(ProjectName, string.Empty, RecentFilesMenu)
                 {
@@ -95,7 +92,7 @@ namespace EuroSound_Application
                 SoundBanksForms.Show();
                 FormID++;
             }
-            else if (TypeOfdata == 1)
+            else if (TypeOfdata == (int)GenericFunctions.ESoundFileType.StreamSounds)
             {
                 Frm_StreamSoundsEditorMain SoundBanksForms = new Frm_StreamSoundsEditorMain(ProjectName, string.Empty, RecentFilesMenu)
                 {
@@ -106,7 +103,7 @@ namespace EuroSound_Application
                 SoundBanksForms.Show();
                 FormID++;
             }
-            else if (TypeOfdata == 2)
+            else if (TypeOfdata == (int)GenericFunctions.ESoundFileType.MusicBanks)
             {
                 Frm_Musics_Main MusicsForms = new Frm_Musics_Main(ProjectName, string.Empty, RecentFilesMenu)
                 {

@@ -23,18 +23,14 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         {
             if (CheckForEuroSoundRegistryKeys())
             {
-                using (BufferedStream bs = new BufferedStream(File.Open(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read)))
+                using (BinaryReader BReader = new BinaryReader(File.Open(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
                 {
-                    using (BinaryReader BReader = new BinaryReader(bs, Encoding.ASCII))
+                    if (FileIsCorrect(BReader))
                     {
-                        if (FileIsCorrect(BReader))
-                        {
-                            RestoreSettings RestoreSettingsFile = new RestoreSettings();
-                            RestoreSettingsFile.Restore(BReader, EuroSoundKey);
-                        }
-                        BReader.Close();
+                        RestoreSettings RestoreSettingsFile = new RestoreSettings();
+                        RestoreSettingsFile.Restore(BReader, EuroSoundKey);
                     }
-                    bs.Close();
+                    BReader.Close();
                 }
             }
             DisposeKeys();

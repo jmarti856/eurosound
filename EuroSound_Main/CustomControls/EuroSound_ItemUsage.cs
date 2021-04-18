@@ -25,18 +25,14 @@ namespace EuroSound_Application.CustomControls.ObjectInstancesForm
 
         private void EuroSound_ItemUsage_Shown(object sender, EventArgs e)
         {
-            string[] LineSplit;
-            ListViewItem ItemToAdd;
-
-
             FormToSearch = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", FormID);
             if (FormToSearch.GetType() == typeof(Frm_Soundbanks_Main))
             {
                 foreach (string Item in UsageItemsList)
                 {
-                    LineSplit = Item.Split(',');
+                    string[] LineSplit = Item.Split(',');
                     TreeNode NodeSound = ((Frm_Soundbanks_Main)FormToSearch).TreeView_File.Nodes.Find(LineSplit[1], true)[0];
-                    ItemToAdd = new ListViewItem(new[] { LineSplit[0], NodeSound.Text })
+                    ListViewItem ItemToAdd = new ListViewItem(new[] { LineSplit[0], NodeSound.Text })
                     {
                         ImageIndex = 0
                     };

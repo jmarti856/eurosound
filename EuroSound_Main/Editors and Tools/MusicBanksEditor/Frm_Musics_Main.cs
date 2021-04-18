@@ -146,7 +146,7 @@ namespace EuroSound_Application.Musics
                 WindowStateConfig.Close();
             }
 
-            ProjectInfo.TypeOfData = 2;
+            ProjectInfo.TypeOfData = (int)GenericFunctions.ESoundFileType.MusicBanks;
 
             //Check Hashcodes are not null
             //Load Hashcodes

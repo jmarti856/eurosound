@@ -155,8 +155,6 @@ namespace EuroSound_Application.Musics
 
         private void UpdateWavDataList()
         {
-            TreeNode NodeToCheck;
-
             UpdateWavList = new Thread(() =>
             {
                 try
@@ -183,7 +181,7 @@ namespace EuroSound_Application.Musics
                     //Add data to list
                     foreach (KeyValuePair<uint, EXMusic> item in MusicsList)
                     {
-                        NodeToCheck = TreeView_MusicData.Nodes.Find(item.Key.ToString(), true)[0];
+                        TreeNode NodeToCheck = TreeView_MusicData.Nodes.Find(item.Key.ToString(), true)[0];
 
                         //Left Channel
                         ListViewItem LeftChannelInfo = new ListViewItem(new[]

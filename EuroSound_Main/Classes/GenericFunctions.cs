@@ -40,6 +40,13 @@ namespace EuroSound_Application
             Jump = 0
         }
 
+        internal enum ESoundFileType : int
+        {
+            SoundBanks = 0,
+            StreamSounds = 1,
+            MusicBanks = 2
+        }
+
         internal static string TruncateLongString(string str, int maxLenght)
         {
             if (str.Length > maxLenght)

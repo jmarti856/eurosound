@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.EuroSound_Profiles;
 using EuroSound_Application.HashCodesFunctions;
+using System.Collections.Generic;
 using System.IO;
 
 namespace EuroSound_Application.ApplicationPreferences.EuroSound_Profiles
@@ -15,7 +16,7 @@ namespace EuroSound_Application.ApplicationPreferences.EuroSound_Profiles
 
         internal void ApplyProfile(string ProfileFilePath, string ProfileFileName, bool ReloadHashTables)
         {
-            string[] FileLines = File.ReadAllLines(ProfileFilePath);
+            IEnumerable<string> FileLines = File.ReadLines(ProfileFilePath);
             string[] SectionData;
 
             if (ProfilesLoader.FileIsValid(FileLines))
