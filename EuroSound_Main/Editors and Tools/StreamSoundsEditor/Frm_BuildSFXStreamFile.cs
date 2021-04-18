@@ -78,10 +78,10 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 GenericFunctions.SetLabelText(Label_CurrentTask, "Getting SFX To export");
 
                 //Update Progress Bar
-                GenericFunctions.ProgressBarSetMaximum(ProgressBar_CurrentTask, ((Frm_StreamSoundsEditorMain)ParentForm).StreamSoundsList.Keys.Count);
+                GenericFunctions.ProgressBarSetMaximum(ProgressBar_CurrentTask, ((Frm_StreamSounds_Main)ParentForm).StreamSoundsList.Keys.Count);
 
                 //Discard SFXs that has checked as "no output"
-                FinalSoundsDict = SFXCreator.GetFinalSoundsDictionary(((Frm_StreamSoundsEditorMain)ParentForm).StreamSoundsList, ProgressBar_CurrentTask, Label_CurrentTask);
+                FinalSoundsDict = SFXCreator.GetFinalSoundsDictionary(((Frm_StreamSounds_Main)ParentForm).StreamSoundsList, ProgressBar_CurrentTask, Label_CurrentTask);
 
                 TotalProgress += 20;
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
@@ -99,7 +99,7 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 //Check Data
                 foreach (KeyValuePair<uint, EXSoundStream> SoundToCheck in FinalSoundsDict)
                 {
-                    CurrentObjectName = ((Frm_StreamSoundsEditorMain)ParentForm).TreeView_StreamData.Nodes.Find(SoundToCheck.Key.ToString(), true)[0].Text;
+                    CurrentObjectName = ((Frm_StreamSounds_Main)ParentForm).TreeView_StreamData.Nodes.Find(SoundToCheck.Key.ToString(), true)[0].Text;
                     CanOutputFile = SFX_Check.ValidateStreamingSounds(SoundToCheck.Value, CurrentObjectName, Reports);
                     if (CanOutputFile == false)
                     {

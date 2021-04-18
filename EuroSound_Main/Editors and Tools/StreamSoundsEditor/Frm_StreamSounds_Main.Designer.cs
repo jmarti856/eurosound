@@ -3,7 +3,7 @@ using EuroSound_Application.CustomControls.ListViewColumnSorting;
 
 namespace EuroSound_Application.StreamSounds
 {
-    partial class Frm_StreamSoundsEditorMain
+    partial class Frm_StreamSounds_Main
     {
         /// <summary>
         /// Required designer variable.
@@ -33,7 +33,7 @@ namespace EuroSound_Application.StreamSounds
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Sounds", 0, 0);
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_StreamSoundsEditorMain));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_StreamSounds_Main));
             this.TreeView_StreamData = new System.Windows.Forms.TreeView();
             this.ImageList_TreeNode = new System.Windows.Forms.ImageList(this.components);
             this.ContextMenu_Folders = new System.Windows.Forms.ContextMenuStrip(this.components);

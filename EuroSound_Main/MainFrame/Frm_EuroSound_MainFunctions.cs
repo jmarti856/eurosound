@@ -16,65 +16,70 @@ namespace EuroSound_Application
 
             if (!string.IsNullOrEmpty(FileToLoad))
             {
-                //Check File Type
-                TypeOfFileToLoad = TypeOfEuroSoundFile(FileToLoad);
-                if (TypeOfFileToLoad == (int)GenericFunctions.ESoundFileType.SoundBanks)
+                if (!FileIsAlreadyOpened(FileToLoad))
                 {
-                    //Add file to recent list
-                    RecentFilesMenu.AddFile(FileToLoad);
+                    //Check File Type
+                    TypeOfFileToLoad = TypeOfEuroSoundFile(FileToLoad);
 
-                    //Save Active Document
-                    WRegFunctions.SaveActiveDocument(FileToLoad);
-
-                    //Open Form
-                    Frm_Soundbanks_Main SoundBanksForm = new Frm_Soundbanks_Main(string.Empty, FileToLoad, RecentFilesMenu)
+                    //Open form
+                    if (TypeOfFileToLoad == (int)GenericFunctions.ESoundFileType.SoundBanks)
                     {
-                        Owner = this,
-                        MdiParent = this,
-                        Tag = FormID.ToString()
-                    };
-                    SoundBanksForm.Show();
-                    FormID++;
-                }
-                else if (TypeOfFileToLoad == (int)GenericFunctions.ESoundFileType.StreamSounds)
-                {
-                    //Add file to recent list
-                    RecentFilesMenu.AddFile(FileToLoad);
+                        //Add file to recent list
+                        RecentFilesMenu.AddFile(FileToLoad);
 
-                    //Save Active Document
-                    WRegFunctions.SaveActiveDocument(FileToLoad);
+                        //Save Active Document
+                        WRegFunctions.SaveActiveDocument(FileToLoad);
 
-                    //Open Form
-                    Frm_StreamSoundsEditorMain StreamSoundsForm = new Frm_StreamSoundsEditorMain(string.Empty, FileToLoad, RecentFilesMenu)
+                        //Open Form
+                        Frm_Soundbanks_Main SoundBanksForm = new Frm_Soundbanks_Main(string.Empty, FileToLoad, RecentFilesMenu)
+                        {
+                            Owner = this,
+                            MdiParent = this,
+                            Tag = FormID.ToString()
+                        };
+                        SoundBanksForm.Show();
+                        FormID++;
+                    }
+                    else if (TypeOfFileToLoad == (int)GenericFunctions.ESoundFileType.StreamSounds)
                     {
-                        Owner = this,
-                        MdiParent = this,
-                        Tag = FormID.ToString()
-                    };
-                    StreamSoundsForm.Show();
-                    FormID++;
-                }
-                else if (TypeOfFileToLoad == (int)GenericFunctions.ESoundFileType.MusicBanks)
-                {
-                    //Add file to recent list
-                    RecentFilesMenu.AddFile(FileToLoad);
+                        //Add file to recent list
+                        RecentFilesMenu.AddFile(FileToLoad);
 
-                    //Save Active Document
-                    WRegFunctions.SaveActiveDocument(FileToLoad);
+                        //Save Active Document
+                        WRegFunctions.SaveActiveDocument(FileToLoad);
 
-                    //Open Form
-                    Frm_Musics_Main MusicsForm = new Frm_Musics_Main(string.Empty, FileToLoad, RecentFilesMenu)
+                        //Open Form
+                        Frm_StreamSounds_Main StreamSoundsForm = new Frm_StreamSounds_Main(string.Empty, FileToLoad, RecentFilesMenu)
+                        {
+                            Owner = this,
+                            MdiParent = this,
+                            Tag = FormID.ToString()
+                        };
+                        StreamSoundsForm.Show();
+                        FormID++;
+                    }
+                    else if (TypeOfFileToLoad == (int)GenericFunctions.ESoundFileType.MusicBanks)
                     {
-                        Owner = this,
-                        MdiParent = this,
-                        Tag = FormID.ToString()
-                    };
-                    MusicsForm.Show();
-                    FormID++;
-                }
-                else
-                {
-                    MessageBox.Show(string.Join(" ", "Loading file:", FileToLoad, "\n\n", "Error:", FileToLoad, "has a bad format"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        //Add file to recent list
+                        RecentFilesMenu.AddFile(FileToLoad);
+
+                        //Save Active Document
+                        WRegFunctions.SaveActiveDocument(FileToLoad);
+
+                        //Open Form
+                        Frm_Musics_Main MusicsForm = new Frm_Musics_Main(string.Empty, FileToLoad, RecentFilesMenu)
+                        {
+                            Owner = this,
+                            MdiParent = this,
+                            Tag = FormID.ToString()
+                        };
+                        MusicsForm.Show();
+                        FormID++;
+                    }
+                    else
+                    {
+                        MessageBox.Show(string.Join(" ", "Loading file:", FileToLoad, "\n\n", "Error:", FileToLoad, "has a bad format"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
             }
         }
@@ -94,7 +99,7 @@ namespace EuroSound_Application
             }
             else if (TypeOfdata == (int)GenericFunctions.ESoundFileType.StreamSounds)
             {
-                Frm_StreamSoundsEditorMain SoundBanksForms = new Frm_StreamSoundsEditorMain(ProjectName, string.Empty, RecentFilesMenu)
+                Frm_StreamSounds_Main SoundBanksForms = new Frm_StreamSounds_Main(ProjectName, string.Empty, RecentFilesMenu)
                 {
                     Owner = this,
                     MdiParent = this,
@@ -176,6 +181,39 @@ namespace EuroSound_Application
             }
 
             return FilesRemoved;
+        }
+
+        private bool FileIsAlreadyOpened(string FilePathToCheck)
+        {
+            bool FileIsAlreadyLoaded = false;
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form.GetType() == typeof(Frm_Soundbanks_Main))
+                {
+                    if (((Frm_Soundbanks_Main)form).CurrentFilePath.Equals(FilePathToCheck))
+                    {
+                        FileIsAlreadyLoaded = true;
+                        break;
+                    }
+                }
+                else if (form.GetType() == typeof(Frm_StreamSounds_Main))
+                {
+                    if (((Frm_StreamSounds_Main)form).CurrentFilePath.Equals(FilePathToCheck))
+                    {
+                        FileIsAlreadyLoaded = true;
+                        break;
+                    }
+                }
+                else if (form.GetType() == typeof(Frm_Musics_Main))
+                {
+                    if (((Frm_Musics_Main)form).CurrentFilePath.Equals(FilePathToCheck))
+                    {
+                        FileIsAlreadyLoaded = true;
+                        break;
+                    }
+                }
+            }
+            return FileIsAlreadyLoaded;
         }
     }
 }

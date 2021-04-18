@@ -20,9 +20,9 @@ namespace EuroSound_Application.AudioConverter
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
+        internal List<string> Reports;
         private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
         private ListViewFunctions LVFunctions = new ListViewFunctions();
-        internal List<string> Reports;
         private string[] FilesCollection;
         public Frm_AudioConverter()
         {

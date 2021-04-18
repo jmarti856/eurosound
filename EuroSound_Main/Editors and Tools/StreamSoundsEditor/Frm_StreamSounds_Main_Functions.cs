@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace EuroSound_Application.StreamSounds
 {
-    public partial class Frm_StreamSoundsEditorMain
+    public partial class Frm_StreamSounds_Main
     {
         private void RemoveStreamSoundSelectedNode(TreeNode NodeToRemove)
         {

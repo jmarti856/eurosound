@@ -22,27 +22,28 @@ using System.Windows.Forms;
 
 namespace EuroSound_Application.StreamSounds
 {
-    public partial class Frm_StreamSoundsEditorMain : Form
+    public partial class Frm_StreamSounds_Main : Form
     {
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
-        private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
         public Dictionary<uint, EXSoundStream> StreamSoundsList = new Dictionary<uint, EXSoundStream>();
-        private EuroSoundFiles EuroSoundFilesFunctions = new EuroSoundFiles();
         public ProjectFile ProjectInfo = new ProjectFile();
+        internal string CurrentFilePath = string.Empty;
+        private string ProjectName;
+        private bool FormMustBeClosed = false;
+        private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
+        private EuroSoundFiles EuroSoundFilesFunctions = new EuroSoundFiles();
         private StreamSoundsYMLReader LibYamlReader = new StreamSoundsYMLReader();
         private AudioFunctions AudioLibrary = new AudioFunctions();
         private Thread UpdateImaData, UpdateWavList;
         private MostRecentFilesMenu RecentFilesMenu;
-        private string ProjectName, CurrentFilePath = string.Empty;
-        private bool FormMustBeClosed = false;
 
         // The undo and redo history lists.
         private Stack<object> UndoListSounds = new Stack<object>();
         private Stack<TreeNode> UndoListNodes = new Stack<TreeNode>();
 
-        public Frm_StreamSoundsEditorMain(string Name, string FilePath, MostRecentFilesMenu RecentFiles)
+        public Frm_StreamSounds_Main(string Name, string FilePath, MostRecentFilesMenu RecentFiles)
         {
             InitializeComponent();
 

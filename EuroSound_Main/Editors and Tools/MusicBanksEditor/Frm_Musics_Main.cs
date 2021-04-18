@@ -25,15 +25,16 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
-        private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
         public Dictionary<uint, EXMusic> MusicsList = new Dictionary<uint, EXMusic>();
-        private EuroSoundFiles EuroSoundFilesFunctions = new EuroSoundFiles();
         public ProjectFile ProjectInfo = new ProjectFile();
+        internal string CurrentFilePath = string.Empty;
+        private string ProjectName;
+        private bool FormMustBeClosed = false;
+        private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
+        private EuroSoundFiles EuroSoundFilesFunctions = new EuroSoundFiles();
         private MostRecentFilesMenu RecentFilesMenu;
         private AudioFunctions AudioLibrary = new AudioFunctions();
         private Thread UpdateImaData, UpdateWavList;
-        private string ProjectName, CurrentFilePath = string.Empty;
-        private bool FormMustBeClosed = false;
 
         // The undo and redo history lists.
         private Stack<object> UndoListMusics = new Stack<object>();

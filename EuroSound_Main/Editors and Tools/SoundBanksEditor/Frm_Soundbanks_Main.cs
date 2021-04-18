@@ -29,18 +29,19 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
-        private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
         internal Dictionary<string, EXAudio> AudioDataDict = new Dictionary<string, EXAudio>();
         internal Dictionary<uint, EXSound> SoundsList = new Dictionary<uint, EXSound>();
         internal ProjectFile ProjectInfo = new ProjectFile();
+        internal string CurrentFilePath = string.Empty;
+        private readonly Regex sWhitespace = new Regex(@"\s+");
+        private string ProjectName;
+        private bool FormMustBeClosed = false;
+        private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
         private EuroSoundFiles EuroSoundFilesFunctions = new EuroSoundFiles();
         private Thread UpdateList, UpdateWavList, UpdateStreamDataList, LoadYamlFile;
         private SoundBanksYMLReader LibYamlReader = new SoundBanksYMLReader();
         private AudioFunctions AudioFunctionsLibrary = new AudioFunctions();
         private MostRecentFilesMenu RecentFilesMenu;
-        private readonly Regex sWhitespace = new Regex(@"\s+");
-        private string ProjectName, CurrentFilePath = string.Empty;
-        private bool FormMustBeClosed = false;
 
         //The undo and redo history lists.
         private Stack<object> UndoListSounds = new Stack<object>();

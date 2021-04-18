@@ -403,16 +403,16 @@
     <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_BuildSFXStreamFile.Designer.cs">
       <DependentUpon>Frm_BuildSFXStreamFile.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSoundsEditorMain.cs">
+    <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSounds_Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSoundsEditorMain.Designer.cs">
-      <DependentUpon>Frm_StreamSoundsEditorMain.cs</DependentUpon>
+    <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSounds_Main.Designer.cs">
+      <DependentUpon>Frm_StreamSounds_Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSoundsEditorMain_ContextualMenus.cs">
+    <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSounds_Main_ContextualMenus.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSoundsEditorMain_Functions.cs">
+    <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSounds_Main_Functions.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Editors and Tools\Frm_StreamSounds_MarkersEditor.cs">
@@ -543,8 +543,8 @@
     <EmbeddedResource Include="Editors and Tools\StreamSoundsEditor\Frm_BuildSFXStreamFile.resx">
       <DependentUpon>Frm_BuildSFXStreamFile.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSoundsEditorMain.resx">
-      <DependentUpon>Frm_StreamSoundsEditorMain.cs</DependentUpon>
+    <EmbeddedResource Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSounds_Main.resx">
+      <DependentUpon>Frm_StreamSounds_Main.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editors and Tools\Frm_StreamSounds_MarkersEditor.resx">
       <DependentUpon>Frm_StreamSounds_MarkersEditor.cs</DependentUpon>

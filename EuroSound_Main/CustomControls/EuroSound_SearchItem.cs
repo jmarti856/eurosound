@@ -50,7 +50,7 @@ namespace EuroSound_Application.CustomControls.SearcherForm
                 Combobox_LookIn.Items.Add(new { Text = "Sounds", Value = 1 });
                 Combobox_LookIn.Items.Add(new { Text = "Stream Sounds", Value = 2 });
             }
-            else if (FormType == typeof(Frm_StreamSoundsEditorMain))
+            else if (FormType == typeof(Frm_StreamSounds_Main))
             {
                 Combobox_LookIn.Items.Add(new { Text = "Sounds", Value = 1 });
             }
@@ -207,9 +207,9 @@ namespace EuroSound_Application.CustomControls.SearcherForm
                 }
             }
             //Stream Sounds
-            else if (FormType == typeof(Frm_StreamSoundsEditorMain))
+            else if (FormType == typeof(Frm_StreamSounds_Main))
             {
-                Results = GetNodeCollection(((Frm_StreamSoundsEditorMain)FormToSearch).TreeView_StreamData.Nodes, ((Frm_StreamSoundsEditorMain)FormToSearch).TreeView_StreamData, Textbox_TextToSearch.Text.Trim(), RadioButton_MatchCase.Checked, e);
+                Results = GetNodeCollection(((Frm_StreamSounds_Main)FormToSearch).TreeView_StreamData.Nodes, ((Frm_StreamSounds_Main)FormToSearch).TreeView_StreamData, Textbox_TextToSearch.Text.Trim(), RadioButton_MatchCase.Checked, e);
             }
             //Musics
             else if (FormType == typeof(Frm_Musics_Main))
@@ -260,11 +260,11 @@ namespace EuroSound_Application.CustomControls.SearcherForm
                             ((Frm_Soundbanks_Main)FormToSearch).OpenAudioProperties(NodeToOpen);
                         }
                     }
-                    else if (FormType == typeof(Frm_StreamSoundsEditorMain))
+                    else if (FormType == typeof(Frm_StreamSounds_Main))
                     {
                         if (ObjectType.Equals("Sound"))
                         {
-                            ((Frm_StreamSoundsEditorMain)FormToSearch).OpenSoundPropertiesForm(NodeToOpen);
+                            ((Frm_StreamSounds_Main)FormToSearch).OpenSoundPropertiesForm(NodeToOpen);
                         }
                     }
                     else if (FormType == typeof(Frm_Musics_Main))

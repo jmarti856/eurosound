@@ -149,7 +149,7 @@ namespace EuroSound_Application.StreamSounds
 
             //Change node icon
             OpenForm = GenericFunctions.GetFormByName("Frm_StreamSoundsEditorMain", Tag.ToString());
-            Results = ((Frm_StreamSoundsEditorMain)OpenForm).TreeView_StreamData.Nodes.Find(SelectedSoundKey, true);
+            Results = ((Frm_StreamSounds_Main)OpenForm).TreeView_StreamData.Nodes.Find(SelectedSoundKey, true);
 
             if (Results.Length > 0)
             {
