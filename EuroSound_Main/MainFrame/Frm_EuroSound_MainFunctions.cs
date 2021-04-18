@@ -186,27 +186,27 @@ namespace EuroSound_Application
         private bool FileIsAlreadyOpened(string FilePathToCheck)
         {
             bool FileIsAlreadyLoaded = false;
-            foreach (Form form in Application.OpenForms)
+            foreach (Form FormToCheck in Application.OpenForms)
             {
-                if (form.GetType() == typeof(Frm_Soundbanks_Main))
+                if (FormToCheck.GetType() == typeof(Frm_Soundbanks_Main))
                 {
-                    if (((Frm_Soundbanks_Main)form).CurrentFilePath.Equals(FilePathToCheck))
+                    if (((Frm_Soundbanks_Main)FormToCheck).CurrentFilePath.Equals(FilePathToCheck))
                     {
                         FileIsAlreadyLoaded = true;
                         break;
                     }
                 }
-                else if (form.GetType() == typeof(Frm_StreamSounds_Main))
+                else if (FormToCheck.GetType() == typeof(Frm_StreamSounds_Main))
                 {
-                    if (((Frm_StreamSounds_Main)form).CurrentFilePath.Equals(FilePathToCheck))
+                    if (((Frm_StreamSounds_Main)FormToCheck).CurrentFilePath.Equals(FilePathToCheck))
                     {
                         FileIsAlreadyLoaded = true;
                         break;
                     }
                 }
-                else if (form.GetType() == typeof(Frm_Musics_Main))
+                else if (FormToCheck.GetType() == typeof(Frm_Musics_Main))
                 {
-                    if (((Frm_Musics_Main)form).CurrentFilePath.Equals(FilePathToCheck))
+                    if (((Frm_Musics_Main)FormToCheck).CurrentFilePath.Equals(FilePathToCheck))
                     {
                         FileIsAlreadyLoaded = true;
                         break;

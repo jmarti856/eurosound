@@ -4,7 +4,6 @@ using EuroSound_Application.EuroSoundSoundBanksFilesFunctions;
 using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
-using EuroSound_Application.TreeViewLibraryFunctions;
 using EuroSound_Application.TreeViewSorter;
 using Syroot.BinaryData;
 using System;
@@ -53,12 +52,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 
             //Sort nodes
             TreeViewControl.TreeViewNodeSorter = new NodeSorter();
-
-            //Update images
-            foreach (TreeNode Node in TreeViewControl.Nodes)
-            {
-                UpdateNodeImagesSoundBank(Node, SoundsList);
-            }
 
             //Enable again the treeview
             TreeViewControl.Enabled = true;
@@ -124,12 +117,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 bs.Close();
             }
 
-            //Update images
-            foreach (TreeNode Node in TreeViewControl.Nodes)
-            {
-                UpdateNodeImagesStreamSoundBank(Node, StreamSoundsList);
-            }
-
             //Enable again the treeview
             TreeViewControl.Enabled = true;
 
@@ -192,12 +179,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 bs.Close();
             }
 
-            //Update images
-            foreach (TreeNode Node in TreeViewControl.Nodes)
-            {
-                UpdateNodeImagesMusicSoundBank(Node, MusicsList);
-            }
-
             //Enable again the treeview
             TreeViewControl.Enabled = true;
 
@@ -251,72 +232,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             }
 
             return FileCorrect;
-        }
-
-        private void UpdateNodeImagesSoundBank(TreeNode Node, Dictionary<uint, EXSound> SoundsList)
-        {
-            if (Node.Tag.Equals("Sound"))
-            {
-                EXSound sound = EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(Node.Name), SoundsList);
-                if (sound != null)
-                {
-                    if (!sound.OutputThisSound)
-                    {
-                        TreeNodeFunctions.TreeNodeSetNodeImage(Node, 5, 5);
-                    }
-                }
-            }
-            else
-            {
-                foreach (TreeNode tn in Node.Nodes)
-                {
-                    UpdateNodeImagesSoundBank(tn, SoundsList);
-                }
-            }
-        }
-
-        private void UpdateNodeImagesStreamSoundBank(TreeNode Node, Dictionary<uint, EXSoundStream> SoundsList)
-        {
-            if (Node.Tag.Equals("Sound"))
-            {
-                EXSoundStream sound = EXStreamSoundsFunctions.GetSoundByName(uint.Parse(Node.Name), SoundsList);
-                if (sound != null)
-                {
-                    if (!sound.OutputThisSound)
-                    {
-                        TreeNodeFunctions.TreeNodeSetNodeImage(Node, 5, 5);
-                    }
-                }
-            }
-            else
-            {
-                foreach (TreeNode tn in Node.Nodes)
-                {
-                    UpdateNodeImagesStreamSoundBank(tn, SoundsList);
-                }
-            }
-        }
-
-        private void UpdateNodeImagesMusicSoundBank(TreeNode Node, Dictionary<uint, EXMusic> SoundsList)
-        {
-            if (Node.Tag.Equals("Sound"))
-            {
-                EXMusic sound = EXMusicsFunctions.GetMusicByName(uint.Parse(Node.Name), SoundsList);
-                if (sound != null)
-                {
-                    if (!sound.OutputThisSound)
-                    {
-                        TreeNodeFunctions.TreeNodeSetNodeImage(Node, 5, 5);
-                    }
-                }
-            }
-            else
-            {
-                foreach (TreeNode tn in Node.Nodes)
-                {
-                    UpdateNodeImagesMusicSoundBank(tn, SoundsList);
-                }
-            }
         }
     }
 }
