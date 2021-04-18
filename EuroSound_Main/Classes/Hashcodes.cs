@@ -103,10 +103,9 @@ namespace EuroSound_Application.HashCodesFunctions
             SFX_Defines.Clear();
             SB_Defines.Clear();
 
-            //Regex FindHexNumber = new Regex(@"(0[xX][A-Fa-f0-9]+;?)+$");
             Regex FindHashcodeLabel = new Regex(@"\s+(\w+)");
 
-            using (FileStream fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read))
+            using (FileStream fs = File.OpenRead(FilePath))
             {
                 using (BufferedStream bs = new BufferedStream(fs))
                 {
@@ -167,10 +166,9 @@ namespace EuroSound_Application.HashCodesFunctions
             //Clear dictionaries
             MFX_Defines.Clear();
 
-            //Regex FindHexNumber = new Regex(@"(0[xX][A-Fa-f0-9]+;?)+$");
             Regex FindHashcodeLabel = new Regex(@"\s+(\w+)");
 
-            using (FileStream fs = new FileStream(GlobalPreferences.HT_MusicPath, FileMode.Open, FileAccess.Read))
+            using (FileStream fs = File.OpenRead(GlobalPreferences.HT_MusicPath))
             {
                 using (BufferedStream bs = new BufferedStream(fs))
                 {
@@ -223,7 +221,7 @@ namespace EuroSound_Application.HashCodesFunctions
             string CurrentLine;
 
             SFX_Data.Clear();
-            using (FileStream fs = new FileStream(GlobalPreferences.HT_SoundsDataPath, FileMode.Open, FileAccess.Read))
+            using (FileStream fs = File.OpenRead(GlobalPreferences.HT_SoundsDataPath))
             {
                 using (BufferedStream bs = new BufferedStream(fs))
                 {
