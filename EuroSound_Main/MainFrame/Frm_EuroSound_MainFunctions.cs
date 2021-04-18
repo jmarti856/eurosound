@@ -18,7 +18,7 @@ namespace EuroSound_Application
             {
                 //Check File Type
                 TypeOfFileToLoad = TypeOfEuroSoundFile(FileToLoad);
-                if (TypeOfFileToLoad == 0)
+                if (TypeOfFileToLoad == (int)GenericFunctions.ESoundFileType.SoundBanks)
                 {
                     //Add file to recent list
                     RecentFilesMenu.AddFile(FileToLoad);
@@ -36,7 +36,7 @@ namespace EuroSound_Application
                     SoundBanksForm.Show();
                     FormID++;
                 }
-                else if (TypeOfFileToLoad == 1)
+                else if (TypeOfFileToLoad == (int)GenericFunctions.ESoundFileType.StreamSounds)
                 {
                     //Add file to recent list
                     RecentFilesMenu.AddFile(FileToLoad);
@@ -54,7 +54,7 @@ namespace EuroSound_Application
                     StreamSoundsForm.Show();
                     FormID++;
                 }
-                else if (TypeOfFileToLoad == 2)
+                else if (TypeOfFileToLoad == (int)GenericFunctions.ESoundFileType.MusicBanks)
                 {
                     //Add file to recent list
                     RecentFilesMenu.AddFile(FileToLoad);
@@ -119,13 +119,6 @@ namespace EuroSound_Application
         private int TypeOfEuroSoundFile(string FileToLoad)
         {
             int Type = -1;
-
-            /* TYPE VALUES
-            Type -1 = bad format
-            Type 0  = Soundbank
-            Type 1  = Stream Soundbank
-            Type 2  = Musics
-            */
 
             if (System.IO.File.Exists(FileToLoad))
             {

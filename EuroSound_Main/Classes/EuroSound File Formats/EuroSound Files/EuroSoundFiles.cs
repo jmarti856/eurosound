@@ -18,6 +18,8 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 {
     internal class EuroSoundFiles
     {
+        uint FileVersion = 0;
+
         internal string LoadSoundBanksDocument(TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
         {
             string ProfileName = string.Empty;
@@ -41,7 +43,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                         if (TypeOfStoredData == 0)
                         {
                             ESF_LoadSoundBanks Version11Reader = new ESF_LoadSoundBanks();
-                            ProfileName = Version11Reader.ReadEuroSoundSoundBankFile(FileProperties, BReader, SoundsList, AudiosList, TreeViewControl);
+                            ProfileName = Version11Reader.ReadEuroSoundSoundBankFile(FileProperties, BReader, SoundsList, AudiosList, TreeViewControl, (int)FileVersion);
                         }
                     }
                     BReader.Close();
@@ -114,17 +116,13 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                         if (TypeOfStoredData == 1)
                         {
                             ESF_LoadStreamSounds Version11Reader = new ESF_LoadStreamSounds();
-                            ProfileName = Version11Reader.ReadEuroSoundStreamFile(FileProperties, BReader, TreeViewControl, StreamSoundsList);
+                            ProfileName = Version11Reader.ReadEuroSoundStreamFile(FileProperties, BReader, TreeViewControl, StreamSoundsList, (int)FileVersion);
                         }
                     }
                     BReader.Close();
                 }
                 bs.Close();
             }
-
-            //Expand root nodes only
-            TreeViewControl.Nodes[0].Collapse();
-            TreeViewControl.Nodes[0].Expand();
 
             //Update images
             foreach (TreeNode Node in TreeViewControl.Nodes)
@@ -186,17 +184,13 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                         if (TypeOfStoredData == 2)
                         {
                             ESF_LoadMusics Version11Reader = new ESF_LoadMusics();
-                            ProfileName = Version11Reader.ReadEuroSoundMusicFile(FileProperties, BReader, TreeViewControl, MusicsList);
+                            ProfileName = Version11Reader.ReadEuroSoundMusicFile(FileProperties, BReader, TreeViewControl, MusicsList, (int)FileVersion);
                         }
                     }
                     BReader.Close();
                 }
                 bs.Close();
             }
-
-            //Expand root nodes only
-            TreeViewControl.Nodes[0].Collapse();
-            TreeViewControl.Nodes[0].Expand();
 
             //Update images
             foreach (TreeNode Node in TreeViewControl.Nodes)
@@ -238,7 +232,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
         public bool FileIsCorrect(BinaryReader BReader)
         {
             string Magic;
-            uint Version;
             bool FileCorrect = false;
 
             //Read MAGIC
@@ -246,14 +239,14 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             if (Magic.Equals("ESF"))
             {
                 //FileVersion
-                Version = BReader.ReadUInt32();
-                if (Version <= int.Parse(GenericFunctions.GetEuroSoundVersion().Replace(".", "")))
+                FileVersion = BReader.ReadUInt32();
+                if (FileVersion <= int.Parse(GenericFunctions.GetEuroSoundVersion().Replace(".", "")))
                 {
                     FileCorrect = true;
                 }
                 else
                 {
-                    MessageBox.Show("This file was written by Eurosound v" + Version + " and cannot be read by v" + GenericFunctions.GetEuroSoundVersion().Replace(".", "") + " or lower.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("This file was written by Eurosound v" + FileVersion + " and cannot be read by v" + GenericFunctions.GetEuroSoundVersion().Replace(".", "") + " or lower.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 

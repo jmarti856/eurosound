@@ -66,12 +66,12 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
                 {
                     TreeNode NodeToMove = ParentTreeViewControl.Nodes.Find(item.Key.ToString(), true)[0];
                     ParentTreeViewControl.Nodes.Remove(NodeToMove);
-                    TreeNodeFunctions.TreeNodeAddNewNode(NewParentNode.Name, NodeToMove.Name, NodeToMove.Text, NodeToMove.SelectedImageIndex, NodeToMove.ImageIndex, NodeToMove.Tag.ToString(), NodeToMove.ForeColor, ParentTreeViewControl);
+                    TreeNodeFunctions.TreeNodeAddNewNode(NewParentNode.Name, NodeToMove.Name, NodeToMove.Text, NodeToMove.SelectedImageIndex, NodeToMove.ImageIndex, NodeToMove.Tag.ToString(), false, false, false, NodeToMove.ForeColor, ParentTreeViewControl);
                     if (NodeToMove.Nodes.Count > 0)
                     {
                         foreach (TreeNode child in NodeToMove.Nodes)
                         {
-                            TreeNodeFunctions.TreeNodeAddNewNode(child.Parent.Name, child.Name, child.Text, child.SelectedImageIndex, child.ImageIndex, child.Tag.ToString(), child.ForeColor, ParentTreeViewControl);
+                            TreeNodeFunctions.TreeNodeAddNewNode(child.Parent.Name, child.Name, child.Text, child.SelectedImageIndex, child.ImageIndex, child.Tag.ToString(), false, false, false, child.ForeColor, ParentTreeViewControl);
                         }
                     }
                 }

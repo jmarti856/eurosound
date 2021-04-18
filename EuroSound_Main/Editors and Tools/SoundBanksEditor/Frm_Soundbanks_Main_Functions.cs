@@ -15,22 +15,6 @@ namespace EuroSound_Application.SoundBanksEditor
 {
     public partial class Frm_Soundbanks_Main
     {
-        private string SaveDocument(string LoadedFile, TreeView TreeView_File, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, ProjectFile ProjectProperties)
-        {
-            string NewFilePath;
-
-            if (!string.IsNullOrEmpty(LoadedFile))
-            {
-                NewFilePath = EuroSoundFilesFunctions.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, LoadedFile, ProjectProperties);
-            }
-            else
-            {
-                NewFilePath = OpenSaveAsDialog(TreeView_File, SoundsList, AudioDataDict, ProjectProperties);
-            }
-
-            return NewFilePath;
-        }
-
         private string OpenSaveAsDialog(TreeView TreeView_File, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, ProjectFile FileProperties)
         {
             string SavePath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Files (*.esf)|*.esf|All files (*.*)|*.*", 1, true, Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, FileProperties.Hashcode));
@@ -303,11 +287,9 @@ namespace EuroSound_Application.SoundBanksEditor
                 //Sounds Hashcodes
                 try
                 {
-                    TreeNode DisplayName;
-
                     foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
                     {
-                        DisplayName = TreeView_File.Nodes.Find(Sound.Key.ToString(), true)[0];
+                        TreeNode DisplayName = TreeView_File.Nodes.Find(Sound.Key.ToString(), true)[0];
                         ListViewItem Hashcode = new ListViewItem(new[] { "", string.Join("", new string[] { "0x", Sound.Value.Hashcode.ToString("X8") }), "<Label Not Found>", DisplayName.Text });
                         if (Hashcodes.SFX_Defines.ContainsKey(Convert.ToUInt32(Sound.Value.Hashcode)))
                         {
@@ -371,9 +353,6 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 try
                 {
-                    string SoundDisplayName;
-                    TreeNode NodeToCheck;
-
                     //Clear List
                     ListView_StreamData.BeginInvoke((MethodInvoker)delegate
                     {
@@ -383,12 +362,12 @@ namespace EuroSound_Application.SoundBanksEditor
 
                     foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
                     {
-                        SoundDisplayName = TreeView_File.Nodes.Find(Sound.Key.ToString(), true)[0].Text;
+                        string SoundDisplayName = TreeView_File.Nodes.Find(Sound.Key.ToString(), true)[0].Text;
                         foreach (KeyValuePair<uint, EXSample> Sample in Sound.Value.Samples)
                         {
                             if (Sample.Value.FileRef < 0)
                             {
-                                NodeToCheck = TreeView_File.Nodes.Find(Sample.Key.ToString(), true)[0];
+                                TreeNode NodeToCheck = TreeView_File.Nodes.Find(Sample.Key.ToString(), true)[0];
                                 ListViewItem ItemStreamed = new ListViewItem(new[]
                                 {
                                     NodeToCheck.Text,
@@ -450,8 +429,6 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 try
                 {
-                    TreeNode NodeToCheck;
-
                     //Clear List
                     ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
                     {
@@ -462,7 +439,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     //Add data to list
                     foreach (KeyValuePair<string, EXAudio> item in AudioDataDict)
                     {
-                        NodeToCheck = TreeView_File.Nodes.Find(item.Key, true)[0];
+                        TreeNode NodeToCheck = TreeView_File.Nodes.Find(item.Key, true)[0];
                         ListViewItem Hashcode = new ListViewItem(new[]
                         {
                             NodeToCheck.Text.ToString(),

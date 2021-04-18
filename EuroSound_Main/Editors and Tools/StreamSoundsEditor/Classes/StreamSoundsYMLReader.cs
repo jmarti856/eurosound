@@ -159,7 +159,7 @@ namespace EuroSound_Application.StreamSounds.YMLReader
                     SoundID = GenericFunctions.GetNewObjectID(FileProperties);
                     SoundsList.Add(SoundID, SoundToAdd);
 
-                    TreeNodeFunctions.TreeNodeAddNewNode("Sounds", SoundID.ToString(), SoundName, 2, 2, "Sound", Color.Black, TreeViewControl);
+                    TreeNodeFunctions.TreeNodeAddNewNode("Sounds", SoundID.ToString(), SoundName, 2, 2, "Sound", false, false, false, Color.Black, TreeViewControl);
                 }
                 catch
                 {

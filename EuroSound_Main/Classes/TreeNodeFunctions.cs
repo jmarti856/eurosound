@@ -106,7 +106,7 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
             return null;
         }
 
-        internal static void TreeNodeAddNewNode(string Parent, string n_Name, string DisplayName, int SelectedImageIndex, int ImageIndex, string Tag, Color TextColor, TreeView TreeViewToEdit)
+        internal static void TreeNodeAddNewNode(string Parent, string n_Name, string DisplayName, int SelectedImageIndex, int ImageIndex, string Tag, bool ParentIsExpanded, bool NodeIsExpanded, bool NodeIsSelected, Color TextColor, TreeView TreeViewToEdit)
         {
             TreeNode[] ParentNode = TreeViewToEdit.Nodes.Find(Parent, true);
 
@@ -118,7 +118,9 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
                     Name = n_Name,
                     Text = DisplayName,
                     ForeColor = TextColor,
-                    Tag = Tag
+                    Tag = Tag,
+                    SelectedImageIndex = SelectedImageIndex,
+                    ImageIndex = ImageIndex
                 };
 
                 //--Add element to the tree node--
@@ -127,10 +129,23 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
                     TreeViewToEdit.Invoke((MethodInvoker)delegate
                     {
                         ParentNode[0].Nodes.Add(NewNode);
-                        ParentNode[0].Expand();
 
-                        //--Set image--
-                        TreeNodeSetNodeImage(NewNode, SelectedImageIndex, ImageIndex);
+                        //--Apply Node State--
+                        if (ParentIsExpanded)
+                        {
+                            NewNode.Parent.Expand();
+                        }
+
+                        if (NodeIsExpanded)
+                        {
+                            NewNode.Expand();
+                        }
+
+                        if (NodeIsSelected)
+                        {
+                            TreeViewToEdit.SelectedNode = NewNode;
+                            NewNode.EnsureVisible();
+                        }
                     });
                 }
             }

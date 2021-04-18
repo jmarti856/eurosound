@@ -39,8 +39,7 @@ namespace EuroSound_Application.SoundBanksEditor
         private AudioFunctions AudioFunctionsLibrary = new AudioFunctions();
         private MostRecentFilesMenu RecentFilesMenu;
         private readonly Regex sWhitespace = new Regex(@"\s+");
-        private string FileToLoadArg, ProjectName;
-        private string LoadedFile = string.Empty;
+        private string ProjectName, CurrentFilePath = string.Empty;
         private bool FormMustBeClosed = false;
 
         //The undo and redo history lists.
@@ -51,7 +50,7 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             InitializeComponent();
 
-            FileToLoadArg = FileToLoad;
+            CurrentFilePath = FileToLoad;
             ProjectName = NewProjectName;
             RecentFilesMenu = RecentFiles;
 
@@ -207,21 +206,16 @@ namespace EuroSound_Application.SoundBanksEditor
             }
 
             //Load ESF file if nedded
-            if (string.IsNullOrEmpty(FileToLoadArg))
+            if (string.IsNullOrEmpty(CurrentFilePath))
             {
                 ProjectInfo.FileName = ProjectName;
             }
             else
             {
-                LoadedFile = FileToLoadArg;
-                ProfileName = EuroSoundFilesFunctions.LoadSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, FileToLoadArg, ProjectInfo);
+                ProfileName = EuroSoundFilesFunctions.LoadSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, CurrentFilePath, ProjectInfo);
 
                 //Check that the profile name matches with the current one
-                if (ProfileName.Equals(GlobalPreferences.SelectedProfileName))
-                {
-                    TreeView_File.ExpandAll();
-                }
-                else
+                if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
                 {
                     FormMustBeClosed = true;
                 }
@@ -237,7 +231,7 @@ namespace EuroSound_Application.SoundBanksEditor
             else
             {
                 //Update from title
-                Text = GenericFunctions.UpdateProjectFormText(LoadedFile, ProjectInfo.FileName);
+                Text = GenericFunctions.UpdateProjectFormText(CurrentFilePath, ProjectInfo.FileName);
                 if (WindowState != FormWindowState.Maximized)
                 {
                     MdiParent.Text = "EuroSound - " + Text;
@@ -325,7 +319,16 @@ namespace EuroSound_Application.SoundBanksEditor
                     DialogResult dialogResult = MessageBox.Show("Save changes to " + ProjectInfo.FileName + "?", "EuroSound", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
                     if (dialogResult == DialogResult.Yes)
                     {
-                        LoadedFile = SaveDocument(LoadedFile, TreeView_File, SoundsList, AudioDataDict, ProjectInfo);
+                        //Check if we have a path for this file
+                        if (string.IsNullOrEmpty(CurrentFilePath))
+                        {
+                            CurrentFilePath = OpenSaveAsDialog(TreeView_File, SoundsList, AudioDataDict, ProjectInfo);
+                        }
+                        //Save Data
+                        else
+                        {
+                            EuroSoundFilesFunctions.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, CurrentFilePath, ProjectInfo);
+                        }
                         ProjectInfo.FileHasBeenModified = false;
                         MdiParent.Text = "EuroSound";
                         Close();
@@ -632,10 +635,19 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void MenuItem_File_Save_Click(object sender, EventArgs e)
         {
-            LoadedFile = SaveDocument(LoadedFile, TreeView_File, SoundsList, AudioDataDict, ProjectInfo);
+            //Check if we have a path for this file
+            if (string.IsNullOrEmpty(CurrentFilePath))
+            {
+                CurrentFilePath = OpenSaveAsDialog(TreeView_File, SoundsList, AudioDataDict, ProjectInfo);
+            }
+            //Save Data
+            else
+            {
+                EuroSoundFilesFunctions.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, CurrentFilePath, ProjectInfo);
+            }
             ProjectInfo.FileHasBeenModified = false;
 
-            Text = GenericFunctions.UpdateProjectFormText(LoadedFile, ProjectInfo.FileName);
+            Text = GenericFunctions.UpdateProjectFormText(CurrentFilePath, ProjectInfo.FileName);
             if (!(WindowState == FormWindowState.Maximized))
             {
                 MdiParent.Text = "EuroSound - " + Text;
@@ -645,10 +657,10 @@ namespace EuroSound_Application.SoundBanksEditor
         private void MenuItem_File_SaveAs_Click(object sender, EventArgs e)
         {
             //Save file in different location
-            LoadedFile = OpenSaveAsDialog(TreeView_File, SoundsList, AudioDataDict, ProjectInfo);
+            CurrentFilePath = OpenSaveAsDialog(TreeView_File, SoundsList, AudioDataDict, ProjectInfo);
 
             //Update text
-            Text = GenericFunctions.UpdateProjectFormText(LoadedFile, ProjectInfo.FileName);
+            Text = GenericFunctions.UpdateProjectFormText(CurrentFilePath, ProjectInfo.FileName);
             if (!(WindowState == FormWindowState.Maximized))
             {
                 MdiParent.Text = "EuroSound - " + Text;

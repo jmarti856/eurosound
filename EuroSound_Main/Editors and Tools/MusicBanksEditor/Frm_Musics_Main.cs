@@ -27,13 +27,12 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
         public Dictionary<uint, EXMusic> MusicsList = new Dictionary<uint, EXMusic>();
-        private EuroSoundFiles SerializeInfo = new EuroSoundFiles();
+        private EuroSoundFiles EuroSoundFilesFunctions = new EuroSoundFiles();
         public ProjectFile ProjectInfo = new ProjectFile();
         private MostRecentFilesMenu RecentFilesMenu;
         private AudioFunctions AudioLibrary = new AudioFunctions();
         private Thread UpdateImaData, UpdateWavList;
-        private string FileToLoadArg, ProjectName;
-        private string LoadedFile = string.Empty;
+        private string ProjectName, CurrentFilePath = string.Empty;
         private bool FormMustBeClosed = false;
 
         // The undo and redo history lists.
@@ -43,7 +42,7 @@ namespace EuroSound_Application.Musics
         public Frm_Musics_Main(string Name, string FilePath, MostRecentFilesMenu RecentFiles)
         {
             InitializeComponent();
-            FileToLoadArg = FilePath;
+            CurrentFilePath = FilePath;
             ProjectName = Name;
             RecentFilesMenu = RecentFiles;
 
@@ -164,21 +163,16 @@ namespace EuroSound_Application.Musics
             }
 
             //Load file in argument 0
-            if (string.IsNullOrEmpty(FileToLoadArg))
+            if (string.IsNullOrEmpty(CurrentFilePath))
             {
                 ProjectInfo.FileName = ProjectName;
             }
             else
             {
-                LoadedFile = FileToLoadArg;
-                ProfileName = SerializeInfo.LoadMusicsDocument(TreeView_MusicData, MusicsList, FileToLoadArg, ProjectInfo, GenericFunctions.ResourcesManager);
+                ProfileName = EuroSoundFilesFunctions.LoadMusicsDocument(TreeView_MusicData, MusicsList, CurrentFilePath, ProjectInfo, GenericFunctions.ResourcesManager);
 
                 //Check that the profile name matches with the current one
-                if (ProfileName.Equals(GlobalPreferences.SelectedProfileName))
-                {
-                    TreeView_MusicData.ExpandAll();
-                }
-                else
+                if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
                 {
                     FormMustBeClosed = true;
                 }
@@ -194,7 +188,7 @@ namespace EuroSound_Application.Musics
             else
             {
                 //Update from title
-                Text = GenericFunctions.UpdateProjectFormText(LoadedFile, ProjectInfo.FileName);
+                Text = GenericFunctions.UpdateProjectFormText(CurrentFilePath, ProjectInfo.FileName);
                 if (WindowState != FormWindowState.Maximized)
                 {
                     MdiParent.Text = "EuroSound - " + Text;
@@ -269,7 +263,16 @@ namespace EuroSound_Application.Musics
                     DialogResult dialogResult = MessageBox.Show("Save changes to " + ProjectInfo.FileName + "?", "EuroSound", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
                     if (dialogResult == DialogResult.Yes)
                     {
-                        LoadedFile = SaveDocument(LoadedFile, TreeView_MusicData, MusicsList, ProjectInfo);
+                        //Check if we have a path for this file
+                        if (string.IsNullOrEmpty(CurrentFilePath))
+                        {
+                            CurrentFilePath = OpenSaveAsDialog(TreeView_MusicData, MusicsList, ProjectInfo);
+                        }
+                        //Save Data
+                        else
+                        {
+                            EuroSoundFilesFunctions.SaveMusics(TreeView_MusicData, MusicsList, CurrentFilePath, ProjectInfo);
+                        }
                         ProjectInfo.FileHasBeenModified = false;
                         MdiParent.Text = "EuroSound";
                         Close();
@@ -320,22 +323,6 @@ namespace EuroSound_Application.Musics
             GenericFunctions.SetCurrentFileLabel(string.Empty, "Hashcode");
         }
 
-        private string SaveDocument(string LoadedFile, TreeView TreeView_File, Dictionary<uint, EXMusic> StreamSoundsList, ProjectFile ProjectProperties)
-        {
-            string NewFilePath;
-
-            if (!string.IsNullOrEmpty(LoadedFile))
-            {
-                NewFilePath = SerializeInfo.SaveMusics(TreeView_File, StreamSoundsList, LoadedFile, ProjectProperties);
-            }
-            else
-            {
-                NewFilePath = OpenSaveAsDialog(TreeView_File, StreamSoundsList, ProjectProperties);
-            }
-
-            return NewFilePath;
-        }
-
         //*===============================================================================================
         //* MENU EDIT
         //*===============================================================================================
@@ -363,10 +350,19 @@ namespace EuroSound_Application.Musics
 
         private void MenuItem_File_Save_Click(object sender, EventArgs e)
         {
-            LoadedFile = SaveDocument(LoadedFile, TreeView_MusicData, MusicsList, ProjectInfo);
+            //Check if we have a path for this file
+            if (string.IsNullOrEmpty(CurrentFilePath))
+            {
+                CurrentFilePath = OpenSaveAsDialog(TreeView_MusicData, MusicsList, ProjectInfo);
+            }
+            //Save Data
+            else
+            {
+                EuroSoundFilesFunctions.SaveMusics(TreeView_MusicData, MusicsList, CurrentFilePath, ProjectInfo);
+            }
             ProjectInfo.FileHasBeenModified = false;
 
-            Text = GenericFunctions.UpdateProjectFormText(LoadedFile, ProjectInfo.FileName);
+            Text = GenericFunctions.UpdateProjectFormText(CurrentFilePath, ProjectInfo.FileName);
             if (!(WindowState == FormWindowState.Maximized))
             {
                 MdiParent.Text = "EuroSound - " + Text;
@@ -376,10 +372,10 @@ namespace EuroSound_Application.Musics
         private void MenuItem_File_SaveAs_Click(object sender, EventArgs e)
         {
             //Save file in different location
-            LoadedFile = OpenSaveAsDialog(TreeView_MusicData, MusicsList, ProjectInfo);
+            CurrentFilePath = OpenSaveAsDialog(TreeView_MusicData, MusicsList, ProjectInfo);
 
             //Update text
-            Text = GenericFunctions.UpdateProjectFormText(LoadedFile, ProjectInfo.FileName);
+            Text = GenericFunctions.UpdateProjectFormText(CurrentFilePath, ProjectInfo.FileName);
             if (!(WindowState == FormWindowState.Maximized))
             {
                 MdiParent.Text = "EuroSound - " + Text;
@@ -765,12 +761,6 @@ namespace EuroSound_Application.Musics
 
         private void Button_Generate_Hashcodes_Click(object sender, EventArgs e)
         {
-            string MusicHashcodeLabel, MusicName;
-            string JumpHashcodeLabel = string.Empty;
-            string Comment;
-            int StartMarkersCount = 1;
-            uint LoopPos = 0, JumpHashcode;
-
             //Clear textbox
             Rtbx_Jump_Music_Codes.Clear();
 
@@ -779,11 +769,13 @@ namespace EuroSound_Application.Musics
                 if (Music.OutputThisSound)
                 {
                     //Generate comment
-                    Comment = "// Music Jump Codes For Level " + Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, ProjectInfo.Hashcode) + "\n";
+                    string Comment = "// Music Jump Codes For Level " + Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, ProjectInfo.Hashcode) + "\n";
                     GenericFunctions.AppendTextToRichTextBox(Comment, Color.Green, Rtbx_Jump_Music_Codes);
 
                     //Get Music Name
-                    MusicHashcodeLabel = Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, ProjectInfo.Hashcode);
+                    string MusicHashcodeLabel = Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, ProjectInfo.Hashcode);
+                    string MusicName;
+
                     if (MusicHashcodeLabel.StartsWith("MFX_"))
                     {
                         MusicName = MusicHashcodeLabel.Substring(4);
@@ -794,6 +786,7 @@ namespace EuroSound_Application.Musics
                     }
 
                     //Search Goto Loop Start Postition
+                    uint LoopPos = 0;
                     for (int j = 0; j < Music.Markers.Count; j++)
                     {
                         if (Music.Markers[j].MusicMakerType == (int)GenericFunctions.ESoundMarkers.Goto)
@@ -803,8 +796,10 @@ namespace EuroSound_Application.Musics
                     }
 
                     //Print Hashcodes
+                    int StartMarkersCount = 1;
                     for (int i = 0; i < Music.Markers.Count; i++)
                     {
+                        string JumpHashcodeLabel = string.Empty;
                         if (Music.Markers[i].MusicMakerType == (int)GenericFunctions.ESoundMarkers.Goto)
                         {
                             JumpHashcodeLabel = string.Join("", "JMP_GOTO_", MusicName, "_LOOP");
@@ -827,11 +822,10 @@ namespace EuroSound_Application.Musics
                         }
 
                         //Calculate Jump HashCode
-                        JumpHashcode = Convert.ToUInt32(0x1BE00000 | ((i & 0xFF) << 8) | (((int)ProjectInfo.Hashcode & 0xFF << 0)));
+                        uint JumpHashcode = Convert.ToUInt32(0x1BE00000 | ((i & 0xFF) << 8) | (((int)ProjectInfo.Hashcode & 0xFF << 0)));
                         if (!string.IsNullOrEmpty(JumpHashcodeLabel))
                         {
                             GenericFunctions.AppendTextToRichTextBox("#define " + JumpHashcodeLabel + " 0x" + JumpHashcode.ToString("X8") + "\n", Color.Brown, Rtbx_Jump_Music_Codes);
-                            JumpHashcodeLabel = string.Empty;
                         }
                     }
                 }

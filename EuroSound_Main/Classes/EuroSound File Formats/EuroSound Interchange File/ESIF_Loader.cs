@@ -189,7 +189,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 
                                 //Add Node
                                 NodeName = "AD_" + Path.GetFileNameWithoutExtension(AudioPath);
-                                TreeNodeFunctions.TreeNodeAddNewNode("AudioData", MD5AudioFilehash, GenericFunctions.GetNextAvailableName(NodeName, TreeViewControl), 7, 7, "Audio", DefaultNodeColor, TreeViewControl);
+                                TreeNodeFunctions.TreeNodeAddNewNode("AudioData", MD5AudioFilehash, GenericFunctions.GetNextAvailableName(NodeName, TreeViewControl), 7, 7, "Audio", false, false, false, DefaultNodeColor, TreeViewControl);
                             }
                             else
                             {
@@ -418,7 +418,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                 NodeAddedInFolder = AddItemInCustomFolder(FolderName, NewSoundKey.ToString(), NodeName, "Sounds", "Sound", TreeViewControl, DefaultNodeColor);
                 if (!NodeAddedInFolder)
                 {
-                    TreeNodeFunctions.TreeNodeAddNewNode("Sounds", NewSoundKey.ToString(), GenericFunctions.GetNextAvailableName(NodeName, TreeViewControl), 2, 2, "Sound", DefaultNodeColor, TreeViewControl);
+                    TreeNodeFunctions.TreeNodeAddNewNode("Sounds", NewSoundKey.ToString(), GenericFunctions.GetNextAvailableName(NodeName, TreeViewControl), 2, 2, "Sound", false, false, false, DefaultNodeColor, TreeViewControl);
                 }
             }
             else
@@ -426,7 +426,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                 NodeAddedInFolder = AddItemInCustomFolder(FolderName, NewSoundKey.ToString(), NodeName, "StreamedSounds", "Sound", TreeViewControl, DefaultNodeColor);
                 if (!NodeAddedInFolder)
                 {
-                    TreeNodeFunctions.TreeNodeAddNewNode("StreamedSounds", NewSoundKey.ToString(), GenericFunctions.GetNextAvailableName(NodeName, TreeViewControl), 2, 2, "Sound", DefaultNodeColor, TreeViewControl);
+                    TreeNodeFunctions.TreeNodeAddNewNode("StreamedSounds", NewSoundKey.ToString(), GenericFunctions.GetNextAvailableName(NodeName, TreeViewControl), 2, 2, "Sound", false, false, false, DefaultNodeColor, TreeViewControl);
                 }
             }
 
@@ -435,11 +435,11 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             {
                 if (string.IsNullOrEmpty(Sample.Value.Name))
                 {
-                    TreeNodeFunctions.TreeNodeAddNewNode(NewSoundKey.ToString(), Sample.Key.ToString(), GenericFunctions.GetNextAvailableName("SMP_" + NodeName, TreeViewControl), 4, 4, "Sample", Sample.Value.NodeColor, TreeViewControl);
+                    TreeNodeFunctions.TreeNodeAddNewNode(NewSoundKey.ToString(), Sample.Key.ToString(), GenericFunctions.GetNextAvailableName("SMP_" + NodeName, TreeViewControl), 4, 4, "Sample", false, false, false, Sample.Value.NodeColor, TreeViewControl);
                 }
                 else
                 {
-                    TreeNodeFunctions.TreeNodeAddNewNode(NewSoundKey.ToString(), Sample.Key.ToString(), GenericFunctions.GetNextAvailableName(Sample.Value.Name, TreeViewControl), 4, 4, "Sample", Sample.Value.NodeColor, TreeViewControl);
+                    TreeNodeFunctions.TreeNodeAddNewNode(NewSoundKey.ToString(), Sample.Key.ToString(), GenericFunctions.GetNextAvailableName(Sample.Value.Name, TreeViewControl), 4, 4, "Sample", false, false, false, Sample.Value.NodeColor, TreeViewControl);
                 }
             }
         }
@@ -700,7 +700,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             NodeAddedInFolder = AddItemInCustomFolder(FolderName, ObjectID.ToString(), GenericFunctions.GetNextAvailableName(NodeName, TreeViewControl), "Sounds", "Sound", TreeViewControl, DefaultNodeColor);
             if (!NodeAddedInFolder)
             {
-                TreeNodeFunctions.TreeNodeAddNewNode("Sounds", ObjectID.ToString(), GenericFunctions.GetNextAvailableName(NodeName, TreeViewControl), 2, 2, "Sound", DefaultNodeColor, TreeViewControl);
+                TreeNodeFunctions.TreeNodeAddNewNode("Sounds", ObjectID.ToString(), GenericFunctions.GetNextAvailableName(NodeName, TreeViewControl), 2, 2, "Sound", false, false, false, DefaultNodeColor, TreeViewControl);
             }
         }
 
@@ -1000,7 +1000,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             NodeAddedInFolder = AddItemInCustomFolder(FolderName, ObjectID.ToString(), GenericFunctions.GetNextAvailableName(NodeName, TreeViewControl), "Musics", "Music", TreeViewControl, DefaultNodeColor);
             if (!NodeAddedInFolder)
             {
-                TreeNodeFunctions.TreeNodeAddNewNode("Musics", ObjectID.ToString(), GenericFunctions.GetNextAvailableName(NodeName, TreeViewControl), 2, 2, "Music", DefaultNodeColor, TreeViewControl);
+                TreeNodeFunctions.TreeNodeAddNewNode("Musics", ObjectID.ToString(), GenericFunctions.GetNextAvailableName(NodeName, TreeViewControl), 2, 2, "Music", false, false, false, DefaultNodeColor, TreeViewControl);
             }
         }
 
@@ -1020,7 +1020,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     //Check that the folder is in the correct section (Sounds, Audios, StreamSounds)
                     if (TreeNodeFunctions.FindRootNode(Folders[0]).Name.Equals(RootFolderName))
                     {
-                        TreeNodeFunctions.TreeNodeAddNewNode(ParentFolderName, NewSoundKey.ToString(), GenericFunctions.GetNextAvailableName(NodeName, TreeViewControl), 2, 2, TypeOfObject, DefaultNodeColor, TreeViewControl);
+                        TreeNodeFunctions.TreeNodeAddNewNode(ParentFolderName, NewSoundKey.ToString(), GenericFunctions.GetNextAvailableName(NodeName, TreeViewControl), 2, 2, TypeOfObject, false, false, false, DefaultNodeColor, TreeViewControl);
                         NodeAddedInFolder = true;
                     }
                 }

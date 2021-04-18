@@ -64,7 +64,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 {
                     //Add data to dictionary and create tree node
                     AudioDataDict.Add(MD5Hash, NewAudio);
-                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, MD5Hash, AudioName, 7, 7, "Audio", Color.Black, TreeView_File);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, MD5Hash, AudioName, 7, 7, "Audio", true, true, false, Color.Black, TreeView_File);
 
                     ProjectInfo.FileHasBeenModified = true;
                 }
@@ -89,12 +89,12 @@ namespace EuroSound_Application.SoundBanksEditor
                     uint SampleID = GenericFunctions.GetNewObjectID(ProjectInfo);
                     if (TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name.Equals("StreamedSounds"))
                     {
-                        TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SampleID.ToString(), Name, 4, 4, "Sample", Color.Black, TreeView_File);
+                        TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SampleID.ToString(), Name, 4, 4, "Sample", true, true, false, Color.Black, TreeView_File);
                         EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(TreeView_File.SelectedNode.Name), SoundsList), SampleID, true);
                     }
                     else
                     {
-                        TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SampleID.ToString(), Name, 4, 4, "Sample", Color.Black, TreeView_File);
+                        TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SampleID.ToString(), Name, 4, 4, "Sample", true, true, false, Color.Black, TreeView_File);
                         EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(TreeView_File.SelectedNode.Name), SoundsList), SampleID, true);
                     }
                     ProjectInfo.FileHasBeenModified = true;
@@ -114,7 +114,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 else
                 {
                     uint SoundID = GenericFunctions.GetNewObjectID(ProjectInfo);
-                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SoundID.ToString(), Name, 2, 2, "Sound", Color.Black, TreeView_File);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SoundID.ToString(), Name, 2, 2, "Sound", true, true, false, Color.Black, TreeView_File);
 
                     //Add Empty Sound
                     EXSound Sound = new EXSound
@@ -167,7 +167,7 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 if (!string.IsNullOrEmpty(Name))
                 {
-                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, EXSoundbanksFunctions.RemoveWhiteSpaces(Name), Name, 1, 1, "Folder", Color.Black, TreeView_File);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, EXSoundbanksFunctions.RemoveWhiteSpaces(Name), Name, 1, 1, "Folder", true, true, false, Color.Black, TreeView_File);
                     ProjectInfo.FileHasBeenModified = true;
                 }
             }

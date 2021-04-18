@@ -189,6 +189,11 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
                 BWriter.Write(Selected.Tag.ToString());
                 BWriter.Write(Selected.ForeColor.ToArgb());
                 BWriter.Write(Selected.IsVisible);
+
+                //Added in the version 1.0.0.8
+                BWriter.Write(Selected.Parent.IsExpanded);
+                BWriter.Write(Selected.IsExpanded);
+                BWriter.Write(Selected.IsSelected);
             }
             foreach (TreeNode Node in Selected.Nodes)
             {

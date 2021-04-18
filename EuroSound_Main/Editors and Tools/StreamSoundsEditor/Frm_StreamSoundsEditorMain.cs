@@ -29,14 +29,13 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
         public Dictionary<uint, EXSoundStream> StreamSoundsList = new Dictionary<uint, EXSoundStream>();
-        private EuroSoundFiles SerializeInfo = new EuroSoundFiles();
+        private EuroSoundFiles EuroSoundFilesFunctions = new EuroSoundFiles();
         public ProjectFile ProjectInfo = new ProjectFile();
         private StreamSoundsYMLReader LibYamlReader = new StreamSoundsYMLReader();
         private AudioFunctions AudioLibrary = new AudioFunctions();
         private Thread UpdateImaData, UpdateWavList;
         private MostRecentFilesMenu RecentFilesMenu;
-        private string FileToLoadArg, ProjectName;
-        private string LoadedFile = string.Empty;
+        private string ProjectName, CurrentFilePath = string.Empty;
         private bool FormMustBeClosed = false;
 
         // The undo and redo history lists.
@@ -47,7 +46,7 @@ namespace EuroSound_Application.StreamSounds
         {
             InitializeComponent();
 
-            FileToLoadArg = FilePath;
+            CurrentFilePath = FilePath;
             ProjectName = Name;
             RecentFilesMenu = RecentFiles;
 
@@ -170,21 +169,16 @@ namespace EuroSound_Application.StreamSounds
             }
 
             //Load file in argument 0
-            if (string.IsNullOrEmpty(FileToLoadArg))
+            if (string.IsNullOrEmpty(CurrentFilePath))
             {
                 ProjectInfo.FileName = ProjectName;
             }
             else
             {
-                LoadedFile = FileToLoadArg;
-                ProfileName = SerializeInfo.LoadStreamSoundsDocument(TreeView_StreamData, StreamSoundsList, FileToLoadArg, ProjectInfo, GenericFunctions.ResourcesManager);
+                ProfileName = EuroSoundFilesFunctions.LoadStreamSoundsDocument(TreeView_StreamData, StreamSoundsList, CurrentFilePath, ProjectInfo, GenericFunctions.ResourcesManager);
 
                 //Check that the profile name matches with the current one
-                if (ProfileName.Equals(GlobalPreferences.SelectedProfileName))
-                {
-                    TreeView_StreamData.ExpandAll();
-                }
-                else
+                if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
                 {
                     FormMustBeClosed = true;
                 }
@@ -202,7 +196,7 @@ namespace EuroSound_Application.StreamSounds
             else
             {
                 //Update from title
-                Text = GenericFunctions.UpdateProjectFormText(LoadedFile, ProjectInfo.FileName);
+                Text = GenericFunctions.UpdateProjectFormText(CurrentFilePath, ProjectInfo.FileName);
                 if (WindowState != FormWindowState.Maximized)
                 {
                     MdiParent.Text = "EuroSound - " + Text;
@@ -271,7 +265,16 @@ namespace EuroSound_Application.StreamSounds
                     DialogResult dialogResult = MessageBox.Show("Save changes to " + ProjectInfo.FileName + "?", "EuroSound", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
                     if (dialogResult == DialogResult.Yes)
                     {
-                        LoadedFile = SaveDocument(LoadedFile, TreeView_StreamData, StreamSoundsList, ProjectInfo);
+                        //Check if we have a path for this file
+                        if (string.IsNullOrEmpty(CurrentFilePath))
+                        {
+                            CurrentFilePath = OpenSaveAsDialog(TreeView_StreamData, StreamSoundsList, ProjectInfo);
+                        }
+                        //Save Data
+                        else
+                        {
+                            EuroSoundFilesFunctions.SaveStreamedSoundsBank(TreeView_StreamData, StreamSoundsList, CurrentFilePath, ProjectInfo);
+                        }
                         ProjectInfo.FileHasBeenModified = false;
                         MdiParent.Text = "EuroSound";
                         Close();
@@ -493,10 +496,19 @@ namespace EuroSound_Application.StreamSounds
 
         private void MenuItem_File_Save_Click(object sender, System.EventArgs e)
         {
-            LoadedFile = SaveDocument(LoadedFile, TreeView_StreamData, StreamSoundsList, ProjectInfo);
+            //Check if we have a path for this file
+            if (string.IsNullOrEmpty(CurrentFilePath))
+            {
+                CurrentFilePath = OpenSaveAsDialog(TreeView_StreamData, StreamSoundsList, ProjectInfo);
+            }
+            //Save Data
+            else
+            {
+                EuroSoundFilesFunctions.SaveStreamedSoundsBank(TreeView_StreamData, StreamSoundsList, CurrentFilePath, ProjectInfo);
+            }
             ProjectInfo.FileHasBeenModified = false;
 
-            Text = GenericFunctions.UpdateProjectFormText(LoadedFile, ProjectInfo.FileName);
+            Text = GenericFunctions.UpdateProjectFormText(CurrentFilePath, ProjectInfo.FileName);
             if (!(WindowState == FormWindowState.Maximized))
             {
                 MdiParent.Text = "EuroSound - " + Text;
@@ -505,10 +517,10 @@ namespace EuroSound_Application.StreamSounds
 
         private void MenuItem_File_SaveAs_Click(object sender, System.EventArgs e)
         {
-            LoadedFile = OpenSaveAsDialog(TreeView_StreamData, StreamSoundsList, ProjectInfo);
+            CurrentFilePath = OpenSaveAsDialog(TreeView_StreamData, StreamSoundsList, ProjectInfo);
 
             //Update text
-            Text = GenericFunctions.UpdateProjectFormText(LoadedFile, ProjectInfo.FileName);
+            Text = GenericFunctions.UpdateProjectFormText(CurrentFilePath, ProjectInfo.FileName);
             if (!(WindowState == FormWindowState.Maximized))
             {
                 MdiParent.Text = "EuroSound - " + Text;

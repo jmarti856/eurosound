@@ -11,7 +11,7 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
 {
     internal class ESF_LoadSoundBanks
     {
-        internal string ReadEuroSoundSoundBankFile(ProjectFile FileProperties, BinaryReader BReader, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
+        internal string ReadEuroSoundSoundBankFile(ProjectFile FileProperties, BinaryReader BReader, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl, int FileVersion)
         {
             uint TreeViewDataOffset, SoundsListDataOffset, AudioDataOffset;
             string ProfileSelected, ProfileSelectedName;
@@ -41,7 +41,7 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
             //* TreeView
             //*===============================================================================================
             BReader.BaseStream.Position = TreeViewDataOffset;
-            ReadTreeViewData(BReader, TreeViewControl);
+            ReadTreeViewData(BReader, TreeViewControl, FileVersion);
 
             //*===============================================================================================
             //* Sounds List Data
@@ -148,10 +148,12 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
             }
         }
 
-        internal void ReadTreeViewData(BinaryReader BReader, TreeView TreeViewControl)
+        internal void ReadTreeViewData(BinaryReader BReader, TreeView TreeViewControl, int Version)
         {
             int NumberOfNodes, SelectedImageIndex, ImageIndex;
             string ParentNode, NodeName, DisplayName, Tag;
+            bool NodeIsExpanded = false, NodeIsSelected = false;
+            bool ParentIsExpanded = false;
             Color NodeColor;
 
             NumberOfNodes = BReader.ReadInt32();
@@ -167,12 +169,19 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
                 NodeColor = Color.FromArgb(BReader.ReadInt32());
                 BReader.ReadBoolean();
 
+                if (Version >= 1008)
+                {
+                    ParentIsExpanded = BReader.ReadBoolean();
+                    NodeIsExpanded = BReader.ReadBoolean();
+                    NodeIsSelected = BReader.ReadBoolean();
+                }
+
                 if (GlobalPreferences.TV_IgnoreStlyesFromESF)
                 {
                     NodeColor = Color.Black;
                 }
 
-                TreeNodeFunctions.TreeNodeAddNewNode(ParentNode, NodeName, DisplayName, SelectedImageIndex, ImageIndex, Tag, NodeColor, TreeViewControl);
+                TreeNodeFunctions.TreeNodeAddNewNode(ParentNode, NodeName, DisplayName, SelectedImageIndex, ImageIndex, Tag, ParentIsExpanded, NodeIsExpanded, NodeIsSelected, NodeColor, TreeViewControl);
             }
         }
     }

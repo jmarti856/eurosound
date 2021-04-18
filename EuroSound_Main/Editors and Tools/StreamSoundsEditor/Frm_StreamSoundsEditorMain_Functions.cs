@@ -63,22 +63,6 @@ namespace EuroSound_Application.StreamSounds
             }
         }
 
-        private string SaveDocument(string LoadedFile, TreeView TreeView_File, Dictionary<uint, EXSoundStream> StreamSoundsList, ProjectFile ProjectProperties)
-        {
-            string NewFilePath;
-
-            if (!string.IsNullOrEmpty(LoadedFile))
-            {
-                NewFilePath = SerializeInfo.SaveStreamedSoundsBank(TreeView_File, StreamSoundsList, LoadedFile, ProjectProperties);
-            }
-            else
-            {
-                NewFilePath = OpenSaveAsDialog(TreeView_File, StreamSoundsList, ProjectProperties);
-            }
-
-            return NewFilePath;
-        }
-
         private string OpenSaveAsDialog(TreeView TreeView_File, Dictionary<uint, EXSoundStream> StreamSoundsList, ProjectFile FileProperties)
         {
             string SavePath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Files (*.esf)|*.esf|All files (*.*)|*.*", 1, true, FileProperties.FileName);
@@ -86,7 +70,7 @@ namespace EuroSound_Application.StreamSounds
             {
                 if (Directory.Exists(Path.GetDirectoryName(SavePath)))
                 {
-                    SerializeInfo.SaveStreamedSoundsBank(TreeView_File, StreamSoundsList, SavePath, FileProperties);
+                    EuroSoundFilesFunctions.SaveStreamedSoundsBank(TreeView_File, StreamSoundsList, SavePath, FileProperties);
 
                     //Add file to recent list
                     RecentFilesMenu.AddFile(SavePath);
@@ -135,7 +119,6 @@ namespace EuroSound_Application.StreamSounds
         private void UpdateWavDataList()
         {
             int Index = 1;
-            TreeNode NodeToCheck;
 
             UpdateWavList = new Thread(() =>
             {
@@ -163,7 +146,7 @@ namespace EuroSound_Application.StreamSounds
                     //Add data to list
                     foreach (KeyValuePair<uint, EXSoundStream> item in StreamSoundsList)
                     {
-                        NodeToCheck = TreeView_StreamData.Nodes.Find(item.Key.ToString(), true)[0];
+                        TreeNode NodeToCheck = TreeView_StreamData.Nodes.Find(item.Key.ToString(), true)[0];
                         ListViewItem Hashcode = new ListViewItem(new[]
                         {
                             NodeToCheck.Text.ToString(),

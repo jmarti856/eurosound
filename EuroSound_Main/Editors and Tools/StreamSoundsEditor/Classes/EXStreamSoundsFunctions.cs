@@ -29,10 +29,10 @@ namespace EuroSound_Application.StreamSounds
         {
             bool Output = false;
 
-            EXSoundStream Test = GetSoundByName(uint.Parse(SoundName), SoundsList);
-            if (Test != null)
+            EXSoundStream ObjectToCheck = GetSoundByName(uint.Parse(SoundName), SoundsList);
+            if (ObjectToCheck != null)
             {
-                if (Test.OutputThisSound)
+                if (ObjectToCheck.OutputThisSound)
                 {
                     Output = true;
                 }
