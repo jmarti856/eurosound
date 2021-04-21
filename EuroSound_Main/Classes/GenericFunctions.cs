@@ -378,6 +378,26 @@ namespace EuroSound_Application
             return NumberOfChildForms;
         }
 
+        internal static bool CheckChildFormIsOpened(string FormName, string ParentTag)
+        {
+            bool Opened = false;
+
+            foreach (Form OpenForm in Application.OpenForms)
+            {
+                if (OpenForm.Name.Equals(FormName))
+                {
+                    if (OpenForm.Tag.Equals(ParentTag))
+                    {
+                        Opened = true;
+                        OpenForm.Focus();
+                        break;
+                    }
+                }
+            }
+
+            return Opened;
+        }
+
         internal static void CheckProfiles(string ProfileSavedInESF, string ProfileNameSavedInESF)
         {
             ProfilesFunctions ProfilesLoader = new ProfilesFunctions();

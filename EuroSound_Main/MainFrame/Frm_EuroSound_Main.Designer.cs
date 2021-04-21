@@ -70,6 +70,7 @@ namespace EuroSound_Application
             this.EuroSoundTrayIcon_Restore = new System.Windows.Forms.ToolStripMenuItem();
             this.EuroSoundTrayIcon_Separator = new System.Windows.Forms.ToolStripSeparator();
             this.EuroSoundTrayIcon_Close = new System.Windows.Forms.ToolStripMenuItem();
+            this.MainMenuTools_DebugHashtables = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip_MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Hashcode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.File)).BeginInit();
@@ -221,6 +222,7 @@ namespace EuroSound_Application
             // MainMenu_Tools
             // 
             this.MainMenu_Tools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MainMenuTools_DebugHashtables,
             this.MainMenuTools_AudioConverter,
             this.MainMenuTools_SFXDataGen,
             this.MainMenuTools_Separator1,
@@ -387,6 +389,13 @@ namespace EuroSound_Application
             this.EuroSoundTrayIcon_Close.Text = "Close";
             this.EuroSoundTrayIcon_Close.Click += new System.EventHandler(this.EuroSoundTrayIcon_Close_Click);
             // 
+            // MainMenuTools_DebugHashtables
+            // 
+            this.MainMenuTools_DebugHashtables.Name = "MainMenuTools_DebugHashtables";
+            this.MainMenuTools_DebugHashtables.Size = new System.Drawing.Size(194, 22);
+            this.MainMenuTools_DebugHashtables.Text = "Debug HashTables";
+            this.MainMenuTools_DebugHashtables.Click += new System.EventHandler(this.MainMenuTools_DebugHashtables_Click);
+            // 
             // Frm_EuroSound_Main
             // 
             this.AllowDrop = true;
@@ -457,5 +466,6 @@ namespace EuroSound_Application
         private System.Windows.Forms.ToolStripSeparator MenuItemHelp_Separator1;
         private System.Windows.Forms.ToolStripMenuItem MenuItemHelp_ReleaseInfo;
         private System.Windows.Forms.ToolStripMenuItem MenuItemHelp_CurrentReleaseInfo;
+        private System.Windows.Forms.ToolStripMenuItem MainMenuTools_DebugHashtables;
     }
 }

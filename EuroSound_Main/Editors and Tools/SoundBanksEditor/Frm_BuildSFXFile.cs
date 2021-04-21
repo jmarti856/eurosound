@@ -62,7 +62,10 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
         //*===============================================================================================
         private void Button_Abort_Click(object sender, EventArgs e)
         {
-            BackgroundWorker_BuildSFX.CancelAsync();
+            if (BackgroundWorker_BuildSFX.IsBusy)
+            {
+                BackgroundWorker_BuildSFX.CancelAsync();
+            }
         }
 
         private void BackgroundWorker_BuildSFX_DoWork(object sender, DoWorkEventArgs e)

@@ -33,7 +33,7 @@
             this.GroupBox_HashTable = new System.Windows.Forms.GroupBox();
             this.Combobox_FileHashcode = new System.Windows.Forms.ComboBox();
             this.Label_HashTableEntry = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.GroupBox_HashTableConfig = new System.Windows.Forms.GroupBox();
             this.Label_Hashcodes = new System.Windows.Forms.Label();
             this.Textbox_Musics_Path = new System.Windows.Forms.TextBox();
             this.Label_MusicEvents_Path = new System.Windows.Forms.Label();
@@ -42,14 +42,14 @@
             this.Label_SFXData_Path = new System.Windows.Forms.Label();
             this.Label_MusicDefines = new System.Windows.Forms.Label();
             this.Textbox_Sounds_Path = new System.Windows.Forms.TextBox();
-            this.Label_sfx_path = new System.Windows.Forms.Label();
+            this.Label_SFX_Path = new System.Windows.Forms.Label();
             this.Label_HT_Sound = new System.Windows.Forms.Label();
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.Label_DataType = new System.Windows.Forms.Label();
             this.Combobox_TypeOfData = new System.Windows.Forms.ComboBox();
             this.GroupBox_HashTable.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.GroupBox_HashTableConfig.SuspendLayout();
             this.SuspendLayout();
             // 
             // Label_FileName
@@ -106,26 +106,26 @@
             this.Label_HashTableEntry.TabIndex = 0;
             this.Label_HashTableEntry.Text = "Hash table entry:";
             // 
-            // groupBox1
+            // GroupBox_HashTableConfig
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.GroupBox_HashTableConfig.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.Label_Hashcodes);
-            this.groupBox1.Controls.Add(this.Textbox_Musics_Path);
-            this.groupBox1.Controls.Add(this.Label_MusicEvents_Path);
-            this.groupBox1.Controls.Add(this.Label_SectionMusic);
-            this.groupBox1.Controls.Add(this.Textbox_SFXData_Path);
-            this.groupBox1.Controls.Add(this.Label_SFXData_Path);
-            this.groupBox1.Controls.Add(this.Label_MusicDefines);
-            this.groupBox1.Controls.Add(this.Textbox_Sounds_Path);
-            this.groupBox1.Controls.Add(this.Label_sfx_path);
-            this.groupBox1.Controls.Add(this.Label_HT_Sound);
-            this.groupBox1.Location = new System.Drawing.Point(12, 71);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(464, 217);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Hash Table Configuration:";
+            this.GroupBox_HashTableConfig.Controls.Add(this.Label_Hashcodes);
+            this.GroupBox_HashTableConfig.Controls.Add(this.Textbox_Musics_Path);
+            this.GroupBox_HashTableConfig.Controls.Add(this.Label_MusicEvents_Path);
+            this.GroupBox_HashTableConfig.Controls.Add(this.Label_SectionMusic);
+            this.GroupBox_HashTableConfig.Controls.Add(this.Textbox_SFXData_Path);
+            this.GroupBox_HashTableConfig.Controls.Add(this.Label_SFXData_Path);
+            this.GroupBox_HashTableConfig.Controls.Add(this.Label_MusicDefines);
+            this.GroupBox_HashTableConfig.Controls.Add(this.Textbox_Sounds_Path);
+            this.GroupBox_HashTableConfig.Controls.Add(this.Label_SFX_Path);
+            this.GroupBox_HashTableConfig.Controls.Add(this.Label_HT_Sound);
+            this.GroupBox_HashTableConfig.Location = new System.Drawing.Point(12, 71);
+            this.GroupBox_HashTableConfig.Name = "GroupBox_HashTableConfig";
+            this.GroupBox_HashTableConfig.Size = new System.Drawing.Size(464, 217);
+            this.GroupBox_HashTableConfig.TabIndex = 4;
+            this.GroupBox_HashTableConfig.TabStop = false;
+            this.GroupBox_HashTableConfig.Text = "Hash Table Configuration:";
             // 
             // Label_Hashcodes
             // 
@@ -134,8 +134,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_Hashcodes.Location = new System.Drawing.Point(6, 16);
             this.Label_Hashcodes.MaximumSize = new System.Drawing.Size(500, 0);
+            this.Label_Hashcodes.MinimumSize = new System.Drawing.Size(452, 26);
             this.Label_Hashcodes.Name = "Label_Hashcodes";
-            this.Label_Hashcodes.Size = new System.Drawing.Size(452, 38);
+            this.Label_Hashcodes.Size = new System.Drawing.Size(452, 26);
             this.Label_Hashcodes.TabIndex = 8;
             this.Label_Hashcodes.Text = "A project can use a shared header file to record all item identities, with unique" +
     " identifier values being assigned by Eurosound to each item.";
@@ -209,14 +210,14 @@
             this.Textbox_Sounds_Path.Size = new System.Drawing.Size(414, 20);
             this.Textbox_Sounds_Path.TabIndex = 2;
             // 
-            // Label_sfx_path
+            // Label_SFX_Path
             // 
-            this.Label_sfx_path.AutoSize = true;
-            this.Label_sfx_path.Location = new System.Drawing.Point(6, 73);
-            this.Label_sfx_path.Name = "Label_sfx_path";
-            this.Label_sfx_path.Size = new System.Drawing.Size(32, 13);
-            this.Label_sfx_path.TabIndex = 1;
-            this.Label_sfx_path.Text = "Path:";
+            this.Label_SFX_Path.AutoSize = true;
+            this.Label_SFX_Path.Location = new System.Drawing.Point(6, 73);
+            this.Label_SFX_Path.Name = "Label_SFX_Path";
+            this.Label_SFX_Path.Size = new System.Drawing.Size(32, 13);
+            this.Label_SFX_Path.TabIndex = 1;
+            this.Label_SFX_Path.Text = "Path:";
             // 
             // Label_HT_Sound
             // 
@@ -250,14 +251,14 @@
             this.Button_Cancel.UseVisualStyleBackColor = true;
             this.Button_Cancel.Click += new System.EventHandler(this.Button_Cancel_Click);
             // 
-            // label1
+            // Label_DataType
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 41);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(94, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Stored Data Type:";
+            this.Label_DataType.AutoSize = true;
+            this.Label_DataType.Location = new System.Drawing.Point(12, 41);
+            this.Label_DataType.Name = "Label_DataType";
+            this.Label_DataType.Size = new System.Drawing.Size(94, 13);
+            this.Label_DataType.TabIndex = 2;
+            this.Label_DataType.Text = "Stored Data Type:";
             // 
             // Combobox_TypeOfData
             // 
@@ -283,10 +284,10 @@
             this.CancelButton = this.Button_Cancel;
             this.ClientSize = new System.Drawing.Size(488, 407);
             this.Controls.Add(this.Combobox_TypeOfData);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.Label_DataType);
             this.Controls.Add(this.Button_Cancel);
             this.Controls.Add(this.Button_OK);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.GroupBox_HashTableConfig);
             this.Controls.Add(this.GroupBox_HashTable);
             this.Controls.Add(this.Textbox_FileName);
             this.Controls.Add(this.Label_FileName);
@@ -302,8 +303,8 @@
             this.Shown += new System.EventHandler(this.Frm_FileProperties_Shown);
             this.GroupBox_HashTable.ResumeLayout(false);
             this.GroupBox_HashTable.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.GroupBox_HashTableConfig.ResumeLayout(false);
+            this.GroupBox_HashTableConfig.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -316,16 +317,16 @@
         private System.Windows.Forms.GroupBox GroupBox_HashTable;
         private System.Windows.Forms.ComboBox Combobox_FileHashcode;
         private System.Windows.Forms.Label Label_HashTableEntry;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox GroupBox_HashTableConfig;
         private System.Windows.Forms.TextBox Textbox_SFXData_Path;
         private System.Windows.Forms.Label Label_SFXData_Path;
         private System.Windows.Forms.Label Label_MusicDefines;
         private System.Windows.Forms.TextBox Textbox_Sounds_Path;
-        private System.Windows.Forms.Label Label_sfx_path;
+        private System.Windows.Forms.Label Label_SFX_Path;
         private System.Windows.Forms.Label Label_HT_Sound;
         private System.Windows.Forms.Button Button_OK;
         private System.Windows.Forms.Button Button_Cancel;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label Label_DataType;
         private System.Windows.Forms.ComboBox Combobox_TypeOfData;
         private System.Windows.Forms.TextBox Textbox_Musics_Path;
         private System.Windows.Forms.Label Label_MusicEvents_Path;

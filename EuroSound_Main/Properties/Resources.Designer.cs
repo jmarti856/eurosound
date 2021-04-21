@@ -934,6 +934,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a You can&apos;t assign a jump code in a project file, the selected HashCode will not be applied..
+        /// </summary>
+        internal static string ProjectSettingsErrorJumpCodes {
+            get {
+                return ResourceManager.GetString("ProjectSettingsErrorJumpCodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The selected profile is currently loaded, do you want to reload again?.
         /// </summary>
         internal static string ReloadProfileAgain {
@@ -1011,6 +1020,24 @@ namespace EuroSound_Application.Properties {
         internal static string StatusBar_RemovingTempFiles {
             get {
                 return ResourceManager.GetString("StatusBar_RemovingTempFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Reading file.
+        /// </summary>
+        internal static string StatusBar_Status_GenericReadingFile {
+            get {
+                return ResourceManager.GetString("StatusBar_Status_GenericReadingFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Saving file.
+        /// </summary>
+        internal static string StatusBar_Status_GenericSavingFile {
+            get {
+                return ResourceManager.GetString("StatusBar_Status_GenericSavingFile", resourceCulture);
             }
         }
         

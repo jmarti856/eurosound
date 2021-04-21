@@ -192,12 +192,9 @@ namespace EuroSound_Application.HashCodesFunctions
 
                                         if (HexNum >= 0x1BE00000)
                                         {
-                                            if (HexLabel.StartsWith("MF", StringComparison.OrdinalIgnoreCase))
+                                            if (!MFX_Defines.ContainsKey(HexNum))
                                             {
-                                                if (!MFX_Defines.ContainsKey(HexNum))
-                                                {
-                                                    MFX_Defines.Add(HexNum, HexLabel);
-                                                }
+                                                MFX_Defines.Add(HexNum, HexLabel);
                                             }
                                         }
                                     }

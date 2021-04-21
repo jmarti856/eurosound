@@ -167,7 +167,8 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 if (!string.IsNullOrEmpty(Name))
                 {
-                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, EXSoundbanksFunctions.RemoveWhiteSpaces(Name), Name, 1, 1, "Folder", true, true, false, Color.Black, TreeView_File);
+                    uint FolderID = GenericFunctions.GetNewObjectID(ProjectInfo);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, FolderID.ToString(), Name, 1, 1, "Folder", true, true, false, Color.Black, TreeView_File);
                     ProjectInfo.FileHasBeenModified = true;
                 }
             }
@@ -239,6 +240,22 @@ namespace EuroSound_Application.SoundBanksEditor
 
                 TreeNodeFunctions.GetNodesInsideFolder(TreeView_File, TreeView_File.SelectedNode, ChildNodesCollection);
                 ESIF_Exp.ExportFolder(ChildNodesCollection, ExportPath, SoundsList, AudioDataDict, TreeView_File);
+            }
+        }
+
+        private void ContextMenuFolder_ImportESIF_Click(object sender, EventArgs e)
+        {
+            string FilePath = BrowsersAndDialogs.FileBrowserDialog("EuroSound Interchange File (*.ESIF)|*.esif", 0, true);
+            if (!string.IsNullOrEmpty(FilePath))
+            {
+                ESIF_Loader EuroSoundPropertiesFileLoader = new ESIF_Loader();
+                List<string> ImportResults = EuroSoundPropertiesFileLoader.LoadSFX_File(FilePath, ProjectInfo, SoundsList, AudioDataDict, TreeView_File);
+                if (ImportResults.Count > 0)
+                {
+                    GenericFunctions.ShowErrorsAndWarningsList(ImportResults, "Import Results", this);
+                }
+
+                ProjectInfo.FileHasBeenModified = true;
             }
         }
 

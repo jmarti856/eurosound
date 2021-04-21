@@ -66,8 +66,6 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
-            uint SelectedHashcode;
-
             //Update properties
             CurrentFileProperties.FileName = Textbox_FileName.Text.Trim();
 
@@ -77,7 +75,7 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
             //Check we have selected a value
             if (Combobox_FileHashcode.SelectedValue != null)
             {
-                SelectedHashcode = Convert.ToUInt32(Combobox_FileHashcode.SelectedValue.ToString());
+                uint SelectedHashcode = Convert.ToUInt32(Combobox_FileHashcode.SelectedValue.ToString());
 
                 //Soundbanks and Music project types can't have the hashcode 0x0000FFFF
                 if (CurrentFileProperties.TypeOfData != (int)GenericFunctions.ESoundFileType.StreamSounds)
@@ -94,7 +92,15 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
                         //Update Hashcode File Label
                         if (CurrentFileProperties.TypeOfData == (int)GenericFunctions.ESoundFileType.MusicBanks)
                         {
-                            GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, CurrentFileProperties.Hashcode), "Hashcode");
+                            string SelectedHashcodeLabel = Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, CurrentFileProperties.Hashcode);
+                            if (SelectedHashcodeLabel.StartsWith("JMP"))
+                            {
+                                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ProjectSettingsErrorJumpCodes"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                            else
+                            {
+                                GenericFunctions.SetCurrentFileLabel(SelectedHashcodeLabel, "Hashcode");
+                            }
                         }
                         else
                         {

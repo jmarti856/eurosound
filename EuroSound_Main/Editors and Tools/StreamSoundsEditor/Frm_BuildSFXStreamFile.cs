@@ -117,7 +117,7 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 }
 
                 //Update Total Progress
-                TotalProgress += 10;
+                TotalProgress += 20;
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
 
                 //*===============================================================================================
@@ -176,11 +176,11 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                     SFXCreator.WriteStreamFile(BWriter, FinalSoundsDict, ProgressBar_CurrentTask);
 
                     //Update Total Progress
-                    TotalProgress += 5;
+                    TotalProgress += 10;
                     BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
 
                     //Update Total Progress
-                    TotalProgress += 5;
+                    TotalProgress += 10;
                     BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
 
                     //*===============================================================================================
@@ -277,7 +277,10 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
         //*===============================================================================================
         private void Button_Abort_Click(object sender, EventArgs e)
         {
-            BackgroundWorker_BuildSFX.CancelAsync();
+            if (BackgroundWorker_BuildSFX.IsBusy)
+            {
+                BackgroundWorker_BuildSFX.CancelAsync();
+            }
         }
     }
 }

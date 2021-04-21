@@ -15,12 +15,7 @@ namespace EuroSound_Application.TreeViewSorter
             TreeNode tx = x as TreeNode;
             TreeNode ty = y as TreeNode;
 
-            //if (tx.Tag.ToString().Equals("Folder") || ty.Tag.ToString().Equals("Folder"))
-            //{
-            //    index = string.Compare(tx.Tag.ToString(), ty.Tag.ToString(), true);
-            //}
             return string.Compare(tx.Text, ty.Text);
-            //return index;
         }
     }
 }

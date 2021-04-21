@@ -3,7 +3,6 @@ using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.SoundBanksEditor
@@ -230,19 +229,6 @@ namespace EuroSound_Application.SoundBanksEditor
         internal static bool SubSFXFlagChecked(int Flags)
         {
             return Convert.ToBoolean((Flags >> 10) & 1);
-        }
-
-        internal static string RemoveWhiteSpaces(string TextToModify)
-        {
-            string NewString = string.Empty;
-
-            //Before remove whitespaces, first check that is not null
-            if (!string.IsNullOrEmpty(TextToModify))
-            {
-                NewString = Regex.Replace(TextToModify, @"\s", "");
-            }
-
-            return NewString;
         }
     }
 }

@@ -118,7 +118,7 @@ namespace EuroSound_Application.StreamSounds
             this.TreeView_StreamData.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1});
             this.TreeView_StreamData.SelectedImageIndex = 0;
-            this.TreeView_StreamData.Size = new System.Drawing.Size(456, 567);
+            this.TreeView_StreamData.Size = new System.Drawing.Size(456, 591);
             this.TreeView_StreamData.TabIndex = 1;
             this.TreeView_StreamData.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.TreeView_StreamData_AfterLabelEdit);
             this.TreeView_StreamData.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.TreeView_StreamData_BeforeCollapse);
@@ -188,7 +188,7 @@ namespace EuroSound_Application.StreamSounds
             // 
             this.ContextMenuFolder_AddSound.Name = "ContextMenuFolder_AddSound";
             this.ContextMenuFolder_AddSound.Size = new System.Drawing.Size(136, 22);
-            this.ContextMenuFolder_AddSound.Text = "Add Sound";
+            this.ContextMenuFolder_AddSound.Text = "New";
             this.ContextMenuFolder_AddSound.Click += new System.EventHandler(this.ContextMenuMain_AddSound_Click);
             // 
             // ContextMenuFolder_Rename
@@ -383,7 +383,7 @@ namespace EuroSound_Application.StreamSounds
             this.GroupBox_StreamData.Controls.Add(this.Button_UpdateList_WavData);
             this.GroupBox_StreamData.Location = new System.Drawing.Point(3, 12);
             this.GroupBox_StreamData.Name = "GroupBox_StreamData";
-            this.GroupBox_StreamData.Size = new System.Drawing.Size(442, 512);
+            this.GroupBox_StreamData.Size = new System.Drawing.Size(442, 536);
             this.GroupBox_StreamData.TabIndex = 2;
             this.GroupBox_StreamData.TabStop = false;
             this.GroupBox_StreamData.Text = "Stream Data:";
@@ -391,7 +391,7 @@ namespace EuroSound_Application.StreamSounds
             // Button_StopUpdate
             // 
             this.Button_StopUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_StopUpdate.Location = new System.Drawing.Point(361, 483);
+            this.Button_StopUpdate.Location = new System.Drawing.Point(361, 507);
             this.Button_StopUpdate.Name = "Button_StopUpdate";
             this.Button_StopUpdate.Size = new System.Drawing.Size(75, 23);
             this.Button_StopUpdate.TabIndex = 2;
@@ -420,7 +420,7 @@ namespace EuroSound_Application.StreamSounds
             this.ListView_WavHeaderData.HideSelection = false;
             this.ListView_WavHeaderData.Location = new System.Drawing.Point(6, 19);
             this.ListView_WavHeaderData.Name = "ListView_WavHeaderData";
-            this.ListView_WavHeaderData.Size = new System.Drawing.Size(430, 458);
+            this.ListView_WavHeaderData.Size = new System.Drawing.Size(430, 482);
             this.ListView_WavHeaderData.TabIndex = 0;
             this.ListView_WavHeaderData.UseCompatibleStateImageBehavior = false;
             this.ListView_WavHeaderData.View = System.Windows.Forms.View.Details;
@@ -475,7 +475,7 @@ namespace EuroSound_Application.StreamSounds
             // Button_UpdateList_WavData
             // 
             this.Button_UpdateList_WavData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateList_WavData.Location = new System.Drawing.Point(280, 483);
+            this.Button_UpdateList_WavData.Location = new System.Drawing.Point(280, 507);
             this.Button_UpdateList_WavData.Name = "Button_UpdateList_WavData";
             this.Button_UpdateList_WavData.Size = new System.Drawing.Size(75, 23);
             this.Button_UpdateList_WavData.TabIndex = 1;
@@ -496,72 +496,72 @@ namespace EuroSound_Application.StreamSounds
             this.ContextMenuSounds_Separator2,
             this.ContextMenuSounds_TextColor});
             this.ContextMenu_Sounds.Name = "ContextMenu_Sounds";
-            this.ContextMenu_Sounds.Size = new System.Drawing.Size(139, 170);
+            this.ContextMenu_Sounds.Size = new System.Drawing.Size(181, 192);
             this.ContextMenu_Sounds.Text = "ContextMenu_StreamSounds";
             // 
             // ContextMenuSounds_Rename
             // 
             this.ContextMenuSounds_Rename.Name = "ContextMenuSounds_Rename";
-            this.ContextMenuSounds_Rename.Size = new System.Drawing.Size(138, 22);
+            this.ContextMenuSounds_Rename.Size = new System.Drawing.Size(180, 22);
             this.ContextMenuSounds_Rename.Text = "Rename";
             this.ContextMenuSounds_Rename.Click += new System.EventHandler(this.ContextMenuSounds_Rename_Click);
             // 
             // ContextMenuSounds_Delete
             // 
             this.ContextMenuSounds_Delete.Name = "ContextMenuSounds_Delete";
-            this.ContextMenuSounds_Delete.Size = new System.Drawing.Size(138, 22);
+            this.ContextMenuSounds_Delete.Size = new System.Drawing.Size(180, 22);
             this.ContextMenuSounds_Delete.Text = "Delete";
             this.ContextMenuSounds_Delete.Click += new System.EventHandler(this.ContextMenuSounds_Delete_Click);
             // 
             // ContextMenuSounds_Properties
             // 
             this.ContextMenuSounds_Properties.Name = "ContextMenuSounds_Properties";
-            this.ContextMenuSounds_Properties.Size = new System.Drawing.Size(138, 22);
+            this.ContextMenuSounds_Properties.Size = new System.Drawing.Size(180, 22);
             this.ContextMenuSounds_Properties.Text = "Properties...";
             this.ContextMenuSounds_Properties.Click += new System.EventHandler(this.ContextMenuSounds_Properties_Click);
             // 
             // ContextMenuSounds_ExportESIF
             // 
             this.ContextMenuSounds_ExportESIF.Name = "ContextMenuSounds_ExportESIF";
-            this.ContextMenuSounds_ExportESIF.Size = new System.Drawing.Size(138, 22);
+            this.ContextMenuSounds_ExportESIF.Size = new System.Drawing.Size(180, 22);
             this.ContextMenuSounds_ExportESIF.Text = "Export";
             this.ContextMenuSounds_ExportESIF.Click += new System.EventHandler(this.ContextMenuSounds_ExportESIF_Click);
             // 
             // ContextMenuSounds_Separator1
             // 
             this.ContextMenuSounds_Separator1.Name = "ContextMenuSounds_Separator1";
-            this.ContextMenuSounds_Separator1.Size = new System.Drawing.Size(135, 6);
+            this.ContextMenuSounds_Separator1.Size = new System.Drawing.Size(177, 6);
             // 
             // ContextMenuSounds_MoveUp
             // 
             this.ContextMenuSounds_MoveUp.Name = "ContextMenuSounds_MoveUp";
-            this.ContextMenuSounds_MoveUp.Size = new System.Drawing.Size(138, 22);
+            this.ContextMenuSounds_MoveUp.Size = new System.Drawing.Size(180, 22);
             this.ContextMenuSounds_MoveUp.Text = "Move Up";
             this.ContextMenuSounds_MoveUp.Click += new System.EventHandler(this.ContextMenuSounds_MoveUp_Click);
             // 
             // ContextMenuSounds_MoveDown
             // 
             this.ContextMenuSounds_MoveDown.Name = "ContextMenuSounds_MoveDown";
-            this.ContextMenuSounds_MoveDown.Size = new System.Drawing.Size(138, 22);
+            this.ContextMenuSounds_MoveDown.Size = new System.Drawing.Size(180, 22);
             this.ContextMenuSounds_MoveDown.Text = "Move Down";
             this.ContextMenuSounds_MoveDown.Click += new System.EventHandler(this.ContextMenuSounds_MoveDown_Click);
             // 
             // ContextMenuSounds_Separator2
             // 
             this.ContextMenuSounds_Separator2.Name = "ContextMenuSounds_Separator2";
-            this.ContextMenuSounds_Separator2.Size = new System.Drawing.Size(135, 6);
+            this.ContextMenuSounds_Separator2.Size = new System.Drawing.Size(177, 6);
             // 
             // ContextMenuSounds_TextColor
             // 
             this.ContextMenuSounds_TextColor.Name = "ContextMenuSounds_TextColor";
-            this.ContextMenuSounds_TextColor.Size = new System.Drawing.Size(138, 22);
+            this.ContextMenuSounds_TextColor.Size = new System.Drawing.Size(180, 22);
             this.ContextMenuSounds_TextColor.Text = "Text Color...";
             this.ContextMenuSounds_TextColor.Click += new System.EventHandler(this.ContextMenuSounds_TextColor_Click);
             // 
             // Button_UpdateIMAData
             // 
             this.Button_UpdateIMAData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateIMAData.Location = new System.Drawing.Point(316, 532);
+            this.Button_UpdateIMAData.Location = new System.Drawing.Point(316, 556);
             this.Button_UpdateIMAData.Name = "Button_UpdateIMAData";
             this.Button_UpdateIMAData.Size = new System.Drawing.Size(120, 23);
             this.Button_UpdateIMAData.TabIndex = 4;
@@ -572,7 +572,7 @@ namespace EuroSound_Application.StreamSounds
             // Button_ExportInterchangeFile
             // 
             this.Button_ExportInterchangeFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_ExportInterchangeFile.Location = new System.Drawing.Point(184, 532);
+            this.Button_ExportInterchangeFile.Location = new System.Drawing.Point(184, 556);
             this.Button_ExportInterchangeFile.Name = "Button_ExportInterchangeFile";
             this.Button_ExportInterchangeFile.Size = new System.Drawing.Size(126, 23);
             this.Button_ExportInterchangeFile.TabIndex = 3;
@@ -583,7 +583,7 @@ namespace EuroSound_Application.StreamSounds
             // SplitContainerStreamSoundsForm
             // 
             this.SplitContainerStreamSoundsForm.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SplitContainerStreamSoundsForm.Location = new System.Drawing.Point(0, 24);
+            this.SplitContainerStreamSoundsForm.Location = new System.Drawing.Point(0, 0);
             this.SplitContainerStreamSoundsForm.Name = "SplitContainerStreamSoundsForm";
             // 
             // SplitContainerStreamSoundsForm.Panel1
@@ -595,11 +595,11 @@ namespace EuroSound_Application.StreamSounds
             this.SplitContainerStreamSoundsForm.Panel2.Controls.Add(this.GroupBox_StreamData);
             this.SplitContainerStreamSoundsForm.Panel2.Controls.Add(this.Button_UpdateIMAData);
             this.SplitContainerStreamSoundsForm.Panel2.Controls.Add(this.Button_ExportInterchangeFile);
-            this.SplitContainerStreamSoundsForm.Size = new System.Drawing.Size(908, 567);
+            this.SplitContainerStreamSoundsForm.Size = new System.Drawing.Size(908, 591);
             this.SplitContainerStreamSoundsForm.SplitterDistance = 456;
             this.SplitContainerStreamSoundsForm.TabIndex = 5;
             // 
-            // Frm_StreamSoundsEditorMain
+            // Frm_StreamSounds_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -608,7 +608,7 @@ namespace EuroSound_Application.StreamSounds
             this.Controls.Add(this.MainMenu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.MainMenu;
-            this.Name = "Frm_StreamSoundsEditorMain";
+            this.Name = "Frm_StreamSounds_Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "EuroSound StreamSounds Edior";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_StreamSoundsEditorMain_FormClosing);

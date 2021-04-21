@@ -5,6 +5,7 @@ using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.AudioConverter;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CustomControls.NewProjectForm;
+using EuroSound_Application.Debug_HashTables;
 using EuroSound_Application.SFXData;
 using Microsoft.Win32;
 using System;
@@ -96,7 +97,7 @@ namespace EuroSound_Application
 
             MenuItemHelp_About.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItemHelp_OnlineHelp.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
-            MenuItemHelp_OnlineHelp.Click += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; Process.Start("https://sphinxandthecursedmummy.fandom.com/wiki/SFX"); };
+            MenuItemHelp_OnlineHelp.Click += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; Process.Start("https://sphinxandthecursedmummy.fandom.com"); };
             MenuItemHelp_ReleaseInfo.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItemHelp_ReleaseInfo.Click += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; Process.Start("https://github.com/jmarti856/eurosound/releases"); };
             MenuItemHelp_CurrentReleaseInfo.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
@@ -314,29 +315,43 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* MAIN MENU -- TOOLS
         //*===============================================================================================
+        private void MainMenuTools_DebugHashtables_Click(object sender, EventArgs e)
+        {
+            if (!GenericFunctions.CheckChildFormIsOpened("Frm_Debug_HashTables_Main", "HT_Debugger"))
+            {
+                Frm_Debug_HashTables_Main ES_Debug_HashTables = new Frm_Debug_HashTables_Main
+                {
+                    Owner = this,
+                    MdiParent = this
+                };
+                ES_Debug_HashTables.Show();
+            }
+        }
+
         private void MainMenuTools_AudioConverter_Click(object sender, EventArgs e)
         {
-            Frm_AudioConverter ES_AudioConverter = new Frm_AudioConverter
+            if (!GenericFunctions.CheckChildFormIsOpened("Frm_AudioConverter", "AudioC"))
             {
-                Owner = this,
-                MdiParent = this,
-                Tag = FormID.ToString()
-            };
-            ES_AudioConverter.Show();
-            FormID++;
+                Frm_AudioConverter ES_AudioConverter = new Frm_AudioConverter
+                {
+                    Owner = this,
+                    MdiParent = this
+                };
+                ES_AudioConverter.Show();
+            }
         }
         private void MainMenuTools_SFXDataGen_Click(object sender, EventArgs e)
         {
             GlobalPreferences.StatusBar_ToolTipMode = false;
-
-            Frm_SFX_DataGenerator BinaryFileGenerator = new Frm_SFX_DataGenerator()
+            if (!GenericFunctions.CheckChildFormIsOpened("Frm_SFX_DataGenerator", "SFXData"))
             {
-                Owner = this,
-                MdiParent = this,
-                Tag = FormID.ToString()
-            };
-            BinaryFileGenerator.Show();
-            FormID++;
+                Frm_SFX_DataGenerator BinaryFileGenerator = new Frm_SFX_DataGenerator()
+                {
+                    Owner = this,
+                    MdiParent = this
+                };
+                BinaryFileGenerator.Show();
+            }
         }
 
         private void MainMenuTools_BackupSettings_Click(object sender, EventArgs e)

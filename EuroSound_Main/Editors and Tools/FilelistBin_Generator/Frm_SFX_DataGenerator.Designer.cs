@@ -206,6 +206,7 @@ namespace EuroSound_Application.SFXData
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Frm_SFX_DataGenerator";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Tag = "SFXData";
             this.Text = "SFX Data Table";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_SFX_DataGenerator_FormClosing);
             this.Load += new System.EventHandler(this.Frm_SFX_DataGenerator_Load);

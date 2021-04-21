@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
@@ -56,7 +57,7 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
         {
             string selectedParent;
 
-            selectedParent = Combobox_AvailableFolders.SelectedItem.ToString();
+            selectedParent = Combobox_AvailableFolders.SelectedValue.ToString();
             if (!string.IsNullOrEmpty(selectedParent))
             {
                 TreeNode NewParentNode = ParentTreeViewControl.Nodes.Find(selectedParent, true)[0];
@@ -96,8 +97,10 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
             CurrentLoadedData = ParentName;
             SoundsDictionary.Clear();
 
-            Combobox_AvailableFolders.DataSource = GetAvailableFolders(ParentTreeViewControl, CurrentLoadedData);
-            Combobox_AvailableFolders.SelectedItem = DestinationFolder;
+            Combobox_AvailableFolders.DataSource = GetAvailableFolders(ParentTreeViewControl, CurrentLoadedData).ToList();
+            Combobox_AvailableFolders.ValueMember = "Key";
+            Combobox_AvailableFolders.DisplayMember = "Value";
+            Combobox_AvailableFolders.SelectedValue = DestinationFolder;
 
             /*Check for sounds*/
             if (Combobox_DataType.SelectedIndex > 0)
@@ -121,12 +124,17 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
                     }
                 }
             }
-            ShowDataInList();
+
+            //Show Sound Nodes
+            if (SoundsDictionary.Count > 0)
+            {
+                ShowDataInList();
+            }
         }
 
-        private List<string> GetAvailableFolders(TreeView control, string ParentName)
+        private Dictionary<string, string> GetAvailableFolders(TreeView control, string ParentName)
         {
-            List<string> AvailableFolders = new List<string>();
+            Dictionary<string, string> AvailableFolders = new Dictionary<string, string>();
             foreach (TreeNode node in control.Nodes)
             {
                 if (node.Name.Equals(ParentName))
@@ -134,16 +142,15 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
                     GetFolders(node, AvailableFolders);
                 }
             }
-            AvailableFolders.TrimExcess();
 
             return AvailableFolders;
         }
 
-        private void GetFolders(TreeNode node, List<string> foldersList)
+        private void GetFolders(TreeNode node, Dictionary<string, string> foldersList)
         {
             if (node.Tag.Equals("Folder"))
             {
-                foldersList.Add(node.Name);
+                foldersList.Add(node.Name, node.Text);
             }
             foreach (TreeNode tn in node.Nodes)
             {

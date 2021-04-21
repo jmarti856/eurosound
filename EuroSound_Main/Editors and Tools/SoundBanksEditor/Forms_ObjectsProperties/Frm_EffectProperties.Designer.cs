@@ -425,7 +425,7 @@
             this.grbx_hashcode.Size = new System.Drawing.Size(524, 57);
             this.grbx_hashcode.TabIndex = 0;
             this.grbx_hashcode.TabStop = false;
-            this.grbx_hashcode.Text = "Hashcode:";
+            this.grbx_hashcode.Text = "HashCode:";
             // 
             // cbx_hashcode
             // 
@@ -444,9 +444,9 @@
             this.label_hashcode.AutoSize = true;
             this.label_hashcode.Location = new System.Drawing.Point(6, 22);
             this.label_hashcode.Name = "label_hashcode";
-            this.label_hashcode.Size = new System.Drawing.Size(59, 13);
+            this.label_hashcode.Size = new System.Drawing.Size(60, 13);
             this.label_hashcode.TabIndex = 0;
-            this.label_hashcode.Text = "Hashcode:";
+            this.label_hashcode.Text = "HashCode:";
             // 
             // Checkbox_OutputThisSound
             // 

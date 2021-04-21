@@ -114,7 +114,7 @@ namespace EuroSound_Application.Musics
                 }
 
                 //Update Total Progress
-                TotalProgress += 10;
+                TotalProgress += 20;
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
 
                 //*===============================================================================================
@@ -146,7 +146,6 @@ namespace EuroSound_Application.Musics
                         TotalProgress += 10;
                         BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
 
-
                         //--------------------------------------[Write SECTIONS]--------------------------------------
                         //Update Label
                         GenericFunctions.SetLabelText(Label_CurrentTask, "Writting File Sections");
@@ -157,7 +156,6 @@ namespace EuroSound_Application.Musics
                         //Update Total Progress
                         TotalProgress += 10;
                         BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
-
 
                         //--------------------------------------[SECTION File Section 1]--------------------------------------
                         //Update Label
@@ -178,11 +176,11 @@ namespace EuroSound_Application.Musics
                         SFXCreator.WriteFileSection2(BWriter, FinalMusicsDict);
 
                         //Update Total Progress
-                        TotalProgress += 5;
+                        TotalProgress += 10;
                         BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
 
                         //Update Total Progress
-                        TotalProgress += 5;
+                        TotalProgress += 10;
                         BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
 
                         //*===============================================================================================
@@ -281,7 +279,10 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         private void Button_Abort_Click(object sender, EventArgs e)
         {
-            BackgroundWorker_BuildSFX.CancelAsync();
+            if (BackgroundWorker_BuildSFX.IsBusy)
+            {
+                BackgroundWorker_BuildSFX.CancelAsync();
+            }
         }
     }
 }

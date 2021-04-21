@@ -267,6 +267,18 @@
     <Compile Include="Editors and Tools\AudioConverter\Frm_AudioConverter_Presets.Designer.cs">
       <DependentUpon>Frm_AudioConverter_Presets.cs</DependentUpon>
     </Compile>
+    <Compile Include="Editors and Tools\Debug_HashTables\Frm_Debug_HashTables_Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editors and Tools\Debug_HashTables\Frm_Debug_HashTables_Main.Designer.cs">
+      <DependentUpon>Frm_Debug_HashTables_Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editors and Tools\Debug_HashTables\Frm_Debug_HT_Data.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editors and Tools\Debug_HashTables\Frm_Debug_HT_Data.Designer.cs">
+      <DependentUpon>Frm_Debug_HT_Data.cs</DependentUpon>
+    </Compile>
     <Compile Include="Editors and Tools\FilelistBin_Generator\Frm_SFX_DataGenerator.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -484,6 +496,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Editors and Tools\AudioConverter\Frm_AudioConverter_Presets.resx">
       <DependentUpon>Frm_AudioConverter_Presets.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editors and Tools\Debug_HashTables\Frm_Debug_HashTables_Main.resx">
+      <DependentUpon>Frm_Debug_HashTables_Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editors and Tools\Debug_HashTables\Frm_Debug_HT_Data.resx">
+      <DependentUpon>Frm_Debug_HT_Data.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editors and Tools\FilelistBin_Generator\Frm_SFX_DataGenerator.resx">
       <DependentUpon>Frm_SFX_DataGenerator.cs</DependentUpon>

@@ -543,6 +543,7 @@ namespace EuroSound_Application.AudioConverter
             this.MainMenuStrip = this.AudioConverter_MainMenu;
             this.Name = "Frm_AudioConverter";
             this.ShowInTaskbar = false;
+            this.Tag = "AudioC";
             this.Text = "Audio Converter";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_AudioConverter_FormClosing);
             this.Load += new System.EventHandler(this.Frm_AudioConverter_Load);

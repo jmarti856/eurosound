@@ -405,6 +405,9 @@
   <data name="OutputSFXSoundbankErrors" xml:space="preserve">
     <value>An error occurred in the output and the file might be corrupt</value>
   </data>
+  <data name="ProjectSettingsErrorJumpCodes" xml:space="preserve">
+    <value>You can't assign a jump code in a project file, the selected HashCode will not be applied.</value>
+  </data>
   <data name="ProjectSettings_ErrorHashcode" xml:space="preserve">
     <value>You can't assign the selected hashcode to this project, the changes will not be applied</value>
   </data>
@@ -434,6 +437,12 @@
   </data>
   <data name="StatusBar_RemovingTempFiles" xml:space="preserve">
     <value>Cleaning temporal folder</value>
+  </data>
+  <data name="StatusBar_Status_GenericReadingFile" xml:space="preserve">
+    <value>Reading file</value>
+  </data>
+  <data name="StatusBar_Status_GenericSavingFile" xml:space="preserve">
+    <value>Saving file</value>
   </data>
   <data name="StatusBar_Status_RadingDataHashcodes" xml:space="preserve">
     <value>Reading hashcodes data file</value>

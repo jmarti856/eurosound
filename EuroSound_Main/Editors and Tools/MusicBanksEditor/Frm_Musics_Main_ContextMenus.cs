@@ -1,6 +1,5 @@
 ﻿using EuroSound_Application.Clases;
 using EuroSound_Application.EuroSoundInterchangeFile;
-using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using EuroSound_Application.TreeViewSorter;
 using System;
@@ -77,7 +76,8 @@ namespace EuroSound_Application.Musics
             {
                 if (!string.IsNullOrEmpty(Name))
                 {
-                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_MusicData.SelectedNode.Name, EXSoundbanksFunctions.RemoveWhiteSpaces(Name), Name, 1, 1, "Folder", true, true, false, Color.Black, TreeView_MusicData);
+                    uint FolderID = GenericFunctions.GetNewObjectID(ProjectInfo);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_MusicData.SelectedNode.Name, FolderID.ToString(), Name, 1, 1, "Folder", true, true, false, Color.Black, TreeView_MusicData);
                     ProjectInfo.FileHasBeenModified = true;
                 }
             }

@@ -429,7 +429,7 @@ namespace EuroSound_Application.Musics
             // 
             this.ContextMenuFolder_AddSound.Name = "ContextMenuFolder_AddSound";
             this.ContextMenuFolder_AddSound.Size = new System.Drawing.Size(136, 22);
-            this.ContextMenuFolder_AddSound.Text = "Add Music";
+            this.ContextMenuFolder_AddSound.Text = "New";
             this.ContextMenuFolder_AddSound.Click += new System.EventHandler(this.ContextMenuFolder_AddSound_Click);
             // 
             // ContextMenuFolder_Rename
@@ -668,31 +668,31 @@ namespace EuroSound_Application.Musics
             this.RichTextBox_SelectAll,
             this.RichTextBox_Separator2});
             this.ContextMenu_RichTextBox.Name = "ContextMenu_RichTextBox";
-            this.ContextMenu_RichTextBox.Size = new System.Drawing.Size(123, 60);
+            this.ContextMenu_RichTextBox.Size = new System.Drawing.Size(181, 82);
             // 
             // RichTextBox_Copy
             // 
             this.RichTextBox_Copy.Name = "RichTextBox_Copy";
-            this.RichTextBox_Copy.Size = new System.Drawing.Size(122, 22);
+            this.RichTextBox_Copy.Size = new System.Drawing.Size(180, 22);
             this.RichTextBox_Copy.Text = "Copy";
             this.RichTextBox_Copy.Click += new System.EventHandler(this.RichTextBox_Copy_Click);
             // 
             // RichTextBox_Separator1
             // 
             this.RichTextBox_Separator1.Name = "RichTextBox_Separator1";
-            this.RichTextBox_Separator1.Size = new System.Drawing.Size(119, 6);
+            this.RichTextBox_Separator1.Size = new System.Drawing.Size(177, 6);
             // 
             // RichTextBox_SelectAll
             // 
             this.RichTextBox_SelectAll.Name = "RichTextBox_SelectAll";
-            this.RichTextBox_SelectAll.Size = new System.Drawing.Size(122, 22);
+            this.RichTextBox_SelectAll.Size = new System.Drawing.Size(180, 22);
             this.RichTextBox_SelectAll.Text = "Select All";
             this.RichTextBox_SelectAll.Click += new System.EventHandler(this.RichTextBox_SelectAll_Click);
             // 
             // RichTextBox_Separator2
             // 
             this.RichTextBox_Separator2.Name = "RichTextBox_Separator2";
-            this.RichTextBox_Separator2.Size = new System.Drawing.Size(119, 6);
+            this.RichTextBox_Separator2.Size = new System.Drawing.Size(177, 6);
             // 
             // Button_Generate_Hashcodes
             // 
