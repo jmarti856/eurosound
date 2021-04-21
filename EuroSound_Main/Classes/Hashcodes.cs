@@ -14,6 +14,7 @@ namespace EuroSound_Application.HashCodesFunctions
         internal static Dictionary<int, float[]> SFX_Data = new Dictionary<int, float[]>();
         internal static Dictionary<uint, string> SFX_Defines = new Dictionary<uint, string>();
         internal static Dictionary<uint, string> MFX_Defines = new Dictionary<uint, string>();
+        internal static Dictionary<uint, string> MFX_JumpCodes = new Dictionary<uint, string>();
 
         internal static void AddDataToCombobox(ComboBox ControlToAddData, Dictionary<uint, string> HashcodesDict)
         {
@@ -113,7 +114,7 @@ namespace EuroSound_Application.HashCodesFunctions
                     {
                         while ((CurrentLine = reader.ReadLine()) != null)
                         {
-                            if (CurrentLine.StartsWith("/"))
+                            if (CurrentLine.StartsWith("/") || string.IsNullOrEmpty(CurrentLine))
                             {
                                 continue;
                             }
@@ -176,7 +177,7 @@ namespace EuroSound_Application.HashCodesFunctions
                     {
                         while ((line = reader.ReadLine()) != null)
                         {
-                            if (line.StartsWith("/"))
+                            if (line.StartsWith("/") || string.IsNullOrEmpty(line))
                             {
                                 continue;
                             }
@@ -186,21 +187,82 @@ namespace EuroSound_Application.HashCodesFunctions
                                 if (matches.Count >= 2)
                                 {
                                     string HexLabel = matches[0].Value.Trim();
-                                    try
+                                    if (HexLabel.Equals("MFX_MaximumDefined"))
                                     {
-                                        uint HexNum = Convert.ToUInt32(matches[1].Value.Trim(), 16);
-
-                                        if (HexNum >= 0x1BE00000)
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        try
                                         {
-                                            if (!MFX_Defines.ContainsKey(HexNum))
+                                            uint HexNum = Convert.ToUInt32(matches[1].Value.Trim(), 16);
+
+                                            if (HexNum >= 0x1BE00000)
                                             {
-                                                MFX_Defines.Add(HexNum, HexLabel);
+                                                if (!MFX_Defines.ContainsKey(HexNum))
+                                                {
+                                                    MFX_Defines.Add(HexNum, HexLabel);
+                                                }
                                             }
                                         }
+                                        catch (FormatException)
+                                        {
+                                            MessageBox.Show(string.Join(" ", new string[] { "A hashcode with an invalid hex format has been found, the label is:", HexLabel }), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        }
                                     }
-                                    catch (FormatException)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        internal static void ReadMusicJumpCodes()
+        {
+            string line;
+
+            //Clear dictionaries
+            MFX_Defines.Clear();
+
+            Regex FindHashcodeLabel = new Regex(@"\s+(\w+)");
+
+            using (FileStream fs = File.OpenRead(GlobalPreferences.HT_MusicPath))
+            {
+                using (BufferedStream bs = new BufferedStream(fs))
+                {
+                    using (StreamReader reader = new StreamReader(bs))
+                    {
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            if (line.StartsWith("/") || string.IsNullOrEmpty(line))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                MatchCollection matches = FindHashcodeLabel.Matches(line);
+                                if (matches.Count >= 2)
+                                {
+                                    string HexLabel = matches[0].Value.Trim();
+                                    if (HexLabel.StartsWith("JMP", StringComparison.OrdinalIgnoreCase))
                                     {
-                                        MessageBox.Show(string.Join(" ", new string[] { "A hashcode with an invalid hex format has been found, the label is:", HexLabel }), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        try
+                                        {
+                                            uint HexNum = Convert.ToUInt32(matches[1].Value.Trim(), 16);
+
+                                            if (HexNum >= 0x1BE00000)
+                                            {
+                                                if (!MFX_JumpCodes.ContainsKey(HexNum))
+                                                {
+                                                    MFX_JumpCodes.Add(HexNum, HexLabel);
+                                                }
+                                            }
+                                        }
+                                        catch (FormatException)
+                                        {
+                                            MessageBox.Show(string.Join(" ", new string[] { "A hashcode with an invalid hex format has been found, the label is:", HexLabel }), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        }
                                     }
                                 }
                             }

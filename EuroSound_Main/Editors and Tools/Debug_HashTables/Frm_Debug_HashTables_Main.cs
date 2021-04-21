@@ -66,6 +66,9 @@ namespace EuroSound_Application.Debug_HashTables
                 CreateSFXDebugFile.Abort();
             }
 
+            //Clear Dictionary
+            Hashcodes.MFX_JumpCodes.Clear();
+
             //Save Form Position
             WRegFunctions.SaveWindowState("DBView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
 
@@ -101,7 +104,8 @@ namespace EuroSound_Application.Debug_HashTables
 
                     sw.WriteLine("s32 MFX_ValidList[]={");
                     //Loop Throught HashCodes
-                    foreach (KeyValuePair<uint, string> Item in Hashcodes.MFX_Defines)
+                    Hashcodes.ReadMusicJumpCodes();
+                    foreach (KeyValuePair<uint, string> Item in Hashcodes.MFX_JumpCodes)
                     {
                         //Check Jump Codes
                         if (Item.Value.StartsWith("JMP"))
