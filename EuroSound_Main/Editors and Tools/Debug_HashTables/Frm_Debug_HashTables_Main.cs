@@ -18,7 +18,6 @@ namespace EuroSound_Application.Debug_HashTables
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
-        private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
         private Thread CreateSFXDebugFile;
         public Frm_Debug_HashTables_Main()
         {
@@ -34,7 +33,7 @@ namespace EuroSound_Application.Debug_HashTables
             Icon = Icon.Clone() as Icon;
 
             //Load Preferences
-            using (RegistryKey WindowStateConfig = WRegFunctions.ReturnRegistryKey("WindowState"))
+            using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
                 bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("DBView_IsIconic", 0));
                 bool IsMaximized = Convert.ToBoolean(WindowStateConfig.GetValue("DBView_IsMaximized", 0));
@@ -70,7 +69,7 @@ namespace EuroSound_Application.Debug_HashTables
             Hashcodes.MFX_JumpCodes.Clear();
 
             //Save Form Position
-            WRegFunctions.SaveWindowState("DBView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
+            WindowsRegistryFunctions.SaveWindowState("DBView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
 
             //Set Program status
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));

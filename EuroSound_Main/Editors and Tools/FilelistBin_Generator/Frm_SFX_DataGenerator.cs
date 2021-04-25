@@ -17,7 +17,6 @@ namespace EuroSound_Application.SFXData
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
-        private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
         private GenerateSFXDataFiles SFXDataBin_Generator = new GenerateSFXDataFiles();
         private Thread LoadSfxDataTable;
 
@@ -35,7 +34,7 @@ namespace EuroSound_Application.SFXData
             Icon = Icon.Clone() as Icon;
 
             //Load Preferences
-            using (RegistryKey WindowStateConfig = WRegFunctions.ReturnRegistryKey("WindowState"))
+            using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
                 bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("SFXData_IsIconic", 0));
                 bool IsMaximized = Convert.ToBoolean(WindowStateConfig.GetValue("SFXData_IsMaximized", 0));
@@ -122,8 +121,7 @@ namespace EuroSound_Application.SFXData
             //Clear array
             SFXDataBin_Generator = null;
 
-
-            WRegFunctions.SaveWindowState("SFXData", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
+            WindowsRegistryFunctions.SaveWindowState("SFXData", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));

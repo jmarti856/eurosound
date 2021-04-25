@@ -6,45 +6,45 @@
         //* PERSISTENT PROPERTIES
         //*===============================================================================================
         //Profile
-        internal static string SelectedProfile;
-        internal static string SelectedProfileName;
+        internal static string SelectedProfile = string.Empty;
+        internal static string SelectedProfileName = "ProgDefaults";
 
         //[SoundbanksSettings]
-        internal static int SoundbankFrequency;
-        internal static string SoundbankEncoding;
-        internal static int SoundbankBits;
-        internal static int SoundbankChannels;
+        internal static int SoundbankFrequency = 0;
+        internal static string SoundbankEncoding = string.Empty;
+        internal static int SoundbankBits = 0;
+        internal static int SoundbankChannels = 0;
 
         //[StreamFileSettings]
-        internal static int StreambankFrequency;
-        internal static string StreambankEncoding;
-        internal static int StreambankBits;
-        internal static int StreambankChannels;
+        internal static int StreambankFrequency = 0;
+        internal static string StreambankEncoding = string.Empty;
+        internal static int StreambankBits = 0;
+        internal static int StreambankChannels = 0;
 
         //[MusicFileSettings]
-        internal static int MusicbankFrequency;
-        internal static string MusicbankEncoding;
-        internal static int MusicbankBits;
-        internal static int MusicbankChannels;
+        internal static int MusicbankFrequency = 0;
+        internal static string MusicbankEncoding = string.Empty;
+        internal static int MusicbankBits = 0;
+        internal static int MusicbankChannels = 0;
 
         //[HashTableFiles]
-        internal static string HT_SoundsPath;
-        internal static string HT_SoundsMD5;
-        internal static string HT_SoundsDataPath;
-        internal static string HT_SoundsDataMD5;
-        internal static string HT_MusicPath;
-        internal static string HT_MusicMD5;
+        internal static string HT_SoundsPath = string.Empty;
+        internal static string HT_SoundsMD5 = string.Empty;
+        internal static string HT_SoundsDataPath = string.Empty;
+        internal static string HT_SoundsDataMD5 = string.Empty;
+        internal static string HT_MusicPath = string.Empty;
+        internal static string HT_MusicMD5 = string.Empty;
 
         //[ExternalFiles]
-        internal static string StreamFilePath;
-        internal static string SoXPath;
-        internal static string MkFileListPath;
-        internal static string MkFileList2Path;
+        internal static string StreamFilePath = string.Empty;
+        internal static string SoXPath = string.Empty;
+        internal static string MkFileListPath = string.Empty;
+        internal static string MkFileList2Path = string.Empty;
 
         //[OutputFolders]
-        internal static string SFXOutputPath;
-        internal static string MusicOutputPath;
-        internal static string StreamFileOutputPath;
+        internal static string SFXOutputPath = string.Empty;
+        internal static string MusicOutputPath = string.Empty;
+        internal static string StreamFileOutputPath = string.Empty;
 
         //User Settings -> Tree View
         internal static string TV_SelectedFont = "Microsoft Sans Serif; 8,25pt";

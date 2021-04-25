@@ -21,7 +21,6 @@ namespace EuroSound_Application.AudioConverter
         //* Global Variables
         //*===============================================================================================
         internal List<string> Reports;
-        private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
         private ListViewFunctions LVFunctions = new ListViewFunctions();
         private string[] FilesCollection;
         public Frm_AudioConverter()
@@ -38,7 +37,7 @@ namespace EuroSound_Application.AudioConverter
             Icon = Icon.Clone() as Icon;
 
             //Load Preferences
-            using (RegistryKey WindowStateConfig = WRegFunctions.ReturnRegistryKey("WindowState"))
+            using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
                 bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("ACView_IsIconic", 0));
                 bool IsMaximized = Convert.ToBoolean(WindowStateConfig.GetValue("ACView_IsMaximized", 0));
@@ -103,7 +102,7 @@ namespace EuroSound_Application.AudioConverter
 
         private void Frm_AudioConverter_FormClosing(object sender, FormClosingEventArgs e)
         {
-            WRegFunctions.SaveWindowState("ACView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
+            WindowsRegistryFunctions.SaveWindowState("ACView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
 
             //Update Text
             MdiParent.Text = "EuroSound";

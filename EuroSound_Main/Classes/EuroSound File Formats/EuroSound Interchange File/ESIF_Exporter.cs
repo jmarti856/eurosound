@@ -69,7 +69,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                 TextFileWriter.WriteLine("");
                 TextFileWriter.WriteLine("*SFXSOUND {");
                 TextFileWriter.WriteLine("\t*NODENAME \"{0}\"", SoundNode.Text);
-                TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", SoundNode.Parent.Name);
+                TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", SoundNode.Parent.Text);
                 TextFileWriter.WriteLine("\t*HASHCODE " + "0x" + SFXObject.Hashcode.ToString("X8"));
                 TextFileWriter.WriteLine("\t*NODECOLOR {0} {1} {2}", SoundNode.ForeColor.R, SoundNode.ForeColor.G, SoundNode.ForeColor.B);
                 TextFileWriter.WriteLine("\t*NUMSAMPLES " + SFXObject.Samples.Count);
@@ -178,7 +178,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     TreeNode SoundNode = TreeViewControl.Nodes.Find(SFXObject.Key.ToString(), true)[0];
                     TextFileWriter.WriteLine("*SFXSOUND {");
                     TextFileWriter.WriteLine("\t*NODENAME \"{0}\"", SoundNode.Text);
-                    TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", SoundNode.Parent.Name);
+                    TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", SoundNode.Parent.Text);
                     TextFileWriter.WriteLine("\t*HASHCODE " + "0x" + SFXObject.Value.Hashcode.ToString("X8"));
                     TextFileWriter.WriteLine("\t*NODECOLOR {0} {1} {2}", SoundNode.ForeColor.R, SoundNode.ForeColor.G, SoundNode.ForeColor.B);
                     TextFileWriter.WriteLine("\t*NUMSAMPLES " + SFXObject.Value.Samples.Count);
@@ -305,7 +305,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                 //Write Object Data
                 TextFileWriter.WriteLine("*STREAMSOUND {");
                 TextFileWriter.WriteLine("\t*NODENAME \"{0}\"", SoundNode.Text);
-                TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", SoundNode.Parent.Name);
+                TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", SoundNode.Parent.Text);
                 TextFileWriter.WriteLine("\t*NODECOLOR {0} {1} {2}", SoundNode.ForeColor.R, SoundNode.ForeColor.G, SoundNode.ForeColor.B);
                 TextFileWriter.WriteLine("\t*FILEPATH \"{0}\"", AudioPath);
                 TextFileWriter.WriteLine("\t*BASEVOLUME {0}", StreamObject.BaseVolume);
@@ -387,7 +387,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     //Write Object Data
                     TextFileWriter.WriteLine("*STREAMSOUND {");
                     TextFileWriter.WriteLine("\t*NODENAME \"{0}\"", SoundNode.Text);
-                    TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", SoundNode.Parent.Name);
+                    TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", SoundNode.Parent.Text);
                     TextFileWriter.WriteLine("\t*NODECOLOR {0} {1} {2}", SoundNode.ForeColor.R, SoundNode.ForeColor.G, SoundNode.ForeColor.B);
                     TextFileWriter.WriteLine("\t*FILEPATH \"{0}\"", AudioPath);
                     TextFileWriter.WriteLine("\t*BASEVOLUME {0}", StreamFileObject.Value.BaseVolume);
@@ -470,7 +470,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                 //Write Object Data
                 TextFileWriter.WriteLine("*MUSIC {");
                 TextFileWriter.WriteLine("\t*NODENAME \"{0}\"", MusicNode.Text);
-                TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", MusicNode.Parent.Name);
+                TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", MusicNode.Parent.Text);
                 TextFileWriter.WriteLine("\t*NODECOLOR {0} {1} {2}", MusicNode.ForeColor.R, MusicNode.ForeColor.G, MusicNode.ForeColor.B);
                 TextFileWriter.WriteLine("\t*FILEPATH_LEFT \"{0}\"", AudioPathLeft);
                 TextFileWriter.WriteLine("\t*FILEPATH_RIGHT \"{0}\"", AudioPathRight);
@@ -559,7 +559,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     //Write Object Data
                     TextFileWriter.WriteLine("*MUSIC {");
                     TextFileWriter.WriteLine("\t*NODENAME \"{0}\"", MusicNode.Text);
-                    TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", MusicNode.Parent.Name);
+                    TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", MusicNode.Parent.Text);
                     TextFileWriter.WriteLine("\t*NODECOLOR {0} {1} {2}", MusicNode.ForeColor.R, MusicNode.ForeColor.G, MusicNode.ForeColor.B);
                     TextFileWriter.WriteLine("\t*FILEPATH_LEFT \"{0}\"", AudioPathLeft);
                     TextFileWriter.WriteLine("\t*FILEPATH_RIGHT \"{0}\"", AudioPathRight);

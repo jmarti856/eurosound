@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.EuroSoundFilesFunctions;
+﻿using EuroSound_Application.ApplicationRegistryFunctions;
+using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
@@ -28,7 +29,7 @@ namespace EuroSound_Application
                         RecentFilesMenu.AddFile(FileToLoad);
 
                         //Save Active Document
-                        WRegFunctions.SaveActiveDocument(FileToLoad);
+                        WindowsRegistryFunctions.SaveActiveDocument(FileToLoad);
 
                         //Open Form
                         Frm_Soundbanks_Main SoundBanksForm = new Frm_Soundbanks_Main(string.Empty, FileToLoad, RecentFilesMenu)
@@ -46,7 +47,7 @@ namespace EuroSound_Application
                         RecentFilesMenu.AddFile(FileToLoad);
 
                         //Save Active Document
-                        WRegFunctions.SaveActiveDocument(FileToLoad);
+                        WindowsRegistryFunctions.SaveActiveDocument(FileToLoad);
 
                         //Open Form
                         Frm_StreamSounds_Main StreamSoundsForm = new Frm_StreamSounds_Main(string.Empty, FileToLoad, RecentFilesMenu)
@@ -64,7 +65,7 @@ namespace EuroSound_Application
                         RecentFilesMenu.AddFile(FileToLoad);
 
                         //Save Active Document
-                        WRegFunctions.SaveActiveDocument(FileToLoad);
+                        WindowsRegistryFunctions.SaveActiveDocument(FileToLoad);
 
                         //Open Form
                         Frm_Musics_Main MusicsForm = new Frm_Musics_Main(string.Empty, FileToLoad, RecentFilesMenu)

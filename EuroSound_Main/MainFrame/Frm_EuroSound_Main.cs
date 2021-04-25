@@ -22,7 +22,6 @@ namespace EuroSound_Application
         //*===============================================================================================
         private int FormID = 0;
         private string ArgumentFromSplash;
-        private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
         protected MostRecentFilesMenu RecentFilesMenu;
         private string RecentFilesMenuRegKey = "SOFTWARE\\Eurocomm\\EuroSound\\RecentFiles";
 
@@ -111,7 +110,7 @@ namespace EuroSound_Application
         {
             string LastActiveDocument = string.Empty;
 
-            using (RegistryKey WindowStateConfig = WRegFunctions.ReturnRegistryKey("WindowState"))
+            using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
                 bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("MainFrame_IsIconic", 0));
                 bool IsMaximized = Convert.ToBoolean(WindowStateConfig.GetValue("MainFrame_IsMaximized", 0));
@@ -152,7 +151,7 @@ namespace EuroSound_Application
             {
                 if (GlobalPreferences.LoadLastLoadedESF)
                 {
-                    LastActiveDocument = WRegFunctions.LoadActiveDocument();
+                    LastActiveDocument = WindowsRegistryFunctions.LoadActiveDocument();
                     OpenFormsWithFileToLoad(LastActiveDocument);
                 }
             }
@@ -208,11 +207,11 @@ namespace EuroSound_Application
             //Save Active Document
             if (MdiChildren.Length == 0)
             {
-                WRegFunctions.SaveActiveDocument("");
+                WindowsRegistryFunctions.SaveActiveDocument("");
             }
 
             //Save Window position
-            WRegFunctions.SaveWindowState("MainFrame", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
+            WindowsRegistryFunctions.SaveWindowState("MainFrame", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
 
             //Save Recent Files
             RecentFilesMenu.SaveToRegistry();

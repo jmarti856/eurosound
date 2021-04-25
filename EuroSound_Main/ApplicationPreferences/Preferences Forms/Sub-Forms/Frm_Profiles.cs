@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.ApplicationPreferencesForms
@@ -21,6 +22,9 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         //*===============================================================================================
         private void Frm_TreeViewPrefs_Load(object sender, EventArgs e)
         {
+            RichTextbox_ProfilesInfo.Text += "Profile Name: <none>\n";
+            RichTextbox_ProfilesInfo.Text += "ESP Used: <none>";
+
             foreach (KeyValuePair<string, string> ProjectName in GenericFunctions.AvailableProfiles)
             {
                 ListView_Profiles.Items.Add(new ListViewItem { Text = ProjectName.Key, Tag = ProjectName.Value });
@@ -53,8 +57,11 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         {
             if (ListView_Profiles.SelectedItems.Count > 0)
             {
-                ((Frm_MainPreferences)OpenForm).SelectedProfileTEMPORAL = ListView_Profiles.SelectedItems[0].Tag.ToString();
-                ((Frm_MainPreferences)OpenForm).SelectedProfileNameTEMPORAL = ListView_Profiles.SelectedItems[0].Text;
+                if (File.Exists(ListView_Profiles.SelectedItems[0].Tag.ToString()))
+                {
+                    ((Frm_MainPreferences)OpenForm).SelectedProfileTEMPORAL = ListView_Profiles.SelectedItems[0].Tag.ToString();
+                    ((Frm_MainPreferences)OpenForm).SelectedProfileNameTEMPORAL = ListView_Profiles.SelectedItems[0].Text;
+                }
             }
         }
 

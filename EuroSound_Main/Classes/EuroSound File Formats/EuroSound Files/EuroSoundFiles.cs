@@ -4,7 +4,6 @@ using EuroSound_Application.EuroSoundSoundBanksFilesFunctions;
 using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
-using EuroSound_Application.TreeViewSorter;
 using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
@@ -28,7 +27,13 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
 
             //Disable temporaly the treeview
-            TreeViewControl.Enabled = false;
+            TreeViewControl.Invoke((MethodInvoker)delegate
+            {
+                TreeViewControl.Enabled = false;
+            });
+
+            //Disable temporaly buttons
+
 
             using (BufferedStream bs = new BufferedStream(File.Open(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read)))
             {
@@ -50,11 +55,11 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 bs.Close();
             }
 
-            //Sort nodes
-            TreeViewControl.TreeViewNodeSorter = new NodeSorter();
-
             //Enable again the treeview
-            TreeViewControl.Enabled = true;
+            TreeViewControl.Invoke((MethodInvoker)delegate
+            {
+                TreeViewControl.Enabled = true;
+            });
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
@@ -95,7 +100,10 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_ReadingESFFile"));
 
             //Disable temporaly the treeview
-            TreeViewControl.Enabled = false;
+            TreeViewControl.Invoke((MethodInvoker)delegate
+            {
+                TreeViewControl.Enabled = false;
+            });
 
             //Init reader
             using (BufferedStream bs = new BufferedStream(File.Open(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read)))
@@ -118,7 +126,10 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             }
 
             //Enable again the treeview
-            TreeViewControl.Enabled = true;
+            TreeViewControl.Invoke((MethodInvoker)delegate
+            {
+                TreeViewControl.Enabled = true;
+            });
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_Status_Ready"));
@@ -157,7 +168,10 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_ReadingESFFile"));
 
             //Disable temporaly the treeview
-            TreeViewControl.Enabled = false;
+            TreeViewControl.Invoke((MethodInvoker)delegate
+            {
+                TreeViewControl.Enabled = false;
+            });
 
             //Init reader
             using (BufferedStream bs = new BufferedStream(File.Open(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read)))
@@ -180,7 +194,10 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             }
 
             //Enable again the treeview
-            TreeViewControl.Enabled = true;
+            TreeViewControl.Invoke((MethodInvoker)delegate
+            {
+                TreeViewControl.Enabled = true;
+            });
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_Status_Ready"));

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EuroSound_Application.ApplicationPreferences;
+using System;
 using System.Collections.Generic;
 
 namespace EuroSound_Application.EuroSound_Profiles
@@ -41,12 +42,9 @@ namespace EuroSound_Application.EuroSound_Profiles
             return FileValid;
         }
 
-        internal string[] ReadSection(string SectionName, int NumberOfItems, IEnumerable<string> lines)
+        internal void ReadSoundBankSettings(IEnumerable<string> lines)
         {
-            string[] SectionData = new string[NumberOfItems];
-            string[] LineData;
             bool ReadingSection = false;
-            int counter = 0;
 
             foreach (string line in lines)
             {
@@ -56,31 +54,10 @@ namespace EuroSound_Application.EuroSound_Profiles
                 }
                 else
                 {
-                    if (line.Trim().Equals("[" + SectionName + "]", StringComparison.OrdinalIgnoreCase))
+                    if (line.Trim().Equals("[SoundbanksSettings]", StringComparison.OrdinalIgnoreCase))
                     {
                         ReadingSection = true;
                         continue;
-                    }
-
-                    if (ReadingSection)
-                    {
-                        if (counter < SectionData.Length)
-                        {
-                            if (SectionName.Equals("SoundFlags", StringComparison.OrdinalIgnoreCase) || SectionName.Equals("AudioFlags", StringComparison.OrdinalIgnoreCase))
-                            {
-                                SectionData[counter] = line.Trim();
-                            }
-                            else
-                            {
-                                LineData = line.Trim().Split('=');
-                                if (LineData.Length == 2)
-                                {
-                                    SectionData[counter] = LineData[1].Trim();
-                                }
-                            }
-
-                            counter++;
-                        }
                     }
 
                     if (line.Trim().Equals("[End]", StringComparison.OrdinalIgnoreCase))
@@ -91,10 +68,354 @@ namespace EuroSound_Application.EuroSound_Profiles
                             break;
                         }
                     }
+
+                    if (ReadingSection)
+                    {
+                        bool ParseRes;
+                        int NumericValue;
+
+                        string[] LineData = line.Trim().Split('=');
+                        switch (LineData[0])
+                        {
+                            case "Frequency":
+                                ParseRes = int.TryParse(LineData[1], out NumericValue);
+                                if (ParseRes)
+                                {
+                                    GlobalPreferences.SoundbankFrequency = NumericValue;
+                                }
+                                break;
+                            case "Encoding":
+                                GlobalPreferences.SoundbankEncoding = LineData[1];
+                                break;
+                            case "Bits":
+                                ParseRes = int.TryParse(LineData[1], out NumericValue);
+                                if (ParseRes)
+                                {
+                                    GlobalPreferences.SoundbankBits = NumericValue;
+                                }
+                                break;
+                            case "Channels":
+                                ParseRes = int.TryParse(LineData[1], out NumericValue);
+                                if (ParseRes)
+                                {
+                                    GlobalPreferences.SoundbankChannels = NumericValue;
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        internal void ReadStreamFileSettings(IEnumerable<string> lines)
+        {
+            bool ReadingSection = false;
+
+            foreach (string line in lines)
+            {
+                if (string.IsNullOrEmpty(line))
+                {
+                    continue;
+                }
+                else
+                {
+                    if (line.Trim().Equals("[StreamFileSettings]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ReadingSection = true;
+                        continue;
+                    }
+
+                    if (line.Trim().Equals("[End]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (ReadingSection)
+                        {
+                            ReadingSection = false;
+                            break;
+                        }
+                    }
+
+                    if (ReadingSection)
+                    {
+                        bool ParseRes;
+                        int NumericValue;
+
+                        string[] LineData = line.Trim().Split('=');
+                        switch (LineData[0])
+                        {
+                            case "Frequency":
+                                ParseRes = int.TryParse(LineData[1], out NumericValue);
+                                if (ParseRes)
+                                {
+                                    GlobalPreferences.StreambankFrequency = NumericValue;
+                                }
+                                break;
+                            case "Encoding":
+                                GlobalPreferences.StreambankEncoding = LineData[1];
+                                break;
+                            case "Bits":
+                                ParseRes = int.TryParse(LineData[1], out NumericValue);
+                                if (ParseRes)
+                                {
+                                    GlobalPreferences.StreambankBits = NumericValue;
+                                }
+                                break;
+                            case "Channels":
+                                ParseRes = int.TryParse(LineData[1], out NumericValue);
+                                if (ParseRes)
+                                {
+                                    GlobalPreferences.StreambankChannels = NumericValue;
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        internal void ReadMusicFileSettings(IEnumerable<string> lines)
+        {
+            bool ReadingSection = false;
+
+            foreach (string line in lines)
+            {
+                if (string.IsNullOrEmpty(line))
+                {
+                    continue;
+                }
+                else
+                {
+                    if (line.Trim().Equals("[MusicFileSettings]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ReadingSection = true;
+                        continue;
+                    }
+
+                    if (line.Trim().Equals("[End]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (ReadingSection)
+                        {
+                            ReadingSection = false;
+                            break;
+                        }
+                    }
+
+                    if (ReadingSection)
+                    {
+                        bool ParseRes;
+                        int NumericValue;
+
+                        string[] LineData = line.Trim().Split('=');
+                        switch (LineData[0])
+                        {
+                            case "Frequency":
+                                ParseRes = int.TryParse(LineData[1], out NumericValue);
+                                if (ParseRes)
+                                {
+                                    GlobalPreferences.MusicbankFrequency = NumericValue;
+                                }
+                                break;
+                            case "Encoding":
+                                GlobalPreferences.MusicbankEncoding = LineData[1];
+                                break;
+                            case "Bits":
+                                ParseRes = int.TryParse(LineData[1], out NumericValue);
+                                if (ParseRes)
+                                {
+                                    GlobalPreferences.MusicbankBits = NumericValue;
+                                }
+                                break;
+                            case "Channels":
+                                ParseRes = int.TryParse(LineData[1], out NumericValue);
+                                if (ParseRes)
+                                {
+                                    GlobalPreferences.MusicbankChannels = NumericValue;
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        internal void ReadHashTableFiles(IEnumerable<string> lines)
+        {
+            bool ReadingSection = false;
+
+            foreach (string line in lines)
+            {
+                if (string.IsNullOrEmpty(line))
+                {
+                    continue;
+                }
+                else
+                {
+                    if (line.Trim().Equals("[HashTableFiles]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ReadingSection = true;
+                        continue;
+                    }
+
+                    if (line.Trim().Equals("[End]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (ReadingSection)
+                        {
+                            ReadingSection = false;
+                            break;
+                        }
+                    }
+
+                    if (ReadingSection)
+                    {
+                        string[] LineData = line.Trim().Split('=');
+                        switch (LineData[0])
+                        {
+                            case "HT_Sound":
+                                GlobalPreferences.HT_SoundsPath = LineData[1];
+                                break;
+                            case "HT_SoundData":
+                                GlobalPreferences.HT_SoundsDataPath = LineData[1];
+                                break;
+                            case "HT_MusicEvent":
+                                GlobalPreferences.HT_MusicPath = LineData[1];
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        internal void ReadExternalFiles(IEnumerable<string> lines)
+        {
+            bool ReadingSection = false;
+
+            foreach (string line in lines)
+            {
+                if (string.IsNullOrEmpty(line))
+                {
+                    continue;
+                }
+                else
+                {
+                    if (line.Trim().Equals("[ExternalFiles]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ReadingSection = true;
+                        continue;
+                    }
+
+                    if (line.Trim().Equals("[End]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (ReadingSection)
+                        {
+                            ReadingSection = false;
+                            break;
+                        }
+                    }
+
+                    if (ReadingSection)
+                    {
+                        string[] LineData = line.Trim().Split('=');
+                        switch (LineData[0])
+                        {
+                            case "StreamFile":
+                                GlobalPreferences.StreamFilePath = LineData[1];
+                                break;
+                            case "MkFileList":
+                                GlobalPreferences.MkFileListPath = LineData[1];
+                                break;
+                            case "MkFileList2":
+                                GlobalPreferences.MkFileList2Path = LineData[1];
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        internal void ReadOutputFolders(IEnumerable<string> lines)
+        {
+            bool ReadingSection = false;
+
+            foreach (string line in lines)
+            {
+                if (string.IsNullOrEmpty(line))
+                {
+                    continue;
+                }
+                else
+                {
+                    if (line.Trim().Equals("[OutputFolders]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ReadingSection = true;
+                        continue;
+                    }
+
+                    if (line.Trim().Equals("[End]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (ReadingSection)
+                        {
+                            ReadingSection = false;
+                            break;
+                        }
+                    }
+
+                    if (ReadingSection)
+                    {
+                        string[] LineData = line.Trim().Split('=');
+                        switch (LineData[0])
+                        {
+                            case "MusicOutputDirectory":
+                                GlobalPreferences.MusicOutputPath = LineData[1];
+                                break;
+                            case "SoundsOutputDirectory":
+                                GlobalPreferences.SFXOutputPath = LineData[1];
+                                break;
+                            case "StreamSoundsOutputDirectory":
+                                GlobalPreferences.StreamFileOutputPath = LineData[1];
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        internal string[] ReadFlagsBlock(string BlockName, IEnumerable<string> lines)
+        {
+            bool ReadingSection = false;
+            string[] FlagLabels = new string[16];
+            int counter = 0;
+
+            foreach (string line in lines)
+            {
+                if (string.IsNullOrEmpty(line))
+                {
+                    continue;
+                }
+                else
+                {
+                    if (line.Trim().Equals("[" + BlockName + "]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ReadingSection = true;
+                        continue;
+                    }
+
+                    if (line.Trim().Equals("[End]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (ReadingSection)
+                        {
+                            ReadingSection = false;
+                            break;
+                        }
+                    }
+
+                    if (ReadingSection)
+                    {
+                        FlagLabels[counter] = line.Trim();
+                        counter++;
+                    }
                 }
             }
 
-            return SectionData;
+            return FlagLabels;
         }
     }
 }

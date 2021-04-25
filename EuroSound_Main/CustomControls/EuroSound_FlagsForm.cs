@@ -12,7 +12,6 @@ namespace EuroSound_Application.CustomControls.FlagsForm
         private TextBox[] AllTextboxes;
         private int Flags, FlagsToEnable;
         private string KeyName;
-        private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
         public int CheckedFlags { get; set; }
 
         //--Properties--
@@ -72,7 +71,7 @@ namespace EuroSound_Application.CustomControls.FlagsForm
 
         private void EuroSound_FlagsForm_Load(object sender, EventArgs e)
         {
-            using (RegistryKey StringFlags = WRegFunctions.ReturnRegistryKey(KeyName))
+            using (RegistryKey StringFlags = WindowsRegistryFunctions.ReturnRegistryKey(KeyName))
             {
                 for (int i = 0; i < AllCheckboxes.Length; i++)
                 {

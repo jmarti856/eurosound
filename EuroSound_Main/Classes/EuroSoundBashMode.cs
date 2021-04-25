@@ -38,11 +38,10 @@ namespace EuroSound_Application.BashMode
                             //*===============================================================================================
                             //* LOAD HASTABLES AND NEEDED PREFERENCES
                             //*===============================================================================================
-                            WindowsRegistryFunctions WRegistryFunctions = new WindowsRegistryFunctions();
-                            GlobalPreferences.SFXOutputPath = WRegistryFunctions.LoadOutputFolders("SoundsOutputDirectory", "Path");
+                            GlobalPreferences.SFXOutputPath = WindowsRegistryFunctions.LoadOutputFolders("SoundsOutputDirectory", "Path");
 
-                            GlobalPreferences.HT_SoundsPath = WRegistryFunctions.LoadHashtablesFiles("HT_Sound", "Path");
-                            GlobalPreferences.HT_SoundsMD5 = WRegistryFunctions.LoadHashtablesFiles("HT_Sound", "MD5");
+                            GlobalPreferences.HT_SoundsPath = WindowsRegistryFunctions.LoadHashtablesFiles("HT_Sound", "Path");
+                            GlobalPreferences.HT_SoundsMD5 = WindowsRegistryFunctions.LoadHashtablesFiles("HT_Sound", "MD5");
                             Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
 
                             //Type of stored data

@@ -20,7 +20,6 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
-        private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
         private Thread DataToCombobox;
         private string HashTableOutputPath;
 
@@ -39,7 +38,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             Icon = Icon.Clone() as Icon;
 
             //Load Preferences
-            using (RegistryKey WindowStateConfig = WRegFunctions.ReturnRegistryKey("WindowState"))
+            using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
                 bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("DBDView_IsIconic", 0));
                 bool IsMaximized = Convert.ToBoolean(WindowStateConfig.GetValue("DBDView_IsMaximized", 0));
@@ -82,7 +81,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
                 DataToCombobox.Abort();
             }
 
-            WRegFunctions.SaveWindowState("DBDView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
+            WindowsRegistryFunctions.SaveWindowState("DBDView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
         }
 
         //*===============================================================================================

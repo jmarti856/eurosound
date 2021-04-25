@@ -2,6 +2,7 @@
 using EuroSound_Application.ApplicationPreferences.EuroSound_Profiles;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.ApplicationPreferencesForms
@@ -106,7 +107,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
-            WindowsRegistryFunctions WRegistryFunctions = new WindowsRegistryFunctions();
             RemoveAllFormsInsidePanel(Panel_SecondaryForms);
 
             //-----------------[Frm_TreeViewPrefs]-----------------
@@ -119,7 +119,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 GlobalPreferences.TV_ShowRootLines = ShowRootLinesTEMPORAL;
 
                 //SaveConfig in Registry
-                WRegistryFunctions.SaveTreeViewPreferences();
+                WindowsRegistryFunctions.SaveTreeViewPreferences();
 
                 //Update Boolean
                 FrmTreeViewPrefsOpened = false;
@@ -134,8 +134,8 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 GlobalPreferences.TV_IgnoreStlyesFromESF = TV_IgnoreStlyesFromESFTEMPORAL;
 
                 //SaveConfig in Registry
-                WRegistryFunctions.SaveWavesControlColors();
-                WRegistryFunctions.SaveAutomaticalyLoadLastESF();
+                WindowsRegistryFunctions.SaveWavesControlColors();
+                WindowsRegistryFunctions.SaveAutomaticalyLoadLastESF();
 
                 //Update Boolean
                 FrmGeneralPreferencesOpened = false;
@@ -147,7 +147,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 GlobalPreferences.SoXPath = SoXPathTEMPORAL;
 
                 //SaveConfig in Registry
-                WRegistryFunctions.SaveSoxFilePath();
+                WindowsRegistryFunctions.SaveSoxFilePath();
 
                 //Update Boolean
                 FrmSoXPreferencesOpened = false;
@@ -159,7 +159,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 GlobalPreferences.UseSystemTray = UseSystemTrayTEMPORAL;
 
                 //SaveConfig in Registry
-                WRegistryFunctions.SaveSystemConfig();
+                WindowsRegistryFunctions.SaveSystemConfig();
 
                 //Update Boolean
                 FrmSystemPreferencesOpened = false;
@@ -171,7 +171,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 GlobalPreferences.DefaultAudioDevice = DefaultAudioDeviceTEMPORAL;
 
                 //SaveConfig in Registry
-                WRegistryFunctions.SaveDefaultAudioDevice();
+                WindowsRegistryFunctions.SaveDefaultAudioDevice();
 
                 //Update Boolean
                 FrmAudioDevicesOpened = false;
@@ -182,27 +182,34 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             {
                 ProfilesFunctions PFunctions = new ProfilesFunctions();
 
-                //Apply the selected profile
-                if (!GlobalPreferences.SelectedProfileName.Equals(SelectedProfileNameTEMPORAL))
+                //Reload profile
+                if (GlobalPreferences.SelectedProfileName.Equals(SelectedProfileNameTEMPORAL))
                 {
-                    PFunctions.ApplyProfile(GlobalPreferences.SelectedProfile, GlobalPreferences.SelectedProfileName, true);
-                }
-                //Ask user if wants to reload the profile
-                else
-                {
-                    DialogResult Answer = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ReloadProfileAgain"), "EuroSound", MessageBoxButtons.YesNo);
-                    if (Answer == DialogResult.Yes)
+                    if (File.Exists(GlobalPreferences.SelectedProfile))
                     {
-                        PFunctions.ApplyProfile(SelectedProfileTEMPORAL, SelectedProfileNameTEMPORAL, true);
+                        PFunctions.ApplyProfile(GlobalPreferences.SelectedProfile, GlobalPreferences.SelectedProfileName, true);
                     }
                 }
+                //Apply selected profile
+                else
+                {
+                    DialogResult Answer = MessageBox.Show(string.Join("", "Profile has changed from [", GlobalPreferences.SelectedProfileName, "] to [", SelectedProfileNameTEMPORAL, "].\n\nDo you want to apply change?"), "EuroSound", MessageBoxButtons.YesNo);
+                    if (Answer == DialogResult.Yes)
+                    {
+                        //Update Variables
+                        GlobalPreferences.SelectedProfile = SelectedProfileTEMPORAL;
+                        GlobalPreferences.SelectedProfileName = SelectedProfileNameTEMPORAL;
 
-                //Update Variables
-                GlobalPreferences.SelectedProfile = SelectedProfileTEMPORAL;
-                GlobalPreferences.SelectedProfileName = SelectedProfileNameTEMPORAL;
+                        //Save config in Registry
+                        WindowsRegistryFunctions.SaveCurrentProfile(GlobalPreferences.SelectedProfile, GlobalPreferences.SelectedProfileName);
 
-                //Save config in Registry
-                WRegistryFunctions.SaveCurrentProfile(GlobalPreferences.SelectedProfile, GlobalPreferences.SelectedProfileName);
+                        //Apply Profile
+                        if (File.Exists(SelectedProfileTEMPORAL))
+                        {
+                            PFunctions.ApplyProfile(SelectedProfileTEMPORAL, SelectedProfileNameTEMPORAL, true);
+                        }
+                    }
+                }
 
                 //Update Boolean
                 FrmProfilesFormOpened = false;

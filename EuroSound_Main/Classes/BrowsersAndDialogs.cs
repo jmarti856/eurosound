@@ -74,15 +74,14 @@ namespace EuroSound_Application.Clases
         internal static string OpenFolderBrowser()
         {
             string SelectedPath = string.Empty;
-            WindowsRegistryFunctions WRegistryFunctions = new WindowsRegistryFunctions();
 
             using (FolderBrowserDialog OpenFolder = new FolderBrowserDialog())
             {
-                OpenFolder.SelectedPath = WRegistryFunctions.LoadFolderBrowserLastPath();
+                OpenFolder.SelectedPath = WindowsRegistryFunctions.LoadFolderBrowserLastPath();
                 if (OpenFolder.ShowDialog() == DialogResult.OK)
                 {
                     SelectedPath = OpenFolder.SelectedPath;
-                    WRegistryFunctions.SaveFolderBrowserLastPath(SelectedPath);
+                    WindowsRegistryFunctions.SaveFolderBrowserLastPath(SelectedPath);
                 }
             }
 
@@ -93,17 +92,16 @@ namespace EuroSound_Application.Clases
         {
             int SelectedColor = -1;
 
-            WindowsRegistryFunctions WRegistryFunctions = new WindowsRegistryFunctions();
             using (ColorDialog ColorDiag = new ColorDialog())
             {
                 ColorDiag.Color = SelectedUserColor;
                 ColorDiag.AllowFullOpen = true;
                 ColorDiag.FullOpen = true;
-                ColorDiag.CustomColors = WRegistryFunctions.LoadCustomColors();
+                ColorDiag.CustomColors = WindowsRegistryFunctions.LoadCustomColors();
                 if (ColorDiag.ShowDialog() == DialogResult.OK)
                 {
                     SelectedColor = ColorDiag.Color.ToArgb();
-                    WRegistryFunctions.SaveCustomColors(ColorDiag.CustomColors);
+                    WindowsRegistryFunctions.SaveCustomColors(ColorDiag.CustomColors);
                 }
             }
 

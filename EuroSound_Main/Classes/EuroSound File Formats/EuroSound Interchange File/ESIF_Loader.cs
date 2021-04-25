@@ -1014,13 +1014,13 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             if (!string.IsNullOrEmpty(ParentFolderName))
             {
                 //Check the folder exists
-                TreeNode[] Folders = TreeViewControl.Nodes.Find(ParentFolderName, true);
-                if (Folders.Length > 0)
+                TreeNode Folders = TreeNodeFunctions.SearchNodeRecursiveByText(TreeViewControl.Nodes, ParentFolderName, TreeViewControl, false);
+                if (Folders != null)
                 {
                     //Check that the folder is in the correct section (Sounds, Audios, StreamSounds)
-                    if (TreeNodeFunctions.FindRootNode(Folders[0]).Name.Equals(RootFolderName))
+                    if (TreeNodeFunctions.FindRootNode(Folders).Name.Equals(RootFolderName))
                     {
-                        TreeNodeFunctions.TreeNodeAddNewNode(ParentFolderName, NewSoundKey.ToString(), GenericFunctions.GetNextAvailableName(NodeName, TreeViewControl), 2, 2, TypeOfObject, false, false, false, DefaultNodeColor, TreeViewControl);
+                        TreeNodeFunctions.TreeNodeAddNewNode(Folders.Name, NewSoundKey.ToString(), GenericFunctions.GetNextAvailableName(NodeName, TreeViewControl), 2, 2, TypeOfObject, false, false, false, DefaultNodeColor, TreeViewControl);
                         NodeAddedInFolder = true;
                     }
                 }

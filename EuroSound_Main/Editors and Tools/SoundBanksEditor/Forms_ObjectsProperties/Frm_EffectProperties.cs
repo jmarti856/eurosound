@@ -1,9 +1,12 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationRegistryFunctions;
+using EuroSound_Application.Clases;
 using EuroSound_Application.CustomControls.FlagsForm;
 using EuroSound_Application.HashCodesFunctions;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -238,19 +241,32 @@ namespace EuroSound_Application.SoundBanksEditor
                     }
                     else
                     {
-                        using (Frm_NewStreamSound AddStreamSound = new Frm_NewStreamSound(SelectedSample))
+                        //Open form only if file exists
+                        if (File.Exists(GlobalPreferences.StreamFilePath))
                         {
-                            AddStreamSound.Text = GenericFunctions.TruncateLongString(SampleName, 25) + " - Properties";
-                            AddStreamSound.Tag = Tag;
-                            AddStreamSound.Owner = this;
-                            AddStreamSound.ShowInTaskbar = false;
-                            AddStreamSound.ShowDialog();
-
-                            if (AddStreamSound.DialogResult == DialogResult.OK)
+                            using (Frm_NewStreamSound AddStreamSound = new Frm_NewStreamSound(SelectedSample))
                             {
-                                SelectedSample.FileRef = (short)AddStreamSound.SelectedSound;
+                                AddStreamSound.Text = GenericFunctions.TruncateLongString(SampleName, 25) + " - Properties";
+                                AddStreamSound.Tag = Tag;
+                                AddStreamSound.Owner = this;
+                                AddStreamSound.ShowInTaskbar = false;
+                                AddStreamSound.ShowDialog();
+
+                                if (AddStreamSound.DialogResult == DialogResult.OK)
+                                {
+                                    SelectedSample.FileRef = (short)AddStreamSound.SelectedSound;
+                                }
+                            };
+                        }
+                        else
+                        {
+                            DialogResult dialogResult = MessageBox.Show("The stream sounds file has not found, the file route is: \"" + GlobalPreferences.StreamFilePath + "\", do you want to specify another path ?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                            if (dialogResult == DialogResult.Yes)
+                            {
+                                GlobalPreferences.StreamFilePath = BrowsersAndDialogs.FileBrowserDialog("EuroSound Files (*.esf)|*.esf", 0, true);
+                                WindowsRegistryFunctions.SaveExternalFiles("StreamFile", "Path", GlobalPreferences.StreamFilePath);
                             }
-                        };
+                        }
                     }
                 }
             }

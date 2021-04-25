@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -33,12 +32,10 @@ namespace EuroSound_Application.SoundBanksEditor
         internal Dictionary<uint, EXSound> SoundsList = new Dictionary<uint, EXSound>();
         internal ProjectFile ProjectInfo = new ProjectFile();
         internal string CurrentFilePath = string.Empty;
-        private readonly Regex sWhitespace = new Regex(@"\s+");
         private string ProjectName;
         private bool FormMustBeClosed = false;
-        private WindowsRegistryFunctions WRegFunctions = new WindowsRegistryFunctions();
         private EuroSoundFiles EuroSoundFilesFunctions = new EuroSoundFiles();
-        private Thread UpdateList, UpdateWavList, UpdateStreamDataList, LoadYamlFile;
+        private Thread UpdateList, UpdateWavList, UpdateStreamDataList, LoadYamlFile, LoadSoundBankFile;
         private SoundBanksYMLReader LibYamlReader = new SoundBanksYMLReader();
         private AudioFunctions AudioFunctionsLibrary = new AudioFunctions();
         private MostRecentFilesMenu RecentFilesMenu;
@@ -161,13 +158,11 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         private void Frm_Soundbanks_Main_Load(object sender, EventArgs e)
         {
-            string ProfileName;
-
             // Fixes bug where loading form maximised in MDI window shows incorrect icon. 
             Icon = Icon.Clone() as Icon;
 
             //Load Preferences
-            using (RegistryKey WindowStateConfig = WRegFunctions.ReturnRegistryKey("WindowState"))
+            using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
                 bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("SBView_IsIconic", 0));
                 bool IsMaximized = Convert.ToBoolean(WindowStateConfig.GetValue("SBView_IsMaximized", 0));
@@ -206,22 +201,6 @@ namespace EuroSound_Application.SoundBanksEditor
                 LoadHashcodes.Join();
                 LoadHashcodeData.Start();
             }
-
-            //Load ESF file if nedded
-            if (string.IsNullOrEmpty(CurrentFilePath))
-            {
-                ProjectInfo.FileName = ProjectName;
-            }
-            else
-            {
-                ProfileName = EuroSoundFilesFunctions.LoadSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, CurrentFilePath, ProjectInfo);
-
-                //Check that the profile name matches with the current one
-                if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
-                {
-                    FormMustBeClosed = true;
-                }
-            }
         }
 
         private void Frm_Soundbanks_Main_Shown(object sender, EventArgs e)
@@ -239,17 +218,143 @@ namespace EuroSound_Application.SoundBanksEditor
                     MdiParent.Text = "EuroSound - " + Text;
                 }
 
-                //Set Program status
-                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                //Load ESF file if nedded
+                if (string.IsNullOrEmpty(CurrentFilePath))
+                {
+                    ProjectInfo.FileName = ProjectName;
 
-                //Update File name label
-                UpdateStatusBarLabels();
+                    //Update File name label
+                    UpdateStatusBarLabels();
+
+                    //Set Program status
+                    GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                }
+                else
+                {
+                    LoadSoundBankFile = new Thread(() =>
+                    {
+                        //Disable Button
+                        Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
+                        {
+                            Button_UpdateList_WavData.Enabled = false;
+                        });
+
+                        //Disable Button
+                        Button_Stop_WavUpdate.Invoke((MethodInvoker)delegate
+                        {
+                            Button_Stop_WavUpdate.Enabled = false;
+                        });
+
+                        //Disable Button
+                        Button_UpdateList_Hashcodes.Invoke((MethodInvoker)delegate
+                        {
+                            Button_UpdateList_Hashcodes.Enabled = false;
+                        });
+
+                        //Disable Button
+                        Button_StopHashcodeUpdate.Invoke((MethodInvoker)delegate
+                        {
+                            Button_StopHashcodeUpdate.Enabled = false;
+                        });
+
+                        //Disable Button
+                        Button_UpdateList_StreamData.Invoke((MethodInvoker)delegate
+                        {
+                            Button_UpdateList_StreamData.Enabled = false;
+                        });
+
+                        //Disable Button
+                        Button_StopStreamData.Invoke((MethodInvoker)delegate
+                        {
+                            Button_StopStreamData.Enabled = false;
+                        });
+
+                        //Disable Button
+                        Button_GenerateList.Invoke((MethodInvoker)delegate
+                        {
+                            Button_GenerateList.Enabled = false;
+                        });
+
+                        //Disable Button
+                        Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
+                        {
+                            Button_ExportInterchangeFile.Enabled = false;
+                        });
+
+                        string ProfileName = EuroSoundFilesFunctions.LoadSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, CurrentFilePath, ProjectInfo);
+
+                        //Update File name label
+                        UpdateStatusBarLabels();
+
+                        //Check that the profile name matches with the current one
+                        if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
+                        {
+                            FormMustBeClosed = true;
+                        }
+                        else
+                        {
+                            //Enable Button
+                            Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
+                            {
+                                Button_UpdateList_WavData.Enabled = true;
+                            });
+
+                            //Enable Button
+                            Button_Stop_WavUpdate.Invoke((MethodInvoker)delegate
+                            {
+                                Button_Stop_WavUpdate.Enabled = true;
+                            });
+
+                            //Enable Button
+                            Button_UpdateList_Hashcodes.Invoke((MethodInvoker)delegate
+                            {
+                                Button_UpdateList_Hashcodes.Enabled = true;
+                            });
+
+                            //Enable Button
+                            Button_StopHashcodeUpdate.Invoke((MethodInvoker)delegate
+                            {
+                                Button_StopHashcodeUpdate.Enabled = true;
+                            });
+
+                            //Enable Button
+                            Button_UpdateList_StreamData.Invoke((MethodInvoker)delegate
+                            {
+                                Button_UpdateList_StreamData.Enabled = true;
+                            });
+
+                            //Enable Button
+                            Button_StopStreamData.Invoke((MethodInvoker)delegate
+                            {
+                                Button_StopStreamData.Enabled = true;
+                            });
+
+                            //Enable Button
+                            Button_GenerateList.Invoke((MethodInvoker)delegate
+                            {
+                                Button_GenerateList.Enabled = true;
+                            });
+
+                            //Enable Button
+                            Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
+                            {
+                                Button_ExportInterchangeFile.Enabled = true;
+                            });
+                        }
+
+                        //Set Program status
+                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                    })
+                    {
+                        IsBackground = true
+                    };
+                    LoadSoundBankFile.Start();
+                }
 
                 //Apply User Preferences
-                FontConverter cvt = new FontConverter();
                 TreeView_File.Indent = GlobalPreferences.TV_Indent;
                 TreeView_File.ItemHeight = GlobalPreferences.TV_ItemHeight;
-                TreeView_File.Font = cvt.ConvertFromString(GlobalPreferences.TV_SelectedFont) as Font;
+                TreeView_File.Font = new FontConverter().ConvertFromString(GlobalPreferences.TV_SelectedFont) as Font;
                 TreeView_File.ShowLines = GlobalPreferences.TV_ShowLines;
                 TreeView_File.ShowRootLines = GlobalPreferences.TV_ShowRootLines;
             }
@@ -308,6 +413,11 @@ namespace EuroSound_Application.SoundBanksEditor
                 LoadYamlFile.Abort();
             }
 
+            if (LoadSoundBankFile != null)
+            {
+                LoadSoundBankFile.Abort();
+            }
+
             //Clear stack lists
             UndoListSounds.Clear();
             UndoListNodes.Clear();
@@ -354,7 +464,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 ClearStatusBarLabels();
             }
 
-            WRegFunctions.SaveWindowState("SBView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
+            WindowsRegistryFunctions.SaveWindowState("SBView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));

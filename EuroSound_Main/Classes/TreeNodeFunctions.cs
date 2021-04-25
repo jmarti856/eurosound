@@ -1,4 +1,5 @@
 ﻿using EuroSound_Application.SoundBanksEditor;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -124,29 +125,57 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
                 };
 
                 //--Add element to the tree node--
-                if (!TreeViewToEdit.IsDisposed)
+                if (TreeViewToEdit.InvokeRequired)
                 {
-                    TreeViewToEdit.Invoke((MethodInvoker)delegate
+                    try
                     {
-                        ParentNode[0].Nodes.Add(NewNode);
-
-                        //--Apply Node State--
-                        if (ParentIsExpanded)
+                        TreeViewToEdit.Invoke((MethodInvoker)delegate
                         {
-                            NewNode.Parent.Expand();
-                        }
+                            ParentNode[0].Nodes.Add(NewNode);
 
-                        if (NodeIsExpanded)
-                        {
-                            NewNode.Expand();
-                        }
+                            //--Apply Node State--
+                            if (ParentIsExpanded)
+                            {
+                                NewNode.Parent.Expand();
+                            }
 
-                        if (NodeIsSelected)
-                        {
-                            TreeViewToEdit.SelectedNode = NewNode;
-                            NewNode.EnsureVisible();
-                        }
-                    });
+                            if (NodeIsExpanded)
+                            {
+                                NewNode.Expand();
+                            }
+
+                            if (NodeIsSelected)
+                            {
+                                TreeViewToEdit.SelectedNode = NewNode;
+                                NewNode.EnsureVisible();
+                            }
+                        });
+                    }
+                    catch (ObjectDisposedException)
+                    {
+
+                    }
+                }
+                else
+                {
+                    ParentNode[0].Nodes.Add(NewNode);
+
+                    //--Apply Node State--
+                    if (ParentIsExpanded)
+                    {
+                        NewNode.Parent.Expand();
+                    }
+
+                    if (NodeIsExpanded)
+                    {
+                        NewNode.Expand();
+                    }
+
+                    if (NodeIsSelected)
+                    {
+                        TreeViewToEdit.SelectedNode = NewNode;
+                        NewNode.EnsureVisible();
+                    }
                 }
             }
         }

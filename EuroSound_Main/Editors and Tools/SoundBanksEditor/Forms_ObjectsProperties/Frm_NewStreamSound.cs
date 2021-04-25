@@ -1,4 +1,6 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationRegistryFunctions;
+using EuroSound_Application.Clases;
 using EuroSound_Application.EuroSoundFilesFunctions;
 using System;
 using System.IO;
@@ -127,7 +129,12 @@ namespace EuroSound_Application.SoundBanksEditor
             }
             else
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("StreamFileNotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DialogResult dialogResult = MessageBox.Show("The stream sounds file has not found, the file route is: \"" + GlobalPreferences.StreamFilePath + "\", do you want to specify another path ?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    GlobalPreferences.StreamFilePath = BrowsersAndDialogs.FileBrowserDialog("EuroSound Files (*.esf)|*.esf", 0, true);
+                    WindowsRegistryFunctions.SaveExternalFiles("StreamFile", "Path", GlobalPreferences.StreamFilePath);
+                }
             }
         }
     }

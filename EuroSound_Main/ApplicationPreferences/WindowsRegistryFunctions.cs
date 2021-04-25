@@ -4,25 +4,25 @@ using System;
 
 namespace EuroSound_Application.ApplicationRegistryFunctions
 {
-    internal class WindowsRegistryFunctions
+    internal static class WindowsRegistryFunctions
     {
         //*===============================================================================================
         //* GLOBAL VARIABLES
         //*===============================================================================================
-        private RegistryKey EurocomKey;
-        private RegistryKey EuroSoundKey;
-        private RegistryKey SoftwareKey = Registry.CurrentUser.OpenSubKey("Software", true);
+        private static RegistryKey EurocomKey;
+        private static RegistryKey EuroSoundKey;
+        private static RegistryKey SoftwareKey = Registry.CurrentUser.OpenSubKey("Software", true);
 
         //*===============================================================================================
         //* EUROCOM AND EUROSOUND KEYS
         //*===============================================================================================
-        private void OpenEuroSoundKeys()
+        private static void OpenEuroSoundKeys()
         {
             CreateEurocomKeyIfNotExists();
             CreateEuroSoundKeyIfNotExists();
         }
 
-        internal void CreateEuroSoundKeyIfNotExists()
+        internal static void CreateEuroSoundKeyIfNotExists()
         {
             if (EurocomKey.OpenSubKey("EuroSound", true) == null)
             {
@@ -31,7 +31,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             EuroSoundKey = EurocomKey.OpenSubKey("EuroSound", true);
         }
 
-        internal void CreateEurocomKeyIfNotExists()
+        internal static void CreateEurocomKeyIfNotExists()
         {
             if (SoftwareKey.OpenSubKey("Eurocomm", true) == null)
             {
@@ -40,7 +40,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             EurocomKey = SoftwareKey.OpenSubKey("Eurocomm", true);
         }
 
-        internal void CreateEuroSoundSubkeyIfNotExists(string SubKeyName, bool Writable)
+        internal static void CreateEuroSoundSubkeyIfNotExists(string SubKeyName, bool Writable)
         {
             if (EuroSoundKey.OpenSubKey(SubKeyName, Writable) == null)
             {
@@ -51,7 +51,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* GENERAL FUNCTIONS
         //*===============================================================================================
-        internal RegistryKey ReturnRegistryKey(string Name)
+        internal static RegistryKey ReturnRegistryKey(string Name)
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists(Name, true);
@@ -62,7 +62,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* Active Document
         //*===============================================================================================
-        internal void SaveActiveDocument(string CurrentDocument)
+        internal static void SaveActiveDocument(string CurrentDocument)
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("ActiveDocument", true);
@@ -73,7 +73,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
         }
 
-        internal string LoadActiveDocument()
+        internal static string LoadActiveDocument()
         {
             string ActiveDocument = string.Empty;
 
@@ -91,7 +91,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* Current Profile
         //*===============================================================================================
-        internal void SaveCurrentProfile(string CurrentProfile, string CurrentProfileName)
+        internal static void SaveCurrentProfile(string CurrentProfile, string CurrentProfileName)
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("Profile", true);
@@ -103,7 +103,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
         }
 
-        internal string LoadCurrentProfie(string KeyName)
+        internal static string LoadCurrentProfie(string KeyName)
         {
             string CurrentProfile = string.Empty;
 
@@ -121,7 +121,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* Sound Settings
         //*===============================================================================================
-        internal void SaveSoundSettings(string Prefix, int Frequency, string Encoding, int Bits, int Channels)
+        internal static void SaveSoundSettings(string Prefix, int Frequency, string Encoding, int Bits, int Channels)
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("SoundSettings", true);
@@ -136,7 +136,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
         }
 
-        internal string LoadSoundSettings(string Prefix, string KeyValueName)
+        internal static string LoadSoundSettings(string Prefix, string KeyValueName)
         {
             string KValue;
 
@@ -155,7 +155,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* HASHTABLES FILES
         //*===============================================================================================
-        internal void SaveHashtablesFiles(string Prefix, string FilePath, string FileMD5)
+        internal static void SaveHashtablesFiles(string Prefix, string FilePath, string FileMD5)
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("HashTablesFiles", true);
@@ -168,7 +168,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
         }
 
-        internal string LoadHashtablesFiles(string Prefix, string KeyValueName)
+        internal static string LoadHashtablesFiles(string Prefix, string KeyValueName)
         {
             string KValue;
 
@@ -187,7 +187,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* EXTERNAL FILES
         //*===============================================================================================
-        internal void SaveExternalFiles(string Prefix, string KeyValueName, string KeyValue)
+        internal static void SaveExternalFiles(string Prefix, string KeyValueName, string KeyValue)
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("ExternalFiles", true);
@@ -199,7 +199,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
         }
 
-        internal string LoadExternalFiles(string Prefix, string KeyValueName)
+        internal static string LoadExternalFiles(string Prefix, string KeyValueName)
         {
             string FolderPath;
 
@@ -218,7 +218,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* OUTPUT FOLDERS
         //*===============================================================================================
-        internal void SaveOutputFolders(string Prefix, string KeyValueName, string KeyValue)
+        internal static void SaveOutputFolders(string Prefix, string KeyValueName, string KeyValue)
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("OutputFolders", true);
@@ -230,7 +230,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
         }
 
-        internal string LoadOutputFolders(string Prefix, string KeyValueName)
+        internal static string LoadOutputFolders(string Prefix, string KeyValueName)
         {
             string FolderPath;
 
@@ -249,7 +249,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* USER SETTINGS -> System Config
         //*===============================================================================================
-        internal void SaveSystemConfig()
+        internal static void SaveSystemConfig()
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
@@ -261,7 +261,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
         }
 
-        internal int GetSystemConfig(string ValueName)
+        internal static int GetSystemConfig(string ValueName)
         {
             int SelectedValue;
 
@@ -279,7 +279,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* USER SETTINGS -> SOX PATH
         //*===============================================================================================
-        internal void SaveSoxFilePath()
+        internal static void SaveSoxFilePath()
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
@@ -291,7 +291,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
         }
 
-        internal string LoadSoxFilePath()
+        internal static string LoadSoxFilePath()
         {
             string SoxFilePath = string.Empty;
 
@@ -308,7 +308,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* USER SETTINGS -> TREE VIEW
         //*===============================================================================================
-        internal void SaveTreeViewPreferences()
+        internal static void SaveTreeViewPreferences()
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
@@ -324,7 +324,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
         }
 
-        internal string LoadTreeViewPreferences(string ValueName)
+        internal static string LoadTreeViewPreferences(string ValueName)
         {
             string RequestValue = string.Empty;
 
@@ -370,7 +370,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* USER SETTINGS -> WAVES CONTROL
         //*===============================================================================================
-        internal void SaveWavesControlColors()
+        internal static void SaveWavesControlColors()
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
@@ -383,7 +383,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
         }
 
-        internal int LoadWavesControlColors(string ValueName)
+        internal static int LoadWavesControlColors(string ValueName)
         {
             int CurrentColor = 0;
 
@@ -414,7 +414,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* USER SETTINGS -> DEFAULT AUDIO DEVICE OUTPUT
         //*===============================================================================================
-        internal void SaveDefaultAudioDevice()
+        internal static void SaveDefaultAudioDevice()
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
@@ -426,7 +426,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
         }
 
-        internal int LoadDefaultAudioDevice()
+        internal static int LoadDefaultAudioDevice()
         {
             int AudioDeviceNum = 0;
 
@@ -453,7 +453,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* OTHERS -> WINDOW STATE
         //*===============================================================================================
-        internal void SaveWindowState(string WindowName, int LocationX, int LocationY, int Width, int Height, bool IsIconic, bool IsMaximized)
+        internal static void SaveWindowState(string WindowName, int LocationX, int LocationY, int Width, int Height, bool IsIconic, bool IsMaximized)
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("WindowState", true);
@@ -472,7 +472,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* OTHERS -> FOLDER BROWSER LAST PATH
         //*===============================================================================================
-        internal void SaveFolderBrowserLastPath(string SelectedPath)
+        internal static void SaveFolderBrowserLastPath(string SelectedPath)
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("FolderBrowserLastPath", true);
@@ -483,7 +483,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
         }
 
-        internal string LoadFolderBrowserLastPath()
+        internal static string LoadFolderBrowserLastPath()
         {
             string LastPath = string.Empty;
 
@@ -501,7 +501,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* USER SETTINGS -> Load Last ESF And IgnoreStyles
         //*===============================================================================================
-        internal void SaveAutomaticalyLoadLastESF()
+        internal static void SaveAutomaticalyLoadLastESF()
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
@@ -514,7 +514,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
         }
 
-        internal bool LoadAutomaticalyLoadLastESF(string KeyWord)
+        internal static bool LoadAutomaticalyLoadLastESF(string KeyWord)
         {
             bool LoadLastESFChecked = false;
 
@@ -531,7 +531,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* OTHERS -> CUSTOM COLORS
         //*===============================================================================================
-        internal void SaveCustomColors(int[] CustomColors)
+        internal static void SaveCustomColors(int[] CustomColors)
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("CustomColors", true);
@@ -545,7 +545,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             }
         }
 
-        internal int[] LoadCustomColors()
+        internal static int[] LoadCustomColors()
         {
             int[] CustomColors = new int[16];
 
@@ -581,7 +581,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* FLAGS
         //*===============================================================================================
-        internal void SaveFlags(string[] Flags, string FolderName)
+        internal static void SaveFlags(string[] Flags, string FolderName)
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists(FolderName, true);

@@ -187,8 +187,8 @@ namespace EuroSound_Application
                 ProgramSplash.ShowDialog();
                 if (ProgramSplash.DialogResult == DialogResult.OK)
                 {
-                    ProgramSplash.Close();
                     Application.Run(new Frm_EuroSound_Main(Arguments[0]));
+                    ProgramSplash.Close();
                 }
             };
         }

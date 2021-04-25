@@ -190,7 +190,7 @@ namespace EuroSound_Application.SoundBanksEditor
             treeNode2,
             treeNode3});
             this.TreeView_File.SelectedImageIndex = 0;
-            this.TreeView_File.Size = new System.Drawing.Size(456, 567);
+            this.TreeView_File.Size = new System.Drawing.Size(456, 591);
             this.TreeView_File.TabIndex = 1;
             this.TreeView_File.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.TreeView_File_AfterLabelEdit);
             this.TreeView_File.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.TreeView_File_BeforeCollapse);
@@ -696,7 +696,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.GroupBox_Hashcodes.Controls.Add(this.ListView_Hashcodes);
             this.GroupBox_Hashcodes.Location = new System.Drawing.Point(3, 329);
             this.GroupBox_Hashcodes.Name = "GroupBox_Hashcodes";
-            this.GroupBox_Hashcodes.Size = new System.Drawing.Size(442, 197);
+            this.GroupBox_Hashcodes.Size = new System.Drawing.Size(442, 221);
             this.GroupBox_Hashcodes.TabIndex = 3;
             this.GroupBox_Hashcodes.TabStop = false;
             this.GroupBox_Hashcodes.Text = "Hashcodes:";
@@ -704,7 +704,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // Button_StopHashcodeUpdate
             // 
             this.Button_StopHashcodeUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_StopHashcodeUpdate.Location = new System.Drawing.Point(361, 168);
+            this.Button_StopHashcodeUpdate.Location = new System.Drawing.Point(361, 192);
             this.Button_StopHashcodeUpdate.Name = "Button_StopHashcodeUpdate";
             this.Button_StopHashcodeUpdate.Size = new System.Drawing.Size(75, 23);
             this.Button_StopHashcodeUpdate.TabIndex = 5;
@@ -716,7 +716,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // 
             this.Textbox_HashcodesCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Textbox_HashcodesCount.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Textbox_HashcodesCount.Location = new System.Drawing.Point(107, 170);
+            this.Textbox_HashcodesCount.Location = new System.Drawing.Point(107, 194);
             this.Textbox_HashcodesCount.Name = "Textbox_HashcodesCount";
             this.Textbox_HashcodesCount.ReadOnly = true;
             this.Textbox_HashcodesCount.Size = new System.Drawing.Size(100, 20);
@@ -728,7 +728,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Label_HashcodesCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Label_HashcodesCount.AutoSize = true;
             this.Label_HashcodesCount.ForeColor = System.Drawing.Color.ForestGreen;
-            this.Label_HashcodesCount.Location = new System.Drawing.Point(6, 173);
+            this.Label_HashcodesCount.Location = new System.Drawing.Point(6, 197);
             this.Label_HashcodesCount.Name = "Label_HashcodesCount";
             this.Label_HashcodesCount.Size = new System.Drawing.Size(95, 13);
             this.Label_HashcodesCount.TabIndex = 1;
@@ -737,7 +737,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // Button_UpdateList_Hashcodes
             // 
             this.Button_UpdateList_Hashcodes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateList_Hashcodes.Location = new System.Drawing.Point(280, 168);
+            this.Button_UpdateList_Hashcodes.Location = new System.Drawing.Point(280, 192);
             this.Button_UpdateList_Hashcodes.Name = "Button_UpdateList_Hashcodes";
             this.Button_UpdateList_Hashcodes.Size = new System.Drawing.Size(75, 23);
             this.Button_UpdateList_Hashcodes.TabIndex = 3;
@@ -761,7 +761,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.ListView_Hashcodes.HideSelection = false;
             this.ListView_Hashcodes.Location = new System.Drawing.Point(6, 19);
             this.ListView_Hashcodes.Name = "ListView_Hashcodes";
-            this.ListView_Hashcodes.Size = new System.Drawing.Size(430, 143);
+            this.ListView_Hashcodes.Size = new System.Drawing.Size(430, 167);
             this.ListView_Hashcodes.SmallImageList = this.ImageList_ListView;
             this.ListView_Hashcodes.TabIndex = 0;
             this.ListView_Hashcodes.UseCompatibleStateImageBehavior = false;
@@ -1099,7 +1099,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // Button_GenerateList
             // 
             this.Button_GenerateList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_GenerateList.Location = new System.Drawing.Point(156, 532);
+            this.Button_GenerateList.Location = new System.Drawing.Point(156, 556);
             this.Button_GenerateList.Name = "Button_GenerateList";
             this.Button_GenerateList.Size = new System.Drawing.Size(149, 23);
             this.Button_GenerateList.TabIndex = 4;
@@ -1110,7 +1110,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // Button_ExportInterchangeFile
             // 
             this.Button_ExportInterchangeFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_ExportInterchangeFile.Location = new System.Drawing.Point(311, 532);
+            this.Button_ExportInterchangeFile.Location = new System.Drawing.Point(311, 556);
             this.Button_ExportInterchangeFile.Name = "Button_ExportInterchangeFile";
             this.Button_ExportInterchangeFile.Size = new System.Drawing.Size(125, 23);
             this.Button_ExportInterchangeFile.TabIndex = 5;
@@ -1121,7 +1121,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // SplitContainer_SoundbanksForm
             // 
             this.SplitContainer_SoundbanksForm.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SplitContainer_SoundbanksForm.Location = new System.Drawing.Point(0, 24);
+            this.SplitContainer_SoundbanksForm.Location = new System.Drawing.Point(0, 0);
             this.SplitContainer_SoundbanksForm.Name = "SplitContainer_SoundbanksForm";
             // 
             // SplitContainer_SoundbanksForm.Panel1
@@ -1134,7 +1134,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.SplitContainer_SoundbanksForm.Panel2.Controls.Add(this.GroupBox_Hashcodes);
             this.SplitContainer_SoundbanksForm.Panel2.Controls.Add(this.Button_GenerateList);
             this.SplitContainer_SoundbanksForm.Panel2.Controls.Add(this.Button_ExportInterchangeFile);
-            this.SplitContainer_SoundbanksForm.Size = new System.Drawing.Size(908, 567);
+            this.SplitContainer_SoundbanksForm.Size = new System.Drawing.Size(908, 591);
             this.SplitContainer_SoundbanksForm.SplitterDistance = 456;
             this.SplitContainer_SoundbanksForm.TabIndex = 7;
             // 
@@ -1205,9 +1205,7 @@ namespace EuroSound_Application.SoundBanksEditor
         private System.Windows.Forms.ToolStripSeparator ContextMenuSound_Separator1;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuSound_TextColor;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuSample_TextColor;
-        private System.Windows.Forms.Button Button_UpdateList_WavData;
         private System.Windows.Forms.GroupBox GroupBox_Hashcodes;
-        private System.Windows.Forms.Button Button_UpdateList_Hashcodes;
         private System.Windows.Forms.ListView ListView_Hashcodes;
         private System.Windows.Forms.ColumnHeader Col_Hashcode_OK;
         private System.Windows.Forms.ColumnHeader Col_Hashcode;
@@ -1251,7 +1249,6 @@ namespace EuroSound_Application.SoundBanksEditor
         private System.Windows.Forms.ColumnHeader Col_Data;
         private System.Windows.Forms.ColumnHeader Col_Encoding;
         private System.Windows.Forms.ColumnHeader Col_Duration;
-        private System.Windows.Forms.Button Button_UpdateList_StreamData;
         private ListView_ColumnSortingClick ListView_StreamData;
         private System.Windows.Forms.ColumnHeader Col_StreamName;
         private System.Windows.Forms.ColumnHeader Col_FileRef;
@@ -1259,7 +1256,6 @@ namespace EuroSound_Application.SoundBanksEditor
         private System.Windows.Forms.ColumnHeader Col_StoredIn;
         private System.Windows.Forms.ToolStripSeparator ContextMenuFolders_Separator2;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_Purge;
-        private System.Windows.Forms.Button Button_GenerateList;
         private System.Windows.Forms.ToolStripSeparator MenuItem_Edit_Separator1;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Edit_Search;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Edit_Undo;
@@ -1277,17 +1273,21 @@ namespace EuroSound_Application.SoundBanksEditor
         private System.Windows.Forms.ToolStripMenuItem MenuItem_CopyHashcode;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_CopyLabel;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_File_Close;
-        private System.Windows.Forms.Button Button_StopHashcodeUpdate;
-        private System.Windows.Forms.Button Button_Stop_WavUpdate;
-        private System.Windows.Forms.Button Button_StopStreamData;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_File_ImportExternal;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_File_ImportESIF;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_File_ImportYML_List;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_File_ImportYML_Single;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuSound_ExportSingle;
-        private System.Windows.Forms.Button Button_ExportInterchangeFile;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_ExportSounds;
         private System.Windows.Forms.SplitContainer SplitContainer_SoundbanksForm;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_ImportESIF;
+        private System.Windows.Forms.Button Button_UpdateList_WavData;
+        private System.Windows.Forms.Button Button_UpdateList_Hashcodes;
+        private System.Windows.Forms.Button Button_UpdateList_StreamData;
+        private System.Windows.Forms.Button Button_GenerateList;
+        private System.Windows.Forms.Button Button_StopHashcodeUpdate;
+        private System.Windows.Forms.Button Button_Stop_WavUpdate;
+        private System.Windows.Forms.Button Button_StopStreamData;
+        private System.Windows.Forms.Button Button_ExportInterchangeFile;
     }
 }

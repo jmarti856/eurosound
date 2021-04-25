@@ -943,15 +943,6 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a The selected profile is currently loaded, do you want to reload again?.
-        /// </summary>
-        internal static string ReloadProfileAgain {
-            get {
-                return ResourceManager.GetString("ReloadProfileAgain", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Busca una cadena traducida similar a This will clear your current search.
         /// </summary>
         internal static string SearcherInfoClearButton {
