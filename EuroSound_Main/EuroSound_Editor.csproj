@@ -121,6 +121,12 @@
     <Compile Include="ApplicationPreferences\BackupAndRestoreSettings\RestoreSettings.cs" />
     <Compile Include="ApplicationPreferences\EuroSound Profiles\ProfilesFunctions.cs" />
     <Compile Include="ApplicationPreferences\Ini File\IniFile_Functions.cs" />
+    <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_OutputSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_OutputSettings.Designer.cs">
+      <DependentUpon>Frm_OutputSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_Profiles.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -439,6 +445,9 @@
     <Compile Include="Editors and Tools\StreamSoundsEditor\Frm_StreamSounds_Properties.Designer.cs">
       <DependentUpon>Frm_StreamSounds_Properties.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_OutputSettings.resx">
+      <DependentUpon>Frm_OutputSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_Profiles.resx">
       <DependentUpon>Frm_Profiles.cs</DependentUpon>
     </EmbeddedResource>

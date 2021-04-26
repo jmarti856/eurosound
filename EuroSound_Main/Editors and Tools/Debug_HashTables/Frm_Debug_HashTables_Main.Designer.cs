@@ -172,6 +172,9 @@ namespace EuroSound_Application.Debug_HashTables
             this.Text = "HashTables Debugger";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_Debug_HashTables_Main_FormClosing);
             this.Load += new System.EventHandler(this.Frm_Debug_HashTables_Main_Load);
+            this.Shown += new System.EventHandler(this.Frm_Debug_HashTables_Main_Shown);
+            this.SizeChanged += new System.EventHandler(this.Frm_Debug_HashTables_Main_SizeChanged);
+            this.Enter += new System.EventHandler(this.Frm_Debug_HashTables_Main_Enter);
             this.Groupbox_Console.ResumeLayout(false);
             this.Groupbox_Console.PerformLayout();
             this.Groupbox_MFX.ResumeLayout(false);

@@ -109,7 +109,7 @@ namespace EuroSound_Application.Musics
             this.BackgroundWorker_BuildSFX.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.BackgroundWorker_BuildSFX_ProgressChanged);
             this.BackgroundWorker_BuildSFX.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker_BuildSFX_RunWorkerCompleted);
             // 
-            // Frm_BuildSFXStreamFile
+            // Frm_BuildSFXMusicFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -117,10 +117,11 @@ namespace EuroSound_Application.Musics
             this.ClientSize = new System.Drawing.Size(350, 171);
             this.Controls.Add(this.Panel_Container);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Frm_BuildSFXStreamFile";
+            this.Name = "Frm_BuildSFXMusicFile";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Frm_BuildSFXStreamFile";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_BuildSFXMusicFile_FormClosing);
             this.Load += new System.EventHandler(this.Frm_BuildSFXStreamFile_Load);
             this.Panel_Container.ResumeLayout(false);
             this.Panel_Container.PerformLayout();

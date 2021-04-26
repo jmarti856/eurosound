@@ -149,6 +149,12 @@ namespace EuroSound_Application.SplashForm
                 GlobalPreferences.StreamFileOutputPath = WindowsRegistryFunctions.LoadOutputFolders("StreamSoundsOutputDirectory", "Path");
                 GlobalPreferences.MusicOutputPath = WindowsRegistryFunctions.LoadOutputFolders("MusicOutputDirectory", "Path");
                 await Task.Delay(RandomNumber.Next(80, 100));
+
+                //[OutputSettings]
+                Label_Status.Text = "Loading output settings, please wait...";
+                GlobalPreferences.OutputSoundPath = WindowsRegistryFunctions.LoadSaveOutputSettings("PlayOutputSoundFilePath", string.Empty);
+                GlobalPreferences.PlaySoundWhenOutput = Convert.ToBoolean(int.Parse(WindowsRegistryFunctions.LoadSaveOutputSettings("PlaySoundWhenOutput", "0")));
+                await Task.Delay(RandomNumber.Next(170, 250));
             }
 
             //*===============================================================================================

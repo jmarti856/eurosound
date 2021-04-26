@@ -57,13 +57,55 @@ namespace EuroSound_Application.Debug_HashTables
             }
         }
 
+        private void Frm_Debug_HashTables_Main_Shown(object sender, EventArgs e)
+        {
+            if (WindowState != FormWindowState.Maximized)
+            {
+                MdiParent.Text = "EuroSound - HashTables Debugger";
+            }
+
+            //Set Program status
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+        }
+
+
+        private void Frm_Debug_HashTables_Main_Enter(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Maximized)
+            {
+                MdiParent.Text = "EuroSound";
+            }
+            else
+            {
+                MdiParent.Text = "EuroSound - HashTables Debugger";
+            }
+        }
+
+        private void Frm_Debug_HashTables_Main_SizeChanged(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Maximized)
+            {
+                MdiParent.Text = "EuroSound";
+            }
+            else
+            {
+                MdiParent.Text = "EuroSound - HashTables Debugger";
+            }
+        }
+
         private void Frm_Debug_HashTables_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //Update Status Bar
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_StoppingThreads"));
+
             //Stop threads
             if (CreateSFXDebugFile != null)
             {
                 CreateSFXDebugFile.Abort();
             }
+
+            //Reset title
+            MdiParent.Text = "EuroSound";
 
             //Clear Dictionary
             Hashcodes.MFX_JumpCodes.Clear();

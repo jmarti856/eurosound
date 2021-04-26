@@ -49,7 +49,7 @@ namespace EuroSound_Application.SoundBanksEditor
             //Draw audio waves in the UI
             if (TemporalAudio.PCMdata != null && TemporalAudio.Channels > 0)
             {
-                AudioFunctionsLibrary.DrawAudioWaves(euroSound_WaveViewer1, TemporalAudio, 0);
+                AudioFunctionsLibrary.DrawAudioWaves(euroSound_WaveViewer1, TemporalAudio, 0, false);
             }
             else
             {
@@ -248,7 +248,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 Textbox_MD5Hash.Text = TemporalAudioHash;
 
                 //Draw audio waves in the UI
-                AudioFunctionsLibrary.DrawAudioWaves(euroSound_WaveViewer1, TemporalAudio, 0);
+                AudioFunctionsLibrary.DrawAudioWaves(euroSound_WaveViewer1, TemporalAudio, 0, false);
 
                 //Ask user if wants to maintain config
                 DialogResult MaintainConfig = MessageBox.Show("Do you want to maintain the flags and loop offset values?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);

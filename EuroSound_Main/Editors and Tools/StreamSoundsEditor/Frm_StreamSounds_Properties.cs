@@ -148,7 +148,7 @@ namespace EuroSound_Application.StreamSounds
             }
 
             //Change node icon
-            OpenForm = GenericFunctions.GetFormByName("Frm_StreamSoundsEditorMain", Tag.ToString());
+            OpenForm = GenericFunctions.GetFormByName("Frm_StreamSounds_Main", Tag.ToString());
             Results = ((Frm_StreamSounds_Main)OpenForm).TreeView_StreamData.Nodes.Find(SelectedSoundKey, true);
 
             if (Results.Length > 0)
@@ -189,7 +189,7 @@ namespace EuroSound_Application.StreamSounds
             //Draw audio waves in the UI
             if (TemporalSound.PCM_Data != null && TemporalSound.Channels > 0)
             {
-                AudioLibrary.DrawAudioWaves(euroSound_WaveViewer1, TemporalSound, 0);
+                AudioLibrary.DrawAudioWaves(euroSound_WaveViewer1, TemporalSound, 0, false);
             }
         }
 

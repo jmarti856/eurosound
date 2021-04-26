@@ -123,6 +123,9 @@ namespace EuroSound_Application.SFXData
 
             WindowsRegistryFunctions.SaveWindowState("SFXData", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
 
+            //Reset title
+            MdiParent.Text = "EuroSound";
+
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }

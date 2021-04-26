@@ -46,7 +46,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Panel_Title.Dock = System.Windows.Forms.DockStyle.Top;
             this.Panel_Title.Location = new System.Drawing.Point(0, 0);
             this.Panel_Title.Name = "Panel_Title";
-            this.Panel_Title.Size = new System.Drawing.Size(491, 23);
+            this.Panel_Title.Size = new System.Drawing.Size(513, 23);
             this.Panel_Title.TabIndex = 1;
             // 
             // Label_Title
@@ -76,7 +76,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.RichTextbox_ProfilesInfo.Location = new System.Drawing.Point(184, 51);
             this.RichTextbox_ProfilesInfo.Name = "RichTextbox_ProfilesInfo";
             this.RichTextbox_ProfilesInfo.ReadOnly = true;
-            this.RichTextbox_ProfilesInfo.Size = new System.Drawing.Size(295, 276);
+            this.RichTextbox_ProfilesInfo.Size = new System.Drawing.Size(317, 332);
             this.RichTextbox_ProfilesInfo.TabIndex = 3;
             this.RichTextbox_ProfilesInfo.Text = "";
             // 
@@ -97,7 +97,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.ListView_Profiles.Location = new System.Drawing.Point(12, 51);
             this.ListView_Profiles.MultiSelect = false;
             this.ListView_Profiles.Name = "ListView_Profiles";
-            this.ListView_Profiles.Size = new System.Drawing.Size(166, 276);
+            this.ListView_Profiles.Size = new System.Drawing.Size(166, 332);
             this.ListView_Profiles.TabIndex = 1;
             this.ListView_Profiles.UseCompatibleStateImageBehavior = false;
             this.ListView_Profiles.View = System.Windows.Forms.View.List;
@@ -108,7 +108,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(491, 339);
+            this.ClientSize = new System.Drawing.Size(513, 395);
             this.Controls.Add(this.ListView_Profiles);
             this.Controls.Add(this.Label_ProfileInfo);
             this.Controls.Add(this.RichTextbox_ProfilesInfo);

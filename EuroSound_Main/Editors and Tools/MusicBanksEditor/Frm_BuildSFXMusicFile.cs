@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.Classes.SFX_Files;
 using EuroSound_Application.CurrentProjectFunctions;
+using NAudio.Wave;
 using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,8 @@ namespace EuroSound_Application.Musics
         private List<string> Reports = new List<string>();
         private string FileName;
         private int DebugFlags;
+        private WaveOut outputSound;
+        private AudioFileReader wave;
 
         public Frm_BuildSFXMusicFile(ProjectFile FileProperties, string MusicBankFinalName, int CheckedDebugFlags)
         {
@@ -269,6 +272,31 @@ namespace EuroSound_Application.Musics
                 GenericFunctions.ShowErrorsAndWarningsList(Reports, FileName + ".SFX Output Errors", this);
             }
 
+            //Play Sound
+            if (GlobalPreferences.PlaySoundWhenOutput)
+            {
+                if (File.Exists(GlobalPreferences.OutputSoundPath))
+                {
+                    Wave16ToFloatProvider provider = new Wave16ToFloatProvider(new WaveFileReader(GlobalPreferences.OutputSoundPath));
+                    outputSound = new WaveOut();
+                    if (outputSound.PlaybackState == PlaybackState.Stopped)
+                    {
+                        outputSound.Init(provider);
+                        outputSound.PlaybackStopped += new EventHandler<StoppedEventArgs>(AudioOutput_PlaybackStopped);
+                        outputSound.Play();
+                    }
+                }
+            }
+            else
+            {
+                //Close Form
+                Close();
+                Dispose();
+            }
+        }
+
+        private void AudioOutput_PlaybackStopped(object sender, StoppedEventArgs e)
+        {
             //Close Form
             Close();
             Dispose();
@@ -282,6 +310,35 @@ namespace EuroSound_Application.Musics
             if (BackgroundWorker_BuildSFX.IsBusy)
             {
                 BackgroundWorker_BuildSFX.CancelAsync();
+            }
+        }
+
+        private void Frm_BuildSFXMusicFile_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (BWriter != null)
+            {
+                BWriter.Close();
+                BWriter.Dispose();
+            }
+            if (BackgroundWorker_BuildSFX.IsBusy)
+            {
+                BackgroundWorker_BuildSFX.Dispose();
+            }
+
+            //Stop sound playing
+            if (outputSound != null)
+            {
+                if (outputSound.PlaybackState == PlaybackState.Playing)
+                {
+                    outputSound.Stop();
+                }
+                outputSound.Dispose();
+            }
+
+            if (wave != null)
+            {
+                wave.Close();
+                wave.Dispose();
             }
         }
     }

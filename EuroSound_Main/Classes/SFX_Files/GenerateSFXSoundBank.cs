@@ -245,7 +245,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             //* WRITE FINAL HEADER INFO
             //*===============================================================================================
             ProgressBarReset(Bar);
-            GenericFunctions.ProgressBarSetMaximum(Bar, HashcodeOffsetM.Length + SampleDataOffsets.Count() + 5);
+            GenericFunctions.ProgressBarSetMaximum(Bar, (HashcodeOffsetM.GetLength(0) + SampleDataOffsets.Count()) + 5);
 
             //--Size of the whole file--
             BWriter.BaseStream.Seek(0xC, SeekOrigin.Begin);

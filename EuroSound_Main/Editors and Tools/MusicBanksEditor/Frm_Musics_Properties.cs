@@ -271,6 +271,12 @@ namespace EuroSound_Application.Musics
                 //Get IMA ADPCM Data
                 TemporalMusic.IMA_ADPCM_DATA_LeftChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_LeftChannel), TemporalMusic.PCM_Data_LeftChannel.Length / 2);
                 AudioReader.Close();
+
+                //Draw audio waves in the UI
+                if (TemporalMusic.PCM_Data_LeftChannel != null && TemporalMusic.Channels_LeftChannel > 0)
+                {
+                    AudioLibrary.DrawAudioWaves(WaveViewer_LeftChannel, TemporalMusic, 0, false);
+                }
             }
 
             if (TemporalMusic != null && TemporalMusic.PCM_Data_LeftChannel != null)
@@ -306,6 +312,12 @@ namespace EuroSound_Application.Musics
                 //Get IMA ADPCM Data
                 TemporalMusic.IMA_ADPCM_DATA_RightChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_RightChannel), TemporalMusic.PCM_Data_RightChannel.Length / 2);
                 AudioReader.Close();
+
+                //Draw audio waves in the UI
+                if (TemporalMusic.PCM_Data_RightChannel != null && TemporalMusic.Channels_RightChannel > 0)
+                {
+                    AudioLibrary.DrawAudioWaves(WaveViewer_RightChannel, TemporalMusic, 0, true);
+                }
             }
 
             if (TemporalMusic != null && TemporalMusic.PCM_Data_RightChannel != null)

@@ -52,7 +52,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Panel_Title.Dock = System.Windows.Forms.DockStyle.Top;
             this.Panel_Title.Location = new System.Drawing.Point(0, 0);
             this.Panel_Title.Name = "Panel_Title";
-            this.Panel_Title.Size = new System.Drawing.Size(491, 23);
+            this.Panel_Title.Size = new System.Drawing.Size(513, 23);
             this.Panel_Title.TabIndex = 2;
             // 
             // Label_Title
@@ -105,7 +105,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.GroupboxSoxPath.Controls.Add(this.LabelSoXPath);
             this.GroupboxSoxPath.Location = new System.Drawing.Point(12, 106);
             this.GroupboxSoxPath.Name = "GroupboxSoxPath";
-            this.GroupboxSoxPath.Size = new System.Drawing.Size(467, 79);
+            this.GroupboxSoxPath.Size = new System.Drawing.Size(489, 79);
             this.GroupboxSoxPath.TabIndex = 6;
             this.GroupboxSoxPath.TabStop = false;
             this.GroupboxSoxPath.Text = "SoX Path:";
@@ -113,7 +113,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             // Button_Search
             // 
             this.Button_Search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Search.Location = new System.Drawing.Point(436, 29);
+            this.Button_Search.Location = new System.Drawing.Point(458, 29);
             this.Button_Search.Name = "Button_Search";
             this.Button_Search.Size = new System.Drawing.Size(25, 23);
             this.Button_Search.TabIndex = 2;
@@ -129,7 +129,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Textbox_SoXPath.Location = new System.Drawing.Point(44, 31);
             this.Textbox_SoXPath.Name = "Textbox_SoXPath";
             this.Textbox_SoXPath.ReadOnly = true;
-            this.Textbox_SoXPath.Size = new System.Drawing.Size(386, 20);
+            this.Textbox_SoXPath.Size = new System.Drawing.Size(408, 20);
             this.Textbox_SoXPath.TabIndex = 1;
             // 
             // LabelSoXPath
@@ -155,7 +155,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(491, 339);
+            this.ClientSize = new System.Drawing.Size(513, 395);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.GroupboxSoxPath);
             this.Controls.Add(this.DownloadLinkSox);

@@ -38,8 +38,8 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Button_WavesColorControl = new System.Windows.Forms.Button();
             this.Label_ColorWaves = new System.Windows.Forms.Label();
             this.GroupBox_LoadingOptions = new System.Windows.Forms.GroupBox();
-            this.CheckBox_ReloadLastESF = new System.Windows.Forms.CheckBox();
             this.CheckBox_IgnoreLookTree = new System.Windows.Forms.CheckBox();
+            this.CheckBox_ReloadLastESF = new System.Windows.Forms.CheckBox();
             this.Panel_Title.SuspendLayout();
             this.Groupbox_Waves.SuspendLayout();
             this.GroupBox_LoadingOptions.SuspendLayout();
@@ -52,7 +52,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Panel_Title.Dock = System.Windows.Forms.DockStyle.Top;
             this.Panel_Title.Location = new System.Drawing.Point(0, 0);
             this.Panel_Title.Name = "Panel_Title";
-            this.Panel_Title.Size = new System.Drawing.Size(491, 23);
+            this.Panel_Title.Size = new System.Drawing.Size(513, 23);
             this.Panel_Title.TabIndex = 1;
             // 
             // Label_Title
@@ -75,7 +75,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Groupbox_Waves.Controls.Add(this.Label_ColorWaves);
             this.Groupbox_Waves.Location = new System.Drawing.Point(12, 161);
             this.Groupbox_Waves.Name = "Groupbox_Waves";
-            this.Groupbox_Waves.Size = new System.Drawing.Size(467, 120);
+            this.Groupbox_Waves.Size = new System.Drawing.Size(489, 120);
             this.Groupbox_Waves.TabIndex = 3;
             this.Groupbox_Waves.TabStop = false;
             this.Groupbox_Waves.Text = "Audio Waves Viewer:";
@@ -130,20 +130,10 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.GroupBox_LoadingOptions.Controls.Add(this.CheckBox_ReloadLastESF);
             this.GroupBox_LoadingOptions.Location = new System.Drawing.Point(12, 70);
             this.GroupBox_LoadingOptions.Name = "GroupBox_LoadingOptions";
-            this.GroupBox_LoadingOptions.Size = new System.Drawing.Size(467, 85);
+            this.GroupBox_LoadingOptions.Size = new System.Drawing.Size(489, 85);
             this.GroupBox_LoadingOptions.TabIndex = 4;
             this.GroupBox_LoadingOptions.TabStop = false;
             this.GroupBox_LoadingOptions.Text = "Loading Options:";
-            // 
-            // CheckBox_ReloadLastESF
-            // 
-            this.CheckBox_ReloadLastESF.AutoSize = true;
-            this.CheckBox_ReloadLastESF.Location = new System.Drawing.Point(22, 19);
-            this.CheckBox_ReloadLastESF.Name = "CheckBox_ReloadLastESF";
-            this.CheckBox_ReloadLastESF.Size = new System.Drawing.Size(181, 17);
-            this.CheckBox_ReloadLastESF.TabIndex = 0;
-            this.CheckBox_ReloadLastESF.Text = "Automatically reload last ESF file.";
-            this.CheckBox_ReloadLastESF.UseVisualStyleBackColor = true;
             // 
             // CheckBox_IgnoreLookTree
             // 
@@ -155,11 +145,21 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.CheckBox_IgnoreLookTree.Text = "Ignore data stored in the ESF describing the look and state of the tree.";
             this.CheckBox_IgnoreLookTree.UseVisualStyleBackColor = true;
             // 
+            // CheckBox_ReloadLastESF
+            // 
+            this.CheckBox_ReloadLastESF.AutoSize = true;
+            this.CheckBox_ReloadLastESF.Location = new System.Drawing.Point(22, 19);
+            this.CheckBox_ReloadLastESF.Name = "CheckBox_ReloadLastESF";
+            this.CheckBox_ReloadLastESF.Size = new System.Drawing.Size(181, 17);
+            this.CheckBox_ReloadLastESF.TabIndex = 0;
+            this.CheckBox_ReloadLastESF.Text = "Automatically reload last ESF file.";
+            this.CheckBox_ReloadLastESF.UseVisualStyleBackColor = true;
+            // 
             // Frm_General
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(491, 339);
+            this.ClientSize = new System.Drawing.Size(513, 395);
             this.Controls.Add(this.GroupBox_LoadingOptions);
             this.Controls.Add(this.Groupbox_Waves);
             this.Controls.Add(this.Panel_Title);

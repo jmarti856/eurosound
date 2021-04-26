@@ -3,6 +3,7 @@ using EuroSound_Application.Classes.SFX_Files;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.GenerateSoundBankSFX;
 using EuroSound_Application.SoundBanksEditor.Debug_Writer;
+using NAudio.Wave;
 using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
         private List<string> Reports = new List<string>();
         private string FileName;
         private int DebugFlags;
+        private WaveOut outputSound;
 
         public Frm_BuildSFXFile(ProjectFile FileProperties, string SoundBankFinalName, int CheckedDebugFlags)
         {
@@ -54,6 +56,16 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
             if (BackgroundWorker_BuildSFX.IsBusy)
             {
                 BackgroundWorker_BuildSFX.Dispose();
+            }
+
+            //Stop sound playing
+            if (outputSound != null)
+            {
+                if (outputSound.PlaybackState == PlaybackState.Playing)
+                {
+                    outputSound.Stop();
+                }
+                outputSound.Dispose();
             }
         }
 
@@ -318,6 +330,31 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 GenericFunctions.ShowErrorsAndWarningsList(Reports, FileName + ".SFX Output Errors", this);
             }
 
+            //Play Sound
+            if (GlobalPreferences.PlaySoundWhenOutput)
+            {
+                if (File.Exists(GlobalPreferences.OutputSoundPath))
+                {
+                    Wave16ToFloatProvider provider = new Wave16ToFloatProvider(new WaveFileReader(GlobalPreferences.OutputSoundPath));
+                    outputSound = new WaveOut();
+                    if (outputSound.PlaybackState == PlaybackState.Stopped)
+                    {
+                        outputSound.Init(provider);
+                        outputSound.PlaybackStopped += new EventHandler<StoppedEventArgs>(AudioOutput_PlaybackStopped);
+                        outputSound.Play();
+                    }
+                }
+            }
+            else
+            {
+                //Close Form
+                Close();
+                Dispose();
+            }
+        }
+
+        private void AudioOutput_PlaybackStopped(object sender, StoppedEventArgs e)
+        {
             //Close Form
             Close();
             Dispose();

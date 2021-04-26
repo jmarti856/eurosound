@@ -59,6 +59,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
             return KeyToReturn;
         }
+
         //*===============================================================================================
         //* Active Document
         //*===============================================================================================
@@ -526,6 +527,37 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 LoadLastESF.Close();
             }
             return LoadLastESFChecked;
+        }
+
+        //*===============================================================================================
+        //* USER SETTINGS -> Output Settings
+        //*===============================================================================================
+        internal static void SaveOutputSettings()
+        {
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
+            using (RegistryKey OutputSettings = EuroSoundKey.OpenSubKey("UserSettings", true))
+            {
+                OutputSettings.SetValue("PlayOutputSoundFilePath", GlobalPreferences.OutputSoundPath, RegistryValueKind.String);
+                OutputSettings.SetValue("PlaySoundWhenOutput", GlobalPreferences.PlaySoundWhenOutput, RegistryValueKind.DWord);
+                OutputSettings.Close();
+            }
+        }
+
+        internal static string LoadSaveOutputSettings(string KeyValueName, string DefaultValue)
+        {
+            string FolderPath;
+
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
+            using (RegistryKey OutputSettings = EuroSoundKey.OpenSubKey("UserSettings", true))
+            {
+                //Save Values
+                FolderPath = OutputSettings.GetValue(KeyValueName, DefaultValue).ToString();
+                OutputSettings.Close();
+            }
+
+            return FolderPath;
         }
 
         //*===============================================================================================

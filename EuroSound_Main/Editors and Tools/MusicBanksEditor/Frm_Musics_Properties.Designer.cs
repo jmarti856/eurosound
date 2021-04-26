@@ -84,6 +84,8 @@ namespace EuroSound_Application.Musics
             this.Groupbox_MusicProps = new System.Windows.Forms.GroupBox();
             this.Button_Stop = new System.Windows.Forms.Button();
             this.Button_Play = new System.Windows.Forms.Button();
+            this.WaveViewer_LeftChannel = new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer();
+            this.WaveViewer_RightChannel = new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer();
             this.GroupBox_LeftChannel_Properties.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_BaseVolume)).BeginInit();
             this.TabControl_MusicChannels.SuspendLayout();
@@ -101,13 +103,13 @@ namespace EuroSound_Application.Musics
             this.Textbox_MD5_Hash_LeftChannel.Location = new System.Drawing.Point(47, 32);
             this.Textbox_MD5_Hash_LeftChannel.Name = "Textbox_MD5_Hash_LeftChannel";
             this.Textbox_MD5_Hash_LeftChannel.ReadOnly = true;
-            this.Textbox_MD5_Hash_LeftChannel.Size = new System.Drawing.Size(435, 20);
+            this.Textbox_MD5_Hash_LeftChannel.Size = new System.Drawing.Size(438, 20);
             this.Textbox_MD5_Hash_LeftChannel.TabIndex = 5;
             // 
             // Button_SaveAudio_LeftChannel
             // 
             this.Button_SaveAudio_LeftChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_SaveAudio_LeftChannel.Location = new System.Drawing.Point(441, 6);
+            this.Button_SaveAudio_LeftChannel.Location = new System.Drawing.Point(444, 6);
             this.Button_SaveAudio_LeftChannel.Name = "Button_SaveAudio_LeftChannel";
             this.Button_SaveAudio_LeftChannel.Size = new System.Drawing.Size(41, 20);
             this.Button_SaveAudio_LeftChannel.TabIndex = 3;
@@ -132,7 +134,7 @@ namespace EuroSound_Application.Musics
             this.Textbox_IMA_ADPCM_LeftChannel.Location = new System.Drawing.Point(47, 6);
             this.Textbox_IMA_ADPCM_LeftChannel.Name = "Textbox_IMA_ADPCM_LeftChannel";
             this.Textbox_IMA_ADPCM_LeftChannel.ReadOnly = true;
-            this.Textbox_IMA_ADPCM_LeftChannel.Size = new System.Drawing.Size(358, 20);
+            this.Textbox_IMA_ADPCM_LeftChannel.Size = new System.Drawing.Size(361, 20);
             this.Textbox_IMA_ADPCM_LeftChannel.TabIndex = 1;
             this.Textbox_IMA_ADPCM_LeftChannel.Text = "<NO DATA>";
             // 
@@ -148,7 +150,7 @@ namespace EuroSound_Application.Musics
             // Button_ReplaceAudio_LeftChannel
             // 
             this.Button_ReplaceAudio_LeftChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_ReplaceAudio_LeftChannel.Location = new System.Drawing.Point(411, 6);
+            this.Button_ReplaceAudio_LeftChannel.Location = new System.Drawing.Point(414, 6);
             this.Button_ReplaceAudio_LeftChannel.Name = "Button_ReplaceAudio_LeftChannel";
             this.Button_ReplaceAudio_LeftChannel.Size = new System.Drawing.Size(24, 20);
             this.Button_ReplaceAudio_LeftChannel.TabIndex = 2;
@@ -161,6 +163,7 @@ namespace EuroSound_Application.Musics
             this.GroupBox_LeftChannel_Properties.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox_LeftChannel_Properties.Controls.Add(this.WaveViewer_LeftChannel);
             this.GroupBox_LeftChannel_Properties.Controls.Add(this.Textbox_Duration_LeftChannel);
             this.GroupBox_LeftChannel_Properties.Controls.Add(this.Label_Duration_LeftChannel);
             this.GroupBox_LeftChannel_Properties.Controls.Add(this.Textbox_RealSize_LeftChannel);
@@ -177,7 +180,7 @@ namespace EuroSound_Application.Musics
             this.GroupBox_LeftChannel_Properties.Controls.Add(this.Label_Frequency_LeftChannel);
             this.GroupBox_LeftChannel_Properties.Location = new System.Drawing.Point(6, 58);
             this.GroupBox_LeftChannel_Properties.Name = "GroupBox_LeftChannel_Properties";
-            this.GroupBox_LeftChannel_Properties.Size = new System.Drawing.Size(476, 203);
+            this.GroupBox_LeftChannel_Properties.Size = new System.Drawing.Size(479, 267);
             this.GroupBox_LeftChannel_Properties.TabIndex = 6;
             this.GroupBox_LeftChannel_Properties.TabStop = false;
             this.GroupBox_LeftChannel_Properties.Text = "Channel Properties:";
@@ -221,10 +224,10 @@ namespace EuroSound_Application.Musics
             // Button_Stop_LeftChannel
             // 
             this.Button_Stop_LeftChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Stop_LeftChannel.Location = new System.Drawing.Point(395, 174);
+            this.Button_Stop_LeftChannel.Location = new System.Drawing.Point(398, 238);
             this.Button_Stop_LeftChannel.Name = "Button_Stop_LeftChannel";
             this.Button_Stop_LeftChannel.Size = new System.Drawing.Size(75, 23);
-            this.Button_Stop_LeftChannel.TabIndex = 13;
+            this.Button_Stop_LeftChannel.TabIndex = 14;
             this.Button_Stop_LeftChannel.Text = "Stop";
             this.Button_Stop_LeftChannel.UseVisualStyleBackColor = true;
             this.Button_Stop_LeftChannel.Click += new System.EventHandler(this.Button_Stop_LeftChannel_Click);
@@ -232,10 +235,10 @@ namespace EuroSound_Application.Musics
             // Button_Play_LeftChannel
             // 
             this.Button_Play_LeftChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Play_LeftChannel.Location = new System.Drawing.Point(314, 174);
+            this.Button_Play_LeftChannel.Location = new System.Drawing.Point(317, 238);
             this.Button_Play_LeftChannel.Name = "Button_Play_LeftChannel";
             this.Button_Play_LeftChannel.Size = new System.Drawing.Size(75, 23);
-            this.Button_Play_LeftChannel.TabIndex = 12;
+            this.Button_Play_LeftChannel.TabIndex = 13;
             this.Button_Play_LeftChannel.Text = "Play";
             this.Button_Play_LeftChannel.UseVisualStyleBackColor = true;
             this.Button_Play_LeftChannel.Click += new System.EventHandler(this.Button_Play_LeftChannel_Click);
@@ -315,7 +318,7 @@ namespace EuroSound_Application.Musics
             // Button_MarkersEditor
             // 
             this.Button_MarkersEditor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_MarkersEditor.Location = new System.Drawing.Point(392, 19);
+            this.Button_MarkersEditor.Location = new System.Drawing.Point(395, 19);
             this.Button_MarkersEditor.Name = "Button_MarkersEditor";
             this.Button_MarkersEditor.Size = new System.Drawing.Size(98, 23);
             this.Button_MarkersEditor.TabIndex = 4;
@@ -361,7 +364,7 @@ namespace EuroSound_Application.Musics
             this.CheckBox_OutputThisMusic.AutoSize = true;
             this.CheckBox_OutputThisMusic.Checked = true;
             this.CheckBox_OutputThisMusic.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.CheckBox_OutputThisMusic.Location = new System.Drawing.Point(12, 378);
+            this.CheckBox_OutputThisMusic.Location = new System.Drawing.Point(12, 442);
             this.CheckBox_OutputThisMusic.Name = "CheckBox_OutputThisMusic";
             this.CheckBox_OutputThisMusic.Size = new System.Drawing.Size(107, 17);
             this.CheckBox_OutputThisMusic.TabIndex = 2;
@@ -372,7 +375,7 @@ namespace EuroSound_Application.Musics
             // 
             this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_Cancel.Location = new System.Drawing.Point(433, 374);
+            this.Button_Cancel.Location = new System.Drawing.Point(436, 438);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.Button_Cancel.TabIndex = 4;
@@ -384,7 +387,7 @@ namespace EuroSound_Application.Musics
             // 
             this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_OK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_OK.Location = new System.Drawing.Point(352, 374);
+            this.Button_OK.Location = new System.Drawing.Point(355, 438);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
             this.Button_OK.TabIndex = 3;
@@ -400,7 +403,7 @@ namespace EuroSound_Application.Musics
             this.Textbox_IMA_ADPCM_RightChannel.Location = new System.Drawing.Point(47, 6);
             this.Textbox_IMA_ADPCM_RightChannel.Name = "Textbox_IMA_ADPCM_RightChannel";
             this.Textbox_IMA_ADPCM_RightChannel.ReadOnly = true;
-            this.Textbox_IMA_ADPCM_RightChannel.Size = new System.Drawing.Size(358, 20);
+            this.Textbox_IMA_ADPCM_RightChannel.Size = new System.Drawing.Size(361, 20);
             this.Textbox_IMA_ADPCM_RightChannel.TabIndex = 1;
             this.Textbox_IMA_ADPCM_RightChannel.Text = "<NO DATA>";
             // 
@@ -412,13 +415,13 @@ namespace EuroSound_Application.Musics
             this.Textbox_MD5_Hash_RightChannel.Location = new System.Drawing.Point(47, 32);
             this.Textbox_MD5_Hash_RightChannel.Name = "Textbox_MD5_Hash_RightChannel";
             this.Textbox_MD5_Hash_RightChannel.ReadOnly = true;
-            this.Textbox_MD5_Hash_RightChannel.Size = new System.Drawing.Size(435, 20);
+            this.Textbox_MD5_Hash_RightChannel.Size = new System.Drawing.Size(438, 20);
             this.Textbox_MD5_Hash_RightChannel.TabIndex = 5;
             // 
             // Button_ReplaceAudio_RightChannel
             // 
             this.Button_ReplaceAudio_RightChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_ReplaceAudio_RightChannel.Location = new System.Drawing.Point(411, 6);
+            this.Button_ReplaceAudio_RightChannel.Location = new System.Drawing.Point(414, 6);
             this.Button_ReplaceAudio_RightChannel.Name = "Button_ReplaceAudio_RightChannel";
             this.Button_ReplaceAudio_RightChannel.Size = new System.Drawing.Size(24, 20);
             this.Button_ReplaceAudio_RightChannel.TabIndex = 2;
@@ -429,7 +432,7 @@ namespace EuroSound_Application.Musics
             // Button_SaveAudio_RightChannel
             // 
             this.Button_SaveAudio_RightChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_SaveAudio_RightChannel.Location = new System.Drawing.Point(441, 6);
+            this.Button_SaveAudio_RightChannel.Location = new System.Drawing.Point(444, 6);
             this.Button_SaveAudio_RightChannel.Name = "Button_SaveAudio_RightChannel";
             this.Button_SaveAudio_RightChannel.Size = new System.Drawing.Size(41, 20);
             this.Button_SaveAudio_RightChannel.TabIndex = 3;
@@ -465,7 +468,7 @@ namespace EuroSound_Application.Musics
             this.TabControl_MusicChannels.Location = new System.Drawing.Point(12, 12);
             this.TabControl_MusicChannels.Name = "TabControl_MusicChannels";
             this.TabControl_MusicChannels.SelectedIndex = 0;
-            this.TabControl_MusicChannels.Size = new System.Drawing.Size(496, 293);
+            this.TabControl_MusicChannels.Size = new System.Drawing.Size(499, 357);
             this.TabControl_MusicChannels.TabIndex = 0;
             // 
             // Tab_LeftChannel
@@ -480,7 +483,7 @@ namespace EuroSound_Application.Musics
             this.Tab_LeftChannel.Location = new System.Drawing.Point(4, 22);
             this.Tab_LeftChannel.Name = "Tab_LeftChannel";
             this.Tab_LeftChannel.Padding = new System.Windows.Forms.Padding(3);
-            this.Tab_LeftChannel.Size = new System.Drawing.Size(488, 267);
+            this.Tab_LeftChannel.Size = new System.Drawing.Size(491, 331);
             this.Tab_LeftChannel.TabIndex = 0;
             this.Tab_LeftChannel.Text = "Left Channel";
             this.Tab_LeftChannel.UseVisualStyleBackColor = true;
@@ -497,7 +500,7 @@ namespace EuroSound_Application.Musics
             this.Tab_RightChannel.Location = new System.Drawing.Point(4, 22);
             this.Tab_RightChannel.Name = "Tab_RightChannel";
             this.Tab_RightChannel.Padding = new System.Windows.Forms.Padding(3);
-            this.Tab_RightChannel.Size = new System.Drawing.Size(488, 267);
+            this.Tab_RightChannel.Size = new System.Drawing.Size(491, 331);
             this.Tab_RightChannel.TabIndex = 1;
             this.Tab_RightChannel.Text = "Right Channel";
             this.Tab_RightChannel.UseVisualStyleBackColor = true;
@@ -507,6 +510,7 @@ namespace EuroSound_Application.Musics
             this.GroupBox_RightChannel_Properties.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox_RightChannel_Properties.Controls.Add(this.WaveViewer_RightChannel);
             this.GroupBox_RightChannel_Properties.Controls.Add(this.Textbox_Duration_RightChannel);
             this.GroupBox_RightChannel_Properties.Controls.Add(this.Duration_RightChannel);
             this.GroupBox_RightChannel_Properties.Controls.Add(this.Textbox_RealSize_RightChannel);
@@ -523,7 +527,7 @@ namespace EuroSound_Application.Musics
             this.GroupBox_RightChannel_Properties.Controls.Add(this.Label_Frequency_RightChannel);
             this.GroupBox_RightChannel_Properties.Location = new System.Drawing.Point(6, 58);
             this.GroupBox_RightChannel_Properties.Name = "GroupBox_RightChannel_Properties";
-            this.GroupBox_RightChannel_Properties.Size = new System.Drawing.Size(476, 203);
+            this.GroupBox_RightChannel_Properties.Size = new System.Drawing.Size(479, 267);
             this.GroupBox_RightChannel_Properties.TabIndex = 6;
             this.GroupBox_RightChannel_Properties.TabStop = false;
             this.GroupBox_RightChannel_Properties.Text = "Channel Properties:";
@@ -567,10 +571,10 @@ namespace EuroSound_Application.Musics
             // Button_Stop_RightChannel
             // 
             this.Button_Stop_RightChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Stop_RightChannel.Location = new System.Drawing.Point(395, 174);
+            this.Button_Stop_RightChannel.Location = new System.Drawing.Point(398, 238);
             this.Button_Stop_RightChannel.Name = "Button_Stop_RightChannel";
             this.Button_Stop_RightChannel.Size = new System.Drawing.Size(75, 23);
-            this.Button_Stop_RightChannel.TabIndex = 13;
+            this.Button_Stop_RightChannel.TabIndex = 14;
             this.Button_Stop_RightChannel.Text = "Stop";
             this.Button_Stop_RightChannel.UseVisualStyleBackColor = true;
             this.Button_Stop_RightChannel.Click += new System.EventHandler(this.Button_Stop_RightChannel_Click);
@@ -578,10 +582,10 @@ namespace EuroSound_Application.Musics
             // Button_Play_RightChannel
             // 
             this.Button_Play_RightChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Play_RightChannel.Location = new System.Drawing.Point(314, 174);
+            this.Button_Play_RightChannel.Location = new System.Drawing.Point(317, 238);
             this.Button_Play_RightChannel.Name = "Button_Play_RightChannel";
             this.Button_Play_RightChannel.Size = new System.Drawing.Size(75, 23);
-            this.Button_Play_RightChannel.TabIndex = 12;
+            this.Button_Play_RightChannel.TabIndex = 13;
             this.Button_Play_RightChannel.Text = "Play";
             this.Button_Play_RightChannel.UseVisualStyleBackColor = true;
             this.Button_Play_RightChannel.Click += new System.EventHandler(this.Button_Play_RightChannel_Click);
@@ -667,9 +671,9 @@ namespace EuroSound_Application.Musics
             this.Groupbox_MusicProps.Controls.Add(this.Numeric_BaseVolume);
             this.Groupbox_MusicProps.Controls.Add(this.Button_MarkersEditor);
             this.Groupbox_MusicProps.Controls.Add(this.Label_BaseVolume);
-            this.Groupbox_MusicProps.Location = new System.Drawing.Point(12, 311);
+            this.Groupbox_MusicProps.Location = new System.Drawing.Point(12, 375);
             this.Groupbox_MusicProps.Name = "Groupbox_MusicProps";
-            this.Groupbox_MusicProps.Size = new System.Drawing.Size(496, 57);
+            this.Groupbox_MusicProps.Size = new System.Drawing.Size(499, 57);
             this.Groupbox_MusicProps.TabIndex = 1;
             this.Groupbox_MusicProps.TabStop = false;
             this.Groupbox_MusicProps.Text = "Music Properties";
@@ -677,7 +681,7 @@ namespace EuroSound_Application.Musics
             // Button_Stop
             // 
             this.Button_Stop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Stop.Location = new System.Drawing.Point(311, 19);
+            this.Button_Stop.Location = new System.Drawing.Point(314, 19);
             this.Button_Stop.Name = "Button_Stop";
             this.Button_Stop.Size = new System.Drawing.Size(75, 23);
             this.Button_Stop.TabIndex = 3;
@@ -688,7 +692,7 @@ namespace EuroSound_Application.Musics
             // Button_Play
             // 
             this.Button_Play.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Play.Location = new System.Drawing.Point(230, 19);
+            this.Button_Play.Location = new System.Drawing.Point(233, 19);
             this.Button_Play.Name = "Button_Play";
             this.Button_Play.Size = new System.Drawing.Size(75, 23);
             this.Button_Play.TabIndex = 2;
@@ -696,13 +700,49 @@ namespace EuroSound_Application.Musics
             this.Button_Play.UseVisualStyleBackColor = true;
             this.Button_Play.Click += new System.EventHandler(this.Button_Play_Click);
             // 
+            // WaveViewer_LeftChannel
+            // 
+            this.WaveViewer_LeftChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.WaveViewer_LeftChannel.AutoScroll = true;
+            this.WaveViewer_LeftChannel.BackColor = System.Drawing.Color.Gray;
+            this.WaveViewer_LeftChannel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.WaveViewer_LeftChannel.CurrentWaveImage = null;
+            this.WaveViewer_LeftChannel.Location = new System.Drawing.Point(6, 71);
+            this.WaveViewer_LeftChannel.Name = "WaveViewer_LeftChannel";
+            this.WaveViewer_LeftChannel.PenWidth = 1F;
+            this.WaveViewer_LeftChannel.SamplesPerPixel = 128;
+            this.WaveViewer_LeftChannel.Size = new System.Drawing.Size(467, 161);
+            this.WaveViewer_LeftChannel.StartPosition = ((long)(0));
+            this.WaveViewer_LeftChannel.TabIndex = 12;
+            this.WaveViewer_LeftChannel.WaveStream = null;
+            // 
+            // WaveViewer_RightChannel
+            // 
+            this.WaveViewer_RightChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.WaveViewer_RightChannel.AutoScroll = true;
+            this.WaveViewer_RightChannel.BackColor = System.Drawing.Color.Gray;
+            this.WaveViewer_RightChannel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.WaveViewer_RightChannel.CurrentWaveImage = null;
+            this.WaveViewer_RightChannel.Location = new System.Drawing.Point(6, 71);
+            this.WaveViewer_RightChannel.Name = "WaveViewer_RightChannel";
+            this.WaveViewer_RightChannel.PenWidth = 1F;
+            this.WaveViewer_RightChannel.SamplesPerPixel = 128;
+            this.WaveViewer_RightChannel.Size = new System.Drawing.Size(467, 161);
+            this.WaveViewer_RightChannel.StartPosition = ((long)(0));
+            this.WaveViewer_RightChannel.TabIndex = 12;
+            this.WaveViewer_RightChannel.WaveStream = null;
+            // 
             // Frm_Musics_Properties
             // 
             this.AcceptButton = this.Button_OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Button_Cancel;
-            this.ClientSize = new System.Drawing.Size(520, 409);
+            this.ClientSize = new System.Drawing.Size(523, 473);
             this.Controls.Add(this.Groupbox_MusicProps);
             this.Controls.Add(this.TabControl_MusicChannels);
             this.Controls.Add(this.CheckBox_OutputThisMusic);
@@ -790,5 +830,7 @@ namespace EuroSound_Application.Musics
         private System.Windows.Forms.Label Label_Duration_LeftChannel;
         private System.Windows.Forms.TextBox Textbox_Duration_RightChannel;
         private System.Windows.Forms.Label Duration_RightChannel;
+        private CustomControls.WavesViewerForm.EuroSound_WaveViewer WaveViewer_LeftChannel;
+        private CustomControls.WavesViewerForm.EuroSound_WaveViewer WaveViewer_RightChannel;
     }
 }

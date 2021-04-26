@@ -47,7 +47,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Panel_Title.Dock = System.Windows.Forms.DockStyle.Top;
             this.Panel_Title.Location = new System.Drawing.Point(0, 0);
             this.Panel_Title.Name = "Panel_Title";
-            this.Panel_Title.Size = new System.Drawing.Size(491, 23);
+            this.Panel_Title.Size = new System.Drawing.Size(513, 23);
             this.Panel_Title.TabIndex = 1;
             // 
             // Label_Title
@@ -71,7 +71,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.GroupboxAudioDevices.Controls.Add(this.Label_AudioDevice);
             this.GroupboxAudioDevices.Location = new System.Drawing.Point(12, 127);
             this.GroupboxAudioDevices.Name = "GroupboxAudioDevices";
-            this.GroupboxAudioDevices.Size = new System.Drawing.Size(467, 107);
+            this.GroupboxAudioDevices.Size = new System.Drawing.Size(489, 163);
             this.GroupboxAudioDevices.TabIndex = 2;
             this.GroupboxAudioDevices.TabStop = false;
             this.GroupboxAudioDevices.Text = "Available Devices:";
@@ -105,7 +105,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Combobox_AvailableDevices.FormattingEnabled = true;
             this.Combobox_AvailableDevices.Location = new System.Drawing.Point(56, 33);
             this.Combobox_AvailableDevices.Name = "Combobox_AvailableDevices";
-            this.Combobox_AvailableDevices.Size = new System.Drawing.Size(405, 21);
+            this.Combobox_AvailableDevices.Size = new System.Drawing.Size(427, 21);
             this.Combobox_AvailableDevices.TabIndex = 1;
             // 
             // Label_AudioDevice
@@ -117,15 +117,15 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Label_AudioDevice.TabIndex = 0;
             this.Label_AudioDevice.Text = "Device:";
             // 
-            // Frm_OutputDevicecs
+            // Frm_OutputDevices
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(491, 339);
+            this.ClientSize = new System.Drawing.Size(513, 395);
             this.Controls.Add(this.GroupboxAudioDevices);
             this.Controls.Add(this.Panel_Title);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Frm_OutputDevicecs";
+            this.Name = "Frm_OutputDevices";
             this.Text = "Frm_OutputDevicecs";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_OutputDevicecs_FormClosing);
             this.Load += new System.EventHandler(this.Frm_OutputDevicecs_Load);

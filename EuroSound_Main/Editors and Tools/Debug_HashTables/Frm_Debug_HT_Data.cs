@@ -74,13 +74,57 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             ComboBox_Looping.SelectedIndex = 0;
         }
 
+        private void Frm_Debug_HT_Data_Shown(object sender, EventArgs e)
+        {
+            if (WindowState != FormWindowState.Maximized)
+            {
+                MdiParent.Text = "EuroSound - Music Data Table Generator";
+            }
+
+            //Set Program status
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+        }
+
+        private void Frm_Debug_HT_Data_Enter(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Maximized)
+            {
+                MdiParent.Text = "EuroSound";
+            }
+            else
+            {
+                MdiParent.Text = "EuroSound - Music Data Table Generator";
+            }
+
+        }
+
+        private void Frm_Debug_HT_Data_SizeChanged(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Maximized)
+            {
+                MdiParent.Text = "EuroSound";
+            }
+            else
+            {
+                MdiParent.Text = "EuroSound - Music Data Table Generator";
+            }
+        }
+
         private void Frm_Debug_HT_Data_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //Update Status Bar
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_StoppingThreads"));
+
+            //Stop threads
             if (DataToCombobox != null)
             {
                 DataToCombobox.Abort();
             }
 
+            //Reset title
+            MdiParent.Text = "EuroSound";
+
+            //Set Program status
             WindowsRegistryFunctions.SaveWindowState("DBDView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
         }
 

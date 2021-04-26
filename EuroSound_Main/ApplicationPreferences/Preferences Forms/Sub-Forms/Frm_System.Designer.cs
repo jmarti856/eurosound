@@ -48,7 +48,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Panel_Title.Dock = System.Windows.Forms.DockStyle.Top;
             this.Panel_Title.Location = new System.Drawing.Point(0, 0);
             this.Panel_Title.Name = "Panel_Title";
-            this.Panel_Title.Size = new System.Drawing.Size(491, 23);
+            this.Panel_Title.Size = new System.Drawing.Size(513, 23);
             this.Panel_Title.TabIndex = 2;
             // 
             // Label_Title
@@ -69,7 +69,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Groupbox_Shell.Controls.Add(this.Label_Expl);
             this.Groupbox_Shell.Location = new System.Drawing.Point(12, 88);
             this.Groupbox_Shell.Name = "Groupbox_Shell";
-            this.Groupbox_Shell.Size = new System.Drawing.Size(467, 92);
+            this.Groupbox_Shell.Size = new System.Drawing.Size(489, 92);
             this.Groupbox_Shell.TabIndex = 3;
             this.Groupbox_Shell.TabStop = false;
             this.Groupbox_Shell.Text = "Shell:";
@@ -104,7 +104,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Groupbox_UseSystemTray.Controls.Add(this.CheckBox_UseSystemTray);
             this.Groupbox_UseSystemTray.Location = new System.Drawing.Point(12, 186);
             this.Groupbox_UseSystemTray.Name = "Groupbox_UseSystemTray";
-            this.Groupbox_UseSystemTray.Size = new System.Drawing.Size(467, 74);
+            this.Groupbox_UseSystemTray.Size = new System.Drawing.Size(489, 74);
             this.Groupbox_UseSystemTray.TabIndex = 4;
             this.Groupbox_UseSystemTray.TabStop = false;
             this.Groupbox_UseSystemTray.Text = "System-Tray:";
@@ -123,7 +123,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(491, 339);
+            this.ClientSize = new System.Drawing.Size(513, 395);
             this.Controls.Add(this.Groupbox_UseSystemTray);
             this.Controls.Add(this.Groupbox_Shell);
             this.Controls.Add(this.Panel_Title);

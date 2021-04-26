@@ -111,7 +111,7 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             }
         }
 
-        internal void DrawAudioWaves(EuroSound_WaveViewer ControlToDraw, object SelectedSound, int Delay)
+        internal void DrawAudioWaves(EuroSound_WaveViewer ControlToDraw, object SelectedSound, int Delay, bool Right)
         {
             ControlToDraw.RenderDelay = Delay;
             if (SelectedSound.GetType() == typeof(EXSoundStream))
@@ -126,8 +126,15 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             }
             else if (SelectedSound.GetType() == typeof(EXMusic))
             {
-                //EXMusic AudioObject = ((EXMusic)SelectedSound);
-                //ControlToDraw.WaveStream = new RawSourceWaveStream(new MemoryStream(AudioObject.PCM_Data_RightChannel), new WaveFormat((int)AudioObject.Frequency, (int)AudioObject.Bits, AudioObject.Channels));
+                EXMusic AudioObject = ((EXMusic)SelectedSound);
+                if (Right)
+                {
+                    ControlToDraw.WaveStream = new RawSourceWaveStream(new MemoryStream(AudioObject.PCM_Data_RightChannel), new WaveFormat((int)AudioObject.Frequency_RightChannel, (int)AudioObject.Bits_RightChannel, AudioObject.Channels_RightChannel));
+                }
+                else
+                {
+                    ControlToDraw.WaveStream = new RawSourceWaveStream(new MemoryStream(AudioObject.PCM_Data_LeftChannel), new WaveFormat((int)AudioObject.Frequency_LeftChannel, (int)AudioObject.Bits_LeftChannel, AudioObject.Channels_LeftChannel));
+                }
             }
             ControlToDraw.InitControl();
         }

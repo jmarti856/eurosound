@@ -305,6 +305,9 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             this.Text = "Music Data Table Generator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_Debug_HT_Data_FormClosing);
             this.Load += new System.EventHandler(this.Frm_Debug_HT_Data_Load);
+            this.Shown += new System.EventHandler(this.Frm_Debug_HT_Data_Shown);
+            this.SizeChanged += new System.EventHandler(this.Frm_Debug_HT_Data_SizeChanged);
+            this.Enter += new System.EventHandler(this.Frm_Debug_HT_Data_Enter);
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView_HT_Content)).EndInit();
             this.GroupBox_Options.ResumeLayout(false);
             this.GroupBox_Options.PerformLayout();

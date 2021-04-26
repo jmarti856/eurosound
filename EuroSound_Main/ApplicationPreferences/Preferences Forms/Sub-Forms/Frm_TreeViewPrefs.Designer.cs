@@ -55,7 +55,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Panel_Title.Dock = System.Windows.Forms.DockStyle.Top;
             this.Panel_Title.Location = new System.Drawing.Point(0, 0);
             this.Panel_Title.Name = "Panel_Title";
-            this.Panel_Title.Size = new System.Drawing.Size(491, 23);
+            this.Panel_Title.Size = new System.Drawing.Size(513, 23);
             this.Panel_Title.TabIndex = 1;
             // 
             // Label_Title
@@ -145,7 +145,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.GroupBox_Lines.Controls.Add(this.Checkbox_ShowRootLines);
             this.GroupBox_Lines.Location = new System.Drawing.Point(12, 158);
             this.GroupBox_Lines.Name = "GroupBox_Lines";
-            this.GroupBox_Lines.Size = new System.Drawing.Size(467, 115);
+            this.GroupBox_Lines.Size = new System.Drawing.Size(489, 115);
             this.GroupBox_Lines.TabIndex = 9;
             this.GroupBox_Lines.TabStop = false;
             this.GroupBox_Lines.Text = "Lines:";
@@ -175,7 +175,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(491, 339);
+            this.ClientSize = new System.Drawing.Size(513, 395);
             this.Controls.Add(this.Numeric_ItemHeight);
             this.Controls.Add(this.Label_ItemHeight);
             this.Controls.Add(this.GroupBox_Lines);

@@ -46,6 +46,10 @@
         internal static string MusicOutputPath = string.Empty;
         internal static string StreamFileOutputPath = string.Empty;
 
+        //[Frm_OutputSettings]
+        internal static bool PlaySoundWhenOutput = false;
+        internal static string OutputSoundPath = string.Empty;
+
         //User Settings -> Tree View
         internal static string TV_SelectedFont = "Microsoft Sans Serif; 8,25pt";
         internal static int TV_Indent = 19;
