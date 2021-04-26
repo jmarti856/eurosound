@@ -125,7 +125,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             // 
             this.Textbox_SoXPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_SoXPath.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_SoXPath.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_SoXPath.Location = new System.Drawing.Point(44, 31);
             this.Textbox_SoXPath.Name = "Textbox_SoXPath";
             this.Textbox_SoXPath.ReadOnly = true;

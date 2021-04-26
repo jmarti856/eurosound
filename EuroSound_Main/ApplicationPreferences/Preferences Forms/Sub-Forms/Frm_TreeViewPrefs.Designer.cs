@@ -129,7 +129,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             // 
             // Textbox_SelectedFont
             // 
-            this.Textbox_SelectedFont.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_SelectedFont.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_SelectedFont.Location = new System.Drawing.Point(80, 132);
             this.Textbox_SelectedFont.Name = "Textbox_SelectedFont";
             this.Textbox_SelectedFont.ReadOnly = true;

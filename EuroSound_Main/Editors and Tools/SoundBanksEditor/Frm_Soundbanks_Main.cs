@@ -281,66 +281,63 @@ namespace EuroSound_Application.SoundBanksEditor
                             Button_ExportInterchangeFile.Enabled = false;
                         });
 
-                        string ProfileName = EuroSoundFilesFunctions.LoadSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, CurrentFilePath, ProjectInfo);
-
-                        //Update File name label
-                        UpdateStatusBarLabels();
-
                         //Check that the profile name matches with the current one
+                        string ProfileName = EuroSoundFilesFunctions.LoadSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, CurrentFilePath, ProjectInfo);
                         if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
                         {
                             FormMustBeClosed = true;
                         }
-                        else
+
+                        //Update File name label
+                        UpdateStatusBarLabels();
+
+                        //Enable Button
+                        Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
                         {
-                            //Enable Button
-                            Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
-                            {
-                                Button_UpdateList_WavData.Enabled = true;
-                            });
+                            Button_UpdateList_WavData.Enabled = true;
+                        });
 
-                            //Enable Button
-                            Button_Stop_WavUpdate.Invoke((MethodInvoker)delegate
-                            {
-                                Button_Stop_WavUpdate.Enabled = true;
-                            });
+                        //Enable Button
+                        Button_Stop_WavUpdate.Invoke((MethodInvoker)delegate
+                        {
+                            Button_Stop_WavUpdate.Enabled = true;
+                        });
 
-                            //Enable Button
-                            Button_UpdateList_Hashcodes.Invoke((MethodInvoker)delegate
-                            {
-                                Button_UpdateList_Hashcodes.Enabled = true;
-                            });
+                        //Enable Button
+                        Button_UpdateList_Hashcodes.Invoke((MethodInvoker)delegate
+                        {
+                            Button_UpdateList_Hashcodes.Enabled = true;
+                        });
 
-                            //Enable Button
-                            Button_StopHashcodeUpdate.Invoke((MethodInvoker)delegate
-                            {
-                                Button_StopHashcodeUpdate.Enabled = true;
-                            });
+                        //Enable Button
+                        Button_StopHashcodeUpdate.Invoke((MethodInvoker)delegate
+                        {
+                            Button_StopHashcodeUpdate.Enabled = true;
+                        });
 
-                            //Enable Button
-                            Button_UpdateList_StreamData.Invoke((MethodInvoker)delegate
-                            {
-                                Button_UpdateList_StreamData.Enabled = true;
-                            });
+                        //Enable Button
+                        Button_UpdateList_StreamData.Invoke((MethodInvoker)delegate
+                        {
+                            Button_UpdateList_StreamData.Enabled = true;
+                        });
 
-                            //Enable Button
-                            Button_StopStreamData.Invoke((MethodInvoker)delegate
-                            {
-                                Button_StopStreamData.Enabled = true;
-                            });
+                        //Enable Button
+                        Button_StopStreamData.Invoke((MethodInvoker)delegate
+                        {
+                            Button_StopStreamData.Enabled = true;
+                        });
 
-                            //Enable Button
-                            Button_GenerateList.Invoke((MethodInvoker)delegate
-                            {
-                                Button_GenerateList.Enabled = true;
-                            });
+                        //Enable Button
+                        Button_GenerateList.Invoke((MethodInvoker)delegate
+                        {
+                            Button_GenerateList.Enabled = true;
+                        });
 
-                            //Enable Button
-                            Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
-                            {
-                                Button_ExportInterchangeFile.Enabled = true;
-                            });
-                        }
+                        //Enable Button
+                        Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
+                        {
+                            Button_ExportInterchangeFile.Enabled = true;
+                        });
 
                         //Set Program status
                         GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));

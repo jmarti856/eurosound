@@ -145,7 +145,7 @@
             // 
             this.Textbox_Musics_Path.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_Musics_Path.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Musics_Path.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Musics_Path.Location = new System.Drawing.Point(44, 179);
             this.Textbox_Musics_Path.Name = "Textbox_Musics_Path";
             this.Textbox_Musics_Path.ReadOnly = true;
@@ -174,7 +174,7 @@
             // 
             this.Textbox_SFXData_Path.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_SFXData_Path.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_SFXData_Path.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_SFXData_Path.Location = new System.Drawing.Point(44, 124);
             this.Textbox_SFXData_Path.Name = "Textbox_SFXData_Path";
             this.Textbox_SFXData_Path.ReadOnly = true;
@@ -203,7 +203,7 @@
             // 
             this.Textbox_Sounds_Path.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_Sounds_Path.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Sounds_Path.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Sounds_Path.Location = new System.Drawing.Point(44, 70);
             this.Textbox_Sounds_Path.Name = "Textbox_Sounds_Path";
             this.Textbox_Sounds_Path.ReadOnly = true;

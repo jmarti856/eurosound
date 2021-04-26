@@ -114,7 +114,7 @@
             // 
             // Textbox_OuterRadius
             // 
-            this.Textbox_OuterRadius.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_OuterRadius.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_OuterRadius.Location = new System.Drawing.Point(107, 120);
             this.Textbox_OuterRadius.Name = "Textbox_OuterRadius";
             this.Textbox_OuterRadius.ReadOnly = true;
@@ -123,7 +123,7 @@
             // 
             // Textbox_InnerRadius
             // 
-            this.Textbox_InnerRadius.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_InnerRadius.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_InnerRadius.Location = new System.Drawing.Point(107, 94);
             this.Textbox_InnerRadius.Name = "Textbox_InnerRadius";
             this.Textbox_InnerRadius.ReadOnly = true;
@@ -148,7 +148,7 @@
             // 
             // textbox_flags
             // 
-            this.textbox_flags.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.textbox_flags.BackColor = System.Drawing.SystemColors.Window;
             this.textbox_flags.Location = new System.Drawing.Point(365, 149);
             this.textbox_flags.Name = "textbox_flags";
             this.textbox_flags.ReadOnly = true;

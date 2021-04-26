@@ -223,42 +223,39 @@ namespace EuroSound_Application.StreamSounds
                             Button_UpdateIMAData.Enabled = false;
                         });
 
-                        string ProfileName = EuroSoundFilesFunctions.LoadStreamSoundsDocument(TreeView_StreamData, StreamSoundsList, CurrentFilePath, ProjectInfo, GenericFunctions.ResourcesManager);
-
-                        //Update File name label
-                        UpdateStatusBarLabels();
-
                         //Check that the profile name matches with the current one
+                        string ProfileName = EuroSoundFilesFunctions.LoadStreamSoundsDocument(TreeView_StreamData, StreamSoundsList, CurrentFilePath, ProjectInfo, GenericFunctions.ResourcesManager);
                         if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
                         {
                             FormMustBeClosed = true;
                         }
-                        else
+
+                        //Update File name label
+                        UpdateStatusBarLabels();
+
+                        //Enable Button
+                        Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
                         {
-                            //Enable Button
-                            Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
-                            {
-                                Button_UpdateList_WavData.Enabled = true;
-                            });
+                            Button_UpdateList_WavData.Enabled = true;
+                        });
 
-                            //Enable Button
-                            Button_StopUpdate.Invoke((MethodInvoker)delegate
-                            {
-                                Button_StopUpdate.Enabled = true;
-                            });
+                        //Enable Button
+                        Button_StopUpdate.Invoke((MethodInvoker)delegate
+                        {
+                            Button_StopUpdate.Enabled = true;
+                        });
 
-                            //Enable Button
-                            Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
-                            {
-                                Button_ExportInterchangeFile.Enabled = true;
-                            });
+                        //Enable Button
+                        Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
+                        {
+                            Button_ExportInterchangeFile.Enabled = true;
+                        });
 
-                            //Enable Button
-                            Button_UpdateIMAData.Invoke((MethodInvoker)delegate
-                            {
-                                Button_UpdateIMAData.Enabled = true;
-                            });
-                        }
+                        //Enable Button
+                        Button_UpdateIMAData.Invoke((MethodInvoker)delegate
+                        {
+                            Button_UpdateIMAData.Enabled = true;
+                        });
 
                         //Set Program status
                         GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));

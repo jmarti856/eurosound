@@ -39,16 +39,16 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
             GenericFunctions.CheckProfiles(ProfileSelected, ProfileSelectedName);
 
             //*===============================================================================================
-            //* TreeView
-            //*===============================================================================================
-            BReader.BaseStream.Position = TreeViewDataOffset;
-            ReadTreeViewData(BReader, TreeViewControl, FileVersion);
-
-            //*===============================================================================================
             //* Dictionary Info
             //*===============================================================================================
             BReader.BaseStream.Position = StreamSoundsDictionaryOffset;
             ReadDictionaryData(BReader, MusicsList);
+
+            //*===============================================================================================
+            //* TreeView
+            //*===============================================================================================
+            BReader.BaseStream.Position = TreeViewDataOffset;
+            ReadTreeViewData(BReader, TreeViewControl, FileVersion);
 
             //Close Reader
             BReader.Close();
@@ -168,6 +168,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
                 NodeColor = Color.FromArgb(BReader.ReadInt32());
                 BReader.ReadBoolean();
 
+                //Check version
                 if (Version >= 1008)
                 {
                     ParentIsExpanded = BReader.ReadBoolean();
@@ -175,9 +176,18 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
                     NodeIsSelected = BReader.ReadBoolean();
                 }
 
+                //Ignore state
                 if (GlobalPreferences.TV_IgnoreStlyesFromESF)
                 {
-                    NodeColor = Color.Black;
+                    ParentIsExpanded = false;
+                    NodeIsExpanded = false;
+                    NodeIsSelected = false;
+                }
+
+                //Whenever possible use system colors
+                if (Color.Equals(NodeColor, ColorTranslator.FromHtml("#000000")) || GlobalPreferences.TV_IgnoreStlyesFromESF)
+                {
+                    NodeColor = SystemColors.WindowText;
                 }
 
                 TreeNodeFunctions.TreeNodeAddNewNode(ParentNode, NodeName, DisplayName, SelectedImageIndex, ImageIndex, Tag, ParentIsExpanded, NodeIsExpanded, NodeIsSelected, NodeColor, TreeViewControl);

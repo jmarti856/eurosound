@@ -260,7 +260,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             // 
             this.Textbox_FilePath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_FilePath.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_FilePath.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_FilePath.Location = new System.Drawing.Point(62, 32);
             this.Textbox_FilePath.Name = "Textbox_FilePath";
             this.Textbox_FilePath.ReadOnly = true;

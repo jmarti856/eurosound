@@ -71,7 +71,10 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             AddDataToCombobox();
 
             //Prevent null selection
-            ComboBox_Looping.SelectedIndex = 0;
+            if (ComboBox_Looping.Items.Count > 0)
+            {
+                ComboBox_Looping.SelectedIndex = 0;
+            }
         }
 
         private void Frm_Debug_HT_Data_Shown(object sender, EventArgs e)
@@ -252,7 +255,10 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
                     Combobox_HashCode.ValueMember = "Key";
                     Combobox_HashCode.DisplayMember = "Value";
                     Combobox_HashCode.Update();
-                    Combobox_HashCode.SelectedIndex = 0;
+                    if (Combobox_HashCode.Items.Count > 0)
+                    {
+                        Combobox_HashCode.SelectedIndex = 0;
+                    }
                     Combobox_HashCode.Enabled = true;
                 });
             })

@@ -163,7 +163,9 @@ namespace EuroSound_Application.SoundBanksEditor
             // TreeView_File
             // 
             this.TreeView_File.AllowDrop = true;
+            this.TreeView_File.BackColor = System.Drawing.SystemColors.Window;
             this.TreeView_File.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TreeView_File.ForeColor = System.Drawing.SystemColors.WindowText;
             this.TreeView_File.ImageIndex = 0;
             this.TreeView_File.ImageList = this.ImageList_TreeNode;
             this.TreeView_File.LabelEdit = true;
@@ -715,7 +717,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // Textbox_HashcodesCount
             // 
             this.Textbox_HashcodesCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Textbox_HashcodesCount.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_HashcodesCount.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_HashcodesCount.Location = new System.Drawing.Point(107, 194);
             this.Textbox_HashcodesCount.Name = "Textbox_HashcodesCount";
             this.Textbox_HashcodesCount.ReadOnly = true;
@@ -859,7 +861,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // Textbox_DataCount
             // 
             this.Textbox_DataCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Textbox_DataCount.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_DataCount.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_DataCount.Location = new System.Drawing.Point(74, 258);
             this.Textbox_DataCount.Name = "Textbox_DataCount";
             this.Textbox_DataCount.ReadOnly = true;

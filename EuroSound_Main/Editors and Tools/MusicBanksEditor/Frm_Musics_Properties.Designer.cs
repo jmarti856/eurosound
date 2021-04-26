@@ -37,6 +37,7 @@ namespace EuroSound_Application.Musics
             this.Label_Data_LeftChannel = new System.Windows.Forms.Label();
             this.Button_ReplaceAudio_LeftChannel = new System.Windows.Forms.Button();
             this.GroupBox_LeftChannel_Properties = new System.Windows.Forms.GroupBox();
+            this.WaveViewer_LeftChannel = new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer();
             this.Textbox_Duration_LeftChannel = new System.Windows.Forms.TextBox();
             this.Label_Duration_LeftChannel = new System.Windows.Forms.Label();
             this.Textbox_RealSize_LeftChannel = new System.Windows.Forms.TextBox();
@@ -67,6 +68,7 @@ namespace EuroSound_Application.Musics
             this.Tab_LeftChannel = new System.Windows.Forms.TabPage();
             this.Tab_RightChannel = new System.Windows.Forms.TabPage();
             this.GroupBox_RightChannel_Properties = new System.Windows.Forms.GroupBox();
+            this.WaveViewer_RightChannel = new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer();
             this.Textbox_Duration_RightChannel = new System.Windows.Forms.TextBox();
             this.Duration_RightChannel = new System.Windows.Forms.Label();
             this.Textbox_RealSize_RightChannel = new System.Windows.Forms.TextBox();
@@ -84,8 +86,6 @@ namespace EuroSound_Application.Musics
             this.Groupbox_MusicProps = new System.Windows.Forms.GroupBox();
             this.Button_Stop = new System.Windows.Forms.Button();
             this.Button_Play = new System.Windows.Forms.Button();
-            this.WaveViewer_LeftChannel = new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer();
-            this.WaveViewer_RightChannel = new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer();
             this.GroupBox_LeftChannel_Properties.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_BaseVolume)).BeginInit();
             this.TabControl_MusicChannels.SuspendLayout();
@@ -99,7 +99,7 @@ namespace EuroSound_Application.Musics
             // 
             this.Textbox_MD5_Hash_LeftChannel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_MD5_Hash_LeftChannel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_MD5_Hash_LeftChannel.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_MD5_Hash_LeftChannel.Location = new System.Drawing.Point(47, 32);
             this.Textbox_MD5_Hash_LeftChannel.Name = "Textbox_MD5_Hash_LeftChannel";
             this.Textbox_MD5_Hash_LeftChannel.ReadOnly = true;
@@ -130,7 +130,7 @@ namespace EuroSound_Application.Musics
             // 
             this.Textbox_IMA_ADPCM_LeftChannel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_IMA_ADPCM_LeftChannel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_IMA_ADPCM_LeftChannel.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_IMA_ADPCM_LeftChannel.Location = new System.Drawing.Point(47, 6);
             this.Textbox_IMA_ADPCM_LeftChannel.Name = "Textbox_IMA_ADPCM_LeftChannel";
             this.Textbox_IMA_ADPCM_LeftChannel.ReadOnly = true;
@@ -185,9 +185,27 @@ namespace EuroSound_Application.Musics
             this.GroupBox_LeftChannel_Properties.TabStop = false;
             this.GroupBox_LeftChannel_Properties.Text = "Channel Properties:";
             // 
+            // WaveViewer_LeftChannel
+            // 
+            this.WaveViewer_LeftChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.WaveViewer_LeftChannel.AutoScroll = true;
+            this.WaveViewer_LeftChannel.BackColor = System.Drawing.Color.Gray;
+            this.WaveViewer_LeftChannel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.WaveViewer_LeftChannel.CurrentWaveImage = null;
+            this.WaveViewer_LeftChannel.Location = new System.Drawing.Point(6, 71);
+            this.WaveViewer_LeftChannel.Name = "WaveViewer_LeftChannel";
+            this.WaveViewer_LeftChannel.PenWidth = 1F;
+            this.WaveViewer_LeftChannel.SamplesPerPixel = 128;
+            this.WaveViewer_LeftChannel.Size = new System.Drawing.Size(467, 161);
+            this.WaveViewer_LeftChannel.StartPosition = ((long)(0));
+            this.WaveViewer_LeftChannel.TabIndex = 12;
+            this.WaveViewer_LeftChannel.WaveStream = null;
+            // 
             // Textbox_Duration_LeftChannel
             // 
-            this.Textbox_Duration_LeftChannel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Duration_LeftChannel.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Duration_LeftChannel.Location = new System.Drawing.Point(383, 45);
             this.Textbox_Duration_LeftChannel.Name = "Textbox_Duration_LeftChannel";
             this.Textbox_Duration_LeftChannel.ReadOnly = true;
@@ -205,7 +223,7 @@ namespace EuroSound_Application.Musics
             // 
             // Textbox_RealSize_LeftChannel
             // 
-            this.Textbox_RealSize_LeftChannel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_RealSize_LeftChannel.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_RealSize_LeftChannel.Location = new System.Drawing.Point(234, 45);
             this.Textbox_RealSize_LeftChannel.Name = "Textbox_RealSize_LeftChannel";
             this.Textbox_RealSize_LeftChannel.ReadOnly = true;
@@ -245,7 +263,7 @@ namespace EuroSound_Application.Musics
             // 
             // Textbox_Encoding_LeftChannel
             // 
-            this.Textbox_Encoding_LeftChannel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Encoding_LeftChannel.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Encoding_LeftChannel.Location = new System.Drawing.Point(66, 45);
             this.Textbox_Encoding_LeftChannel.Name = "Textbox_Encoding_LeftChannel";
             this.Textbox_Encoding_LeftChannel.ReadOnly = true;
@@ -263,7 +281,7 @@ namespace EuroSound_Application.Musics
             // 
             // Textbox_Bits_LeftChannel
             // 
-            this.Textbox_Bits_LeftChannel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Bits_LeftChannel.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Bits_LeftChannel.Location = new System.Drawing.Point(383, 19);
             this.Textbox_Bits_LeftChannel.Name = "Textbox_Bits_LeftChannel";
             this.Textbox_Bits_LeftChannel.ReadOnly = true;
@@ -281,7 +299,7 @@ namespace EuroSound_Application.Musics
             // 
             // Textbox_Channels_LeftChannel
             // 
-            this.Textbox_Channels_LeftChannel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Channels_LeftChannel.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Channels_LeftChannel.Location = new System.Drawing.Point(66, 19);
             this.Textbox_Channels_LeftChannel.Name = "Textbox_Channels_LeftChannel";
             this.Textbox_Channels_LeftChannel.ReadOnly = true;
@@ -290,7 +308,7 @@ namespace EuroSound_Application.Musics
             // 
             // Textbox_Frequency_LeftChannel
             // 
-            this.Textbox_Frequency_LeftChannel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Frequency_LeftChannel.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Frequency_LeftChannel.Location = new System.Drawing.Point(234, 19);
             this.Textbox_Frequency_LeftChannel.Name = "Textbox_Frequency_LeftChannel";
             this.Textbox_Frequency_LeftChannel.ReadOnly = true;
@@ -399,7 +417,7 @@ namespace EuroSound_Application.Musics
             // 
             this.Textbox_IMA_ADPCM_RightChannel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_IMA_ADPCM_RightChannel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_IMA_ADPCM_RightChannel.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_IMA_ADPCM_RightChannel.Location = new System.Drawing.Point(47, 6);
             this.Textbox_IMA_ADPCM_RightChannel.Name = "Textbox_IMA_ADPCM_RightChannel";
             this.Textbox_IMA_ADPCM_RightChannel.ReadOnly = true;
@@ -411,7 +429,7 @@ namespace EuroSound_Application.Musics
             // 
             this.Textbox_MD5_Hash_RightChannel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_MD5_Hash_RightChannel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_MD5_Hash_RightChannel.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_MD5_Hash_RightChannel.Location = new System.Drawing.Point(47, 32);
             this.Textbox_MD5_Hash_RightChannel.Name = "Textbox_MD5_Hash_RightChannel";
             this.Textbox_MD5_Hash_RightChannel.ReadOnly = true;
@@ -532,9 +550,27 @@ namespace EuroSound_Application.Musics
             this.GroupBox_RightChannel_Properties.TabStop = false;
             this.GroupBox_RightChannel_Properties.Text = "Channel Properties:";
             // 
+            // WaveViewer_RightChannel
+            // 
+            this.WaveViewer_RightChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.WaveViewer_RightChannel.AutoScroll = true;
+            this.WaveViewer_RightChannel.BackColor = System.Drawing.Color.Gray;
+            this.WaveViewer_RightChannel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.WaveViewer_RightChannel.CurrentWaveImage = null;
+            this.WaveViewer_RightChannel.Location = new System.Drawing.Point(6, 71);
+            this.WaveViewer_RightChannel.Name = "WaveViewer_RightChannel";
+            this.WaveViewer_RightChannel.PenWidth = 1F;
+            this.WaveViewer_RightChannel.SamplesPerPixel = 128;
+            this.WaveViewer_RightChannel.Size = new System.Drawing.Size(467, 161);
+            this.WaveViewer_RightChannel.StartPosition = ((long)(0));
+            this.WaveViewer_RightChannel.TabIndex = 12;
+            this.WaveViewer_RightChannel.WaveStream = null;
+            // 
             // Textbox_Duration_RightChannel
             // 
-            this.Textbox_Duration_RightChannel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Duration_RightChannel.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Duration_RightChannel.Location = new System.Drawing.Point(383, 45);
             this.Textbox_Duration_RightChannel.Name = "Textbox_Duration_RightChannel";
             this.Textbox_Duration_RightChannel.ReadOnly = true;
@@ -552,7 +588,7 @@ namespace EuroSound_Application.Musics
             // 
             // Textbox_RealSize_RightChannel
             // 
-            this.Textbox_RealSize_RightChannel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_RealSize_RightChannel.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_RealSize_RightChannel.Location = new System.Drawing.Point(234, 45);
             this.Textbox_RealSize_RightChannel.Name = "Textbox_RealSize_RightChannel";
             this.Textbox_RealSize_RightChannel.ReadOnly = true;
@@ -592,7 +628,7 @@ namespace EuroSound_Application.Musics
             // 
             // Textbox_Encoding_RightChannel
             // 
-            this.Textbox_Encoding_RightChannel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Encoding_RightChannel.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Encoding_RightChannel.Location = new System.Drawing.Point(66, 45);
             this.Textbox_Encoding_RightChannel.Name = "Textbox_Encoding_RightChannel";
             this.Textbox_Encoding_RightChannel.ReadOnly = true;
@@ -610,7 +646,7 @@ namespace EuroSound_Application.Musics
             // 
             // Textbox_Bits_RightChannel
             // 
-            this.Textbox_Bits_RightChannel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Bits_RightChannel.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Bits_RightChannel.Location = new System.Drawing.Point(383, 19);
             this.Textbox_Bits_RightChannel.Name = "Textbox_Bits_RightChannel";
             this.Textbox_Bits_RightChannel.ReadOnly = true;
@@ -628,7 +664,7 @@ namespace EuroSound_Application.Musics
             // 
             // Textbox_Channels_RightChannel
             // 
-            this.Textbox_Channels_RightChannel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Channels_RightChannel.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Channels_RightChannel.Location = new System.Drawing.Point(66, 19);
             this.Textbox_Channels_RightChannel.Name = "Textbox_Channels_RightChannel";
             this.Textbox_Channels_RightChannel.ReadOnly = true;
@@ -637,7 +673,7 @@ namespace EuroSound_Application.Musics
             // 
             // Textbox_Frequency_RightChannel
             // 
-            this.Textbox_Frequency_RightChannel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Frequency_RightChannel.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Frequency_RightChannel.Location = new System.Drawing.Point(234, 19);
             this.Textbox_Frequency_RightChannel.Name = "Textbox_Frequency_RightChannel";
             this.Textbox_Frequency_RightChannel.ReadOnly = true;
@@ -699,42 +735,6 @@ namespace EuroSound_Application.Musics
             this.Button_Play.Text = "Play";
             this.Button_Play.UseVisualStyleBackColor = true;
             this.Button_Play.Click += new System.EventHandler(this.Button_Play_Click);
-            // 
-            // WaveViewer_LeftChannel
-            // 
-            this.WaveViewer_LeftChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.WaveViewer_LeftChannel.AutoScroll = true;
-            this.WaveViewer_LeftChannel.BackColor = System.Drawing.Color.Gray;
-            this.WaveViewer_LeftChannel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.WaveViewer_LeftChannel.CurrentWaveImage = null;
-            this.WaveViewer_LeftChannel.Location = new System.Drawing.Point(6, 71);
-            this.WaveViewer_LeftChannel.Name = "WaveViewer_LeftChannel";
-            this.WaveViewer_LeftChannel.PenWidth = 1F;
-            this.WaveViewer_LeftChannel.SamplesPerPixel = 128;
-            this.WaveViewer_LeftChannel.Size = new System.Drawing.Size(467, 161);
-            this.WaveViewer_LeftChannel.StartPosition = ((long)(0));
-            this.WaveViewer_LeftChannel.TabIndex = 12;
-            this.WaveViewer_LeftChannel.WaveStream = null;
-            // 
-            // WaveViewer_RightChannel
-            // 
-            this.WaveViewer_RightChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.WaveViewer_RightChannel.AutoScroll = true;
-            this.WaveViewer_RightChannel.BackColor = System.Drawing.Color.Gray;
-            this.WaveViewer_RightChannel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.WaveViewer_RightChannel.CurrentWaveImage = null;
-            this.WaveViewer_RightChannel.Location = new System.Drawing.Point(6, 71);
-            this.WaveViewer_RightChannel.Name = "WaveViewer_RightChannel";
-            this.WaveViewer_RightChannel.PenWidth = 1F;
-            this.WaveViewer_RightChannel.SamplesPerPixel = 128;
-            this.WaveViewer_RightChannel.Size = new System.Drawing.Size(467, 161);
-            this.WaveViewer_RightChannel.StartPosition = ((long)(0));
-            this.WaveViewer_RightChannel.TabIndex = 12;
-            this.WaveViewer_RightChannel.WaveStream = null;
             // 
             // Frm_Musics_Properties
             // 

@@ -38,12 +38,6 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
             GenericFunctions.CheckProfiles(ProfileSelected, ProfileSelectedName);
 
             //*===============================================================================================
-            //* TreeView
-            //*===============================================================================================
-            BReader.BaseStream.Position = TreeViewDataOffset;
-            ReadTreeViewData(BReader, TreeViewControl, FileVersion);
-
-            //*===============================================================================================
             //* Sounds List Data
             //*===============================================================================================
             BReader.BaseStream.Position = SoundsListDataOffset;
@@ -54,6 +48,12 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
             //*===============================================================================================
             BReader.BaseStream.Position = AudioDataOffset;
             ReadAudioDataDictionary(BReader, AudiosList);
+
+            //*===============================================================================================
+            //* TreeView
+            //*===============================================================================================
+            BReader.BaseStream.Position = TreeViewDataOffset;
+            ReadTreeViewData(BReader, TreeViewControl, FileVersion);
 
             //Close Reader
             BReader.Close();
@@ -169,6 +169,7 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
                 NodeColor = Color.FromArgb(BReader.ReadInt32());
                 BReader.ReadBoolean();
 
+                //Check version
                 if (Version >= 1008)
                 {
                     ParentIsExpanded = BReader.ReadBoolean();
@@ -176,9 +177,18 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
                     NodeIsSelected = BReader.ReadBoolean();
                 }
 
+                //Ignore state
                 if (GlobalPreferences.TV_IgnoreStlyesFromESF)
                 {
-                    NodeColor = Color.Black;
+                    ParentIsExpanded = false;
+                    NodeIsExpanded = false;
+                    NodeIsSelected = false;
+                }
+
+                //Whenever possible use system colors
+                if (Color.Equals(NodeColor, ColorTranslator.FromHtml("#000000")) || GlobalPreferences.TV_IgnoreStlyesFromESF)
+                {
+                    NodeColor = SystemColors.WindowText;
                 }
 
                 TreeNodeFunctions.TreeNodeAddNewNode(ParentNode, NodeName, DisplayName, SelectedImageIndex, ImageIndex, Tag, ParentIsExpanded, NodeIsExpanded, NodeIsSelected, NodeColor, TreeViewControl);

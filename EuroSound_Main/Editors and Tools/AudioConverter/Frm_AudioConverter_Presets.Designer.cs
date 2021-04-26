@@ -81,7 +81,7 @@ namespace EuroSound_Application.AudioConverter
             // 
             // Textbox_Frequency
             // 
-            this.Textbox_Frequency.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Frequency.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Frequency.Location = new System.Drawing.Point(72, 19);
             this.Textbox_Frequency.Name = "Textbox_Frequency";
             this.Textbox_Frequency.ReadOnly = true;
@@ -99,7 +99,7 @@ namespace EuroSound_Application.AudioConverter
             // 
             // Textbox_Bits
             // 
-            this.Textbox_Bits.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Bits.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Bits.Location = new System.Drawing.Point(211, 19);
             this.Textbox_Bits.Name = "Textbox_Bits";
             this.Textbox_Bits.ReadOnly = true;
@@ -117,7 +117,7 @@ namespace EuroSound_Application.AudioConverter
             // 
             // Textbox_Channels
             // 
-            this.Textbox_Channels.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Channels.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Channels.Location = new System.Drawing.Point(365, 19);
             this.Textbox_Channels.Name = "Textbox_Channels";
             this.Textbox_Channels.ReadOnly = true;

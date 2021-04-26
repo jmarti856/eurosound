@@ -166,7 +166,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // 
             this.Textbox_MediaName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_MediaName.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_MediaName.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_MediaName.Location = new System.Drawing.Point(47, 19);
             this.Textbox_MediaName.Name = "Textbox_MediaName";
             this.Textbox_MediaName.ReadOnly = true;
@@ -269,7 +269,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // 
             // Textbox_Flags
             // 
-            this.Textbox_Flags.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Flags.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Flags.Location = new System.Drawing.Point(68, 74);
             this.Textbox_Flags.Name = "Textbox_Flags";
             this.Textbox_Flags.ReadOnly = true;
@@ -313,7 +313,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // 
             // Textbox_Encoding
             // 
-            this.Textbox_Encoding.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Encoding.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Encoding.Location = new System.Drawing.Point(68, 100);
             this.Textbox_Encoding.Name = "Textbox_Encoding";
             this.Textbox_Encoding.ReadOnly = true;
@@ -331,7 +331,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // 
             // Textbox_Duration
             // 
-            this.Textbox_Duration.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Duration.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Duration.Location = new System.Drawing.Point(390, 48);
             this.Textbox_Duration.Name = "Textbox_Duration";
             this.Textbox_Duration.ReadOnly = true;
@@ -349,7 +349,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // 
             // Textbox_Bits
             // 
-            this.Textbox_Bits.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Bits.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Bits.Location = new System.Drawing.Point(229, 48);
             this.Textbox_Bits.Name = "Textbox_Bits";
             this.Textbox_Bits.ReadOnly = true;
@@ -367,7 +367,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // 
             // Textbox_Channels
             // 
-            this.Textbox_Channels.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Channels.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Channels.Location = new System.Drawing.Point(68, 48);
             this.Textbox_Channels.Name = "Textbox_Channels";
             this.Textbox_Channels.ReadOnly = true;
@@ -385,7 +385,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // 
             // Textbox_RealSize
             // 
-            this.Textbox_RealSize.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_RealSize.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_RealSize.Location = new System.Drawing.Point(390, 22);
             this.Textbox_RealSize.Name = "Textbox_RealSize";
             this.Textbox_RealSize.ReadOnly = true;
@@ -403,7 +403,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // 
             // Textbox_Frequency
             // 
-            this.Textbox_Frequency.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Frequency.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Frequency.Location = new System.Drawing.Point(229, 22);
             this.Textbox_Frequency.Name = "Textbox_Frequency";
             this.Textbox_Frequency.ReadOnly = true;
@@ -421,7 +421,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // 
             // Textbox_DataSize
             // 
-            this.Textbox_DataSize.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_DataSize.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_DataSize.Location = new System.Drawing.Point(68, 22);
             this.Textbox_DataSize.Name = "Textbox_DataSize";
             this.Textbox_DataSize.ReadOnly = true;
@@ -461,7 +461,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // 
             this.Textbox_MD5Hash.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_MD5Hash.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_MD5Hash.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_MD5Hash.Location = new System.Drawing.Point(73, 19);
             this.Textbox_MD5Hash.Name = "Textbox_MD5Hash";
             this.Textbox_MD5Hash.ReadOnly = true;

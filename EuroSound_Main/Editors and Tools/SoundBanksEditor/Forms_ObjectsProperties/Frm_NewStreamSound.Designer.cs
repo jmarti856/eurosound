@@ -72,7 +72,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // 
             this.Textbox_ExternalFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_ExternalFile.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_ExternalFile.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_ExternalFile.Location = new System.Drawing.Point(85, 12);
             this.Textbox_ExternalFile.Name = "Textbox_ExternalFile";
             this.Textbox_ExternalFile.ReadOnly = true;

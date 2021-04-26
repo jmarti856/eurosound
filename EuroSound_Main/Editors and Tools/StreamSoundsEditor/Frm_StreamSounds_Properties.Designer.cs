@@ -36,6 +36,8 @@ namespace EuroSound_Application.StreamSounds
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
             this.GroupBox_Properties = new System.Windows.Forms.GroupBox();
+            this.Textbox_Duration = new System.Windows.Forms.TextBox();
+            this.Label_Duration = new System.Windows.Forms.Label();
             this.Textbox_RealSize = new System.Windows.Forms.TextBox();
             this.Label_RealSize = new System.Windows.Forms.Label();
             this.Button_Stop = new System.Windows.Forms.Button();
@@ -62,8 +64,6 @@ namespace EuroSound_Application.StreamSounds
             this.Label_Data = new System.Windows.Forms.Label();
             this.Button_ReplaceAudio = new System.Windows.Forms.Button();
             this.Textbox_IMA_ADPCM = new System.Windows.Forms.TextBox();
-            this.Label_Duration = new System.Windows.Forms.Label();
-            this.Textbox_Duration = new System.Windows.Forms.TextBox();
             this.GroupBox_Properties.SuspendLayout();
             this.ContextMenu_SaveAudio.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Numeric_BaseVolume)).BeginInit();
@@ -124,9 +124,27 @@ namespace EuroSound_Application.StreamSounds
             this.GroupBox_Properties.TabStop = false;
             this.GroupBox_Properties.Text = "Sound Properties:";
             // 
+            // Textbox_Duration
+            // 
+            this.Textbox_Duration.BackColor = System.Drawing.SystemColors.Window;
+            this.Textbox_Duration.Location = new System.Drawing.Point(397, 45);
+            this.Textbox_Duration.Name = "Textbox_Duration";
+            this.Textbox_Duration.ReadOnly = true;
+            this.Textbox_Duration.Size = new System.Drawing.Size(87, 20);
+            this.Textbox_Duration.TabIndex = 13;
+            // 
+            // Label_Duration
+            // 
+            this.Label_Duration.AutoSize = true;
+            this.Label_Duration.Location = new System.Drawing.Point(341, 48);
+            this.Label_Duration.Name = "Label_Duration";
+            this.Label_Duration.Size = new System.Drawing.Size(50, 13);
+            this.Label_Duration.TabIndex = 12;
+            this.Label_Duration.Text = "Duration:";
+            // 
             // Textbox_RealSize
             // 
-            this.Textbox_RealSize.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_RealSize.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_RealSize.Location = new System.Drawing.Point(397, 19);
             this.Textbox_RealSize.Name = "Textbox_RealSize";
             this.Textbox_RealSize.ReadOnly = true;
@@ -199,7 +217,7 @@ namespace EuroSound_Application.StreamSounds
             // 
             // Textbox_Encoding
             // 
-            this.Textbox_Encoding.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Encoding.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Encoding.Location = new System.Drawing.Point(84, 71);
             this.Textbox_Encoding.Name = "Textbox_Encoding";
             this.Textbox_Encoding.ReadOnly = true;
@@ -246,7 +264,7 @@ namespace EuroSound_Application.StreamSounds
             // 
             // Textbox_Bits
             // 
-            this.Textbox_Bits.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Bits.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Bits.Location = new System.Drawing.Point(243, 45);
             this.Textbox_Bits.Name = "Textbox_Bits";
             this.Textbox_Bits.ReadOnly = true;
@@ -273,7 +291,7 @@ namespace EuroSound_Application.StreamSounds
             // 
             // Textbox_Channels
             // 
-            this.Textbox_Channels.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Channels.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Channels.Location = new System.Drawing.Point(84, 45);
             this.Textbox_Channels.Name = "Textbox_Channels";
             this.Textbox_Channels.ReadOnly = true;
@@ -282,7 +300,7 @@ namespace EuroSound_Application.StreamSounds
             // 
             // Textbox_Frequency
             // 
-            this.Textbox_Frequency.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Frequency.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Frequency.Location = new System.Drawing.Point(243, 19);
             this.Textbox_Frequency.Name = "Textbox_Frequency";
             this.Textbox_Frequency.ReadOnly = true;
@@ -352,7 +370,7 @@ namespace EuroSound_Application.StreamSounds
             // 
             this.Textbox_MD5_Hash.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_MD5_Hash.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_MD5_Hash.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_MD5_Hash.Location = new System.Drawing.Point(44, 45);
             this.Textbox_MD5_Hash.Name = "Textbox_MD5_Hash";
             this.Textbox_MD5_Hash.ReadOnly = true;
@@ -392,31 +410,13 @@ namespace EuroSound_Application.StreamSounds
             // 
             this.Textbox_IMA_ADPCM.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_IMA_ADPCM.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_IMA_ADPCM.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_IMA_ADPCM.Location = new System.Drawing.Point(44, 19);
             this.Textbox_IMA_ADPCM.Name = "Textbox_IMA_ADPCM";
             this.Textbox_IMA_ADPCM.ReadOnly = true;
             this.Textbox_IMA_ADPCM.Size = new System.Drawing.Size(369, 20);
             this.Textbox_IMA_ADPCM.TabIndex = 1;
             this.Textbox_IMA_ADPCM.Text = "<NO DATA>";
-            // 
-            // Label_Duration
-            // 
-            this.Label_Duration.AutoSize = true;
-            this.Label_Duration.Location = new System.Drawing.Point(341, 48);
-            this.Label_Duration.Name = "Label_Duration";
-            this.Label_Duration.Size = new System.Drawing.Size(50, 13);
-            this.Label_Duration.TabIndex = 12;
-            this.Label_Duration.Text = "Duration:";
-            // 
-            // Textbox_Duration
-            // 
-            this.Textbox_Duration.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Textbox_Duration.Location = new System.Drawing.Point(397, 45);
-            this.Textbox_Duration.Name = "Textbox_Duration";
-            this.Textbox_Duration.ReadOnly = true;
-            this.Textbox_Duration.Size = new System.Drawing.Size(87, 20);
-            this.Textbox_Duration.TabIndex = 13;
             // 
             // Frm_StreamSounds_Properties
             // 

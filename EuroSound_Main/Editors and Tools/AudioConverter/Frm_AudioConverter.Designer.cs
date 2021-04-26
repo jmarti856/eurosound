@@ -115,7 +115,7 @@ namespace EuroSound_Application.AudioConverter
             // 
             this.Textbox_OutputFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_OutputFolder.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_OutputFolder.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_OutputFolder.Location = new System.Drawing.Point(44, 19);
             this.Textbox_OutputFolder.Name = "Textbox_OutputFolder";
             this.Textbox_OutputFolder.ReadOnly = true;
@@ -261,7 +261,7 @@ namespace EuroSound_Application.AudioConverter
             // Textbox_ItemsCount
             // 
             this.Textbox_ItemsCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Textbox_ItemsCount.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_ItemsCount.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_ItemsCount.Location = new System.Drawing.Point(78, 540);
             this.Textbox_ItemsCount.Name = "Textbox_ItemsCount";
             this.Textbox_ItemsCount.ReadOnly = true;

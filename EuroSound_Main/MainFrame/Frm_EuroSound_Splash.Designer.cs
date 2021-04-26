@@ -52,6 +52,7 @@ namespace EuroSound_Application.SplashForm
             // Label_Status
             // 
             this.Label_Status.AutoSize = true;
+            this.Label_Status.ForeColor = System.Drawing.SystemColors.WindowText;
             this.Label_Status.Location = new System.Drawing.Point(4, 5);
             this.Label_Status.Name = "Label_Status";
             this.Label_Status.Size = new System.Drawing.Size(66, 13);
@@ -62,6 +63,7 @@ namespace EuroSound_Application.SplashForm
             // 
             this.Label_EuroSoundVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_EuroSoundVersion.AutoSize = true;
+            this.Label_EuroSoundVersion.ForeColor = System.Drawing.SystemColors.WindowText;
             this.Label_EuroSoundVersion.Location = new System.Drawing.Point(519, 383);
             this.Label_EuroSoundVersion.Name = "Label_EuroSoundVersion";
             this.Label_EuroSoundVersion.Size = new System.Drawing.Size(107, 13);

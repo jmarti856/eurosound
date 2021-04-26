@@ -60,7 +60,7 @@ namespace EuroSound_Application.Debug_HashTables
             // 
             // Textbox_Console
             // 
-            this.Textbox_Console.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_Console.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_Console.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Textbox_Console.Location = new System.Drawing.Point(3, 16);
             this.Textbox_Console.Multiline = true;
@@ -136,7 +136,7 @@ namespace EuroSound_Application.Debug_HashTables
             // Textbox_OutputFolder
             // 
             this.Textbox_OutputFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_OutputFolder.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_OutputFolder.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_OutputFolder.Location = new System.Drawing.Point(407, 226);
             this.Textbox_OutputFolder.Name = "Textbox_OutputFolder";
             this.Textbox_OutputFolder.ReadOnly = true;

@@ -522,7 +522,7 @@ namespace EuroSound_Application.Musics
             // Textbox_DataCount
             // 
             this.Textbox_DataCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Textbox_DataCount.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_DataCount.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_DataCount.Location = new System.Drawing.Point(74, 240);
             this.Textbox_DataCount.Name = "Textbox_DataCount";
             this.Textbox_DataCount.ReadOnly = true;
@@ -649,7 +649,7 @@ namespace EuroSound_Application.Musics
             this.Rtbx_Jump_Music_Codes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Rtbx_Jump_Music_Codes.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Rtbx_Jump_Music_Codes.BackColor = System.Drawing.SystemColors.Window;
             this.Rtbx_Jump_Music_Codes.ContextMenuStrip = this.ContextMenu_RichTextBox;
             this.Rtbx_Jump_Music_Codes.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Rtbx_Jump_Music_Codes.Location = new System.Drawing.Point(6, 19);
@@ -668,31 +668,31 @@ namespace EuroSound_Application.Musics
             this.RichTextBox_SelectAll,
             this.RichTextBox_Separator2});
             this.ContextMenu_RichTextBox.Name = "ContextMenu_RichTextBox";
-            this.ContextMenu_RichTextBox.Size = new System.Drawing.Size(181, 82);
+            this.ContextMenu_RichTextBox.Size = new System.Drawing.Size(123, 60);
             // 
             // RichTextBox_Copy
             // 
             this.RichTextBox_Copy.Name = "RichTextBox_Copy";
-            this.RichTextBox_Copy.Size = new System.Drawing.Size(180, 22);
+            this.RichTextBox_Copy.Size = new System.Drawing.Size(122, 22);
             this.RichTextBox_Copy.Text = "Copy";
             this.RichTextBox_Copy.Click += new System.EventHandler(this.RichTextBox_Copy_Click);
             // 
             // RichTextBox_Separator1
             // 
             this.RichTextBox_Separator1.Name = "RichTextBox_Separator1";
-            this.RichTextBox_Separator1.Size = new System.Drawing.Size(177, 6);
+            this.RichTextBox_Separator1.Size = new System.Drawing.Size(119, 6);
             // 
             // RichTextBox_SelectAll
             // 
             this.RichTextBox_SelectAll.Name = "RichTextBox_SelectAll";
-            this.RichTextBox_SelectAll.Size = new System.Drawing.Size(180, 22);
+            this.RichTextBox_SelectAll.Size = new System.Drawing.Size(122, 22);
             this.RichTextBox_SelectAll.Text = "Select All";
             this.RichTextBox_SelectAll.Click += new System.EventHandler(this.RichTextBox_SelectAll_Click);
             // 
             // RichTextBox_Separator2
             // 
             this.RichTextBox_Separator2.Name = "RichTextBox_Separator2";
-            this.RichTextBox_Separator2.Size = new System.Drawing.Size(177, 6);
+            this.RichTextBox_Separator2.Size = new System.Drawing.Size(119, 6);
             // 
             // Button_Generate_Hashcodes
             // 

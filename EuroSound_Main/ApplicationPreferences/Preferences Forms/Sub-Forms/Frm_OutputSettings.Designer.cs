@@ -71,7 +71,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             // 
             // Textbox_SoundPath
             // 
-            this.Textbox_SoundPath.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_SoundPath.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_SoundPath.Location = new System.Drawing.Point(25, 155);
             this.Textbox_SoundPath.Name = "Textbox_SoundPath";
             this.Textbox_SoundPath.ReadOnly = true;

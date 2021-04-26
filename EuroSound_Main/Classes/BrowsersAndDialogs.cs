@@ -108,12 +108,12 @@ namespace EuroSound_Application.Clases
             //Ask user to reset color
             if (SelectedColor == -1)
             {
-                if (!SelectedUserColor.ToArgb().Equals(Color.Black.ToArgb()))
+                if (!SelectedUserColor.ToArgb().Equals(SystemColors.WindowText.ToArgb()))
                 {
                     DialogResult QuestionAnswer = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ColorDialogRemoveColor"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (QuestionAnswer == DialogResult.Yes)
                     {
-                        SelectedColor = Color.Black.ToArgb();
+                        SelectedColor = SystemColors.WindowText.ToArgb();
                     }
                 }
             }

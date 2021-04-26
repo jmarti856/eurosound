@@ -221,48 +221,45 @@ namespace EuroSound_Application.Musics
                             Button_UpdateIMAData.Enabled = false;
                         });
 
-                        string ProfileName = EuroSoundFilesFunctions.LoadMusicsDocument(TreeView_MusicData, MusicsList, CurrentFilePath, ProjectInfo, GenericFunctions.ResourcesManager);
-
-                        //Update File name label
-                        UpdateStatusBarLabels();
-
                         //Check that the profile name matches with the current one
+                        string ProfileName = EuroSoundFilesFunctions.LoadMusicsDocument(TreeView_MusicData, MusicsList, CurrentFilePath, ProjectInfo, GenericFunctions.ResourcesManager);
                         if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
                         {
                             FormMustBeClosed = true;
                         }
-                        else
+
+                        //Update File name label
+                        UpdateStatusBarLabels();
+
+                        //Disable button
+                        Button_Generate_Hashcodes.Invoke((MethodInvoker)delegate
                         {
-                            //Disable button
-                            Button_Generate_Hashcodes.Invoke((MethodInvoker)delegate
-                            {
-                                Button_Generate_Hashcodes.Enabled = true;
-                            });
+                            Button_Generate_Hashcodes.Enabled = true;
+                        });
 
-                            //Disable button
-                            Button_UpdateProperties.Invoke((MethodInvoker)delegate
-                            {
-                                Button_UpdateProperties.Enabled = true;
-                            });
+                        //Disable button
+                        Button_UpdateProperties.Invoke((MethodInvoker)delegate
+                        {
+                            Button_UpdateProperties.Enabled = true;
+                        });
 
-                            //Disable button
-                            Button_StopUpdate.Invoke((MethodInvoker)delegate
-                            {
-                                Button_StopUpdate.Enabled = true;
-                            });
+                        //Disable button
+                        Button_StopUpdate.Invoke((MethodInvoker)delegate
+                        {
+                            Button_StopUpdate.Enabled = true;
+                        });
 
-                            //Disable button
-                            Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
-                            {
-                                Button_ExportInterchangeFile.Enabled = true;
-                            });
+                        //Disable button
+                        Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
+                        {
+                            Button_ExportInterchangeFile.Enabled = true;
+                        });
 
-                            //Disable button
-                            Button_UpdateIMAData.Invoke((MethodInvoker)delegate
-                            {
-                                Button_UpdateIMAData.Enabled = true;
-                            });
-                        }
+                        //Disable button
+                        Button_UpdateIMAData.Invoke((MethodInvoker)delegate
+                        {
+                            Button_UpdateIMAData.Enabled = true;
+                        });
 
                         //Set Program status
                         GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));

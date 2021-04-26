@@ -75,7 +75,7 @@ namespace EuroSound_Application.SFXData
             // 
             this.Textbox_SelectedHashcode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Textbox_SelectedHashcode.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Textbox_SelectedHashcode.BackColor = System.Drawing.SystemColors.Window;
             this.Textbox_SelectedHashcode.Location = new System.Drawing.Point(77, 12);
             this.Textbox_SelectedHashcode.Name = "Textbox_SelectedHashcode";
             this.Textbox_SelectedHashcode.ReadOnly = true;

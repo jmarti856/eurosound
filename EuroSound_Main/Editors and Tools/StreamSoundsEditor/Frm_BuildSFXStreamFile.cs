@@ -23,7 +23,6 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
         private string FileName;
         private int DebugFlags;
         private WaveOut outputSound;
-        private AudioFileReader wave;
 
         public Frm_BuildSFXStreamFile(ProjectFile FileProperties, string SoundBankFinalName, int CheckedDebugFlags)
         {
@@ -318,12 +317,6 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                     outputSound.Stop();
                 }
                 outputSound.Dispose();
-            }
-
-            if (wave != null)
-            {
-                wave.Close();
-                wave.Dispose();
             }
         }
     }
