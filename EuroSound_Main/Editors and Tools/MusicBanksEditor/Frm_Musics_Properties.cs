@@ -271,12 +271,6 @@ namespace EuroSound_Application.Musics
                 //Get IMA ADPCM Data
                 TemporalMusic.IMA_ADPCM_DATA_LeftChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_LeftChannel), TemporalMusic.PCM_Data_LeftChannel.Length / 2);
                 AudioReader.Close();
-
-                //Draw audio waves in the UI
-                if (TemporalMusic.PCM_Data_LeftChannel != null && TemporalMusic.Channels_LeftChannel > 0)
-                {
-                    AudioLibrary.DrawAudioWaves(WaveViewer_LeftChannel, TemporalMusic, 0, false);
-                }
             }
 
             if (TemporalMusic != null && TemporalMusic.PCM_Data_LeftChannel != null)
@@ -312,12 +306,6 @@ namespace EuroSound_Application.Musics
                 //Get IMA ADPCM Data
                 TemporalMusic.IMA_ADPCM_DATA_RightChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_RightChannel), TemporalMusic.PCM_Data_RightChannel.Length / 2);
                 AudioReader.Close();
-
-                //Draw audio waves in the UI
-                if (TemporalMusic.PCM_Data_RightChannel != null && TemporalMusic.Channels_RightChannel > 0)
-                {
-                    AudioLibrary.DrawAudioWaves(WaveViewer_RightChannel, TemporalMusic, 0, true);
-                }
             }
 
             if (TemporalMusic != null && TemporalMusic.PCM_Data_RightChannel != null)
@@ -340,6 +328,12 @@ namespace EuroSound_Application.Musics
             Textbox_Frequency_LeftChannel.Text = string.Join(" ", new string[] { TemporalMusic.Frequency_LeftChannel.ToString(), "Hz" });
             Textbox_RealSize_LeftChannel.Text = string.Join(" ", new string[] { TemporalMusic.RealSize_LeftChannel.ToString(), "bytes" });
             Textbox_Duration_LeftChannel.Text = string.Join(" ", new string[] { TemporalMusic.Duration_LeftChannel.ToString(), "ms" });
+
+            //Draw audio waves in the UI
+            if (TemporalMusic.PCM_Data_LeftChannel != null && TemporalMusic.Channels_LeftChannel > 0)
+            {
+                AudioLibrary.DrawAudioWaves(WaveViewer_LeftChannel, TemporalMusic, 0, false);
+            }
         }
 
         private void ShowAudioInfoRightChannel()
@@ -352,6 +346,12 @@ namespace EuroSound_Application.Musics
             Textbox_Frequency_RightChannel.Text = string.Join(" ", new string[] { TemporalMusic.Frequency_RightChannel.ToString(), "Hz" });
             Textbox_RealSize_RightChannel.Text = string.Join(" ", new string[] { TemporalMusic.RealSize_RightChannel.ToString(), "bytes" });
             Textbox_Duration_RightChannel.Text = string.Join(" ", new string[] { TemporalMusic.Duration_RightChannel.ToString(), "ms" });
+
+            //Draw audio waves in the UI
+            if (TemporalMusic.PCM_Data_RightChannel != null && TemporalMusic.Channels_RightChannel > 0)
+            {
+                AudioLibrary.DrawAudioWaves(WaveViewer_RightChannel, TemporalMusic, 0, true);
+            }
         }
     }
 }

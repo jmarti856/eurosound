@@ -153,7 +153,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             UpdateStatusBarLabels();
 
             //Save form location and size
-            WindowsRegistryFunctions.SaveWindowState("DBDView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
+            WindowsRegistryFunctions.SaveWindowState("DBDView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, 0);
 
             //Set Program status
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
@@ -174,7 +174,11 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
         private void Button_HashTablePath_Click(object sender, EventArgs e)
         {
             //Open file browser
-            Textbox_FilePath.Text = BrowsersAndDialogs.FileBrowserDialog("HashTable File (*.h)|*.h", 0, true);
+            string SelectedPath = BrowsersAndDialogs.FileBrowserDialog("HashTable File (*.h)|*.h", 0, true);
+            if (!string.IsNullOrEmpty(SelectedPath))
+            {
+                Textbox_FilePath.Text = SelectedPath;
+            }
 
             //Set Program status
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_GenericReadingFile"));

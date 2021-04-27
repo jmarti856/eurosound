@@ -67,7 +67,11 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         //*===============================================================================================
         private void Button_BrowseSound_Click(object sender, EventArgs e)
         {
-            Textbox_SoundPath.Text = BrowsersAndDialogs.FileBrowserDialog("WAV Files (*.wav)|*.wav", 0, true);
+            string SelectedPath = BrowsersAndDialogs.FileBrowserDialog("WAV Files (*.wav)|*.wav", 0, true);
+            if (!string.IsNullOrEmpty(SelectedPath))
+            {
+                Textbox_SoundPath.Text = SelectedPath;
+            }
         }
 
         private void Button_PlaySound_Click(object sender, EventArgs e)

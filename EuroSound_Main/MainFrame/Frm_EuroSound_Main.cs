@@ -211,7 +211,7 @@ namespace EuroSound_Application
             }
 
             //Save Window position
-            WindowsRegistryFunctions.SaveWindowState("MainFrame", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
+            WindowsRegistryFunctions.SaveWindowState("MainFrame", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, 0);
 
             //Save Recent Files
             RecentFilesMenu.SaveToRegistry();

@@ -139,7 +139,7 @@ namespace EuroSound_Application.StreamSounds
                 }
                 Width = Convert.ToInt32(WindowStateConfig.GetValue("SSView_Width", 997));
                 Height = Convert.ToInt32(WindowStateConfig.GetValue("SSView_Height", 779));
-
+                SplitContainerStreamSoundsForm.SplitterDistance = Convert.ToInt32(WindowStateConfig.GetValue("SSView_SplitterDistance", 456));
                 WindowStateConfig.Close();
             }
 
@@ -363,7 +363,7 @@ namespace EuroSound_Application.StreamSounds
                 ClearStatusBarLabels();
             }
 
-            WindowsRegistryFunctions.SaveWindowState("SSView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
+            WindowsRegistryFunctions.SaveWindowState("SSView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, SplitContainerStreamSoundsForm.SplitterDistance);
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));

@@ -84,7 +84,7 @@ namespace EuroSound_Application.Musics
 
             //Update GUI
             ProgressBarReset(Bar);
-            GenericFunctions.ProgressBarSetMaximum(Bar, 1);
+            GenericFunctions.ProgressBarSetMaximum(Bar, MusicsDictionary.Count);
 
             BWriter.Seek((int)FileStart1, SeekOrigin.Begin);
 
@@ -156,11 +156,15 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         //* FILE SECTION 2
         //*===============================================================================================
-        public void WriteFileSection2(BinaryStream BWriter, Dictionary<uint, EXMusic> MusicsDictionary)
+        public void WriteFileSection2(BinaryStream BWriter, Dictionary<uint, EXMusic> MusicsDictionary, ProgressBar Bar)
         {
             int IndexLC, IndexRC;
             int TotalLength;
             bool StereoInterleaving;
+
+            //Update GUI
+            ProgressBarReset(Bar);
+            GenericFunctions.ProgressBarSetMaximum(Bar, MusicsDictionary.Count);
 
             //Write ADPCM Data
             BWriter.Seek((int)FileStart2, SeekOrigin.Begin);
@@ -191,6 +195,9 @@ namespace EuroSound_Application.Musics
 
                 FileLength2 = TotalLength;
                 FullFileLength = BWriter.BaseStream.Position;
+
+                //Update GUI
+                ProgressBarAddValue(Bar, 1);
             }
         }
 
@@ -201,19 +208,22 @@ namespace EuroSound_Application.Musics
         {
             //Update GUI
             ProgressBarReset(Bar);
-            GenericFunctions.ProgressBarSetMaximum(Bar, MarkersStartList.Count);
+            GenericFunctions.ProgressBarSetMaximum(Bar, 3);
 
             //File Full Size
             BWriter.BaseStream.Seek(0xC, SeekOrigin.Begin);
             BWriter.WriteUInt32((uint)FullFileLength);
+            ProgressBarAddValue(Bar, 1);
 
             //File length 1
             BWriter.BaseStream.Seek(0x14, SeekOrigin.Begin);
             BWriter.WriteUInt32((uint)FileLength1);
+            ProgressBarAddValue(Bar, 1);
 
             //File length 2
             BWriter.BaseStream.Seek(0x1C, SeekOrigin.Begin);
             BWriter.WriteUInt32((uint)FileLength2);
+            ProgressBarAddValue(Bar, 1);
         }
 
         //*===============================================================================================

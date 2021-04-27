@@ -105,6 +105,11 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             TreeViewPreferences.ExpandAll();
         }
 
+        private void Frm_MainPreferences_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            RemoveAllFormsInsidePanel(Panel_SecondaryForms);
+        }
+
         //*===============================================================================================
         //* FORM CONTROLS EVENTS
         //*===============================================================================================

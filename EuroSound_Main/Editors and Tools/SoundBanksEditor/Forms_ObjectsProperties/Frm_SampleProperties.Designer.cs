@@ -105,6 +105,11 @@
             this.Numeric_BaseVolume.Name = "Numeric_BaseVolume";
             this.Numeric_BaseVolume.Size = new System.Drawing.Size(94, 20);
             this.Numeric_BaseVolume.TabIndex = 3;
+            this.Numeric_BaseVolume.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // Label_BaseVolume
             // 

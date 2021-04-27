@@ -608,7 +608,8 @@ namespace EuroSound_Application.Musics
             // 
             // Col_Duration
             // 
-            this.Col_Duration.Text = "Duration";
+            this.Col_Duration.Text = "Duration (ms)";
+            this.Col_Duration.Width = 75;
             // 
             // Col_MarkersCount
             // 

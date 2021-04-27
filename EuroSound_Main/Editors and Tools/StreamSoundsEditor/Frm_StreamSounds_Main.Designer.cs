@@ -460,7 +460,8 @@ namespace EuroSound_Application.StreamSounds
             // 
             // Col_Duration
             // 
-            this.Col_Duration.Text = "Duration";
+            this.Col_Duration.Text = "Duration (ms)";
+            this.Col_Duration.Width = 75;
             // 
             // Col_MarkersCount
             // 
@@ -496,65 +497,65 @@ namespace EuroSound_Application.StreamSounds
             this.ContextMenuSounds_Separator2,
             this.ContextMenuSounds_TextColor});
             this.ContextMenu_Sounds.Name = "ContextMenu_Sounds";
-            this.ContextMenu_Sounds.Size = new System.Drawing.Size(181, 192);
+            this.ContextMenu_Sounds.Size = new System.Drawing.Size(139, 170);
             this.ContextMenu_Sounds.Text = "ContextMenu_StreamSounds";
             // 
             // ContextMenuSounds_Rename
             // 
             this.ContextMenuSounds_Rename.Name = "ContextMenuSounds_Rename";
-            this.ContextMenuSounds_Rename.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuSounds_Rename.Size = new System.Drawing.Size(138, 22);
             this.ContextMenuSounds_Rename.Text = "Rename";
             this.ContextMenuSounds_Rename.Click += new System.EventHandler(this.ContextMenuSounds_Rename_Click);
             // 
             // ContextMenuSounds_Delete
             // 
             this.ContextMenuSounds_Delete.Name = "ContextMenuSounds_Delete";
-            this.ContextMenuSounds_Delete.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuSounds_Delete.Size = new System.Drawing.Size(138, 22);
             this.ContextMenuSounds_Delete.Text = "Delete";
             this.ContextMenuSounds_Delete.Click += new System.EventHandler(this.ContextMenuSounds_Delete_Click);
             // 
             // ContextMenuSounds_Properties
             // 
             this.ContextMenuSounds_Properties.Name = "ContextMenuSounds_Properties";
-            this.ContextMenuSounds_Properties.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuSounds_Properties.Size = new System.Drawing.Size(138, 22);
             this.ContextMenuSounds_Properties.Text = "Properties...";
             this.ContextMenuSounds_Properties.Click += new System.EventHandler(this.ContextMenuSounds_Properties_Click);
             // 
             // ContextMenuSounds_ExportESIF
             // 
             this.ContextMenuSounds_ExportESIF.Name = "ContextMenuSounds_ExportESIF";
-            this.ContextMenuSounds_ExportESIF.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuSounds_ExportESIF.Size = new System.Drawing.Size(138, 22);
             this.ContextMenuSounds_ExportESIF.Text = "Export";
             this.ContextMenuSounds_ExportESIF.Click += new System.EventHandler(this.ContextMenuSounds_ExportESIF_Click);
             // 
             // ContextMenuSounds_Separator1
             // 
             this.ContextMenuSounds_Separator1.Name = "ContextMenuSounds_Separator1";
-            this.ContextMenuSounds_Separator1.Size = new System.Drawing.Size(177, 6);
+            this.ContextMenuSounds_Separator1.Size = new System.Drawing.Size(135, 6);
             // 
             // ContextMenuSounds_MoveUp
             // 
             this.ContextMenuSounds_MoveUp.Name = "ContextMenuSounds_MoveUp";
-            this.ContextMenuSounds_MoveUp.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuSounds_MoveUp.Size = new System.Drawing.Size(138, 22);
             this.ContextMenuSounds_MoveUp.Text = "Move Up";
             this.ContextMenuSounds_MoveUp.Click += new System.EventHandler(this.ContextMenuSounds_MoveUp_Click);
             // 
             // ContextMenuSounds_MoveDown
             // 
             this.ContextMenuSounds_MoveDown.Name = "ContextMenuSounds_MoveDown";
-            this.ContextMenuSounds_MoveDown.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuSounds_MoveDown.Size = new System.Drawing.Size(138, 22);
             this.ContextMenuSounds_MoveDown.Text = "Move Down";
             this.ContextMenuSounds_MoveDown.Click += new System.EventHandler(this.ContextMenuSounds_MoveDown_Click);
             // 
             // ContextMenuSounds_Separator2
             // 
             this.ContextMenuSounds_Separator2.Name = "ContextMenuSounds_Separator2";
-            this.ContextMenuSounds_Separator2.Size = new System.Drawing.Size(177, 6);
+            this.ContextMenuSounds_Separator2.Size = new System.Drawing.Size(135, 6);
             // 
             // ContextMenuSounds_TextColor
             // 
             this.ContextMenuSounds_TextColor.Name = "ContextMenuSounds_TextColor";
-            this.ContextMenuSounds_TextColor.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuSounds_TextColor.Size = new System.Drawing.Size(138, 22);
             this.ContextMenuSounds_TextColor.Text = "Text Color...";
             this.ContextMenuSounds_TextColor.Click += new System.EventHandler(this.ContextMenuSounds_TextColor_Click);
             // 

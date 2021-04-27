@@ -181,6 +181,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
                 Width = Convert.ToInt32(WindowStateConfig.GetValue("SBView_Width", 997));
                 Height = Convert.ToInt32(WindowStateConfig.GetValue("SBView_Height", 779));
+                SplitContainer_SoundbanksForm.SplitterDistance = Convert.ToInt32(WindowStateConfig.GetValue("SBView_SplitterDistance", 456));
 
                 WindowStateConfig.Close();
             }
@@ -461,7 +462,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 ClearStatusBarLabels();
             }
 
-            WindowsRegistryFunctions.SaveWindowState("SBView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
+            WindowsRegistryFunctions.SaveWindowState("SBView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, SplitContainer_SoundbanksForm.SplitterDistance);
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));

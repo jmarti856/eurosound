@@ -133,7 +133,7 @@ namespace EuroSound_Application.Debug_HashTables
             Hashcodes.MFX_JumpCodes.Clear();
 
             //Save Form Position
-            WindowsRegistryFunctions.SaveWindowState("DBView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized);
+            WindowsRegistryFunctions.SaveWindowState("DBView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, 0);
 
             //Set Program status
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
@@ -314,7 +314,11 @@ namespace EuroSound_Application.Debug_HashTables
         private void Button_SearchOutputFolder_Click(object sender, System.EventArgs e)
         {
             //Search directory
-            Textbox_OutputFolder.Text = BrowsersAndDialogs.OpenFolderBrowser();
+            string SelectedPath = BrowsersAndDialogs.OpenFolderBrowser();
+            if (!string.IsNullOrEmpty(SelectedPath))
+            {
+                Textbox_OutputFolder.Text = BrowsersAndDialogs.OpenFolderBrowser();
+            }
         }
     }
 }

@@ -74,6 +74,7 @@ namespace EuroSound_Application.Musics
                 //*===============================================================================================
                 //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED (20%)
                 //*===============================================================================================
+                GenericFunctions.ProgressBarSetMaximum(ProgressBar_CurrentTask, 1);
                 GenericFunctions.ProgressBarValue(ProgressBar_CurrentTask, 0);
 
                 //Update Label
@@ -84,6 +85,7 @@ namespace EuroSound_Application.Musics
 
                 //Discard SFXs that has checked as "no output"
                 FinalMusicsDict = SFXCreator.GetFinalMusicsDictionary(((Frm_Musics_Main)ParentForm).MusicsList, ProgressBar_CurrentTask, Label_CurrentTask);
+                GenericFunctions.ProgressBarValue(ProgressBar_CurrentTask, 1);
 
                 //*===============================================================================================
                 //* STEP 2: CHECK DATA THAT WILL BE OUTPUTED (30%)
@@ -175,7 +177,7 @@ namespace EuroSound_Application.Musics
                         GenericFunctions.SetLabelText(Label_CurrentTask, "Writting IMA ADPCM Data");
 
                         //Write Data
-                        SFXCreator.WriteFileSection2(BWriter, FinalMusicsDict);
+                        SFXCreator.WriteFileSection2(BWriter, FinalMusicsDict, ProgressBar_CurrentTask);
 
                         //Update Total Progress
                         TotalProgress += 10;
