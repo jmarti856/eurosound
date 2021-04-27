@@ -98,6 +98,7 @@
             this.GroupBox_InvolvedPeople.Controls.Add(this.label3);
             this.GroupBox_InvolvedPeople.Controls.Add(this.label2);
             this.GroupBox_InvolvedPeople.Controls.Add(this.Label_Credits);
+            this.GroupBox_InvolvedPeople.ForeColor = System.Drawing.SystemColors.WindowText;
             this.GroupBox_InvolvedPeople.Location = new System.Drawing.Point(12, 47);
             this.GroupBox_InvolvedPeople.Name = "GroupBox_InvolvedPeople";
             this.GroupBox_InvolvedPeople.Size = new System.Drawing.Size(333, 78);
@@ -146,6 +147,7 @@
             this.Groupbox_EuroSoundVersion.Controls.Add(this.Label_Version);
             this.Groupbox_EuroSoundVersion.Controls.Add(this.label1);
             this.Groupbox_EuroSoundVersion.Controls.Add(this.Label_Release);
+            this.Groupbox_EuroSoundVersion.ForeColor = System.Drawing.SystemColors.WindowText;
             this.Groupbox_EuroSoundVersion.Location = new System.Drawing.Point(12, 131);
             this.Groupbox_EuroSoundVersion.Name = "Groupbox_EuroSoundVersion";
             this.Groupbox_EuroSoundVersion.Size = new System.Drawing.Size(333, 62);

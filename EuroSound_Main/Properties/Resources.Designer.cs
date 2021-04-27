@@ -61,6 +61,33 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Cancels the conversion of the sound files.
+        /// </summary>
+        internal static string ACButtonCancel {
+            get {
+                return ResourceManager.GetString("ACButtonCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Clears the list.
+        /// </summary>
+        internal static string ACButtonClear {
+            get {
+                return ResourceManager.GetString("ACButtonClear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Starts the conversion of the sound files in the list to the specified format.
+        /// </summary>
+        internal static string ACButtonStart {
+            get {
+                return ResourceManager.GetString("ACButtonStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a This audio does not use a loop offset.
         /// </summary>
         internal static string AudioNotUseOffset {
@@ -88,11 +115,56 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Add new item to the list.
+        /// </summary>
+        internal static string Button_AddItem {
+            get {
+                return ResourceManager.GetString("Button_AddItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Close the current form.
+        /// </summary>
+        internal static string Button_CloseCurrent {
+            get {
+                return ResourceManager.GetString("Button_CloseCurrent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Delete selected item from the list.
+        /// </summary>
+        internal static string Button_DeleteItem {
+            get {
+                return ResourceManager.GetString("Button_DeleteItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Exports the current project as an EuroSound interchange file, including the project hashcode and name.
         /// </summary>
         internal static string Button_ExportInterchangeFile {
             get {
                 return ResourceManager.GetString("Button_ExportInterchangeFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Generate HashTable.
+        /// </summary>
+        internal static string Button_Gen_GenerateHashTable {
+            get {
+                return ResourceManager.GetString("Button_Gen_GenerateHashTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Open an existing HashTable file.
+        /// </summary>
+        internal static string Button_OpenHashTable {
+            get {
+                return ResourceManager.GetString("Button_OpenHashTable", resourceCulture);
             }
         }
         
@@ -430,6 +502,33 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Debug the MFX HashCodes getting a list with the HashCode and the asociated music info.
+        /// </summary>
+        internal static string DebugMFXHT_DATA {
+            get {
+                return ResourceManager.GetString("DebugMFXHT_DATA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Debug the MFX HashCodes getting a list with the valid Jump Codes.
+        /// </summary>
+        internal static string DebugMFXHT_ValidList {
+            get {
+                return ResourceManager.GetString("DebugMFXHT_ValidList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Debug the SFX HashCodes getting a list with the HashCode and label asociation.
+        /// </summary>
+        internal static string DebugSFXHT {
+            get {
+                return ResourceManager.GetString("DebugSFXHT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Sorry, cannot add an item with this name, an item with this name already exists.
         /// </summary>
         internal static string Error_Adding_AlreadyExists {
@@ -547,11 +646,38 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Generates the SFX_Data.bin file with the data of this table.
+        /// </summary>
+        internal static string Gen_GenerateSFXDataFile {
+            get {
+                return ResourceManager.GetString("Gen_GenerateSFXDataFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a There are no temporal files to clear.
         /// </summary>
         internal static string Gen_NoTemporalFilesStored {
             get {
                 return ResourceManager.GetString("Gen_NoTemporalFilesStored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Reloads the HashTable again.
+        /// </summary>
+        internal static string Gen_ReloadHashTable {
+            get {
+                return ResourceManager.GetString("Gen_ReloadHashTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Search the specified HashCode in the table.
+        /// </summary>
+        internal static string Gen_SearchHashcode {
+            get {
+                return ResourceManager.GetString("Gen_SearchHashcode", resourceCulture);
             }
         }
         
@@ -588,6 +714,15 @@ namespace EuroSound_Application.Properties {
         internal static string GenericUploadedFileWrongExt {
             get {
                 return ResourceManager.GetString("GenericUploadedFileWrongExt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Search an output folder.
+        /// </summary>
+        internal static string GenSearchOutputFolder {
+            get {
+                return ResourceManager.GetString("GenSearchOutputFolder", resourceCulture);
             }
         }
         

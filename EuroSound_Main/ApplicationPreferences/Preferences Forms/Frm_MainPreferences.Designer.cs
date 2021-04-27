@@ -129,7 +129,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Name = "Frm_MainPreferences";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Tag = "Prefs";
-            this.Text = "Preferences";
+            this.Text = "Global Options";
             this.Load += new System.EventHandler(this.Frm_MainPreferences_Load);
             this.ResumeLayout(false);
 

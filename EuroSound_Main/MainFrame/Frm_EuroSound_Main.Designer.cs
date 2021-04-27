@@ -49,6 +49,7 @@ namespace EuroSound_Application
             this.MenuItemWindow_Arrange = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemWindow_Separator = new System.Windows.Forms.ToolStripSeparator();
             this.MainMenu_Tools = new System.Windows.Forms.ToolStripMenuItem();
+            this.MainMenuTools_DebugHashtables = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenuTools_AudioConverter = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenuTools_SFXDataGen = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenuTools_Separator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -70,7 +71,6 @@ namespace EuroSound_Application
             this.EuroSoundTrayIcon_Restore = new System.Windows.Forms.ToolStripMenuItem();
             this.EuroSoundTrayIcon_Separator = new System.Windows.Forms.ToolStripSeparator();
             this.EuroSoundTrayIcon_Close = new System.Windows.Forms.ToolStripMenuItem();
-            this.MainMenuTools_DebugHashtables = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip_MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Hashcode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.File)).BeginInit();
@@ -163,8 +163,8 @@ namespace EuroSound_Application
             // 
             this.MenuItemView_Preferences.MergeIndex = 0;
             this.MenuItemView_Preferences.Name = "MenuItemView_Preferences";
-            this.MenuItemView_Preferences.Size = new System.Drawing.Size(135, 22);
-            this.MenuItemView_Preferences.Text = "Preferences";
+            this.MenuItemView_Preferences.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemView_Preferences.Text = "Global Options";
             this.MenuItemView_Preferences.Click += new System.EventHandler(this.MenuItemView_Preferences_Click);
             // 
             // MenuItemView_StatusBar
@@ -174,7 +174,7 @@ namespace EuroSound_Application
             this.MenuItemView_StatusBar.CheckState = System.Windows.Forms.CheckState.Checked;
             this.MenuItemView_StatusBar.MergeIndex = 1;
             this.MenuItemView_StatusBar.Name = "MenuItemView_StatusBar";
-            this.MenuItemView_StatusBar.Size = new System.Drawing.Size(135, 22);
+            this.MenuItemView_StatusBar.Size = new System.Drawing.Size(180, 22);
             this.MenuItemView_StatusBar.Text = "Status Bar";
             this.MenuItemView_StatusBar.CheckStateChanged += new System.EventHandler(this.MenuItemView_StatusBar_CheckStateChanged);
             // 
@@ -233,6 +233,13 @@ namespace EuroSound_Application
             this.MainMenu_Tools.Name = "MainMenu_Tools";
             this.MainMenu_Tools.Size = new System.Drawing.Size(46, 20);
             this.MainMenu_Tools.Text = "Tools";
+            // 
+            // MainMenuTools_DebugHashtables
+            // 
+            this.MainMenuTools_DebugHashtables.Name = "MainMenuTools_DebugHashtables";
+            this.MainMenuTools_DebugHashtables.Size = new System.Drawing.Size(194, 22);
+            this.MainMenuTools_DebugHashtables.Text = "Debug HashTables";
+            this.MainMenuTools_DebugHashtables.Click += new System.EventHandler(this.MainMenuTools_DebugHashtables_Click);
             // 
             // MainMenuTools_AudioConverter
             // 
@@ -388,13 +395,6 @@ namespace EuroSound_Application
             this.EuroSoundTrayIcon_Close.Size = new System.Drawing.Size(134, 22);
             this.EuroSoundTrayIcon_Close.Text = "Close";
             this.EuroSoundTrayIcon_Close.Click += new System.EventHandler(this.EuroSoundTrayIcon_Close_Click);
-            // 
-            // MainMenuTools_DebugHashtables
-            // 
-            this.MainMenuTools_DebugHashtables.Name = "MainMenuTools_DebugHashtables";
-            this.MainMenuTools_DebugHashtables.Size = new System.Drawing.Size(194, 22);
-            this.MainMenuTools_DebugHashtables.Text = "Debug HashTables";
-            this.MainMenuTools_DebugHashtables.Click += new System.EventHandler(this.MainMenuTools_DebugHashtables_Click);
             // 
             // Frm_EuroSound_Main
             // 

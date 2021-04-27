@@ -23,6 +23,16 @@ namespace EuroSound_Application.SFXData
         public Frm_SFX_DataGenerator()
         {
             InitializeComponent();
+
+            //Buttons
+            Button_Search.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("Gen_SearchHashcode")); };
+            Button_Search.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+
+            Button_Reload.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("Gen_ReloadHashTable")); };
+            Button_Reload.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+
+            button_generateFile.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("Gen_GenerateSFXDataFile")); };
+            button_generateFile.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
         }
 
         //*===============================================================================================
@@ -80,10 +90,16 @@ namespace EuroSound_Application.SFXData
                 IsBackground = true
             };
             LoadSfxDataTable.Start();
+
+            //Update File name label
+            UpdateStatusBarLabels();
         }
 
         private void Frm_SFX_DataGenerator_Enter(object sender, EventArgs e)
         {
+            //Update File name label
+            UpdateStatusBarLabels();
+
             if (WindowState == FormWindowState.Maximized)
             {
                 MdiParent.Text = "EuroSound";
@@ -126,10 +142,25 @@ namespace EuroSound_Application.SFXData
             //Reset title
             MdiParent.Text = "EuroSound";
 
+            //Update File name label
+            UpdateStatusBarLabels();
+
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
+        private void UpdateStatusBarLabels()
+        {
+            //Update File name label
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "File");
+
+            //Update Hashcode name label
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "Hashcode");
+        }
+
+        //*===============================================================================================
+        //* FUNCTIONS
+        //*===============================================================================================
         private void LoadDataFromHashtable()
         {
             ListViewItem ItemToAdd;

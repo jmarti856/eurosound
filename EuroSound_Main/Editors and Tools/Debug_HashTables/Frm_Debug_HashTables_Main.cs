@@ -22,6 +22,19 @@ namespace EuroSound_Application.Debug_HashTables
         public Frm_Debug_HashTables_Main()
         {
             InitializeComponent();
+
+            //Buttons
+            Button_MFX_ValidList.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("DebugMFXHT_ValidList")); };
+            Button_MFX_ValidList.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+
+            Button_MFX_Data.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("DebugMFXHT_DATA")); };
+            Button_MFX_Data.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+
+            Button_HT_Sound.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("DebugSFXHT")); };
+            Button_HT_Sound.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+
+            Button_SearchOutputFolder.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("GenSearchOutputFolder")); };
+            Button_SearchOutputFolder.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
         }
 
         //*===============================================================================================
@@ -64,6 +77,9 @@ namespace EuroSound_Application.Debug_HashTables
                 MdiParent.Text = "EuroSound - HashTables Debugger";
             }
 
+            //Update File name label
+            UpdateStatusBarLabels();
+
             //Set Program status
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
@@ -71,6 +87,9 @@ namespace EuroSound_Application.Debug_HashTables
 
         private void Frm_Debug_HashTables_Main_Enter(object sender, EventArgs e)
         {
+            //Update File name label
+            UpdateStatusBarLabels();
+
             if (WindowState == FormWindowState.Maximized)
             {
                 MdiParent.Text = "EuroSound";
@@ -107,6 +126,9 @@ namespace EuroSound_Application.Debug_HashTables
             //Reset title
             MdiParent.Text = "EuroSound";
 
+            //Update File name label
+            UpdateStatusBarLabels();
+
             //Clear Dictionary
             Hashcodes.MFX_JumpCodes.Clear();
 
@@ -115,6 +137,15 @@ namespace EuroSound_Application.Debug_HashTables
 
             //Set Program status
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+        }
+
+        private void UpdateStatusBarLabels()
+        {
+            //Update File name label
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "File");
+
+            //Update Hashcode name label
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "Hashcode");
         }
 
         //*===============================================================================================

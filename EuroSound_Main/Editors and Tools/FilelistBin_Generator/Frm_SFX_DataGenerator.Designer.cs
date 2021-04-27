@@ -34,7 +34,6 @@ namespace EuroSound_Application.SFXData
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_SFX_DataGenerator));
             this.label_hashcode = new System.Windows.Forms.Label();
             this.button_generateFile = new System.Windows.Forms.Button();
-            this.FolderSavePath = new System.Windows.Forms.FolderBrowserDialog();
             this.Textbox_SelectedHashcode = new System.Windows.Forms.TextBox();
             this.Button_Reload = new System.Windows.Forms.Button();
             this.Label_Hashcodes = new System.Windows.Forms.Label();
@@ -63,11 +62,11 @@ namespace EuroSound_Application.SFXData
             // button_generateFile
             // 
             this.button_generateFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_generateFile.Location = new System.Drawing.Point(489, 553);
+            this.button_generateFile.Location = new System.Drawing.Point(542, 553);
             this.button_generateFile.Name = "button_generateFile";
-            this.button_generateFile.Size = new System.Drawing.Size(128, 23);
+            this.button_generateFile.Size = new System.Drawing.Size(75, 23);
             this.button_generateFile.TabIndex = 6;
-            this.button_generateFile.Text = "Generate SFX_Data.bin";
+            this.button_generateFile.Text = "Generate";
             this.button_generateFile.UseVisualStyleBackColor = true;
             this.button_generateFile.Click += new System.EventHandler(this.Button_generateFile_Click);
             // 
@@ -231,7 +230,6 @@ namespace EuroSound_Application.SFXData
         private System.Windows.Forms.ColumnHeader col_samplestreamed;
         private System.Windows.Forms.Label label_hashcode;
         private System.Windows.Forms.Button button_generateFile;
-        private System.Windows.Forms.FolderBrowserDialog FolderSavePath;
         private System.Windows.Forms.TextBox Textbox_SelectedHashcode;
         private System.Windows.Forms.Button Button_Reload;
         private System.Windows.Forms.Label Label_Hashcodes;

@@ -26,6 +26,16 @@ namespace EuroSound_Application.AudioConverter
         public Frm_AudioConverter()
         {
             InitializeComponent();
+
+            //Buttons
+            Button_Start.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ACButtonStart")); };
+            Button_Start.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+
+            Button_Cancel.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ACButtonCancel")); };
+            Button_Cancel.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+
+            Button_ClearList.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ACButtonClear")); };
+            Button_ClearList.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
         }
 
         //*===============================================================================================
@@ -72,12 +82,18 @@ namespace EuroSound_Application.AudioConverter
                 MdiParent.Text = "EuroSound - Audio Converter";
             }
 
+            //Update File name label
+            UpdateStatusBarLabels();
+
             //Set Program status
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         private void Frm_AudioConverter_Enter(object sender, EventArgs e)
         {
+            //Update File name label
+            UpdateStatusBarLabels();
+
             if (WindowState == FormWindowState.Maximized)
             {
                 MdiParent.Text = "EuroSound";
@@ -107,8 +123,20 @@ namespace EuroSound_Application.AudioConverter
             //Update Text
             MdiParent.Text = "EuroSound";
 
+            //Update File name label
+            UpdateStatusBarLabels();
+
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+        }
+
+        private void UpdateStatusBarLabels()
+        {
+            //Update File name label
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "File");
+
+            //Update Hashcode name label
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "Hashcode");
         }
 
         //*===============================================================================================

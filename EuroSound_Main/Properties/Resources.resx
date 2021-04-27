@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ACButtonCancel" xml:space="preserve">
+    <value>Cancels the conversion of the sound files</value>
+  </data>
+  <data name="ACButtonClear" xml:space="preserve">
+    <value>Clears the list</value>
+  </data>
+  <data name="ACButtonStart" xml:space="preserve">
+    <value>Starts the conversion of the sound files in the list to the specified format</value>
+  </data>
   <data name="AudioNotUseOffset" xml:space="preserve">
     <value>This audio does not use a loop offset</value>
   </data>
@@ -150,8 +159,23 @@
   <data name="ButtonUpdateIMAData" xml:space="preserve">
     <value>Clears and generates again the IMA ADPCM data from each object in the project.</value>
   </data>
+  <data name="Button_AddItem" xml:space="preserve">
+    <value>Add new item to the list</value>
+  </data>
+  <data name="Button_CloseCurrent" xml:space="preserve">
+    <value>Close the current form</value>
+  </data>
+  <data name="Button_DeleteItem" xml:space="preserve">
+    <value>Delete selected item from the list</value>
+  </data>
   <data name="Button_ExportInterchangeFile" xml:space="preserve">
     <value>Exports the current project as an EuroSound interchange file, including the project hashcode and name</value>
+  </data>
+  <data name="Button_Gen_GenerateHashTable" xml:space="preserve">
+    <value>Generate HashTable</value>
+  </data>
+  <data name="Button_OpenHashTable" xml:space="preserve">
+    <value>Open an existing HashTable file</value>
   </data>
   <data name="ColorDialogRemoveColor" xml:space="preserve">
     <value>Remove color from item?</value>
@@ -240,6 +264,15 @@
   <data name="ContextMenuStreamSound_MoveUp" xml:space="preserve">
     <value>Move one level up the selected item.</value>
   </data>
+  <data name="DebugMFXHT_DATA" xml:space="preserve">
+    <value>Debug the MFX HashCodes getting a list with the HashCode and the asociated music info</value>
+  </data>
+  <data name="DebugMFXHT_ValidList" xml:space="preserve">
+    <value>Debug the MFX HashCodes getting a list with the valid Jump Codes</value>
+  </data>
+  <data name="DebugSFXHT" xml:space="preserve">
+    <value>Debug the SFX HashCodes getting a list with the HashCode and label asociation</value>
+  </data>
   <data name="ErrorLoopOffsetNoValid" xml:space="preserve">
     <value>The entered loop offset value is not valid.</value>
   </data>
@@ -270,6 +303,9 @@
   <data name="GenericUploadedFileWrongExt" xml:space="preserve">
     <value>The selected file is not valid, please choose a file with a valid extension</value>
   </data>
+  <data name="GenSearchOutputFolder" xml:space="preserve">
+    <value>Search an output folder</value>
+  </data>
   <data name="Gen_DirectoryNotExists" xml:space="preserve">
     <value>The specified directory does not exists.</value>
   </data>
@@ -285,8 +321,17 @@
   <data name="Gen_FileNotExists" xml:space="preserve">
     <value>The specified file does not exists.</value>
   </data>
+  <data name="Gen_GenerateSFXDataFile" xml:space="preserve">
+    <value>Generates the SFX_Data.bin file with the data of this table</value>
+  </data>
   <data name="Gen_NoTemporalFilesStored" xml:space="preserve">
     <value>There are no temporal files to clear</value>
+  </data>
+  <data name="Gen_ReloadHashTable" xml:space="preserve">
+    <value>Reloads the HashTable again</value>
+  </data>
+  <data name="Gen_SearchHashcode" xml:space="preserve">
+    <value>Search the specified HashCode in the table</value>
   </data>
   <data name="Gen_TemporalFilesRemovedSuccess" xml:space="preserve">
     <value>Temporal files cleared successfully</value>
