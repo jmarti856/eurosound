@@ -97,7 +97,7 @@ namespace EuroSound_Application.StreamSounds
                     MarkerFilesMusic_Loader MarkerFilesFunctions = new MarkerFilesMusic_Loader();
 
                     //Load Markers
-                    List<string> ImportResults = MarkerFilesFunctions.LoadMusicMarkersFile(FilePath, TemporalSelectedMusic);
+                    IList<string> ImportResults = MarkerFilesFunctions.LoadMusicMarkersFile(FilePath, TemporalSelectedMusic);
                     if (ImportResults.Count > 0)
                     {
                         GenericFunctions.ShowErrorsAndWarningsList(ImportResults, "Import Results", this);
@@ -116,7 +116,7 @@ namespace EuroSound_Application.StreamSounds
                     MarkerFiles_Loader MarkerFilesFunctions = new MarkerFiles_Loader();
 
                     //Load Markers
-                    List<string> ImportResults = MarkerFilesFunctions.LoadSTRMarkersFile(FilePath, TemporalSelectedSound);
+                    IList<string> ImportResults = MarkerFilesFunctions.LoadSTRMarkersFile(FilePath, TemporalSelectedSound);
                     if (ImportResults.Count > 0)
                     {
                         GenericFunctions.ShowErrorsAndWarningsList(ImportResults, "Import Results", this);

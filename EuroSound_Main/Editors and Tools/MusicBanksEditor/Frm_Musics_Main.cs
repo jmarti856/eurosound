@@ -824,7 +824,7 @@ namespace EuroSound_Application.Musics
             if (!string.IsNullOrEmpty(FilePath))
             {
                 ESIF_Loader EuroSoundPropertiesFileLoader = new ESIF_Loader();
-                List<string> ImportResults = EuroSoundPropertiesFileLoader.LoadMusicBank_File(FilePath, ProjectInfo, MusicsList, TreeView_MusicData);
+                IList<string> ImportResults = EuroSoundPropertiesFileLoader.LoadMusicBank_File(FilePath, ProjectInfo, MusicsList, TreeView_MusicData);
                 if (ImportResults.Count > 0)
                 {
                     GenericFunctions.ShowErrorsAndWarningsList(ImportResults, "Import Results", this);

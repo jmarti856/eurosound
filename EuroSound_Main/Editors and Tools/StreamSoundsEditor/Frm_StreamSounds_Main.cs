@@ -639,7 +639,7 @@ namespace EuroSound_Application.StreamSounds
             if (!string.IsNullOrEmpty(FilePath))
             {
                 ESIF_Loader EuroSoundPropertiesFileLoader = new ESIF_Loader();
-                List<string> ImportResults = EuroSoundPropertiesFileLoader.LoadStreamSoundBank_File(FilePath, ProjectInfo, StreamSoundsList, TreeView_StreamData);
+                IList<string> ImportResults = EuroSoundPropertiesFileLoader.LoadStreamSoundBank_File(FilePath, ProjectInfo, StreamSoundsList, TreeView_StreamData);
                 if (ImportResults.Count > 0)
                 {
                     GenericFunctions.ShowErrorsAndWarningsList(ImportResults, "Import Results", this);

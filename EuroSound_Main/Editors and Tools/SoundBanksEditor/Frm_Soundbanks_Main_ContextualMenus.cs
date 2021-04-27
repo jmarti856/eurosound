@@ -249,7 +249,7 @@ namespace EuroSound_Application.SoundBanksEditor
             if (!string.IsNullOrEmpty(FilePath))
             {
                 ESIF_Loader EuroSoundPropertiesFileLoader = new ESIF_Loader();
-                List<string> ImportResults = EuroSoundPropertiesFileLoader.LoadSFX_File(FilePath, ProjectInfo, SoundsList, AudioDataDict, TreeView_File);
+                IList<string> ImportResults = EuroSoundPropertiesFileLoader.LoadSFX_File(FilePath, ProjectInfo, SoundsList, AudioDataDict, TreeView_File);
                 if (ImportResults.Count > 0)
                 {
                     GenericFunctions.ShowErrorsAndWarningsList(ImportResults, "Import Results", this);

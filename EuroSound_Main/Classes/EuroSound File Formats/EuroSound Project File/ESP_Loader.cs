@@ -71,34 +71,28 @@ namespace EuroSound_Application.EuroSound_Profiles
 
                     if (ReadingSection)
                     {
-                        bool ParseRes;
-                        int NumericValue;
-
                         string[] LineData = line.Trim().Split('=');
                         switch (LineData[0])
                         {
                             case "Frequency":
-                                ParseRes = int.TryParse(LineData[1], out NumericValue);
-                                if (ParseRes)
+                                if (int.TryParse(LineData[1], out int SoundbankFrequencyParsed))
                                 {
-                                    GlobalPreferences.SoundbankFrequency = NumericValue;
+                                    GlobalPreferences.SoundbankFrequency = SoundbankFrequencyParsed;
                                 }
                                 break;
                             case "Encoding":
                                 GlobalPreferences.SoundbankEncoding = LineData[1];
                                 break;
                             case "Bits":
-                                ParseRes = int.TryParse(LineData[1], out NumericValue);
-                                if (ParseRes)
+                                if (int.TryParse(LineData[1], out int SoundbankBitsParsed))
                                 {
-                                    GlobalPreferences.SoundbankBits = NumericValue;
+                                    GlobalPreferences.SoundbankBits = SoundbankBitsParsed;
                                 }
                                 break;
                             case "Channels":
-                                ParseRes = int.TryParse(LineData[1], out NumericValue);
-                                if (ParseRes)
+                                if (int.TryParse(LineData[1], out int SoundbankChannelsParsed))
                                 {
-                                    GlobalPreferences.SoundbankChannels = NumericValue;
+                                    GlobalPreferences.SoundbankChannels = SoundbankChannelsParsed;
                                 }
                                 break;
                         }
@@ -136,34 +130,28 @@ namespace EuroSound_Application.EuroSound_Profiles
 
                     if (ReadingSection)
                     {
-                        bool ParseRes;
-                        int NumericValue;
-
                         string[] LineData = line.Trim().Split('=');
                         switch (LineData[0])
                         {
                             case "Frequency":
-                                ParseRes = int.TryParse(LineData[1], out NumericValue);
-                                if (ParseRes)
+                                if (int.TryParse(LineData[1], out int StreambankFrequencyParsed))
                                 {
-                                    GlobalPreferences.StreambankFrequency = NumericValue;
+                                    GlobalPreferences.StreambankFrequency = StreambankFrequencyParsed;
                                 }
                                 break;
                             case "Encoding":
                                 GlobalPreferences.StreambankEncoding = LineData[1];
                                 break;
                             case "Bits":
-                                ParseRes = int.TryParse(LineData[1], out NumericValue);
-                                if (ParseRes)
+                                if (int.TryParse(LineData[1], out int StreambankBitsParsed))
                                 {
-                                    GlobalPreferences.StreambankBits = NumericValue;
+                                    GlobalPreferences.StreambankBits = StreambankBitsParsed;
                                 }
                                 break;
                             case "Channels":
-                                ParseRes = int.TryParse(LineData[1], out NumericValue);
-                                if (ParseRes)
+                                if (int.TryParse(LineData[1], out int StreambankChannelsParsed))
                                 {
-                                    GlobalPreferences.StreambankChannels = NumericValue;
+                                    GlobalPreferences.StreambankChannels = StreambankChannelsParsed;
                                 }
                                 break;
                         }
@@ -201,34 +189,28 @@ namespace EuroSound_Application.EuroSound_Profiles
 
                     if (ReadingSection)
                     {
-                        bool ParseRes;
-                        int NumericValue;
-
                         string[] LineData = line.Trim().Split('=');
                         switch (LineData[0])
                         {
                             case "Frequency":
-                                ParseRes = int.TryParse(LineData[1], out NumericValue);
-                                if (ParseRes)
+                                if (int.TryParse(LineData[1], out int MusicbankFrequencyParsed))
                                 {
-                                    GlobalPreferences.MusicbankFrequency = NumericValue;
+                                    GlobalPreferences.MusicbankFrequency = MusicbankFrequencyParsed;
                                 }
                                 break;
                             case "Encoding":
                                 GlobalPreferences.MusicbankEncoding = LineData[1];
                                 break;
                             case "Bits":
-                                ParseRes = int.TryParse(LineData[1], out NumericValue);
-                                if (ParseRes)
+                                if (int.TryParse(LineData[1], out int MusicbankBitsParsed))
                                 {
-                                    GlobalPreferences.MusicbankBits = NumericValue;
+                                    GlobalPreferences.MusicbankBits = MusicbankBitsParsed;
                                 }
                                 break;
                             case "Channels":
-                                ParseRes = int.TryParse(LineData[1], out NumericValue);
-                                if (ParseRes)
+                                if (int.TryParse(LineData[1], out int MusicbankChannelsParsed))
                                 {
-                                    GlobalPreferences.MusicbankChannels = NumericValue;
+                                    GlobalPreferences.MusicbankChannels = MusicbankChannelsParsed;
                                 }
                                 break;
                         }

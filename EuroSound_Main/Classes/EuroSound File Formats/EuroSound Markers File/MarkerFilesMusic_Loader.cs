@@ -15,48 +15,52 @@ namespace EuroSound_Application.MarkerFiles
         private List<string> ImportResults = new List<string>();
         MarkersFunctions MKFunctions = new MarkersFunctions();
 
-        internal List<string> LoadMusicMarkersFile(string FilePath, EXMusic MusicToModify)
+        internal IList<string> LoadMusicMarkersFile(string FilePath, EXMusic MusicToModify)
         {
             string[] FileLines = File.ReadAllLines(FilePath);
-            string[] KeyWordValues = null;
             string CurrentKeyWord;
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingMRKFile"));
 
-            //Check File
-            if (FileLines[0].Equals("*EUROSOUND_MARKERS_FILE V1.0"))
+            //Check file is not empty
+            if (FileLines.Length > 0)
             {
-                for (int i = 1; i < FileLines.Length; i++)
+                //Check file is correct
+                CurrentKeyWord = GetKeyWord(FileLines[0]);
+                if (CurrentKeyWord.Equals("EUROSOUND"))
                 {
-                    CurrentKeyWord = GetKeyWord(FileLines[i]);
-                    if (string.IsNullOrEmpty(CurrentKeyWord) || CurrentKeyWord.Equals("COMMENT"))
+                    for (int i = 1; i < FileLines.Length; i++)
                     {
-                        continue;
-                    }
-                    else
-                    {
-                        //Check for start markers block
-                        if (CurrentKeyWord.Equals("STRSTARTMARKERS"))
+                        CurrentKeyWord = GetKeyWord(FileLines[i]);
+                        if (string.IsNullOrEmpty(CurrentKeyWord) || CurrentKeyWord.Equals("COMMENT"))
                         {
-                            i++;
-                            MusicToModify.StartMarkers.Clear();
-                            ReadSTRStartMarkersBlock(FileLines, i, CurrentKeyWord, KeyWordValues, MusicToModify);
+                            continue;
                         }
-
-                        //Check for markers block
-                        if (CurrentKeyWord.Equals("STRMARKERS"))
+                        else
                         {
-                            i++;
-                            MusicToModify.Markers.Clear();
-                            ReadMusicMarkersBlock(FileLines, i, CurrentKeyWord, KeyWordValues, MusicToModify);
+                            //Check for start markers block
+                            if (CurrentKeyWord.Equals("STRSTARTMARKERS"))
+                            {
+                                i++;
+                                MusicToModify.StartMarkers.Clear();
+                                ReadSTRStartMarkersBlock(FileLines, i, MusicToModify);
+                            }
+
+                            //Check for markers block
+                            if (CurrentKeyWord.Equals("STRMARKERS"))
+                            {
+                                i++;
+                                MusicToModify.Markers.Clear();
+                                ReadMusicMarkersBlock(FileLines, i, MusicToModify);
+                            }
                         }
                     }
                 }
-            }
-            else
-            {
-                ImportResults.Add(string.Join("", "0", "Error the file: ", FilePath, " is not valid"));
+                else
+                {
+                    ImportResults.Add(string.Join("", "0", "Error the file: ", FilePath, " is not valid"));
+                }
             }
 
             //Update Status Bar
@@ -65,44 +69,65 @@ namespace EuroSound_Application.MarkerFiles
             return ImportResults;
         }
 
-        private void ReadSTRStartMarkersBlock(string[] FileLines, int CurrentIndex, string CurrentKeyWord, string[] KeyWordValues, EXMusic Music)
+        private void ReadSTRStartMarkersBlock(string[] FileLines, int CurrentIndex, EXMusic Music)
         {
             uint Position = 0, MarkerType = 0, MarkerPos = 0, LoopStart = 0, LoopMarkerCount = 0, StateA = 0, StateB = 0;
 
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
-                CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                string CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
                 if (CurrentKeyWord.Equals("MARKER"))
                 {
                     CurrentIndex++;
                     while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
                     {
                         CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
-                        KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
+                        string[] KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
                         if (KeyWordValues.Length > 0)
                         {
                             switch (CurrentKeyWord)
                             {
                                 case "POSITION":
-                                    Position = uint.Parse(KeyWordValues[0]);
+                                    if (uint.TryParse(KeyWordValues[0], out uint PositionParsed))
+                                    {
+                                        Position = PositionParsed;
+                                    }
                                     break;
                                 case "TYPE":
-                                    MarkerType = uint.Parse(KeyWordValues[0]);
+                                    if (uint.TryParse(KeyWordValues[0], out uint MarkerTypeParsed))
+                                    {
+                                        MarkerType = MarkerTypeParsed;
+                                    }
                                     break;
                                 case "LOOPSTART":
-                                    LoopStart = uint.Parse(KeyWordValues[0]);
+                                    if (uint.TryParse(KeyWordValues[0], out uint LoopStartParsed))
+                                    {
+                                        LoopStart = LoopStartParsed;
+                                    }
                                     break;
                                 case "LOOPMARKERCOUNT":
-                                    LoopMarkerCount = uint.Parse(KeyWordValues[0]);
+                                    if (uint.TryParse(KeyWordValues[0], out uint LoopMarkerCountParsed))
+                                    {
+                                        LoopMarkerCount = LoopMarkerCountParsed;
+                                    }
                                     break;
                                 case "MARKERPOS":
-                                    MarkerPos = uint.Parse(KeyWordValues[0]);
+                                    if (uint.TryParse(KeyWordValues[0], out uint MarkerPosParsed))
+                                    {
+                                        MarkerPos = MarkerPosParsed;
+                                    }
                                     break;
                                 case "STATEA":
-                                    StateA = uint.Parse(KeyWordValues[0]);
+                                    if (uint.TryParse(KeyWordValues[0], out uint StateAParsed))
+                                    {
+                                        StateA = StateAParsed;
+                                    }
                                     break;
                                 case "STATEB":
-                                    StateB = uint.Parse(KeyWordValues[0]);
+                                    if (uint.TryParse(KeyWordValues[0], out uint StateBParsed))
+                                    {
+                                        StateB = StateBParsed;
+                                    }
                                     break;
                             }
                         }
@@ -122,42 +147,60 @@ namespace EuroSound_Application.MarkerFiles
             }
         }
 
-        private void ReadMusicMarkersBlock(string[] FileLines, int CurrentIndex, string CurrentKeyWord, string[] KeyWordValues, EXMusic Music)
+        private void ReadMusicMarkersBlock(string[] FileLines, int CurrentIndex, EXMusic Music)
         {
             int Name = 0;
             uint Position = 0, MarkerType = 0, MarkerCount = 0, LoopStart = 0, LoopMarkerCount = 0;
 
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
-                CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                string CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
                 if (CurrentKeyWord.Equals("MARKER"))
                 {
                     CurrentIndex++;
                     while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
                     {
                         CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
-                        KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
+                        string[] KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
                         if (KeyWordValues.Length > 0)
                         {
                             switch (CurrentKeyWord)
                             {
                                 case "NAME":
-                                    Name = int.Parse(KeyWordValues[0]);
+                                    if (int.TryParse(KeyWordValues[0], out int NameParsed))
+                                    {
+                                        Name = NameParsed;
+                                    }
                                     break;
                                 case "POSITION":
-                                    Position = uint.Parse(KeyWordValues[0]);
+                                    if (uint.TryParse(KeyWordValues[0], out uint PositionParsed))
+                                    {
+                                        Position = PositionParsed;
+                                    }
                                     break;
                                 case "TYPE":
-                                    MarkerType = uint.Parse(KeyWordValues[0]);
+                                    if (uint.TryParse(KeyWordValues[0], out uint MarkerTypeParsed))
+                                    {
+                                        MarkerType = MarkerTypeParsed;
+                                    }
                                     break;
                                 case "MARKERCOUNT":
-                                    MarkerCount = uint.Parse(KeyWordValues[0]);
+                                    if (uint.TryParse(KeyWordValues[0], out uint MarkerCountParsed))
+                                    {
+                                        MarkerCount = MarkerCountParsed;
+                                    }
                                     break;
                                 case "LOOPSTART":
-                                    LoopStart = uint.Parse(KeyWordValues[0]);
+                                    if (uint.TryParse(KeyWordValues[0], out uint LoopStartParsed))
+                                    {
+                                        LoopStart = LoopStartParsed;
+                                    }
                                     break;
                                 case "LOOPMARKERCOUNT":
-                                    LoopMarkerCount = uint.Parse(KeyWordValues[0]);
+                                    if (uint.TryParse(KeyWordValues[0], out uint LoopMarkerCountParsed))
+                                    {
+                                        LoopMarkerCount = LoopMarkerCountParsed;
+                                    }
                                     break;
                             }
                         }

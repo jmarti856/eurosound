@@ -14,8 +14,8 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 {
     internal class ESIF_Exporter
     {
-        AudioFunctions AudioF = new AudioFunctions();
-        List<string> AudiosAssocTable = new List<string>();
+        private AudioFunctions AudioF = new AudioFunctions();
+        private List<string> AudiosAssocTable = new List<string>();
 
         //*===============================================================================================
         //* SFX Soundbank

@@ -7,7 +7,7 @@ namespace EuroSound_Application.Classes.SFX_Files
 {
     class SFX_ChecksBeforeGeneration
     {
-        internal bool ValidateMarkers(List<EXStreamMarker> MarkersList, string ObjectName, List<string> Reports)
+        internal bool ValidateMarkers(List<EXStreamMarker> MarkersList, string ObjectName, IList<string> Reports)
         {
             int StartMarkers, EndMarkers, GotoMarkers, LoopMarkers;
             bool MarkersCorrect = true;
@@ -73,7 +73,7 @@ namespace EuroSound_Application.Classes.SFX_Files
             return MarkersCorrect;
         }
 
-        internal bool ValidateMusics(EXMusic MusicToOutput, string ObjectName, List<string> Reports)
+        internal bool ValidateMusics(EXMusic MusicToOutput, string ObjectName, IList<string> Reports)
         {
             bool MusicIsCorrect = true;
 
@@ -142,7 +142,7 @@ namespace EuroSound_Application.Classes.SFX_Files
             return MusicIsCorrect;
         }
 
-        internal bool ValidateStreamingSounds(EXSoundStream StreamSoundToExport, string ObjectName, List<string> Reports)
+        internal bool ValidateStreamingSounds(EXSoundStream StreamSoundToExport, string ObjectName, IList<string> Reports)
         {
             bool StreamSoundIsCorrect = true;
 
@@ -158,7 +158,7 @@ namespace EuroSound_Application.Classes.SFX_Files
             return StreamSoundIsCorrect;
         }
 
-        internal bool ValidateSFX(EXSound SoundToExport, List<uint> Hashcodes, string ObjectName, List<string> Reports)
+        internal bool ValidateSFX(EXSound SoundToExport, IList<uint> Hashcodes, string ObjectName, IList<string> Reports)
         {
             bool SFXIsCorrect = true;
 
@@ -239,7 +239,7 @@ namespace EuroSound_Application.Classes.SFX_Files
             return SFXIsCorrect;
         }
 
-        internal bool ValidateAudios(EXAudio AudioToExport, string ObjectName, List<string> Reports)
+        internal bool ValidateAudios(EXAudio AudioToExport, string ObjectName, IList<string> Reports)
         {
             bool AudioIsValid = true;
 

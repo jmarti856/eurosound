@@ -31,54 +31,58 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         //*===============================================================================================
         //* SFX Soundbank
         //*===============================================================================================
-        internal List<string> LoadSFX_File(string FilePath, ProjectFile FileProperties, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
+        internal IList<string> LoadSFX_File(string FilePath, ProjectFile FileProperties, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
         {
             string[] FileLines = File.ReadAllLines(FilePath);
-            string[] KeyWordValues = null;
             string CurrentKeyWord;
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESIFFile"));
 
-            //Check File
-            if (FileLines[0].Equals("*EUROSOUND_INTERCHANGE_FILE V1.0"))
+            //Check file is not empty
+            if (FileLines.Length > 0)
             {
-                for (int i = 1; i < FileLines.Length; i++)
+                //Check file is correct
+                CurrentKeyWord = GetKeyWord(FileLines[0]);
+                if (CurrentKeyWord.Equals("EUROSOUND"))
                 {
-                    CurrentKeyWord = GetKeyWord(FileLines[i]);
-                    if (string.IsNullOrEmpty(CurrentKeyWord) || CurrentKeyWord.Equals("COMMENT"))
+                    for (int i = 1; i < FileLines.Length; i++)
                     {
-                        continue;
-                    }
-                    else
-                    {
-                        //Check for project settings block
-                        if (CurrentKeyWord.Equals("PROJECTSETTINGS"))
+                        CurrentKeyWord = GetKeyWord(FileLines[i]);
+                        if (string.IsNullOrEmpty(CurrentKeyWord) || CurrentKeyWord.Equals("COMMENT"))
                         {
-                            i++;
-                            ReadProjectSettingsBlock(FileLines, i, FileProperties);
+                            continue;
                         }
+                        else
+                        {
+                            //Check for project settings block
+                            if (CurrentKeyWord.Equals("PROJECTSETTINGS"))
+                            {
+                                i++;
+                                ReadProjectSettingsBlock(FileLines, i, FileProperties);
+                            }
 
-                        //Check for audio data block
-                        if (CurrentKeyWord.Equals("AUDIODATA"))
-                        {
-                            i++;
-                            ReadAudioDataBlock(FileLines, i, CurrentKeyWord, KeyWordValues, AudiosList, TreeViewControl);
-                        }
+                            //Check for audio data block
+                            if (CurrentKeyWord.Equals("AUDIODATA"))
+                            {
+                                i++;
+                                ReadAudioDataBlock(FileLines, i, AudiosList, TreeViewControl);
+                            }
 
-                        //SFX SOUND BLOCK
-                        if (CurrentKeyWord.Equals("SFXSOUND"))
-                        {
-                            i++;
-                            ReadSFXSoundBlock(FileLines, i, CurrentKeyWord, KeyWordValues, FileProperties, TreeViewControl, SoundsList);
+                            //SFX SOUND BLOCK
+                            if (CurrentKeyWord.Equals("SFXSOUND"))
+                            {
+                                i++;
+                                ReadSFXSoundBlock(FileLines, i, FileProperties, TreeViewControl, SoundsList);
+                            }
                         }
                     }
+                    AudiosAssocTable.Clear();
                 }
-                AudiosAssocTable.Clear();
-            }
-            else
-            {
-                ImportResults.Add(string.Join("", "0", "Error the file: ", FilePath, " is not valid"));
+                else
+                {
+                    ImportResults.Add(string.Join("", "0", "Error the file: ", FilePath, " is not valid"));
+                }
             }
 
             //Update Status Bar
@@ -87,7 +91,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             return ImportResults;
         }
 
-        private void ReadAudioDataBlock(string[] FileLines, int CurrentIndex, string CurrentKeyWord, string[] KeyWordValues, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
+        private void ReadAudioDataBlock(string[] FileLines, int CurrentIndex, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
         {
             string MD5AudioFilehash = string.Empty, AudioPath = string.Empty, NodeName;
             ushort AudioFlags = 0;
@@ -97,10 +101,10 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
-                CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                string CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
                 if (CurrentKeyWord.Equals("AUDIO"))
                 {
-                    KeyWordValues = FileLines[CurrentIndex].Trim().Split(' ');
+                    string[] KeyWordValues = FileLines[CurrentIndex].Trim().Split(' ');
                     if (KeyWordValues.Length > 1)
                     {
                         EXAudio NewAudio = null;
@@ -143,15 +147,38 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                 }
                                 if (CurrentKeyWord.Equals("FLAGS"))
                                 {
-                                    AudioFlags = ushort.Parse(KeyWordValues[0]);
+
+                                    if (ushort.TryParse(KeyWordValues[0], out ushort Flags))
+                                    {
+                                        AudioFlags = Flags;
+                                    }
+                                    else
+                                    {
+                                        ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid ushort value type"));
+                                    }
                                 }
                                 if (CurrentKeyWord.Equals("LOOPOFFSET"))
                                 {
-                                    LoopOffset = uint.Parse(KeyWordValues[0]);
+
+                                    if (uint.TryParse(KeyWordValues[0], out uint LoopOffst))
+                                    {
+                                        LoopOffset = LoopOffst;
+                                    }
+                                    else
+                                    {
+                                        ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                    }
                                 }
                                 if (CurrentKeyWord.Equals("PSI"))
                                 {
-                                    AudioPSI = uint.Parse(KeyWordValues[0]);
+                                    if (uint.TryParse(KeyWordValues[0], out uint PSIValue))
+                                    {
+                                        AudioPSI = PSIValue;
+                                    }
+                                    else
+                                    {
+                                        ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                    }
                                 }
                             }
                             else
@@ -206,7 +233,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             }
         }
 
-        private void ReadSFXSoundBlock(string[] FileLines, int CurrentIndex, string CurrentKeyWord, string[] KeyWordValues, ProjectFile FileProperties, TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList)
+        private void ReadSFXSoundBlock(string[] FileLines, int CurrentIndex, ProjectFile FileProperties, TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList)
         {
             string NodeName = string.Empty, FolderName = string.Empty, SampleName = string.Empty;
             bool NodeAddedInFolder;
@@ -218,8 +245,8 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
-                CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
-                KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
+                string CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                string[] KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
                 if (KeyWordValues.Length > 0)
                 {
                     if (CurrentKeyWord.Equals("NODENAME"))
@@ -254,34 +281,124 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                 switch (CurrentKeyWord)
                                 {
                                     case "DUCKERLENGTH":
-                                        SFXSound.DuckerLenght = short.Parse(KeyWordValues[0]);
+                                        short DuckLength;
+
+                                        if (short.TryParse(KeyWordValues[0], out DuckLength))
+                                        {
+                                            SFXSound.DuckerLenght = DuckLength;
+                                        }
+                                        else
+                                        {
+                                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid short value type"));
+                                        }
                                         break;
                                     case "MINDELAY":
-                                        SFXSound.MinDelay = short.Parse(KeyWordValues[0]);
+                                        short MinDel;
+
+                                        if (short.TryParse(KeyWordValues[0], out MinDel))
+                                        {
+                                            SFXSound.MinDelay = MinDel;
+                                        }
+                                        else
+                                        {
+                                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid short value type"));
+                                        }
                                         break;
                                     case "MAXDELAY":
-                                        SFXSound.MaxDelay = short.Parse(KeyWordValues[0]);
+                                        short MaxDel;
+
+                                        if (short.TryParse(KeyWordValues[0], out MaxDel))
+                                        {
+                                            SFXSound.MaxDelay = MaxDel;
+                                        }
+                                        else
+                                        {
+                                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid short value type"));
+                                        }
                                         break;
                                     case "REVERBSEND":
-                                        SFXSound.ReverbSend = sbyte.Parse(KeyWordValues[0]);
+                                        sbyte RevSend;
+
+                                        if (sbyte.TryParse(KeyWordValues[0], out RevSend))
+                                        {
+                                            SFXSound.ReverbSend = RevSend;
+                                        }
+                                        else
+                                        {
+                                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid sbyte value type"));
+                                        }
                                         break;
                                     case "TRACKINGTYPE":
-                                        SFXSound.TrackingType = sbyte.Parse(KeyWordValues[0]);
+                                        sbyte TrackType;
+
+                                        if (sbyte.TryParse(KeyWordValues[0], out TrackType))
+                                        {
+                                            SFXSound.TrackingType = TrackType;
+                                        }
+                                        else
+                                        {
+                                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid sbyte value type"));
+                                        }
                                         break;
                                     case "MAXVOICES":
-                                        SFXSound.MaxVoices = sbyte.Parse(KeyWordValues[0]);
+                                        sbyte MaxV;
+
+                                        if (sbyte.TryParse(KeyWordValues[0], out MaxV))
+                                        {
+                                            SFXSound.MaxVoices = MaxV;
+                                        }
+                                        else
+                                        {
+                                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid sbyte value type"));
+                                        }
                                         break;
                                     case "PRIORITY":
-                                        SFXSound.Priority = sbyte.Parse(KeyWordValues[0]);
+                                        sbyte Prio;
+
+                                        if (sbyte.TryParse(KeyWordValues[0], out Prio))
+                                        {
+                                            SFXSound.Priority = Prio;
+                                        }
+                                        else
+                                        {
+                                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid sbyte value type"));
+                                        }
                                         break;
                                     case "DUCKER":
-                                        SFXSound.Ducker = sbyte.Parse(KeyWordValues[0]);
+                                        sbyte Duck;
+
+                                        if (sbyte.TryParse(KeyWordValues[0], out Duck))
+                                        {
+                                            SFXSound.Ducker = Duck;
+                                        }
+                                        else
+                                        {
+                                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid sbyte value type"));
+                                        }
                                         break;
                                     case "MASTERVOLUME":
-                                        SFXSound.MasterVolume = sbyte.Parse(KeyWordValues[0]);
+                                        sbyte MasterV;
+
+                                        if (sbyte.TryParse(KeyWordValues[0], out MasterV))
+                                        {
+                                            SFXSound.MasterVolume = MasterV;
+                                        }
+                                        else
+                                        {
+                                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid sbyte value type"));
+                                        }
                                         break;
                                     case "FLAGS":
-                                        SFXSound.Flags = ushort.Parse(KeyWordValues[0]);
+                                        ushort FlagsV;
+
+                                        if (ushort.TryParse(KeyWordValues[0], out FlagsV))
+                                        {
+                                            SFXSound.Flags = FlagsV;
+                                        }
+                                        else
+                                        {
+                                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid ushort value type"));
+                                        }
                                         break;
                                 }
                             }
@@ -350,46 +467,109 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                             }
                                             break;
                                         case "PITCHOFFSET":
-                                            NewSample.PitchOffset = short.Parse(KeyWordValues[0]);
-                                            break;
-                                        case "BASEVOLUME":
-                                            NewSample.BaseVolume = sbyte.Parse(KeyWordValues[0]);
-                                            break;
-                                        case "PAN":
-                                            NewSample.Pan = sbyte.Parse(KeyWordValues[0]);
-                                            break;
-                                        case "RANDOMPITCHOFFSET":
-                                            NewSample.RandomPitchOffset = short.Parse(KeyWordValues[0]);
-                                            break;
-                                        case "RANDOMVOLUMEOFFSET":
-                                            NewSample.RandomVolumeOffset = sbyte.Parse(KeyWordValues[0]);
-                                            break;
-                                        case "RANDOMPAN":
-                                            NewSample.RandomPan = sbyte.Parse(KeyWordValues[0]);
-                                            break;
-                                        case "FILEREF":
-                                            FileRef = short.Parse(KeyWordValues[0]);
-                                            NewSample.FileRef = FileRef;
-                                            if (FileRef < 0)
+                                            short PitchOff;
+
+                                            if (short.TryParse(KeyWordValues[0], out PitchOff))
                                             {
-                                                NewSample.IsStreamed = true;
-                                            }
-                                            else if (EXSoundbanksFunctions.SubSFXFlagChecked(SFXSound.Flags))
-                                            {
-                                                uint RefHashC = (uint)FileRef;
-                                                NewSample.HashcodeSubSFX = 0x1A000000 | RefHashC;
-                                                NewSample.ComboboxSelectedAudio = "<SUB SFX>";
+                                                NewSample.PitchOffset = PitchOff;
                                             }
                                             else
                                             {
-                                                if (AudiosAssocTable.ContainsKey(FileRef))
+                                                ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid short value type"));
+                                            }
+                                            break;
+                                        case "BASEVOLUME":
+                                            sbyte BasVolume;
+
+                                            if (sbyte.TryParse(KeyWordValues[0], out BasVolume))
+                                            {
+                                                NewSample.BaseVolume = BasVolume;
+                                            }
+                                            else
+                                            {
+                                                ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid sbyte value type"));
+                                            }
+                                            break;
+                                        case "PAN":
+                                            sbyte PanValue;
+
+                                            if (sbyte.TryParse(KeyWordValues[0], out PanValue))
+                                            {
+                                                NewSample.Pan = PanValue;
+                                            }
+                                            else
+                                            {
+                                                ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid sbyte value type"));
+                                            }
+                                            break;
+                                        case "RANDOMPITCHOFFSET":
+                                            short RndmPitchOff;
+
+                                            if (short.TryParse(KeyWordValues[0], out RndmPitchOff))
+                                            {
+                                                NewSample.RandomPitchOffset = RndmPitchOff;
+                                            }
+                                            else
+                                            {
+                                                ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid short value type"));
+                                            }
+                                            break;
+                                        case "RANDOMVOLUMEOFFSET":
+                                            sbyte RndmVolOff;
+
+                                            if (sbyte.TryParse(KeyWordValues[0], out RndmVolOff))
+                                            {
+                                                NewSample.RandomVolumeOffset = RndmVolOff;
+                                            }
+                                            else
+                                            {
+                                                ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid sbyte value type"));
+                                            }
+                                            break;
+                                        case "RANDOMPAN":
+                                            sbyte RndPan;
+
+                                            if (sbyte.TryParse(KeyWordValues[0], out RndPan))
+                                            {
+                                                NewSample.RandomPan = RndPan;
+                                            }
+                                            else
+                                            {
+                                                ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid sbyte value type"));
+                                            }
+                                            break;
+                                        case "FILEREF":
+                                            short FileRefValue;
+
+                                            if (short.TryParse(KeyWordValues[0], out FileRefValue))
+                                            {
+                                                FileRef = FileRefValue;
+                                                NewSample.FileRef = FileRef;
+                                                if (FileRef < 0)
                                                 {
-                                                    NewSample.ComboboxSelectedAudio = AudiosAssocTable[FileRef];
+                                                    NewSample.IsStreamed = true;
+                                                }
+                                                else if (EXSoundbanksFunctions.SubSFXFlagChecked(SFXSound.Flags))
+                                                {
+                                                    uint RefHashC = (uint)FileRef;
+                                                    NewSample.HashcodeSubSFX = 0x1A000000 | RefHashC;
+                                                    NewSample.ComboboxSelectedAudio = "<SUB SFX>";
                                                 }
                                                 else
                                                 {
-                                                    ImportResults.Add(string.Join("", "0", "The audio with the file ref: ", FileRef, " was not found"));
+                                                    if (AudiosAssocTable.ContainsKey(FileRef))
+                                                    {
+                                                        NewSample.ComboboxSelectedAudio = AudiosAssocTable[FileRef];
+                                                    }
+                                                    else
+                                                    {
+                                                        ImportResults.Add(string.Join("", "0", "The audio with the file ref: ", FileRef, " was not found"));
+                                                    }
                                                 }
+                                            }
+                                            else
+                                            {
+                                                ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid short value type"));
                                             }
                                             break;
                                     }
@@ -447,46 +627,50 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         //*===============================================================================================
         //* Stream Sound Soundbank
         //*===============================================================================================
-        internal List<string> LoadStreamSoundBank_File(string FilePath, ProjectFile FileProperties, Dictionary<uint, EXSoundStream> SoundsList, TreeView TreeViewControl)
+        internal IList<string> LoadStreamSoundBank_File(string FilePath, ProjectFile FileProperties, Dictionary<uint, EXSoundStream> SoundsList, TreeView TreeViewControl)
         {
-            string[] lines = File.ReadAllLines(FilePath);
-            string[] KeyWordValues = null;
+            string[] FileLines = File.ReadAllLines(FilePath);
             string CurrentKeyWord;
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESIFFile"));
 
-            //Check File
-            if (lines[0].Equals("*EUROSOUND_INTERCHANGE_FILE V1.0"))
+            //Check file is not empty
+            if (FileLines.Length > 0)
             {
-                for (int i = 1; i < lines.Length; i++)
+                //Check file is correct
+                CurrentKeyWord = GetKeyWord(FileLines[0]);
+                if (CurrentKeyWord.Equals("EUROSOUND"))
                 {
-                    CurrentKeyWord = GetKeyWord(lines[i]);
-                    if (string.IsNullOrEmpty(CurrentKeyWord) || CurrentKeyWord.Equals("COMMENT"))
+                    for (int i = 1; i < FileLines.Length; i++)
                     {
-                        continue;
-                    }
-                    else
-                    {
-                        //Check for project settings block
-                        if (CurrentKeyWord.Equals("PROJECTSETTINGS"))
+                        CurrentKeyWord = GetKeyWord(FileLines[i]);
+                        if (string.IsNullOrEmpty(CurrentKeyWord) || CurrentKeyWord.Equals("COMMENT"))
                         {
-                            i++;
-                            ReadProjectSettingsBlock(lines, i, FileProperties);
+                            continue;
                         }
-
-                        //Check for project settings block
-                        if (CurrentKeyWord.Equals("STREAMSOUND"))
+                        else
                         {
-                            i++;
-                            ReadStreamSoundsBlock(lines, i, CurrentKeyWord, KeyWordValues, SoundsList, FileProperties, TreeViewControl);
+                            //Check for project settings block
+                            if (CurrentKeyWord.Equals("PROJECTSETTINGS"))
+                            {
+                                i++;
+                                ReadProjectSettingsBlock(FileLines, i, FileProperties);
+                            }
+
+                            //Check for project settings block
+                            if (CurrentKeyWord.Equals("STREAMSOUND"))
+                            {
+                                i++;
+                                ReadStreamSoundsBlock(FileLines, i, SoundsList, FileProperties, TreeViewControl);
+                            }
                         }
                     }
                 }
-            }
-            else
-            {
-                ImportResults.Add(string.Join("", "0", "Error the file: ", FilePath, " is not valid"));
+                else
+                {
+                    ImportResults.Add(string.Join("", "0", "Error the file: ", FilePath, " is not valid"));
+                }
             }
 
             //Update Status Bar
@@ -495,7 +679,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             return ImportResults;
         }
 
-        private void ReadStreamSoundsBlock(string[] FileLines, int CurrentIndex, string CurrentKeyWord, string[] KeyWordValues, Dictionary<uint, EXSoundStream> SoundsList, ProjectFile FileProperties, TreeView TreeViewControl)
+        private void ReadStreamSoundsBlock(string[] FileLines, int CurrentIndex, Dictionary<uint, EXSoundStream> SoundsList, ProjectFile FileProperties, TreeView TreeViewControl)
         {
             string NodeName = string.Empty, FolderName = string.Empty, AudioPath;
             uint ObjectID;
@@ -505,8 +689,8 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
-                CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
-                KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
+                string CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                string[] KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
                 if (KeyWordValues.Length > 0)
                 {
                     if (CurrentKeyWord.Equals("NODENAME"))
@@ -567,7 +751,14 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     }
                     if (CurrentKeyWord.Equals("BASEVOLUME"))
                     {
-                        NewSSound.BaseVolume = uint.Parse(KeyWordValues[0]);
+                        if (uint.TryParse(KeyWordValues[0], out uint Volume))
+                        {
+                            NewSSound.BaseVolume = Volume;
+                        }
+                        else
+                        {
+                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                        }
                     }
                     if (CurrentKeyWord.Equals("STARTMARKERS"))
                     {
@@ -586,28 +777,79 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
                                     if (KeyWordValues.Length > 0)
                                     {
+                                        uint ValueNumber;
+
                                         switch (CurrentKeyWord)
                                         {
                                             case "POSITION":
-                                                Position = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out ValueNumber))
+                                                {
+                                                    Position = ValueNumber;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "MUSICMARKERTYPE":
-                                                MarkerType = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out ValueNumber))
+                                                {
+                                                    MarkerType = ValueNumber;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "LOOPSTART":
-                                                LoopStart = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out ValueNumber))
+                                                {
+                                                    LoopStart = ValueNumber;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "LOOPMARKERCOUNT":
-                                                LoopMarkerCount = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out ValueNumber))
+                                                {
+                                                    LoopMarkerCount = ValueNumber;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "MARKERPOS":
-                                                MarkerPos = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out ValueNumber))
+                                                {
+                                                    MarkerPos = ValueNumber;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "STATEA":
-                                                StateA = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out ValueNumber))
+                                                {
+                                                    StateA = ValueNumber;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "STATEB":
-                                                StateB = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out ValueNumber))
+                                                {
+                                                    StateB = ValueNumber;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                         }
                                     }
@@ -644,25 +886,71 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
                                     if (KeyWordValues.Length > 0)
                                     {
+                                        uint ValueNumber;
+
                                         switch (CurrentKeyWord)
                                         {
                                             case "NAME":
-                                                Name = int.Parse(KeyWordValues[0]);
+                                                int NameValue;
+
+                                                if (int.TryParse(KeyWordValues[0], out NameValue))
+                                                {
+                                                    Name = NameValue;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid int value type"));
+                                                }
                                                 break;
                                             case "POSITION":
-                                                Position = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out ValueNumber))
+                                                {
+                                                    Position = ValueNumber;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "MUSICMARKERTYPE":
-                                                MarkerType = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out ValueNumber))
+                                                {
+                                                    MarkerType = ValueNumber;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "MARKERCOUNT":
-                                                MarkerCount = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out ValueNumber))
+                                                {
+                                                    MarkerCount = ValueNumber;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "LOOPSTART":
-                                                LoopStart = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out ValueNumber))
+                                                {
+                                                    LoopStart = ValueNumber;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "LOOPMARKERCOUNT":
-                                                LoopMarkerCount = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out ValueNumber))
+                                                {
+                                                    LoopMarkerCount = ValueNumber;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                         }
                                     }
@@ -707,46 +995,50 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         //*===============================================================================================
         //* Music Banks
         //*===============================================================================================
-        internal List<string> LoadMusicBank_File(string FilePath, ProjectFile FileProperties, Dictionary<uint, EXMusic> MusicsList, TreeView TreeViewControl)
+        internal IList<string> LoadMusicBank_File(string FilePath, ProjectFile FileProperties, Dictionary<uint, EXMusic> MusicsList, TreeView TreeViewControl)
         {
-            string[] lines = File.ReadAllLines(FilePath);
-            string[] KeyWordValues = null;
+            string[] FileLines = File.ReadAllLines(FilePath);
             string CurrentKeyWord;
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESIFFile"));
 
-            //Check File
-            if (lines[0].Equals("*EUROSOUND_INTERCHANGE_FILE V1.0"))
+            //Check file is not empty
+            if (FileLines.Length > 0)
             {
-                for (int i = 1; i < lines.Length; i++)
+                //Check file is correct
+                CurrentKeyWord = GetKeyWord(FileLines[0]);
+                if (CurrentKeyWord.Equals("EUROSOUND"))
                 {
-                    CurrentKeyWord = GetKeyWord(lines[i]);
-                    if (string.IsNullOrEmpty(CurrentKeyWord) || CurrentKeyWord.Equals("COMMENT"))
+                    for (int i = 1; i < FileLines.Length; i++)
                     {
-                        continue;
-                    }
-                    else
-                    {
-                        //Check for project settings block
-                        if (CurrentKeyWord.Equals("PROJECTSETTINGS"))
+                        CurrentKeyWord = GetKeyWord(FileLines[i]);
+                        if (string.IsNullOrEmpty(CurrentKeyWord) || CurrentKeyWord.Equals("COMMENT"))
                         {
-                            i++;
-                            ReadProjectSettingsBlock(lines, i, FileProperties);
+                            continue;
                         }
-
-                        //Check for project settings block
-                        if (CurrentKeyWord.Equals("MUSIC"))
+                        else
                         {
-                            i++;
-                            ReadMusicBankBlock(lines, i, CurrentKeyWord, KeyWordValues, MusicsList, FileProperties, TreeViewControl);
+                            //Check for project settings block
+                            if (CurrentKeyWord.Equals("PROJECTSETTINGS"))
+                            {
+                                i++;
+                                ReadProjectSettingsBlock(FileLines, i, FileProperties);
+                            }
+
+                            //Check for project settings block
+                            if (CurrentKeyWord.Equals("MUSIC"))
+                            {
+                                i++;
+                                ReadMusicBankBlock(FileLines, i, MusicsList, FileProperties, TreeViewControl);
+                            }
                         }
                     }
                 }
-            }
-            else
-            {
-                ImportResults.Add(string.Join("", "0", "Error the file: ", FilePath, " is not valid"));
+                else
+                {
+                    ImportResults.Add(string.Join("", "0", "Error the file: ", FilePath, " is not valid"));
+                }
             }
 
             //Update Status Bar
@@ -755,7 +1047,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             return ImportResults;
         }
 
-        private void ReadMusicBankBlock(string[] FileLines, int CurrentIndex, string CurrentKeyWord, string[] KeyWordValues, Dictionary<uint, EXMusic> MusicsList, ProjectFile FileProperties, TreeView TreeViewControl)
+        private void ReadMusicBankBlock(string[] FileLines, int CurrentIndex, Dictionary<uint, EXMusic> MusicsList, ProjectFile FileProperties, TreeView TreeViewControl)
         {
             string NodeName = string.Empty, FolderName = string.Empty, AudioPath;
             uint ObjectID;
@@ -765,8 +1057,8 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
-                CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
-                KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
+                string CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
+                string[] KeyWordValues = GetKeyValues(FileLines[CurrentIndex]);
                 if (KeyWordValues.Length > 0)
                 {
                     if (CurrentKeyWord.Equals("NODENAME"))
@@ -867,7 +1159,14 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     }
                     if (CurrentKeyWord.Equals("BASEVOLUME"))
                     {
-                        NewMusicBank.BaseVolume = uint.Parse(KeyWordValues[0]);
+                        if (uint.TryParse(KeyWordValues[0], out uint Volume))
+                        {
+                            NewMusicBank.BaseVolume = Volume;
+                        }
+                        else
+                        {
+                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                        }
                     }
                     if (CurrentKeyWord.Equals("STARTMARKERS"))
                     {
@@ -889,25 +1188,74 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                         switch (CurrentKeyWord)
                                         {
                                             case "POSITION":
-                                                Position = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out uint PositionParsed))
+                                                {
+                                                    Position = PositionParsed;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "MUSICMARKERTYPE":
-                                                MarkerType = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out uint MarkerTypeParsed))
+                                                {
+                                                    MarkerType = MarkerTypeParsed;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "LOOPSTART":
-                                                LoopStart = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out uint LoopStartParsed))
+                                                {
+                                                    LoopStart = LoopStartParsed;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "LOOPMARKERCOUNT":
-                                                LoopMarkerCount = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out uint LoopMarkerCountParsed))
+                                                {
+                                                    LoopMarkerCount = LoopMarkerCountParsed;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "MARKERPOS":
-                                                MarkerPos = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out uint MarkerPosParsed))
+                                                {
+                                                    MarkerPos = MarkerPosParsed;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "STATEA":
-                                                StateA = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out uint StateAParsed))
+                                                {
+                                                    StateA = StateAParsed;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "STATEB":
-                                                StateB = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out uint StateBParsed))
+                                                {
+                                                    StateB = StateBParsed;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                         }
                                     }
@@ -947,22 +1295,64 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                         switch (CurrentKeyWord)
                                         {
                                             case "NAME":
-                                                Name = int.Parse(KeyWordValues[0]);
+                                                if (int.TryParse(KeyWordValues[0], out int NameParsed))
+                                                {
+                                                    Name = NameParsed;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid int value type"));
+                                                }
                                                 break;
                                             case "POSITION":
-                                                Position = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out uint PositionParsed))
+                                                {
+                                                    Position = PositionParsed;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "MUSICMARKERTYPE":
-                                                MarkerType = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out uint MarkerTypeParsed))
+                                                {
+                                                    MarkerType = MarkerTypeParsed;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "MARKERCOUNT":
-                                                MarkerCount = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out uint MarkerCountParsed))
+                                                {
+                                                    MarkerCount = MarkerCountParsed;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "LOOPSTART":
-                                                LoopStart = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out uint LoopStartParsed))
+                                                {
+                                                    LoopStart = LoopStartParsed;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                             case "LOOPMARKERCOUNT":
-                                                LoopMarkerCount = uint.Parse(KeyWordValues[0]);
+                                                if (uint.TryParse(KeyWordValues[0], out uint LoopMarkerCountParsed))
+                                                {
+                                                    LoopMarkerCount = LoopMarkerCountParsed;
+                                                }
+                                                else
+                                                {
+                                                    ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                                }
                                                 break;
                                         }
                                     }
