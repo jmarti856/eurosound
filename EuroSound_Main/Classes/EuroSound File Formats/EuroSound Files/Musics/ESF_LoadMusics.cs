@@ -22,7 +22,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
             //Sound ID
             FileProperties.SoundID = BReader.ReadUInt32();
             //Sounds List Offset
-            BReader.BaseStream.Position += 4;//Only Used in the "Frm_NewStreamSound" Form
+            BReader.BaseStream.Position += 4;
             //TreeViewData Offset
             TreeViewDataOffset = BReader.ReadUInt32();
             //Dictionary Data Offset

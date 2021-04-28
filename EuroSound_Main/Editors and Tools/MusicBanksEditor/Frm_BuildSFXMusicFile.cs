@@ -56,8 +56,6 @@ namespace EuroSound_Application.Musics
                 GenerateSFXMusicBank SFXCreator = new GenerateSFXMusicBank();
                 Form ParentForm = GenericFunctions.GetFormByName("Frm_Musics_Main", Tag.ToString());
                 SFX_ChecksBeforeGeneration SFX_Check = new SFX_ChecksBeforeGeneration();
-                bool CanOutputFile = true;
-                string CurrentObjectName;
                 int TotalProgress = 1;
 
                 BWriter = new BinaryStream(File.Open(GlobalPreferences.MusicOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
@@ -98,9 +96,10 @@ namespace EuroSound_Application.Musics
                 GenericFunctions.ProgressBarValue(ProgressBar_CurrentTask, 0);
 
                 //Check Data
+                bool CanOutputFile = true;
                 foreach (KeyValuePair<uint, EXMusic> MusicToCheck in FinalMusicsDict)
                 {
-                    CurrentObjectName = ((Frm_Musics_Main)ParentForm).TreeView_MusicData.Nodes.Find(MusicToCheck.Key.ToString(), true)[0].Text;
+                    string CurrentObjectName = ((Frm_Musics_Main)ParentForm).TreeView_MusicData.Nodes.Find(MusicToCheck.Key.ToString(), true)[0].Text;
                     CanOutputFile = SFX_Check.ValidateMusics(MusicToCheck.Value, CurrentObjectName, Reports);
                     if (CanOutputFile == false)
                     {

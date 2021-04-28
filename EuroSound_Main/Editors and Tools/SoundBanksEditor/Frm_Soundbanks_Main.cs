@@ -161,7 +161,27 @@ namespace EuroSound_Application.SoundBanksEditor
             // Fixes bug where loading form maximised in MDI window shows incorrect icon. 
             Icon = Icon.Clone() as Icon;
 
-            //Load Preferences
+            //Type of data that creates this form
+            ProjectInfo.TypeOfData = (int)GenericFunctions.ESoundFileType.SoundBanks;
+
+            //Check Hashcodes are not null
+            if (Hashcodes.SFX_Defines.Keys.Count == 0 || Hashcodes.SFX_Data.Keys.Count == 0)
+            {
+                //Load Data
+                Thread LoadHashcodeData = new Thread(() => Hashcodes.LoadSoundDataFile(GlobalPreferences.HT_SoundsDataPath))
+                {
+                    IsBackground = true
+                };
+                Thread LoadHashcodes = new Thread(() => Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath))
+                {
+                    IsBackground = true
+                };
+                LoadHashcodes.Start();
+                LoadHashcodes.Join();
+                LoadHashcodeData.Start();
+            }
+
+            //Load Last State
             using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
                 bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("SBView_IsIconic", 0));
@@ -181,26 +201,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
                 Width = Convert.ToInt32(WindowStateConfig.GetValue("SBView_Width", 997));
                 Height = Convert.ToInt32(WindowStateConfig.GetValue("SBView_Height", 779));
-                SplitContainer_SoundbanksForm.SplitterDistance = Convert.ToInt32(WindowStateConfig.GetValue("SBView_SplitterDistance", 456));
-
                 WindowStateConfig.Close();
-            }
-
-            //Check Hashcodes are not null
-            if (Hashcodes.SFX_Defines.Keys.Count == 0 || Hashcodes.SFX_Data.Keys.Count == 0)
-            {
-                //Load Data
-                Thread LoadHashcodeData = new Thread(() => Hashcodes.LoadSoundDataFile(GlobalPreferences.HT_SoundsDataPath))
-                {
-                    IsBackground = true
-                };
-                Thread LoadHashcodes = new Thread(() => Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath))
-                {
-                    IsBackground = true
-                };
-                LoadHashcodes.Start();
-                LoadHashcodes.Join();
-                LoadHashcodeData.Start();
             }
         }
 
@@ -212,6 +213,13 @@ namespace EuroSound_Application.SoundBanksEditor
             }
             else
             {
+                //Apply Splitter Distance
+                using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
+                {
+                    SplitContainer_SoundbanksForm.SplitterDistance = Convert.ToInt32(WindowStateConfig.GetValue("SBView_SplitterDistance", 456));
+                    WindowStateConfig.Close();
+                }
+
                 //Update from title
                 Text = GenericFunctions.UpdateProjectFormText(CurrentFilePath, ProjectInfo.FileName);
                 if (WindowState != FormWindowState.Maximized)

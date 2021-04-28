@@ -116,10 +116,27 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         private void Frm_Musics_Main_Load(object sender, System.EventArgs e)
         {
-            // Fixes bug where loading form maximised in MDI window shows incorrect icon. 
+            //Fixes bug where loading form maximised in MDI window shows incorrect icon. 
             Icon = Icon.Clone() as Icon;
 
-            //Load Preferences
+            //Type of data that creates this form
+            ProjectInfo.TypeOfData = (int)GenericFunctions.ESoundFileType.MusicBanks;
+
+            //Check Hashcodes are not null
+            if (Hashcodes.MFX_Defines.Keys.Count == 0)
+            {
+                //Update Status Bar
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
+
+                //Load Data
+                Thread LoadHashcodes = new Thread(() => Hashcodes.LoadMusicHashcodes(GlobalPreferences.HT_MusicPath))
+                {
+                    IsBackground = true
+                };
+                LoadHashcodes.Start();
+            }
+
+            //Load Last State
             using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
                 bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("MView_IsIconic", 0));
@@ -139,26 +156,7 @@ namespace EuroSound_Application.Musics
                 }
                 Width = Convert.ToInt32(WindowStateConfig.GetValue("MView_Width", 997));
                 Height = Convert.ToInt32(WindowStateConfig.GetValue("MView_Height", 779));
-                SplitContainerMusicsForm.SplitterDistance = Convert.ToInt32(WindowStateConfig.GetValue("MView_SplitterDistance", 456));
-
                 WindowStateConfig.Close();
-            }
-
-            ProjectInfo.TypeOfData = (int)GenericFunctions.ESoundFileType.MusicBanks;
-
-            //Check Hashcodes are not null
-            //Load Hashcodes
-            if (Hashcodes.MFX_Defines.Keys.Count == 0)
-            {
-                //Update Status Bar
-                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
-
-                //Load Data
-                Thread LoadHashcodes = new Thread(() => Hashcodes.LoadMusicHashcodes(GlobalPreferences.HT_MusicPath))
-                {
-                    IsBackground = true
-                };
-                LoadHashcodes.Start();
             }
         }
 
@@ -170,6 +168,13 @@ namespace EuroSound_Application.Musics
             }
             else
             {
+                //Apply Splitter Distance
+                using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
+                {
+                    SplitContainerMusicsForm.SplitterDistance = Convert.ToInt32(WindowStateConfig.GetValue("MView_SplitterDistance", 456));
+                    WindowStateConfig.Close();
+                }
+
                 //Update from title
                 Text = GenericFunctions.UpdateProjectFormText(CurrentFilePath, ProjectInfo.FileName);
                 if (WindowState != FormWindowState.Maximized)

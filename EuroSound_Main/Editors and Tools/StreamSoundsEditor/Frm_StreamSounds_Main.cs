@@ -120,33 +120,10 @@ namespace EuroSound_Application.StreamSounds
             // Fixes bug where loading form maximised in MDI window shows incorrect icon. 
             Icon = Icon.Clone() as Icon;
 
-            //Load Preferences
-            using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
-            {
-                bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("SSView_IsIconic", 0));
-                bool IsMaximized = Convert.ToBoolean(WindowStateConfig.GetValue("SSView_IsMaximized", 0));
-                if (IsIconic)
-                {
-                    WindowState = FormWindowState.Minimized;
-                }
-                else if (IsMaximized)
-                {
-                    WindowState = FormWindowState.Maximized;
-                }
-                else
-                {
-                    Location = new Point(Convert.ToInt32(WindowStateConfig.GetValue("SSView_PositionX", 0)), Convert.ToInt32(WindowStateConfig.GetValue("SSView_PositionY", 0)));
-                }
-                Width = Convert.ToInt32(WindowStateConfig.GetValue("SSView_Width", 997));
-                Height = Convert.ToInt32(WindowStateConfig.GetValue("SSView_Height", 779));
-                SplitContainerStreamSoundsForm.SplitterDistance = Convert.ToInt32(WindowStateConfig.GetValue("SSView_SplitterDistance", 456));
-                WindowStateConfig.Close();
-            }
-
+            //Type of data that creates this form
             ProjectInfo.TypeOfData = (int)GenericFunctions.ESoundFileType.StreamSounds;
 
             //Check Hashcodes are not null
-            //Load Hashcodes
             if (Hashcodes.SFX_Defines.Keys.Count == 0 || Hashcodes.SFX_Data.Keys.Count == 0)
             {
                 //Update Status Bar
@@ -167,6 +144,28 @@ namespace EuroSound_Application.StreamSounds
             }
 
             ProjectInfo.Hashcode = 65535;
+
+            //Load Last State
+            using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
+            {
+                bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("SSView_IsIconic", 0));
+                bool IsMaximized = Convert.ToBoolean(WindowStateConfig.GetValue("SSView_IsMaximized", 0));
+                if (IsIconic)
+                {
+                    WindowState = FormWindowState.Minimized;
+                }
+                else if (IsMaximized)
+                {
+                    WindowState = FormWindowState.Maximized;
+                }
+                else
+                {
+                    Location = new Point(Convert.ToInt32(WindowStateConfig.GetValue("SSView_PositionX", 0)), Convert.ToInt32(WindowStateConfig.GetValue("SSView_PositionY", 0)));
+                }
+                Width = Convert.ToInt32(WindowStateConfig.GetValue("SSView_Width", 997));
+                Height = Convert.ToInt32(WindowStateConfig.GetValue("SSView_Height", 779));
+                WindowStateConfig.Close();
+            }
         }
 
         private void Frm_StreamSoundsEditorMain_Shown(object sender, EventArgs e)
@@ -177,6 +176,13 @@ namespace EuroSound_Application.StreamSounds
             }
             else
             {
+                //Apply Splitter Distance
+                using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
+                {
+                    SplitContainerStreamSoundsForm.SplitterDistance = Convert.ToInt32(WindowStateConfig.GetValue("SSView_SplitterDistance", 456));
+                    WindowStateConfig.Close();
+                }
+
                 //Update from title
                 Text = GenericFunctions.UpdateProjectFormText(CurrentFilePath, ProjectInfo.FileName);
                 if (WindowState != FormWindowState.Maximized)

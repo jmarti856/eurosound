@@ -34,9 +34,11 @@ namespace EuroSound_Application
         [STAThread]
         static void Main(string[] args)
         {
-            //args = new string[2];
-            //args[0] = "/o";
-            //args[1] = "Sakkara_1.esf";
+            /*
+            args = new string[2];
+            args[0] = "/o";
+            args[1] = @"C:\Users\Jordi Martinez\Desktop\Sphinx and the shadow of set\SoundBanks\Files\Abydos\Abydos_North.esf";
+            */
 
             /*--Check For .NET Framework v4.5--*/
             if (Get45or451FromRegistry())
@@ -46,9 +48,10 @@ namespace EuroSound_Application
 
                 if (args.Length > 0)
                 {
-                    if (args[0].StartsWith("/"))
+                    if (args[0].Trim().StartsWith("/"))
                     {
                         EuroSoundBashMode BashMode = new EuroSoundBashMode();
+                        BashMode.LoadBasicData();
                         BashMode.ExecuteCommand(args);
                     }
                     else

@@ -43,7 +43,13 @@ namespace EuroSound_Application.SFXData
             // Fixes bug where loading form maximised in MDI window shows incorrect icon. 
             Icon = Icon.Clone() as Icon;
 
-            //Load Preferences
+            //Add Hashcodes to combobox
+            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsMD5, GlobalPreferences.HT_SoundsPath))
+            {
+                Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
+            }
+
+            //Load Last State
             using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
                 bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("SFXData_IsIconic", 0));
@@ -66,12 +72,6 @@ namespace EuroSound_Application.SFXData
 
                 WindowStateConfig.Close();
             }
-
-            //Add Hashcodes to combobox
-            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsMD5, GlobalPreferences.HT_SoundsPath))
-            {
-                Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
-            }
         }
 
         private void Frm_SFX_DataGenerator_Shown(object sender, EventArgs e)
@@ -82,9 +82,11 @@ namespace EuroSound_Application.SFXData
                 MdiParent.Text = "EuroSound - SFX Data Table";
             }
 
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
             Hashcodes.AddDataToCombobox(Combobox_LabelHashcodes, Hashcodes.SFX_Defines);
 
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+
+            //Start Thread
             LoadSfxDataTable = new Thread(LoadDataFromHashtable)
             {
                 IsBackground = true

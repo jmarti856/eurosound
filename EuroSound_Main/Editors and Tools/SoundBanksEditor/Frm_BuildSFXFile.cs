@@ -94,7 +94,6 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 GenerateSFXSoundBank SFXCreator = new GenerateSFXSoundBank();
                 Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
                 SFX_ChecksBeforeGeneration SFX_Check = new SFX_ChecksBeforeGeneration();
-                bool CanOutputFile = true;
 
                 int TotalProgress = 1;
 
@@ -154,6 +153,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 GenericFunctions.ProgressBarValue(ProgressBar_CurrentTask, 0);
 
                 //Check Data
+                bool CanOutputFile = true;
                 foreach (KeyValuePair<uint, EXSound> SoundToCheck in FinalSoundsDict)
                 {
                     CanOutputFile = SFX_Check.ValidateSFX(SoundToCheck.Value, SoundsHashcodes, ((Frm_Soundbanks_Main)ParentForm).TreeView_File.Nodes.Find(SoundToCheck.Key.ToString(), true)[0].Text, Reports);

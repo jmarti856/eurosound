@@ -332,10 +332,13 @@ namespace EuroSound_Application
 
         internal static void SetLabelText(Label LabelToChange, string TextToShow)
         {
-            LabelToChange.Invoke((MethodInvoker)delegate
+            if (LabelToChange != null)
             {
-                LabelToChange.Text = TextToShow;
-            });
+                LabelToChange.Invoke((MethodInvoker)delegate
+                {
+                    LabelToChange.Text = TextToShow;
+                });
+            }
         }
 
         //*===============================================================================================
@@ -343,26 +346,35 @@ namespace EuroSound_Application
         //*===============================================================================================
         internal static void ProgressBarSetMaximum(ProgressBar BarToChange, int Maximum)
         {
-            BarToChange.Invoke((MethodInvoker)delegate
+            if (BarToChange != null)
             {
-                BarToChange.Maximum = Maximum;
-            });
+                BarToChange.Invoke((MethodInvoker)delegate
+                {
+                    BarToChange.Maximum = Maximum;
+                });
+            }
         }
 
         internal static void ProgressBarValue(ProgressBar BarToChange, int value)
         {
-            BarToChange.Invoke((MethodInvoker)delegate
+            if (BarToChange != null)
             {
-                BarToChange.Value = value;
-            });
+                BarToChange.Invoke((MethodInvoker)delegate
+                {
+                    BarToChange.Value = value;
+                });
+            }
         }
 
         internal static void ProgressBarAddValue(ProgressBar BarToChange, int value)
         {
-            BarToChange.Invoke((MethodInvoker)delegate
+            if (BarToChange != null)
             {
-                BarToChange.Value += value;
-            });
+                BarToChange.Invoke((MethodInvoker)delegate
+                {
+                    BarToChange.Value += value;
+                });
+            }
         }
 
         //*===============================================================================================
@@ -370,10 +382,13 @@ namespace EuroSound_Application
         //*===============================================================================================
         internal static int NumberOfChildForms()
         {
-            int NumberOfChildForms;
+            int NumberOfChildForms = 1;
 
             Form OpenForm = GetFormByName("Frm_EuroSound_Main", "Main");
-            NumberOfChildForms = ((Frm_EuroSound_Main)OpenForm).MdiChildren.Length;
+            if (OpenForm != null)
+            {
+                NumberOfChildForms = ((Frm_EuroSound_Main)OpenForm).MdiChildren.Length;
+            }
 
             return NumberOfChildForms;
         }

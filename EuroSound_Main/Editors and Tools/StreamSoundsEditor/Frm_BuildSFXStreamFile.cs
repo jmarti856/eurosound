@@ -56,8 +56,6 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 GenerateSFXStreamedSounds SFXCreator = new GenerateSFXStreamedSounds();
                 SFX_ChecksBeforeGeneration SFX_Check = new SFX_ChecksBeforeGeneration();
                 Form ParentForm = GenericFunctions.GetFormByName("Frm_StreamSounds_Main", Tag.ToString());
-                bool CanOutputFile = true;
-                string CurrentObjectName;
                 int TotalProgress = 1;
 
                 BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
@@ -99,9 +97,10 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
                 GenericFunctions.ProgressBarValue(ProgressBar_CurrentTask, 0);
 
                 //Check Data
+                bool CanOutputFile = true;
                 foreach (KeyValuePair<uint, EXSoundStream> SoundToCheck in FinalSoundsDict)
                 {
-                    CurrentObjectName = ((Frm_StreamSounds_Main)ParentForm).TreeView_StreamData.Nodes.Find(SoundToCheck.Key.ToString(), true)[0].Text;
+                    string CurrentObjectName = ((Frm_StreamSounds_Main)ParentForm).TreeView_StreamData.Nodes.Find(SoundToCheck.Key.ToString(), true)[0].Text;
                     CanOutputFile = SFX_Check.ValidateStreamingSounds(SoundToCheck.Value, CurrentObjectName, Reports);
                     if (CanOutputFile == false)
                     {

@@ -45,7 +45,7 @@ namespace EuroSound_Application.Debug_HashTables
             // Fixes bug where loading form maximised in MDI window shows incorrect icon. 
             Icon = Icon.Clone() as Icon;
 
-            //Load Preferences
+            //Load Last State
             using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
                 bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("DBView_IsIconic", 0));
@@ -72,6 +72,7 @@ namespace EuroSound_Application.Debug_HashTables
 
         private void Frm_Debug_HashTables_Main_Shown(object sender, EventArgs e)
         {
+            //Update Title bar
             if (WindowState != FormWindowState.Maximized)
             {
                 MdiParent.Text = "EuroSound - HashTables Debugger";

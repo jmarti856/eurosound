@@ -53,7 +53,22 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             // Fixes bug where loading form maximised in MDI window shows incorrect icon. 
             Icon = Icon.Clone() as Icon;
 
-            //Load Preferences
+            //MFX Data defines
+            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_MusicMD5, GlobalPreferences.HT_MusicPath))
+            {
+                Hashcodes.LoadMusicHashcodes(GlobalPreferences.HT_MusicPath);
+            }
+
+            //Load data
+            AddDataToCombobox();
+
+            //Prevent null selection
+            if (ComboBox_Looping.Items.Count > 0)
+            {
+                ComboBox_Looping.SelectedIndex = 0;
+            }
+
+            //Load Last state
             using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
                 bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("DBDView_IsIconic", 0));
@@ -76,21 +91,6 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
 
                 WindowStateConfig.Close();
             }
-
-            //MFX Data defines
-            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_MusicMD5, GlobalPreferences.HT_MusicPath))
-            {
-                Hashcodes.LoadMusicHashcodes(GlobalPreferences.HT_MusicPath);
-            }
-
-            //Load data
-            AddDataToCombobox();
-
-            //Prevent null selection
-            if (ComboBox_Looping.Items.Count > 0)
-            {
-                ComboBox_Looping.SelectedIndex = 0;
-            }
         }
 
         private void Frm_Debug_HT_Data_Shown(object sender, EventArgs e)
@@ -98,6 +98,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             //Update File name label
             UpdateStatusBarLabels();
 
+            //Update Title bar
             if (WindowState != FormWindowState.Maximized)
             {
                 MdiParent.Text = "EuroSound - Music Data Table Generator";
