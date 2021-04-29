@@ -80,6 +80,9 @@
         internal static int MakeBackupsInterval = 1;
         internal static int MakeBackupsIndex = 0;
 
+        //ShowAlerts
+        internal static bool ShowUpdatesAlerts = true;
+
         //*===============================================================================================
         //* TEMPORAL PROPERTIES
         //*===============================================================================================

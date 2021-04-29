@@ -185,6 +185,8 @@ namespace EuroSound_Application.SplashForm
             GlobalPreferences.UseSystemTray = Convert.ToBoolean(WindowsRegistryFunctions.GetSystemConfig("UseSysTray"));
             await Task.Delay(RandomNumber.Next(Minimum, Maximum));
 
+            GlobalPreferences.ShowUpdatesAlerts = WindowsRegistryFunctions.LoadUpdatesAlerts();
+
             //-----------------------------------------[Sound Data]----------------------------------------
             Label_Status.Text = "Loading sounds data hashtable, please wait...";
             if (File.Exists(GlobalPreferences.HT_SoundsDataPath))

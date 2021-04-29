@@ -59,6 +59,34 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
             return KeyToReturn;
         }
+        //*===============================================================================================
+        //* Updates Alerts
+        //*===============================================================================================
+        internal static void SaveUpdatesAlerts()
+        {
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("Updates", true);
+            using (RegistryKey ShowAlerts = EuroSoundKey.OpenSubKey("Updates", true))
+            {
+                ShowAlerts.SetValue("ShowAlerts", GlobalPreferences.ShowUpdatesAlerts, RegistryValueKind.DWord);
+                ShowAlerts.Close();
+            }
+        }
+
+        internal static bool LoadUpdatesAlerts()
+        {
+            bool ShowAlerts = false;
+
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("Updates", true);
+            using (RegistryKey ShowUpdatesAlerts = EuroSoundKey.OpenSubKey("Updates", true))
+            {
+                ShowAlerts = Convert.ToBoolean(int.Parse(ShowUpdatesAlerts.GetValue("ShowAlerts", 0).ToString()));
+                ShowUpdatesAlerts.Close();
+            }
+
+            return ShowAlerts;
+        }
 
         //*===============================================================================================
         //* Active Document

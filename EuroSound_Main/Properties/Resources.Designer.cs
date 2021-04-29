@@ -871,6 +871,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Enable/disable automatic checking of version updates every time the application starts.
+        /// </summary>
+        internal static string MenuItemFile_EnableVersionUpdates {
+            get {
+                return ResourceManager.GetString("MenuItemFile_EnableVersionUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Quit the application; prompts to save documents.
         /// </summary>
         internal static string MenuItemFile_Exit {

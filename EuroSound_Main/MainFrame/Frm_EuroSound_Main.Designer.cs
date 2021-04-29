@@ -36,8 +36,10 @@ namespace EuroSound_Application
             this.MenuItemFile_New = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemFile_OpenESF = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemFile_Separator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.MenuItemFile_RecentFiles = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemFile_Updates = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemFile_Separator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuItemFile_RecentFiles = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemFile_Separator3 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItemFile_Exit = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu_View = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemView_Preferences = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,8 +100,10 @@ namespace EuroSound_Application
             this.MenuItemFile_New,
             this.MenuItemFile_OpenESF,
             this.MenuItemFile_Separator1,
-            this.MenuItemFile_RecentFiles,
+            this.MenuItemFile_Updates,
             this.MenuItemFile_Separator2,
+            this.MenuItemFile_RecentFiles,
+            this.MenuItemFile_Separator3,
             this.MenuItemFile_Exit});
             this.MainMenu_File.Name = "MainMenu_File";
             this.MainMenu_File.Size = new System.Drawing.Size(37, 20);
@@ -110,7 +114,7 @@ namespace EuroSound_Application
             this.MenuItemFile_New.MergeIndex = 0;
             this.MenuItemFile_New.Name = "MenuItemFile_New";
             this.MenuItemFile_New.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.MenuItemFile_New.Size = new System.Drawing.Size(146, 22);
+            this.MenuItemFile_New.Size = new System.Drawing.Size(196, 22);
             this.MenuItemFile_New.Text = "New";
             this.MenuItemFile_New.Click += new System.EventHandler(this.MenuItemFile_New_Click);
             // 
@@ -119,7 +123,7 @@ namespace EuroSound_Application
             this.MenuItemFile_OpenESF.MergeIndex = 1;
             this.MenuItemFile_OpenESF.Name = "MenuItemFile_OpenESF";
             this.MenuItemFile_OpenESF.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.MenuItemFile_OpenESF.Size = new System.Drawing.Size(146, 22);
+            this.MenuItemFile_OpenESF.Size = new System.Drawing.Size(196, 22);
             this.MenuItemFile_OpenESF.Text = "Open";
             this.MenuItemFile_OpenESF.Click += new System.EventHandler(this.MenuItemFile_OpenESF_Click);
             // 
@@ -127,26 +131,43 @@ namespace EuroSound_Application
             // 
             this.MenuItemFile_Separator1.MergeIndex = 10;
             this.MenuItemFile_Separator1.Name = "MenuItemFile_Separator1";
-            this.MenuItemFile_Separator1.Size = new System.Drawing.Size(143, 6);
+            this.MenuItemFile_Separator1.Size = new System.Drawing.Size(193, 6);
             // 
-            // MenuItemFile_RecentFiles
+            // MenuItemFile_Updates
             // 
-            this.MenuItemFile_RecentFiles.MergeIndex = 11;
-            this.MenuItemFile_RecentFiles.Name = "MenuItemFile_RecentFiles";
-            this.MenuItemFile_RecentFiles.Size = new System.Drawing.Size(146, 22);
-            this.MenuItemFile_RecentFiles.Text = "Recent Files";
+            this.MenuItemFile_Updates.Checked = true;
+            this.MenuItemFile_Updates.CheckOnClick = true;
+            this.MenuItemFile_Updates.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.MenuItemFile_Updates.MergeIndex = 11;
+            this.MenuItemFile_Updates.Name = "MenuItemFile_Updates";
+            this.MenuItemFile_Updates.Size = new System.Drawing.Size(196, 22);
+            this.MenuItemFile_Updates.Text = "Enable Version Updates";
+            this.MenuItemFile_Updates.CheckedChanged += new System.EventHandler(this.MenuItemFile_Updates_CheckedChanged);
             // 
             // MenuItemFile_Separator2
             // 
-            this.MenuItemFile_Separator2.MergeIndex = 18;
+            this.MenuItemFile_Separator2.MergeIndex = 12;
             this.MenuItemFile_Separator2.Name = "MenuItemFile_Separator2";
-            this.MenuItemFile_Separator2.Size = new System.Drawing.Size(143, 6);
+            this.MenuItemFile_Separator2.Size = new System.Drawing.Size(193, 6);
+            // 
+            // MenuItemFile_RecentFiles
+            // 
+            this.MenuItemFile_RecentFiles.MergeIndex = 12;
+            this.MenuItemFile_RecentFiles.Name = "MenuItemFile_RecentFiles";
+            this.MenuItemFile_RecentFiles.Size = new System.Drawing.Size(196, 22);
+            this.MenuItemFile_RecentFiles.Text = "Recent Files";
+            // 
+            // MenuItemFile_Separator3
+            // 
+            this.MenuItemFile_Separator3.MergeIndex = 19;
+            this.MenuItemFile_Separator3.Name = "MenuItemFile_Separator3";
+            this.MenuItemFile_Separator3.Size = new System.Drawing.Size(193, 6);
             // 
             // MenuItemFile_Exit
             // 
-            this.MenuItemFile_Exit.MergeIndex = 19;
+            this.MenuItemFile_Exit.MergeIndex = 20;
             this.MenuItemFile_Exit.Name = "MenuItemFile_Exit";
-            this.MenuItemFile_Exit.Size = new System.Drawing.Size(146, 22);
+            this.MenuItemFile_Exit.Size = new System.Drawing.Size(196, 22);
             this.MenuItemFile_Exit.Text = "Exit";
             this.MenuItemFile_Exit.Click += new System.EventHandler(this.MenuItemFile_Exit_Click);
             // 
@@ -435,7 +456,7 @@ namespace EuroSound_Application
         private System.Windows.Forms.ToolStripMenuItem MenuItemFile_OpenESF;
         private System.Windows.Forms.ToolStripMenuItem MenuItemView_StatusBar;
         private System.Windows.Forms.ToolStripMenuItem MenuItemFile_New;
-        private System.Windows.Forms.ToolStripSeparator MenuItemFile_Separator2;
+        private System.Windows.Forms.ToolStripSeparator MenuItemFile_Separator3;
         private System.Windows.Forms.ToolStripMenuItem MenuItemFile_Exit;
         private System.Windows.Forms.ToolStripMenuItem MenuItemWindow_Cascade;
         private System.Windows.Forms.ToolStripMenuItem MenuItemWindow_TileH;
@@ -468,5 +489,7 @@ namespace EuroSound_Application
         private System.Windows.Forms.ToolStripMenuItem MenuItemHelp_ReleaseInfo;
         private System.Windows.Forms.ToolStripMenuItem MenuItemHelp_CurrentReleaseInfo;
         private System.Windows.Forms.ToolStripMenuItem MainMenuTools_DebugHashtables;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemFile_Updates;
+        private System.Windows.Forms.ToolStripSeparator MenuItemFile_Separator2;
     }
 }

@@ -1,10 +1,15 @@
-﻿using EuroSound_Application.ApplicationRegistryFunctions;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
+using Octokit;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -129,7 +134,7 @@ namespace EuroSound_Application
             if (System.IO.File.Exists(FileToLoad))
             {
                 EuroSoundFiles ESFFiles = new EuroSoundFiles();
-                using (BinaryReader BReader = new BinaryReader(System.IO.File.Open(FileToLoad, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
+                using (BinaryReader BReader = new BinaryReader(System.IO.File.Open(FileToLoad, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
                 {
                     if (ESFFiles.FileIsCorrect(BReader))
                     {
@@ -187,7 +192,7 @@ namespace EuroSound_Application
         private bool FileIsAlreadyOpened(string FilePathToCheck)
         {
             bool FileIsAlreadyLoaded = false;
-            foreach (Form FormToCheck in Application.OpenForms)
+            foreach (Form FormToCheck in System.Windows.Forms.Application.OpenForms)
             {
                 if (FormToCheck.GetType() == typeof(Frm_Soundbanks_Main))
                 {
@@ -215,6 +220,38 @@ namespace EuroSound_Application
                 }
             }
             return FileIsAlreadyLoaded;
+        }
+
+        private void CheckForUpdates()
+        {
+            if (GlobalPreferences.ShowUpdatesAlerts)
+            {
+                CheckUpdates = new Thread(async () =>
+                {
+                    if (GenericFunctions.CheckForInternetConnection())
+                    {
+                        GitHubClient github = new GitHubClient(new ProductHeaderValue("EuroSound-Editor"));
+                        IReadOnlyList<Release> ESReleases = await github.Repository.Release.GetAll("jmarti856", "eurosound");
+                        if (ESReleases.Count > 0)
+                        {
+                            string CurrentRelease = GenericFunctions.GetEuroSoundVersion();
+                            string LatestRelease = ESReleases[0].TagName;
+                            if (!CurrentRelease.Equals(LatestRelease))
+                            {
+                                DialogResult UpdateQuestion = MessageBox.Show(string.Join("", "It seems that you don't have the latest version of EuroSound.\nYou have the release: ", CurrentRelease, " and the latest release is: ", LatestRelease, ".\n\nWould you like to go to the repository page?"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                                if (UpdateQuestion == DialogResult.Yes)
+                                {
+                                    Process.Start(string.Join("", "https://github.com/jmarti856/eurosound/releases/tag/", LatestRelease));
+                                }
+                            }
+                        }
+                    }
+                })
+                {
+                    IsBackground = true
+                };
+                CheckUpdates.Start();
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Resources;
 using System.Security.Cryptography;
@@ -374,6 +375,22 @@ namespace EuroSound_Application
                 {
                     BarToChange.Value += value;
                 });
+            }
+        }
+
+        internal static bool CheckForInternetConnection()
+        {
+            try
+            {
+                using (WebClient client = new WebClient())
+                using (Stream stream = client.OpenRead("http://www.google.com"))
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
             }
         }
 

@@ -11,6 +11,7 @@ using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace EuroSound_Application
@@ -24,7 +25,7 @@ namespace EuroSound_Application
         private string ArgumentFromSplash;
         protected MostRecentFilesMenu RecentFilesMenu;
         private string RecentFilesMenuRegKey = "SOFTWARE\\Eurocomm\\EuroSound\\RecentFiles";
-
+        private Thread CheckUpdates;
         public Frm_EuroSound_Main(string ArgumentToLoad)
         {
             InitializeComponent();
@@ -36,10 +37,12 @@ namespace EuroSound_Application
 
             MenuItemFile_New.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItem_File_NewProject")); };
             MenuItemFile_OpenESF.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_OpenESF")); };
+            MenuItemFile_Updates.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_EnableVersionUpdates")); };
             MenuItemFile_Exit.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_Exit")); };
 
             MenuItemFile_New.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItemFile_OpenESF.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MenuItemFile_Updates.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MenuItemFile_Exit.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
 
             //Menu Item: View
@@ -108,6 +111,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void Frm_EuroSound_Main_Load(object sender, EventArgs e)
         {
+            //Load Last State
             using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
                 if (Convert.ToBoolean(WindowStateConfig.GetValue("MainFrame_IsIconic", 0)))
@@ -151,6 +155,12 @@ namespace EuroSound_Application
                     OpenFormsWithFileToLoad(LastActiveDocument);
                 }
             }
+
+            //Menu Item Checked
+            MenuItemFile_Updates.Checked = GlobalPreferences.ShowUpdatesAlerts;
+
+            //Show Update Alerts
+            CheckForUpdates();
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
@@ -209,6 +219,12 @@ namespace EuroSound_Application
                 WindowsRegistryFunctions.SaveActiveDocument("");
             }
 
+            //Stop threads
+            if (CheckUpdates != null)
+            {
+                CheckUpdates.Abort();
+            }
+
             //Save Window position
             WindowsRegistryFunctions.SaveWindowState("MainFrame", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, 0);
 
@@ -253,6 +269,12 @@ namespace EuroSound_Application
             {
                 OpenFormsWithFileToLoad(ArgumentFromSplash);
             }
+        }
+
+        private void MenuItemFile_Updates_CheckedChanged(object sender, EventArgs e)
+        {
+            GlobalPreferences.ShowUpdatesAlerts = MenuItemFile_Updates.Checked;
+            WindowsRegistryFunctions.SaveUpdatesAlerts();
         }
 
         //*===============================================================================================

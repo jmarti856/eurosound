@@ -363,6 +363,9 @@
   <data name="MenuItemFile_Close" xml:space="preserve">
     <value>Close the active document</value>
   </data>
+  <data name="MenuItemFile_EnableVersionUpdates" xml:space="preserve">
+    <value>Enable/disable automatic checking of version updates every time the application starts</value>
+  </data>
   <data name="MenuItemFile_Exit" xml:space="preserve">
     <value>Quit the application; prompts to save documents</value>
   </data>
