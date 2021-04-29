@@ -226,9 +226,9 @@ namespace EuroSound_Application
         {
             if (GlobalPreferences.ShowUpdatesAlerts)
             {
-                CheckUpdates = new Thread(async () =>
+                if (GenericFunctions.CheckForInternetConnection())
                 {
-                    if (GenericFunctions.CheckForInternetConnection())
+                    CheckUpdates = new Thread(async () =>
                     {
                         GitHubClient github = new GitHubClient(new ProductHeaderValue("EuroSound-Editor"));
                         IReadOnlyList<Release> ESReleases = await github.Repository.Release.GetAll("jmarti856", "eurosound");
@@ -245,12 +245,12 @@ namespace EuroSound_Application
                                 }
                             }
                         }
-                    }
-                })
-                {
-                    IsBackground = true
-                };
-                CheckUpdates.Start();
+                    })
+                    {
+                        IsBackground = true
+                    };
+                    CheckUpdates.Start();
+                }
             }
         }
     }

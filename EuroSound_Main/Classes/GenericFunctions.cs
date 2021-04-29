@@ -14,9 +14,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Net;
 using System.Reflection;
 using System.Resources;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
@@ -28,9 +28,12 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
+        [DllImport("wininet.dll")]
+        private extern static bool InternetGetConnectedState(out int connDescription, int ReservedValue);
         internal static ResourceManager ResourcesManager;
         internal static StatusBarToolTips ParentFormStatusBar;
         internal static Dictionary<string, string> AvailableProfiles = new Dictionary<string, string>();
+
         internal enum ESoundMarkers : uint
         {
             Start = 10,
@@ -380,18 +383,8 @@ namespace EuroSound_Application
 
         internal static bool CheckForInternetConnection()
         {
-            try
-            {
-                using (WebClient client = new WebClient())
-                using (Stream stream = client.OpenRead("http://www.google.com"))
-                {
-                    return true;
-                }
-            }
-            catch
-            {
-                return false;
-            }
+            int Desc;
+            return InternetGetConnectedState(out Desc, 0);
         }
 
         //*===============================================================================================
