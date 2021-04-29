@@ -19,6 +19,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.SoundBanksEditor
@@ -39,6 +40,7 @@ namespace EuroSound_Application.SoundBanksEditor
         private SoundBanksYMLReader LibYamlReader = new SoundBanksYMLReader();
         private AudioFunctions AudioFunctionsLibrary = new AudioFunctions();
         private MostRecentFilesMenu RecentFilesMenu;
+        private System.Timers.Timer TimerBackups;
 
         //The undo and redo history lists.
         private Stack<object> UndoListSounds = new Stack<object>();
@@ -184,14 +186,11 @@ namespace EuroSound_Application.SoundBanksEditor
             //Load Last State
             using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
-                bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("SBView_IsIconic", 0));
-                bool IsMaximized = Convert.ToBoolean(WindowStateConfig.GetValue("SBView_IsMaximized", 0));
-
-                if (IsIconic)
+                if (Convert.ToBoolean(WindowStateConfig.GetValue("SBView_IsIconic", 0)))
                 {
                     WindowState = FormWindowState.Minimized;
                 }
-                else if (IsMaximized)
+                else if (Convert.ToBoolean(WindowStateConfig.GetValue("SBView_IsMaximized", 0)))
                 {
                     WindowState = FormWindowState.Maximized;
                 }
@@ -203,6 +202,39 @@ namespace EuroSound_Application.SoundBanksEditor
                 Height = Convert.ToInt32(WindowStateConfig.GetValue("SBView_Height", 779));
                 WindowStateConfig.Close();
             }
+
+            //Backups
+            if (GlobalPreferences.MakeBackups)
+            {
+                TimerBackups = new System.Timers.Timer(TimeSpan.FromMinutes(GlobalPreferences.MakeBackupsInterval).TotalMilliseconds)
+                {
+                    AutoReset = true
+                };
+                TimerBackups.Elapsed += new ElapsedEventHandler(MakeBackup);
+                TimerBackups.Start();
+            }
+        }
+
+        private void MakeBackup(object sender, ElapsedEventArgs e)
+        {
+            //Set Program status
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_SavingBackUp"));
+
+            //Check index
+            if (GlobalPreferences.MakeBackupsIndex > (GlobalPreferences.MakeBackupsMaxNumber - 1))
+            {
+                GlobalPreferences.MakeBackupsIndex = 0;
+            }
+
+            //Save File
+            if (Directory.Exists(GlobalPreferences.MakeBackupsDirectory))
+            {
+                EuroSoundFilesFunctions.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, Path.Combine(GlobalPreferences.MakeBackupsDirectory, string.Join("", "ES_BackUp", GlobalPreferences.MakeBackupsIndex, ".ESF")), ProjectInfo);
+                GlobalPreferences.MakeBackupsIndex++;
+            }
+
+            //Set Program status
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         private void Frm_Soundbanks_Main_Shown(object sender, EventArgs e)
@@ -240,56 +272,126 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
                 else
                 {
-                    LoadSoundBankFile = new Thread(() =>
+                    if (GlobalPreferences.UseThreadingWhenLoad)
                     {
-                        //Disable Button
-                        Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
+                        LoadSoundBankFile = new Thread(() =>
                         {
-                            Button_UpdateList_WavData.Enabled = false;
-                        });
+                            //Disable Button
+                            Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
+                            {
+                                Button_UpdateList_WavData.Enabled = false;
+                            });
 
-                        //Disable Button
-                        Button_Stop_WavUpdate.Invoke((MethodInvoker)delegate
+                            //Disable Button
+                            Button_Stop_WavUpdate.Invoke((MethodInvoker)delegate
+                            {
+                                Button_Stop_WavUpdate.Enabled = false;
+                            });
+
+                            //Disable Button
+                            Button_UpdateList_Hashcodes.Invoke((MethodInvoker)delegate
+                            {
+                                Button_UpdateList_Hashcodes.Enabled = false;
+                            });
+
+                            //Disable Button
+                            Button_StopHashcodeUpdate.Invoke((MethodInvoker)delegate
+                            {
+                                Button_StopHashcodeUpdate.Enabled = false;
+                            });
+
+                            //Disable Button
+                            Button_UpdateList_StreamData.Invoke((MethodInvoker)delegate
+                            {
+                                Button_UpdateList_StreamData.Enabled = false;
+                            });
+
+                            //Disable Button
+                            Button_StopStreamData.Invoke((MethodInvoker)delegate
+                            {
+                                Button_StopStreamData.Enabled = false;
+                            });
+
+                            //Disable Button
+                            Button_GenerateList.Invoke((MethodInvoker)delegate
+                            {
+                                Button_GenerateList.Enabled = false;
+                            });
+
+                            //Disable Button
+                            Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
+                            {
+                                Button_ExportInterchangeFile.Enabled = false;
+                            });
+
+                            //Check that the profile name matches with the current one
+                            string ProfileName = EuroSoundFilesFunctions.LoadSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, CurrentFilePath, ProjectInfo);
+                            if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
+                            {
+                                FormMustBeClosed = true;
+                            }
+
+                            //Update File name label
+                            UpdateStatusBarLabels();
+
+                            //Enable Button
+                            Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
+                            {
+                                Button_UpdateList_WavData.Enabled = true;
+                            });
+
+                            //Enable Button
+                            Button_Stop_WavUpdate.Invoke((MethodInvoker)delegate
+                            {
+                                Button_Stop_WavUpdate.Enabled = true;
+                            });
+
+                            //Enable Button
+                            Button_UpdateList_Hashcodes.Invoke((MethodInvoker)delegate
+                            {
+                                Button_UpdateList_Hashcodes.Enabled = true;
+                            });
+
+                            //Enable Button
+                            Button_StopHashcodeUpdate.Invoke((MethodInvoker)delegate
+                            {
+                                Button_StopHashcodeUpdate.Enabled = true;
+                            });
+
+                            //Enable Button
+                            Button_UpdateList_StreamData.Invoke((MethodInvoker)delegate
+                            {
+                                Button_UpdateList_StreamData.Enabled = true;
+                            });
+
+                            //Enable Button
+                            Button_StopStreamData.Invoke((MethodInvoker)delegate
+                            {
+                                Button_StopStreamData.Enabled = true;
+                            });
+
+                            //Enable Button
+                            Button_GenerateList.Invoke((MethodInvoker)delegate
+                            {
+                                Button_GenerateList.Enabled = true;
+                            });
+
+                            //Enable Button
+                            Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
+                            {
+                                Button_ExportInterchangeFile.Enabled = true;
+                            });
+
+                            //Set Program status
+                            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                        })
                         {
-                            Button_Stop_WavUpdate.Enabled = false;
-                        });
-
-                        //Disable Button
-                        Button_UpdateList_Hashcodes.Invoke((MethodInvoker)delegate
-                        {
-                            Button_UpdateList_Hashcodes.Enabled = false;
-                        });
-
-                        //Disable Button
-                        Button_StopHashcodeUpdate.Invoke((MethodInvoker)delegate
-                        {
-                            Button_StopHashcodeUpdate.Enabled = false;
-                        });
-
-                        //Disable Button
-                        Button_UpdateList_StreamData.Invoke((MethodInvoker)delegate
-                        {
-                            Button_UpdateList_StreamData.Enabled = false;
-                        });
-
-                        //Disable Button
-                        Button_StopStreamData.Invoke((MethodInvoker)delegate
-                        {
-                            Button_StopStreamData.Enabled = false;
-                        });
-
-                        //Disable Button
-                        Button_GenerateList.Invoke((MethodInvoker)delegate
-                        {
-                            Button_GenerateList.Enabled = false;
-                        });
-
-                        //Disable Button
-                        Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
-                        {
-                            Button_ExportInterchangeFile.Enabled = false;
-                        });
-
+                            IsBackground = true
+                        };
+                        LoadSoundBankFile.Start();
+                    }
+                    else
+                    {
                         //Check that the profile name matches with the current one
                         string ProfileName = EuroSoundFilesFunctions.LoadSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, CurrentFilePath, ProjectInfo);
                         if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
@@ -300,61 +402,9 @@ namespace EuroSound_Application.SoundBanksEditor
                         //Update File name label
                         UpdateStatusBarLabels();
 
-                        //Enable Button
-                        Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
-                        {
-                            Button_UpdateList_WavData.Enabled = true;
-                        });
-
-                        //Enable Button
-                        Button_Stop_WavUpdate.Invoke((MethodInvoker)delegate
-                        {
-                            Button_Stop_WavUpdate.Enabled = true;
-                        });
-
-                        //Enable Button
-                        Button_UpdateList_Hashcodes.Invoke((MethodInvoker)delegate
-                        {
-                            Button_UpdateList_Hashcodes.Enabled = true;
-                        });
-
-                        //Enable Button
-                        Button_StopHashcodeUpdate.Invoke((MethodInvoker)delegate
-                        {
-                            Button_StopHashcodeUpdate.Enabled = true;
-                        });
-
-                        //Enable Button
-                        Button_UpdateList_StreamData.Invoke((MethodInvoker)delegate
-                        {
-                            Button_UpdateList_StreamData.Enabled = true;
-                        });
-
-                        //Enable Button
-                        Button_StopStreamData.Invoke((MethodInvoker)delegate
-                        {
-                            Button_StopStreamData.Enabled = true;
-                        });
-
-                        //Enable Button
-                        Button_GenerateList.Invoke((MethodInvoker)delegate
-                        {
-                            Button_GenerateList.Enabled = true;
-                        });
-
-                        //Enable Button
-                        Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
-                        {
-                            Button_ExportInterchangeFile.Enabled = true;
-                        });
-
                         //Set Program status
                         GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
-                    })
-                    {
-                        IsBackground = true
-                    };
-                    LoadSoundBankFile.Start();
+                    }
                 }
 
                 //Apply User Preferences
@@ -422,6 +472,14 @@ namespace EuroSound_Application.SoundBanksEditor
             if (LoadSoundBankFile != null)
             {
                 LoadSoundBankFile.Abort();
+            }
+
+            //Stop timer
+            if (TimerBackups != null)
+            {
+                TimerBackups.Stop();
+                TimerBackups.Close();
+                TimerBackups.Dispose();
             }
 
             //Clear stack lists

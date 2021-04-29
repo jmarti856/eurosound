@@ -21,12 +21,10 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
         //* Global Variables
         //*===============================================================================================
         private Thread DataToCombobox;
-        private string HashTableOutputPath;
 
-        public Frm_Debug_HT_Data(string OutputPath)
+        public Frm_Debug_HT_Data()
         {
             InitializeComponent();
-            HashTableOutputPath = OutputPath;
 
             //Buttons
             Button_HashTablePath.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("DebugMFXHT_ValidList")); };
@@ -71,14 +69,11 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             //Load Last state
             using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
-                bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("DBDView_IsIconic", 0));
-                bool IsMaximized = Convert.ToBoolean(WindowStateConfig.GetValue("DBDView_IsMaximized", 0));
-
-                if (IsIconic)
+                if (Convert.ToBoolean(WindowStateConfig.GetValue("DBDView_IsIconic", 0)))
                 {
                     WindowState = FormWindowState.Minimized;
                 }
-                else if (IsMaximized)
+                else if (Convert.ToBoolean(WindowStateConfig.GetValue("DBDView_IsMaximized", 0)))
                 {
                     WindowState = FormWindowState.Maximized;
                 }
@@ -229,7 +224,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_GenericSavingFile"));
 
             //Check directory
-            if (Directory.Exists(HashTableOutputPath))
+            if (Directory.Exists(GlobalPreferences.DebugFilesFolder))
             {
                 //Disable button
                 Button_Generate.Invoke((MethodInvoker)delegate
@@ -238,7 +233,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
                 });
 
                 // Create a file to write to.
-                using (StreamWriter sw = File.CreateText(HashTableOutputPath + "\\MFX_Data.h"))
+                using (StreamWriter sw = File.CreateText(Path.Combine(GlobalPreferences.DebugFilesFolder, "MFX_Data.h")))
                 {
                     sw.WriteLine("// Music Data table from EuroSound 1");
                     sw.WriteLine("// " + DateTime.Now.ToString("dd MMMM yyyy"));
@@ -252,7 +247,12 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
                     sw.WriteLine("MusicDetails MusicData[]={");
                     foreach (DataGridViewRow RowToWrite in DataGridView_HT_Content.Rows)
                     {
+                        //Write data
                         sw.WriteLine(string.Join("", "\t{0x", Convert.ToUInt32(RowToWrite.Cells[0].Value).ToString("X8"), "," + RowToWrite.Cells[2].Value, "f,", RowToWrite.Cells[3].Value.ToString().ToUpper(), "},"));
+
+                        //Set Program status
+                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_GenericSavingFile"));
+
                         Task.Delay(1);
                     }
                     sw.WriteLine("};");

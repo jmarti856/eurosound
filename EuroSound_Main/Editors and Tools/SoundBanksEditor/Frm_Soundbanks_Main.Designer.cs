@@ -31,9 +31,9 @@ namespace EuroSound_Application.SoundBanksEditor
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Audio Data", 0, 0);
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Sounds", 0, 0);
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Streamed Sounds", 0, 0);
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Audio Data", 0, 0);
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Sounds", 0, 0);
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Streamed Sounds", 0, 0);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Soundbanks_Main));
             this.TreeView_File = new System.Windows.Forms.TreeView();
             this.ImageList_TreeNode = new System.Windows.Forms.ImageList(this.components);
@@ -172,25 +172,25 @@ namespace EuroSound_Application.SoundBanksEditor
             this.TreeView_File.Location = new System.Drawing.Point(0, 0);
             this.TreeView_File.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.TreeView_File.Name = "TreeView_File";
-            treeNode1.ImageIndex = 0;
-            treeNode1.Name = "AudioData";
-            treeNode1.SelectedImageIndex = 0;
-            treeNode1.Tag = "Root";
-            treeNode1.Text = "Audio Data";
-            treeNode2.ImageIndex = 0;
-            treeNode2.Name = "Sounds";
-            treeNode2.SelectedImageIndex = 0;
-            treeNode2.Tag = "Root";
-            treeNode2.Text = "Sounds";
-            treeNode3.ImageIndex = 0;
-            treeNode3.Name = "StreamedSounds";
-            treeNode3.SelectedImageIndex = 0;
-            treeNode3.Tag = "Root";
-            treeNode3.Text = "Streamed Sounds";
+            treeNode4.ImageIndex = 0;
+            treeNode4.Name = "AudioData";
+            treeNode4.SelectedImageIndex = 0;
+            treeNode4.Tag = "Root";
+            treeNode4.Text = "Audio Data";
+            treeNode5.ImageIndex = 0;
+            treeNode5.Name = "Sounds";
+            treeNode5.SelectedImageIndex = 0;
+            treeNode5.Tag = "Root";
+            treeNode5.Text = "Sounds";
+            treeNode6.ImageIndex = 0;
+            treeNode6.Name = "StreamedSounds";
+            treeNode6.SelectedImageIndex = 0;
+            treeNode6.Tag = "Root";
+            treeNode6.Text = "Streamed Sounds";
             this.TreeView_File.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2,
-            treeNode3});
+            treeNode4,
+            treeNode5,
+            treeNode6});
             this.TreeView_File.SelectedImageIndex = 0;
             this.TreeView_File.Size = new System.Drawing.Size(456, 591);
             this.TreeView_File.TabIndex = 1;

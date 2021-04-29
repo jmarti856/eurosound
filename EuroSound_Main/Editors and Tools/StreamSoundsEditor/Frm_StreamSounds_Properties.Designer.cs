@@ -371,16 +371,16 @@ namespace EuroSound_Application.StreamSounds
             this.Textbox_MD5_Hash.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Textbox_MD5_Hash.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_MD5_Hash.Location = new System.Drawing.Point(44, 45);
+            this.Textbox_MD5_Hash.Location = new System.Drawing.Point(50, 45);
             this.Textbox_MD5_Hash.Name = "Textbox_MD5_Hash";
             this.Textbox_MD5_Hash.ReadOnly = true;
-            this.Textbox_MD5_Hash.Size = new System.Drawing.Size(446, 20);
+            this.Textbox_MD5_Hash.Size = new System.Drawing.Size(440, 20);
             this.Textbox_MD5_Hash.TabIndex = 5;
             // 
             // Label_MD5_Hash
             // 
             this.Label_MD5_Hash.AutoSize = true;
-            this.Label_MD5_Hash.Location = new System.Drawing.Point(3, 48);
+            this.Label_MD5_Hash.Location = new System.Drawing.Point(9, 48);
             this.Label_MD5_Hash.Name = "Label_MD5_Hash";
             this.Label_MD5_Hash.Size = new System.Drawing.Size(35, 13);
             this.Label_MD5_Hash.TabIndex = 4;
@@ -391,9 +391,9 @@ namespace EuroSound_Application.StreamSounds
             this.Label_Data.AutoSize = true;
             this.Label_Data.Location = new System.Drawing.Point(6, 23);
             this.Label_Data.Name = "Label_Data";
-            this.Label_Data.Size = new System.Drawing.Size(32, 13);
+            this.Label_Data.Size = new System.Drawing.Size(38, 13);
             this.Label_Data.TabIndex = 0;
-            this.Label_Data.Text = "Path:";
+            this.Label_Data.Text = "Name:";
             // 
             // Button_ReplaceAudio
             // 
@@ -411,10 +411,10 @@ namespace EuroSound_Application.StreamSounds
             this.Textbox_IMA_ADPCM.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Textbox_IMA_ADPCM.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_IMA_ADPCM.Location = new System.Drawing.Point(44, 19);
+            this.Textbox_IMA_ADPCM.Location = new System.Drawing.Point(50, 19);
             this.Textbox_IMA_ADPCM.Name = "Textbox_IMA_ADPCM";
             this.Textbox_IMA_ADPCM.ReadOnly = true;
-            this.Textbox_IMA_ADPCM.Size = new System.Drawing.Size(369, 20);
+            this.Textbox_IMA_ADPCM.Size = new System.Drawing.Size(363, 20);
             this.Textbox_IMA_ADPCM.TabIndex = 1;
             this.Textbox_IMA_ADPCM.Text = "<NO DATA>";
             // 

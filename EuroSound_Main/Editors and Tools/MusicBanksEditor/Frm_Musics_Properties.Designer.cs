@@ -100,10 +100,10 @@ namespace EuroSound_Application.Musics
             this.Textbox_MD5_Hash_LeftChannel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Textbox_MD5_Hash_LeftChannel.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_MD5_Hash_LeftChannel.Location = new System.Drawing.Point(47, 32);
+            this.Textbox_MD5_Hash_LeftChannel.Location = new System.Drawing.Point(50, 32);
             this.Textbox_MD5_Hash_LeftChannel.Name = "Textbox_MD5_Hash_LeftChannel";
             this.Textbox_MD5_Hash_LeftChannel.ReadOnly = true;
-            this.Textbox_MD5_Hash_LeftChannel.Size = new System.Drawing.Size(438, 20);
+            this.Textbox_MD5_Hash_LeftChannel.Size = new System.Drawing.Size(435, 20);
             this.Textbox_MD5_Hash_LeftChannel.TabIndex = 5;
             // 
             // Button_SaveAudio_LeftChannel
@@ -120,7 +120,7 @@ namespace EuroSound_Application.Musics
             // Label_MD5_Hash_LeftChannel
             // 
             this.Label_MD5_Hash_LeftChannel.AutoSize = true;
-            this.Label_MD5_Hash_LeftChannel.Location = new System.Drawing.Point(6, 35);
+            this.Label_MD5_Hash_LeftChannel.Location = new System.Drawing.Point(9, 35);
             this.Label_MD5_Hash_LeftChannel.Name = "Label_MD5_Hash_LeftChannel";
             this.Label_MD5_Hash_LeftChannel.Size = new System.Drawing.Size(35, 13);
             this.Label_MD5_Hash_LeftChannel.TabIndex = 4;
@@ -131,21 +131,21 @@ namespace EuroSound_Application.Musics
             this.Textbox_IMA_ADPCM_LeftChannel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Textbox_IMA_ADPCM_LeftChannel.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_IMA_ADPCM_LeftChannel.Location = new System.Drawing.Point(47, 6);
+            this.Textbox_IMA_ADPCM_LeftChannel.Location = new System.Drawing.Point(50, 6);
             this.Textbox_IMA_ADPCM_LeftChannel.Name = "Textbox_IMA_ADPCM_LeftChannel";
             this.Textbox_IMA_ADPCM_LeftChannel.ReadOnly = true;
-            this.Textbox_IMA_ADPCM_LeftChannel.Size = new System.Drawing.Size(361, 20);
+            this.Textbox_IMA_ADPCM_LeftChannel.Size = new System.Drawing.Size(358, 20);
             this.Textbox_IMA_ADPCM_LeftChannel.TabIndex = 1;
             this.Textbox_IMA_ADPCM_LeftChannel.Text = "<NO DATA>";
             // 
             // Label_Data_LeftChannel
             // 
             this.Label_Data_LeftChannel.AutoSize = true;
-            this.Label_Data_LeftChannel.Location = new System.Drawing.Point(9, 10);
+            this.Label_Data_LeftChannel.Location = new System.Drawing.Point(6, 10);
             this.Label_Data_LeftChannel.Name = "Label_Data_LeftChannel";
-            this.Label_Data_LeftChannel.Size = new System.Drawing.Size(32, 13);
+            this.Label_Data_LeftChannel.Size = new System.Drawing.Size(38, 13);
             this.Label_Data_LeftChannel.TabIndex = 0;
-            this.Label_Data_LeftChannel.Text = "Path:";
+            this.Label_Data_LeftChannel.Text = "Name:";
             // 
             // Button_ReplaceAudio_LeftChannel
             // 
@@ -418,10 +418,10 @@ namespace EuroSound_Application.Musics
             this.Textbox_IMA_ADPCM_RightChannel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Textbox_IMA_ADPCM_RightChannel.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_IMA_ADPCM_RightChannel.Location = new System.Drawing.Point(47, 6);
+            this.Textbox_IMA_ADPCM_RightChannel.Location = new System.Drawing.Point(50, 6);
             this.Textbox_IMA_ADPCM_RightChannel.Name = "Textbox_IMA_ADPCM_RightChannel";
             this.Textbox_IMA_ADPCM_RightChannel.ReadOnly = true;
-            this.Textbox_IMA_ADPCM_RightChannel.Size = new System.Drawing.Size(361, 20);
+            this.Textbox_IMA_ADPCM_RightChannel.Size = new System.Drawing.Size(358, 20);
             this.Textbox_IMA_ADPCM_RightChannel.TabIndex = 1;
             this.Textbox_IMA_ADPCM_RightChannel.Text = "<NO DATA>";
             // 
@@ -430,10 +430,10 @@ namespace EuroSound_Application.Musics
             this.Textbox_MD5_Hash_RightChannel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Textbox_MD5_Hash_RightChannel.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_MD5_Hash_RightChannel.Location = new System.Drawing.Point(47, 32);
+            this.Textbox_MD5_Hash_RightChannel.Location = new System.Drawing.Point(50, 32);
             this.Textbox_MD5_Hash_RightChannel.Name = "Textbox_MD5_Hash_RightChannel";
             this.Textbox_MD5_Hash_RightChannel.ReadOnly = true;
-            this.Textbox_MD5_Hash_RightChannel.Size = new System.Drawing.Size(438, 20);
+            this.Textbox_MD5_Hash_RightChannel.Size = new System.Drawing.Size(435, 20);
             this.Textbox_MD5_Hash_RightChannel.TabIndex = 5;
             // 
             // Button_ReplaceAudio_RightChannel
@@ -461,16 +461,16 @@ namespace EuroSound_Application.Musics
             // Label_Data_RightChannel
             // 
             this.Label_Data_RightChannel.AutoSize = true;
-            this.Label_Data_RightChannel.Location = new System.Drawing.Point(9, 10);
+            this.Label_Data_RightChannel.Location = new System.Drawing.Point(6, 10);
             this.Label_Data_RightChannel.Name = "Label_Data_RightChannel";
-            this.Label_Data_RightChannel.Size = new System.Drawing.Size(32, 13);
+            this.Label_Data_RightChannel.Size = new System.Drawing.Size(38, 13);
             this.Label_Data_RightChannel.TabIndex = 0;
-            this.Label_Data_RightChannel.Text = "Path:";
+            this.Label_Data_RightChannel.Text = "Name:";
             // 
             // Label_MD5_Hash_RightChannel
             // 
             this.Label_MD5_Hash_RightChannel.AutoSize = true;
-            this.Label_MD5_Hash_RightChannel.Location = new System.Drawing.Point(6, 35);
+            this.Label_MD5_Hash_RightChannel.Location = new System.Drawing.Point(9, 35);
             this.Label_MD5_Hash_RightChannel.Name = "Label_MD5_Hash_RightChannel";
             this.Label_MD5_Hash_RightChannel.Size = new System.Drawing.Size(35, 13);
             this.Label_MD5_Hash_RightChannel.TabIndex = 4;

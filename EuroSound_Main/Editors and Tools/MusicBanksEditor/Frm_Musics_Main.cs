@@ -14,8 +14,10 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.Musics
@@ -34,6 +36,7 @@ namespace EuroSound_Application.Musics
         private MostRecentFilesMenu RecentFilesMenu;
         private AudioFunctions AudioLibrary = new AudioFunctions();
         private Thread UpdateImaData, UpdateWavList, LoadMusicFile;
+        private System.Timers.Timer TimerBackups;
 
         // The undo and redo history lists.
         private Stack<object> UndoListMusics = new Stack<object>();
@@ -139,14 +142,11 @@ namespace EuroSound_Application.Musics
             //Load Last State
             using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
-                bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("MView_IsIconic", 0));
-                bool IsMaximized = Convert.ToBoolean(WindowStateConfig.GetValue("MView_IsMaximized", 0));
-
-                if (IsIconic)
+                if (Convert.ToBoolean(WindowStateConfig.GetValue("MView_IsIconic", 0)))
                 {
                     WindowState = FormWindowState.Minimized;
                 }
-                else if (IsMaximized)
+                else if (Convert.ToBoolean(WindowStateConfig.GetValue("MView_IsMaximized", 0)))
                 {
                     WindowState = FormWindowState.Maximized;
                 }
@@ -158,6 +158,39 @@ namespace EuroSound_Application.Musics
                 Height = Convert.ToInt32(WindowStateConfig.GetValue("MView_Height", 779));
                 WindowStateConfig.Close();
             }
+
+            //Backups
+            if (GlobalPreferences.MakeBackups)
+            {
+                TimerBackups = new System.Timers.Timer(TimeSpan.FromMinutes(GlobalPreferences.MakeBackupsInterval).TotalMilliseconds)
+                {
+                    AutoReset = true
+                };
+                TimerBackups.Elapsed += new ElapsedEventHandler(MakeBackup);
+                TimerBackups.Start();
+            }
+        }
+
+        private void MakeBackup(object sender, ElapsedEventArgs e)
+        {
+            //Set Program status
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_SavingBackUp"));
+
+            //Check index
+            if (GlobalPreferences.MakeBackupsIndex > (GlobalPreferences.MakeBackupsMaxNumber - 1))
+            {
+                GlobalPreferences.MakeBackupsIndex = 0;
+            }
+
+            //Save File
+            if (Directory.Exists(GlobalPreferences.MakeBackupsDirectory))
+            {
+                EuroSoundFilesFunctions.SaveMusics(TreeView_MusicData, MusicsList, Path.Combine(GlobalPreferences.MakeBackupsDirectory, string.Join("", "ES_BackUp", GlobalPreferences.MakeBackupsIndex, ".ESF")), ProjectInfo);
+                GlobalPreferences.MakeBackupsIndex++;
+            }
+
+            //Set Program status
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         private void Frm_Musics_Main_Shown(object sender, System.EventArgs e)
@@ -195,38 +228,90 @@ namespace EuroSound_Application.Musics
                 }
                 else
                 {
-                    LoadMusicFile = new Thread(() =>
+                    if (GlobalPreferences.UseThreadingWhenLoad)
                     {
-                        //Disable button
-                        Button_Generate_Hashcodes.Invoke((MethodInvoker)delegate
+                        LoadMusicFile = new Thread(() =>
                         {
-                            Button_Generate_Hashcodes.Enabled = false;
-                        });
+                            //Disable button
+                            Button_Generate_Hashcodes.Invoke((MethodInvoker)delegate
+                            {
+                                Button_Generate_Hashcodes.Enabled = false;
+                            });
 
-                        //Disable button
-                        Button_UpdateProperties.Invoke((MethodInvoker)delegate
+                            //Disable button
+                            Button_UpdateProperties.Invoke((MethodInvoker)delegate
+                            {
+                                Button_UpdateProperties.Enabled = false;
+                            });
+
+                            //Disable button
+                            Button_StopUpdate.Invoke((MethodInvoker)delegate
+                            {
+                                Button_StopUpdate.Enabled = false;
+                            });
+
+                            //Disable button
+                            Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
+                            {
+                                Button_ExportInterchangeFile.Enabled = false;
+                            });
+
+                            //Disable button
+                            Button_UpdateIMAData.Invoke((MethodInvoker)delegate
+                            {
+                                Button_UpdateIMAData.Enabled = false;
+                            });
+
+                            //Check that the profile name matches with the current one
+                            string ProfileName = EuroSoundFilesFunctions.LoadMusicsDocument(TreeView_MusicData, MusicsList, CurrentFilePath, ProjectInfo, GenericFunctions.ResourcesManager);
+                            if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
+                            {
+                                FormMustBeClosed = true;
+                            }
+
+                            //Update File name label
+                            UpdateStatusBarLabels();
+
+                            //Disable button
+                            Button_Generate_Hashcodes.Invoke((MethodInvoker)delegate
+                            {
+                                Button_Generate_Hashcodes.Enabled = true;
+                            });
+
+                            //Disable button
+                            Button_UpdateProperties.Invoke((MethodInvoker)delegate
+                            {
+                                Button_UpdateProperties.Enabled = true;
+                            });
+
+                            //Disable button
+                            Button_StopUpdate.Invoke((MethodInvoker)delegate
+                            {
+                                Button_StopUpdate.Enabled = true;
+                            });
+
+                            //Disable button
+                            Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
+                            {
+                                Button_ExportInterchangeFile.Enabled = true;
+                            });
+
+                            //Disable button
+                            Button_UpdateIMAData.Invoke((MethodInvoker)delegate
+                            {
+                                Button_UpdateIMAData.Enabled = true;
+                            });
+
+                            //Set Program status
+                            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                        })
                         {
-                            Button_UpdateProperties.Enabled = false;
-                        });
-
-                        //Disable button
-                        Button_StopUpdate.Invoke((MethodInvoker)delegate
-                        {
-                            Button_StopUpdate.Enabled = false;
-                        });
-
-                        //Disable button
-                        Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
-                        {
-                            Button_ExportInterchangeFile.Enabled = false;
-                        });
-
-                        //Disable button
-                        Button_UpdateIMAData.Invoke((MethodInvoker)delegate
-                        {
-                            Button_UpdateIMAData.Enabled = false;
-                        });
-
+                            IsBackground = true
+                        };
+                        LoadMusicFile.Start();
+                    }
+                    else
+                    {
                         //Check that the profile name matches with the current one
                         string ProfileName = EuroSoundFilesFunctions.LoadMusicsDocument(TreeView_MusicData, MusicsList, CurrentFilePath, ProjectInfo, GenericFunctions.ResourcesManager);
                         if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
@@ -237,43 +322,9 @@ namespace EuroSound_Application.Musics
                         //Update File name label
                         UpdateStatusBarLabels();
 
-                        //Disable button
-                        Button_Generate_Hashcodes.Invoke((MethodInvoker)delegate
-                        {
-                            Button_Generate_Hashcodes.Enabled = true;
-                        });
-
-                        //Disable button
-                        Button_UpdateProperties.Invoke((MethodInvoker)delegate
-                        {
-                            Button_UpdateProperties.Enabled = true;
-                        });
-
-                        //Disable button
-                        Button_StopUpdate.Invoke((MethodInvoker)delegate
-                        {
-                            Button_StopUpdate.Enabled = true;
-                        });
-
-                        //Disable button
-                        Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
-                        {
-                            Button_ExportInterchangeFile.Enabled = true;
-                        });
-
-                        //Disable button
-                        Button_UpdateIMAData.Invoke((MethodInvoker)delegate
-                        {
-                            Button_UpdateIMAData.Enabled = true;
-                        });
-
                         //Set Program status
                         GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
-                    })
-                    {
-                        IsBackground = true
-                    };
-                    LoadMusicFile.Start();
+                    }
                 }
 
                 //Apply User Preferences
@@ -329,6 +380,14 @@ namespace EuroSound_Application.Musics
             if (LoadMusicFile != null)
             {
                 LoadMusicFile.Abort();
+            }
+
+            //Stop timer
+            if (TimerBackups != null)
+            {
+                TimerBackups.Stop();
+                TimerBackups.Close();
+                TimerBackups.Dispose();
             }
 
             //Clear stack lists

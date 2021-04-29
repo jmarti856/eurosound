@@ -184,16 +184,15 @@ namespace EuroSound_Application
 
         private static void StartApplicationForms(string[] Arguments)
         {
+            //Show "Frm_EuroSound_Splash" form and load data
             using (Frm_EuroSound_Splash ProgramSplash = new Frm_EuroSound_Splash())
             {
                 ProgramSplash.ShowInTaskbar = false;
                 ProgramSplash.ShowDialog();
-                if (ProgramSplash.DialogResult == DialogResult.OK)
-                {
-                    Application.Run(new Frm_EuroSound_Main(Arguments[0]));
-                    ProgramSplash.Close();
-                }
             };
+
+            //Show "Frm_EuroSound_Main" form
+            Application.Run(new Frm_EuroSound_Main(Arguments[0]));
         }
     }
 }

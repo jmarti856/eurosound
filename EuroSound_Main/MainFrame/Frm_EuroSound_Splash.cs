@@ -15,9 +15,6 @@ namespace EuroSound_Application.SplashForm
 {
     public partial class Frm_EuroSound_Splash : Form
     {
-        //*===============================================================================================
-        //* GLOBAL VARS
-        //*===============================================================================================
         public Frm_EuroSound_Splash()
         {
             InitializeComponent();
@@ -157,6 +154,7 @@ namespace EuroSound_Application.SplashForm
                 GlobalPreferences.SFXOutputPath = WindowsRegistryFunctions.LoadOutputFolders("SoundsOutputDirectory", "Path");
                 GlobalPreferences.StreamFileOutputPath = WindowsRegistryFunctions.LoadOutputFolders("StreamSoundsOutputDirectory", "Path");
                 GlobalPreferences.MusicOutputPath = WindowsRegistryFunctions.LoadOutputFolders("MusicOutputDirectory", "Path");
+                GlobalPreferences.DebugFilesFolder = WindowsRegistryFunctions.LoadOutputFolders("DebugFilesFolder", "Path");
                 await Task.Delay(RandomNumber.Next(Minimum, Maximum));
 
                 //[OutputSettings]
@@ -180,7 +178,8 @@ namespace EuroSound_Application.SplashForm
             GlobalPreferences.WavesViewerControl_WavesColor = WindowsRegistryFunctions.LoadWavesControlColors("WavesColors");
             GlobalPreferences.WavesViewerControl_BackgroundColor = WindowsRegistryFunctions.LoadWavesControlColors("BackgroundColor");
             GlobalPreferences.LoadLastLoadedESF = WindowsRegistryFunctions.LoadAutomaticalyLoadLastESF("AutomaticalyLoadLastESF");
-            GlobalPreferences.TV_IgnoreStlyesFromESF = WindowsRegistryFunctions.LoadAutomaticalyLoadLastESF("TV_IgnoreStlyesFromESF"); ;
+            GlobalPreferences.TV_IgnoreStlyesFromESF = WindowsRegistryFunctions.LoadAutomaticalyLoadLastESF("TV_IgnoreStlyesFromESF");
+            GlobalPreferences.UseThreadingWhenLoad = WindowsRegistryFunctions.LoadAutomaticalyLoadLastESF("UseThreadingWhenLoad");
             await Task.Delay(RandomNumber.Next(Minimum, Maximum));
 
             GlobalPreferences.UseSystemTray = Convert.ToBoolean(WindowsRegistryFunctions.GetSystemConfig("UseSysTray"));
@@ -246,6 +245,15 @@ namespace EuroSound_Application.SplashForm
             //-----------------------------------------[Load AudioDevice]---------------------------------------
             Label_Status.Text = "Loading audio devices preferences, please wait...";
             WindowsRegistryFunctions.LoadDefaultAudioDevice();
+            await Task.Delay(RandomNumber.Next(Minimum, Maximum));
+
+            //-----------------------------------------[Backup Settings]----------------------------------------
+            Label_Status.Text = "Loading backup settings, please wait...";
+            GlobalPreferences.MakeBackups = Convert.ToBoolean(int.Parse(WindowsRegistryFunctions.LoadBackupSettings("MakeBackups")));
+            GlobalPreferences.MakeBackupsDirectory = WindowsRegistryFunctions.LoadBackupSettings("BackupsFolder");
+            GlobalPreferences.MakeBackupsMaxNumber = int.Parse(WindowsRegistryFunctions.LoadBackupSettings("MaxBackups"));
+            GlobalPreferences.MakeBackupsInterval = int.Parse(WindowsRegistryFunctions.LoadBackupSettings("BackupsInterval"));
+            GlobalPreferences.MakeBackupsIndex = int.Parse(WindowsRegistryFunctions.LoadBackupSettings("NextBackup"));
             await Task.Delay(RandomNumber.Next(Minimum, Maximum));
 
             //-----------------------------------------[Open Form]----------------------------------------

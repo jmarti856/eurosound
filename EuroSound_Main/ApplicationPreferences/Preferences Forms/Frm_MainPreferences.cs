@@ -31,6 +31,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         internal string MusicOutputPathTEMPORAL;
         internal int ColorWavesControlTEMPORAL;
         internal int BackColorWavesControlTEMPORAL;
+        internal bool UseThreadingWhenLoadTEMPORAL;
 
         //Frm_StreamFile
         internal string StreamFilePathTEMPORAL;
@@ -52,6 +53,12 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         internal bool PlaySoundWhenOutputTEMPORAL;
         internal string OutputSoundPathTEMPORAL;
 
+        //Frm_AutoBackUps
+        internal bool MakeBackupsTEMPORAL;
+        internal string MakeBackupsDirectoryTEMPORAL;
+        internal int MakeBackupsMaxNumberTEMPORAL;
+        internal int MakeBackupsIntervalTEMPORAL;
+
         //*===============================================================================================
         //* GLOBAL VARS
         //*===============================================================================================
@@ -62,13 +69,15 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         private Frm_OutputDevices AudioDevices;
         private Frm_Profiles ProfilesForm;
         private Frm_OutputSettings OutputSettingsForm;
+        private Frm_AutoBackUps BackupsSettingsForm;
         private bool FrmGeneralPreferencesOpened = false;
         private bool FrmTreeViewPrefsOpened = false;
         private bool FrmSoXPreferencesOpened = false;
         private bool FrmSystemPreferencesOpened = false;
         private bool FrmAudioDevicesOpened = false;
         private bool FrmProfilesFormOpened = false;
-        private bool OutputSettingsFormOpened = false;
+        private bool FrmOutputSettingsFormOpened = false;
+        private bool FrmBackupsSettingsFormOpened = false;
 
         public Frm_MainPreferences()
         {
@@ -101,6 +110,11 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             LoadLastLoadedESFTEMPORAL = GlobalPreferences.LoadLastLoadedESF;
             PlaySoundWhenOutputTEMPORAL = GlobalPreferences.PlaySoundWhenOutput;
             OutputSoundPathTEMPORAL = GlobalPreferences.OutputSoundPath;
+            UseThreadingWhenLoadTEMPORAL = GlobalPreferences.UseThreadingWhenLoad;
+            MakeBackupsTEMPORAL = GlobalPreferences.MakeBackups;
+            MakeBackupsDirectoryTEMPORAL = GlobalPreferences.MakeBackupsDirectory;
+            MakeBackupsMaxNumberTEMPORAL = GlobalPreferences.MakeBackupsMaxNumber;
+            MakeBackupsIntervalTEMPORAL = GlobalPreferences.MakeBackupsInterval;
 
             TreeViewPreferences.ExpandAll();
         }
@@ -125,7 +139,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             //-----------------[Frm_TreeViewPrefs]-----------------
             if (FrmTreeViewPrefsOpened)
             {
-                //Update vars
+                //Update Variables
                 GlobalPreferences.TV_SelectedFont = SelectedFontTEMPORAL;
                 GlobalPreferences.TV_Indent = TreeViewIndentTEMPORAL;
                 GlobalPreferences.TV_ItemHeight = TreeViewItemHeightTEMPORAL;
@@ -142,11 +156,12 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             //-----------------[Frm_GeneralPreferences]-----------------
             if (FrmGeneralPreferencesOpened)
             {
-                //Update vars
+                //Update Variables
                 GlobalPreferences.WavesViewerControl_WavesColor = ColorWavesControlTEMPORAL;
                 GlobalPreferences.WavesViewerControl_BackgroundColor = BackColorWavesControlTEMPORAL;
                 GlobalPreferences.LoadLastLoadedESF = LoadLastLoadedESFTEMPORAL;
                 GlobalPreferences.TV_IgnoreStlyesFromESF = TV_IgnoreStlyesFromESFTEMPORAL;
+                GlobalPreferences.UseThreadingWhenLoad = UseThreadingWhenLoadTEMPORAL;
 
                 //SaveConfig in Registry
                 WindowsRegistryFunctions.SaveWavesControlColors();
@@ -159,7 +174,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             //-----------------[Frm_SoxPrefs]-----------------
             if (FrmSoXPreferencesOpened)
             {
-                //Update vars
+                //Update Variables
                 GlobalPreferences.SoXPath = SoXPathTEMPORAL;
 
                 //SaveConfig in Registry
@@ -172,7 +187,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             //-----------------[Frm_System]-----------------
             if (FrmSystemPreferencesOpened)
             {
-                //Update vars
+                //Update Variables
                 GlobalPreferences.UseSystemTray = UseSystemTrayTEMPORAL;
 
                 //SaveConfig in Registry
@@ -185,7 +200,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             //-----------------[Frm_OutputDevices]-----------------
             if (FrmAudioDevicesOpened)
             {
-                //Update vars
+                //Update Variables
                 GlobalPreferences.DefaultAudioDevice = DefaultAudioDeviceTEMPORAL;
 
                 //SaveConfig in Registry
@@ -234,9 +249,9 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             }
 
             //-----------------[Frm_OutputSettings]-----------------
-            if (OutputSettingsFormOpened)
+            if (FrmOutputSettingsFormOpened)
             {
-                //Update vars
+                //Update Variables
                 GlobalPreferences.PlaySoundWhenOutput = PlaySoundWhenOutputTEMPORAL;
                 GlobalPreferences.OutputSoundPath = OutputSoundPathTEMPORAL;
 
@@ -244,7 +259,23 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 WindowsRegistryFunctions.SaveOutputSettings();
 
                 //Update Boolean 
-                OutputSettingsFormOpened = false;
+                FrmOutputSettingsFormOpened = false;
+            }
+
+            //-----------------[BackupsSettingsForm]-----------------
+            if (FrmBackupsSettingsFormOpened)
+            {
+                //Update Variables
+                GlobalPreferences.MakeBackups = MakeBackupsTEMPORAL;
+                GlobalPreferences.MakeBackupsDirectory = MakeBackupsDirectoryTEMPORAL;
+                GlobalPreferences.MakeBackupsInterval = MakeBackupsIntervalTEMPORAL;
+                GlobalPreferences.MakeBackupsMaxNumber = MakeBackupsMaxNumberTEMPORAL;
+
+                //Save config in Registry
+                WindowsRegistryFunctions.SaveBackupSettings();
+
+                //Update Boolean 
+                FrmBackupsSettingsFormOpened = false;
             }
 
             Close();
@@ -391,7 +422,25 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 OutputSettingsForm.Show();
 
                 //Update Boolean
-                OutputSettingsFormOpened = true;
+                FrmOutputSettingsFormOpened = true;
+            }
+            //Open Sub-Form "Frm_AutoBackUps"
+            else if (string.Equals(e.Node.Name, "AutoBackup"))
+            {
+                RemoveAllFormsInsidePanel(Panel_SecondaryForms);
+
+                BackupsSettingsForm = new Frm_AutoBackUps
+                {
+                    TopLevel = false,
+                    AutoScroll = true,
+                    Tag = Tag
+                };
+                Panel_SecondaryForms.Controls.Add(BackupsSettingsForm);
+                BackupsSettingsForm.Dock = DockStyle.Fill;
+                BackupsSettingsForm.Show();
+
+                //Update Boolean
+                FrmBackupsSettingsFormOpened = true;
             }
         }
 

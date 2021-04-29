@@ -163,7 +163,7 @@ namespace EuroSound_Application
             // 
             this.MenuItemView_Preferences.MergeIndex = 0;
             this.MenuItemView_Preferences.Name = "MenuItemView_Preferences";
-            this.MenuItemView_Preferences.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemView_Preferences.Size = new System.Drawing.Size(153, 22);
             this.MenuItemView_Preferences.Text = "Global Options";
             this.MenuItemView_Preferences.Click += new System.EventHandler(this.MenuItemView_Preferences_Click);
             // 
@@ -174,7 +174,7 @@ namespace EuroSound_Application
             this.MenuItemView_StatusBar.CheckState = System.Windows.Forms.CheckState.Checked;
             this.MenuItemView_StatusBar.MergeIndex = 1;
             this.MenuItemView_StatusBar.Name = "MenuItemView_StatusBar";
-            this.MenuItemView_StatusBar.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemView_StatusBar.Size = new System.Drawing.Size(153, 22);
             this.MenuItemView_StatusBar.Text = "Status Bar";
             this.MenuItemView_StatusBar.CheckStateChanged += new System.EventHandler(this.MenuItemView_StatusBar_CheckStateChanged);
             // 
@@ -413,6 +413,7 @@ namespace EuroSound_Application
             this.Text = "EuroSound";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Frm_EuroSound_Main_FormClosed);
             this.Load += new System.EventHandler(this.Frm_EuroSound_Main_Load);
+            this.Shown += new System.EventHandler(this.Frm_EuroSound_Main_Shown);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Frm_EuroSound_Main_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Frm_EuroSound_Main_DragEnter);
             this.Resize += new System.EventHandler(this.Frm_EuroSound_Main_Resize);

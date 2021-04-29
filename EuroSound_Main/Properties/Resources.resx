@@ -393,11 +393,17 @@
   <data name="MenuItemHelp_ReleaseInfo" xml:space="preserve">
     <value>Show what changes have been made in recent releases</value>
   </data>
+  <data name="MenuItemTools_AudioConverter" xml:space="preserve">
+    <value>A small tool to convert WAV files with a valid format for the current project</value>
+  </data>
   <data name="MenuItemTools_BackupSettings" xml:space="preserve">
     <value>Create a file with the current program preferences</value>
   </data>
   <data name="MenuItemTools_ClearTemp" xml:space="preserve">
     <value>Clears the temporal files folder</value>
+  </data>
+  <data name="MenuItemTools_DebugFiles" xml:space="preserve">
+    <value>Creates a debug file for the current loaded HashTables</value>
   </data>
   <data name="MenuItemTools_RestoreSettings" xml:space="preserve">
     <value>Restore settings from Eurosound Registry file</value>
@@ -500,6 +506,9 @@
   </data>
   <data name="StatusBar_Status_Ready" xml:space="preserve">
     <value>Ready</value>
+  </data>
+  <data name="StatusBar_Status_SavingBackUp" xml:space="preserve">
+    <value>Saving Backup</value>
   </data>
   <data name="StatusBar_Status_StoppingThreads" xml:space="preserve">
     <value>Stopping Threads</value>

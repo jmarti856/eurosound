@@ -307,6 +307,52 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         }
 
         //*===============================================================================================
+        //* Back-Ups Settings
+        //*===============================================================================================
+        internal static void SaveBackupSettings()
+        {
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("Backup", true);
+            using (RegistryKey BackupSettings = EuroSoundKey.OpenSubKey("Backup", true))
+            {
+                //Save Values
+                BackupSettings.SetValue("MakeBackups", GlobalPreferences.MakeBackups, RegistryValueKind.DWord);
+                BackupSettings.SetValue("BackupsFolder", GlobalPreferences.MakeBackupsDirectory, RegistryValueKind.String);
+                BackupSettings.SetValue("MaxBackups", GlobalPreferences.MakeBackupsMaxNumber, RegistryValueKind.DWord);
+                BackupSettings.SetValue("BackupsInterval", GlobalPreferences.MakeBackupsInterval, RegistryValueKind.DWord);
+                BackupSettings.SetValue("NextBackup", GlobalPreferences.MakeBackupsIndex, RegistryValueKind.DWord);
+                BackupSettings.Close();
+            }
+        }
+
+        internal static string LoadBackupSettings(string ValueName)
+        {
+            string RequestValue = string.Empty;
+
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("Backup", true);
+            using (RegistryKey BackupSettings = EuroSoundKey.OpenSubKey("Backup", true))
+            {
+                //Load Values
+                if (BackupSettings.GetValue(ValueName) != null)
+                {
+                    RequestValue = BackupSettings.GetValue(ValueName).ToString();
+                    BackupSettings.Close();
+                }
+                //Default Values
+                else if (ValueName.Equals("BackupsFolder"))
+                {
+                    RequestValue = string.Empty;
+                }
+                else
+                {
+                    RequestValue = "0";
+                }
+            }
+            return RequestValue;
+        }
+
+        //*===============================================================================================
         //* USER SETTINGS -> TREE VIEW
         //*===============================================================================================
         internal static void SaveTreeViewPreferences()
@@ -515,6 +561,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 //Save Values
                 LoadLastESF.SetValue("AutomaticalyLoadLastESF", GlobalPreferences.LoadLastLoadedESF, RegistryValueKind.DWord);
                 LoadLastESF.SetValue("TV_IgnoreStlyesFromESF", GlobalPreferences.TV_IgnoreStlyesFromESF, RegistryValueKind.DWord);
+                LoadLastESF.SetValue("UseThreadingWhenLoad", GlobalPreferences.UseThreadingWhenLoad, RegistryValueKind.DWord);
                 LoadLastESF.Close();
             }
         }

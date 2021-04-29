@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.ApplicationRegistryFunctions;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.Clases;
 using EuroSound_Application.Debug_HashTables.HT_Data;
 using EuroSound_Application.HashCodesFunctions;
@@ -48,14 +49,11 @@ namespace EuroSound_Application.Debug_HashTables
             //Load Last State
             using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
-                bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("DBView_IsIconic", 0));
-                bool IsMaximized = Convert.ToBoolean(WindowStateConfig.GetValue("DBView_IsMaximized", 0));
-
-                if (IsIconic)
+                if (Convert.ToBoolean(WindowStateConfig.GetValue("DBView_IsIconic", 0)))
                 {
                     WindowState = FormWindowState.Minimized;
                 }
-                else if (IsMaximized)
+                else if (Convert.ToBoolean(WindowStateConfig.GetValue("DBView_IsMaximized", 0)))
                 {
                     WindowState = FormWindowState.Maximized;
                 }
@@ -72,6 +70,9 @@ namespace EuroSound_Application.Debug_HashTables
 
         private void Frm_Debug_HashTables_Main_Shown(object sender, EventArgs e)
         {
+            //Output Folder
+            Textbox_OutputFolder.Text = GlobalPreferences.DebugFilesFolder;
+
             //Update Title bar
             if (WindowState != FormWindowState.Maximized)
             {
@@ -124,6 +125,10 @@ namespace EuroSound_Application.Debug_HashTables
                 CreateSFXDebugFile.Abort();
             }
 
+            //Clear Textbox
+            Textbox_Console.Clear();
+            Textbox_Console.Dispose();
+
             //Reset title
             MdiParent.Text = "EuroSound";
 
@@ -157,9 +162,6 @@ namespace EuroSound_Application.Debug_HashTables
             //Clear Console
             Textbox_Console.Clear();
 
-            //Set Program status
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_GenericSavingFile"));
-
             //Check directory
             if (Directory.Exists(Textbox_OutputFolder.Text))
             {
@@ -170,7 +172,7 @@ namespace EuroSound_Application.Debug_HashTables
                 });
 
                 // Create a file to write to.
-                using (StreamWriter sw = File.CreateText(Textbox_OutputFolder.Text + "\\MFX_ValidList.h"))
+                using (StreamWriter sw = File.CreateText(Path.Combine(Textbox_OutputFolder.Text, "MFX_ValidList.h")))
                 {
                     //Inform User
                     Textbox_Console.Text += "Valid HashCodes:" + Environment.NewLine;
@@ -180,6 +182,9 @@ namespace EuroSound_Application.Debug_HashTables
                     Hashcodes.ReadMusicJumpCodes();
                     foreach (KeyValuePair<uint, string> Item in Hashcodes.MFX_JumpCodes)
                     {
+                        //Set Program status
+                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_GenericSavingFile"));
+
                         //Check Jump Codes
                         if (Item.Value.StartsWith("JMP"))
                         {
@@ -213,7 +218,7 @@ namespace EuroSound_Application.Debug_HashTables
             //Open Form
             if (!GenericFunctions.CheckChildFormIsOpened("Frm_Debug_HT_Data", "MusicData"))
             {
-                Frm_Debug_HT_Data DebugHTDataForm = new Frm_Debug_HT_Data(Textbox_OutputFolder.Text)
+                Frm_Debug_HT_Data DebugHTDataForm = new Frm_Debug_HT_Data()
                 {
                     Owner = Owner,
                     MdiParent = MdiParent
@@ -232,9 +237,6 @@ namespace EuroSound_Application.Debug_HashTables
             {
                 CreateSFXDebugFile = new Thread(() =>
                 {
-                    //Set Program status
-                    GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_GenericSavingFile"));
-
                     //Disable button
                     Button_HT_Sound.Invoke((MethodInvoker)delegate
                     {
@@ -242,7 +244,7 @@ namespace EuroSound_Application.Debug_HashTables
                     });
 
                     // Create a file to write to.
-                    using (StreamWriter sw = File.CreateText(Textbox_OutputFolder.Text + "\\SFX_Debug.h"))
+                    using (StreamWriter sw = File.CreateText(Path.Combine(Textbox_OutputFolder.Text, "SFX_Debug.h")))
                     {
                         //Inform User
                         Textbox_Console.Invoke((MethodInvoker)delegate
@@ -265,6 +267,10 @@ namespace EuroSound_Application.Debug_HashTables
                                 Textbox_Console.Text += StringCombined + Environment.NewLine;
                             });
                             sw.WriteLine(StringCombined);
+
+                            //Set Program status
+                            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_GenericSavingFile"));
+
                             Thread.Sleep(5);
                         }
                         sw.WriteLine("};");
@@ -285,6 +291,10 @@ namespace EuroSound_Application.Debug_HashTables
                                 Textbox_Console.Text += StringCombined + Environment.NewLine;
                             });
                             sw.WriteLine(StringCombined);
+
+                            //Set Program status
+                            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_GenericSavingFile"));
+
                             Thread.Sleep(5);
                         }
                         sw.WriteLine("};");
@@ -318,7 +328,14 @@ namespace EuroSound_Application.Debug_HashTables
             string SelectedPath = BrowsersAndDialogs.OpenFolderBrowser();
             if (!string.IsNullOrEmpty(SelectedPath))
             {
-                Textbox_OutputFolder.Text = BrowsersAndDialogs.OpenFolderBrowser();
+                //Update var
+                GlobalPreferences.DebugFilesFolder = SelectedPath;
+
+                //Save new path
+                WindowsRegistryFunctions.SaveOutputFolders("DebugFilesFolder", "Path", GlobalPreferences.DebugFilesFolder);
+
+                //Show path
+                Textbox_OutputFolder.Text = GlobalPreferences.DebugFilesFolder;
             }
         }
     }

@@ -11,6 +11,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         //* GLOBAL VARIABLES
         //*===============================================================================================
         private Form OpenForm;
+        private bool MouseDownButtonColor, MouseDownButtonBackColor;
 
         public Frm_General()
         {
@@ -27,6 +28,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             Button_WavesBackColor.BackColor = Color.FromArgb(((Frm_MainPreferences)OpenForm).BackColorWavesControlTEMPORAL);
             CheckBox_IgnoreLookTree.Checked = ((Frm_MainPreferences)OpenForm).TV_IgnoreStlyesFromESFTEMPORAL;
             CheckBox_ReloadLastESF.Checked = ((Frm_MainPreferences)OpenForm).LoadLastLoadedESFTEMPORAL;
+            CheckBox_UseThreading.Checked = ((Frm_MainPreferences)OpenForm).UseThreadingWhenLoadTEMPORAL;
         }
 
         private void Frm_TreeViewPrefs_FormClosing(object sender, FormClosingEventArgs e)
@@ -35,6 +37,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             ((Frm_MainPreferences)OpenForm).BackColorWavesControlTEMPORAL = Button_WavesBackColor.BackColor.ToArgb();
             ((Frm_MainPreferences)OpenForm).TV_IgnoreStlyesFromESFTEMPORAL = CheckBox_IgnoreLookTree.Checked;
             ((Frm_MainPreferences)OpenForm).LoadLastLoadedESFTEMPORAL = CheckBox_ReloadLastESF.Checked;
+            ((Frm_MainPreferences)OpenForm).UseThreadingWhenLoadTEMPORAL = CheckBox_UseThreading.Checked;
         }
 
         //*===============================================================================================
@@ -42,6 +45,10 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         //*===============================================================================================
         private void Button_WavesColorControl_Click(object sender, EventArgs e)
         {
+            //Update Boolean
+            MouseDownButtonColor = false;
+
+            //Open Color Dialog
             int SelectedColor = BrowsersAndDialogs.ColorPickerDialog(Button_WavesColorControl.BackColor);
             if (SelectedColor != -1)
             {
@@ -49,13 +56,68 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             }
         }
 
+        private void Button_WavesColorControl_Paint(object sender, PaintEventArgs e)
+        {
+            //Draw 3d border
+            Rectangle borderRectangle = Button_WavesColorControl.ClientRectangle;
+            if (MouseDownButtonColor)
+            {
+                ControlPaint.DrawBorder3D(e.Graphics, borderRectangle, Border3DStyle.Sunken);
+            }
+            else
+            {
+                ControlPaint.DrawBorder3D(e.Graphics, borderRectangle, Border3DStyle.Raised);
+            }
+        }
+        private void Button_WavesColorControl_MouseUp(object sender, MouseEventArgs e)
+        {
+            //Update Boolean
+            MouseDownButtonColor = false;
+        }
+
+        private void Button_WavesColorControl_MouseDown(object sender, MouseEventArgs e)
+        {
+            //Update Boolean
+            MouseDownButtonColor = true;
+        }
+
         private void Button_WavesBackColor_Click(object sender, EventArgs e)
         {
+            //Update Boolean
+            MouseDownButtonBackColor = false;
+
+            //Open Color Dialog
             int SelectedColor = BrowsersAndDialogs.ColorPickerDialog(Button_WavesBackColor.BackColor);
             if (SelectedColor != -1)
             {
                 Button_WavesBackColor.BackColor = Color.FromArgb(SelectedColor);
             }
+        }
+
+        private void Button_WavesBackColor_Paint(object sender, PaintEventArgs e)
+        {
+            //Draw 3d border
+            Rectangle borderRectangle = Button_WavesBackColor.ClientRectangle;
+            if (MouseDownButtonBackColor)
+            {
+                ControlPaint.DrawBorder3D(e.Graphics, borderRectangle, Border3DStyle.Sunken);
+            }
+            else
+            {
+                ControlPaint.DrawBorder3D(e.Graphics, borderRectangle, Border3DStyle.Raised);
+            }
+        }
+
+        private void Button_WavesBackColor_MouseUp(object sender, MouseEventArgs e)
+        {
+            //Update Boolean
+            MouseDownButtonBackColor = false;
+        }
+
+        private void Button_WavesBackColor_MouseDown(object sender, MouseEventArgs e)
+        {
+            //Update Boolean
+            MouseDownButtonBackColor = true;
         }
     }
 }

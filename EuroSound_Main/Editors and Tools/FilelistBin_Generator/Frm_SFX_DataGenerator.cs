@@ -52,14 +52,11 @@ namespace EuroSound_Application.SFXData
             //Load Last State
             using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
-                bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("SFXData_IsIconic", 0));
-                bool IsMaximized = Convert.ToBoolean(WindowStateConfig.GetValue("SFXData_IsMaximized", 0));
-
-                if (IsIconic)
+                if (Convert.ToBoolean(WindowStateConfig.GetValue("SFXData_IsIconic", 0)))
                 {
                     WindowState = FormWindowState.Minimized;
                 }
-                else if (IsMaximized)
+                else if (Convert.ToBoolean(WindowStateConfig.GetValue("SFXData_IsMaximized", 0)))
                 {
                     WindowState = FormWindowState.Maximized;
                 }

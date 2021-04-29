@@ -108,17 +108,13 @@ namespace EuroSound_Application
         //*===============================================================================================
         private void Frm_EuroSound_Main_Load(object sender, EventArgs e)
         {
-            string LastActiveDocument = string.Empty;
-
             using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
-                bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("MainFrame_IsIconic", 0));
-                bool IsMaximized = Convert.ToBoolean(WindowStateConfig.GetValue("MainFrame_IsMaximized", 0));
-                if (IsIconic)
+                if (Convert.ToBoolean(WindowStateConfig.GetValue("MainFrame_IsIconic", 0)))
                 {
                     WindowState = FormWindowState.Minimized;
                 }
-                else if (IsMaximized)
+                else if (Convert.ToBoolean(WindowStateConfig.GetValue("MainFrame_IsMaximized", 0)))
                 {
                     WindowState = FormWindowState.Maximized;
                 }
@@ -132,15 +128,15 @@ namespace EuroSound_Application
                 WindowStateConfig.Close();
             }
 
-            //GetControl
-            GenericFunctions.ParentFormStatusBar = MainStatusBar;
-
-            //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
-
             //Load Recent Files
             RecentFilesMenu = new MruStripMenuInline(MainMenu_File, MenuItemFile_RecentFiles, new MostRecentFilesMenu.ClickedHandler(RecentFile_click), RecentFilesMenuRegKey, 8);
             RecentFilesMenu.LoadFromRegistry();
+        }
+
+        private void Frm_EuroSound_Main_Shown(object sender, EventArgs e)
+        {
+            //GetControl
+            GenericFunctions.ParentFormStatusBar = MainStatusBar;
 
             //This means we have an argument to read
             if (!string.IsNullOrEmpty(ArgumentFromSplash))
@@ -151,10 +147,13 @@ namespace EuroSound_Application
             {
                 if (GlobalPreferences.LoadLastLoadedESF)
                 {
-                    LastActiveDocument = WindowsRegistryFunctions.LoadActiveDocument();
+                    string LastActiveDocument = WindowsRegistryFunctions.LoadActiveDocument();
                     OpenFormsWithFileToLoad(LastActiveDocument);
                 }
             }
+
+            //Update Status Bar
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         private void Frm_EuroSound_Main_Resize(object sender, EventArgs e)

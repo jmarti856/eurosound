@@ -38,6 +38,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Button_WavesColorControl = new System.Windows.Forms.Button();
             this.Label_ColorWaves = new System.Windows.Forms.Label();
             this.GroupBox_LoadingOptions = new System.Windows.Forms.GroupBox();
+            this.CheckBox_UseThreading = new System.Windows.Forms.CheckBox();
             this.CheckBox_IgnoreLookTree = new System.Windows.Forms.CheckBox();
             this.CheckBox_ReloadLastESF = new System.Windows.Forms.CheckBox();
             this.Panel_Title.SuspendLayout();
@@ -73,17 +74,17 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Groupbox_Waves.Controls.Add(this.Label_ColorBackground);
             this.Groupbox_Waves.Controls.Add(this.Button_WavesColorControl);
             this.Groupbox_Waves.Controls.Add(this.Label_ColorWaves);
-            this.Groupbox_Waves.Location = new System.Drawing.Point(12, 161);
+            this.Groupbox_Waves.Location = new System.Drawing.Point(12, 187);
             this.Groupbox_Waves.Name = "Groupbox_Waves";
-            this.Groupbox_Waves.Size = new System.Drawing.Size(489, 120);
+            this.Groupbox_Waves.Size = new System.Drawing.Size(489, 103);
             this.Groupbox_Waves.TabIndex = 3;
             this.Groupbox_Waves.TabStop = false;
             this.Groupbox_Waves.Text = "Audio Waves Viewer:";
             // 
             // Button_WavesBackColor
             // 
-            this.Button_WavesBackColor.FlatAppearance.BorderSize = 2;
-            this.Button_WavesBackColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_WavesBackColor.FlatAppearance.BorderSize = 0;
+            this.Button_WavesBackColor.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.Button_WavesBackColor.ForeColor = System.Drawing.SystemColors.Desktop;
             this.Button_WavesBackColor.Location = new System.Drawing.Point(306, 32);
             this.Button_WavesBackColor.Name = "Button_WavesBackColor";
@@ -91,6 +92,9 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Button_WavesBackColor.TabIndex = 3;
             this.Button_WavesBackColor.UseVisualStyleBackColor = true;
             this.Button_WavesBackColor.Click += new System.EventHandler(this.Button_WavesBackColor_Click);
+            this.Button_WavesBackColor.Paint += new System.Windows.Forms.PaintEventHandler(this.Button_WavesBackColor_Paint);
+            this.Button_WavesBackColor.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Button_WavesBackColor_MouseDown);
+            this.Button_WavesBackColor.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_WavesBackColor_MouseUp);
             // 
             // Label_ColorBackground
             // 
@@ -103,15 +107,19 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             // 
             // Button_WavesColorControl
             // 
-            this.Button_WavesColorControl.FlatAppearance.BorderSize = 2;
-            this.Button_WavesColorControl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Button_WavesColorControl.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonShadow;
+            this.Button_WavesColorControl.FlatAppearance.BorderSize = 0;
+            this.Button_WavesColorControl.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.Button_WavesColorControl.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.Button_WavesColorControl.Location = new System.Drawing.Point(150, 32);
+            this.Button_WavesColorControl.Location = new System.Drawing.Point(149, 32);
             this.Button_WavesColorControl.Name = "Button_WavesColorControl";
             this.Button_WavesColorControl.Size = new System.Drawing.Size(50, 29);
             this.Button_WavesColorControl.TabIndex = 1;
             this.Button_WavesColorControl.UseVisualStyleBackColor = true;
             this.Button_WavesColorControl.Click += new System.EventHandler(this.Button_WavesColorControl_Click);
+            this.Button_WavesColorControl.Paint += new System.Windows.Forms.PaintEventHandler(this.Button_WavesColorControl_Paint);
+            this.Button_WavesColorControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Button_WavesColorControl_MouseDown);
+            this.Button_WavesColorControl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_WavesColorControl_MouseUp);
             // 
             // Label_ColorWaves
             // 
@@ -126,19 +134,31 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             // 
             this.GroupBox_LoadingOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox_LoadingOptions.Controls.Add(this.CheckBox_UseThreading);
             this.GroupBox_LoadingOptions.Controls.Add(this.CheckBox_IgnoreLookTree);
             this.GroupBox_LoadingOptions.Controls.Add(this.CheckBox_ReloadLastESF);
-            this.GroupBox_LoadingOptions.Location = new System.Drawing.Point(12, 70);
+            this.GroupBox_LoadingOptions.Location = new System.Drawing.Point(12, 88);
             this.GroupBox_LoadingOptions.Name = "GroupBox_LoadingOptions";
-            this.GroupBox_LoadingOptions.Size = new System.Drawing.Size(489, 85);
+            this.GroupBox_LoadingOptions.Size = new System.Drawing.Size(489, 93);
             this.GroupBox_LoadingOptions.TabIndex = 4;
             this.GroupBox_LoadingOptions.TabStop = false;
             this.GroupBox_LoadingOptions.Text = "Loading Options:";
             // 
+            // CheckBox_UseThreading
+            // 
+            this.CheckBox_UseThreading.AutoSize = true;
+            this.CheckBox_UseThreading.Location = new System.Drawing.Point(19, 65);
+            this.CheckBox_UseThreading.Name = "CheckBox_UseThreading";
+            this.CheckBox_UseThreading.Size = new System.Drawing.Size(438, 17);
+            this.CheckBox_UseThreading.TabIndex = 2;
+            this.CheckBox_UseThreading.Text = "Use threading when loading ESF files (recommended on computers with low resources" +
+    ").";
+            this.CheckBox_UseThreading.UseVisualStyleBackColor = true;
+            // 
             // CheckBox_IgnoreLookTree
             // 
             this.CheckBox_IgnoreLookTree.AutoSize = true;
-            this.CheckBox_IgnoreLookTree.Location = new System.Drawing.Point(22, 42);
+            this.CheckBox_IgnoreLookTree.Location = new System.Drawing.Point(19, 42);
             this.CheckBox_IgnoreLookTree.Name = "CheckBox_IgnoreLookTree";
             this.CheckBox_IgnoreLookTree.Size = new System.Drawing.Size(357, 17);
             this.CheckBox_IgnoreLookTree.TabIndex = 1;
@@ -148,7 +168,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             // CheckBox_ReloadLastESF
             // 
             this.CheckBox_ReloadLastESF.AutoSize = true;
-            this.CheckBox_ReloadLastESF.Location = new System.Drawing.Point(22, 19);
+            this.CheckBox_ReloadLastESF.Location = new System.Drawing.Point(19, 19);
             this.CheckBox_ReloadLastESF.Name = "CheckBox_ReloadLastESF";
             this.CheckBox_ReloadLastESF.Size = new System.Drawing.Size(181, 17);
             this.CheckBox_ReloadLastESF.TabIndex = 0;
@@ -191,5 +211,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         private System.Windows.Forms.GroupBox GroupBox_LoadingOptions;
         private System.Windows.Forms.CheckBox CheckBox_ReloadLastESF;
         private System.Windows.Forms.CheckBox CheckBox_IgnoreLookTree;
+        private System.Windows.Forms.CheckBox CheckBox_UseThreading;
     }
 }

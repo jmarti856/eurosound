@@ -354,6 +354,9 @@ namespace EuroSound_Application.EuroSound_Profiles
                             case "StreamSoundsOutputDirectory":
                                 GlobalPreferences.StreamFileOutputPath = LineData[1];
                                 break;
+                            case "DebugFilesFolder":
+                                GlobalPreferences.DebugFilesFolder = LineData[1];
+                                break;
                         }
                     }
                 }

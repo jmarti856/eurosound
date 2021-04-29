@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Threading;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.StreamSounds
@@ -37,6 +38,7 @@ namespace EuroSound_Application.StreamSounds
         private AudioFunctions AudioLibrary = new AudioFunctions();
         private Thread UpdateImaData, UpdateWavList, LoadStreamFile;
         private MostRecentFilesMenu RecentFilesMenu;
+        private System.Timers.Timer TimerBackups;
 
         // The undo and redo history lists.
         private Stack<object> UndoListSounds = new Stack<object>();
@@ -148,13 +150,11 @@ namespace EuroSound_Application.StreamSounds
             //Load Last State
             using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
             {
-                bool IsIconic = Convert.ToBoolean(WindowStateConfig.GetValue("SSView_IsIconic", 0));
-                bool IsMaximized = Convert.ToBoolean(WindowStateConfig.GetValue("SSView_IsMaximized", 0));
-                if (IsIconic)
+                if (Convert.ToBoolean(WindowStateConfig.GetValue("SSView_IsIconic", 0)))
                 {
                     WindowState = FormWindowState.Minimized;
                 }
-                else if (IsMaximized)
+                else if (Convert.ToBoolean(WindowStateConfig.GetValue("SSView_IsMaximized", 0)))
                 {
                     WindowState = FormWindowState.Maximized;
                 }
@@ -166,7 +166,40 @@ namespace EuroSound_Application.StreamSounds
                 Height = Convert.ToInt32(WindowStateConfig.GetValue("SSView_Height", 779));
                 WindowStateConfig.Close();
             }
+
+            //Backups
+            if (GlobalPreferences.MakeBackups)
+            {
+                TimerBackups = new System.Timers.Timer(TimeSpan.FromMinutes(GlobalPreferences.MakeBackupsInterval).TotalMilliseconds)
+                {
+                    AutoReset = true
+                };
+                TimerBackups.Elapsed += new ElapsedEventHandler(MakeBackup);
+                TimerBackups.Start();
+            }
         }
+        private void MakeBackup(object sender, ElapsedEventArgs e)
+        {
+            //Set Program status
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_SavingBackUp"));
+
+            //Check index
+            if (GlobalPreferences.MakeBackupsIndex > (GlobalPreferences.MakeBackupsMaxNumber - 1))
+            {
+                GlobalPreferences.MakeBackupsIndex = 0;
+            }
+
+            //Save File
+            if (Directory.Exists(GlobalPreferences.MakeBackupsDirectory))
+            {
+                EuroSoundFilesFunctions.SaveStreamedSoundsBank(TreeView_StreamData, StreamSoundsList, Path.Combine(GlobalPreferences.MakeBackupsDirectory, string.Join("", "ES_BackUp", GlobalPreferences.MakeBackupsIndex, ".ESF")), ProjectInfo);
+                GlobalPreferences.MakeBackupsIndex++;
+            }
+
+            //Set Program status
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+        }
+
 
         private void Frm_StreamSoundsEditorMain_Shown(object sender, EventArgs e)
         {
@@ -203,32 +236,78 @@ namespace EuroSound_Application.StreamSounds
                 }
                 else
                 {
-                    LoadStreamFile = new Thread(() =>
+                    if (GlobalPreferences.UseThreadingWhenLoad)
                     {
-                        //Disable Button
-                        Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
+                        LoadStreamFile = new Thread(() =>
                         {
-                            Button_UpdateList_WavData.Enabled = false;
-                        });
+                            //Disable Button
+                            Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
+                            {
+                                Button_UpdateList_WavData.Enabled = false;
+                            });
 
-                        //Disable Button
-                        Button_StopUpdate.Invoke((MethodInvoker)delegate
+                            //Disable Button
+                            Button_StopUpdate.Invoke((MethodInvoker)delegate
+                            {
+                                Button_StopUpdate.Enabled = false;
+                            });
+
+                            //Disable Button
+                            Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
+                            {
+                                Button_ExportInterchangeFile.Enabled = false;
+                            });
+
+                            //Disable Button
+                            Button_UpdateIMAData.Invoke((MethodInvoker)delegate
+                            {
+                                Button_UpdateIMAData.Enabled = false;
+                            });
+
+                            //Check that the profile name matches with the current one
+                            string ProfileName = EuroSoundFilesFunctions.LoadStreamSoundsDocument(TreeView_StreamData, StreamSoundsList, CurrentFilePath, ProjectInfo, GenericFunctions.ResourcesManager);
+                            if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
+                            {
+                                FormMustBeClosed = true;
+                            }
+
+                            //Update File name label
+                            UpdateStatusBarLabels();
+
+                            //Enable Button
+                            Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
+                            {
+                                Button_UpdateList_WavData.Enabled = true;
+                            });
+
+                            //Enable Button
+                            Button_StopUpdate.Invoke((MethodInvoker)delegate
+                            {
+                                Button_StopUpdate.Enabled = true;
+                            });
+
+                            //Enable Button
+                            Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
+                            {
+                                Button_ExportInterchangeFile.Enabled = true;
+                            });
+
+                            //Enable Button
+                            Button_UpdateIMAData.Invoke((MethodInvoker)delegate
+                            {
+                                Button_UpdateIMAData.Enabled = true;
+                            });
+
+                            //Set Program status
+                            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                        })
                         {
-                            Button_StopUpdate.Enabled = false;
-                        });
-
-                        //Disable Button
-                        Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
-                        {
-                            Button_ExportInterchangeFile.Enabled = false;
-                        });
-
-                        //Disable Button
-                        Button_UpdateIMAData.Invoke((MethodInvoker)delegate
-                        {
-                            Button_UpdateIMAData.Enabled = false;
-                        });
-
+                            IsBackground = true
+                        };
+                        LoadStreamFile.Start();
+                    }
+                    else
+                    {
                         //Check that the profile name matches with the current one
                         string ProfileName = EuroSoundFilesFunctions.LoadStreamSoundsDocument(TreeView_StreamData, StreamSoundsList, CurrentFilePath, ProjectInfo, GenericFunctions.ResourcesManager);
                         if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
@@ -239,37 +318,9 @@ namespace EuroSound_Application.StreamSounds
                         //Update File name label
                         UpdateStatusBarLabels();
 
-                        //Enable Button
-                        Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
-                        {
-                            Button_UpdateList_WavData.Enabled = true;
-                        });
-
-                        //Enable Button
-                        Button_StopUpdate.Invoke((MethodInvoker)delegate
-                        {
-                            Button_StopUpdate.Enabled = true;
-                        });
-
-                        //Enable Button
-                        Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
-                        {
-                            Button_ExportInterchangeFile.Enabled = true;
-                        });
-
-                        //Enable Button
-                        Button_UpdateIMAData.Invoke((MethodInvoker)delegate
-                        {
-                            Button_UpdateIMAData.Enabled = true;
-                        });
-
                         //Set Program status
                         GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
-                    })
-                    {
-                        IsBackground = true
-                    };
-                    LoadStreamFile.Start();
+                    }
                 }
 
                 //Apply User Preferences
@@ -321,6 +372,14 @@ namespace EuroSound_Application.StreamSounds
             if (LoadStreamFile != null)
             {
                 LoadStreamFile.Abort();
+            }
+
+            //Stop timer
+            if (TimerBackups != null)
+            {
+                TimerBackups.Stop();
+                TimerBackups.Close();
+                TimerBackups.Dispose();
             }
 
             //Clear stack lists

@@ -45,6 +45,7 @@
         internal static string SFXOutputPath = string.Empty;
         internal static string MusicOutputPath = string.Empty;
         internal static string StreamFileOutputPath = string.Empty;
+        internal static string DebugFilesFolder = string.Empty;
 
         //[Frm_OutputSettings]
         internal static bool PlaySoundWhenOutput = false;
@@ -70,6 +71,14 @@
 
         //User Settings -> General
         internal static bool LoadLastLoadedESF = false;
+        internal static bool UseThreadingWhenLoad = true;
+
+        //Backups
+        internal static bool MakeBackups = true;
+        internal static string MakeBackupsDirectory = @"X:\Backups";
+        internal static int MakeBackupsMaxNumber = 8;
+        internal static int MakeBackupsInterval = 1;
+        internal static int MakeBackupsIndex = 0;
 
         //*===============================================================================================
         //* TEMPORAL PROPERTIES

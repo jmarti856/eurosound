@@ -961,6 +961,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a A small tool to convert WAV files with a valid format for the current project.
+        /// </summary>
+        internal static string MenuItemTools_AudioConverter {
+            get {
+                return ResourceManager.GetString("MenuItemTools_AudioConverter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Create a file with the current program preferences.
         /// </summary>
         internal static string MenuItemTools_BackupSettings {
@@ -975,6 +984,15 @@ namespace EuroSound_Application.Properties {
         internal static string MenuItemTools_ClearTemp {
             get {
                 return ResourceManager.GetString("MenuItemTools_ClearTemp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Creates a debug file for the current loaded HashTables.
+        /// </summary>
+        internal static string MenuItemTools_DebugFiles {
+            get {
+                return ResourceManager.GetString("MenuItemTools_DebugFiles", resourceCulture);
             }
         }
         
@@ -1209,6 +1227,15 @@ namespace EuroSound_Application.Properties {
         internal static string StatusBar_Status_Ready {
             get {
                 return ResourceManager.GetString("StatusBar_Status_Ready", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Saving Backup.
+        /// </summary>
+        internal static string StatusBar_Status_SavingBackUp {
+            get {
+                return ResourceManager.GetString("StatusBar_Status_SavingBackUp", resourceCulture);
             }
         }
         
