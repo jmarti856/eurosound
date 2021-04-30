@@ -249,27 +249,56 @@ namespace EuroSound_Application.AudioConverter
                             {
                                 try
                                 {
-                                    //Convert File
-                                    using (WaveFileReader reader = new WaveFileReader(InputFilePath))
+                                    string ExtensionFile = Path.GetExtension(InputFilePath);
+
+                                    //MP3 To Wav
+                                    if (ExtensionFile.Equals(".mp3", StringComparison.OrdinalIgnoreCase))
                                     {
-                                        var newFormat = new WaveFormat((int)Frequency, Bits, Channels);
-                                        using (WaveFormatConversionStream conversionStream = new WaveFormatConversionStream(newFormat, reader))
+                                        using (Mp3FileReader reader = new Mp3FileReader(InputFilePath))
                                         {
-                                            WaveFileWriter.CreateWaveFile(OutputFilePath, conversionStream);
+                                            RawSourceWaveStream Original = new RawSourceWaveStream(reader, new WaveFormat(reader.WaveFormat.SampleRate, reader.WaveFormat.BitsPerSample, reader.WaveFormat.Channels));
+                                            WaveStream pcmStream = WaveFormatConversionStream.CreatePcmStream(Original);
+                                            using (WaveFormatConversionStream conversionStream = new WaveFormatConversionStream(new WaveFormat((int)Frequency, Bits, Channels), pcmStream))
+                                            {
+                                                WaveFileWriter.CreateWaveFile(OutputFilePath, conversionStream);
+                                            }
                                         }
                                     }
-
-                                    //Update Progress bar
-                                    ProgressBar_Status.Invoke((MethodInvoker)delegate
+                                    //WAV File
+                                    else if (ExtensionFile.Equals(".wav", StringComparison.OrdinalIgnoreCase))
                                     {
-                                        ProgressBar_Status.Value += 1;
-                                    });
-
+                                        using (WaveFileReader reader = new WaveFileReader(InputFilePath))
+                                        {
+                                            using (WaveFormatConversionStream conversionStream = new WaveFormatConversionStream(new WaveFormat((int)Frequency, Bits, Channels), reader))
+                                            {
+                                                WaveFileWriter.CreateWaveFile(OutputFilePath, conversionStream);
+                                            }
+                                        }
+                                    }
+                                    //AIFF
+                                    else if (ExtensionFile.Equals(".aiff", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        using (AiffFileReader reader = new AiffFileReader(InputFilePath))
+                                        {
+                                            RawSourceWaveStream Original = new RawSourceWaveStream(reader, new WaveFormat(reader.WaveFormat.SampleRate, reader.WaveFormat.BitsPerSample, reader.WaveFormat.Channels));
+                                            WaveStream pcmStream = WaveFormatConversionStream.CreatePcmStream(Original);
+                                            using (WaveFormatConversionStream conversionStream = new WaveFormatConversionStream(new WaveFormat((int)Frequency, Bits, Channels), pcmStream))
+                                            {
+                                                WaveFileWriter.CreateWaveFile(OutputFilePath, conversionStream);
+                                            }
+                                        }
+                                    }
                                 }
-                                catch (Exception ex)
+                                catch
                                 {
-                                    MessageBox.Show(ex.ToString(), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    Reports.Add(string.Join("", new string[] { "0", "An error ocurred while processing: ", InputFilePath }));
                                 }
+
+                                //Update Progress bar
+                                ProgressBar_Status.Invoke((MethodInvoker)delegate
+                                {
+                                    ProgressBar_Status.Value += 1;
+                                });
                             }
                             else
                             {
@@ -318,14 +347,14 @@ namespace EuroSound_Application.AudioConverter
             string FolderToOpen = BrowsersAndDialogs.OpenFolderBrowser();
             if (Directory.Exists(FolderToOpen))
             {
-                FilesCollection = Directory.GetFiles(FolderToOpen, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".mp3") || s.EndsWith(".wav") || s.EndsWith(".flac") || s.EndsWith(".wma") || s.EndsWith(".aac")).ToArray();
+                FilesCollection = Directory.GetFiles(FolderToOpen, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase) || s.EndsWith(".wav", StringComparison.OrdinalIgnoreCase)).ToArray();
                 PrintFilesCollection(FilesCollection);
             }
         }
 
         private void MenuItemFile_ImportFiles_Click(object sender, EventArgs e)
         {
-            string FileToOpen = BrowsersAndDialogs.FileBrowserDialog("WAV Files (*.wav)|*.wav|MP3 Files (*.mp3)|*.mp3|FLAC Files (*.flac)|.flac|WMA Files (*.wma)|.wma|AAC Files (*.aac)|.aac", 0, true);
+            string FileToOpen = BrowsersAndDialogs.FileBrowserDialog("WAV Files (*.wav)|*.wav|MP3 Files (*.mp3)|*.mp3", 0, true);
             if (!string.IsNullOrEmpty(FileToOpen))
             {
                 AddFileToListView(Path.GetFileName(FileToOpen), Path.GetDirectoryName(FileToOpen), Path.GetExtension(FileToOpen), new FileInfo(FileToOpen).Length.ToString() + " bytes");

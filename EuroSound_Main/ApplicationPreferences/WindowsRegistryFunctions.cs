@@ -128,6 +128,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
             {
                 SaveProfile.SetValue("CurrentProfile", CurrentProfile, RegistryValueKind.String);
                 SaveProfile.SetValue("CurrentProfileName", CurrentProfileName, RegistryValueKind.String);
+                SaveProfile.SetValue("CurrentProfileMD5", GenericFunctions.CalculateMD5(CurrentProfile), RegistryValueKind.String);
                 SaveProfile.Close();
             }
         }

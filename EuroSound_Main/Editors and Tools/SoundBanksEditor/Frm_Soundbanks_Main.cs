@@ -1,6 +1,5 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
-using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls.DebugTypes;
@@ -38,7 +37,6 @@ namespace EuroSound_Application.SoundBanksEditor
         private EuroSoundFiles EuroSoundFilesFunctions = new EuroSoundFiles();
         private Thread UpdateList, UpdateWavList, UpdateStreamDataList, LoadYamlFile, LoadSoundBankFile;
         private SoundBanksYMLReader LibYamlReader = new SoundBanksYMLReader();
-        private AudioFunctions AudioFunctionsLibrary = new AudioFunctions();
         private MostRecentFilesMenu RecentFilesMenu;
         private System.Timers.Timer TimerBackups;
 

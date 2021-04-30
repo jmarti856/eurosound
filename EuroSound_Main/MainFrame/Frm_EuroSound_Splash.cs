@@ -61,6 +61,7 @@ namespace EuroSound_Application.SplashForm
 
             string ProfileNameFromReg = WindowsRegistryFunctions.LoadCurrentProfie("CurrentProfileName");
             string ProfilePathFromReg = WindowsRegistryFunctions.LoadCurrentProfie("CurrentProfile");
+            string ProfileMD5 = WindowsRegistryFunctions.LoadCurrentProfie("CurrentProfileMD5");
 
             //Reload last profile if file exists
             if (File.Exists(ProfilePathFromReg))
@@ -94,8 +95,8 @@ namespace EuroSound_Application.SplashForm
             //*===============================================================================================
             if (File.Exists(GlobalPreferences.SelectedProfile))
             {
-                //Reload profile if paths are not equal
-                if (!ProfilePathFromReg.Equals(GlobalPreferences.SelectedProfile))
+                //Reload profile if paths are not equal or the file has changed
+                if (!ProfilePathFromReg.Equals(GlobalPreferences.SelectedProfile) || !GenericFunctions.CalculateMD5(GlobalPreferences.SelectedProfile).Equals(ProfileMD5))
                 {
                     Label_Status.Text = "Loading Profile, please wait...";
 
