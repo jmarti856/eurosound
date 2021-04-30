@@ -223,27 +223,6 @@ namespace EuroSound_Application.SplashForm
             }
             await Task.Delay(RandomNumber.Next(Minimum, Maximum));
 
-            //-----------------------------------------[SoX Executable]----------------------------------------
-            Label_Status.Text = "Loading SoX Executable Path, please wait...";
-            string SoXExePath = WindowsRegistryFunctions.LoadSoxFilePath();
-
-            if (string.IsNullOrEmpty(SoXExePath))
-            {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("SoXNoPath"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                if (File.Exists(SoXExePath))
-                {
-                    GlobalPreferences.SoXPath = SoXExePath;
-                }
-                else
-                {
-                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("SoXInvalidPath"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            await Task.Delay(RandomNumber.Next(Minimum, Maximum));
-
             //-----------------------------------------[Load AudioDevice]---------------------------------------
             Label_Status.Text = "Loading audio devices preferences, please wait...";
             WindowsRegistryFunctions.LoadDefaultAudioDevice();

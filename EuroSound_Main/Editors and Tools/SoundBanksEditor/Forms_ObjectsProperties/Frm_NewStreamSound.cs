@@ -28,8 +28,6 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         private void Frm_NewStreamSound_Load(object sender, EventArgs e)
         {
-            int StreamIndex;
-
             Textbox_ExternalFile.Text = GlobalPreferences.StreamFilePath;
             ReadSoundsList();
 
@@ -42,7 +40,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
             if (SelectedSample.FileRef != 0)
             {
-                StreamIndex = (Math.Abs(SelectedSample.FileRef) - 1);
+                int StreamIndex = (Math.Abs(SelectedSample.FileRef) - 1);
                 if (StreamIndex <= ListBox_StreamSounds.Items.Count && ListBox_StreamSounds.Items.Count > 0)
                 {
                     ListBox_StreamSounds.SelectedIndex = StreamIndex;
@@ -88,9 +86,6 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         private void ReadSoundsList()
         {
-            sbyte TypeOfStoredData;
-            uint ListOffset, NumberOfItems;
-
             if (File.Exists(GlobalPreferences.StreamFilePath))
             {
                 EuroSoundFiles ESFReader = new EuroSoundFiles();
@@ -99,7 +94,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     if (ESFReader.FileIsCorrect(BReader))
                     {
                         //Type of stored data
-                        TypeOfStoredData = BReader.ReadSByte();
+                        sbyte TypeOfStoredData = BReader.ReadSByte();
                         if (TypeOfStoredData == 1)
                         {
                             //File Hashcode
@@ -107,11 +102,11 @@ namespace EuroSound_Application.SoundBanksEditor
                             //Sound ID
                             BReader.ReadUInt32();
                             //Sounds List Offset
-                            ListOffset = BReader.ReadUInt32();
+                            uint ListOffset = BReader.ReadUInt32();
 
                             //Go to list offset
                             BReader.BaseStream.Seek(ListOffset, SeekOrigin.Begin);
-                            NumberOfItems = BReader.ReadUInt32();
+                            uint NumberOfItems = BReader.ReadUInt32();
 
                             //Clear List
                             ListBox_StreamSounds.Items.Clear();

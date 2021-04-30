@@ -36,8 +36,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             treeNode3});
             System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Output");
             System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Profile");
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("SoX (Sound eXchange)");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("System");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("System");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_MainPreferences));
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
@@ -99,18 +98,15 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             treeNode5.Text = "Output";
             treeNode6.Name = "Profile";
             treeNode6.Text = "Profile";
-            treeNode7.Name = "SoX";
-            treeNode7.Text = "SoX (Sound eXchange)";
-            treeNode8.Name = "System";
-            treeNode8.Text = "System";
+            treeNode7.Name = "System";
+            treeNode7.Text = "System";
             this.TreeViewPreferences.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,
             treeNode4,
             treeNode5,
             treeNode6,
-            treeNode7,
-            treeNode8});
+            treeNode7});
             this.TreeViewPreferences.Size = new System.Drawing.Size(177, 424);
             this.TreeViewPreferences.TabIndex = 0;
             this.TreeViewPreferences.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeViewPreferences_AfterSelect);

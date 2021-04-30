@@ -162,9 +162,6 @@ namespace EuroSound_Application.SFXData
         //*===============================================================================================
         private void LoadDataFromHashtable()
         {
-            ListViewItem ItemToAdd;
-            float[] ItemValue;
-
             ListView_HashTableData.BeginInvoke((MethodInvoker)delegate
             {
                 ListView_HashTableData.Enabled = false;
@@ -193,8 +190,8 @@ namespace EuroSound_Application.SFXData
 
             foreach (KeyValuePair<int, float[]> Item in Hashcodes.SFX_Data)
             {
-                ItemValue = Item.Value;
-                ItemToAdd = new ListViewItem(new[] { ItemValue[0].ToString(), ItemValue[1].ToString("n1"), ItemValue[2].ToString("n1"), ItemValue[3].ToString("n1"), ItemValue[4].ToString("n6"), ItemValue[5].ToString(), ItemValue[6].ToString(), ItemValue[7].ToString() })
+                float[] ItemValue = Item.Value;
+                ListViewItem ItemToAdd = new ListViewItem(new[] { ItemValue[0].ToString(), ItemValue[1].ToString("n1"), ItemValue[2].ToString("n1"), ItemValue[3].ToString("n1"), ItemValue[4].ToString("n6"), ItemValue[5].ToString(), ItemValue[6].ToString(), ItemValue[7].ToString() })
                 {
                     Tag = 0x1A000000 | (uint)ItemValue[0]
                 };
@@ -262,13 +259,11 @@ namespace EuroSound_Application.SFXData
 
         private void Button_Search_Click(object sender, EventArgs e)
         {
-            uint Hashcode, ItemTag;
-
             //Deselect all items
             ListView_HashTableData.SelectedIndices.Clear();
 
             //Get hashcode form combobox
-            Hashcode = Convert.ToUInt32(Combobox_LabelHashcodes.SelectedValue);
+            uint Hashcode = Convert.ToUInt32(Combobox_LabelHashcodes.SelectedValue);
 
             //Focus control
             ListView_HashTableData.Focus();
@@ -276,7 +271,7 @@ namespace EuroSound_Application.SFXData
             //Select Item
             foreach (ListViewItem Item in ListView_HashTableData.Items)
             {
-                ItemTag = Convert.ToUInt32(Item.Tag);
+                uint ItemTag = Convert.ToUInt32(Item.Tag);
                 if (ItemTag == Hashcode)
                 {
                     Item.Selected = true;
@@ -324,14 +319,12 @@ namespace EuroSound_Application.SFXData
         //*===============================================================================================
         private void ListView_HashTableData_SelectedIndexChanged(object sender, EventArgs e)
         {
-            uint SelectedHash;
-
             if (ListView_HashTableData.SelectedItems.Count > 0)
             {
                 ListViewItem SelectedItem = ListView_HashTableData.SelectedItems[0];
                 if (SelectedItem.SubItems.Count > 0)
                 {
-                    SelectedHash = 0x1A000000 | uint.Parse(SelectedItem.SubItems[0].Text);
+                    uint SelectedHash = 0x1A000000 | uint.Parse(SelectedItem.SubItems[0].Text);
                     if (Hashcodes.SFX_Defines.ContainsKey(SelectedHash))
                     {
                         Textbox_SelectedHashcode.Text = Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, SelectedHash);

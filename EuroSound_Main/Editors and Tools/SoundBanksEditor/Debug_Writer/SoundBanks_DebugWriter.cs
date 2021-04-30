@@ -14,10 +14,6 @@ namespace EuroSound_Application.SoundBanksEditor.Debug_Writer
             //* Global Variables
             //*===============================================================================================
             string FileName = Path.GetFileNameWithoutExtension(FilePath);
-            uint SFXStart, SampleInfoStart, SampleDataStart, SampleDataLength;
-            uint SFXCount, SFXHashcode, SFXOffset;
-            int SampleCount;
-            uint SFXSamplesCount;
             Dictionary<uint, uint> SFXElements = new Dictionary<uint, uint>();
 
             using (StreamWriter DebugFile = new StreamWriter(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".dbg"))
@@ -50,13 +46,13 @@ namespace EuroSound_Application.SoundBanksEditor.Debug_Writer
                     DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
 
                     DebugFile.WriteLine(string.Join(" ", "//", "SFX section start"));
-                    SFXStart = BReader.ReadUInt32();
+                    uint SFXStart = BReader.ReadUInt32();
                     DebugFile.WriteLine(string.Join(" ", "\tDD", SFXStart.ToString("X8") + "h"));
                     DebugFile.WriteLine(string.Join(" ", "//", "SFX section length"));
                     DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
 
                     DebugFile.WriteLine(string.Join(" ", "//", "Sample info start"));
-                    SampleInfoStart = BReader.ReadUInt32();
+                    uint SampleInfoStart = BReader.ReadUInt32();
                     DebugFile.WriteLine(string.Join(" ", "\tDD", SampleInfoStart.ToString("X8") + "h"));
                     DebugFile.WriteLine(string.Join(" ", "//", "Sample info length"));
                     DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
@@ -67,10 +63,10 @@ namespace EuroSound_Application.SoundBanksEditor.Debug_Writer
                     DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
 
                     DebugFile.WriteLine(string.Join(" ", "//", "Sample data start"));
-                    SampleDataStart = BReader.ReadUInt32();
+                    uint SampleDataStart = BReader.ReadUInt32();
                     DebugFile.WriteLine(string.Join(" ", "\tDD", SampleDataStart.ToString("X8") + "h"));
                     DebugFile.WriteLine(string.Join(" ", "//", "Sample data length"));
-                    SampleDataLength = BReader.ReadUInt32();
+                    uint SampleDataLength = BReader.ReadUInt32();
                     DebugFile.WriteLine(string.Join(" ", "\tDD", SampleDataLength.ToString("X8") + "h"));
                     DebugFile.WriteLine("");
 
@@ -85,7 +81,7 @@ namespace EuroSound_Application.SoundBanksEditor.Debug_Writer
 
                         //Read and print SFXCount
                         BReader.BaseStream.Seek(SFXStart, SeekOrigin.Begin);
-                        SFXCount = BReader.ReadUInt32();
+                        uint SFXCount = BReader.ReadUInt32();
 
                         DebugFile.WriteLine(string.Join(" ", "//", "SFX entry count"));
                         DebugFile.WriteLine(string.Join(" ", "\tDD", SFXCount.ToString("X8") + "h"));
@@ -94,8 +90,8 @@ namespace EuroSound_Application.SoundBanksEditor.Debug_Writer
                         for (int i = 0; i < SFXCount; i++)
                         {
                             //Read Data
-                            SFXHashcode = BReader.ReadUInt32();
-                            SFXOffset = BReader.ReadUInt32();
+                            uint SFXHashcode = BReader.ReadUInt32();
+                            uint SFXOffset = BReader.ReadUInt32();
 
                             //Add Data To Dictionary
                             if (!SFXElements.ContainsKey(SFXOffset))
@@ -155,7 +151,7 @@ namespace EuroSound_Application.SoundBanksEditor.Debug_Writer
                             DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt16().ToString("X8") + "h"));
 
                             DebugFile.WriteLine(string.Join(" ", "//", "Sample count"));
-                            SampleCount = BReader.ReadInt16();
+                            short SampleCount = BReader.ReadInt16();
                             DebugFile.WriteLine(string.Join(" ", "\tDD", SampleCount.ToString("X8") + "h"));
 
                             for (int i = 0; i < SampleCount; i++)
@@ -200,7 +196,7 @@ namespace EuroSound_Application.SoundBanksEditor.Debug_Writer
                         BReader.BaseStream.Seek(SampleInfoStart, SeekOrigin.Begin);
 
                         DebugFile.WriteLine(string.Join(" ", "//", "Sample info count"));
-                        SFXSamplesCount = BReader.ReadUInt32();
+                        uint SFXSamplesCount = BReader.ReadUInt32();
                         DebugFile.WriteLine(string.Join(" ", "\tDD", SFXSamplesCount.ToString("X8") + "h"));
 
                         for (int i = 0; i < SFXSamplesCount; i++)

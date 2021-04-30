@@ -13,8 +13,6 @@ namespace EuroSound_Application.Editors_and_Tools.StreamSoundsEditor.Debug_Write
             //* Global Variables
             //*===============================================================================================
             string FileName = Path.GetFileNameWithoutExtension(FilePath);
-            uint StartMarkersCount, MarkersCount, SoundsCount;
-            uint FileStart1, FileStart1Length, FileStart2;
             List<uint> SoundsOffsets = new List<uint>();
 
             using (StreamWriter DebugFile = new StreamWriter(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".dbg"))
@@ -50,16 +48,16 @@ namespace EuroSound_Application.Editors_and_Tools.StreamSoundsEditor.Debug_Write
                     DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
 
                     DebugFile.WriteLine(string.Join(" ", "//", "File start 1"));
-                    FileStart1 = BReader.ReadUInt32();
+                    uint FileStart1 = BReader.ReadUInt32();
                     DebugFile.WriteLine(string.Join(" ", "\tDD", FileStart1.ToString("X8") + "h"));
 
                     DebugFile.WriteLine(string.Join(" ", "//", "File length 1"));
-                    FileStart1Length = BReader.ReadUInt32();
-                    SoundsCount = FileStart1Length / 4;
+                    uint FileStart1Length = BReader.ReadUInt32();
+                    uint SoundsCount = FileStart1Length / 4;
                     DebugFile.WriteLine(string.Join(" ", "\tDD", FileStart1Length.ToString("X8") + "h"));
 
                     DebugFile.WriteLine(string.Join(" ", "//", "File start 2"));
-                    FileStart2 = BReader.ReadUInt32();
+                    uint FileStart2 = BReader.ReadUInt32();
                     DebugFile.WriteLine(string.Join(" ", "\tDD", FileStart2.ToString("X8") + "h"));
 
                     DebugFile.WriteLine(string.Join(" ", "//", "File length 2"));
@@ -122,11 +120,11 @@ namespace EuroSound_Application.Editors_and_Tools.StreamSoundsEditor.Debug_Write
 
                             //Stream marker header data 
                             DebugFile.WriteLine(string.Join(" ", "//", "Start marker count"));
-                            StartMarkersCount = BReader.ReadUInt32();
+                            uint StartMarkersCount = BReader.ReadUInt32();
                             DebugFile.WriteLine(string.Join(" ", "\tDD", StartMarkersCount.ToString("X8") + "h"));
 
                             DebugFile.WriteLine(string.Join(" ", "//", "Marker count"));
-                            MarkersCount = BReader.ReadUInt32();
+                            uint MarkersCount = BReader.ReadUInt32();
                             DebugFile.WriteLine(string.Join(" ", "\tDD", MarkersCount.ToString("X8") + "h"));
 
                             DebugFile.WriteLine(string.Join(" ", "//", "Start marker offset"));

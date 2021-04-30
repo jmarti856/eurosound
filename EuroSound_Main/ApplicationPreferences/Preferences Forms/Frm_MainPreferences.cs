@@ -36,9 +36,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         //Frm_StreamFile
         internal string StreamFilePathTEMPORAL;
 
-        //Frm_SoxPrefs
-        internal string SoXPathTEMPORAL;
-
         //Frm_System
         internal bool UseSystemTrayTEMPORAL;
 
@@ -64,7 +61,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         //*===============================================================================================
         private Frm_General GeneralPreferences;
         private Frm_TreeViewPrefs TreeViewPrefs;
-        private Frm_SoxPrefs SoXPreferences;
         private Frm_System SystemPreferences;
         private Frm_OutputDevices AudioDevices;
         private Frm_Profiles ProfilesForm;
@@ -72,7 +68,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         private Frm_AutoBackUps BackupsSettingsForm;
         private bool FrmGeneralPreferencesOpened = false;
         private bool FrmTreeViewPrefsOpened = false;
-        private bool FrmSoXPreferencesOpened = false;
         private bool FrmSystemPreferencesOpened = false;
         private bool FrmAudioDevicesOpened = false;
         private bool FrmProfilesFormOpened = false;
@@ -99,7 +94,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             SFXOutputPathTEMPORAL = GlobalPreferences.SFXOutputPath;
             ShowLinesTEMPORAL = GlobalPreferences.TV_ShowLines;
             ShowRootLinesTEMPORAL = GlobalPreferences.TV_ShowRootLines;
-            SoXPathTEMPORAL = GlobalPreferences.SoXPath;
             StreamFilePathTEMPORAL = GlobalPreferences.StreamFilePath;
             TreeViewIndentTEMPORAL = GlobalPreferences.TV_Indent;
             TreeViewItemHeightTEMPORAL = GlobalPreferences.TV_ItemHeight;
@@ -169,19 +163,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
                 //Update Boolean
                 FrmGeneralPreferencesOpened = false;
-            }
-
-            //-----------------[Frm_SoxPrefs]-----------------
-            if (FrmSoXPreferencesOpened)
-            {
-                //Update Variables
-                GlobalPreferences.SoXPath = SoXPathTEMPORAL;
-
-                //SaveConfig in Registry
-                WindowsRegistryFunctions.SaveSoxFilePath();
-
-                //Update Boolean
-                FrmSoXPreferencesOpened = false;
             }
 
             //-----------------[Frm_System]-----------------
@@ -323,27 +304,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
                     //Update Boolean
                     FrmGeneralPreferencesOpened = true;
-                }
-            }
-            //Open Sub-Form "Frm_SoxPrefs"
-            else if (string.Equals(e.Node.Name, "SoX"))
-            {
-                if (!Panel_SecondaryForms.Controls.Contains(SoXPreferences))
-                {
-                    RemoveAllFormsInsidePanel(Panel_SecondaryForms);
-
-                    SoXPreferences = new Frm_SoxPrefs
-                    {
-                        TopLevel = false,
-                        AutoScroll = true,
-                        Tag = Tag
-                    };
-                    Panel_SecondaryForms.Controls.Add(SoXPreferences);
-                    SoXPreferences.Dock = DockStyle.Fill;
-                    SoXPreferences.Show();
-
-                    //Update Boolean
-                    FrmSoXPreferencesOpened = true;
                 }
             }
             //Open Sub-Form "Frm_System"

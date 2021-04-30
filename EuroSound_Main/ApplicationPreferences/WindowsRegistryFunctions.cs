@@ -306,35 +306,6 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         }
 
         //*===============================================================================================
-        //* USER SETTINGS -> SOX PATH
-        //*===============================================================================================
-        internal static void SaveSoxFilePath()
-        {
-            OpenEuroSoundKeys();
-            CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
-            using (RegistryKey SoxPath = EuroSoundKey.OpenSubKey("UserSettings", true))
-            {
-                //Save Values
-                SoxPath.SetValue("SoxExePath", GlobalPreferences.SoXPath, RegistryValueKind.String);
-                SoxPath.Close();
-            }
-        }
-
-        internal static string LoadSoxFilePath()
-        {
-            string SoxFilePath = string.Empty;
-
-            OpenEuroSoundKeys();
-            CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
-            using (RegistryKey SoxPath = EuroSoundKey.OpenSubKey("UserSettings", true))
-            {
-                SoxFilePath = SoxPath.GetValue("SoxExePath", "").ToString();
-                SoxPath.Close();
-            }
-            return SoxFilePath;
-        }
-
-        //*===============================================================================================
         //* Back-Ups Settings
         //*===============================================================================================
         internal static void SaveBackupSettings()

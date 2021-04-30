@@ -55,9 +55,7 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
-            string selectedParent;
-
-            selectedParent = Combobox_AvailableFolders.SelectedValue.ToString();
+            string selectedParent = Combobox_AvailableFolders.SelectedValue.ToString();
             if (!string.IsNullOrEmpty(selectedParent))
             {
                 TreeNode NewParentNode = ParentTreeViewControl.Nodes.Find(selectedParent, true)[0];

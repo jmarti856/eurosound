@@ -78,11 +78,9 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 if (SelectedSound.Samples != null)
                 {
-                    string SampleName;
-
                     foreach (KeyValuePair<uint, EXSample> sample in SelectedSound.Samples)
                     {
-                        SampleName = ((Frm_Soundbanks_Main)OpenForm).TreeView_File.Nodes.Find(sample.Key.ToString(), true)[0].Text;
+                        string SampleName = ((Frm_Soundbanks_Main)OpenForm).TreeView_File.Nodes.Find(sample.Key.ToString(), true)[0].Text;
                         //Crate item
                         ListViewItem ItemToAdd = new ListViewItem
                         {
@@ -149,7 +147,6 @@ namespace EuroSound_Application.SoundBanksEditor
                     TreeNodeFunctions.TreeNodeSetNodeImage(Results[0], 5, 5);
                 }
             }
-
             Close();
         }
 

@@ -271,7 +271,6 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void UpdateHashcodesValidList()
         {
-
             UpdateList = new Thread(() =>
             {
                 //Clear List
@@ -527,7 +526,6 @@ namespace EuroSound_Application.SoundBanksEditor
 
             //Update Hashcode name label
             GenericFunctions.SetCurrentFileLabel(string.Empty, "Hashcode");
-
         }
 
         //*===============================================================================================

@@ -1,4 +1,4 @@
-﻿using EuroSound_Application.AudioFunctionsLibrary;
+﻿using EuroSound_Application.ApplicationPreferences;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
@@ -12,8 +12,6 @@ namespace EuroSound_Application.SoundBanksEditor
         #region AUDIOS
         internal static IEnumerable<string> GetAudioDependencies(string AudioKey, string AudioName, Dictionary<uint, EXSound> SoundsList, TreeView ControlNodes, bool ItemUsage)
         {
-            string DisplayName;
-
             foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
             {
                 foreach (KeyValuePair<uint, EXSample> Sample in Sound.Value.Samples)
@@ -26,7 +24,7 @@ namespace EuroSound_Application.SoundBanksEditor
                         }
                         else
                         {
-                            DisplayName = ControlNodes.Nodes.Find(Sample.Key.ToString(), true)[0].Text;
+                            string DisplayName = ControlNodes.Nodes.Find(Sample.Key.ToString(), true)[0].Text;
                             yield return "0" + DisplayName + " uses this audio";
                         }
                     }
@@ -54,12 +52,11 @@ namespace EuroSound_Application.SoundBanksEditor
 
         internal static IEnumerable<string> GetAudiosToPurge(Dictionary<string, EXAudio> AudioDataDict, Dictionary<uint, EXSound> SoundsList)
         {
-            bool PurgeCurrent;
             List<string> AudiosToPurge = new List<string>();
 
             foreach (string AudioKey in AudioDataDict.Keys)
             {
-                PurgeCurrent = true;
+                bool PurgeCurrent = true;
 
                 foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
                 {
@@ -108,22 +105,17 @@ namespace EuroSound_Application.SoundBanksEditor
 
         internal static EXAudio LoadAudioData(string FilePath)
         {
-            int NumberOfChannels;
-
             try
             {
                 using (WaveFileReader AudioReader = new WaveFileReader(FilePath))
                 {
-                    NumberOfChannels = AudioReader.WaveFormat.Channels;
-
-                    AudioFunctions AudioLibrary = new AudioFunctions();
                     EXAudio Audio = new EXAudio
                     {
                         LoadedFileName = Path.GetFileName(FilePath),
                         DataSize = (uint)AudioReader.Length,
                         Frequency = (uint)AudioReader.WaveFormat.SampleRate,
                         RealSize = (uint)new FileInfo(FilePath).Length,
-                        Channels = (uint)NumberOfChannels,
+                        Channels = (uint)AudioReader.WaveFormat.Channels,
                         Bits = (uint)AudioReader.WaveFormat.BitsPerSample,
                         Duration = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1),
                         Encoding = AudioReader.WaveFormat.Encoding.ToString(),
@@ -131,12 +123,54 @@ namespace EuroSound_Application.SoundBanksEditor
                         LoopOffset = 0,
                         PSIsample = 0
                     };
+
                     //Get PCM Data
                     Audio.PCMdata = new byte[AudioReader.Length];
                     AudioReader.Read(Audio.PCMdata, 0, (int)AudioReader.Length);
-
                     AudioReader.Close();
+
                     return Audio;
+                }
+            }
+            catch
+            {
+
+            }
+
+            return null;
+        }
+
+        internal static EXAudio LoadAndConvertData(string SourcePath)
+        {
+            try
+            {
+                using (WaveFileReader reader = new WaveFileReader(SourcePath))
+                {
+                    WaveFormat newFormat = new WaveFormat(GlobalPreferences.SoundbankFrequency, GlobalPreferences.SoundbankBits, GlobalPreferences.SoundbankChannels);
+                    using (WaveFormatConversionStream conversionStream = new WaveFormatConversionStream(newFormat, reader))
+                    {
+                        EXAudio Audio = new EXAudio
+                        {
+                            LoadedFileName = Path.GetFileName(SourcePath),
+                            DataSize = (uint)conversionStream.Length,
+                            Frequency = (uint)conversionStream.WaveFormat.SampleRate,
+                            RealSize = (uint)new FileInfo(SourcePath).Length,
+                            Channels = (uint)conversionStream.WaveFormat.Channels,
+                            Bits = (uint)conversionStream.WaveFormat.BitsPerSample,
+                            Duration = (uint)Math.Round(conversionStream.TotalTime.TotalMilliseconds, 1),
+                            Encoding = conversionStream.WaveFormat.Encoding.ToString(),
+                            Flags = 0,
+                            LoopOffset = 0,
+                            PSIsample = 0
+                        };
+
+                        //Get PCM Data
+                        Audio.PCMdata = new byte[conversionStream.Length];
+                        conversionStream.Read(Audio.PCMdata, 0, (int)conversionStream.Length);
+                        conversionStream.Close();
+
+                        return Audio;
+                    }
                 }
             }
             catch
@@ -219,9 +253,7 @@ namespace EuroSound_Application.SoundBanksEditor
         internal static EXSample ReturnSampleFromSound(EXSound SelectedSound, uint SampleID)
         {
             //Renamed to ReturnSampleFromSound
-            EXSample SelectedSample;
-
-            SelectedSample = SelectedSound.Samples[SampleID];
+            EXSample SelectedSample = SelectedSound.Samples[SampleID];
 
             return SelectedSample;
         }

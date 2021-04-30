@@ -124,12 +124,10 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         private void EnableOrDisableSubSFXSection(bool IsSubSFX)
         {
-            bool Invert;
-
             if (IsSubSFX)
             {
                 //Invert boolean
-                Invert = !IsSubSFX;
+                bool Invert = !IsSubSFX;
 
                 //Activate and deactivate controls
                 Combobox_SelectedAudio.Enabled = Invert;

@@ -114,12 +114,12 @@ namespace EuroSound_Application.Musics
 
         private void UpdateIMAData()
         {
-            EngineXImaAdpcm.ImaADPCM_Functions ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Functions();
-
             UpdateImaData = new Thread(() =>
             {
                 try
                 {
+                    EngineXImaAdpcm.ImaADPCM_Functions ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Functions();
+
                     foreach (KeyValuePair<uint, EXMusic> SoundToUpdate in MusicsList)
                     {
                         //Get IMA ADPCM Data Left Channel

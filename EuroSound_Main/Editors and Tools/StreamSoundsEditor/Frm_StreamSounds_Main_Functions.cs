@@ -81,12 +81,11 @@ namespace EuroSound_Application.StreamSounds
 
         private void UpdateIMAData()
         {
-            EngineXImaAdpcm.ImaADPCM_Functions ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Functions();
-
             UpdateImaData = new Thread(() =>
             {
                 try
                 {
+                    EngineXImaAdpcm.ImaADPCM_Functions ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Functions();
                     foreach (KeyValuePair<uint, EXSoundStream> SoundToUpdate in StreamSoundsList)
                     {
                         //Get IMA ADPCM Data
@@ -221,7 +220,6 @@ namespace EuroSound_Application.StreamSounds
 
             //Update Hashcode name label
             GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, ProjectInfo.Hashcode), "Hashcode");
-
         }
 
         private void ClearStatusBarLabels()
@@ -231,7 +229,6 @@ namespace EuroSound_Application.StreamSounds
 
             //Update Hashcode name label
             GenericFunctions.SetCurrentFileLabel(string.Empty, "Hashcode");
-
         }
 
         //*===============================================================================================

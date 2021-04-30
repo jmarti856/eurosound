@@ -11,11 +11,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
     {
         public void Save(string SavePath, RegistryKey EuroSoundKey)
         {
-            long AlignOffset;
-            uint NumberOfSubKeys;
             byte ValueKind = 0;
-            string KeyName, KeyType, KeyValue;
-            int NumericKeyValue;
             List<long> SectionOffsets = new List<long>();
             List<long> FinalSectionOffsets = new List<long>();
 
@@ -26,7 +22,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 //--WriteFileVersion--
                 BWriter.Write((sbyte)10);
                 //--WirteNumberOfSubKeys
-                NumberOfSubKeys = (uint)EuroSoundKey.SubKeyCount;
+                uint NumberOfSubKeys = (uint)EuroSoundKey.SubKeyCount;
                 BWriter.Write(NumberOfSubKeys);
 
 
@@ -43,9 +39,8 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                     BWriter.Write(Convert.ToUInt32(00000000));
                 }
 
-
                 //Align Bytes
-                AlignOffset = (BWriter.BaseStream.Position + 512) & (512 - 1);
+                long AlignOffset = (BWriter.BaseStream.Position + 512) & (512 - 1);
                 BWriter.Seek(AlignOffset, SeekOrigin.Current);
                 BWriter.Align(16);
 
@@ -60,8 +55,8 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                             BWriter.Write((uint)KeyToSave.ValueCount);
                             foreach (string SubKeyValue in KeyToSave.GetValueNames())
                             {
-                                KeyName = SubKeyValue;
-                                KeyType = KeyToSave.GetValueKind(SubKeyValue).ToString();
+                                string KeyName = SubKeyValue;
+                                string KeyType = KeyToSave.GetValueKind(SubKeyValue).ToString();
                                 if (KeyType.Equals("DWord"))
                                 {
                                     ValueKind = 1;
@@ -80,12 +75,12 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                                 //Write SubKey Value
                                 if (ValueKind == 1)
                                 {
-                                    NumericKeyValue = int.Parse(KeyToSave.GetValue(SubKeyValue).ToString());
+                                    int NumericKeyValue = int.Parse(KeyToSave.GetValue(SubKeyValue).ToString());
                                     BWriter.Write(NumericKeyValue);
                                 }
                                 else if (ValueKind == 2)
                                 {
-                                    KeyValue = KeyToSave.GetValue(SubKeyValue).ToString();
+                                    string KeyValue = KeyToSave.GetValue(SubKeyValue).ToString();
                                     BWriter.Write(KeyValue);
                                 }
                             }

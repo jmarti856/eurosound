@@ -98,10 +98,8 @@ namespace EuroSound_Application
 
         internal static bool FileIsModified(string StoredMD5Hash, string FileToCheck)
         {
-            string hash;
             bool Modified = true;
-
-            hash = CalculateMD5(FileToCheck);
+            string hash = CalculateMD5(FileToCheck);
 
             if (hash.Equals(StoredMD5Hash))
             {
@@ -148,9 +146,7 @@ namespace EuroSound_Application
 
         internal static uint GetNewObjectID(ProjectFile FileProperties)
         {
-            uint index;
-
-            index = (FileProperties.SoundID += 1);
+            uint index = (FileProperties.SoundID += 1);
 
             return index;
         }
@@ -315,9 +311,7 @@ namespace EuroSound_Application
 
         internal static void SaveAudio(AudioFunctions AudioLibrary, string FileName, int Frequency, int Bits, int Channels, byte[] PCM_Data)
         {
-            string SavePath;
-
-            SavePath = BrowsersAndDialogs.SaveFileBrowser("WAV Files (*.wav)|*.wav", 0, true, FileName);
+            string SavePath = BrowsersAndDialogs.SaveFileBrowser("WAV Files (*.wav)|*.wav", 0, true, FileName);
             if (!string.IsNullOrEmpty(SavePath))
             {
                 AudioLibrary.CreateWavFile(Frequency, Bits, Channels, PCM_Data, SavePath);
@@ -426,8 +420,6 @@ namespace EuroSound_Application
         internal static void CheckProfiles(string ProfileSavedInESF, string ProfileNameSavedInESF)
         {
             ProfilesFunctions ProfilesLoader = new ProfilesFunctions();
-            string ProfilePath = string.Empty;
-            string ProfileName = string.Empty;
 
             //There's a file loaded that uses another profile
             if (!ProfileNameSavedInESF.Equals(GlobalPreferences.SelectedProfileName) && NumberOfChildForms() > 1)
@@ -437,6 +429,9 @@ namespace EuroSound_Application
             //No files loaded but there's a diferent profile
             else if (NumberOfChildForms() == 1 && !ProfileNameSavedInESF.Equals(GlobalPreferences.SelectedProfileName))
             {
+                string ProfilePath = string.Empty;
+                string ProfileName = string.Empty;
+
                 //Get path of the profile file in the ini file.
                 foreach (KeyValuePair<string, string> ProfileItem in AvailableProfiles)
                 {

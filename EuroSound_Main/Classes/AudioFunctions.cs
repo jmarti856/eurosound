@@ -6,11 +6,8 @@ using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using SoxSharp;
-using System;
 using System.IO;
 using System.Text;
-using System.Windows.Forms;
 
 namespace EuroSound_Application.AudioFunctionsLibrary
 {
@@ -70,9 +67,7 @@ namespace EuroSound_Application.AudioFunctionsLibrary
 
         private int CalculateValidRate(int DefaultRate, int Pitch)
         {
-            int NewPitch;
-
-            NewPitch = DefaultRate + Pitch;
+            int NewPitch = DefaultRate + Pitch;
             while (NewPitch <= 0)
             {
                 NewPitch = DefaultRate + (Pitch / 10);
@@ -162,44 +157,6 @@ namespace EuroSound_Application.AudioFunctionsLibrary
 
             return PCMDataShortArray;
         }
-
-        internal string ConvertWavToSoundBankValid(string SourcePath, string FileName, uint Frequency, ushort Channels, int Bits)
-        {
-            string FinalFile = string.Empty;
-
-            //Create folder in %temp%
-            GenericFunctions.CreateTemporalFolder();
-
-            //Resample wav
-            if (File.Exists(GlobalPreferences.SoXPath))
-            {
-                FinalFile = Path.Combine(Path.GetTempPath(), @"EuroSound\", FileName + "f.wav");
-                try
-                {
-                    using (Sox sox = new Sox(GlobalPreferences.SoXPath))
-                    {
-                        sox.Output.Type = FileType.WAV;
-                        sox.Output.SampleRate = Frequency;
-                        sox.Output.Channels = Channels;
-                        sox.Output.CustomArgs = " -b " + Bits;
-
-                        InputFile testInput = new InputFile(SourcePath);
-                        sox.Process(testInput, FinalFile);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString(), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("SoXInvalidPath"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            return FinalFile;
-        }
-
         internal void CreateWavFile(int Frequency, int BitsPerChannel, int NumberOfChannels, byte[] PCMData, string FilePath)
         {
             using (FileStream WavFile = new FileStream(FilePath, FileMode.Create))

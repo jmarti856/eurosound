@@ -12,8 +12,6 @@ namespace EuroSound_Application.Musics
             //* Global Variables
             //*===============================================================================================
             string FileName = Path.GetFileNameWithoutExtension(FilePath);
-            uint StartMarkersCount, MarkersCount;
-            uint FileStart1, FileStart2;
 
             using (StreamWriter DebugFile = new StreamWriter(GlobalPreferences.MusicOutputPath + "\\" + FileName + ".dbg"))
             {
@@ -48,14 +46,14 @@ namespace EuroSound_Application.Musics
                     DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
 
                     DebugFile.WriteLine(string.Join(" ", "//", "File start 1"));
-                    FileStart1 = BReader.ReadUInt32();
+                    uint FileStart1 = BReader.ReadUInt32();
                     DebugFile.WriteLine(string.Join(" ", "\tDD", FileStart1.ToString("X8") + "h"));
 
                     DebugFile.WriteLine(string.Join(" ", "//", "File length 1"));
                     DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
 
                     DebugFile.WriteLine(string.Join(" ", "//", "File start 2"));
-                    FileStart2 = BReader.ReadUInt32();
+                    uint FileStart2 = BReader.ReadUInt32();
                     DebugFile.WriteLine(string.Join(" ", "\tDD", FileStart2.ToString("X8") + "h"));
 
                     DebugFile.WriteLine(string.Join(" ", "//", "File length 2"));
@@ -79,11 +77,11 @@ namespace EuroSound_Application.Musics
                         BReader.BaseStream.Seek(FileStart1, SeekOrigin.Begin);
 
                         DebugFile.WriteLine(string.Join(" ", "//", "Start marker count"));
-                        StartMarkersCount = BReader.ReadUInt32();
+                        uint StartMarkersCount = BReader.ReadUInt32();
                         DebugFile.WriteLine(string.Join(" ", "\tDD", StartMarkersCount.ToString("X8") + "h"));
 
                         DebugFile.WriteLine(string.Join(" ", "//", "Marker count"));
-                        MarkersCount = BReader.ReadUInt32();
+                        uint MarkersCount = BReader.ReadUInt32();
                         DebugFile.WriteLine(string.Join(" ", "\tDD", MarkersCount.ToString("X8") + "h"));
 
                         DebugFile.WriteLine(string.Join(" ", "//", "Start marker offset"));

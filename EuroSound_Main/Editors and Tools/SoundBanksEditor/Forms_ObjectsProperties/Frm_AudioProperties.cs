@@ -5,7 +5,6 @@ using EuroSound_Application.CustomControls.FlagsForm;
 using NAudio.Wave;
 using System;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -73,18 +72,14 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.SoundbankChannels, GlobalPreferences.SoundbankFrequency))
                 {
-                    LoadAudio(AudioPath);
+                    LoadAudio(AudioPath, false);
                 }
                 else
                 {
                     DialogResult TryToReload = MessageBox.Show("Error, this audio file is not correct, the specifies are: " + GlobalPreferences.SoundbankChannels + " channels, the rate must be " + GlobalPreferences.SoundbankFrequency + "Hz, must have " + GlobalPreferences.SoundbankBits + " bits per sample and encoded in " + GlobalPreferences.SoundbankEncoding + ".", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (TryToReload == DialogResult.Yes)
                     {
-                        string FileTempFile = AudioFunctionsLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), (uint)GlobalPreferences.SoundbankChannels, (ushort)GlobalPreferences.SoundbankFrequency, GlobalPreferences.SoundbankBits);
-                        if (!string.IsNullOrEmpty(FileTempFile))
-                        {
-                            LoadAudio(FileTempFile);
-                        }
+                        LoadAudio(AudioPath, true);
                     }
                 }
             }
@@ -114,14 +109,10 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             if (byte.Parse(Textbox_Flags.Text) == 1)
             {
-                int SamplesToSkip;
-                byte[] LoopSamples;
-
                 try
                 {
-                    SamplesToSkip = int.Parse(numeric_loopOffset.Value.ToString()) * 2;
-
-                    LoopSamples = TemporalAudio.PCMdata.Skip(SamplesToSkip).ToArray();
+                    int SamplesToSkip = int.Parse(numeric_loopOffset.Value.ToString()) * 2;
+                    byte[] LoopSamples = TemporalAudio.PCMdata.Skip(SamplesToSkip).ToArray();
                     AudioFunctionsLibrary.PlayAudioLoopOffset(_waveOut, LoopSamples, (int)TemporalAudio.Frequency, 0, (int)TemporalAudio.Bits, (int)TemporalAudio.Channels, 0);
                 }
                 catch
@@ -171,10 +162,10 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
-            Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
             //--Add The Audio to the list if has been replaced--
             if (!SelectedAudioMD5Hash.Equals(TemporalAudioHash))
             {
+                Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
                 if (!((Frm_Soundbanks_Main)ParentForm).AudioDataDict.ContainsKey(TemporalAudioHash))
                 {
                     //--Update Dictionary--
@@ -236,10 +227,17 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         //* FUNCTIONS
         //*===============================================================================================
-        private void LoadAudio(string AudioPath)
+        private void LoadAudio(string AudioPath, bool ConvertData)
         {
             TemporalAudioHash = GenericFunctions.CalculateMD5(AudioPath);
-            TemporalAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);
+            if (ConvertData)
+            {
+                TemporalAudio = EXSoundbanksFunctions.LoadAndConvertData(AudioPath);
+            }
+            else
+            {
+                TemporalAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);
+            }
 
             if (TemporalAudio != null && TemporalAudio.PCMdata != null)
             {

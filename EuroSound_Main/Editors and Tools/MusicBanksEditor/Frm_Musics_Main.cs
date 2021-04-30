@@ -612,8 +612,6 @@ namespace EuroSound_Application.Musics
 
         private void TreeView_MusicData_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            string LabelText;
-
             //Check that we have selected a node, and we have not selected the root folder
             if (e.Node.Parent != null && !e.Node.Tag.Equals("Root"))
             {
@@ -621,7 +619,7 @@ namespace EuroSound_Application.Musics
                 if (e.Label != null)
                 {
                     //Get text label
-                    LabelText = e.Label.Trim();
+                    string LabelText = e.Label.Trim();
 
                     //Check we are not renaming with an empty string
                     if (string.IsNullOrEmpty(LabelText))
@@ -739,8 +737,6 @@ namespace EuroSound_Application.Musics
 
         private void TreeView_MusicData_DragDrop(object sender, DragEventArgs e)
         {
-            string DestSection, SourceSection, DestNodeType;
-
             //Retrieve the client coordinates of the drop location.
             Point pt = TreeView_MusicData.PointToClient(new Point(e.X, e.Y));
 
@@ -752,12 +748,12 @@ namespace EuroSound_Application.Musics
 
             if (FindTargetNode != null)
             {
-                DestSection = FindTargetNode.Text;
-                DestNodeType = targetNode.Tag.ToString();
+                string DestSection = FindTargetNode.Text;
+                string DestNodeType = targetNode.Tag.ToString();
 
                 //Retrieve the node that was dragged
                 TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
-                SourceSection = TreeNodeFunctions.FindRootNode(draggedNode).Text;
+                string SourceSection = TreeNodeFunctions.FindRootNode(draggedNode).Text;
 
                 //Confirm that the node at the drop location is not
                 //the dragged node and that target node isn't null
@@ -873,9 +869,7 @@ namespace EuroSound_Application.Musics
 
         private void Button_ExportInterchangeFile_Click(object sender, EventArgs e)
         {
-            string ExportPath;
-
-            ExportPath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, ProjectInfo.FileName);
+            string ExportPath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, ProjectInfo.FileName);
             if (!string.IsNullOrEmpty(ExportPath))
             {
                 ESIF_Exporter ESIF_Exp = new ESIF_Exporter();

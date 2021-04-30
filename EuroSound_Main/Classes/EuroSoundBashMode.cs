@@ -154,10 +154,7 @@ namespace EuroSound_Application.BashMode
                     {
                         if (FileReader.FileIsCorrect(BReader))
                         {
-                            sbyte TypeOfStoredData;
-
-                            //Type of stored data
-                            TypeOfStoredData = BReader.ReadSByte();
+                            sbyte TypeOfStoredData = BReader.ReadSByte();
 
                             //*===============================================================================================
                             //* EXPORT SOUNDBANK

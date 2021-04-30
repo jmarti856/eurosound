@@ -1,9 +1,8 @@
-﻿using EuroSound_Application.ApplicationPreferences;
-using EuroSound_Application.ApplicationRegistryFunctions;
+﻿using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.Clases;
 using EuroSound_Application.FunctionsListView;
 using Microsoft.Win32;
-using SoxSharp;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -158,9 +157,7 @@ namespace EuroSound_Application.AudioConverter
 
         private void Button_SearchOutputFolder_Click(object sender, EventArgs e)
         {
-            string OutputPath;
-
-            OutputPath = BrowsersAndDialogs.OpenFolderBrowser();
+            string OutputPath = BrowsersAndDialogs.OpenFolderBrowser();
             if (!string.IsNullOrEmpty(OutputPath))
             {
                 Textbox_OutputFolder.Text = OutputPath;
@@ -169,11 +166,9 @@ namespace EuroSound_Application.AudioConverter
 
         private void ListView_ItemsToConvert_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            string FileToOpen;
-
             if (ListView_ItemsToConvert.SelectedItems.Count > 0)
             {
-                FileToOpen = Path.Combine(ListView_ItemsToConvert.SelectedItems[0].SubItems[1].Text, ListView_ItemsToConvert.SelectedItems[0].SubItems[0].Text);
+                string FileToOpen = Path.Combine(ListView_ItemsToConvert.SelectedItems[0].SubItems[1].Text, ListView_ItemsToConvert.SelectedItems[0].SubItems[0].Text);
                 OpenFile(FileToOpen);
             }
         }
@@ -199,7 +194,6 @@ namespace EuroSound_Application.AudioConverter
             sbyte Bits = 16;
             uint Frequency = 22050;
             ushort Channels = 2;
-            string OutputFilePath;
 
             //Disable List
             ListView_ItemsToConvert.BeginInvoke((MethodInvoker)delegate
@@ -248,36 +242,29 @@ namespace EuroSound_Application.AudioConverter
                         }
 
                         //Convert audios
-                        OutputFilePath = Path.Combine(Textbox_OutputFolder.Text, Path.GetFileNameWithoutExtension(InputFilePath) + "Converted.wav");
-
+                        string OutputFilePath = Path.Combine(Textbox_OutputFolder.Text, Path.GetFileNameWithoutExtension(InputFilePath) + "Converted.wav");
                         if (File.Exists(InputFilePath))
                         {
                             if (Directory.Exists(Textbox_OutputFolder.Text))
                             {
                                 try
                                 {
-                                    //Start to convert data
-                                    if (File.Exists(GlobalPreferences.SoXPath))
+                                    //Convert File
+                                    using (WaveFileReader reader = new WaveFileReader(InputFilePath))
                                     {
-                                        using (Sox sox = new Sox(GlobalPreferences.SoXPath))
+                                        var newFormat = new WaveFormat((int)Frequency, Bits, Channels);
+                                        using (WaveFormatConversionStream conversionStream = new WaveFormatConversionStream(newFormat, reader))
                                         {
-                                            sox.Multithreaded = true;
-                                            sox.OnLogMessage += Sox_OnLogMessage;
-                                            sox.Output.Type = FileType.WAV;
-                                            sox.Output.SampleRate = Frequency;
-                                            sox.Output.Channels = Channels;
-                                            sox.Output.CustomArgs = "-b " + Bits;
-
-                                            InputFile testInput = new InputFile(InputFilePath);
-                                            sox.Process(testInput, OutputFilePath);
+                                            WaveFileWriter.CreateWaveFile(OutputFilePath, conversionStream);
                                         }
-
-                                        //Update Progress bar
-                                        ProgressBar_Status.Invoke((MethodInvoker)delegate
-                                        {
-                                            ProgressBar_Status.Value += 1;
-                                        });
                                     }
+
+                                    //Update Progress bar
+                                    ProgressBar_Status.Invoke((MethodInvoker)delegate
+                                    {
+                                        ProgressBar_Status.Value += 1;
+                                    });
+
                                 }
                                 catch (Exception ex)
                                 {
@@ -321,25 +308,6 @@ namespace EuroSound_Application.AudioConverter
                 Reports = null;
             }
             ProgressBar_Status.Value = 0;
-        }
-
-        //*===============================================================================================
-        //* Sox Events
-        //*===============================================================================================
-        void Sox_OnLogMessage(object sender, LogMessageEventArgs e)
-        {
-            if (e.LogLevel == LogLevelType.Warning)
-            {
-                Reports.Add(string.Join("", new string[] { "1", e.Message }));
-            }
-            else if (e.LogLevel == LogLevelType.Info)
-            {
-                Reports.Add(string.Join("", new string[] { "2", e.Message }));
-            }
-            else
-            {
-                Reports.Add(string.Join("", new string[] { "0", e.Message }));
-            }
         }
 
         //*===============================================================================================
@@ -400,11 +368,9 @@ namespace EuroSound_Application.AudioConverter
         //*===============================================================================================
         private void MenuItem_Open_Click(object sender, EventArgs e)
         {
-            string FileToOpen;
-
             if (ListView_ItemsToConvert.SelectedItems.Count > 0)
             {
-                FileToOpen = Path.Combine(ListView_ItemsToConvert.SelectedItems[0].SubItems[1].Text, ListView_ItemsToConvert.SelectedItems[0].SubItems[0].Text);
+                string FileToOpen = Path.Combine(ListView_ItemsToConvert.SelectedItems[0].SubItems[1].Text, ListView_ItemsToConvert.SelectedItems[0].SubItems[0].Text);
                 OpenFile(FileToOpen);
             }
         }

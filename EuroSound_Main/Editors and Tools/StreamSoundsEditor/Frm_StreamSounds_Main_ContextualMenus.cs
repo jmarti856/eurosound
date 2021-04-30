@@ -56,10 +56,8 @@ namespace EuroSound_Application.StreamSounds
 
         private void ContextMenuMain_TextColor_Click(object sender, EventArgs e)
         {
-            int SelectedColor;
-
             TreeNode SelectedNode = TreeView_StreamData.SelectedNode;
-            SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
+            int SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
                 SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
@@ -92,11 +90,8 @@ namespace EuroSound_Application.StreamSounds
 
         private void ContextMenuSounds_ExportESIF_Click(object sender, EventArgs e)
         {
-            TreeNode SelectedNode;
-            string ExportPath;
-
-            SelectedNode = TreeView_StreamData.SelectedNode;
-            ExportPath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, SelectedNode.Text);
+            TreeNode SelectedNode = TreeView_StreamData.SelectedNode;
+            string ExportPath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, SelectedNode.Text);
 
             if (!string.IsNullOrEmpty(ExportPath))
             {
@@ -117,11 +112,9 @@ namespace EuroSound_Application.StreamSounds
 
         private void ContextMenuSounds_TextColor_Click(object sender, EventArgs e)
         {
-            int SelectedColor;
-
             TreeNode SelectedNode = TreeView_StreamData.SelectedNode;
+            int SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
 
-            SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
                 SelectedNode.ForeColor = Color.FromArgb(SelectedColor);

@@ -37,7 +37,6 @@
 
         //[ExternalFiles]
         internal static string StreamFilePath = string.Empty;
-        internal static string SoXPath = string.Empty;
         internal static string MkFileListPath = string.Empty;
         internal static string MkFileList2Path = string.Empty;
 

@@ -8,7 +8,6 @@ using EuroSound_Application.TreeViewSorter;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -35,18 +34,14 @@ namespace EuroSound_Application.SoundBanksEditor
                     {
                         if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.SoundbankChannels, GlobalPreferences.SoundbankFrequency))
                         {
-                            LoadAudio(AudioPath, NodeName);
+                            LoadAudio(AudioPath, NodeName, false);
                         }
                         else
                         {
                             DialogResult TryToReload = MessageBox.Show("Error, this audio file is not correct, the specifies are: " + GlobalPreferences.SoundbankChannels + " channels, the rate must be " + GlobalPreferences.SoundbankFrequency + "Hz, must have " + GlobalPreferences.SoundbankBits + " bits per sample and encoded in " + GlobalPreferences.SoundbankEncoding + ".", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                             if (TryToReload == DialogResult.Yes)
                             {
-                                string FileTempFile = AudioFunctionsLibrary.ConvertWavToSoundBankValid(AudioPath, Path.GetFileNameWithoutExtension(AudioPath), (uint)GlobalPreferences.SoundbankChannels, (ushort)GlobalPreferences.SoundbankFrequency, GlobalPreferences.SoundbankBits);
-                                if (!string.IsNullOrEmpty(FileTempFile))
-                                {
-                                    LoadAudio(FileTempFile, NodeName);
-                                }
+                                LoadAudio(AudioPath, NodeName, true);
                             }
                         }
                     }
@@ -54,12 +49,21 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
-        private void LoadAudio(string AudioPath, string AudioName)
+        private void LoadAudio(string AudioPath, string AudioName, bool ConvertData)
         {
             string MD5Hash = GenericFunctions.CalculateMD5(AudioPath);
             if (!AudioDataDict.ContainsKey(MD5Hash))
             {
-                EXAudio NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);
+                EXAudio NewAudio;
+                if (ConvertData)
+                {
+                    NewAudio = EXSoundbanksFunctions.LoadAndConvertData(AudioPath);
+                }
+                else
+                {
+                    NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);
+                }
+
                 if (NewAudio != null)
                 {
                     //Add data to dictionary and create tree node
@@ -215,11 +219,9 @@ namespace EuroSound_Application.SoundBanksEditor
         }
         private void ContextMenuFolders_TextColor_Click(object sender, EventArgs e)
         {
-            int SelectedColor;
-
             TreeNode SelectedNode = TreeView_File.SelectedNode;
+            int SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
 
-            SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
                 SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
@@ -229,9 +231,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenuFolder_ExportSounds_Click(object sender, EventArgs e)
         {
-            string ExportPath;
-
-            ExportPath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, "");
+            string ExportPath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, "");
 
             if (!string.IsNullOrEmpty(ExportPath))
             {
@@ -282,11 +282,9 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenu_Sound_TextColor_Click(object sender, EventArgs e)
         {
-            int SelectedColor;
-
             TreeNode SelectedNode = TreeView_File.SelectedNode;
+            int SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
 
-            SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
                 SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
@@ -296,11 +294,8 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenuSound_ExportSingle_Click(object sender, EventArgs e)
         {
-            TreeNode SelectedNode;
-            string ExportPath;
-
-            SelectedNode = TreeView_File.SelectedNode;
-            ExportPath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, SelectedNode.Text);
+            TreeNode SelectedNode = TreeView_File.SelectedNode;
+            string ExportPath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, SelectedNode.Text);
 
             if (!string.IsNullOrEmpty(ExportPath))
             {
@@ -331,11 +326,9 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenu_Sample_TextColor_Click(object sender, System.EventArgs e)
         {
-            int SelectedColor;
-
             TreeNode SelectedNode = TreeView_File.SelectedNode;
+            int SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
 
-            SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
                 SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
@@ -366,11 +359,9 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenuAudio_TextColor_Click(object sender, EventArgs e)
         {
-            int SelectedColor;
-
             TreeNode SelectedNode = TreeView_File.SelectedNode;
+            int SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
 
-            SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
             if (SelectedColor != -1)
             {
                 SelectedNode.ForeColor = Color.FromArgb(SelectedColor);

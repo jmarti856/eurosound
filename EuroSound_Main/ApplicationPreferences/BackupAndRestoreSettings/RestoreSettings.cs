@@ -9,11 +9,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         public void Restore(BinaryReader BReader, RegistryKey EuroSoundKey)
         {
             Dictionary<uint, string> SubKeysToRestore = new Dictionary<uint, string>();
-            uint NumberOfSubKeys;
-            int NumericSubKeyValue;
-            string SubKeyValue;
-
-            NumberOfSubKeys = BReader.ReadUInt32();
+            uint NumberOfSubKeys = BReader.ReadUInt32();
 
             for (int i = 0; i < NumberOfSubKeys; i++)
             {
@@ -40,12 +36,12 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
                         if (ValueKind == 1)
                         {
-                            NumericSubKeyValue = BReader.ReadInt32();
+                            int NumericSubKeyValue = BReader.ReadInt32();
                             KeyToCreate.SetValue(SubKeyName, NumericSubKeyValue, RegistryValueKind.DWord);
                         }
                         else if (ValueKind == 2)
                         {
-                            SubKeyValue = BReader.ReadString();
+                            string SubKeyValue = BReader.ReadString();
                             KeyToCreate.SetValue(SubKeyName, SubKeyValue, RegistryValueKind.String);
                         }
                     }
