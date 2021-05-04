@@ -38,7 +38,7 @@ namespace EuroSound_Application.SoundBanksEditor
                         }
                         else
                         {
-                            DialogResult TryToReload = MessageBox.Show("Error, this audio file is not correct, the specifies are: " + GlobalPreferences.SoundbankChannels + " channels, the rate must be " + GlobalPreferences.SoundbankFrequency + "Hz, must have " + GlobalPreferences.SoundbankBits + " bits per sample and encoded in " + GlobalPreferences.SoundbankEncoding + ".", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                            DialogResult TryToReload = MessageBox.Show(string.Join("", "Error, this audio file is not correct, the specifies are: ", GlobalPreferences.SoundbankChannels, " channels, the rate must be ", GlobalPreferences.SoundbankFrequency, "Hz, must have ", GlobalPreferences.SoundbankBits, " bits per sample and encoded in ", GlobalPreferences.SoundbankEncoding, ".\n\nDo you want that EuroSound tries to convert it to a valid format?"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                             if (TryToReload == DialogResult.Yes)
                             {
                                 LoadAudio(AudioPath, NodeName, true);
@@ -172,7 +172,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 if (!string.IsNullOrEmpty(Name))
                 {
                     uint FolderID = GenericFunctions.GetNewObjectID(ProjectInfo);
-                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, FolderID.ToString(), Name, 1, 1, "Folder", true, true, false, SystemColors.WindowText, TreeView_File);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, FolderID.ToString(), Name, 0, 0, "Folder", true, true, false, SystemColors.WindowText, TreeView_File);
                     ProjectInfo.FileHasBeenModified = true;
                 }
             }

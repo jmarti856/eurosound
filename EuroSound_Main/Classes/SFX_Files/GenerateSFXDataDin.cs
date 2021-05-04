@@ -17,10 +17,8 @@ namespace EuroSound_Application.GenerateDataBinaryFile
             {
                 using (BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.MusicOutputPath + "\\SFX_Data.bin", FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                 {
-                    foreach (KeyValuePair<int, float[]> Item in Hashcodes.SFX_Data)
+                    foreach (float[] Values in Hashcodes.SFX_Data)
                     {
-                        float[] Values = Item.Value;
-
                         //Hashcode
                         BWriter.WriteUInt32(Convert.ToUInt32(((int)Values[0])));
                         //Inner Radius
@@ -40,7 +38,6 @@ namespace EuroSound_Application.GenerateDataBinaryFile
                         //Padding
                         BWriter.WriteSByte(Convert.ToSByte(0));
                     }
-
                     BWriter.Close();
                 }
             }
@@ -52,10 +49,8 @@ namespace EuroSound_Application.GenerateDataBinaryFile
 
         private string FloatToHex(float Number)
         {
-            string HexNumber;
-
             uint NumberData = BitConverter.ToUInt32(BitConverter.GetBytes(Number), 0);
-            HexNumber = NumberData.ToString("X8");
+            string HexNumber = NumberData.ToString("X8");
 
             return HexNumber;
         }

@@ -9,13 +9,10 @@ namespace EuroSound_Application.Classes.SFX_Files
     {
         internal bool ValidateMarkers(List<EXStreamMarker> MarkersList, string ObjectName, IList<string> Reports)
         {
-            int StartMarkers, EndMarkers, GotoMarkers, LoopMarkers;
-            bool MarkersCorrect = true;
-
-            StartMarkers = 0;
-            EndMarkers = 0;
-            GotoMarkers = 0;
-            LoopMarkers = 0;
+            int StartMarkers = 0;
+            int EndMarkers = 0;
+            int GotoMarkers = 0;
+            int LoopMarkers = 0;
 
             //Count Markers
             for (int i = 0; i < MarkersList.Count; i++)
@@ -38,6 +35,8 @@ namespace EuroSound_Application.Classes.SFX_Files
             }
 
             //Check Markers
+            bool MarkersCorrect = true;
+
             if (StartMarkers < 1)
             {
                 if (Reports != null)

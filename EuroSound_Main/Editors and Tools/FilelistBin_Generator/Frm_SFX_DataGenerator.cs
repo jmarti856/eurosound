@@ -162,35 +162,34 @@ namespace EuroSound_Application.SFXData
         //*===============================================================================================
         private void LoadDataFromHashtable()
         {
-            ListView_HashTableData.BeginInvoke((MethodInvoker)delegate
+            ListView_HashTableData.Invoke((MethodInvoker)delegate
             {
                 ListView_HashTableData.Enabled = false;
                 ListView_HashTableData.Items.Clear();
             });
 
-            Button_Reload.BeginInvoke((MethodInvoker)delegate
+            Button_Reload.Invoke((MethodInvoker)delegate
             {
                 Button_Reload.Enabled = false;
             });
 
-            button_generateFile.BeginInvoke((MethodInvoker)delegate
+            button_generateFile.Invoke((MethodInvoker)delegate
             {
                 button_generateFile.Enabled = false;
             });
 
-            Combobox_LabelHashcodes.BeginInvoke((MethodInvoker)delegate
+            Combobox_LabelHashcodes.Invoke((MethodInvoker)delegate
             {
                 Combobox_LabelHashcodes.Enabled = false;
             });
 
-            Button_Search.BeginInvoke((MethodInvoker)delegate
+            Button_Search.Invoke((MethodInvoker)delegate
             {
                 Button_Search.Enabled = false;
             });
 
-            foreach (KeyValuePair<int, float[]> Item in Hashcodes.SFX_Data)
+            foreach (float[] ItemValue in Hashcodes.SFX_Data)
             {
-                float[] ItemValue = Item.Value;
                 ListViewItem ItemToAdd = new ListViewItem(new[] { ItemValue[0].ToString(), ItemValue[1].ToString("n1"), ItemValue[2].ToString("n1"), ItemValue[3].ToString("n1"), ItemValue[4].ToString("n6"), ItemValue[5].ToString(), ItemValue[6].ToString(), ItemValue[7].ToString() })
                 {
                     Tag = 0x1A000000 | (uint)ItemValue[0]
@@ -203,39 +202,42 @@ namespace EuroSound_Application.SFXData
                     {
                         ListView_HashTableData.Items.Add(ItemToAdd);
                     });
+
+                    Textbox_TotalItems.Invoke((MethodInvoker)delegate
+                    {
+                        Textbox_TotalItems.Text = ListView_HashTableData.Items.Count.ToString();
+                    });
                 }
                 catch (ObjectDisposedException)
                 {
 
                 }
-                GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking Hashcode: " + Item.Key);
-
-                //Thread.Sleep(14);
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking Hashcode: " + ItemValue[0]);
             }
 
 
-            ListView_HashTableData.BeginInvoke((MethodInvoker)delegate
+            ListView_HashTableData.Invoke((MethodInvoker)delegate
             {
                 ListView_HashTableData.Enabled = true;
             });
 
 
-            Button_Reload.BeginInvoke((MethodInvoker)delegate
+            Button_Reload.Invoke((MethodInvoker)delegate
             {
                 Button_Reload.Enabled = true;
             });
 
-            button_generateFile.BeginInvoke((MethodInvoker)delegate
+            button_generateFile.Invoke((MethodInvoker)delegate
             {
                 button_generateFile.Enabled = true;
             });
 
-            Combobox_LabelHashcodes.BeginInvoke((MethodInvoker)delegate
+            Combobox_LabelHashcodes.Invoke((MethodInvoker)delegate
             {
                 Combobox_LabelHashcodes.Enabled = true;
             });
 
-            Button_Search.BeginInvoke((MethodInvoker)delegate
+            Button_Search.Invoke((MethodInvoker)delegate
             {
                 Button_Search.Enabled = true;
             });

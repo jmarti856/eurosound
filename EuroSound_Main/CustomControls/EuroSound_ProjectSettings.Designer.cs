@@ -90,6 +90,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Combobox_FileHashcode.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
             this.Combobox_FileHashcode.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.Combobox_FileHashcode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Combobox_FileHashcode.FormattingEnabled = true;
             this.Combobox_FileHashcode.Location = new System.Drawing.Point(99, 19);
             this.Combobox_FileHashcode.Name = "Combobox_FileHashcode";

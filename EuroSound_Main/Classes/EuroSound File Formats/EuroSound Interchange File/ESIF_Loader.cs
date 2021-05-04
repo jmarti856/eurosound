@@ -414,8 +414,8 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                         }
 
                         //Parameters from SFX Data
-                        uint KeyToCheck = SFXSound.Hashcode - 0x1A000000;
-                        float[] SFXValues = Hashcodes.SFX_Data.FirstOrDefault(x => x.Value[0] == KeyToCheck).Value;
+                        uint KeyToCheck = SFXSound.Hashcode & 0x00ffffff; //Apply bytes mask, example: 0x1A00005C -> 0x0000005C
+                        float[] SFXValues = GenericFunctions.GetSoundData(KeyToCheck);
                         if (SFXValues != null)
                         {
                             SFXSound.InnerRadiusReal = (short)SFXValues[1];

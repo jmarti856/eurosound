@@ -66,6 +66,7 @@ namespace EuroSound_Application.Musics
             EXMusic SelectedMusic = EXMusicsFunctions.GetMusicByName(Convert.ToUInt32(MusicKeyInDictionary), MusicsList);
             if (SelectedMusic != null)
             {
+                GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "LastFile");
                 Frm_Musics_Properties FormAudioProps = new Frm_Musics_Properties(SelectedMusic, MusicKeyInDictionary, SelectedNode.Text)
                 {
                     Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",

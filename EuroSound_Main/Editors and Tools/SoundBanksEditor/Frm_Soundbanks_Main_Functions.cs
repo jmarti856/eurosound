@@ -37,6 +37,7 @@ namespace EuroSound_Application.SoundBanksEditor
             EXAudio SelectedSound = TreeNodeFunctions.GetSelectedAudio(SelectedNode.Name, AudioDataDict);
             if (SelectedSound != null)
             {
+                GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "LastFile");
                 Frm_AudioProperties FormAudioProps = new Frm_AudioProperties(SelectedSound, SelectedNode.Name)
                 {
                     Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
@@ -61,6 +62,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 //Open form only if file exists
                 if (File.Exists(GlobalPreferences.StreamFilePath))
                 {
+                    GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "LastFile");
                     using (Frm_NewStreamSound AddStreamSound = new Frm_NewStreamSound(SelectedSample))
                     {
                         AddStreamSound.Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties";
@@ -87,6 +89,7 @@ namespace EuroSound_Application.SoundBanksEditor
             }
             else
             {
+                GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "LastFile");
                 Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(SelectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(ParentSound.Flags))
                 {
                     Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
@@ -119,6 +122,7 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             string SoundSection = TreeNodeFunctions.FindRootNode(SelectedNode).Name;
             EXSound SelectedSound = EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(SelectedNode.Name), SoundsList);
+            GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "LastFile");
             Frm_EffectProperties FormSoundProps = new Frm_EffectProperties(SelectedSound, SelectedNode.Name, SoundSection)
             {
                 Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",

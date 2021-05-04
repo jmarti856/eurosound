@@ -238,8 +238,7 @@ namespace EuroSound_Application.MarkerFiles
 
         private string[] GetKeyValues(string FileLine)
         {
-            string[] Values = Regex.Matches(FileLine, @"(?<=[*])\w+[\s-[\r\n]]*=[\s-[\r\n]]*(.*?)\r?$").Cast<Match>().Select(x => x.Groups[1].Value).ToArray();
-            return Values;
+            return Regex.Matches(FileLine, @"(?<=[*])\w+[\s-[\r\n]]*=[\s-[\r\n]]*(.*?)\r?$").Cast<Match>().Select(x => x.Groups[1].Value).ToArray(); ;
         }
     }
 }

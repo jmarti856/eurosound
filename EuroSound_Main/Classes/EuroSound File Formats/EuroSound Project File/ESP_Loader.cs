@@ -1,11 +1,14 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace EuroSound_Application.EuroSound_Profiles
 {
     class ESP_Loader
     {
+        Regex RemoveCharactersFromPathString = new Regex(@"[\p{Cc}\p{Cf}\p{Mn}\p{Me}\p{Zl}\p{Zp}]");
+
         internal bool FileIsValid(IEnumerable<string> lines)
         {
             bool FileValid = false;
@@ -252,13 +255,13 @@ namespace EuroSound_Application.EuroSound_Profiles
                         switch (LineData[0])
                         {
                             case "HT_Sound":
-                                GlobalPreferences.HT_SoundsPath = LineData[1];
+                                GlobalPreferences.HT_SoundsPath = RemoveCharactersFromPathString.Replace(LineData[1], "");
                                 break;
                             case "HT_SoundData":
-                                GlobalPreferences.HT_SoundsDataPath = LineData[1];
+                                GlobalPreferences.HT_SoundsDataPath = RemoveCharactersFromPathString.Replace(LineData[1], "");
                                 break;
                             case "HT_MusicEvent":
-                                GlobalPreferences.HT_MusicPath = LineData[1];
+                                GlobalPreferences.HT_MusicPath = RemoveCharactersFromPathString.Replace(LineData[1], "");
                                 break;
                         }
                     }
@@ -299,13 +302,13 @@ namespace EuroSound_Application.EuroSound_Profiles
                         switch (LineData[0])
                         {
                             case "StreamFile":
-                                GlobalPreferences.StreamFilePath = LineData[1];
+                                GlobalPreferences.StreamFilePath = RemoveCharactersFromPathString.Replace(LineData[1], "");
                                 break;
                             case "MkFileList":
-                                GlobalPreferences.MkFileListPath = LineData[1];
+                                GlobalPreferences.MkFileListPath = RemoveCharactersFromPathString.Replace(LineData[1], "");
                                 break;
                             case "MkFileList2":
-                                GlobalPreferences.MkFileList2Path = LineData[1];
+                                GlobalPreferences.MkFileList2Path = RemoveCharactersFromPathString.Replace(LineData[1], "");
                                 break;
                         }
                     }
@@ -346,16 +349,16 @@ namespace EuroSound_Application.EuroSound_Profiles
                         switch (LineData[0])
                         {
                             case "MusicOutputDirectory":
-                                GlobalPreferences.MusicOutputPath = LineData[1];
+                                GlobalPreferences.MusicOutputPath = RemoveCharactersFromPathString.Replace(LineData[1], "");
                                 break;
                             case "SoundsOutputDirectory":
-                                GlobalPreferences.SFXOutputPath = LineData[1];
+                                GlobalPreferences.SFXOutputPath = RemoveCharactersFromPathString.Replace(LineData[1], "");
                                 break;
                             case "StreamSoundsOutputDirectory":
-                                GlobalPreferences.StreamFileOutputPath = LineData[1];
+                                GlobalPreferences.StreamFileOutputPath = RemoveCharactersFromPathString.Replace(LineData[1], "");
                                 break;
                             case "DebugFilesFolder":
-                                GlobalPreferences.DebugFilesFolder = LineData[1];
+                                GlobalPreferences.DebugFilesFolder = RemoveCharactersFromPathString.Replace(LineData[1], "");
                                 break;
                         }
                     }

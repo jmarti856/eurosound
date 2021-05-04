@@ -21,8 +21,6 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         internal void WriteFileHeader(BinaryStream BWriter, uint FileHashcode, ProgressBar Bar)
         {
-            uint Hashcode;
-
             ProgressBarReset(Bar);
             GenericFunctions.ProgressBarSetMaximum(Bar, 4);
 
@@ -31,7 +29,7 @@ namespace EuroSound_Application.Musics
             ProgressBarAddValue(Bar, 1);
 
             //--hashc[Hashcode for the current soundbank without the section prefix]--
-            Hashcode = 0x00E00000 | (FileHashcode - 0x1BE00000);
+            uint Hashcode = 0x00E00000 | (FileHashcode & 0x000fffff); //Apply bytes mask, example: 0x1BE0005C -> 0x0000005C
             BWriter.WriteUInt32(Hashcode);
             ProgressBarAddValue(Bar, 1);
 
@@ -79,9 +77,6 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         public void WriteFileSection1(BinaryStream BWriter, Dictionary<uint, EXMusic> MusicsDictionary, ProgressBar Bar)
         {
-            long StartMarkerOffset, MarkerSizeStartOffset, PrevPos;
-            uint SoundStartOffset, MarkerDataOffset;
-
             //Update GUI
             ProgressBarReset(Bar);
             GenericFunctions.ProgressBarSetMaximum(Bar, MusicsDictionary.Count);
@@ -90,7 +85,7 @@ namespace EuroSound_Application.Musics
 
             foreach (KeyValuePair<uint, EXMusic> MusicToExport in MusicsDictionary)
             {
-                SoundStartOffset = (uint)BWriter.BaseStream.Position;
+                uint SoundStartOffset = (uint)BWriter.BaseStream.Position;
                 MarkersStartList.Add(SoundStartOffset - FileStart2);
 
                 //Start marker count
@@ -98,14 +93,13 @@ namespace EuroSound_Application.Musics
                 //Marker count
                 BWriter.WriteUInt32((uint)MusicToExport.Value.Markers.Count);
                 //Start marker offset
-                BWriter.WriteUInt32((uint)00000000);
+                BWriter.WriteUInt32(00000000);
                 //Marker offset
                 BWriter.WriteUInt32(00000000);
                 //Base volume
                 BWriter.WriteUInt32(MusicToExport.Value.BaseVolume);
 
-                StartMarkerOffset = BWriter.BaseStream.Position - SoundStartOffset;
-                MarkerSizeStartOffset = BWriter.BaseStream.Position;
+                long StartMarkerOffset = BWriter.BaseStream.Position - SoundStartOffset;
 
                 //Start Markers Data
                 for (int i = 0; i < MusicToExport.Value.StartMarkers.Count; i++)
@@ -125,7 +119,7 @@ namespace EuroSound_Application.Musics
                     BWriter.WriteUInt32(MusicToExport.Value.StartMarkers[i].StateB);
                 }
 
-                MarkerDataOffset = (uint)(BWriter.BaseStream.Position - SoundStartOffset);
+                uint MarkerDataOffset = (uint)(BWriter.BaseStream.Position - SoundStartOffset);
                 //Markers
                 for (int j = 0; j < MusicToExport.Value.Markers.Count; j++)
                 {
@@ -140,11 +134,11 @@ namespace EuroSound_Application.Musics
                 }
 
                 //Write Marker Data Offset
-                PrevPos = BWriter.BaseStream.Position;
+                long PrevPos = BWriter.BaseStream.Position;
                 BWriter.Seek((int)SoundStartOffset, SeekOrigin.Begin);
                 BWriter.Seek(8, SeekOrigin.Current);
                 BWriter.WriteUInt32((uint)StartMarkerOffset);
-                BWriter.WriteUInt32((uint)MarkerDataOffset);
+                BWriter.WriteUInt32(MarkerDataOffset);
                 BWriter.BaseStream.Seek(PrevPos, SeekOrigin.Begin);
 
                 //Update GUI

@@ -165,7 +165,7 @@ namespace EuroSound_Application.SoundBanksEditor
             ProjectInfo.TypeOfData = (int)GenericFunctions.ESoundFileType.SoundBanks;
 
             //Check Hashcodes are not null
-            if (Hashcodes.SFX_Defines.Keys.Count == 0 || Hashcodes.SFX_Data.Keys.Count == 0)
+            if (Hashcodes.SFX_Defines.Keys.Count == 0 || Hashcodes.SFX_Data.Count == 0)
             {
                 //Load Data
                 Thread LoadHashcodeData = new Thread(() => Hashcodes.LoadSoundDataFile(GlobalPreferences.HT_SoundsDataPath))
@@ -530,6 +530,9 @@ namespace EuroSound_Application.SoundBanksEditor
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+
+            //Clear Last File Label
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "LastFile");
         }
 
         //*===============================================================================================

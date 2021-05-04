@@ -72,7 +72,7 @@ namespace EuroSound_Application.Musics
                 }
                 else
                 {
-                    DialogResult TryToReload = MessageBox.Show("Error, this audio file is not correct, the specifies are: " + GlobalPreferences.MusicbankChannels + " channels, the rate must be " + GlobalPreferences.MusicbankFrequency + "Hz, must have " + GlobalPreferences.MusicbankBits + " bits per sample and encoded in " + GlobalPreferences.MusicbankEncoding + ".", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                    DialogResult TryToReload = MessageBox.Show(string.Join("", "Error, this audio file is not correct, the specifies are: ", GlobalPreferences.MusicbankChannels, " channels, the rate must be ", GlobalPreferences.MusicbankFrequency, "Hz, must have ", GlobalPreferences.MusicbankBits, " bits per sample and encoded in ", GlobalPreferences.MusicbankEncoding, ".\n\nDo you want that EuroSound tries to convert it to a valid format?"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (TryToReload == DialogResult.Yes)
                     {
                         LoadDataLeftChannel(AudioPath, true);
@@ -97,7 +97,7 @@ namespace EuroSound_Application.Musics
                 }
                 else
                 {
-                    DialogResult TryToReload = MessageBox.Show("Error, this audio file is not correct, the specifies are: " + GlobalPreferences.MusicbankChannels + " channels, the rate must be " + GlobalPreferences.MusicbankFrequency + "Hz, must have " + GlobalPreferences.MusicbankBits + " bits per sample and encoded in " + GlobalPreferences.MusicbankEncoding + ".", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                    DialogResult TryToReload = MessageBox.Show(string.Join("", "Error, this audio file is not correct, the specifies are: ", GlobalPreferences.MusicbankChannels, " channels, the rate must be ", GlobalPreferences.MusicbankFrequency, "Hz, must have ", GlobalPreferences.MusicbankBits, " bits per sample and encoded in ", GlobalPreferences.MusicbankEncoding, ".\n\nDo you want that EuroSound tries to convert it to a valid format?"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (TryToReload == DialogResult.Yes)
                     {
                         LoadDataRightChannel(AudioPath, true);

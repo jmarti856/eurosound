@@ -376,6 +376,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Combobox_Hashcode.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
             this.Combobox_Hashcode.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.Combobox_Hashcode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Combobox_Hashcode.Enabled = false;
             this.Combobox_Hashcode.FormattingEnabled = true;
             this.Combobox_Hashcode.Location = new System.Drawing.Point(71, 52);

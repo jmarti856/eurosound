@@ -27,13 +27,17 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
 
             //Disable temporaly the treeview
-            TreeViewControl.Invoke((MethodInvoker)delegate
+            if (TreeViewControl.InvokeRequired)
+            {
+                TreeViewControl.Invoke((MethodInvoker)delegate
+                {
+                    TreeViewControl.Enabled = false;
+                });
+            }
+            else
             {
                 TreeViewControl.Enabled = false;
-            });
-
-            //Disable temporaly buttons
-
+            }
 
             using (BufferedStream bs = new BufferedStream(File.Open(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read)))
             {
@@ -56,10 +60,17 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             }
 
             //Enable again the treeview
-            TreeViewControl.Invoke((MethodInvoker)delegate
+            if (TreeViewControl.InvokeRequired)
+            {
+                TreeViewControl.Invoke((MethodInvoker)delegate
+                {
+                    TreeViewControl.Enabled = true;
+                });
+            }
+            else
             {
                 TreeViewControl.Enabled = true;
-            });
+            }
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
@@ -100,10 +111,17 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_ReadingESFFile"));
 
             //Disable temporaly the treeview
-            TreeViewControl.Invoke((MethodInvoker)delegate
+            if (TreeViewControl.InvokeRequired)
+            {
+                TreeViewControl.Invoke((MethodInvoker)delegate
+                {
+                    TreeViewControl.Enabled = false;
+                });
+            }
+            else
             {
                 TreeViewControl.Enabled = false;
-            });
+            }
 
             //Init reader
             using (BufferedStream bs = new BufferedStream(File.Open(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read)))
@@ -126,10 +144,17 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             }
 
             //Enable again the treeview
-            TreeViewControl.Invoke((MethodInvoker)delegate
+            if (TreeViewControl.InvokeRequired)
+            {
+                TreeViewControl.Invoke((MethodInvoker)delegate
+                {
+                    TreeViewControl.Enabled = true;
+                });
+            }
+            else
             {
                 TreeViewControl.Enabled = true;
-            });
+            }
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_Status_Ready"));
@@ -168,10 +193,17 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_ReadingESFFile"));
 
             //Disable temporaly the treeview
-            TreeViewControl.Invoke((MethodInvoker)delegate
+            if (TreeViewControl.InvokeRequired)
+            {
+                TreeViewControl.Invoke((MethodInvoker)delegate
+                {
+                    TreeViewControl.Enabled = false;
+                });
+            }
+            else
             {
                 TreeViewControl.Enabled = false;
-            });
+            }
 
             //Init reader
             using (BufferedStream bs = new BufferedStream(File.Open(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read)))
@@ -194,10 +226,17 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             }
 
             //Enable again the treeview
-            TreeViewControl.Invoke((MethodInvoker)delegate
+            if (TreeViewControl.InvokeRequired)
+            {
+                TreeViewControl.Invoke((MethodInvoker)delegate
+                {
+                    TreeViewControl.Enabled = true;
+                });
+            }
+            else
             {
                 TreeViewControl.Enabled = true;
-            });
+            }
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_Status_Ready"));

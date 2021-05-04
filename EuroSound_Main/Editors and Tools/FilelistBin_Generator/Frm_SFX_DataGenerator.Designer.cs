@@ -39,6 +39,8 @@ namespace EuroSound_Application.SFXData
             this.Label_Hashcodes = new System.Windows.Forms.Label();
             this.Combobox_LabelHashcodes = new System.Windows.Forms.ComboBox();
             this.Button_Search = new System.Windows.Forms.Button();
+            this.Label_TotalItems = new System.Windows.Forms.Label();
+            this.Textbox_TotalItems = new System.Windows.Forms.TextBox();
             this.ListView_HashTableData = new EuroSound_Application.CustomControls.ListViewColumnSorting.ListView_ColumnSortingClick();
             this.col_hashcode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.col_innerradius = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -65,7 +67,7 @@ namespace EuroSound_Application.SFXData
             this.button_generateFile.Location = new System.Drawing.Point(542, 553);
             this.button_generateFile.Name = "button_generateFile";
             this.button_generateFile.Size = new System.Drawing.Size(75, 23);
-            this.button_generateFile.TabIndex = 6;
+            this.button_generateFile.TabIndex = 8;
             this.button_generateFile.Text = "Generate";
             this.button_generateFile.UseVisualStyleBackColor = true;
             this.button_generateFile.Click += new System.EventHandler(this.Button_generateFile_Click);
@@ -87,7 +89,7 @@ namespace EuroSound_Application.SFXData
             this.Button_Reload.Location = new System.Drawing.Point(623, 553);
             this.Button_Reload.Name = "Button_Reload";
             this.Button_Reload.Size = new System.Drawing.Size(104, 23);
-            this.Button_Reload.TabIndex = 7;
+            this.Button_Reload.TabIndex = 9;
             this.Button_Reload.Text = "Reload Hashtable";
             this.Button_Reload.UseVisualStyleBackColor = true;
             this.Button_Reload.Click += new System.EventHandler(this.Button_Reload_Click);
@@ -124,6 +126,27 @@ namespace EuroSound_Application.SFXData
             this.Button_Search.Text = "Search";
             this.Button_Search.UseVisualStyleBackColor = true;
             this.Button_Search.Click += new System.EventHandler(this.Button_Search_Click);
+            // 
+            // Label_TotalItems
+            // 
+            this.Label_TotalItems.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Label_TotalItems.AutoSize = true;
+            this.Label_TotalItems.ForeColor = System.Drawing.Color.Green;
+            this.Label_TotalItems.Location = new System.Drawing.Point(9, 558);
+            this.Label_TotalItems.Name = "Label_TotalItems";
+            this.Label_TotalItems.Size = new System.Drawing.Size(62, 13);
+            this.Label_TotalItems.TabIndex = 6;
+            this.Label_TotalItems.Text = "Total Items:";
+            // 
+            // Textbox_TotalItems
+            // 
+            this.Textbox_TotalItems.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Textbox_TotalItems.BackColor = System.Drawing.SystemColors.Window;
+            this.Textbox_TotalItems.Location = new System.Drawing.Point(77, 555);
+            this.Textbox_TotalItems.Name = "Textbox_TotalItems";
+            this.Textbox_TotalItems.ReadOnly = true;
+            this.Textbox_TotalItems.Size = new System.Drawing.Size(100, 20);
+            this.Textbox_TotalItems.TabIndex = 7;
             // 
             // ListView_HashTableData
             // 
@@ -194,6 +217,8 @@ namespace EuroSound_Application.SFXData
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(739, 588);
+            this.Controls.Add(this.Textbox_TotalItems);
+            this.Controls.Add(this.Label_TotalItems);
             this.Controls.Add(this.Button_Search);
             this.Controls.Add(this.Combobox_LabelHashcodes);
             this.Controls.Add(this.Label_Hashcodes);
@@ -235,5 +260,7 @@ namespace EuroSound_Application.SFXData
         private System.Windows.Forms.Label Label_Hashcodes;
         private System.Windows.Forms.ComboBox Combobox_LabelHashcodes;
         private System.Windows.Forms.Button Button_Search;
+        private System.Windows.Forms.Label Label_TotalItems;
+        private System.Windows.Forms.TextBox Textbox_TotalItems;
     }
 }

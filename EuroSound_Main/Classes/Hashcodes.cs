@@ -11,7 +11,7 @@ namespace EuroSound_Application.HashCodesFunctions
     internal static class Hashcodes
     {
         internal static Dictionary<uint, string> SB_Defines = new Dictionary<uint, string>();
-        internal static Dictionary<int, float[]> SFX_Data = new Dictionary<int, float[]>();
+        internal static List<float[]> SFX_Data = new List<float[]>();
         internal static Dictionary<uint, string> SFX_Defines = new Dictionary<uint, string>();
         internal static Dictionary<uint, string> MFX_Defines = new Dictionary<uint, string>();
         internal static Dictionary<uint, string> MFX_JumpCodes = new Dictionary<uint, string>();
@@ -19,7 +19,7 @@ namespace EuroSound_Application.HashCodesFunctions
         internal static void AddDataToCombobox(ComboBox ControlToAddData, Dictionary<uint, string> HashcodesDict)
         {
             //Datasource Combobox
-            ControlToAddData.DataSource = HashcodesDict.ToList();
+            ControlToAddData.DataSource = HashcodesDict.OrderBy(o => o.Value).ToList();
             if (ControlToAddData.InvokeRequired)
             {
                 ControlToAddData.Invoke((MethodInvoker)delegate
@@ -276,7 +276,6 @@ namespace EuroSound_Application.HashCodesFunctions
         #region SFX DATA DICTIONARY
         internal static void ReadSFXData()
         {
-            int ItemKey = 0;
             string CurrentLine;
 
             SFX_Data.Clear();
@@ -306,15 +305,9 @@ namespace EuroSound_Application.HashCodesFunctions
                                     ArrayOfValues[5] = GenericFunctions.StringFloatToDouble(SplitedLine[5]);
                                     ArrayOfValues[6] = GenericFunctions.StringFloatToDouble(SplitedLine[6]);
                                     ArrayOfValues[7] = GenericFunctions.StringFloatToDouble(SplitedLine[7]);
-
-                                    if (!SFX_Data.ContainsKey(ItemKey))
-                                    {
-                                        SFX_Data.Add(ItemKey, ArrayOfValues);
-                                    }
+                                    SFX_Data.Add(ArrayOfValues);
                                 }
                             }
-
-                            ItemKey++;
                         }
                     }
                 }

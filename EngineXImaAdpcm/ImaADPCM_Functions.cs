@@ -253,9 +253,14 @@ namespace EngineXImaAdpcm
                 /* Step 6 - Update step value */
                 step = stepsizeTable[index];
 
-                /* Step 7 - Calculate State A and B */
+                /* Step 7 - Calculate States */
                 byte bufferstepInt = Convert.ToByte(bufferstep);
-                EngineXState = ((uint)((((short)valpred & 0xffff) << 0) | ((inputbuffer & 0xff) << 16) | (((bufferstepInt & 0x1) << 7) | ((index & 0x7f) << 0)) << 24));
+                EngineXState = ((uint)(
+                    (((short)valpred & 0xffff) << 0) | /* 0xPPPP....   swy: signed 16-bit predictor */
+                    ((inputbuffer & 0xff) << 16) |     /* 0x....II..   swy: full byte that contains a staging buffer */
+                    (((bufferstepInt & 0x1) << 7) |    /* 0x......OO   swy: boolean, top bit of the last byte */
+                    ((index & 0x7f) << 0))             /* 0x......OO   swy: remaining seven bits of the last byte */
+                    << 24));
 
                 /*Store data*/
                 outdata[outp] = EngineXState;

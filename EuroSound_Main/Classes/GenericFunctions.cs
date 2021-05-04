@@ -5,6 +5,7 @@ using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls.WarningsList;
+using EuroSound_Application.HashCodesFunctions;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using NAudio.Wave;
@@ -339,6 +340,31 @@ namespace EuroSound_Application
             }
         }
 
+        internal static float[] GetSoundData(uint Hashcode)
+        {
+            float[] SFXValues = null;
+
+            float[] SpecifiedItem = Hashcodes.SFX_Data[(int)Hashcode];
+            if ((uint)SpecifiedItem[0] == Hashcode)
+            {
+                SFXValues = SpecifiedItem;
+            }
+            else
+            {
+                for (int i = 0; i < Hashcodes.SFX_Data.Count; i++)
+                {
+                    float[] CurrentItem = Hashcodes.SFX_Data[i];
+                    if ((uint)CurrentItem[0] == Hashcode)
+                    {
+                        SFXValues = Hashcodes.SFX_Data[i];
+                        break;
+                    }
+                }
+            }
+
+            return SFXValues;
+        }
+
         //*===============================================================================================
         //* PROGRESS BAR FUNCTIONS
         //*===============================================================================================
@@ -377,8 +403,7 @@ namespace EuroSound_Application
 
         internal static bool CheckForInternetConnection()
         {
-            int Desc;
-            return InternetGetConnectedState(out Desc, 0);
+            return InternetGetConnectedState(out int Desc, 0);
         }
 
         //*===============================================================================================

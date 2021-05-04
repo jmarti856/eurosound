@@ -172,8 +172,8 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void Cbx_hashcode_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            uint KeyToCheck = Convert.ToUInt32(cbx_hashcode.SelectedValue) - 0x1A000000;
-            float[] SFXValues = Hashcodes.SFX_Data.FirstOrDefault(x => x.Value[0] == KeyToCheck).Value;
+            uint KeyToCheck = Convert.ToUInt32(cbx_hashcode.SelectedValue) & 0x00ffffff; //Apply bytes mask, example: 0x1A00005C -> 0x0000005C
+            float[] SFXValues = GenericFunctions.GetSoundData(KeyToCheck);
 
             if (SFXValues != null)
             {
@@ -226,6 +226,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 {
                     if (SoundSection.Equals("Sounds"))
                     {
+                        GenericFunctions.SetCurrentFileLabel(SampleName, "LastFile");
                         Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(SelectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(SelectedSound.Flags))
                         {
                             Text = GenericFunctions.TruncateLongString(SampleName, 25) + " - Properties",
@@ -241,6 +242,7 @@ namespace EuroSound_Application.SoundBanksEditor
                         //Open form only if file exists
                         if (File.Exists(GlobalPreferences.StreamFilePath))
                         {
+                            GenericFunctions.SetCurrentFileLabel(SampleName, "LastFile");
                             using (Frm_NewStreamSound AddStreamSound = new Frm_NewStreamSound(SelectedSample))
                             {
                                 AddStreamSound.Text = GenericFunctions.TruncateLongString(SampleName, 25) + " - Properties";
@@ -291,6 +293,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     cbx_hashcode.DisplayMember = "Value";
                     cbx_hashcode.Update();
                     cbx_hashcode.SelectedValue = SelectedSound.Hashcode;
+
                     cbx_hashcode.Enabled = true;
                 });
             })

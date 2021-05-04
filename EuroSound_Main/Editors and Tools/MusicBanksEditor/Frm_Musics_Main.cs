@@ -440,6 +440,9 @@ namespace EuroSound_Application.Musics
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+
+            //Clear Last File Label
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "LastFile");
         }
 
         //*===============================================================================================
@@ -529,7 +532,8 @@ namespace EuroSound_Application.Musics
         {
             if (ProjectInfo.Hashcode != 0x00000000)
             {
-                string FileName = "HCE" + (ProjectInfo.Hashcode - 0x1BE00000).ToString("X8").Substring(3);
+                //Apply bytes mask, example: 0x1BE0005C -> 0x0000005C
+                string FileName = "HCE" + (ProjectInfo.Hashcode & 0x000fffff).ToString("X8").Substring(3);
 
                 //---[Output with debug options
                 if ((ModifierKeys & Keys.Control) == Keys.Control)

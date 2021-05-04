@@ -14,6 +14,9 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 {
     internal class ESIF_Exporter
     {
+        //*===============================================================================================
+        //* Global Variables
+        //*===============================================================================================
         private AudioFunctions AudioF = new AudioFunctions();
         private List<string> AudiosAssocTable = new List<string>();
 
@@ -101,7 +104,8 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 
                     if (EXSoundbanksFunctions.SubSFXFlagChecked(SFXObject.Flags))
                     {
-                        TextFileWriter.WriteLine("\t\t\t*FILEREF " + (SFXObjectSample.Value.HashcodeSubSFX - 0x1A000000));
+                        //Apply bytes mask, example: 0x1A00005C -> 0x0000005C
+                        TextFileWriter.WriteLine("\t\t\t*FILEREF " + (SFXObjectSample.Value.HashcodeSubSFX & 0x00ffffff));
                     }
                     else if (SFXObjectSample.Value.IsStreamed)
                     {
@@ -210,7 +214,8 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 
                         if (EXSoundbanksFunctions.SubSFXFlagChecked(SFXObject.Value.Flags))
                         {
-                            TextFileWriter.WriteLine("\t\t\t*FILEREF " + (SFXObjectSample.Value.HashcodeSubSFX - 0x1A000000));
+                            //Apply bytes mask, example: 0x1A00005C -> 0x0000005C
+                            TextFileWriter.WriteLine("\t\t\t*FILEREF " + (SFXObjectSample.Value.HashcodeSubSFX & 0x00ffffff));
                         }
                         else if (SFXObjectSample.Value.IsStreamed)
                         {

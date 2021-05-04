@@ -72,7 +72,7 @@ namespace EuroSound_Application.Musics
                 if (!string.IsNullOrEmpty(Name))
                 {
                     uint FolderID = GenericFunctions.GetNewObjectID(ProjectInfo);
-                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_MusicData.SelectedNode.Name, FolderID.ToString(), Name, 1, 1, "Folder", true, true, false, SystemColors.WindowText, TreeView_MusicData);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_MusicData.SelectedNode.Name, FolderID.ToString(), Name, 0, 0, "Folder", true, true, false, SystemColors.WindowText, TreeView_MusicData);
                     ProjectInfo.FileHasBeenModified = true;
                 }
             }

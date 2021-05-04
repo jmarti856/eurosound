@@ -173,7 +173,7 @@ namespace EuroSound_Application.SoundBanksEditor
             Thread AudioData = new Thread(() =>
             {
                 //Add data to combobox
-                Combobox_SelectedAudio.DataSource = EXSoundbanksFunctions.GetListAudioData(((Frm_Soundbanks_Main)SoundsParentForm).AudioDataDict, ((Frm_Soundbanks_Main)SoundsParentForm).TreeView_File).ToList();
+                Combobox_SelectedAudio.DataSource = EXSoundbanksFunctions.GetListAudioData(((Frm_Soundbanks_Main)SoundsParentForm).AudioDataDict, ((Frm_Soundbanks_Main)SoundsParentForm).TreeView_File).OrderBy(o => o.Value).ToList();
                 Combobox_SelectedAudio.BeginInvoke((MethodInvoker)delegate
                 {
                     Combobox_SelectedAudio.ValueMember = "Key";
@@ -214,7 +214,7 @@ namespace EuroSound_Application.SoundBanksEditor
             //---AddDataToCombobox
             Thread DataToCombobox = new Thread(() =>
             {
-                Combobox_Hashcode.DataSource = Hashcodes.SFX_Defines.ToList();
+                Combobox_Hashcode.DataSource = Hashcodes.SFX_Defines.OrderBy(o => o.Value).ToList();
                 Combobox_Hashcode.Invoke((MethodInvoker)async delegate
                 {
                     await Task.Delay(50);

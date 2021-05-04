@@ -51,6 +51,7 @@ namespace EuroSound_Application.StreamSounds
             EXSoundStream SelectedSound = EXStreamSoundsFunctions.GetSoundByName(Convert.ToUInt32(SoundKeyInDictionary), StreamSoundsList);
             if (SelectedSound != null)
             {
+                GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "LastFile");
                 Frm_StreamSounds_Properties FormAudioProps = new Frm_StreamSounds_Properties(SelectedSound, SoundKeyInDictionary, SelectedNode.Text)
                 {
                     Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",

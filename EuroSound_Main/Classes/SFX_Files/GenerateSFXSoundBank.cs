@@ -97,7 +97,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             HashcodeOffsetM = new long[FinalSoundsDict.Keys.Count, 2];
             foreach (KeyValuePair<uint, EXSound> Sound in FinalSoundsDict)
             {
-                BWriter.WriteUInt32(Sound.Value.Hashcode - 0x1A000000);
+                BWriter.WriteUInt32(Sound.Value.Hashcode & 0x00ffffff); //Apply bytes mask, example: 0x1A00005C -> 0x0000005C
                 BWriter.WriteUInt32((uint)BWriter.BaseStream.Position);
 
                 HashcodeOffsetM[index, 0] = Convert.ToUInt32(Sound.Value.Hashcode.ToString("X8"), 16);
@@ -383,7 +383,8 @@ namespace EuroSound_Application.GenerateSoundBankSFX
 
             if (EXSoundbanksFunctions.SubSFXFlagChecked(Flags))
             {
-                index = (int)Sample.HashcodeSubSFX - 0x1A000000;
+                //Apply bytes mask, example: 0x1A00005C -> 0x0000005C
+                index = (int)Sample.HashcodeSubSFX & 0x00ffffff;
             }
             else
             {

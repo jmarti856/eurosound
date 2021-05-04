@@ -92,7 +92,7 @@ namespace EuroSound_Application.StreamSounds
                 }
                 else
                 {
-                    DialogResult TryToReload = MessageBox.Show("Error, this audio file is not correct, the specifies are: " + GlobalPreferences.StreambankChannels + " channels, the rate must be " + GlobalPreferences.StreambankFrequency + "Hz, must have " + GlobalPreferences.StreambankBits + " bits per sample and encoded in " + GlobalPreferences.StreambankEncoding + ".", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                    DialogResult TryToReload = MessageBox.Show(string.Join("", "Error, this audio file is not correct, the specifies are: ", GlobalPreferences.StreambankChannels, " channels, the rate must be ", GlobalPreferences.StreambankFrequency, "Hz, must have ", GlobalPreferences.StreambankBits, " bits per sample and encoded in ", GlobalPreferences.StreambankEncoding, ".\n\nDo you want that EuroSound tries to convert it to a valid format?"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (TryToReload == DialogResult.Yes)
                     {
                         LoadAudio(AudioPath, true);

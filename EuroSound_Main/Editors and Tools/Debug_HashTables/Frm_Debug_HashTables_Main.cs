@@ -259,7 +259,8 @@ namespace EuroSound_Application.Debug_HashTables
                         //Loop Throught HashCodes
                         foreach (KeyValuePair<uint, string> Item in Hashcodes.SFX_Defines)
                         {
-                            string StringCombined = string.Join("", (Item.Key - 0x1A000000), " ,");
+                            //Apply bytes mask, example: 0x1A00005C -> 0x0000005C
+                            string StringCombined = string.Join("", (Item.Key & 0x00ffffff), " ,");
 
                             //Check Jump Codes
                             Textbox_Console.Invoke((MethodInvoker)delegate
@@ -284,7 +285,9 @@ namespace EuroSound_Application.Debug_HashTables
                         //Loop Throught HashCodes
                         foreach (KeyValuePair<uint, string> Item in Hashcodes.SFX_Defines)
                         {
-                            string StringCombined = string.Join("", "{", (Item.Key - 0x1A000000), " , \"" + Item.Value + "\"} ,");
+                            //Apply bytes mask, example: 0x1A00005C -> 0x0000005C
+                            string StringCombined = string.Join("", "{", (Item.Key & 0x00ffffff), " , \"" + Item.Value + "\"} ,");
+
                             //Check Jump Codes
                             Textbox_Console.Invoke((MethodInvoker)delegate
                             {

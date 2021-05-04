@@ -73,10 +73,12 @@ namespace EuroSound_Application
             this.EuroSoundTrayIcon_Restore = new System.Windows.Forms.ToolStripMenuItem();
             this.EuroSoundTrayIcon_Separator = new System.Windows.Forms.ToolStripSeparator();
             this.EuroSoundTrayIcon_Close = new System.Windows.Forms.ToolStripMenuItem();
+            this.LastFile = new System.Windows.Forms.StatusBarPanel();
             this.MenuStrip_MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Hashcode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.File)).BeginInit();
             this.EuroSoundTrayIconMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LastFile)).BeginInit();
             this.SuspendLayout();
             // 
             // MenuStrip_MainMenu
@@ -354,6 +356,7 @@ namespace EuroSound_Application
             this.MainStatusBar.Location = new System.Drawing.Point(0, 556);
             this.MainStatusBar.Name = "MainStatusBar";
             this.MainStatusBar.Panels.AddRange(new System.Windows.Forms.StatusBarPanel[] {
+            this.LastFile,
             this.Hashcode,
             this.File});
             this.MainStatusBar.ShowPanels = true;
@@ -367,7 +370,6 @@ namespace EuroSound_Application
             this.Hashcode.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Contents;
             this.Hashcode.MinWidth = 40;
             this.Hashcode.Name = "Hashcode";
-            this.Hashcode.ToolTipText = "Project Hashcode";
             this.Hashcode.Width = 40;
             // 
             // File
@@ -376,7 +378,6 @@ namespace EuroSound_Application
             this.File.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Contents;
             this.File.MinWidth = 40;
             this.File.Name = "File";
-            this.File.ToolTipText = "Project Name";
             this.File.Width = 40;
             // 
             // EuroSoundTrayIcon
@@ -417,6 +418,14 @@ namespace EuroSound_Application
             this.EuroSoundTrayIcon_Close.Text = "Close";
             this.EuroSoundTrayIcon_Close.Click += new System.EventHandler(this.EuroSoundTrayIcon_Close_Click);
             // 
+            // LastFile
+            // 
+            this.LastFile.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
+            this.LastFile.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Contents;
+            this.LastFile.MinWidth = 40;
+            this.LastFile.Name = "LastFile";
+            this.LastFile.Width = 40;
+            // 
             // Frm_EuroSound_Main
             // 
             this.AllowDrop = true;
@@ -443,6 +452,7 @@ namespace EuroSound_Application
             ((System.ComponentModel.ISupportInitialize)(this.Hashcode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.File)).EndInit();
             this.EuroSoundTrayIconMenu.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.LastFile)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -491,5 +501,6 @@ namespace EuroSound_Application
         private System.Windows.Forms.ToolStripMenuItem MainMenuTools_DebugHashtables;
         private System.Windows.Forms.ToolStripMenuItem MenuItemFile_Updates;
         private System.Windows.Forms.ToolStripSeparator MenuItemFile_Separator2;
+        private System.Windows.Forms.StatusBarPanel LastFile;
     }
 }
