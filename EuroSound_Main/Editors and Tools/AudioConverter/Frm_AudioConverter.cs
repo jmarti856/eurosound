@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.ApplicationRegistryFunctions;
+﻿using EuroSound_Application.ApplicationPreferences.Ini_File;
+using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.Clases;
 using EuroSound_Application.FunctionsListView;
 using Microsoft.Win32;
@@ -21,6 +22,7 @@ namespace EuroSound_Application.AudioConverter
         //*===============================================================================================
         internal List<string> Reports;
         private ListViewFunctions LVFunctions = new ListViewFunctions();
+        private List<string[]> Presets = new List<string[]>();
         private string[] FilesCollection;
         public Frm_AudioConverter()
         {
@@ -35,6 +37,9 @@ namespace EuroSound_Application.AudioConverter
 
             Button_ClearList.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("ACButtonClear")); };
             Button_ClearList.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
+
+            Button_SearchOutputFolder.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("GenSearchOutputFolder")); };
+            Button_SearchOutputFolder.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
         }
 
         //*===============================================================================================
@@ -67,6 +72,13 @@ namespace EuroSound_Application.AudioConverter
 
                 Combobox_Rate.SelectedIndex = 0;
                 ComboBox_Bits.SelectedIndex = 0;
+            }
+
+            //Get Presets
+            if (File.Exists(Application.StartupPath + "\\ESound.ini"))
+            {
+                IniFile_Functions ProfilesReader = new IniFile_Functions();
+                Presets = ProfilesReader.GetAudioConverterPresets(Application.StartupPath + "\\ESound.ini");
             }
         }
 
@@ -129,10 +141,10 @@ namespace EuroSound_Application.AudioConverter
         private void UpdateStatusBarLabels()
         {
             //Update File name label
-            GenericFunctions.SetCurrentFileLabel(string.Empty, "File");
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "SBPanel_File");
 
             //Update Hashcode name label
-            GenericFunctions.SetCurrentFileLabel(string.Empty, "Hashcode");
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "SBPanel_Hashcode");
         }
 
         //*===============================================================================================
@@ -183,6 +195,16 @@ namespace EuroSound_Application.AudioConverter
                     ListView_ItemsToConvert.Items.Clear();
                     UpdateListViewCounter();
                 }
+            }
+        }
+
+        private void Button_LoadPresets_Click(object sender, EventArgs e)
+        {
+            using (Frm_AudioConverter_Presets AC_Presets = new Frm_AudioConverter_Presets(Presets))
+            {
+                AC_Presets.Owner = Owner;
+                AC_Presets.Tag = Tag;
+                AC_Presets.ShowDialog();
             }
         }
 
@@ -384,7 +406,7 @@ namespace EuroSound_Application.AudioConverter
         //*===============================================================================================
         private void MenuItemLoad_Presets_Click(object sender, EventArgs e)
         {
-            using (Frm_AudioConverter_Presets AC_Presets = new Frm_AudioConverter_Presets())
+            using (Frm_AudioConverter_Presets AC_Presets = new Frm_AudioConverter_Presets(Presets))
             {
                 AC_Presets.Owner = Owner;
                 AC_Presets.Tag = Tag;

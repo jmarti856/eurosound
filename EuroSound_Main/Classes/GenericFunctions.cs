@@ -216,7 +216,7 @@ namespace EuroSound_Application
             return AudioIsCorrect;
         }
 
-        internal static void CreateTemporalFolder()
+        internal static string CreateTemporalFolder()
         {
             string TemporalFolderPath = Path.Combine(new string[] { Path.GetTempPath(), "EuroSound" });
 
@@ -225,6 +225,8 @@ namespace EuroSound_Application
             {
                 Directory.CreateDirectory(TemporalFolderPath);
             }
+
+            return TemporalFolderPath;
         }
 
         internal static void AddItemToListView(ListViewItem ItemToAdd, ListView ListToAddItem)

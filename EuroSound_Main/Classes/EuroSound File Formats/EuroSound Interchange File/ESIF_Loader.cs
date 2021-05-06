@@ -552,7 +552,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                                 else if (EXSoundbanksFunctions.SubSFXFlagChecked(SFXSound.Flags))
                                                 {
                                                     uint RefHashC = (uint)FileRef;
-                                                    NewSample.HashcodeSubSFX = 0x1A000000 | RefHashC;
+                                                    NewSample.HashcodeSubSFX = GlobalPreferences.SfxPrefix | RefHashC;
                                                     NewSample.ComboboxSelectedAudio = "<SUB SFX>";
                                                 }
                                                 else
@@ -1436,12 +1436,12 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     if (CurrentKeyWord.Equals("FILENAME"))
                     {
                         FileProperties.FileName = KeyWordValues[0];
-                        GenericFunctions.SetCurrentFileLabel(FileProperties.FileName, "File");
+                        GenericFunctions.SetCurrentFileLabel(FileProperties.FileName, "SBPanel_File");
                     }
                     if (CurrentKeyWord.Equals("HASHCODE"))
                     {
                         FileProperties.Hashcode = Convert.ToUInt32(KeyWordValues[0], 16);
-                        GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, FileProperties.Hashcode), "Hashcode");
+                        GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, FileProperties.Hashcode), "SBPanel_Hashcode");
                     }
                 }
                 else

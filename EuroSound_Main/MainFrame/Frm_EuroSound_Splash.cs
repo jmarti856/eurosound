@@ -143,6 +143,17 @@ namespace EuroSound_Application.SplashForm
                 GlobalPreferences.HT_MusicMD5 = WindowsRegistryFunctions.LoadHashtablesFiles("HT_MusicEvent", "MD5");
                 await Task.Delay(RandomNumber.Next(Minimum, Maximum));
 
+                //[HashCodesPrefixes]
+                Label_Status.Text = "Loading HashCodes prefixes, please wait...";
+                GlobalPreferences.StreamFileHashCode = WindowsRegistryFunctions.LoadHashCodesPrefixes("StreamFileHashCode");
+                await Task.Delay(RandomNumber.Next(Minimum, Maximum));
+
+                GlobalPreferences.SfxPrefix = WindowsRegistryFunctions.LoadHashCodesPrefixes("SfxPrefix");
+                await Task.Delay(RandomNumber.Next(Minimum, Maximum));
+
+                GlobalPreferences.SongPrefix = WindowsRegistryFunctions.LoadHashCodesPrefixes("SongPrefix");
+                await Task.Delay(RandomNumber.Next(Minimum, Maximum));
+
                 //[ExternalFiles]
                 Label_Status.Text = "Loading External File Path, please wait...";
                 GlobalPreferences.StreamFilePath = WindowsRegistryFunctions.LoadExternalFiles("StreamFile", "Path");

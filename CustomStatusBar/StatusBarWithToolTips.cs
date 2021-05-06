@@ -67,7 +67,10 @@ namespace CustomStatusBar
                 }
                 else
                 {
-                    StatusPanel.Text = ProgramStatus;
+                    if (StatusPanel != null)
+                    {
+                        StatusPanel.Text = ProgramStatus;
+                    }
                 }
             }
         }

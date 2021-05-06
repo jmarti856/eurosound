@@ -5,12 +5,15 @@ using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.AudioConverter;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CustomControls.NewProjectForm;
+using EuroSound_Application.CustomControls.WebBrowser;
 using EuroSound_Application.Debug_HashTables;
 using EuroSound_Application.SFXData;
 using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.IO.Compression;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -78,11 +81,15 @@ namespace EuroSound_Application
             MainMenu_Tools.DropDownOpened += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
             MainMenu_Tools.DropDownClosed += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
 
+            MainMenuTools_DebugHashtables.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemTools_DebugFiles")); };
+            MainMenuTools_AudioConverter.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemTools_AudioConverter")); };
             MainMenuTools_SFXDataGen.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuTools_SFXDataGenerator")); };
             MainMenuTools_BackupSettings.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemTools_BackupSettings")); };
             MainMenuTools_RestoreSettings.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemTools_RestoreSettings")); };
             MainMenuTools_ClearTempFiles.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemTools_ClearTemp")); };
 
+            MainMenuTools_DebugHashtables.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+            MainMenuTools_AudioConverter.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MainMenuTools_SFXDataGen.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MainMenuTools_BackupSettings.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
             MainMenuTools_RestoreSettings.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
@@ -286,7 +293,7 @@ namespace EuroSound_Application
             GlobalPreferences.StatusBar_ToolTipMode = false;
 
             //Load file
-            if (System.IO.File.Exists(filename))
+            if (File.Exists(filename))
             {
                 OpenFormsWithFileToLoad(filename);
             }
@@ -309,6 +316,55 @@ namespace EuroSound_Application
                 About.ShowInTaskbar = false;
                 About.ShowDialog();
             };
+        }
+
+        private void MenuItemHelp_Documentation_Click(object sender, EventArgs e)
+        {
+            string TemporalFolderPath = GenericFunctions.CreateTemporalFolder();
+            string ZipFilePath = Path.Combine(TemporalFolderPath, "ESDocumentation.zip");
+
+            //Create folder in %temp%
+            if (!File.Exists(ZipFilePath))
+            {
+                File.WriteAllBytes(ZipFilePath, Properties.Resources.ESDocumentation);
+            }
+
+            //Create "Documentation" folder
+            string UnpackPath = Path.Combine(TemporalFolderPath, "Documentation");
+            if (!Directory.Exists(UnpackPath))
+            {
+                Directory.CreateDirectory(UnpackPath);
+            }
+
+            //Extract Zip File
+            using (ZipArchive Files = ZipFile.OpenRead(ZipFilePath))
+            {
+                foreach (ZipArchiveEntry ZipFiles in Files.Entries)
+                {
+                    //Is Folder
+                    if (ZipFiles.FullName.EndsWith("/"))
+                    {
+                        Directory.CreateDirectory(Path.Combine(UnpackPath, ZipFiles.FullName));
+                    }
+                    //Is File
+                    else
+                    {
+                        ZipFiles.ExtractToFile(Path.Combine(UnpackPath, ZipFiles.FullName), true);
+                    }
+                }
+            }
+
+            //Open Web Browser
+            if (!GenericFunctions.CheckChildFormIsOpened("EuroSound_WebBrowser", "WebBrowser"))
+            {
+                GlobalPreferences.StatusBar_ToolTipMode = false;
+                EuroSound_WebBrowser ESWebBrowser = new EuroSound_WebBrowser(Path.Combine(UnpackPath, "index.html"), "EuroSound Editor Help")
+                {
+                    Owner = this,
+                    MdiParent = this
+                };
+                ESWebBrowser.Show();
+            }
         }
 
         //*===============================================================================================

@@ -100,7 +100,7 @@ namespace EuroSound_Application.SoundBanksEditor.Debug_Writer
                             }
 
                             //Write Debug
-                            DebugFile.WriteLine(string.Join(" ", "//", "HashCode =", Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, 0x1A000000 | SFXHashcode), "-", (0x1A000000 | SFXHashcode).ToString("X8") + "h"));
+                            DebugFile.WriteLine(string.Join(" ", "//", "HashCode =", Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, GlobalPreferences.SfxPrefix | SFXHashcode), "-", (GlobalPreferences.SfxPrefix | SFXHashcode).ToString("X8") + "h"));
                             DebugFile.WriteLine(string.Join(" ", "\tHashCode", SFXHashcode.ToString("X8") + "h"));
                             DebugFile.WriteLine(string.Join(" ", "\tOffset", SFXOffset.ToString("X8") + "h"));
                         }
@@ -109,7 +109,7 @@ namespace EuroSound_Application.SoundBanksEditor.Debug_Writer
                         foreach (KeyValuePair<uint, uint> DictionaryItem in SFXElements)
                         {
                             DebugFile.WriteLine(new String('/', 70));
-                            DebugFile.WriteLine(string.Join(" ", "//", Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, 0x1A000000 | DictionaryItem.Value), "-", (0x1A000000 | DictionaryItem.Value).ToString("X8") + "h"));
+                            DebugFile.WriteLine(string.Join(" ", "//", Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, GlobalPreferences.SfxPrefix | DictionaryItem.Value), "-", (GlobalPreferences.SfxPrefix | DictionaryItem.Value).ToString("X8") + "h"));
                             DebugFile.WriteLine(new String('/', 70));
                             DebugFile.WriteLine("");
                             BReader.BaseStream.Seek(DictionaryItem.Key + SFXStart, SeekOrigin.Begin);

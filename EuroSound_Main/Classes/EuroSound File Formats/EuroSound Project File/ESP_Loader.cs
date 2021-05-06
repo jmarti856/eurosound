@@ -269,6 +269,53 @@ namespace EuroSound_Application.EuroSound_Profiles
             }
         }
 
+        internal void ReadHashCodesPrefixes(IEnumerable<string> lines)
+        {
+            bool ReadingSection = false;
+
+            foreach (string line in lines)
+            {
+                if (string.IsNullOrEmpty(line))
+                {
+                    continue;
+                }
+                else
+                {
+                    if (line.Trim().Equals("[HashCodesPrefixes]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ReadingSection = true;
+                        continue;
+                    }
+
+                    if (line.Trim().Equals("[End]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (ReadingSection)
+                        {
+                            ReadingSection = false;
+                            break;
+                        }
+                    }
+
+                    if (ReadingSection)
+                    {
+                        string[] LineData = line.Trim().Split('=');
+                        switch (LineData[0])
+                        {
+                            case "StreamFileHashCode":
+                                GlobalPreferences.StreamFileHashCode = Convert.ToUInt32(LineData[1], 16);
+                                break;
+                            case "SfxPrefix":
+                                GlobalPreferences.SfxPrefix = Convert.ToUInt32(LineData[1], 16);
+                                break;
+                            case "SongPrefix":
+                                GlobalPreferences.SongPrefix = Convert.ToUInt32(LineData[1], 16);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
         internal void ReadExternalFiles(IEnumerable<string> lines)
         {
             bool ReadingSection = false;

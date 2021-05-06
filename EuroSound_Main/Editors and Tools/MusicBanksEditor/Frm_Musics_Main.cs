@@ -442,7 +442,7 @@ namespace EuroSound_Application.Musics
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
             //Clear Last File Label
-            GenericFunctions.SetCurrentFileLabel(string.Empty, "LastFile");
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "SBPanel_LastFile");
         }
 
         //*===============================================================================================
@@ -451,19 +451,19 @@ namespace EuroSound_Application.Musics
         private void UpdateStatusBarLabels()
         {
             //Update File name label
-            GenericFunctions.SetCurrentFileLabel(ProjectInfo.FileName, "File");
+            GenericFunctions.SetCurrentFileLabel(ProjectInfo.FileName, "SBPanel_File");
 
             //Update Hashcode name label
-            GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, ProjectInfo.Hashcode), "Hashcode");
+            GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, ProjectInfo.Hashcode), "SBPanel_Hashcode");
         }
 
         private void ClearStatusBarLabels()
         {
             //Update File name label
-            GenericFunctions.SetCurrentFileLabel(string.Empty, "File");
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "SBPanel_File");
 
             //Update Hashcode name label
-            GenericFunctions.SetCurrentFileLabel(string.Empty, "Hashcode");
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "SBPanel_Hashcode");
         }
 
         //*===============================================================================================
@@ -960,7 +960,7 @@ namespace EuroSound_Application.Musics
                         }
 
                         //Calculate Jump HashCode
-                        uint JumpHashcode = Convert.ToUInt32(0x1BE00000 | ((i & 0xFF) << 8) | (((int)ProjectInfo.Hashcode & 0xFF << 0)));
+                        uint JumpHashcode = Convert.ToUInt32((int)GlobalPreferences.SongPrefix | ((i & 0xFF) << 8) | (((int)ProjectInfo.Hashcode & 0xFF << 0)));
                         if (!string.IsNullOrEmpty(JumpHashcodeLabel))
                         {
                             GenericFunctions.AppendTextToRichTextBox("#define " + JumpHashcodeLabel + " 0x" + JumpHashcode.ToString("X8") + "\n", Color.Brown, Rtbx_Jump_Music_Codes);

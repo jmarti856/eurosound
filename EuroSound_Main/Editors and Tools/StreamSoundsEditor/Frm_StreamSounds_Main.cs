@@ -145,7 +145,7 @@ namespace EuroSound_Application.StreamSounds
                 LoadHashcodeData.Start();
             }
 
-            ProjectInfo.Hashcode = 65535;
+            ProjectInfo.Hashcode = GlobalPreferences.StreamFileHashCode;
 
             //Load Last State
             using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
@@ -433,7 +433,7 @@ namespace EuroSound_Application.StreamSounds
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
             //Clear Last File Label
-            GenericFunctions.SetCurrentFileLabel(string.Empty, "LastFile");
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "SBPanel_LastFile");
         }
 
         //*===============================================================================================
@@ -443,10 +443,6 @@ namespace EuroSound_Application.StreamSounds
         {
             //Update File Status
             ProjectInfo.FileHasBeenModified = true;
-
-            //Create folder in %temp%
-            GenericFunctions.CreateTemporalFolder();
-
             UpdateIMAData();
         }
 

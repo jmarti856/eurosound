@@ -6,56 +6,86 @@ namespace EuroSound_Application.ApplicationPreferences.Ini_File
 {
     class IniFile_Functions
     {
-        internal Dictionary<string, string> GetAvailableProfiles(string Path)
+        internal Dictionary<string, string> GetAvailableProfiles(string FilePath)
         {
+            string ProjectName = string.Empty, ProjectFilePath = string.Empty;
             Regex RemoveCharactersFromPathString = new Regex(@"[\p{Cc}\p{Cf}\p{Mn}\p{Me}\p{Zl}\p{Zp}]");
             Regex PatternForProjects = new Regex(@"(?<=\[).+?(?=\])");
             Dictionary<string, string> ProfilesDictionary = new Dictionary<string, string>();
-            string ProjectName = string.Empty, ProjectFilePath = string.Empty;
 
-            IEnumerable<string> lines = File.ReadLines(Path);
-            foreach (string line in lines)
+            IEnumerable<string> FileLines = File.ReadLines(FilePath);
+            foreach (string CurrentLine in FileLines)
             {
-                if (string.IsNullOrEmpty(line))
+                if (string.IsNullOrEmpty(CurrentLine))
                 {
                     continue;
                 }
                 else
                 {
-                    //Get project name
-                    if (line.Trim().StartsWith("["))
+                    //[Project Name]
+                    if (CurrentLine.Trim().StartsWith("["))
                     {
-                        MatchCollection RegexMatches = PatternForProjects.Matches(line);
+                        MatchCollection RegexMatches = PatternForProjects.Matches(CurrentLine);
                         if (RegexMatches.Count > 0)
                         {
-                            ProjectName = RegexMatches[0].ToString();
+                            ProjectName = RegexMatches[0].ToString().Trim();
                         }
                     }
 
-                    //Get path
-                    if (line.Trim().StartsWith("UseESP"))
+                    //[Use Profile]
+                    if (CurrentLine.Trim().StartsWith("UseESP", System.StringComparison.OrdinalIgnoreCase))
                     {
-                        string[] LineData = line.Split('=');
+                        string[] LineData = CurrentLine.Split('=');
                         if (LineData.Length > 1)
                         {
-                            ProjectFilePath = LineData[1];
+                            ProjectFilePath = LineData[1].Trim();
                         }
-                    }
 
-                    //Add data if not contains
-                    if (!string.IsNullOrEmpty(ProjectName) && !string.IsNullOrEmpty(ProjectFilePath))
-                    {
-                        if (!ProfilesDictionary.ContainsKey(ProjectName))
+                        //Add data to dictionary
+                        if (!string.IsNullOrEmpty(ProjectName) && !string.IsNullOrEmpty(ProjectFilePath))
                         {
-                            ProfilesDictionary.Add(ProjectName, RemoveCharactersFromPathString.Replace(ProjectFilePath, ""));
-                            ProjectFilePath = string.Empty;
-                            ProjectName = string.Empty;
+                            if (!ProfilesDictionary.ContainsKey(ProjectName))
+                            {
+                                ProfilesDictionary.Add(ProjectName, RemoveCharactersFromPathString.Replace(ProjectFilePath, ""));
+                                ProjectFilePath = string.Empty;
+                                ProjectName = string.Empty;
+                            }
                         }
                     }
                 }
             }
-
             return ProfilesDictionary;
+        }
+
+        internal List<string[]> GetAudioConverterPresets(string FilePath)
+        {
+            List<string[]> AvailablePresets = new List<string[]>();
+
+            IEnumerable<string> FileLines = File.ReadLines(FilePath);
+            foreach (string CurrentLine in FileLines)
+            {
+                if (string.IsNullOrEmpty(CurrentLine))
+                {
+                    continue;
+                }
+                else
+                {
+                    if (CurrentLine.Trim().StartsWith("ACPresets", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        string[] LineData = CurrentLine.Split('=');
+                        if (LineData.Length > 1)
+                        {
+                            //MatchCollection Preset = Regex.Matches(LineData[1].Trim(), @"\{\s*""(.*)""\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\}");
+                            MatchCollection Preset = Regex.Matches(LineData[1], @"\{\s*""(.*)""\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*""(.*)""\s*\}");
+                            if (Preset.Count > 0 && Preset[0].Groups.Count == 6)
+                            {
+                                AvailablePresets.Add(new string[] { Preset[0].Groups[1].Value.Trim(), Preset[0].Groups[2].Value, Preset[0].Groups[3].Value, Preset[0].Groups[4].Value, Preset[0].Groups[5].Value.Trim() });
+                            }
+                        }
+                    }
+                }
+            }
+            return AvailablePresets;
         }
     }
 }

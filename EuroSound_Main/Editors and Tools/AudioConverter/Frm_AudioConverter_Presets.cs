@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.AudioConverter
@@ -8,21 +9,53 @@ namespace EuroSound_Application.AudioConverter
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
-        bool CancelExit = false;
+        private bool CancelExit = false;
+        private List<string[]> AvailablePresets = new List<string[]>();
 
-        public Frm_AudioConverter_Presets()
+        public Frm_AudioConverter_Presets(List<string[]> Presets)
         {
             InitializeComponent();
+            AvailablePresets = Presets;
         }
 
+        //*===============================================================================================
+        //* Form Events
+        //*===============================================================================================
+        private void Frm_AudioConverter_Presets_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (CancelExit)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void Frm_AudioConverter_Presets_Shown(object sender, EventArgs e)
+        {
+            foreach (string[] PresetName in AvailablePresets)
+            {
+                ListBox_Presets.Items.Add(PresetName[0]);
+            }
+        }
+
+        //*===============================================================================================
+        //* Form Controls Events
+        //*===============================================================================================
         private void ListBox_Presets_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //Clear Textbox
+            Textbox_Frequency.Text = string.Empty;
+            Textbox_Bits.Text = string.Empty;
+            Textbox_Channels.Text = string.Empty;
+            Textbox_Desc.Text = string.Empty;
+
+            //Add values
             if (ListBox_Presets.SelectedItems.Count > 0)
             {
-                //At the moment we only have one preset, no no need to check with is the selected item
-                Textbox_Bits.Text = "16";
-                Textbox_Channels.Text = "1";
-                Textbox_Frequency.Text = "22050";
+                string[] Values = AvailablePresets[ListBox_Presets.SelectedIndex];
+                Textbox_Frequency.Text = Values[1];
+                Textbox_Bits.Text = Values[2];
+                Textbox_Channels.Text = Values[3];
+                Textbox_Desc.Text = Values[4];
             }
         }
 
@@ -32,9 +65,16 @@ namespace EuroSound_Application.AudioConverter
             {
                 //Get parent form
                 Form FormToSearch = GenericFunctions.GetFormByName("Frm_AudioConverter", Tag.ToString());
-                ((Frm_AudioConverter)FormToSearch).ComboBox_Bits.SelectedIndex = 0;
-                ((Frm_AudioConverter)FormToSearch).Combobox_Rate.SelectedIndex = 1;
-                ((Frm_AudioConverter)FormToSearch).RadioButton_Mono.Checked = true;
+                ((Frm_AudioConverter)FormToSearch).ComboBox_Bits.SelectedItem = Textbox_Bits.Text;
+                ((Frm_AudioConverter)FormToSearch).Combobox_Rate.SelectedItem = Textbox_Frequency.Text;
+                if (Textbox_Channels.Text.Equals("1"))
+                {
+                    ((Frm_AudioConverter)FormToSearch).RadioButton_Mono.Checked = true;
+                }
+                else
+                {
+                    ((Frm_AudioConverter)FormToSearch).RadioButton_Stereo.Checked = true;
+                }
 
                 //Close current form
                 CancelExit = false;
@@ -51,14 +91,6 @@ namespace EuroSound_Application.AudioConverter
         {
             CancelExit = false;
             Close();
-        }
-
-        private void Frm_AudioConverter_Presets_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (CancelExit)
-            {
-                e.Cancel = true;
-            }
         }
     }
 }

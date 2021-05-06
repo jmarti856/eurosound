@@ -151,10 +151,10 @@ namespace EuroSound_Application.SFXData
         private void UpdateStatusBarLabels()
         {
             //Update File name label
-            GenericFunctions.SetCurrentFileLabel(string.Empty, "File");
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "SBPanel_File");
 
             //Update Hashcode name label
-            GenericFunctions.SetCurrentFileLabel(string.Empty, "Hashcode");
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "SBPanel_Hashcode");
         }
 
         //*===============================================================================================
@@ -192,7 +192,7 @@ namespace EuroSound_Application.SFXData
             {
                 ListViewItem ItemToAdd = new ListViewItem(new[] { ItemValue[0].ToString(), ItemValue[1].ToString("n1"), ItemValue[2].ToString("n1"), ItemValue[3].ToString("n1"), ItemValue[4].ToString("n6"), ItemValue[5].ToString(), ItemValue[6].ToString(), ItemValue[7].ToString() })
                 {
-                    Tag = 0x1A000000 | (uint)ItemValue[0]
+                    Tag = GlobalPreferences.SfxPrefix | (uint)ItemValue[0]
                 };
 
                 //Save check in case the object is disposed. 
@@ -326,7 +326,7 @@ namespace EuroSound_Application.SFXData
                 ListViewItem SelectedItem = ListView_HashTableData.SelectedItems[0];
                 if (SelectedItem.SubItems.Count > 0)
                 {
-                    uint SelectedHash = 0x1A000000 | uint.Parse(SelectedItem.SubItems[0].Text);
+                    uint SelectedHash = GlobalPreferences.SfxPrefix | uint.Parse(SelectedItem.SubItems[0].Text);
                     if (Hashcodes.SFX_Defines.ContainsKey(SelectedHash))
                     {
                         Textbox_SelectedHashcode.Text = Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, SelectedHash);

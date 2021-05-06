@@ -65,20 +65,22 @@ namespace EuroSound_Application
             this.MenuItemHelp_Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItemHelp_ReleaseInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemHelp_CurrentReleaseInfo = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemHelp_Separator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuItemHelp_Documentation = new System.Windows.Forms.ToolStripMenuItem();
             this.MainStatusBar = new CustomStatusBar.StatusBarToolTips();
-            this.Hashcode = new System.Windows.Forms.StatusBarPanel();
-            this.File = new System.Windows.Forms.StatusBarPanel();
+            this.SBPanel_LastFile = new System.Windows.Forms.StatusBarPanel();
+            this.SBPanel_Hashcode = new System.Windows.Forms.StatusBarPanel();
+            this.SBPanel_File = new System.Windows.Forms.StatusBarPanel();
             this.EuroSoundTrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.EuroSoundTrayIconMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.EuroSoundTrayIcon_Restore = new System.Windows.Forms.ToolStripMenuItem();
             this.EuroSoundTrayIcon_Separator = new System.Windows.Forms.ToolStripSeparator();
             this.EuroSoundTrayIcon_Close = new System.Windows.Forms.ToolStripMenuItem();
-            this.LastFile = new System.Windows.Forms.StatusBarPanel();
             this.MenuStrip_MainMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Hashcode)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.File)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SBPanel_LastFile)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SBPanel_Hashcode)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SBPanel_File)).BeginInit();
             this.EuroSoundTrayIconMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LastFile)).BeginInit();
             this.SuspendLayout();
             // 
             // MenuStrip_MainMenu
@@ -316,7 +318,9 @@ namespace EuroSound_Application
             this.MenuItemHelp_OnlineHelp,
             this.MenuItemHelp_Separator1,
             this.MenuItemHelp_ReleaseInfo,
-            this.MenuItemHelp_CurrentReleaseInfo});
+            this.MenuItemHelp_CurrentReleaseInfo,
+            this.MenuItemHelp_Separator2,
+            this.MenuItemHelp_Documentation});
             this.MainMenu_Help.Name = "MainMenu_Help";
             this.MainMenu_Help.Size = new System.Drawing.Size(44, 20);
             this.MainMenu_Help.Text = "Help";
@@ -351,34 +355,54 @@ namespace EuroSound_Application
             this.MenuItemHelp_CurrentReleaseInfo.Size = new System.Drawing.Size(189, 22);
             this.MenuItemHelp_CurrentReleaseInfo.Text = "Current Release Info...";
             // 
+            // MenuItemHelp_Separator2
+            // 
+            this.MenuItemHelp_Separator2.Name = "MenuItemHelp_Separator2";
+            this.MenuItemHelp_Separator2.Size = new System.Drawing.Size(186, 6);
+            // 
+            // MenuItemHelp_Documentation
+            // 
+            this.MenuItemHelp_Documentation.Name = "MenuItemHelp_Documentation";
+            this.MenuItemHelp_Documentation.Size = new System.Drawing.Size(189, 22);
+            this.MenuItemHelp_Documentation.Text = "Documentation";
+            this.MenuItemHelp_Documentation.Click += new System.EventHandler(this.MenuItemHelp_Documentation_Click);
+            // 
             // MainStatusBar
             // 
             this.MainStatusBar.Location = new System.Drawing.Point(0, 556);
             this.MainStatusBar.Name = "MainStatusBar";
             this.MainStatusBar.Panels.AddRange(new System.Windows.Forms.StatusBarPanel[] {
-            this.LastFile,
-            this.Hashcode,
-            this.File});
+            this.SBPanel_LastFile,
+            this.SBPanel_Hashcode,
+            this.SBPanel_File});
             this.MainStatusBar.ShowPanels = true;
             this.MainStatusBar.Size = new System.Drawing.Size(1103, 22);
             this.MainStatusBar.TabIndex = 1;
             this.MainStatusBar.Text = "EuroSound_StatusBar";
             // 
-            // Hashcode
+            // SBPanel_LastFile
             // 
-            this.Hashcode.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
-            this.Hashcode.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Contents;
-            this.Hashcode.MinWidth = 40;
-            this.Hashcode.Name = "Hashcode";
-            this.Hashcode.Width = 40;
+            this.SBPanel_LastFile.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
+            this.SBPanel_LastFile.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Contents;
+            this.SBPanel_LastFile.MinWidth = 40;
+            this.SBPanel_LastFile.Name = "SBPanel_LastFile";
+            this.SBPanel_LastFile.Width = 40;
             // 
-            // File
+            // SBPanel_Hashcode
             // 
-            this.File.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
-            this.File.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Contents;
-            this.File.MinWidth = 40;
-            this.File.Name = "File";
-            this.File.Width = 40;
+            this.SBPanel_Hashcode.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
+            this.SBPanel_Hashcode.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Contents;
+            this.SBPanel_Hashcode.MinWidth = 40;
+            this.SBPanel_Hashcode.Name = "SBPanel_Hashcode";
+            this.SBPanel_Hashcode.Width = 40;
+            // 
+            // SBPanel_File
+            // 
+            this.SBPanel_File.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
+            this.SBPanel_File.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Contents;
+            this.SBPanel_File.MinWidth = 40;
+            this.SBPanel_File.Name = "SBPanel_File";
+            this.SBPanel_File.Width = 40;
             // 
             // EuroSoundTrayIcon
             // 
@@ -418,14 +442,6 @@ namespace EuroSound_Application
             this.EuroSoundTrayIcon_Close.Text = "Close";
             this.EuroSoundTrayIcon_Close.Click += new System.EventHandler(this.EuroSoundTrayIcon_Close_Click);
             // 
-            // LastFile
-            // 
-            this.LastFile.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
-            this.LastFile.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Contents;
-            this.LastFile.MinWidth = 40;
-            this.LastFile.Name = "LastFile";
-            this.LastFile.Width = 40;
-            // 
             // Frm_EuroSound_Main
             // 
             this.AllowDrop = true;
@@ -449,10 +465,10 @@ namespace EuroSound_Application
             this.Resize += new System.EventHandler(this.Frm_EuroSound_Main_Resize);
             this.MenuStrip_MainMenu.ResumeLayout(false);
             this.MenuStrip_MainMenu.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Hashcode)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.File)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SBPanel_LastFile)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SBPanel_Hashcode)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SBPanel_File)).EndInit();
             this.EuroSoundTrayIconMenu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.LastFile)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -479,7 +495,7 @@ namespace EuroSound_Application
         private System.Windows.Forms.ToolStripMenuItem MainMenu_Tools;
         private System.Windows.Forms.ToolStripMenuItem MainMenuTools_SFXDataGen;
         private CustomStatusBar.StatusBarToolTips MainStatusBar;
-        private System.Windows.Forms.StatusBarPanel File;
+        private System.Windows.Forms.StatusBarPanel SBPanel_File;
         private System.Windows.Forms.ToolStripMenuItem MainMenu_Window;
         private System.Windows.Forms.ToolStripSeparator MainMenuTools_Separator1;
         private System.Windows.Forms.ToolStripMenuItem MainMenuTools_BackupSettings;
@@ -494,13 +510,15 @@ namespace EuroSound_Application
         private System.Windows.Forms.ToolStripMenuItem MainMenuTools_AudioConverter;
         private System.Windows.Forms.ToolStripMenuItem MenuItemFile_RecentFiles;
         private System.Windows.Forms.ToolStripSeparator MenuItemFile_Separator1;
-        private System.Windows.Forms.StatusBarPanel Hashcode;
+        private System.Windows.Forms.StatusBarPanel SBPanel_Hashcode;
         private System.Windows.Forms.ToolStripSeparator MenuItemHelp_Separator1;
         private System.Windows.Forms.ToolStripMenuItem MenuItemHelp_ReleaseInfo;
         private System.Windows.Forms.ToolStripMenuItem MenuItemHelp_CurrentReleaseInfo;
         private System.Windows.Forms.ToolStripMenuItem MainMenuTools_DebugHashtables;
         private System.Windows.Forms.ToolStripMenuItem MenuItemFile_Updates;
         private System.Windows.Forms.ToolStripSeparator MenuItemFile_Separator2;
-        private System.Windows.Forms.StatusBarPanel LastFile;
+        private System.Windows.Forms.StatusBarPanel SBPanel_LastFile;
+        private System.Windows.Forms.ToolStripSeparator MenuItemHelp_Separator2;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemHelp_Documentation;
     }
 }

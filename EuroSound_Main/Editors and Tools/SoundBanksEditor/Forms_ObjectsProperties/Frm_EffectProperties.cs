@@ -226,7 +226,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 {
                     if (SoundSection.Equals("Sounds"))
                     {
-                        GenericFunctions.SetCurrentFileLabel(SampleName, "LastFile");
+                        GenericFunctions.SetCurrentFileLabel(SampleName, "SBPanel_LastFile");
                         Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(SelectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(SelectedSound.Flags))
                         {
                             Text = GenericFunctions.TruncateLongString(SampleName, 25) + " - Properties",
@@ -242,7 +242,7 @@ namespace EuroSound_Application.SoundBanksEditor
                         //Open form only if file exists
                         if (File.Exists(GlobalPreferences.StreamFilePath))
                         {
-                            GenericFunctions.SetCurrentFileLabel(SampleName, "LastFile");
+                            GenericFunctions.SetCurrentFileLabel(SampleName, "SBPanel_LastFile");
                             using (Frm_NewStreamSound AddStreamSound = new Frm_NewStreamSound(SelectedSample))
                             {
                                 AddStreamSound.Text = GenericFunctions.TruncateLongString(SampleName, 25) + " - Properties";

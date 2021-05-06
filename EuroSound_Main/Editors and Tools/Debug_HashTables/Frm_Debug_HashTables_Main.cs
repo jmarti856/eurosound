@@ -148,10 +148,10 @@ namespace EuroSound_Application.Debug_HashTables
         private void UpdateStatusBarLabels()
         {
             //Update File name label
-            GenericFunctions.SetCurrentFileLabel(string.Empty, "File");
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "SBPanel_File");
 
             //Update Hashcode name label
-            GenericFunctions.SetCurrentFileLabel(string.Empty, "Hashcode");
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "SBPanel_Hashcode");
         }
 
         //*===============================================================================================

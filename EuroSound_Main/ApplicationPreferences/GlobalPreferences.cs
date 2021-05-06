@@ -35,6 +35,11 @@
         internal static string HT_MusicPath = string.Empty;
         internal static string HT_MusicMD5 = string.Empty;
 
+        //[HashCodesPrefixes]
+        internal static uint StreamFileHashCode;
+        internal static uint SfxPrefix;
+        internal static uint SongPrefix;
+
         //[ExternalFiles]
         internal static string StreamFilePath = string.Empty;
         internal static string MkFileListPath = string.Empty;

@@ -68,6 +68,17 @@ namespace EuroSound_Application.ApplicationPreferences.EuroSound_Profiles
                 WindowsRegistryFunctions.SaveHashtablesFiles("HT_MusicEvent", GlobalPreferences.HT_MusicPath, GlobalPreferences.HT_MusicMD5);
 
                 //*===============================================================================================
+                //* [HashCodesPrefixes]
+                //*===============================================================================================
+                //Load Data
+                ProfilesLoader.ReadHashCodesPrefixes(FileLines);
+
+                //Save Data
+                WindowsRegistryFunctions.SaveHashCodesPrefixes("StreamFileHashCode", GlobalPreferences.StreamFileHashCode);
+                WindowsRegistryFunctions.SaveHashCodesPrefixes("SfxPrefix", GlobalPreferences.SfxPrefix);
+                WindowsRegistryFunctions.SaveHashCodesPrefixes("SongPrefix", GlobalPreferences.SongPrefix);
+
+                //*===============================================================================================
                 //* [ExternalFiles]
                 //*===============================================================================================
                 //Load Data

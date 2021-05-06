@@ -583,6 +583,16 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Byte[].
+        /// </summary>
+        internal static byte[] ESDocumentation {
+            get {
+                object obj = ResourceManager.GetObject("ESDocumentation", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a An error occurred registering EuroSound File-Types with the shell.
         /// </summary>
         internal static string EuroSoundFile_TypesRegisterdError {

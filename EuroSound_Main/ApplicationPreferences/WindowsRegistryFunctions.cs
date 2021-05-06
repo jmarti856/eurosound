@@ -149,6 +149,35 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         }
 
         //*===============================================================================================
+        //* Prefixes
+        //*===============================================================================================
+        internal static void SaveHashCodesPrefixes(string Name, uint Prefix)
+        {
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("HashCodesPrefixes", true);
+            using (RegistryKey SavePrefix = EuroSoundKey.OpenSubKey("HashCodesPrefixes", true))
+            {
+                SavePrefix.SetValue(Name, Prefix, RegistryValueKind.DWord);
+                SavePrefix.Close();
+            }
+        }
+
+        internal static uint LoadHashCodesPrefixes(string KeyName)
+        {
+            uint HashCodePrefix = 0;
+
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("HashCodesPrefixes", true);
+            using (RegistryKey LoadPrefix = EuroSoundKey.OpenSubKey("HashCodesPrefixes", true))
+            {
+                HashCodePrefix = uint.Parse(LoadPrefix.GetValue(KeyName, 0).ToString());
+                LoadPrefix.Close();
+            }
+
+            return HashCodePrefix;
+        }
+
+        //*===============================================================================================
         //* Sound Settings
         //*===============================================================================================
         internal static void SaveSoundSettings(string Prefix, int Frequency, string Encoding, int Bits, int Channels)

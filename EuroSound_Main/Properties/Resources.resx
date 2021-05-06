@@ -291,6 +291,10 @@
   <data name="Error_Rename_AlreadyExists" xml:space="preserve">
     <value>Sorry, cannot rename this item, an item with this name already exists</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ESDocumentation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ESDocumentation.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="EuroSoundFile-TypesRegisterdError" xml:space="preserve">
     <value>An error occurred registering EuroSound File-Types with the shell</value>
   </data>

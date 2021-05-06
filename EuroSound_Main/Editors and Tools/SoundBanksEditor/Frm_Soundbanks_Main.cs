@@ -532,7 +532,7 @@ namespace EuroSound_Application.SoundBanksEditor
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
 
             //Clear Last File Label
-            GenericFunctions.SetCurrentFileLabel(string.Empty, "LastFile");
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "SBPanel_LastFile");
         }
 
         //*===============================================================================================
@@ -774,7 +774,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 if (QuestionAnswer == DialogResult.Yes)
                 {
                     ProjectInfo.Hashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SB_Defines, Path.GetFileNameWithoutExtension(FilePath));
-                    GenericFunctions.SetCurrentFileLabel(Path.GetFileNameWithoutExtension(FilePath), "Hashcode");
+                    GenericFunctions.SetCurrentFileLabel(Path.GetFileNameWithoutExtension(FilePath), "SBPanel_Hashcode");
                 }
 
                 //Load New data

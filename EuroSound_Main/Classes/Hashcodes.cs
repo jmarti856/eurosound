@@ -128,7 +128,7 @@ namespace EuroSound_Application.HashCodesFunctions
                                     {
                                         uint HexNum = Convert.ToUInt32(matches[1].Value.Trim(), 16);
 
-                                        if (HexNum >= 0x1A000000)
+                                        if (HexNum >= GlobalPreferences.SfxPrefix)
                                         {
                                             if (HexLabel.StartsWith("SF", StringComparison.OrdinalIgnoreCase))
                                             {
@@ -197,7 +197,7 @@ namespace EuroSound_Application.HashCodesFunctions
                                         {
                                             uint HexNum = Convert.ToUInt32(matches[1].Value.Trim(), 16);
 
-                                            if (HexNum >= 0x1BE00000)
+                                            if (HexNum >= GlobalPreferences.SongPrefix)
                                             {
                                                 if (!MFX_Defines.ContainsKey(HexNum))
                                                 {
@@ -251,7 +251,7 @@ namespace EuroSound_Application.HashCodesFunctions
                                         {
                                             uint HexNum = Convert.ToUInt32(matches[1].Value.Trim(), 16);
 
-                                            if (HexNum >= 0x1BE00000)
+                                            if (HexNum >= GlobalPreferences.SongPrefix)
                                             {
                                                 if (!MFX_JumpCodes.ContainsKey(HexNum))
                                                 {

@@ -37,7 +37,7 @@ namespace EuroSound_Application.SoundBanksEditor
             EXAudio SelectedSound = TreeNodeFunctions.GetSelectedAudio(SelectedNode.Name, AudioDataDict);
             if (SelectedSound != null)
             {
-                GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "LastFile");
+                GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "SBPanel_LastFile");
                 Frm_AudioProperties FormAudioProps = new Frm_AudioProperties(SelectedSound, SelectedNode.Name)
                 {
                     Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
@@ -62,7 +62,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 //Open form only if file exists
                 if (File.Exists(GlobalPreferences.StreamFilePath))
                 {
-                    GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "LastFile");
+                    GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "SBPanel_LastFile");
                     using (Frm_NewStreamSound AddStreamSound = new Frm_NewStreamSound(SelectedSample))
                     {
                         AddStreamSound.Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties";
@@ -89,7 +89,7 @@ namespace EuroSound_Application.SoundBanksEditor
             }
             else
             {
-                GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "LastFile");
+                GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "SBPanel_LastFile");
                 Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(SelectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(ParentSound.Flags))
                 {
                     Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
@@ -122,7 +122,7 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             string SoundSection = TreeNodeFunctions.FindRootNode(SelectedNode).Name;
             EXSound SelectedSound = EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(SelectedNode.Name), SoundsList);
-            GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "LastFile");
+            GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "SBPanel_LastFile");
             Frm_EffectProperties FormSoundProps = new Frm_EffectProperties(SelectedSound, SelectedNode.Name, SoundSection)
             {
                 Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
@@ -517,19 +517,19 @@ namespace EuroSound_Application.SoundBanksEditor
         private void UpdateStatusBarLabels()
         {
             //Update File name label
-            GenericFunctions.SetCurrentFileLabel(ProjectInfo.FileName, "File");
+            GenericFunctions.SetCurrentFileLabel(ProjectInfo.FileName, "SBPanel_File");
 
             //Update Hashcode name label
-            GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, ProjectInfo.Hashcode), "Hashcode");
+            GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, ProjectInfo.Hashcode), "SBPanel_Hashcode");
         }
 
         private void ClearStatusBarLabels()
         {
             //Update File name label
-            GenericFunctions.SetCurrentFileLabel(string.Empty, "File");
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "SBPanel_File");
 
             //Update Hashcode name label
-            GenericFunctions.SetCurrentFileLabel(string.Empty, "Hashcode");
+            GenericFunctions.SetCurrentFileLabel(string.Empty, "SBPanel_Hashcode");
         }
 
         //*===============================================================================================

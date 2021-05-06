@@ -49,7 +49,7 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
                 Combobox_FileHashcode.SelectedValue = CurrentFileProperties.Hashcode;
             }
 
-            if (CurrentFileProperties.Hashcode == 65535)
+            if (CurrentFileProperties.Hashcode == GlobalPreferences.StreamFileHashCode)
             {
                 Combobox_FileHashcode.Enabled = false;
             }
@@ -70,7 +70,7 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
             CurrentFileProperties.FileName = Textbox_FileName.Text.Trim();
 
             //Update Current File label
-            GenericFunctions.SetCurrentFileLabel(CurrentFileProperties.FileName, "File");
+            GenericFunctions.SetCurrentFileLabel(CurrentFileProperties.FileName, "SBPanel_File");
 
             //Check we have selected a value
             if (Combobox_FileHashcode.SelectedValue != null)
@@ -80,7 +80,7 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
                 //Soundbanks and Music project types can't have the hashcode 0x0000FFFF
                 if (CurrentFileProperties.TypeOfData != (int)GenericFunctions.ESoundFileType.StreamSounds)
                 {
-                    if (SelectedHashcode == 0x0000FFFF)
+                    if (SelectedHashcode == GlobalPreferences.StreamFileHashCode)
                     {
                         MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ProjectSettings_ErrorHashcode"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
@@ -99,12 +99,12 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
                             }
                             else
                             {
-                                GenericFunctions.SetCurrentFileLabel(SelectedHashcodeLabel, "Hashcode");
+                                GenericFunctions.SetCurrentFileLabel(SelectedHashcodeLabel, "SBPanel_Hashcode");
                             }
                         }
                         else
                         {
-                            GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, CurrentFileProperties.Hashcode), "Hashcode");
+                            GenericFunctions.SetCurrentFileLabel(Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, CurrentFileProperties.Hashcode), "SBPanel_Hashcode");
                         }
                     }
                 }
