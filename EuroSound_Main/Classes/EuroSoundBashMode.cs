@@ -232,7 +232,7 @@ namespace EuroSound_Application.BashMode
                                         //Check Data, first the SFX Objects
                                         foreach (KeyValuePair<uint, EXSound> SoundToCheck in FinalSoundsDict)
                                         {
-                                            CanOutputFile = SFX_Check.ValidateSFX(SoundToCheck.Value, SoundsHashcodes, null, null);
+                                            CanOutputFile = SFX_Check.ValidateSFX(SoundToCheck.Value, FinalSoundsDict, SoundsHashcodes, null, null);
                                             if (CanOutputFile == false)
                                             {
                                                 break;

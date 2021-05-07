@@ -156,11 +156,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 bool CanOutputFile = true;
                 foreach (KeyValuePair<uint, EXSound> SoundToCheck in FinalSoundsDict)
                 {
-                    CanOutputFile = SFX_Check.ValidateSFX(SoundToCheck.Value, SoundsHashcodes, ((Frm_Soundbanks_Main)ParentForm).TreeView_File.Nodes.Find(SoundToCheck.Key.ToString(), true)[0].Text, Reports);
-                    if (CanOutputFile == false)
-                    {
-                        break;
-                    }
+                    CanOutputFile = SFX_Check.ValidateSFX(SoundToCheck.Value, FinalSoundsDict, SoundsHashcodes, ((Frm_Soundbanks_Main)ParentForm).TreeView_File.Nodes.Find(SoundToCheck.Key.ToString(), true)[0].Text, Reports);
                     GenericFunctions.ProgressBarAddValue(ProgressBar_CurrentTask, 1);
                 }
 

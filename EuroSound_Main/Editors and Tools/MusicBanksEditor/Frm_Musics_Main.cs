@@ -208,13 +208,6 @@ namespace EuroSound_Application.Musics
                     WindowStateConfig.Close();
                 }
 
-                //Update from title
-                Text = GenericFunctions.UpdateProjectFormText(CurrentFilePath, ProjectInfo.FileName);
-                if (WindowState != FormWindowState.Maximized)
-                {
-                    MdiParent.Text = "EuroSound - " + Text;
-                }
-
                 //Load ESF file if nedded
                 if (string.IsNullOrEmpty(CurrentFilePath))
                 {
@@ -325,6 +318,13 @@ namespace EuroSound_Application.Musics
                         //Set Program status
                         GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
                     }
+                }
+
+                //Update from title
+                Text = GenericFunctions.UpdateProjectFormText(CurrentFilePath, ProjectInfo.FileName);
+                if (WindowState != FormWindowState.Maximized)
+                {
+                    MdiParent.Text = "EuroSound - " + Text;
                 }
 
                 //Apply User Preferences

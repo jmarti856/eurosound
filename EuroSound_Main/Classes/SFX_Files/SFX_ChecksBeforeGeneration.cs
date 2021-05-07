@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.Musics;
+﻿using EuroSound_Application.HashCodesFunctions;
+using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace EuroSound_Application.Classes.SFX_Files
     {
         internal bool ValidateMarkers(List<EXStreamMarker> MarkersList, string ObjectName, IList<string> Reports)
         {
+            //Declare Variables
             int StartMarkers = 0;
             int EndMarkers = 0;
             int GotoMarkers = 0;
@@ -68,7 +70,6 @@ namespace EuroSound_Application.Classes.SFX_Files
                     Reports.Add("0More than one End marker on \"" + ObjectName + "\", must have only one.");
                 }
             }
-
             return MarkersCorrect;
         }
 
@@ -137,7 +138,6 @@ namespace EuroSound_Application.Classes.SFX_Files
                     }
                 }
             }
-
             return MusicIsCorrect;
         }
 
@@ -153,11 +153,10 @@ namespace EuroSound_Application.Classes.SFX_Files
                     Reports.Add("0Error in \"" + ObjectName + "\", there is no loaded data.");
                 }
             }
-
             return StreamSoundIsCorrect;
         }
 
-        internal bool ValidateSFX(EXSound SoundToExport, IList<uint> Hashcodes, string ObjectName, IList<string> Reports)
+        internal bool ValidateSFX(EXSound SoundToExport, Dictionary<uint, EXSound> SoundsDictionary, IList<uint> HashcodesList, string ObjectName, IList<string> Reports)
         {
             bool SFXIsCorrect = true;
 
@@ -171,7 +170,7 @@ namespace EuroSound_Application.Classes.SFX_Files
             }
             else
             {
-                if (Hashcodes.Contains(SoundToExport.Hashcode))
+                if (HashcodesList.Contains(SoundToExport.Hashcode))
                 {
                     if (Reports != null)
                     {
@@ -180,7 +179,7 @@ namespace EuroSound_Application.Classes.SFX_Files
                 }
                 else
                 {
-                    Hashcodes.Add(SoundToExport.Hashcode);
+                    HashcodesList.Add(SoundToExport.Hashcode);
                 }
             }
 
@@ -195,11 +194,11 @@ namespace EuroSound_Application.Classes.SFX_Files
             }
 
             //Check Samples has an audio asociated
-            foreach (KeyValuePair<uint, EXSample> Sample in SoundToExport.Samples)
+            foreach (EXSample Sample in SoundToExport.Samples.Values)
             {
-                if (Sample.Value.IsStreamed)
+                if (Sample.IsStreamed)
                 {
-                    if (Sample.Value.FileRef >= 0)
+                    if (Sample.FileRef >= 0)
                     {
                         SFXIsCorrect = false;
                         if (Reports != null)
@@ -212,7 +211,7 @@ namespace EuroSound_Application.Classes.SFX_Files
                 {
                     if (EXSoundbanksFunctions.SubSFXFlagChecked(SoundToExport.Flags))
                     {
-                        if (Sample.Value.HashcodeSubSFX == 0)
+                        if (Sample.HashcodeSubSFX == 0)
                         {
                             SFXIsCorrect = false;
                             if (Reports != null)
@@ -223,7 +222,7 @@ namespace EuroSound_Application.Classes.SFX_Files
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(Sample.Value.ComboboxSelectedAudio))
+                        if (string.IsNullOrEmpty(Sample.ComboboxSelectedAudio))
                         {
                             SFXIsCorrect = false;
                             if (Reports != null)
@@ -235,6 +234,35 @@ namespace EuroSound_Application.Classes.SFX_Files
                 }
             }
 
+            //Check Sub-SFX
+            if (EXSoundbanksFunctions.SubSFXFlagChecked(SoundToExport.Flags))
+            {
+                //Sub-SFX HashCode
+                foreach (EXSample Sample in SoundToExport.Samples.Values)
+                {
+                    bool SoundRefExists = false;
+
+                    //Check there's a sound that has assigned this HashCode
+                    foreach (EXSound Sound in SoundsDictionary.Values)
+                    {
+                        if (Sample.HashcodeSubSFX == Sound.Hashcode)
+                        {
+                            SoundRefExists = true;
+                            break;
+                        }
+                    }
+
+                    //Inform user if not exists
+                    if (!SoundRefExists)
+                    {
+                        SFXIsCorrect = false;
+                        if (Reports != null)
+                        {
+                            Reports.Add("0SFX " + ObjectName + " has a Sub-SFX, but has not found or is checked as \"No output\" the Sub-SFX HashCode is: " + Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, Sample.HashcodeSubSFX) + " (0x" + Sample.HashcodeSubSFX.ToString("X8") + ").");
+                        }
+                    }
+                }
+            }
             return SFXIsCorrect;
         }
 
@@ -250,7 +278,6 @@ namespace EuroSound_Application.Classes.SFX_Files
                     Reports.Add("0SFX " + ObjectName + " does not have data loaded.");
                 }
             }
-
             return AudioIsValid;
         }
     }
