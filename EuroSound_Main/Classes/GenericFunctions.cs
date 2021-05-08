@@ -208,9 +208,9 @@ namespace EuroSound_Application
                     AudioReader.Close();
                 }
             }
-            catch (FormatException)
+            catch
             {
-
+                MessageBox.Show(ResourcesManager.GetString("Gen_ErrorRedingFile") + FilePath, "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             return AudioIsCorrect;

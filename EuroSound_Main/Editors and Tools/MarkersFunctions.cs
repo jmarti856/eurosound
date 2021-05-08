@@ -1,5 +1,6 @@
 ﻿using EngineXImaAdpcm;
 using EuroSound_Application.StreamSounds;
+using System;
 using System.Collections.Generic;
 
 namespace EuroSound_Application.MarkerFiles.StreamSoundsEditor.Classes

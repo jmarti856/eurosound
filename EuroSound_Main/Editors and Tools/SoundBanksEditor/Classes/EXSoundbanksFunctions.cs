@@ -146,28 +146,40 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 using (WaveFileReader reader = new WaveFileReader(SourcePath))
                 {
-                    WaveFormat newFormat = new WaveFormat(GlobalPreferences.SoundbankFrequency, GlobalPreferences.SoundbankBits, GlobalPreferences.SoundbankChannels);
-                    using (WaveFormatConversionStream conversionStream = new WaveFormatConversionStream(newFormat, reader))
+                    using (MediaFoundationResampler conversionStream = new MediaFoundationResampler(reader, new WaveFormat(GlobalPreferences.SoundbankFrequency, GlobalPreferences.SoundbankBits, GlobalPreferences.SoundbankChannels)))
                     {
                         EXAudio Audio = new EXAudio
                         {
                             LoadedFileName = Path.GetFileName(SourcePath),
-                            DataSize = (uint)conversionStream.Length,
                             Frequency = (uint)conversionStream.WaveFormat.SampleRate,
                             RealSize = (uint)new FileInfo(SourcePath).Length,
                             Channels = (uint)conversionStream.WaveFormat.Channels,
                             Bits = (uint)conversionStream.WaveFormat.BitsPerSample,
-                            Duration = (uint)Math.Round(conversionStream.TotalTime.TotalMilliseconds, 1),
                             Encoding = conversionStream.WaveFormat.Encoding.ToString(),
                             Flags = 0,
                             LoopOffset = 0,
                             PSIsample = 0
                         };
 
-                        //Get PCM Data
-                        Audio.PCMdata = new byte[conversionStream.Length];
-                        conversionStream.Read(Audio.PCMdata, 0, (int)conversionStream.Length);
-                        conversionStream.Close();
+                        //Get PCM Data Stereo
+                        using (MemoryStream outStream = new MemoryStream())
+                        {
+                            byte[] bytes = new byte[conversionStream.WaveFormat.AverageBytesPerSecond * 4];
+                            while (true)
+                            {
+                                int bytesRead = conversionStream.Read(bytes, 0, bytes.Length);
+                                if (bytesRead == 0)
+                                {
+                                    break;
+                                }
+                                outStream.Write(bytes, 0, bytesRead);
+                            }
+                            Audio.PCMdata = outStream.ToArray();
+                        }
+
+                        //Get Properties
+                        Audio.DataSize = (uint)Audio.PCMdata.Length;
+                        Audio.Duration = (uint)(decimal.Divide(Audio.PCMdata.Length, conversionStream.WaveFormat.AverageBytesPerSecond) * 1000);
 
                         return Audio;
                     }

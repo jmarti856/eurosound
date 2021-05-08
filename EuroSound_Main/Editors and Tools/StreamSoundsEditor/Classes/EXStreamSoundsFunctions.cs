@@ -85,20 +85,32 @@ namespace EuroSound_Application.StreamSounds
                 EngineXImaAdpcm.ImaADPCM_Functions ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Functions();
                 if (ConvertAudio)
                 {
-                    WaveFormat newFormat = new WaveFormat(GlobalPreferences.StreambankFrequency, GlobalPreferences.StreambankBits, GlobalPreferences.StreambankChannels);
-                    using (WaveFormatConversionStream conversionStream = new WaveFormatConversionStream(newFormat, AudioReader))
+                    using (MediaFoundationResampler conversionStream = new MediaFoundationResampler(AudioReader, new WaveFormat(GlobalPreferences.StreambankFrequency, GlobalPreferences.StreambankBits, GlobalPreferences.StreambankChannels)))
                     {
                         TemporalSound.Channels = (byte)conversionStream.WaveFormat.Channels;
                         TemporalSound.Frequency = (uint)conversionStream.WaveFormat.SampleRate;
                         TemporalSound.RealSize = (uint)new FileInfo(AudioPath).Length;
                         TemporalSound.Bits = (uint)conversionStream.WaveFormat.BitsPerSample;
                         TemporalSound.Encoding = conversionStream.WaveFormat.Encoding.ToString();
-                        TemporalSound.Duration = (uint)Math.Round(conversionStream.TotalTime.TotalMilliseconds, 1);
 
-                        //Get PCM Data
-                        TemporalSound.PCM_Data = new byte[conversionStream.Length];
-                        conversionStream.Read(TemporalSound.PCM_Data, 0, (int)conversionStream.Length);
-                        conversionStream.Close();
+                        //Get PCM Data Stereo
+                        using (MemoryStream outStream = new MemoryStream())
+                        {
+                            byte[] bytes = new byte[conversionStream.WaveFormat.AverageBytesPerSecond * 4];
+                            while (true)
+                            {
+                                int bytesRead = conversionStream.Read(bytes, 0, bytes.Length);
+                                if (bytesRead == 0)
+                                {
+                                    break;
+                                }
+                                outStream.Write(bytes, 0, bytesRead);
+                            }
+                            TemporalSound.PCM_Data = outStream.ToArray();
+                        }
+
+                        //Get Properties
+                        TemporalSound.Duration = (uint)(decimal.Divide(TemporalSound.PCM_Data.Length, conversionStream.WaveFormat.AverageBytesPerSecond) * 1000);
 
                         //Get IMA ADPCM Data
                         TemporalSound.IMA_ADPCM_DATA = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalSound.PCM_Data), TemporalSound.PCM_Data.Length / 2);

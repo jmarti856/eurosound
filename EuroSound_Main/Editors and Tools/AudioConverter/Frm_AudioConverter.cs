@@ -280,7 +280,7 @@ namespace EuroSound_Application.AudioConverter
                                         {
                                             RawSourceWaveStream Original = new RawSourceWaveStream(reader, new WaveFormat(reader.WaveFormat.SampleRate, reader.WaveFormat.BitsPerSample, reader.WaveFormat.Channels));
                                             WaveStream pcmStream = WaveFormatConversionStream.CreatePcmStream(Original);
-                                            using (WaveFormatConversionStream conversionStream = new WaveFormatConversionStream(new WaveFormat((int)Frequency, Bits, Channels), pcmStream))
+                                            using (MediaFoundationResampler conversionStream = new MediaFoundationResampler(pcmStream, new WaveFormat((int)Frequency, Bits, Channels)))
                                             {
                                                 WaveFileWriter.CreateWaveFile(OutputFilePath, conversionStream);
                                             }
@@ -291,7 +291,7 @@ namespace EuroSound_Application.AudioConverter
                                     {
                                         using (WaveFileReader reader = new WaveFileReader(InputFilePath))
                                         {
-                                            using (WaveFormatConversionStream conversionStream = new WaveFormatConversionStream(new WaveFormat((int)Frequency, Bits, Channels), reader))
+                                            using (MediaFoundationResampler conversionStream = new MediaFoundationResampler(reader, new WaveFormat((int)Frequency, Bits, Channels)))
                                             {
                                                 WaveFileWriter.CreateWaveFile(OutputFilePath, conversionStream);
                                             }
@@ -304,7 +304,7 @@ namespace EuroSound_Application.AudioConverter
                                         {
                                             RawSourceWaveStream Original = new RawSourceWaveStream(reader, new WaveFormat(reader.WaveFormat.SampleRate, reader.WaveFormat.BitsPerSample, reader.WaveFormat.Channels));
                                             WaveStream pcmStream = WaveFormatConversionStream.CreatePcmStream(Original);
-                                            using (WaveFormatConversionStream conversionStream = new WaveFormatConversionStream(new WaveFormat((int)Frequency, Bits, Channels), pcmStream))
+                                            using (MediaFoundationResampler conversionStream = new MediaFoundationResampler(pcmStream, new WaveFormat((int)Frequency, Bits, Channels)))
                                             {
                                                 WaveFileWriter.CreateWaveFile(OutputFilePath, conversionStream);
                                             }
