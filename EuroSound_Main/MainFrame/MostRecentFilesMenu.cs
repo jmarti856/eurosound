@@ -564,7 +564,7 @@ namespace EuroSound_Application
         {
             maxShortenPathLength = 48;
             this.owningMenu = owningMenu;
-            this.firstMenuItem = recentFileMenuItem;
+            firstMenuItem = recentFileMenuItem;
             Init(recentFileMenuItem, clickedHandler, registryKeyName, loadFromRegistry, maxEntries);
         }
 

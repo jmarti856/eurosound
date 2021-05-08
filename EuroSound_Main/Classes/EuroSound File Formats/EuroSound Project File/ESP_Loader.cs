@@ -5,9 +5,9 @@ using System.Text.RegularExpressions;
 
 namespace EuroSound_Application.EuroSound_Profiles
 {
-    class ESP_Loader
+    internal class ESP_Loader
     {
-        Regex RemoveCharactersFromPathString = new Regex(@"[\p{Cc}\p{Cf}\p{Mn}\p{Me}\p{Zl}\p{Zp}]");
+        private Regex RemoveCharactersFromPathString = new Regex(@"[\p{Cc}\p{Cf}\p{Mn}\p{Me}\p{Zl}\p{Zp}]");
 
         internal bool FileIsValid(IEnumerable<string> lines)
         {

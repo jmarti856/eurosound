@@ -19,7 +19,7 @@ namespace EuroSound_Application.StreamSounds
         private MarkersFunctions MarkerFunctions = new MarkersFunctions();
 
         private bool MusicMode;
-        int v_MarkerName;
+        private int v_MarkerName;
 
         //*===============================================================================================
         //* FORM EVENTS
@@ -304,6 +304,13 @@ namespace EuroSound_Application.StreamSounds
                     //-----------------------------------------------------[Markers]-----------------------------------------------------
                     EXStreamMarker Marker = MarkerFunctions.CreateMarker(TemporalSelectedSound.Markers, v_MarkerName, Position, 7, 2, (uint)TemporalSelectedSound.Markers.Count, LoopStart, 1);
                     AddMarkerDataToListView(Marker);
+                }
+                else if (MarkerType == (int)GenericFunctions.ESoundMarkers.Pause)
+                {
+                    //--------------------------------------------------[Markers]--------------------------------------------------------
+                    //----Add End Marker----
+                    EXStreamMarker MarkerStart = MarkerFunctions.CreateMarker(TemporalSelectedSound.Markers, v_MarkerName, Position, MarkerType, 2, (uint)TemporalSelectedSound.StartMarkers.Count, 0, 0);
+                    AddMarkerDataToListView(MarkerStart);
                 }
                 else
                 {

@@ -6,7 +6,7 @@ using System.IO;
 
 namespace EuroSound_Application.SoundBanksEditor.Debug_Writer
 {
-    class SoundBanks_DebugWriter
+    internal class SoundBanks_DebugWriter
     {
         internal void CreateDebugFile(string FilePath, int DebugFlags)
         {

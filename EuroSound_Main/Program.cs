@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace EuroSound_Application
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
         /// Punto de entrada principal para la aplicación.
@@ -24,15 +24,15 @@ namespace EuroSound_Application
         private static extern int SetForegroundWindow(IntPtr hwnd);
 
         [DllImport("user32.dll")]
-        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
         private const int SW_SHOWMAXIMIZED = 3;
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool IsIconic(IntPtr hWnd);
+        private static extern bool IsIconic(IntPtr hWnd);
 
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             /*
             args = new string[2];
@@ -72,7 +72,7 @@ namespace EuroSound_Application
             }
         }
 
-        static bool Get45or451FromRegistry()
+        private static bool Get45or451FromRegistry()
         {
             bool versionOK = false;
 
@@ -88,7 +88,7 @@ namespace EuroSound_Application
             return versionOK;
         }
 
-        static string CheckFor45DotVersion(int releaseKey)
+        private static string CheckFor45DotVersion(int releaseKey)
         {
             if (releaseKey >= 461808)
             {
@@ -136,7 +136,7 @@ namespace EuroSound_Application
             return "No 4.5 or later version detected";
         }
 
-        static void StartApplicationMDI(string[] Arguments)
+        private static void StartApplicationMDI(string[] Arguments)
         {
             Process[] EuroSoundInstances = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location));
             //We have more instances

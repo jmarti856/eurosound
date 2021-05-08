@@ -16,7 +16,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 {
     internal class EuroSoundFiles
     {
-        uint FileVersion = 0;
+        private uint FileVersion = 0;
 
         internal string LoadSoundBanksDocument(TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
         {

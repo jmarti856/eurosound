@@ -11,7 +11,7 @@ using YamlDotNet.RepresentationModel;
 
 namespace EuroSound_Application.StreamSounds.YMLReader
 {
-    class StreamSoundsYMLReader
+    internal class StreamSoundsYMLReader
     {
         private AudioFunctions AudioLibrary = new AudioFunctions();
         internal List<string> Reports;

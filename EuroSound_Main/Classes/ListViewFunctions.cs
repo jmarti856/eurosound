@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace EuroSound_Application.FunctionsListView
 {
-    class ListViewFunctions
+    internal class ListViewFunctions
     {
         internal void SelectAllItems(ListView ListViewControl)
         {

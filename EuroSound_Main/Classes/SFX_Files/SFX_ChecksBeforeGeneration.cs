@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace EuroSound_Application.Classes.SFX_Files
 {
-    class SFX_ChecksBeforeGeneration
+    internal class SFX_ChecksBeforeGeneration
     {
         internal bool ValidateMarkers(List<EXStreamMarker> MarkersList, string ObjectName, IList<string> Reports)
         {

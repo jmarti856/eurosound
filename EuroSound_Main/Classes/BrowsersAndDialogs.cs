@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace EuroSound_Application.Clases
 {
-    static class BrowsersAndDialogs
+    internal static class BrowsersAndDialogs
     {
         internal static string FileBrowserDialog(string BrowserFilter, int SelectedIndexFilter, bool ForceSpecifiedFilter)
         {

@@ -4,7 +4,7 @@ using System.IO;
 
 namespace EuroSound_Application.MarkerFiles
 {
-    class MarkerFiles_Exporter
+    internal class MarkerFiles_Exporter
     {
         internal void ExportMarkersFromSound(string FilePath, string SoundName, EXSoundStream SoundToExport)
         {

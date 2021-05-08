@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.ApplicationPreferences;
+﻿using EngineXImaAdpcm;
+using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.AudioFunctionsLibrary;
 using NAudio.Wave;
 using System;
@@ -82,7 +83,7 @@ namespace EuroSound_Application.StreamSounds
 
             using (WaveFileReader AudioReader = new WaveFileReader(AudioPath))
             {
-                EngineXImaAdpcm.ImaADPCM_Functions ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Functions();
+                ImaADPCM_Functions ImaADPCM = new ImaADPCM_Functions();
                 if (ConvertAudio)
                 {
                     using (MediaFoundationResampler conversionStream = new MediaFoundationResampler(AudioReader, new WaveFormat(GlobalPreferences.StreambankFrequency, GlobalPreferences.StreambankBits, GlobalPreferences.StreambankChannels)))

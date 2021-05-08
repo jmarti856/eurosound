@@ -540,7 +540,7 @@ namespace EuroSound_Application.Musics
                 {
                     using (EuroSound_DebugTypes DebugOpts = new EuroSound_DebugTypes(new string[] { "File start 1", "File start 2" }))
                     {
-                        DebugOpts.Owner = this.Owner;
+                        DebugOpts.Owner = Owner;
                         if (DebugOpts.ShowDialog() == DialogResult.OK)
                         {
                             BuildSfxForm(FileName, DebugOpts.CheckedOptions);

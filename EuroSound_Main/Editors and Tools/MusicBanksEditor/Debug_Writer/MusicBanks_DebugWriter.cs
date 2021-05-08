@@ -4,7 +4,7 @@ using System.IO;
 
 namespace EuroSound_Application.Musics
 {
-    class MusicBanks_DebugWriter
+    internal class MusicBanks_DebugWriter
     {
         internal void CreateDebugFile(string FilePath, int DebugFlags)
         {

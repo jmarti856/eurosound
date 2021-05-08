@@ -4,7 +4,7 @@ using System.IO;
 
 namespace EuroSound_Application.ApplicationRegistryFunctions
 {
-    class RestoreSettings
+    internal class RestoreSettings
     {
         public void Restore(BinaryReader BReader, RegistryKey EuroSoundKey)
         {

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace EuroSound_Application.ApplicationRegistryFunctions
 {
-    class BackupSettings
+    internal class BackupSettings
     {
         public void Save(string SavePath, RegistryKey EuroSoundKey)
         {

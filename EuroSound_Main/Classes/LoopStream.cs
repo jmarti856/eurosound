@@ -4,7 +4,7 @@ namespace EuroSound_Application.AudioMixingFunctions
 {
     public class LoopStream : WaveStream
     {
-        RawSourceWaveStream sourceStream;
+        private RawSourceWaveStream sourceStream;
 
         /// <summary>
         /// Creates a new Loop stream
@@ -14,7 +14,7 @@ namespace EuroSound_Application.AudioMixingFunctions
         public LoopStream(RawSourceWaveStream sourceStream)
         {
             this.sourceStream = sourceStream;
-            this.EnableLooping = true;
+            EnableLooping = true;
         }
 
         /// <summary>

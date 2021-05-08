@@ -6,12 +6,12 @@ using System.IO;
 
 namespace EuroSound_Application.ApplicationPreferences.EuroSound_Profiles
 {
-    class ProfilesFunctions
+    internal class ProfilesFunctions
     {
         //*===============================================================================================
         //* GLOBAL VARIABLES
         //*===============================================================================================
-        ESP_Loader ProfilesLoader = new ESP_Loader();
+        private ESP_Loader ProfilesLoader = new ESP_Loader();
 
         internal void ApplyProfile(string ProfileFilePath, string ProfileFileName, bool ReloadHashTables)
         {

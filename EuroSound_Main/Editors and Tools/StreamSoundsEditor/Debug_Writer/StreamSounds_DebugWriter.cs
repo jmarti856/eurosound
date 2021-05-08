@@ -5,7 +5,7 @@ using System.IO;
 
 namespace EuroSound_Application.Editors_and_Tools.StreamSoundsEditor.Debug_Writer
 {
-    class StreamSounds_DebugWriter
+    internal class StreamSounds_DebugWriter
     {
         internal void CreateDebugFile(string FilePath, int DebugFlags)
         {

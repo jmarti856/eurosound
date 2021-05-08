@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EuroSound_Application.ApplicationRegistryFunctions
 {
-    class BackupReloadSettings
+    internal class BackupReloadSettings
     {
         private RegistryKey EurocomKey, EuroSoundKey;
         private RegistryKey SoftwareKey = Registry.CurrentUser.OpenSubKey("Software", true);

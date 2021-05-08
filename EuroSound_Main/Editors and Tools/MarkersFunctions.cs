@@ -1,11 +1,10 @@
 ﻿using EngineXImaAdpcm;
 using EuroSound_Application.StreamSounds;
-using System;
 using System.Collections.Generic;
 
 namespace EuroSound_Application.MarkerFiles.StreamSoundsEditor.Classes
 {
-    class MarkersFunctions
+    internal class MarkersFunctions
     {
         internal EXStreamStartMarker CreateStartMarker(List<EXStreamStartMarker> MarkersList, uint v_pos, uint v_type, uint v_flags, uint v_loopstart, uint v_loopmarkercount, uint v_mkrpos, uint v_stateA, uint v_stateB)
         {

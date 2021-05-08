@@ -853,7 +853,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 {
                     using (EuroSound_DebugTypes DebugOpts = new EuroSound_DebugTypes(new string[] { "SFX Elements", "Sample info elements", "Sample Data" }))
                     {
-                        DebugOpts.Owner = this.Owner;
+                        DebugOpts.Owner = Owner;
                         if (DebugOpts.ShowDialog() == DialogResult.OK)
                         {
                             BuildSfxForm(FileName, DebugOpts.CheckedOptions);

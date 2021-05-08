@@ -11,7 +11,7 @@ namespace EuroSound_Application.Musics
     internal class GenerateSFXMusicBank
     {
         private List<long> MarkersStartList = new List<long>();
-        long FileLength1, FileLength2, FullFileLength;
+        private long FileLength1, FileLength2, FullFileLength;
 
         private const uint FileStart1 = 0x800;
         private const uint FileStart2 = 0x1000;

@@ -24,8 +24,8 @@ namespace EuroSound_Application.BashMode
         //*===============================================================================================
         //* Variables
         //*===============================================================================================
-        IniFile_Functions ProfilesReader = new IniFile_Functions();
-        ProfilesFunctions ProfilesLoader = new ProfilesFunctions();
+        private IniFile_Functions ProfilesReader = new IniFile_Functions();
+        private ProfilesFunctions ProfilesLoader = new ProfilesFunctions();
 
         internal void LoadBasicData()
         {

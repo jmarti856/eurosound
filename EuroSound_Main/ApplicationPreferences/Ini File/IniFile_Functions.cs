@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace EuroSound_Application.ApplicationPreferences.Ini_File
 {
-    class IniFile_Functions
+    internal class IniFile_Functions
     {
         internal Dictionary<string, string> GetAvailableProfiles(string FilePath)
         {

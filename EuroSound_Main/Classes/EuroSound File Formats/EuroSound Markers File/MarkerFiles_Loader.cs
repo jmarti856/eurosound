@@ -7,13 +7,13 @@ using System.Text.RegularExpressions;
 
 namespace EuroSound_Application.MarkerFiles
 {
-    class MarkerFiles_Loader
+    internal class MarkerFiles_Loader
     {
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
         private List<string> ImportResults = new List<string>();
-        MarkersFunctions MKFunctions = new MarkersFunctions();
+        private MarkersFunctions MKFunctions = new MarkersFunctions();
 
         internal IList<string> LoadSTRMarkersFile(string FilePath, EXSoundStream StreamSoundToModify)
         {
