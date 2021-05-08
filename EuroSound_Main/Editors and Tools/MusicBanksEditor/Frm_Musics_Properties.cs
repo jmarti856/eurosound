@@ -4,6 +4,7 @@ using EuroSound_Application.Clases;
 using EuroSound_Application.StreamSounds;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -355,14 +356,19 @@ namespace EuroSound_Application.Musics
 
         private void ShowAudioInfoLeftChannel()
         {
+            //Loaded data
             Textbox_IMA_ADPCM_LeftChannel.Text = TemporalMusic.WAVFileName_LeftChannel;
             Textbox_MD5_Hash_LeftChannel.Text = TemporalMusic.WAVFileMD5_LeftChannel;
-            Textbox_Bits_LeftChannel.Text = TemporalMusic.Bits_LeftChannel.ToString();
-            Textbox_Encoding_LeftChannel.Text = TemporalMusic.Encoding_LeftChannel.ToUpper();
-            Textbox_Channels_LeftChannel.Text = TemporalMusic.Channels_LeftChannel.ToString();
-            Textbox_Frequency_LeftChannel.Text = string.Join(" ", new string[] { TemporalMusic.Frequency_LeftChannel.ToString(), "Hz" });
+
+            //Properties
+            Textbox_IMA_ADPCM_Size_LeftChannels.Text = string.Join(" ", new string[] { TemporalMusic.IMA_ADPCM_DATA_LeftChannel.Length.ToString(), "bytes" });
+            Textbox_DataSize_LeftChannel.Text = string.Join(" ", new string[] { TemporalMusic.PCM_Data_LeftChannel.Length.ToString(), "bytes" });
             Textbox_RealSize_LeftChannel.Text = string.Join(" ", new string[] { TemporalMusic.RealSize_LeftChannel.ToString(), "bytes" });
+            Textbox_Frequency_LeftChannel.Text = string.Join(" ", new string[] { TemporalMusic.Frequency_LeftChannel.ToString(), "Hz" });
+            Textbox_Channels_LeftChannel.Text = TemporalMusic.Channels_LeftChannel.ToString();
+            Textbox_Bits_LeftChannel.Text = TemporalMusic.Bits_LeftChannel.ToString();
             Textbox_Duration_LeftChannel.Text = string.Join(" ", new string[] { TemporalMusic.Duration_LeftChannel.ToString(), "ms" });
+            Textbox_Encoding_LeftChannel.Text = TemporalMusic.Encoding_LeftChannel.ToUpper();
 
             //Draw audio waves in the UI
             if (TemporalMusic.PCM_Data_LeftChannel != null && TemporalMusic.Channels_LeftChannel > 0)
@@ -373,14 +379,19 @@ namespace EuroSound_Application.Musics
 
         private void ShowAudioInfoRightChannel()
         {
+            //Loaded data
             Textbox_IMA_ADPCM_RightChannel.Text = TemporalMusic.WAVFileName_RightChannel;
             Textbox_MD5_Hash_RightChannel.Text = TemporalMusic.WAVFileMD5_RightChannel;
-            Textbox_Bits_RightChannel.Text = TemporalMusic.Bits_RightChannel.ToString();
-            Textbox_Encoding_RightChannel.Text = TemporalMusic.Encoding_RightChannel.ToUpper();
-            Textbox_Channels_RightChannel.Text = TemporalMusic.Channels_RightChannel.ToString();
-            Textbox_Frequency_RightChannel.Text = string.Join(" ", new string[] { TemporalMusic.Frequency_RightChannel.ToString(), "Hz" });
+
+            //Properties
+            Textbox_IMA_ADPCM_Size_RightChannels.Text = string.Join(" ", new string[] { TemporalMusic.IMA_ADPCM_DATA_RightChannel.Length.ToString(), "bytes" });
+            Textbox_DataSize_RightChannel.Text = string.Join(" ", new string[] { TemporalMusic.PCM_Data_RightChannel.Length.ToString(), "bytes" });
             Textbox_RealSize_RightChannel.Text = string.Join(" ", new string[] { TemporalMusic.RealSize_RightChannel.ToString(), "bytes" });
+            Textbox_Frequency_RightChannel.Text = string.Join(" ", new string[] { TemporalMusic.Frequency_RightChannel.ToString(), "Hz" });
+            Textbox_Channels_RightChannel.Text = TemporalMusic.Channels_RightChannel.ToString();
+            Textbox_Bits_RightChannel.Text = TemporalMusic.Bits_RightChannel.ToString();
             Textbox_Duration_RightChannel.Text = string.Join(" ", new string[] { TemporalMusic.Duration_RightChannel.ToString(), "ms" });
+            Textbox_Encoding_RightChannel.Text = TemporalMusic.Encoding_RightChannel.ToUpper();
 
             //Draw audio waves in the UI
             if (TemporalMusic.PCM_Data_RightChannel != null && TemporalMusic.Channels_RightChannel > 0)

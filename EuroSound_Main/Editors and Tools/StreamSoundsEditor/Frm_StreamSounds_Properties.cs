@@ -169,14 +169,19 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         private void ShowAudioInfo()
         {
-            Textbox_Bits.Text = TemporalSound.Bits.ToString();
-            Textbox_Encoding.Text = TemporalSound.Encoding.ToUpper();
-            Textbox_Channels.Text = TemporalSound.Channels.ToString();
-            Textbox_Frequency.Text = string.Join(" ", new string[] { TemporalSound.Frequency.ToString(), "Hz" });
-            Textbox_RealSize.Text = string.Join(" ", new string[] { TemporalSound.RealSize.ToString(), "bytes" });
-            Textbox_Duration.Text = string.Join(" ", new string[] { TemporalSound.Duration.ToString(), "ms" });
+            //Loaded Data
             Textbox_IMA_ADPCM.Text = TemporalSound.WAVFileName;
             Textbox_MD5_Hash.Text = TemporalSound.WAVFileMD5;
+
+            //Sound Properties
+            Textbox_IMA_Data_Lenght.Text = string.Join(" ", new string[] { TemporalSound.IMA_ADPCM_DATA.Length.ToString(), "bytes" });
+            Textbox_DataSize.Text = string.Join(" ", new string[] { TemporalSound.PCM_Data.Length.ToString(), "bytes" });
+            Textbox_RealSize.Text = string.Join(" ", new string[] { TemporalSound.RealSize.ToString(), "bytes" });
+            Textbox_Frequency.Text = string.Join(" ", new string[] { TemporalSound.Frequency.ToString(), "Hz" });
+            Textbox_Channels.Text = TemporalSound.Channels.ToString();
+            Textbox_Bits.Text = TemporalSound.Bits.ToString();
+            Textbox_Duration.Text = string.Join(" ", new string[] { TemporalSound.Duration.ToString(), "ms" });
+            Textbox_Encoding.Text = TemporalSound.Encoding.ToUpper();
 
             //Draw audio waves in the UI
             if (TemporalSound.PCM_Data != null && TemporalSound.Channels > 0)

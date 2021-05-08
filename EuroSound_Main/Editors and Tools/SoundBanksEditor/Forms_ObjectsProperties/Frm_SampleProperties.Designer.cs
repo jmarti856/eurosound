@@ -140,11 +140,11 @@
             // Label_RandomPitchOffset
             // 
             this.Label_RandomPitchOffset.AutoSize = true;
-            this.Label_RandomPitchOffset.Location = new System.Drawing.Point(228, 21);
+            this.Label_RandomPitchOffset.Location = new System.Drawing.Point(259, 21);
             this.Label_RandomPitchOffset.Name = "Label_RandomPitchOffset";
-            this.Label_RandomPitchOffset.Size = new System.Drawing.Size(108, 13);
+            this.Label_RandomPitchOffset.Size = new System.Drawing.Size(77, 13);
             this.Label_RandomPitchOffset.TabIndex = 6;
-            this.Label_RandomPitchOffset.Text = "Random Pitch Offset:";
+            this.Label_RandomPitchOffset.Text = "Random Pitch:";
             // 
             // numeric_randompan
             // 
@@ -172,7 +172,7 @@
             // label_randompan
             // 
             this.label_randompan.AutoSize = true;
-            this.label_randompan.Location = new System.Drawing.Point(264, 71);
+            this.label_randompan.Location = new System.Drawing.Point(264, 73);
             this.label_randompan.Name = "label_randompan";
             this.label_randompan.Size = new System.Drawing.Size(72, 13);
             this.label_randompan.TabIndex = 10;
@@ -231,11 +231,11 @@
             // label_randomvolumeoffset
             // 
             this.label_randomvolumeoffset.AutoSize = true;
-            this.label_randomvolumeoffset.Location = new System.Drawing.Point(217, 47);
+            this.label_randomvolumeoffset.Location = new System.Drawing.Point(248, 47);
             this.label_randomvolumeoffset.Name = "label_randomvolumeoffset";
-            this.label_randomvolumeoffset.Size = new System.Drawing.Size(119, 13);
+            this.label_randomvolumeoffset.Size = new System.Drawing.Size(88, 13);
             this.label_randomvolumeoffset.TabIndex = 8;
-            this.label_randomvolumeoffset.Text = "Random Volume Offset:";
+            this.label_randomvolumeoffset.Text = "Random Volume:";
             // 
             // numeric_pitchoffset
             // 
@@ -257,11 +257,11 @@
             // label_pitchoffset
             // 
             this.label_pitchoffset.AutoSize = true;
-            this.label_pitchoffset.Location = new System.Drawing.Point(23, 21);
+            this.label_pitchoffset.Location = new System.Drawing.Point(54, 21);
             this.label_pitchoffset.Name = "label_pitchoffset";
-            this.label_pitchoffset.Size = new System.Drawing.Size(65, 13);
+            this.label_pitchoffset.Size = new System.Drawing.Size(34, 13);
             this.label_pitchoffset.TabIndex = 0;
-            this.label_pitchoffset.Text = "Pitch Offset:";
+            this.label_pitchoffset.Text = "Pitch:";
             // 
             // button_ok
             // 
