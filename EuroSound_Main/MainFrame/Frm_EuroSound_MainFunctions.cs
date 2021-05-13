@@ -131,10 +131,10 @@ namespace EuroSound_Application
         {
             int Type = -1;
 
-            if (System.IO.File.Exists(FileToLoad))
+            if (File.Exists(FileToLoad))
             {
                 EuroSoundFiles ESFFiles = new EuroSoundFiles();
-                using (BinaryReader BReader = new BinaryReader(System.IO.File.Open(FileToLoad, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
+                using (BinaryReader BReader = new BinaryReader(File.Open(FileToLoad, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
                 {
                     if (ESFFiles.FileIsCorrect(BReader))
                     {

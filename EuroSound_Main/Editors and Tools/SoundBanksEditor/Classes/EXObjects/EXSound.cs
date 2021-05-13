@@ -17,6 +17,7 @@ namespace EuroSound_Application.SoundBanksEditor
         public bool OutputThisSound = true;
         public sbyte Priority;
         public sbyte ReverbSend;
+
         //public List<EXSample> Samples { get; set; } = new List<EXSample>();
         public Dictionary<uint, EXSample> Samples { get; set; } = new Dictionary<uint, EXSample>();
 
