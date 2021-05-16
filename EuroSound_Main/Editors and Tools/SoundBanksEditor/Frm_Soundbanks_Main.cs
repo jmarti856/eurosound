@@ -34,6 +34,7 @@ namespace EuroSound_Application.SoundBanksEditor
         internal string CurrentFilePath = string.Empty;
         private string ProjectName;
         private bool FormMustBeClosed = false;
+        private bool CanExpandChildNodes = true;
         private EuroSoundFiles EuroSoundFilesFunctions = new EuroSoundFiles();
         private Thread UpdateList, UpdateWavList, UpdateStreamDataList, LoadYamlFile, LoadSoundBankFile;
         private SoundBanksYMLReader LibYamlReader = new SoundBanksYMLReader();
@@ -862,7 +863,6 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
                 else
                 {
-
                     BuildSfxForm(FileName, 0);
                 }
             }
@@ -928,49 +928,63 @@ namespace EuroSound_Application.SoundBanksEditor
         //---------------------------------------------[Change Nodes Images]---------------------------------------------
         private void TreeView_File_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
         {
-            //Change node images depending of the type
-            if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
+            if (CanExpandChildNodes)
             {
-                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 0, 0);
-            }
-            else if (e.Node.Tag.Equals("Sound"))
-            {
-                if (EXSoundbanksFunctions.SoundWillBeOutputed(SoundsList, uint.Parse(e.Node.Name)))
+                //Change node images depending of the type
+                if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
                 {
-                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 2, 2);
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 0, 0);
                 }
-                else
+                else if (e.Node.Tag.Equals("Sound"))
                 {
-                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 5, 5);
+                    if (EXSoundbanksFunctions.SoundWillBeOutputed(SoundsList, uint.Parse(e.Node.Name)))
+                    {
+                        TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 2, 2);
+                    }
+                    else
+                    {
+                        TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 5, 5);
+                    }
+                }
+                else if (e.Node.Tag.Equals("Sample"))
+                {
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 4, 4);
                 }
             }
-            else if (e.Node.Tag.Equals("Sample"))
+            else
             {
-                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 4, 4);
+                e.Cancel = true;
             }
         }
 
         private void TreeView_File_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            //Change node images depending of the type
-            if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
+            if (CanExpandChildNodes)
             {
-                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 1, 1);
-            }
-            else if (e.Node.Tag.Equals("Sound"))
-            {
-                if (EXSoundbanksFunctions.SoundWillBeOutputed(SoundsList, uint.Parse(e.Node.Name)))
+                //Change node images depending of the type
+                if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
                 {
-                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 3, 3);
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 1, 1);
                 }
-                else
+                else if (e.Node.Tag.Equals("Sound"))
                 {
-                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 6, 6);
+                    if (EXSoundbanksFunctions.SoundWillBeOutputed(SoundsList, uint.Parse(e.Node.Name)))
+                    {
+                        TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 3, 3);
+                    }
+                    else
+                    {
+                        TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 6, 6);
+                    }
+                }
+                else if (e.Node.Tag.Equals("Sample"))
+                {
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 4, 4);
                 }
             }
-            else if (e.Node.Tag.Equals("Sample"))
+            else
             {
-                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 4, 4);
+                e.Cancel = true;
             }
         }
 
@@ -1069,6 +1083,24 @@ namespace EuroSound_Application.SoundBanksEditor
             TreeView_File.SelectedNode = node;
         }
 
+        private void TreeView_File_MouseDown(object sender, MouseEventArgs e)
+        {
+            //Expand child nodes only if is a folder
+            if (TreeView_File.SelectedNode != null)
+            {
+                CanExpandChildNodes = true;
+
+                //Double click
+                if (e.Clicks > 1)
+                {
+                    if (!(TreeView_File.SelectedNode.Tag.Equals("Folder") || TreeView_File.SelectedNode.Tag.Equals("Root")))
+                    {
+                        CanExpandChildNodes = false;
+                    }
+                }
+            }
+        }
+
         private void TreeView_File_ItemDrag(object sender, ItemDragEventArgs e)
         {
             DoDragDrop(e.Item, DragDropEffects.Move);
@@ -1080,16 +1112,17 @@ namespace EuroSound_Application.SoundBanksEditor
             if (e.Button == MouseButtons.Right)
             {
                 //Select node
-                TreeNode SelectedNode = TreeView_File.GetNodeAt(e.X, e.Y);
-                TreeView_File.SelectedNode = SelectedNode;
+                TreeNode SelectedTreeViewNode = TreeView_File.GetNodeAt(e.X, e.Y);
+                TreeView_File.SelectedNode = SelectedTreeViewNode;
 
-                //Check the selected node
-                if (SelectedNode.Tag.Equals("Folder") || SelectedNode.Tag.Equals("Root"))
+                //Check node is not null
+                if (SelectedTreeViewNode != null)
                 {
-                    if (SelectedNode != null)
+                    //Check the selected node
+                    if (SelectedTreeViewNode.Tag.Equals("Folder") || SelectedTreeViewNode.Tag.Equals("Root"))
                     {
                         ContextMenu_Folders.Show(Cursor.Position);
-                        if (TreeNodeFunctions.FindRootNode(SelectedNode).Name.Equals("AudioData"))
+                        if (TreeNodeFunctions.FindRootNode(SelectedTreeViewNode).Name.Equals("AudioData"))
                         {
                             ContextMenuFolder_AddSound.Visible = false;
                             ContextMenuFolder_AddAudio.Visible = true;
@@ -1100,35 +1133,43 @@ namespace EuroSound_Application.SoundBanksEditor
                             ContextMenuFolder_AddAudio.Visible = false;
                         }
                     }
-                }
-                else if (SelectedNode.Tag.Equals("Sound"))
-                {
-                    ContextMenu_Sound.Show(Cursor.Position);
-                }
-                else if (SelectedNode.Tag.Equals("Sample"))
-                {
-                    ContextMenu_Sample.Show(Cursor.Position);
-                }
-                else if (SelectedNode.Tag.Equals("Audio"))
-                {
-                    ContextMenu_Audio.Show(Cursor.Position);
+                    else if (SelectedTreeViewNode.Tag.Equals("Sound"))
+                    {
+                        ContextMenu_Sound.Show(Cursor.Position);
+                    }
+                    else if (SelectedTreeViewNode.Tag.Equals("Sample"))
+                    {
+                        ContextMenu_Sample.Show(Cursor.Position);
+                    }
+                    else if (SelectedTreeViewNode.Tag.Equals("Audio"))
+                    {
+                        ContextMenu_Audio.Show(Cursor.Position);
+                    }
                 }
             }
         }
 
         private void TreeView_File_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            //Select node
-            TreeNode SelectedNode = TreeView_File.GetNodeAt(e.X, e.Y);
-            TreeView_File.SelectedNode = SelectedNode;
+            //Get node
+            TreeNode SelectedTreeViewNode = TreeView_File.SelectedNode;
 
-            if (SelectedNode.Tag.Equals("Sample"))
+            //Check clicked node
+            if (SelectedTreeViewNode != null)
             {
-                OpenSelectedNodeSampleProperties(SelectedNode);
-            }
-            if (SelectedNode.Tag.Equals("Audio"))
-            {
-                OpenAudioProperties(TreeView_File.SelectedNode);
+                //Open Properties
+                switch (SelectedTreeViewNode.Tag)
+                {
+                    case "Sample":
+                        OpenSelectedNodeSampleProperties(SelectedTreeViewNode);
+                        break;
+                    case "Audio":
+                        OpenAudioProperties(SelectedTreeViewNode);
+                        break;
+                    case "Sound":
+                        OpenSoundProperties(SelectedTreeViewNode);
+                        break;
+                }
             }
         }
 

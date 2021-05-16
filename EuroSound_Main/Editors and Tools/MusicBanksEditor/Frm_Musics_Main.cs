@@ -32,6 +32,7 @@ namespace EuroSound_Application.Musics
         internal string CurrentFilePath = string.Empty;
         private string ProjectName;
         private bool FormMustBeClosed = false;
+        private bool CanExpandChildNodes = true;
         private EuroSoundFiles EuroSoundFilesFunctions = new EuroSoundFiles();
         private MostRecentFilesMenu RecentFilesMenu;
         private AudioFunctions AudioLibrary = new AudioFunctions();
@@ -576,41 +577,55 @@ namespace EuroSound_Application.Musics
 
         private void TreeView_MusicData_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
         {
-            //Change node images depending of the type
-            if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
+            if (CanExpandChildNodes)
             {
-                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 0, 0);
+                //Change node images depending of the type
+                if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
+                {
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 0, 0);
+                }
+                else if (e.Node.Tag.Equals("Music"))
+                {
+                    if (EXMusicsFunctions.MusicWillBeOutputed(MusicsList, e.Node.Name))
+                    {
+                        TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 2, 2);
+                    }
+                    else
+                    {
+                        TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 5, 5);
+                    }
+                }
             }
-            else if (e.Node.Tag.Equals("Music"))
+            else
             {
-                if (EXMusicsFunctions.MusicWillBeOutputed(MusicsList, e.Node.Name))
-                {
-                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 2, 2);
-                }
-                else
-                {
-                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 5, 5);
-                }
+                e.Cancel = true;
             }
         }
 
         private void TreeView_MusicData_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            //Change node images depending of the type
-            if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
+            if (CanExpandChildNodes)
             {
-                TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 1, 1);
+                //Change node images depending of the type
+                if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
+                {
+                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 1, 1);
+                }
+                else if (e.Node.Tag.Equals("Music"))
+                {
+                    if (EXMusicsFunctions.MusicWillBeOutputed(MusicsList, e.Node.Name))
+                    {
+                        TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 3, 3);
+                    }
+                    else
+                    {
+                        TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 6, 6);
+                    }
+                }
             }
-            else if (e.Node.Tag.Equals("Music"))
+            else
             {
-                if (EXMusicsFunctions.MusicWillBeOutputed(MusicsList, e.Node.Name))
-                {
-                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 3, 3);
-                }
-                else
-                {
-                    TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 6, 6);
-                }
+                e.Cancel = true;
             }
         }
 
@@ -677,13 +692,14 @@ namespace EuroSound_Application.Musics
 
         private void TreeView_MusicData_MouseClick(object sender, MouseEventArgs e)
         {
-            //Select node
-            TreeNode SelectedNode = TreeView_MusicData.GetNodeAt(e.X, e.Y);
-            TreeView_MusicData.SelectedNode = SelectedNode;
-
             //Open context menu depending of the selected node
             if (e.Button == MouseButtons.Right)
             {
+                //Select node
+                TreeNode SelectedNode = TreeView_MusicData.GetNodeAt(e.X, e.Y);
+                TreeView_MusicData.SelectedNode = SelectedNode;
+
+                //Open contextual menu
                 if (SelectedNode.Tag.Equals("Folder") || SelectedNode.Tag.Equals("Root"))
                 {
                     ContextMenu_Folders.Show(Cursor.Position);
@@ -703,6 +719,24 @@ namespace EuroSound_Application.Musics
                 {
                     OpenMusicPropertiesForm(TreeView_MusicData.SelectedNode);
                     ProjectInfo.FileHasBeenModified = true;
+                }
+            }
+        }
+
+        private void TreeView_MusicData_MouseDown(object sender, MouseEventArgs e)
+        {
+            //Expand child nodes only if is a folder
+            if (TreeView_MusicData.SelectedNode != null)
+            {
+                CanExpandChildNodes = true;
+
+                //Double click
+                if (e.Clicks > 1)
+                {
+                    if (!(TreeView_MusicData.SelectedNode.Tag.Equals("Folder") || TreeView_MusicData.SelectedNode.Tag.Equals("Root")))
+                    {
+                        CanExpandChildNodes = false;
+                    }
                 }
             }
         }
@@ -837,6 +871,21 @@ namespace EuroSound_Application.Musics
             DoDragDrop(e.Item, DragDropEffects.Move);
         }
 
+        private void ListView_WavHeaderData_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (ListView_WavHeaderData.SelectedItems.Count > 0)
+            {
+                TreeNode[] SelectedNode = TreeView_MusicData.Nodes.Find(ListView_WavHeaderData.SelectedItems[0].Tag.ToString(), true);
+                if (SelectedNode.Length > 0)
+                {
+                    OpenMusicPropertiesForm(SelectedNode[0]);
+                }
+            }
+        }
+
+        //*===============================================================================================
+        //* Buttons Events
+        //*===============================================================================================
         private void Button_UpdateProperties_Click(object sender, EventArgs e)
         {
             UpdateWavDataList();
@@ -859,18 +908,6 @@ namespace EuroSound_Application.Musics
             UpdateIMAData();
         }
 
-        private void ListView_WavHeaderData_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (ListView_WavHeaderData.SelectedItems.Count > 0)
-            {
-                TreeNode[] SelectedNode = TreeView_MusicData.Nodes.Find(ListView_WavHeaderData.SelectedItems[0].Tag.ToString(), true);
-                if (SelectedNode.Length > 0)
-                {
-                    OpenMusicPropertiesForm(SelectedNode[0]);
-                }
-            }
-        }
-
         private void Button_ExportInterchangeFile_Click(object sender, EventArgs e)
         {
             string ExportPath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Interchange File (*.esif)|*.ESIF", 0, true, ProjectInfo.FileName);
@@ -880,23 +917,6 @@ namespace EuroSound_Application.Musics
                 ESIF_Exp.ExportProjectMusic(ExportPath, ProjectInfo, MusicsList, TreeView_MusicData);
             }
         }
-
-        private void MenuItemFile_ReadESIF_Click(object sender, EventArgs e)
-        {
-            string FilePath = BrowsersAndDialogs.FileBrowserDialog("EuroSound Interchange File (*.ESIF)|*.esif", 0, true);
-            if (!string.IsNullOrEmpty(FilePath))
-            {
-                ESIF_Loader EuroSoundPropertiesFileLoader = new ESIF_Loader();
-                IList<string> ImportResults = EuroSoundPropertiesFileLoader.LoadMusicBank_File(FilePath, ProjectInfo, MusicsList, TreeView_MusicData);
-                if (ImportResults.Count > 0)
-                {
-                    GenericFunctions.ShowErrorsAndWarningsList(ImportResults, "Import Results", this);
-                }
-
-                ProjectInfo.FileHasBeenModified = true;
-            }
-        }
-
         private void Button_Generate_Hashcodes_Click(object sender, EventArgs e)
         {
             //Clear textbox
@@ -967,6 +987,25 @@ namespace EuroSound_Application.Musics
                         }
                     }
                 }
+            }
+        }
+
+        //*===============================================================================================
+        //* MENUS
+        //*===============================================================================================
+        private void MenuItemFile_ReadESIF_Click(object sender, EventArgs e)
+        {
+            string FilePath = BrowsersAndDialogs.FileBrowserDialog("EuroSound Interchange File (*.ESIF)|*.esif", 0, true);
+            if (!string.IsNullOrEmpty(FilePath))
+            {
+                ESIF_Loader EuroSoundPropertiesFileLoader = new ESIF_Loader();
+                IList<string> ImportResults = EuroSoundPropertiesFileLoader.LoadMusicBank_File(FilePath, ProjectInfo, MusicsList, TreeView_MusicData);
+                if (ImportResults.Count > 0)
+                {
+                    GenericFunctions.ShowErrorsAndWarningsList(ImportResults, "Import Results", this);
+                }
+
+                ProjectInfo.FileHasBeenModified = true;
             }
         }
 

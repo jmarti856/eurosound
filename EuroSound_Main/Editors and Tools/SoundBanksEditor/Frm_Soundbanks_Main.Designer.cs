@@ -114,11 +114,25 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Button_Stop_WavUpdate = new System.Windows.Forms.Button();
             this.Textbox_DataCount = new System.Windows.Forms.TextBox();
             this.Label_ItemsCountWav = new System.Windows.Forms.Label();
+            this.ListView_WavHeaderData = new EuroSound_Application.CustomControls.ListViewColumnSorting.ListView_ColumnSortingClick();
+            this.Col_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_LoopOffset = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_Frequency = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_Channels = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_Bits = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_Data = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_Encoding = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_Duration = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TabPage_StreamData = new System.Windows.Forms.TabPage();
             this.Button_StopStreamData = new System.Windows.Forms.Button();
             this.Textbox_StreamFilesCount = new System.Windows.Forms.TextBox();
             this.Label_StreamFilesCount = new System.Windows.Forms.Label();
             this.Button_UpdateList_StreamData = new System.Windows.Forms.Button();
+            this.ListView_StreamData = new EuroSound_Application.CustomControls.ListViewColumnSorting.ListView_ColumnSortingClick();
+            this.Col_StreamName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_FileRef = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_Sound = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Col_StoredIn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ContextMenu_Audio = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ContextMenuAudio_Usage = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuAudio_Separator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -130,20 +144,6 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Button_GenerateList = new System.Windows.Forms.Button();
             this.Button_ExportInterchangeFile = new System.Windows.Forms.Button();
             this.SplitContainer_SoundbanksForm = new System.Windows.Forms.SplitContainer();
-            this.ListView_WavHeaderData = new EuroSound_Application.CustomControls.ListViewColumnSorting.ListView_ColumnSortingClick();
-            this.Col_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_LoopOffset = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_Frequency = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_Channels = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_Bits = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_Data = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_Encoding = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_Duration = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.ListView_StreamData = new EuroSound_Application.CustomControls.ListViewColumnSorting.ListView_ColumnSortingClick();
-            this.Col_StreamName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_FileRef = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_Sound = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Col_StoredIn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ContextMenu_Folders.SuspendLayout();
             this.ContextMenu_Sound.SuspendLayout();
             this.MainMenu.SuspendLayout();
@@ -204,6 +204,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.TreeView_File.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TreeView_File_KeyDown);
             this.TreeView_File.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TreeView_File_MouseClick);
             this.TreeView_File.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TreeView_File_MouseDoubleClick);
+            this.TreeView_File.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TreeView_File_MouseDown);
             // 
             // ImageList_TreeNode
             // 
@@ -880,6 +881,69 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Label_ItemsCountWav.TabIndex = 1;
             this.Label_ItemsCountWav.Text = "Files Count:";
             // 
+            // ListView_WavHeaderData
+            // 
+            this.ListView_WavHeaderData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ListView_WavHeaderData.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Col_Name,
+            this.Col_LoopOffset,
+            this.Col_Frequency,
+            this.Col_Channels,
+            this.Col_Bits,
+            this.Col_Data,
+            this.Col_Encoding,
+            this.Col_Duration});
+            this.ListView_WavHeaderData.FullRowSelect = true;
+            this.ListView_WavHeaderData.GridLines = true;
+            this.ListView_WavHeaderData.HideSelection = false;
+            this.ListView_WavHeaderData.Location = new System.Drawing.Point(6, 6);
+            this.ListView_WavHeaderData.Name = "ListView_WavHeaderData";
+            this.ListView_WavHeaderData.Size = new System.Drawing.Size(422, 244);
+            this.ListView_WavHeaderData.TabIndex = 2;
+            this.ListView_WavHeaderData.UseCompatibleStateImageBehavior = false;
+            this.ListView_WavHeaderData.View = System.Windows.Forms.View.Details;
+            this.ListView_WavHeaderData.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListView_WavHeaderData_MouseDoubleClick);
+            // 
+            // Col_Name
+            // 
+            this.Col_Name.Text = "Name";
+            this.Col_Name.Width = 166;
+            // 
+            // Col_LoopOffset
+            // 
+            this.Col_LoopOffset.Text = "Loop Offset";
+            this.Col_LoopOffset.Width = 69;
+            // 
+            // Col_Frequency
+            // 
+            this.Col_Frequency.Text = "Frequency";
+            this.Col_Frequency.Width = 70;
+            // 
+            // Col_Channels
+            // 
+            this.Col_Channels.Text = "Channels";
+            // 
+            // Col_Bits
+            // 
+            this.Col_Bits.Text = "Bits";
+            this.Col_Bits.Width = 38;
+            // 
+            // Col_Data
+            // 
+            this.Col_Data.Text = "Data Length";
+            this.Col_Data.Width = 74;
+            // 
+            // Col_Encoding
+            // 
+            this.Col_Encoding.Text = "Encoding";
+            // 
+            // Col_Duration
+            // 
+            this.Col_Duration.Text = "Duration (ms)";
+            this.Col_Duration.Width = 75;
+            // 
             // TabPage_StreamData
             // 
             this.TabPage_StreamData.BackColor = System.Drawing.SystemColors.Control;
@@ -936,6 +1000,47 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Button_UpdateList_StreamData.Text = "Update";
             this.Button_UpdateList_StreamData.UseVisualStyleBackColor = true;
             this.Button_UpdateList_StreamData.Click += new System.EventHandler(this.Button_UpdateList_StreamData_Click);
+            // 
+            // ListView_StreamData
+            // 
+            this.ListView_StreamData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ListView_StreamData.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Col_StreamName,
+            this.Col_FileRef,
+            this.Col_Sound,
+            this.Col_StoredIn});
+            this.ListView_StreamData.FullRowSelect = true;
+            this.ListView_StreamData.GridLines = true;
+            this.ListView_StreamData.HideSelection = false;
+            this.ListView_StreamData.Location = new System.Drawing.Point(6, 6);
+            this.ListView_StreamData.Name = "ListView_StreamData";
+            this.ListView_StreamData.Size = new System.Drawing.Size(422, 244);
+            this.ListView_StreamData.TabIndex = 0;
+            this.ListView_StreamData.UseCompatibleStateImageBehavior = false;
+            this.ListView_StreamData.View = System.Windows.Forms.View.Details;
+            this.ListView_StreamData.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListView_StreamData_MouseDoubleClick);
+            // 
+            // Col_StreamName
+            // 
+            this.Col_StreamName.Text = "Name";
+            this.Col_StreamName.Width = 168;
+            // 
+            // Col_FileRef
+            // 
+            this.Col_FileRef.Text = "File Ref";
+            this.Col_FileRef.Width = 62;
+            // 
+            // Col_Sound
+            // 
+            this.Col_Sound.Text = "Sound";
+            this.Col_Sound.Width = 105;
+            // 
+            // Col_StoredIn
+            // 
+            this.Col_StoredIn.Text = "Stored In";
+            this.Col_StoredIn.Width = 178;
             // 
             // ContextMenu_Audio
             // 
@@ -1036,110 +1141,6 @@ namespace EuroSound_Application.SoundBanksEditor
             this.SplitContainer_SoundbanksForm.Size = new System.Drawing.Size(908, 591);
             this.SplitContainer_SoundbanksForm.SplitterDistance = 456;
             this.SplitContainer_SoundbanksForm.TabIndex = 7;
-            // 
-            // ListView_WavHeaderData
-            // 
-            this.ListView_WavHeaderData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ListView_WavHeaderData.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Col_Name,
-            this.Col_LoopOffset,
-            this.Col_Frequency,
-            this.Col_Channels,
-            this.Col_Bits,
-            this.Col_Data,
-            this.Col_Encoding,
-            this.Col_Duration});
-            this.ListView_WavHeaderData.FullRowSelect = true;
-            this.ListView_WavHeaderData.GridLines = true;
-            this.ListView_WavHeaderData.HideSelection = false;
-            this.ListView_WavHeaderData.Location = new System.Drawing.Point(6, 6);
-            this.ListView_WavHeaderData.Name = "ListView_WavHeaderData";
-            this.ListView_WavHeaderData.Size = new System.Drawing.Size(422, 244);
-            this.ListView_WavHeaderData.TabIndex = 2;
-            this.ListView_WavHeaderData.UseCompatibleStateImageBehavior = false;
-            this.ListView_WavHeaderData.View = System.Windows.Forms.View.Details;
-            this.ListView_WavHeaderData.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListView_WavHeaderData_MouseDoubleClick);
-            // 
-            // Col_Name
-            // 
-            this.Col_Name.Text = "Name";
-            this.Col_Name.Width = 166;
-            // 
-            // Col_LoopOffset
-            // 
-            this.Col_LoopOffset.Text = "Loop Offset";
-            this.Col_LoopOffset.Width = 69;
-            // 
-            // Col_Frequency
-            // 
-            this.Col_Frequency.Text = "Frequency";
-            this.Col_Frequency.Width = 70;
-            // 
-            // Col_Channels
-            // 
-            this.Col_Channels.Text = "Channels";
-            // 
-            // Col_Bits
-            // 
-            this.Col_Bits.Text = "Bits";
-            this.Col_Bits.Width = 38;
-            // 
-            // Col_Data
-            // 
-            this.Col_Data.Text = "Data Length";
-            this.Col_Data.Width = 74;
-            // 
-            // Col_Encoding
-            // 
-            this.Col_Encoding.Text = "Encoding";
-            // 
-            // Col_Duration
-            // 
-            this.Col_Duration.Text = "Duration (ms)";
-            this.Col_Duration.Width = 75;
-            // 
-            // ListView_StreamData
-            // 
-            this.ListView_StreamData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ListView_StreamData.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Col_StreamName,
-            this.Col_FileRef,
-            this.Col_Sound,
-            this.Col_StoredIn});
-            this.ListView_StreamData.FullRowSelect = true;
-            this.ListView_StreamData.GridLines = true;
-            this.ListView_StreamData.HideSelection = false;
-            this.ListView_StreamData.Location = new System.Drawing.Point(6, 6);
-            this.ListView_StreamData.Name = "ListView_StreamData";
-            this.ListView_StreamData.Size = new System.Drawing.Size(422, 244);
-            this.ListView_StreamData.TabIndex = 0;
-            this.ListView_StreamData.UseCompatibleStateImageBehavior = false;
-            this.ListView_StreamData.View = System.Windows.Forms.View.Details;
-            this.ListView_StreamData.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListView_StreamData_MouseDoubleClick);
-            // 
-            // Col_StreamName
-            // 
-            this.Col_StreamName.Text = "Name";
-            this.Col_StreamName.Width = 168;
-            // 
-            // Col_FileRef
-            // 
-            this.Col_FileRef.Text = "File Ref";
-            this.Col_FileRef.Width = 62;
-            // 
-            // Col_Sound
-            // 
-            this.Col_Sound.Text = "Sound";
-            this.Col_Sound.Width = 105;
-            // 
-            // Col_StoredIn
-            // 
-            this.Col_StoredIn.Text = "Stored In";
-            this.Col_StoredIn.Width = 178;
             // 
             // Frm_Soundbanks_Main
             // 
