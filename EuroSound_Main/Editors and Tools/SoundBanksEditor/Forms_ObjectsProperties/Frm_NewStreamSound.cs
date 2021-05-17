@@ -40,10 +40,10 @@ namespace EuroSound_Application.SoundBanksEditor
 
             if (SelectedSample.FileRef != 0)
             {
-                int StreamIndex = (Math.Abs(SelectedSample.FileRef) - 1);
-                if (StreamIndex <= ListBox_StreamSounds.Items.Count && ListBox_StreamSounds.Items.Count > 0)
+                int streamIndex = (Math.Abs(SelectedSample.FileRef) - 1);
+                if (streamIndex <= ListBox_StreamSounds.Items.Count && ListBox_StreamSounds.Items.Count > 0)
                 {
-                    ListBox_StreamSounds.SelectedIndex = StreamIndex;
+                    ListBox_StreamSounds.SelectedIndex = streamIndex;
                 }
             }
 
@@ -88,44 +88,44 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             if (File.Exists(GlobalPreferences.StreamFilePath))
             {
-                EuroSoundFiles ESFReader = new EuroSoundFiles();
-                using (BinaryReader BReader = new BinaryReader(File.Open(GlobalPreferences.StreamFilePath, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
+                EuroSoundFiles eurosoundFilesReader = new EuroSoundFiles();
+                using (BinaryReader binaryReader = new BinaryReader(File.Open(GlobalPreferences.StreamFilePath, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
                 {
-                    if (ESFReader.FileIsCorrect(BReader))
+                    if (eurosoundFilesReader.FileIsCorrect(binaryReader))
                     {
                         //Type of stored data
-                        sbyte TypeOfStoredData = BReader.ReadSByte();
-                        if (TypeOfStoredData == 1)
+                        sbyte typeOfStoredData = binaryReader.ReadSByte();
+                        if (typeOfStoredData == 1)
                         {
                             //File Hashcode
-                            BReader.ReadUInt32();
+                            binaryReader.ReadUInt32();
                             //Sound ID
-                            BReader.ReadUInt32();
+                            binaryReader.ReadUInt32();
                             //Sounds List Offset
-                            uint ListOffset = BReader.ReadUInt32();
+                            uint ListOffset = binaryReader.ReadUInt32();
 
                             //Go to list offset
-                            BReader.BaseStream.Seek(ListOffset, SeekOrigin.Begin);
-                            uint NumberOfItems = BReader.ReadUInt32();
+                            binaryReader.BaseStream.Seek(ListOffset, SeekOrigin.Begin);
+                            uint numberOfItems = binaryReader.ReadUInt32();
 
                             //Clear List
                             ListBox_StreamSounds.Items.Clear();
 
                             //Add Items To List
-                            for (int i = 0; i < NumberOfItems; i++)
+                            for (int i = 0; i < numberOfItems; i++)
                             {
-                                ListBox_StreamSounds.Items.Add(BReader.ReadString());
+                                ListBox_StreamSounds.Items.Add(binaryReader.ReadString());
                             }
                         }
                     }
 
-                    BReader.Close();
+                    binaryReader.Close();
                 }
             }
             else
             {
-                DialogResult dialogResult = MessageBox.Show("The stream sounds file has not found, the file route is: \"" + GlobalPreferences.StreamFilePath + "\", do you want to specify another path ?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
-                if (dialogResult == DialogResult.Yes)
+                DialogResult specifyOtherPathQuestion = MessageBox.Show("The stream sounds file has not found, the file route is: \"" + GlobalPreferences.StreamFilePath + "\", do you want to specify another path ?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                if (specifyOtherPathQuestion == DialogResult.Yes)
                 {
                     GlobalPreferences.StreamFilePath = BrowsersAndDialogs.FileBrowserDialog("EuroSound Files (*.esf)|*.esf", 0, true);
                     WindowsRegistryFunctions.SaveExternalFiles("StreamFile", "Path", GlobalPreferences.StreamFilePath);

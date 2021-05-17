@@ -41,11 +41,11 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             try
             {
                 SetAssociation(".esf", "EuroSound.exe", Application.ExecutablePath);
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("EuroSoundFile-TypesRegisterdOK"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(GenericFunctions.resourcesManager.GetString("EuroSoundFile-TypesRegisterdOK"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("EuroSoundFile-TypesRegisterdError"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(GenericFunctions.resourcesManager.GetString("EuroSoundFile-TypesRegisterdError"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

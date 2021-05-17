@@ -63,9 +63,12 @@ namespace EuroSound_Application.CustomControls.WavesViewerForm
                 return;
             }
 
-            int samples = (int)(waveStream.Length / bytesPerSample);
-            startPosition = 0;
-            SamplesPerPixel = samples / Width;
+            if (bytesPerSample > 0 && Width > 0)
+            {
+                int samples = (int)(waveStream.Length / bytesPerSample);
+                startPosition = 0;
+                SamplesPerPixel = samples / Width;
+            }
         }
 
         protected override void OnResize(EventArgs e)

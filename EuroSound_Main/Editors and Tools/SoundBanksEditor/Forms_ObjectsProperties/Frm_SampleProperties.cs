@@ -76,13 +76,13 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         private void Button_PlayAudio_Click(object sender, EventArgs e)
         {
-            Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
+            Form parentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
             if (Combobox_SelectedAudio.SelectedValue != null)
             {
-                EXAudio AudioSelected = TreeNodeFunctions.GetSelectedAudio(Combobox_SelectedAudio.SelectedValue.ToString(), ((Frm_Soundbanks_Main)ParentForm).AudioDataDict);
-                if (AudioSelected != null && AudioSelected.PCMdata != null)
+                EXAudio audioSelected = TreeNodeFunctions.GetSelectedAudio(Combobox_SelectedAudio.SelectedValue.ToString(), ((Frm_Soundbanks_Main)parentForm).AudioDataDict);
+                if (audioSelected != null && audioSelected.PCMdata != null)
                 {
-                    AudioFunctionsLibrary.PlayAudio(_waveOut, AudioSelected.PCMdata, (int)AudioSelected.Frequency, int.Parse(numeric_pitchoffset.Value.ToString()), (int)AudioSelected.Bits, (int)AudioSelected.Channels, numeric_pan.Value, Numeric_BaseVolume.Value);
+                    AudioFunctionsLibrary.PlayAudio(_waveOut, audioSelected.PCMdata, (int)audioSelected.Frequency, int.Parse(numeric_pitchoffset.Value.ToString()), (int)audioSelected.Bits, (int)audioSelected.Channels, numeric_pan.Value, Numeric_BaseVolume.Value);
                 }
             }
         }
@@ -170,7 +170,7 @@ namespace EuroSound_Application.SoundBanksEditor
         private void AddAvailableAudiosToCombobox()
         {
             //Datasource Combobox
-            Thread AudioData = new Thread(() =>
+            Thread audioData = new Thread(() =>
             {
                 //Add data to combobox
                 Combobox_SelectedAudio.DataSource = EXSoundbanksFunctions.GetListAudioData(((Frm_Soundbanks_Main)SoundsParentForm).AudioDataDict, ((Frm_Soundbanks_Main)SoundsParentForm).TreeView_File).OrderBy(o => o.Value).ToList();
@@ -206,13 +206,13 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 IsBackground = true
             };
-            AudioData.Start();
+            audioData.Start();
         }
 
         private void AddHashcodesToCombobox()
         {
             //---AddDataToCombobox
-            Thread DataToCombobox = new Thread(() =>
+            Thread dataToCombobox = new Thread(() =>
             {
                 Combobox_Hashcode.DataSource = Hashcodes.SFX_Defines.OrderBy(o => o.Value).ToList();
                 Combobox_Hashcode.Invoke((MethodInvoker)async delegate
@@ -226,7 +226,7 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 IsBackground = true
             };
-            DataToCombobox.Start();
+            dataToCombobox.Start();
         }
     }
 }

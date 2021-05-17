@@ -52,51 +52,51 @@ namespace EuroSound_Application.MarkerFiles.StreamSoundsEditor.Classes
 
         internal uint[] GetEngineXMarkerStates_Mono(byte[] ImaADPCM_File, int Position)
         {
-            ImaADPCM_Functions ImaADPCM = new ImaADPCM_Functions();
-            uint[] States = new uint[2];
+            ImaADPCM_Functions imaADPCMFunctions = new ImaADPCM_Functions();
+            uint[] enginexStates = new uint[2];
 
-            int Pointer = ((Position & -256) / 2) - 1;
+            int roundedIndex = ((Position & -256) / 2) - 1;
 
             //Calculate States
-            int SamplesToDecode = ImaADPCM_File.Length * 2;
-            uint[] IMAStates = new uint[SamplesToDecode];
-            ImaADPCM.DecodeIMA_ADPCM(ImaADPCM_File, SamplesToDecode, IMAStates);
+            int samplesToDecode = ImaADPCM_File.Length * 2;
+            uint[] decodedStates = new uint[samplesToDecode];
+            imaADPCMFunctions.DecodeIMA_ADPCM(ImaADPCM_File, samplesToDecode, decodedStates);
 
             //Get states
-            if (Pointer > 0 && Pointer <= IMAStates.Length)
+            if (roundedIndex > 0 && roundedIndex <= decodedStates.Length)
             {
-                States[0] = IMAStates[Pointer];
-                States[1] = IMAStates[Pointer];
+                enginexStates[0] = decodedStates[roundedIndex];
+                enginexStates[1] = decodedStates[roundedIndex];
             }
 
-            return States;
+            return enginexStates;
         }
 
         internal uint[] GetEngineXMarkerStates_Stereo(byte[] ImaADPCM_FileLeftChannel, byte[] ImaADPCM_FileRightChannel, int Position)
         {
-            ImaADPCM_Functions ImaADPCM = new ImaADPCM_Functions();
-            uint[] States = new uint[2];
+            ImaADPCM_Functions imaADPCMFunctions = new ImaADPCM_Functions();
+            uint[] enginexStates = new uint[2];
 
             //Calculate States Left Channel
-            int SamplesToDecode_LeftChannel = ImaADPCM_FileLeftChannel.Length * 2;
-            uint[] IMAStates_LeftChannel = new uint[SamplesToDecode_LeftChannel];
-            ImaADPCM.DecodeIMA_ADPCM(ImaADPCM_FileLeftChannel, SamplesToDecode_LeftChannel, IMAStates_LeftChannel);
+            int samplesToDecode_leftChannel = ImaADPCM_FileLeftChannel.Length * 2;
+            uint[] decodedStates_leftChannel = new uint[samplesToDecode_leftChannel];
+            imaADPCMFunctions.DecodeIMA_ADPCM(ImaADPCM_FileLeftChannel, samplesToDecode_leftChannel, decodedStates_leftChannel);
 
             //Calculate States Right Channel
-            int SamplesToDecode_RightChannel = ImaADPCM_FileRightChannel.Length * 2;
-            uint[] IMAStates_RightChannel = new uint[SamplesToDecode_RightChannel];
-            ImaADPCM.DecodeIMA_ADPCM(ImaADPCM_FileRightChannel, SamplesToDecode_RightChannel, IMAStates_RightChannel);
+            int samplesToDecode_rightChannel = ImaADPCM_FileRightChannel.Length * 2;
+            uint[] decodedStates_rightChannel = new uint[samplesToDecode_rightChannel];
+            imaADPCMFunctions.DecodeIMA_ADPCM(ImaADPCM_FileRightChannel, samplesToDecode_rightChannel, decodedStates_rightChannel);
 
-            int Pointer = ((((Position / 256) * 256) / 4));
+            int roundedIndex = ((((Position / 256) * 256) / 4));
 
             //Get states
-            if (Pointer > 0 && Pointer <= IMAStates_LeftChannel.Length)
+            if (roundedIndex > 0 && roundedIndex <= decodedStates_leftChannel.Length)
             {
-                States[0] = IMAStates_LeftChannel[Pointer - 1];
-                States[1] = IMAStates_RightChannel[Pointer - 1];
+                enginexStates[0] = decodedStates_leftChannel[roundedIndex - 1];
+                enginexStates[1] = decodedStates_rightChannel[roundedIndex - 1];
             }
 
-            return States;
+            return enginexStates;
         }
     }
 }

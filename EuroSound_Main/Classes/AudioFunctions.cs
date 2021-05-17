@@ -157,6 +157,7 @@ namespace EuroSound_Application.AudioFunctionsLibrary
 
             return PCMDataShortArray;
         }
+
         internal void CreateWavFile(int Frequency, int BitsPerChannel, int NumberOfChannels, byte[] PCMData, string FilePath)
         {
             using (FileStream WavFile = new FileStream(FilePath, FileMode.Create))
@@ -191,35 +192,6 @@ namespace EuroSound_Application.AudioFunctionsLibrary
                 //Close File
                 WavFile.Close();
             }
-        }
-
-        internal byte[] SplitChannels(byte[] PCM_Data, bool LeftChannel)
-        {
-            byte[] ChannelData;
-
-            using (BinaryReader BReader = new BinaryReader(new MemoryStream(PCM_Data)))
-            {
-                using (MemoryStream MS_ChannelData = new MemoryStream())
-                {
-                    using (BinaryWriter BWriter = new BinaryWriter(MS_ChannelData))
-                    {
-                        while (BReader.BaseStream.Position != BReader.BaseStream.Length)
-                        {
-                            if (LeftChannel)
-                            {
-                                BWriter.Write(BReader.ReadBytes(2));
-                            }
-                            else
-                            {
-                                BReader.ReadBytes(2);
-                            }
-                            LeftChannel = !LeftChannel;
-                        }
-                    }
-                    ChannelData = MS_ChannelData.ToArray();
-                }
-            }
-            return ChannelData;
         }
     }
 }

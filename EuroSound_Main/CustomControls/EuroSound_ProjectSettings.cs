@@ -82,7 +82,7 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
                 {
                     if (SelectedHashcode == GlobalPreferences.StreamFileHashCode)
                     {
-                        MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ProjectSettings_ErrorHashcode"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(GenericFunctions.resourcesManager.GetString("ProjectSettings_ErrorHashcode"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                     else
                     {
@@ -95,7 +95,7 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
                             string SelectedHashcodeLabel = Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, CurrentFileProperties.Hashcode);
                             if (SelectedHashcodeLabel.StartsWith("JMP"))
                             {
-                                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ProjectSettingsErrorJumpCodes"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show(GenericFunctions.resourcesManager.GetString("ProjectSettingsErrorJumpCodes"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                             else
                             {

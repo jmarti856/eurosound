@@ -24,7 +24,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             sbyte TypeOfStoredData;
 
             //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESFFile"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_ReadingESFFile"));
 
             //Disable temporaly the treeview
             if (TreeViewControl.InvokeRequired)
@@ -73,7 +73,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             }
 
             //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
 
             return ProfileName;
         }

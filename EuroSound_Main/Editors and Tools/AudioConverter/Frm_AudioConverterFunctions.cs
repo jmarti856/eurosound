@@ -14,7 +14,7 @@ namespace EuroSound_Application.AudioConverter
             }
             else
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_FileNotExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(GenericFunctions.resourcesManager.GetString("Gen_FileNotExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -26,7 +26,7 @@ namespace EuroSound_Application.AudioConverter
             }
             else
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Gen_DirectoryNotExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(GenericFunctions.resourcesManager.GetString("Gen_DirectoryNotExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

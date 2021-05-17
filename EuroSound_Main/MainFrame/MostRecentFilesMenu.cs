@@ -110,7 +110,7 @@ namespace EuroSound_Application
 
         protected void RecentFile_MouseHover(object sender, EventArgs e)
         {
-            GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("MenuItemFile_RecentFile"));
+            GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("MenuItemFile_RecentFile"));
         }
 
         protected void RecentFile_MouseLeave(object sender, EventArgs e)

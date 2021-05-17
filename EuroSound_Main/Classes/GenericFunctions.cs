@@ -31,7 +31,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         [DllImport("wininet.dll")]
         private extern static bool InternetGetConnectedState(out int connDescription, int ReservedValue);
-        internal static ResourceManager ResourcesManager;
+        internal static ResourceManager resourcesManager;
         internal static StatusBarToolTips ParentFormStatusBar;
         internal static Dictionary<string, string> AvailableProfiles = new Dictionary<string, string>();
 
@@ -210,7 +210,7 @@ namespace EuroSound_Application
             }
             catch
             {
-                MessageBox.Show(ResourcesManager.GetString("Gen_ErrorRedingFile") + FilePath, "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(resourcesManager.GetString("Gen_ErrorRedingFile") + FilePath, "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             return AudioIsCorrect;

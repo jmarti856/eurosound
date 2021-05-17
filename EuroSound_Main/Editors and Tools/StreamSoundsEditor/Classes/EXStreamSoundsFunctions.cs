@@ -20,60 +20,60 @@ namespace EuroSound_Application.StreamSounds
 
         internal static EXSoundStream GetSoundByName(uint NameToSearch, Dictionary<uint, EXSoundStream> SoundsList)
         {
-            EXSoundStream SearchedSound = null;
+            EXSoundStream searchedSound = null;
 
             if (SoundsList.ContainsKey(NameToSearch))
             {
-                SearchedSound = SoundsList[NameToSearch];
-                return SearchedSound;
+                searchedSound = SoundsList[NameToSearch];
+                return searchedSound;
             }
 
-            return SearchedSound;
+            return searchedSound;
         }
 
         internal static bool SoundWillBeOutputed(Dictionary<uint, EXSoundStream> SoundsList, string SoundName)
         {
-            bool Output = false;
+            bool output = false;
 
             EXSoundStream ObjectToCheck = GetSoundByName(uint.Parse(SoundName), SoundsList);
             if (ObjectToCheck != null)
             {
                 if (ObjectToCheck.OutputThisSound)
                 {
-                    Output = true;
+                    output = true;
                 }
             }
 
-            return Output;
+            return output;
         }
 
         internal static string GetMarkerType(uint MarkerValue)
         {
-            string MType;
+            string markerType;
 
             switch (MarkerValue)
             {
                 case 10:
-                    MType = "Start";
+                    markerType = "Start";
                     break;
                 case 9:
-                    MType = "End";
+                    markerType = "End";
                     break;
                 case 7:
-                    MType = "Goto";
+                    markerType = "Goto";
                     break;
                 case 6:
-                    MType = "Loop";
+                    markerType = "Loop";
                     break;
                 case 5:
-                    MType = "Pause";
+                    markerType = "Pause";
                     break;
                 default:
-                    MType = "Jump";
+                    markerType = "Jump";
                     break;
             }
 
-            return MType;
+            return markerType;
         }
 
         internal static void LoadAudioData(string AudioPath, EXSoundStream TemporalSound, bool ConvertAudio, AudioFunctions AudioLibrary)
@@ -83,7 +83,7 @@ namespace EuroSound_Application.StreamSounds
 
             using (WaveFileReader AudioReader = new WaveFileReader(AudioPath))
             {
-                ImaADPCM_Functions ImaADPCM = new ImaADPCM_Functions();
+                ImaADPCM_Functions imaADPCMFunctions = new ImaADPCM_Functions();
                 if (ConvertAudio)
                 {
                     using (MediaFoundationResampler conversionStream = new MediaFoundationResampler(AudioReader, new WaveFormat(GlobalPreferences.StreambankFrequency, GlobalPreferences.StreambankBits, GlobalPreferences.StreambankChannels)))
@@ -114,7 +114,7 @@ namespace EuroSound_Application.StreamSounds
                         TemporalSound.Duration = (uint)(decimal.Divide(TemporalSound.PCM_Data.Length, conversionStream.WaveFormat.AverageBytesPerSecond) * 1000);
 
                         //Get IMA ADPCM Data
-                        TemporalSound.IMA_ADPCM_DATA = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalSound.PCM_Data), TemporalSound.PCM_Data.Length / 2);
+                        TemporalSound.IMA_ADPCM_DATA = imaADPCMFunctions.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalSound.PCM_Data), TemporalSound.PCM_Data.Length / 2);
                     }
                 }
                 else
@@ -131,7 +131,7 @@ namespace EuroSound_Application.StreamSounds
                     AudioReader.Read(TemporalSound.PCM_Data, 0, (int)AudioReader.Length);
 
                     //Get IMA ADPCM Data
-                    TemporalSound.IMA_ADPCM_DATA = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalSound.PCM_Data), TemporalSound.PCM_Data.Length / 2);
+                    TemporalSound.IMA_ADPCM_DATA = imaADPCMFunctions.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalSound.PCM_Data), TemporalSound.PCM_Data.Length / 2);
                 }
                 AudioReader.Close();
             }

@@ -27,19 +27,19 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             InitializeComponent();
 
             //Buttons
-            Button_HashTablePath.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("DebugMFXHT_ValidList")); };
+            Button_HashTablePath.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("DebugMFXHT_ValidList")); };
             Button_HashTablePath.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
 
-            Button_Add.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("Button_AddItem")); };
+            Button_Add.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("Button_AddItem")); };
             Button_Add.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
 
-            Button_DeleteItems.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("Button_DeleteItem")); };
+            Button_DeleteItems.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("Button_DeleteItem")); };
             Button_DeleteItems.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
 
-            Button_Generate.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("Button_Gen_GenerateHashTable")); };
+            Button_Generate.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("Button_Gen_GenerateHashTable")); };
             Button_Generate.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
 
-            Button_Close.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("Button_CloseCurrent")); };
+            Button_Close.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("Button_CloseCurrent")); };
             Button_Close.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
         }
 
@@ -100,7 +100,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             }
 
             //Set Program status
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         private void Frm_Debug_HT_Data_Enter(object sender, EventArgs e)
@@ -134,7 +134,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
         private void Frm_Debug_HT_Data_FormClosing(object sender, FormClosingEventArgs e)
         {
             //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_StoppingThreads"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_StoppingThreads"));
 
             //Stop threads
             if (DataToCombobox != null)
@@ -152,7 +152,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             WindowsRegistryFunctions.SaveWindowState("DBDView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, 0);
 
             //Set Program status
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         private void UpdateStatusBarLabels()
@@ -177,7 +177,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             }
 
             //Set Program status
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_GenericReadingFile"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_GenericReadingFile"));
 
             //Read File
             if (!string.IsNullOrEmpty(Textbox_FilePath.Text))
@@ -200,7 +200,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             }
 
             //Set Program status
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         private void Button_Add_Click(object sender, EventArgs e)
@@ -221,7 +221,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
         private void Button_Generate_Click(object sender, EventArgs e)
         {
             //Set Program status
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_GenericSavingFile"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_GenericSavingFile"));
 
             //Check directory
             if (Directory.Exists(GlobalPreferences.DebugFilesFolder))
@@ -251,7 +251,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
                         sw.WriteLine(string.Join("", "\t{0x", Convert.ToUInt32(RowToWrite.Cells[0].Value).ToString("X8"), "," + RowToWrite.Cells[2].Value, "f,", RowToWrite.Cells[3].Value.ToString().ToUpper(), "},"));
 
                         //Set Program status
-                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_GenericSavingFile"));
+                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_GenericSavingFile"));
 
                         Task.Delay(1);
                     }
@@ -267,7 +267,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             }
 
             //Set Program status
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         private void Button_Close_Click(object sender, EventArgs e)

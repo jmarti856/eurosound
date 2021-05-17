@@ -38,7 +38,7 @@ namespace EuroSound_Application.StreamSounds.YMLReader
             }
             else
             {
-                Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect") + ": " + LevelSoundBankPath);
+                Reports.Add("1" + GenericFunctions.resourcesManager.GetString("Gen_ErrorReading_FileIncorrect") + ": " + LevelSoundBankPath);
             }
         }
 
@@ -62,22 +62,22 @@ namespace EuroSound_Application.StreamSounds.YMLReader
 
         public void ReadYmlFile(Dictionary<uint, EXSoundStream> SoundsList, TreeView TreeViewControl, string FilePath, string SoundName, ProjectFile FileProperties)
         {
-            uint SoundID;
-            uint[] CurrentSoundParams;
-            IEnumerable<uint[]> StartMarkers;
-            IEnumerable<int[]> Markers;
-            string WavDataPath, FileCheck;
+            uint soundID;
+            uint[] currentSoundParams;
+            IEnumerable<uint[]> startMarkers;
+            IEnumerable<int[]> markers;
+            string wavDataPath, fileCheck;
 
             //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_ReadingYamlFile") + ": " + SoundName);
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_ReadingYamlFile") + ": " + SoundName);
             if (Reports == null)
             {
                 Reports = new List<string>();
             }
 
             StreamReader reader = new StreamReader(FilePath);
-            FileCheck = reader.ReadLine();
-            if (FileCheck.Equals("#ftype:4", StringComparison.OrdinalIgnoreCase))
+            fileCheck = reader.ReadLine();
+            if (fileCheck.Equals("#ftype:4", StringComparison.OrdinalIgnoreCase))
             {
                 try
                 {
@@ -88,153 +88,150 @@ namespace EuroSound_Application.StreamSounds.YMLReader
                     //Examine the stream
                     YamlMappingNode mapping = (YamlMappingNode)yaml.Documents[0].RootNode;
 
-                    CurrentSoundParams = GetSoundParams(mapping);
-                    StartMarkers = GetStartMarkers(mapping);
-                    Markers = GetMarkers(mapping);
-                    WavDataPath = GetSoundFilePath(mapping, FilePath);
+                    currentSoundParams = GetSoundParams(mapping);
+                    startMarkers = GetStartMarkers(mapping);
+                    markers = GetMarkers(mapping);
+                    wavDataPath = GetSoundFilePath(mapping, FilePath);
 
-                    EXSoundStream SoundToAdd = new EXSoundStream
+                    EXSoundStream soundToAdd = new EXSoundStream
                     {
-                        BaseVolume = CurrentSoundParams[4],
+                        BaseVolume = currentSoundParams[4],
                     };
 
                     //------------------READ WAV FILE----------------------
-                    if (GenericFunctions.AudioIsValid(WavDataPath, GlobalPreferences.StreambankChannels, GlobalPreferences.StreambankFrequency))
+                    if (GenericFunctions.AudioIsValid(wavDataPath, GlobalPreferences.StreambankChannels, GlobalPreferences.StreambankFrequency))
                     {
-                        LoadAudio(WavDataPath, SoundToAdd, false);
+                        LoadAudio(wavDataPath, soundToAdd, false);
                     }
                     else
                     {
-                        LoadAudio(WavDataPath, SoundToAdd, true);
+                        LoadAudio(wavDataPath, soundToAdd, true);
                     }
 
-                    foreach (uint[] StartMarkerData in StartMarkers)
+                    foreach (uint[] startMarkerData in startMarkers)
                     {
                         EXStreamStartMarker StartMarker = new EXStreamStartMarker
                         {
-                            Name = StartMarkerData[0],
-                            Position = StartMarkerData[1],
-                            MusicMakerType = StartMarkerData[2],
-                            Flags = StartMarkerData[3],
-                            Extra = StartMarkerData[4],
-                            LoopStart = StartMarkerData[5],
-                            MarkerCount = StartMarkerData[6],
-                            LoopMarkerCount = StartMarkerData[7],
-                            MarkerPos = StartMarkerData[8],
-                            IsInstant = StartMarkerData[9],
-                            InstantBuffer = StartMarkerData[10],
-                            StateA = StartMarkerData[11],
-                            StateB = StartMarkerData[12]
+                            Name = startMarkerData[0],
+                            Position = startMarkerData[1],
+                            MusicMakerType = startMarkerData[2],
+                            Flags = startMarkerData[3],
+                            Extra = startMarkerData[4],
+                            LoopStart = startMarkerData[5],
+                            MarkerCount = startMarkerData[6],
+                            LoopMarkerCount = startMarkerData[7],
+                            MarkerPos = startMarkerData[8],
+                            IsInstant = startMarkerData[9],
+                            InstantBuffer = startMarkerData[10],
+                            StateA = startMarkerData[11],
+                            StateB = startMarkerData[12]
                         };
 
-                        SoundToAdd.StartMarkers.Add(StartMarker);
+                        soundToAdd.StartMarkers.Add(StartMarker);
                     }
 
-                    foreach (int[] MarkerData in Markers)
+                    foreach (int[] markerData in markers)
                     {
                         EXStreamMarker Marker = new EXStreamMarker
                         {
-                            Name = MarkerData[0],
-                            Position = (uint)MarkerData[1],
-                            MusicMakerType = (uint)MarkerData[2],
-                            Flags = (uint)MarkerData[3],
-                            Extra = (uint)MarkerData[4],
-                            LoopStart = (uint)MarkerData[5],
-                            MarkerCount = (uint)MarkerData[6],
-                            LoopMarkerCount = (uint)MarkerData[7]
+                            Name = markerData[0],
+                            Position = (uint)markerData[1],
+                            MusicMakerType = (uint)markerData[2],
+                            Flags = (uint)markerData[3],
+                            Extra = (uint)markerData[4],
+                            LoopStart = (uint)markerData[5],
+                            MarkerCount = (uint)markerData[6],
+                            LoopMarkerCount = (uint)markerData[7]
                         };
 
-                        SoundToAdd.Markers.Add(Marker);
+                        soundToAdd.Markers.Add(Marker);
                     }
 
-                    SoundID = GenericFunctions.GetNewObjectID(FileProperties);
-                    SoundsList.Add(SoundID, SoundToAdd);
+                    soundID = GenericFunctions.GetNewObjectID(FileProperties);
+                    SoundsList.Add(soundID, soundToAdd);
 
-                    TreeNodeFunctions.TreeNodeAddNewNode("Sounds", SoundID.ToString(), SoundName, 2, 2, "Sound", false, false, false, SystemColors.WindowText, TreeViewControl);
+                    TreeNodeFunctions.TreeNodeAddNewNode("Sounds", soundID.ToString(), SoundName, 2, 2, "Sound", false, false, false, SystemColors.WindowText, TreeViewControl);
                 }
                 catch
                 {
-                    Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect"));
+                    Reports.Add("1" + GenericFunctions.resourcesManager.GetString("Gen_ErrorReading_FileIncorrect"));
                 }
             }
             else
             {
-                Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect"));
+                Reports.Add("1" + GenericFunctions.resourcesManager.GetString("Gen_ErrorReading_FileIncorrect"));
             }
 
             reader.Close();
             reader.Dispose();
 
             //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         private uint[] GetSoundParams(YamlMappingNode mapping)
         {
-            uint[] Parameters = new uint[5];
+            uint[] parameters = new uint[5];
             //Sound Parameters
-            YamlMappingNode SoundParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("properties")];
-            foreach (KeyValuePair<YamlNode, YamlNode> entry in SoundParameters.Children)
+            YamlMappingNode soundParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("properties")];
+            foreach (KeyValuePair<YamlNode, YamlNode> entry in soundParameters.Children)
             {
                 if (entry.Key.ToString().Equals("StartMarkerCount"))
                 {
-                    Parameters[0] = Convert.ToUInt32(entry.Value.ToString());
+                    parameters[0] = Convert.ToUInt32(entry.Value.ToString());
                 }
                 if (entry.Key.ToString().Equals("MarkerCount"))
                 {
-                    Parameters[1] = Convert.ToUInt32(entry.Value.ToString());
+                    parameters[1] = Convert.ToUInt32(entry.Value.ToString());
                 }
                 if (entry.Key.ToString().Equals("StartMarkerOffset"))
                 {
-                    Parameters[2] = Convert.ToUInt32(entry.Value.ToString());
+                    parameters[2] = Convert.ToUInt32(entry.Value.ToString());
                 }
                 if (entry.Key.ToString().Equals("MarkerOffset"))
                 {
-                    Parameters[3] = Convert.ToUInt32(entry.Value.ToString());
+                    parameters[3] = Convert.ToUInt32(entry.Value.ToString());
                 }
                 if (entry.Key.ToString().Equals("BaseVolume"))
                 {
-                    Parameters[4] = Convert.ToUInt32(entry.Value.ToString());
+                    parameters[4] = Convert.ToUInt32(entry.Value.ToString());
                 }
             }
 
-            return Parameters;
+            return parameters;
         }
 
         private string GetSoundFilePath(YamlMappingNode mapping, string FilePath)
         {
-            string SoundFilePath = string.Empty;
+            string soundFilePath = string.Empty;
 
             //Sound Parameters
-            YamlMappingNode SoundParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("Data")];
-            foreach (KeyValuePair<YamlNode, YamlNode> entry in SoundParameters.Children)
+            YamlMappingNode soundParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("Data")];
+            foreach (KeyValuePair<YamlNode, YamlNode> entry in soundParameters.Children)
             {
                 if (entry.Key.ToString().Equals("FileName"))
                 {
-                    SoundFilePath = Path.GetDirectoryName(FilePath) + "\\" + entry.Value.ToString();
+                    soundFilePath = Path.GetDirectoryName(FilePath) + "\\" + entry.Value.ToString();
                 }
             }
 
-            return SoundFilePath;
+            return soundFilePath;
         }
 
         private IEnumerable<uint[]> GetStartMarkers(YamlMappingNode mapping)
         {
-            int SampleIndex;
-            int index;
-
-            YamlMappingNode SampleParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("StartMarkers")];
-            foreach (KeyValuePair<YamlNode, YamlNode> entry in SampleParameters.Children)
+            YamlMappingNode sampleParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("StartMarkers")];
+            foreach (KeyValuePair<YamlNode, YamlNode> entry in sampleParameters.Children)
             {
                 //Temporal array to store values
                 uint[] SampleParams = new uint[13];
 
                 //Get sample name
-                SampleIndex = int.Parse(entry.Key.ToString());
-                SampleParams[0] = (uint)SampleIndex;
-                index = 1;
+                int sampleIndex = int.Parse(entry.Key.ToString());
+                SampleParams[0] = (uint)sampleIndex;
+                int index = 1;
 
-                YamlMappingNode SampleProps = (YamlMappingNode)SampleParameters.Children[new YamlScalarNode(SampleIndex.ToString())];
+                YamlMappingNode SampleProps = (YamlMappingNode)sampleParameters.Children[new YamlScalarNode(sampleIndex.ToString())];
                 foreach (KeyValuePair<YamlNode, YamlNode> flagsEntry in SampleProps.Children)
                 {
                     //Get sample properties
@@ -250,9 +247,6 @@ namespace EuroSound_Application.StreamSounds.YMLReader
 
         private IEnumerable<int[]> GetMarkers(YamlMappingNode mapping)
         {
-            int SampleIndex;
-            int index;
-
             YamlMappingNode SampleParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("Markers")];
             foreach (KeyValuePair<YamlNode, YamlNode> entry in SampleParameters.Children)
             {
@@ -260,10 +254,10 @@ namespace EuroSound_Application.StreamSounds.YMLReader
                 int[] SampleParams = new int[8];
 
                 //Get sample name
-                SampleIndex = int.Parse(entry.Key.ToString());
-                index = 0;
+                int sampleIndex = int.Parse(entry.Key.ToString());
+                int index = 0;
 
-                YamlMappingNode SampleProps = (YamlMappingNode)SampleParameters.Children[new YamlScalarNode(SampleIndex.ToString())];
+                YamlMappingNode SampleProps = (YamlMappingNode)SampleParameters.Children[new YamlScalarNode(sampleIndex.ToString())];
                 foreach (KeyValuePair<YamlNode, YamlNode> flagsEntry in SampleProps.Children)
                 {
                     //Get sample properties

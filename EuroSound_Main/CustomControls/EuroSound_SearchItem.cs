@@ -374,7 +374,7 @@ namespace EuroSound_Application.CustomControls.SearcherForm
             {
                 if (!BgWorker_Searches.IsBusy)
                 {
-                    DialogResult AskToClearSearch = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("SearcherInfoClearButton"), "EuroSound", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                    DialogResult AskToClearSearch = MessageBox.Show(GenericFunctions.resourcesManager.GetString("SearcherInfoClearButton"), "EuroSound", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                     if (AskToClearSearch == DialogResult.OK)
                     {
                         //Clear stored data from previous searchs

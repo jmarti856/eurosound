@@ -18,27 +18,27 @@ namespace EuroSound_Application.SoundBanksEditor
     {
         private string OpenSaveAsDialog(TreeView TreeView_File, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, ProjectFile FileProperties)
         {
-            string SavePath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Files (*.esf)|*.esf|All files (*.*)|*.*", 1, true, Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, FileProperties.Hashcode));
-            if (!string.IsNullOrEmpty(SavePath))
+            string savePath = BrowsersAndDialogs.SaveFileBrowser("EuroSound Files (*.esf)|*.esf|All files (*.*)|*.*", 1, true, Hashcodes.GetHashcodeLabel(Hashcodes.SB_Defines, FileProperties.Hashcode));
+            if (!string.IsNullOrEmpty(savePath))
             {
-                if (Directory.Exists(Path.GetDirectoryName(SavePath)))
+                if (Directory.Exists(Path.GetDirectoryName(savePath)))
                 {
-                    EuroSoundFilesFunctions.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, SavePath, FileProperties);
+                    EuroSoundFilesFunctions.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, savePath, FileProperties);
 
                     //Add file to recent list
-                    RecentFilesMenu.AddFile(SavePath);
+                    RecentFilesMenu.AddFile(savePath);
                 }
             }
-            return SavePath;
+            return savePath;
         }
 
         internal void OpenAudioProperties(TreeNode SelectedNode)
         {
-            EXAudio SelectedSound = TreeNodeFunctions.GetSelectedAudio(SelectedNode.Name, AudioDataDict);
-            if (SelectedSound != null)
+            EXAudio selectedSound = TreeNodeFunctions.GetSelectedAudio(SelectedNode.Name, AudioDataDict);
+            if (selectedSound != null)
             {
                 GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "SBPanel_LastFile");
-                Frm_AudioProperties FormAudioProps = new Frm_AudioProperties(SelectedSound, SelectedNode.Name)
+                Frm_AudioProperties FormAudioProps = new Frm_AudioProperties(selectedSound, SelectedNode.Name)
                 {
                     Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
                     Tag = Tag,
@@ -53,27 +53,27 @@ namespace EuroSound_Application.SoundBanksEditor
 
         internal void OpenSampleProperties(TreeNode SelectedNode)
         {
-            string Section = TreeNodeFunctions.FindRootNode(SelectedNode).Name;
-            EXSound ParentSound = EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(SelectedNode.Parent.Name), SoundsList);
-            EXSample SelectedSample = EXSoundbanksFunctions.ReturnSampleFromSound(ParentSound, uint.Parse(SelectedNode.Name));
+            string section = TreeNodeFunctions.FindRootNode(SelectedNode).Name;
+            EXSound parentSound = EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(SelectedNode.Parent.Name), SoundsList);
+            EXSample selectedSample = EXSoundbanksFunctions.ReturnSampleFromSound(parentSound, uint.Parse(SelectedNode.Name));
 
-            if (Section.Equals("StreamedSounds"))
+            if (section.Equals("StreamedSounds"))
             {
                 //Open form only if file exists
                 if (File.Exists(GlobalPreferences.StreamFilePath))
                 {
                     GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "SBPanel_LastFile");
-                    using (Frm_NewStreamSound AddStreamSound = new Frm_NewStreamSound(SelectedSample))
+                    using (Frm_NewStreamSound addStreamSound = new Frm_NewStreamSound(selectedSample))
                     {
-                        AddStreamSound.Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties";
-                        AddStreamSound.Tag = Tag;
-                        AddStreamSound.Owner = this;
-                        AddStreamSound.ShowInTaskbar = false;
-                        AddStreamSound.ShowDialog();
+                        addStreamSound.Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties";
+                        addStreamSound.Tag = Tag;
+                        addStreamSound.Owner = this;
+                        addStreamSound.ShowInTaskbar = false;
+                        addStreamSound.ShowDialog();
 
-                        if (AddStreamSound.DialogResult == DialogResult.OK)
+                        if (addStreamSound.DialogResult == DialogResult.OK)
                         {
-                            SelectedSample.FileRef = (short)AddStreamSound.SelectedSound;
+                            selectedSample.FileRef = (short)addStreamSound.SelectedSound;
                         }
                     };
                 }
@@ -90,7 +90,7 @@ namespace EuroSound_Application.SoundBanksEditor
             else
             {
                 GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "SBPanel_LastFile");
-                Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(SelectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(ParentSound.Flags))
+                Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(selectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(parentSound.Flags))
                 {
                     Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
                     Tag = Tag,
@@ -120,27 +120,27 @@ namespace EuroSound_Application.SoundBanksEditor
 
         internal void OpenSoundProperties(TreeNode SelectedNode)
         {
-            string SoundSection = TreeNodeFunctions.FindRootNode(SelectedNode).Name;
-            EXSound SelectedSound = EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(SelectedNode.Name), SoundsList);
+            string soundSection = TreeNodeFunctions.FindRootNode(SelectedNode).Name;
+            EXSound selectedSound = EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(SelectedNode.Name), SoundsList);
             GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "SBPanel_LastFile");
-            Frm_EffectProperties FormSoundProps = new Frm_EffectProperties(SelectedSound, SelectedNode.Name, SoundSection)
+            Frm_EffectProperties formSoundProps = new Frm_EffectProperties(selectedSound, SelectedNode.Name, soundSection)
             {
                 Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
                 Tag = Tag,
                 Owner = this,
                 ShowInTaskbar = false,
             };
-            FormSoundProps.ShowDialog();
-            FormSoundProps.Dispose();
+            formSoundProps.ShowDialog();
+            formSoundProps.Dispose();
             ProjectInfo.FileHasBeenModified = true;
         }
 
         private void RemoveAudioAndWarningDependencies(TreeNode SelectedNode)
         {
-            IEnumerable<string> Dependencies = EXSoundbanksFunctions.GetAudioDependencies(SelectedNode.Name, SelectedNode.Text, SoundsList, TreeView_File, false);
-            if (Dependencies.Any())
+            IEnumerable<string> dependencies = EXSoundbanksFunctions.GetAudioDependencies(SelectedNode.Name, SelectedNode.Text, SoundsList, TreeView_File, false);
+            if (dependencies.Any())
             {
-                GenericFunctions.ShowErrorsAndWarningsList(Dependencies, "Deleting Audio", this);
+                GenericFunctions.ShowErrorsAndWarningsList(dependencies, "Deleting Audio", this);
             }
             else
             {
@@ -153,13 +153,13 @@ namespace EuroSound_Application.SoundBanksEditor
             //Show warning
             if (GlobalPreferences.ShowWarningMessagesBox)
             {
-                EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Audio:", SelectedNode.Text.ToString() }), "Warning", true);
-                if (WarningDialog.ShowDialog() == DialogResult.OK)
+                EuroSound_WarningBox warningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Audio:", SelectedNode.Text.ToString() }), "Warning", true);
+                if (warningDialog.ShowDialog() == DialogResult.OK)
                 {
-                    GlobalPreferences.ShowWarningMessagesBox = WarningDialog.ShowWarningAgain;
+                    GlobalPreferences.ShowWarningMessagesBox = warningDialog.ShowWarningAgain;
                     RemoveAudio();
                 }
-                WarningDialog.Dispose();
+                warningDialog.Dispose();
             }
             else
             {
@@ -175,13 +175,13 @@ namespace EuroSound_Application.SoundBanksEditor
                 //Show warning
                 if (GlobalPreferences.ShowWarningMessagesBox)
                 {
-                    EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Folder:", SelectedNode.Text }), "Warning", true);
-                    if (WarningDialog.ShowDialog() == DialogResult.OK)
+                    EuroSound_WarningBox warningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Folder:", SelectedNode.Text }), "Warning", true);
+                    if (warningDialog.ShowDialog() == DialogResult.OK)
                     {
-                        GlobalPreferences.ShowWarningMessagesBox = WarningDialog.ShowWarningAgain;
+                        GlobalPreferences.ShowWarningMessagesBox = warningDialog.ShowWarningAgain;
                         RemoveRecursivelyFolder();
                     }
-                    WarningDialog.Dispose();
+                    warningDialog.Dispose();
                 }
                 else
                 {
@@ -195,13 +195,13 @@ namespace EuroSound_Application.SoundBanksEditor
             //Show warning
             if (GlobalPreferences.ShowWarningMessagesBox)
             {
-                EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Sample:", SelectedNode.Text }), "Warning", true);
-                if (WarningDialog.ShowDialog() == DialogResult.OK)
+                EuroSound_WarningBox warningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Sample:", SelectedNode.Text }), "Warning", true);
+                if (warningDialog.ShowDialog() == DialogResult.OK)
                 {
-                    GlobalPreferences.ShowWarningMessagesBox = WarningDialog.ShowWarningAgain;
+                    GlobalPreferences.ShowWarningMessagesBox = warningDialog.ShowWarningAgain;
                     RemoveSample();
                 }
-                WarningDialog.Dispose();
+                warningDialog.Dispose();
             }
             else
             {
@@ -214,13 +214,13 @@ namespace EuroSound_Application.SoundBanksEditor
             //Show warning
             if (GlobalPreferences.ShowWarningMessagesBox)
             {
-                EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Sound:", SelectedNode.Text }), "Warning", true);
-                if (WarningDialog.ShowDialog() == DialogResult.OK)
+                EuroSound_WarningBox warningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Sound:", SelectedNode.Text }), "Warning", true);
+                if (warningDialog.ShowDialog() == DialogResult.OK)
                 {
-                    GlobalPreferences.ShowWarningMessagesBox = WarningDialog.ShowWarningAgain;
+                    GlobalPreferences.ShowWarningMessagesBox = warningDialog.ShowWarningAgain;
                     RemoveSound();
                 }
-                WarningDialog.Dispose();
+                warningDialog.Dispose();
             }
             else
             {
@@ -230,22 +230,22 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void RemoveAudio()
         {
-            TreeNode SelectedNode = TreeView_File.SelectedNode;
+            TreeNode selectedNode = TreeView_File.SelectedNode;
 
             //Save to Undo List
-            KeyValuePair<string, EXAudio> SoundtoSave = new KeyValuePair<string, EXAudio>(SelectedNode.Name, AudioDataDict[SelectedNode.Name]);
-            SaveSnapshot(SoundtoSave, SelectedNode);
+            KeyValuePair<string, EXAudio> SoundtoSave = new KeyValuePair<string, EXAudio>(selectedNode.Name, AudioDataDict[selectedNode.Name]);
+            SaveSnapshot(SoundtoSave, selectedNode);
 
             //EXObjectsFunctions.RemoveSound(TreeView_File.SelectedNode.Name, SoundsList);
-            EXSoundbanksFunctions.DeleteAudio(AudioDataDict, SelectedNode.Name);
-            TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, SelectedNode, SelectedNode.Tag.ToString());
+            EXSoundbanksFunctions.DeleteAudio(AudioDataDict, selectedNode.Name);
+            TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, selectedNode, selectedNode.Tag.ToString());
         }
 
         private void RemoveRecursivelyFolder()
         {
             //Remove child nodes sounds and samples
-            IList<TreeNode> ChildNodesCollection = new List<TreeNode>();
-            foreach (TreeNode ChildNode in TreeNodeFunctions.GetNodesInsideFolder(TreeView_File, TreeView_File.SelectedNode, ChildNodesCollection))
+            IList<TreeNode> childNodesCollection = new List<TreeNode>();
+            foreach (TreeNode ChildNode in TreeNodeFunctions.GetNodesInsideFolder(TreeView_File, TreeView_File.SelectedNode, childNodesCollection))
             {
                 EXSoundbanksFunctions.DeleteSound(ChildNode.Name, SoundsList);
             }
@@ -254,23 +254,23 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void RemoveSample()
         {
-            EXSound ParentSound = EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(TreeView_File.SelectedNode.Parent.Name), SoundsList);
-            if (ParentSound != null)
+            EXSound parentSound = EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(TreeView_File.SelectedNode.Parent.Name), SoundsList);
+            if (parentSound != null)
             {
-                ParentSound.Samples.Remove(uint.Parse(TreeView_File.SelectedNode.Name));
+                parentSound.Samples.Remove(uint.Parse(TreeView_File.SelectedNode.Name));
             }
             TreeView_File.SelectedNode.Remove();
         }
 
         private void RemoveSound()
         {
-            TreeNode SelectedNode = TreeView_File.SelectedNode;
+            TreeNode selectedNode = TreeView_File.SelectedNode;
             //Save to Undo List
-            KeyValuePair<uint, EXSound> SoundtoSave = new KeyValuePair<uint, EXSound>(uint.Parse(SelectedNode.Name), SoundsList[uint.Parse(SelectedNode.Name)]);
-            SaveSnapshot(SoundtoSave, SelectedNode);
+            KeyValuePair<uint, EXSound> soundtoSave = new KeyValuePair<uint, EXSound>(uint.Parse(selectedNode.Name), SoundsList[uint.Parse(selectedNode.Name)]);
+            SaveSnapshot(soundtoSave, selectedNode);
 
-            EXSoundbanksFunctions.DeleteSound(SelectedNode.Name, SoundsList);
-            TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, SelectedNode, TreeView_File.SelectedNode.Tag.ToString());
+            EXSoundbanksFunctions.DeleteSound(selectedNode.Name, SoundsList);
+            TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, selectedNode, TreeView_File.SelectedNode.Tag.ToString());
         }
 
         private void UpdateHashcodesValidList()
@@ -285,34 +285,34 @@ namespace EuroSound_Application.SoundBanksEditor
                 });
 
                 //Level Hashcode
-                ListViewItem LevelHashcode = new ListViewItem(new[] { "", string.Join("", new string[] { "0x", ProjectInfo.Hashcode.ToString("X8") }), "<Label Not Found>", "File Properties" });
+                ListViewItem levelHashcodeItem = new ListViewItem(new[] { "", string.Join("", new string[] { "0x", ProjectInfo.Hashcode.ToString("X8") }), "<Label Not Found>", "File Properties" });
                 if (Hashcodes.SB_Defines.ContainsKey(ProjectInfo.Hashcode))
                 {
-                    LevelHashcode.SubItems[0].Text = "OK";
-                    LevelHashcode.ImageIndex = 2;
-                    LevelHashcode.SubItems[2].Text = Hashcodes.SB_Defines[ProjectInfo.Hashcode];
+                    levelHashcodeItem.SubItems[0].Text = "OK";
+                    levelHashcodeItem.ImageIndex = 2;
+                    levelHashcodeItem.SubItems[2].Text = Hashcodes.SB_Defines[ProjectInfo.Hashcode];
                 }
                 else
                 {
-                    LevelHashcode.SubItems[0].Text = "Missing";
-                    LevelHashcode.ImageIndex = 0;
+                    levelHashcodeItem.SubItems[0].Text = "Missing";
+                    levelHashcodeItem.ImageIndex = 0;
                 }
-                LevelHashcode.UseItemStyleForSubItems = false;
-                LevelHashcode.Tag = "Project";
-                GenericFunctions.AddItemToListView(LevelHashcode, ListView_Hashcodes);
+                levelHashcodeItem.UseItemStyleForSubItems = false;
+                levelHashcodeItem.Tag = "Project";
+                GenericFunctions.AddItemToListView(levelHashcodeItem, ListView_Hashcodes);
 
                 //Sounds Hashcodes
                 try
                 {
-                    foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
+                    foreach (KeyValuePair<uint, EXSound> soundItem in SoundsList)
                     {
-                        TreeNode DisplayName = TreeView_File.Nodes.Find(Sound.Key.ToString(), true)[0];
-                        ListViewItem Hashcode = new ListViewItem(new[] { "", string.Join("", new string[] { "0x", Sound.Value.Hashcode.ToString("X8") }), "<Label Not Found>", DisplayName.Text });
-                        if (Hashcodes.SFX_Defines.ContainsKey(Convert.ToUInt32(Sound.Value.Hashcode)))
+                        TreeNode DisplayName = TreeView_File.Nodes.Find(soundItem.Key.ToString(), true)[0];
+                        ListViewItem Hashcode = new ListViewItem(new[] { "", string.Join("", new string[] { "0x", soundItem.Value.Hashcode.ToString("X8") }), "<Label Not Found>", DisplayName.Text });
+                        if (Hashcodes.SFX_Defines.ContainsKey(Convert.ToUInt32(soundItem.Value.Hashcode)))
                         {
                             Hashcode.SubItems[0].Text = "OK";
                             Hashcode.ImageIndex = 2;
-                            Hashcode.SubItems[2].Text = Hashcodes.SFX_Defines[Convert.ToUInt32(Sound.Value.Hashcode)];
+                            Hashcode.SubItems[2].Text = Hashcodes.SFX_Defines[Convert.ToUInt32(soundItem.Value.Hashcode)];
                         }
                         else
                         {
@@ -344,7 +344,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 {
 
                 }
-                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {
                 IsBackground = true
@@ -360,7 +360,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 ListView_Hashcodes.Items.Clear();
                 ListView_Hashcodes.Enabled = true;
                 Textbox_HashcodesCount.Text = "0";
-                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             }
         }
 
@@ -377,10 +377,10 @@ namespace EuroSound_Application.SoundBanksEditor
                         ListView_StreamData.Enabled = false;
                     });
 
-                    foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
+                    foreach (KeyValuePair<uint, EXSound> soundItem in SoundsList)
                     {
-                        string SoundDisplayName = TreeView_File.Nodes.Find(Sound.Key.ToString(), true)[0].Text;
-                        foreach (KeyValuePair<uint, EXSample> Sample in Sound.Value.Samples)
+                        string SoundDisplayName = TreeView_File.Nodes.Find(soundItem.Key.ToString(), true)[0].Text;
+                        foreach (KeyValuePair<uint, EXSample> Sample in soundItem.Value.Samples)
                         {
                             if (Sample.Value.FileRef < 0)
                             {
@@ -420,7 +420,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 catch (ObjectDisposedException)
                 {
                 }
-                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {
                 IsBackground = true
@@ -436,7 +436,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 ListView_StreamData.Items.Clear();
                 ListView_StreamData.Enabled = true;
                 Textbox_StreamFilesCount.Text = "0";
-                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             }
         }
 
@@ -454,19 +454,19 @@ namespace EuroSound_Application.SoundBanksEditor
                     });
 
                     //Add data to list
-                    foreach (KeyValuePair<string, EXAudio> item in AudioDataDict)
+                    foreach (KeyValuePair<string, EXAudio> audioItem in AudioDataDict)
                     {
-                        TreeNode NodeToCheck = TreeView_File.Nodes.Find(item.Key, true)[0];
+                        TreeNode NodeToCheck = TreeView_File.Nodes.Find(audioItem.Key, true)[0];
                         ListViewItem Hashcode = new ListViewItem(new[]
                         {
                             NodeToCheck.Text.ToString(),
-                            item.Value.LoopOffset.ToString(),
-                            item.Value.Frequency.ToString(),
-                            item.Value.Channels.ToString(),
-                            item.Value.Bits.ToString(),
-                            item.Value.PCMdata.Length.ToString(),
-                            item.Value.Encoding.ToString(),
-                            item.Value.Duration.ToString(),
+                            audioItem.Value.LoopOffset.ToString(),
+                            audioItem.Value.Frequency.ToString(),
+                            audioItem.Value.Channels.ToString(),
+                            audioItem.Value.Bits.ToString(),
+                            audioItem.Value.PCMdata.Length.ToString(),
+                            audioItem.Value.Encoding.ToString(),
+                            audioItem.Value.Duration.ToString(),
                         })
                         {
                             UseItemStyleForSubItems = false
@@ -474,7 +474,7 @@ namespace EuroSound_Application.SoundBanksEditor
                         Hashcode.Tag = NodeToCheck.Name;
                         GenericFunctions.AddItemToListView(Hashcode, ListView_WavHeaderData);
 
-                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking Audio:", item.Value.LoadedFileName.ToString() }));
+                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking Audio:", audioItem.Value.LoadedFileName.ToString() }));
 
                         //Show Items Count
                         Textbox_DataCount.Invoke((MethodInvoker)delegate
@@ -494,7 +494,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 catch (ObjectDisposedException)
                 {
                 }
-                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {
                 IsBackground = true
@@ -510,7 +510,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 ListView_WavHeaderData.Items.Clear();
                 ListView_WavHeaderData.Enabled = true;
                 Textbox_DataCount.Text = "0";
-                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             }
         }
 

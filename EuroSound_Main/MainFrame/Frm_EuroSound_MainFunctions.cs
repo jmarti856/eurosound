@@ -11,6 +11,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Application = System.Windows.Forms.Application;
 
 namespace EuroSound_Application
 {
@@ -18,17 +19,17 @@ namespace EuroSound_Application
     {
         private void OpenFormsWithFileToLoad(string FileToLoad)
         {
-            int TypeOfFileToLoad;
+            int typeOfFileToLoad;
 
             if (!string.IsNullOrEmpty(FileToLoad))
             {
                 if (!FileIsAlreadyOpened(FileToLoad))
                 {
                     //Check File Type
-                    TypeOfFileToLoad = TypeOfEuroSoundFile(FileToLoad);
+                    typeOfFileToLoad = TypeOfEuroSoundFile(FileToLoad);
 
                     //Open form
-                    if (TypeOfFileToLoad == (int)GenericFunctions.ESoundFileType.SoundBanks)
+                    if (typeOfFileToLoad == (int)GenericFunctions.ESoundFileType.SoundBanks)
                     {
                         //Add file to recent list
                         RecentFilesMenu.AddFile(FileToLoad);
@@ -46,7 +47,7 @@ namespace EuroSound_Application
                         SoundBanksForm.Show();
                         FormID++;
                     }
-                    else if (TypeOfFileToLoad == (int)GenericFunctions.ESoundFileType.StreamSounds)
+                    else if (typeOfFileToLoad == (int)GenericFunctions.ESoundFileType.StreamSounds)
                     {
                         //Add file to recent list
                         RecentFilesMenu.AddFile(FileToLoad);
@@ -64,7 +65,7 @@ namespace EuroSound_Application
                         StreamSoundsForm.Show();
                         FormID++;
                     }
-                    else if (TypeOfFileToLoad == (int)GenericFunctions.ESoundFileType.MusicBanks)
+                    else if (typeOfFileToLoad == (int)GenericFunctions.ESoundFileType.MusicBanks)
                     {
                         //Add file to recent list
                         RecentFilesMenu.AddFile(FileToLoad);
@@ -129,7 +130,7 @@ namespace EuroSound_Application
 
         private int TypeOfEuroSoundFile(string FileToLoad)
         {
-            int Type = -1;
+            int fileType = -1;
 
             if (File.Exists(FileToLoad))
             {
@@ -138,14 +139,14 @@ namespace EuroSound_Application
                 {
                     if (ESFFiles.FileIsCorrect(BReader))
                     {
-                        Type = BReader.ReadSByte();
+                        fileType = BReader.ReadSByte();
                     }
 
                     BReader.Close();
                 }
             }
 
-            return Type;
+            return fileType;
         }
 
         private void RestoreApplication()
@@ -160,66 +161,66 @@ namespace EuroSound_Application
 
         private bool ClearTemporalFiles()
         {
-            bool FilesRemoved = false;
-            string TemporalFolderPath = Path.Combine(new string[] { Path.GetTempPath(), "EuroSound" });
+            bool filesRemoved = false;
+            string temporalFolderPath = Path.Combine(new string[] { Path.GetTempPath(), "EuroSound" });
 
             //Delete Temp Files from session if exists
-            if (Directory.Exists(TemporalFolderPath))
+            if (Directory.Exists(temporalFolderPath))
             {
                 //Update Status Bar
-                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_RemovingTempFiles"));
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_RemovingTempFiles"));
 
                 //Get temporal files
-                DirectoryInfo TemporalDirectoryInfo = new DirectoryInfo(TemporalFolderPath);
-                foreach (FileInfo FileToDelete in TemporalDirectoryInfo.GetFiles())
+                DirectoryInfo temporalDirectoryInfo = new DirectoryInfo(temporalFolderPath);
+                foreach (FileInfo fileToDelete in temporalDirectoryInfo.GetFiles())
                 {
-                    FilesRemoved = true;
-                    FileToDelete.Delete();
+                    filesRemoved = true;
+                    fileToDelete.Delete();
                 }
-                foreach (DirectoryInfo DirectoryToDelete in TemporalDirectoryInfo.GetDirectories())
+                foreach (DirectoryInfo directoryToDelete in temporalDirectoryInfo.GetDirectories())
                 {
-                    FilesRemoved = true;
-                    DirectoryToDelete.Delete(true);
+                    filesRemoved = true;
+                    directoryToDelete.Delete(true);
                 }
 
                 //Update Status Bar
-                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             }
 
-            return FilesRemoved;
+            return filesRemoved;
         }
 
         private bool FileIsAlreadyOpened(string FilePathToCheck)
         {
-            bool FileIsAlreadyLoaded = false;
-            foreach (Form FormToCheck in System.Windows.Forms.Application.OpenForms)
+            bool fileIsAlreadyLoaded = false;
+            foreach (Form formToCheck in Application.OpenForms)
             {
-                if (FormToCheck.GetType() == typeof(Frm_Soundbanks_Main))
+                if (formToCheck.GetType() == typeof(Frm_Soundbanks_Main))
                 {
-                    if (((Frm_Soundbanks_Main)FormToCheck).CurrentFilePath.Equals(FilePathToCheck))
+                    if (((Frm_Soundbanks_Main)formToCheck).CurrentFilePath.Equals(FilePathToCheck))
                     {
-                        FileIsAlreadyLoaded = true;
+                        fileIsAlreadyLoaded = true;
                         break;
                     }
                 }
-                else if (FormToCheck.GetType() == typeof(Frm_StreamSounds_Main))
+                else if (formToCheck.GetType() == typeof(Frm_StreamSounds_Main))
                 {
-                    if (((Frm_StreamSounds_Main)FormToCheck).CurrentFilePath.Equals(FilePathToCheck))
+                    if (((Frm_StreamSounds_Main)formToCheck).CurrentFilePath.Equals(FilePathToCheck))
                     {
-                        FileIsAlreadyLoaded = true;
+                        fileIsAlreadyLoaded = true;
                         break;
                     }
                 }
-                else if (FormToCheck.GetType() == typeof(Frm_Musics_Main))
+                else if (formToCheck.GetType() == typeof(Frm_Musics_Main))
                 {
-                    if (((Frm_Musics_Main)FormToCheck).CurrentFilePath.Equals(FilePathToCheck))
+                    if (((Frm_Musics_Main)formToCheck).CurrentFilePath.Equals(FilePathToCheck))
                     {
-                        FileIsAlreadyLoaded = true;
+                        fileIsAlreadyLoaded = true;
                         break;
                     }
                 }
             }
-            return FileIsAlreadyLoaded;
+            return fileIsAlreadyLoaded;
         }
 
         private void CheckForUpdates()
@@ -234,14 +235,14 @@ namespace EuroSound_Application
                         IReadOnlyList<Release> ESReleases = await github.Repository.Release.GetAll("jmarti856", "eurosound");
                         if (ESReleases.Count > 0)
                         {
-                            string CurrentRelease = GenericFunctions.GetEuroSoundVersion();
-                            string LatestRelease = ESReleases[0].TagName;
-                            if (!CurrentRelease.Equals(LatestRelease))
+                            string currentRelease = GenericFunctions.GetEuroSoundVersion();
+                            string latestRelease = ESReleases[0].TagName;
+                            if (!currentRelease.Equals(latestRelease))
                             {
-                                DialogResult UpdateQuestion = MessageBox.Show(string.Join("", "It seems that you don't have the latest version of EuroSound.\nYou have the release: ", CurrentRelease, " and the latest release is: ", LatestRelease, ".\n\nWould you like to go to the repository page?"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                                if (UpdateQuestion == DialogResult.Yes)
+                                DialogResult updateQuestion = MessageBox.Show(string.Join("", "It seems that you don't have the latest version of EuroSound.\nYou have the release: ", currentRelease, " and the latest release is: ", latestRelease, ".\n\nWould you like to go to the repository page?"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                                if (updateQuestion == DialogResult.Yes)
                                 {
-                                    Process.Start(string.Join("", "https://github.com/jmarti856/eurosound/releases/tag/", LatestRelease));
+                                    Process.Start(string.Join("", "https://github.com/jmarti856/eurosound/releases/tag/", latestRelease));
                                 }
                             }
                         }

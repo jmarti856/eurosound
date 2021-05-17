@@ -34,11 +34,11 @@ namespace EuroSound_Application.SoundBanksEditor
 
         internal static IEnumerable<string> GetAudiosToExport(Dictionary<uint, EXSound> SoundsList)
         {
-            foreach (KeyValuePair<uint, EXSound> SoundToCheck in SoundsList)
+            foreach (KeyValuePair<uint, EXSound> soundToCheck in SoundsList)
             {
-                if (SoundToCheck.Value.OutputThisSound)
+                if (soundToCheck.Value.OutputThisSound)
                 {
-                    foreach (KeyValuePair<uint, EXSample> Sample in SoundToCheck.Value.Samples)
+                    foreach (KeyValuePair<uint, EXSample> Sample in soundToCheck.Value.Samples)
                     {
                         yield return Sample.Value.ComboboxSelectedAudio;
                     }
@@ -52,82 +52,82 @@ namespace EuroSound_Application.SoundBanksEditor
 
         internal static IEnumerable<string> GetAudiosToPurge(Dictionary<string, EXAudio> AudioDataDict, Dictionary<uint, EXSound> SoundsList)
         {
-            List<string> AudiosToPurge = new List<string>();
+            List<string> audiosToPurge = new List<string>();
 
-            foreach (string AudioKey in AudioDataDict.Keys)
+            foreach (string audioKey in AudioDataDict.Keys)
             {
-                bool PurgeCurrent = true;
+                bool purgeCurrent = true;
 
                 foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
                 {
                     foreach (KeyValuePair<uint, EXSample> sample in Sound.Value.Samples)
                     {
-                        if (sample.Value.ComboboxSelectedAudio.Equals(AudioKey))
+                        if (sample.Value.ComboboxSelectedAudio.Equals(audioKey))
                         {
-                            PurgeCurrent = false;
+                            purgeCurrent = false;
                             break;
                         }
                     }
-                    if (!PurgeCurrent)
+                    if (!purgeCurrent)
                     {
                         break;
                     }
                 }
 
-                if (PurgeCurrent)
+                if (purgeCurrent)
                 {
-                    AudiosToPurge.Add(AudioKey);
+                    audiosToPurge.Add(audioKey);
                 }
             }
-            AudiosToPurge.TrimExcess();
+            audiosToPurge.TrimExcess();
 
-            return AudiosToPurge;
+            return audiosToPurge;
         }
 
         internal static Dictionary<string, string> GetListAudioData(Dictionary<string, EXAudio> AudiosList, TreeView ControlToSearch)
         {
-            Dictionary<string, string> DictionaryToShow = new Dictionary<string, string>
+            Dictionary<string, string> dictionaryToShow = new Dictionary<string, string>
             {
                 { "<SUB SFX>", "<SUB SFX>" }
             };
 
             foreach (KeyValuePair<string, EXAudio> item in AudiosList)
             {
-                TreeNode NodeResult = ControlToSearch.Nodes.Find(item.Key, true)[0];
-                if (NodeResult != null)
+                TreeNode nodesSearchResult = ControlToSearch.Nodes.Find(item.Key, true)[0];
+                if (nodesSearchResult != null)
                 {
-                    DictionaryToShow.Add(item.Key, NodeResult.Text);
+                    dictionaryToShow.Add(item.Key, nodesSearchResult.Text);
                 }
             }
 
-            return DictionaryToShow;
+            return dictionaryToShow;
         }
 
         internal static EXAudio LoadAudioData(string FilePath)
         {
             try
             {
-                using (WaveFileReader AudioReader = new WaveFileReader(FilePath))
+                using (WaveFileReader audioReader = new WaveFileReader(FilePath))
                 {
                     EXAudio Audio = new EXAudio
                     {
                         LoadedFileName = Path.GetFileName(FilePath),
-                        DataSize = (uint)AudioReader.Length,
-                        Frequency = (uint)AudioReader.WaveFormat.SampleRate,
+                        DataSize = (uint)audioReader.Length,
+                        Frequency = (uint)audioReader.WaveFormat.SampleRate,
                         RealSize = (uint)new FileInfo(FilePath).Length,
-                        Channels = (uint)AudioReader.WaveFormat.Channels,
-                        Bits = (uint)AudioReader.WaveFormat.BitsPerSample,
-                        Duration = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1),
-                        Encoding = AudioReader.WaveFormat.Encoding.ToString(),
+                        Channels = (uint)audioReader.WaveFormat.Channels,
+                        Bits = (uint)audioReader.WaveFormat.BitsPerSample,
+                        Duration = (uint)Math.Round(audioReader.TotalTime.TotalMilliseconds, 1),
+                        Encoding = audioReader.WaveFormat.Encoding.ToString(),
                         Flags = 0,
                         LoopOffset = 0,
                         PSIsample = 0
                     };
 
                     //Get PCM Data
-                    Audio.PCMdata = new byte[AudioReader.Length];
-                    AudioReader.Read(Audio.PCMdata, 0, (int)AudioReader.Length);
-                    AudioReader.Close();
+                    Audio.PCMdata = new byte[audioReader.Length];
+                    audioReader.Read(Audio.PCMdata, 0, (int)audioReader.Length);
+                    audioReader.Close();
 
                     return Audio;
                 }
@@ -144,9 +144,9 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             try
             {
-                using (WaveFileReader reader = new WaveFileReader(SourcePath))
+                using (WaveFileReader wavReader = new WaveFileReader(SourcePath))
                 {
-                    using (MediaFoundationResampler conversionStream = new MediaFoundationResampler(reader, new WaveFormat(GlobalPreferences.SoundbankFrequency, GlobalPreferences.SoundbankBits, GlobalPreferences.SoundbankChannels)))
+                    using (MediaFoundationResampler conversionStream = new MediaFoundationResampler(wavReader, new WaveFormat(GlobalPreferences.SoundbankFrequency, GlobalPreferences.SoundbankBits, GlobalPreferences.SoundbankChannels)))
                     {
                         EXAudio Audio = new EXAudio
                         {
@@ -195,61 +195,61 @@ namespace EuroSound_Application.SoundBanksEditor
 
         internal static bool DeleteAudio(Dictionary<string, EXAudio> AudiosDictionary, string AudioKeyToRemove)
         {
-            bool DeletedSuccessfully = false;
+            bool deletedSuccessfully = false;
 
             if (AudiosDictionary.ContainsKey(AudioKeyToRemove))
             {
-                DeletedSuccessfully = true;
+                deletedSuccessfully = true;
                 AudiosDictionary.Remove(AudioKeyToRemove);
             }
 
-            return DeletedSuccessfully;
+            return deletedSuccessfully;
         }
         #endregion
 
         #region SOUNDS
         internal static bool SoundWillBeOutputed(Dictionary<uint, EXSound> SoundsList, uint SoundKey)
         {
-            bool Output = false;
+            bool outputThisSound = false;
 
-            EXSound Test = ReturnSoundFromDictionary(SoundKey, SoundsList);
-            if (Test != null)
+            EXSound soundToCheck = ReturnSoundFromDictionary(SoundKey, SoundsList);
+            if (soundToCheck != null)
             {
-                if (Test.OutputThisSound)
+                if (soundToCheck.OutputThisSound)
                 {
-                    Output = true;
+                    outputThisSound = true;
                 }
             }
 
-            return Output;
+            return outputThisSound;
         }
 
         internal static EXSound ReturnSoundFromDictionary(uint SoundID, Dictionary<uint, EXSound> SoundsList)
         {
             //REnamed to ReturnSoundFromDictionary
-            EXSound SearchedSound = null;
+            EXSound searchedSound = null;
 
             if (SoundsList.ContainsKey(SoundID))
             {
-                SearchedSound = SoundsList[SoundID];
-                return SearchedSound;
+                searchedSound = SoundsList[SoundID];
+                return searchedSound;
             }
 
-            return SearchedSound;
+            return searchedSound;
         }
 
         internal static bool AddSampleToSound(EXSound Sound, uint Index, bool StreamedSample)
         {
-            bool AddedCorrectly = false;
+            bool addedCorrectly = false;
 
-            EXSample Sample = new EXSample
+            EXSample sample = new EXSample
             {
                 IsStreamed = StreamedSample,
             };
 
-            Sound.Samples.Add(Index, Sample);
+            Sound.Samples.Add(Index, sample);
 
-            return AddedCorrectly;
+            return addedCorrectly;
         }
 
         internal static void DeleteSound(string Name, Dictionary<uint, EXSound> SoundsList)
@@ -265,9 +265,9 @@ namespace EuroSound_Application.SoundBanksEditor
         internal static EXSample ReturnSampleFromSound(EXSound SelectedSound, uint SampleID)
         {
             //Renamed to ReturnSampleFromSound
-            EXSample SelectedSample = SelectedSound.Samples[SampleID];
+            EXSample selectedSample = SelectedSound.Samples[SampleID];
 
-            return SelectedSample;
+            return selectedSample;
         }
 
         internal static bool SubSFXFlagChecked(int Flags)

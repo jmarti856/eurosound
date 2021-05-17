@@ -110,7 +110,7 @@ namespace EuroSound_Application.Clases
             {
                 if (!SelectedUserColor.ToArgb().Equals(SystemColors.WindowText.ToArgb()))
                 {
-                    DialogResult QuestionAnswer = MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ColorDialogRemoveColor"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    DialogResult QuestionAnswer = MessageBox.Show(GenericFunctions.resourcesManager.GetString("ColorDialogRemoveColor"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (QuestionAnswer == DialogResult.Yes)
                     {
                         SelectedColor = SystemColors.WindowText.ToArgb();

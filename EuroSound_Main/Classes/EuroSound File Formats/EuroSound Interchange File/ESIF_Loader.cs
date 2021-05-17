@@ -37,7 +37,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             string CurrentKeyWord;
 
             //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESIFFile"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_ReadingESIFFile"));
 
             //Check file is not empty
             if (FileLines.Length > 0)
@@ -86,7 +86,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             }
 
             //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
 
             return ImportResults;
         }
@@ -633,7 +633,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             string CurrentKeyWord;
 
             //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESIFFile"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_ReadingESIFFile"));
 
             //Check file is not empty
             if (FileLines.Length > 0)
@@ -674,7 +674,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             }
 
             //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
 
             return ImportResults;
         }
@@ -1001,7 +1001,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             string CurrentKeyWord;
 
             //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingESIFFile"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_ReadingESIFFile"));
 
             //Check file is not empty
             if (FileLines.Length > 0)
@@ -1042,7 +1042,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             }
 
             //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
 
             return ImportResults;
         }

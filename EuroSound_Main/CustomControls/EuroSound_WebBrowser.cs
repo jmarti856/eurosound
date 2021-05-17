@@ -96,7 +96,7 @@ namespace EuroSound_Application.CustomControls.WebBrowser
             WindowsRegistryFunctions.SaveWindowState("WBrowser", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, 0);
 
             //Set Program status
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
 
             //Update Title Bar
             MdiParent.Text = "EuroSound";
@@ -116,7 +116,7 @@ namespace EuroSound_Application.CustomControls.WebBrowser
             }
             else
             {
-                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             }
         }
     }

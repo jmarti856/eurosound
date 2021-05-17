@@ -21,7 +21,7 @@ namespace EuroSound_Application.MarkerFiles
             string CurrentKeyWord;
 
             //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_ReadingMRKFile"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_ReadingMRKFile"));
 
             //Check file is not empty
             if (FileLines.Length > 0)
@@ -64,7 +64,7 @@ namespace EuroSound_Application.MarkerFiles
             }
 
             //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
 
             return ImportResults;
         }

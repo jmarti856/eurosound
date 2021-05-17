@@ -25,13 +25,13 @@ namespace EuroSound_Application.SFXData
             InitializeComponent();
 
             //Buttons
-            Button_Search.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("Gen_SearchHashcode")); };
+            Button_Search.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("Gen_SearchHashcode")); };
             Button_Search.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
 
-            Button_Reload.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("Gen_ReloadHashTable")); };
+            Button_Reload.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("Gen_ReloadHashTable")); };
             Button_Reload.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
 
-            button_generateFile.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.ResourcesManager.GetString("Gen_GenerateSFXDataFile")); };
+            button_generateFile.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("Gen_GenerateSFXDataFile")); };
             button_generateFile.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
         }
 
@@ -81,7 +81,7 @@ namespace EuroSound_Application.SFXData
 
             Hashcodes.AddDataToCombobox(Combobox_LabelHashcodes, Hashcodes.SFX_Defines);
 
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
 
             //Start Thread
             LoadSfxDataTable = new Thread(LoadDataFromHashtable)
@@ -145,7 +145,7 @@ namespace EuroSound_Application.SFXData
             UpdateStatusBarLabels();
 
             //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         private void UpdateStatusBarLabels()
@@ -243,7 +243,7 @@ namespace EuroSound_Application.SFXData
             });
 
             /*Set Program status*/
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         //*===============================================================================================
@@ -286,7 +286,7 @@ namespace EuroSound_Application.SFXData
             //Inform User the hashcode does not exists
             if (ListView_HashTableData.SelectedItems.Count == 0)
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("SFXDataHashcodeNotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(GenericFunctions.resourcesManager.GetString("SFXDataHashcodeNotFound"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -307,7 +307,7 @@ namespace EuroSound_Application.SFXData
             Hashcodes.LoadSoundDataFile(GlobalPreferences.HT_SoundsDataPath);
 
             //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
 
             LoadSfxDataTable = new Thread(LoadDataFromHashtable)
             {

@@ -27,7 +27,7 @@ namespace EuroSound_Application.StreamSounds
             string Name = BrowsersAndDialogs.InputBoxDialog("Enter a name for new a new streaming sound.", "New Streaming Sound");
             if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_StreamData, Name))
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(GenericFunctions.resourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {

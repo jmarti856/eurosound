@@ -74,17 +74,17 @@ namespace EuroSound_Application.SoundBanksEditor
             Checkbox_OutputThisSound.Checked = SelectedSound.OutputThisSound;
 
             //---Print Samples--
-            Thread PrintSampleList = new Thread(() =>
+            Thread printSampleList = new Thread(() =>
             {
                 if (SelectedSound.Samples != null)
                 {
                     foreach (KeyValuePair<uint, EXSample> sample in SelectedSound.Samples)
                     {
-                        string SampleName = ((Frm_Soundbanks_Main)OpenForm).TreeView_File.Nodes.Find(sample.Key.ToString(), true)[0].Text;
+                        string sampleName = ((Frm_Soundbanks_Main)OpenForm).TreeView_File.Nodes.Find(sample.Key.ToString(), true)[0].Text;
                         //Crate item
                         ListViewItem ItemToAdd = new ListViewItem
                         {
-                            Text = SampleName,
+                            Text = sampleName,
                             Tag = sample.Key,
                             ImageIndex = 0,
                             StateImageIndex = 0
@@ -103,7 +103,7 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 IsBackground = true
             };
-            PrintSampleList.Start();
+            printSampleList.Start();
         }
 
         //*===============================================================================================
@@ -135,16 +135,16 @@ namespace EuroSound_Application.SoundBanksEditor
             SelectedSound.OutputThisSound = Checkbox_OutputThisSound.Checked;
 
             //--Change icon in the parent form--
-            TreeNode[] Results = ((Frm_Soundbanks_Main)OpenForm).TreeView_File.Nodes.Find(TreeNodeSoundName, true);
-            if (Results.Length > 0)
+            TreeNode[] nodeSearchResults = ((Frm_Soundbanks_Main)OpenForm).TreeView_File.Nodes.Find(TreeNodeSoundName, true);
+            if (nodeSearchResults.Length > 0)
             {
                 if (SelectedSound.OutputThisSound)
                 {
-                    TreeNodeFunctions.TreeNodeSetNodeImage(Results[0], 2, 2);
+                    TreeNodeFunctions.TreeNodeSetNodeImage(nodeSearchResults[0], 2, 2);
                 }
                 else
                 {
-                    TreeNodeFunctions.TreeNodeSetNodeImage(Results[0], 5, 5);
+                    TreeNodeFunctions.TreeNodeSetNodeImage(nodeSearchResults[0], 5, 5);
                 }
             }
             Close();
@@ -172,8 +172,8 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void Cbx_hashcode_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            uint KeyToCheck = Convert.ToUInt32(cbx_hashcode.SelectedValue) & 0x00ffffff; //Apply bytes mask, example: 0x1A00005C -> 0x0000005C
-            float[] SFXValues = GenericFunctions.GetSoundData(KeyToCheck);
+            uint keyToCheck = Convert.ToUInt32(cbx_hashcode.SelectedValue) & 0x00ffffff; //Apply bytes mask, example: 0x1A00005C -> 0x0000005C
+            float[] SFXValues = GenericFunctions.GetSoundData(keyToCheck);
 
             if (SFXValues != null)
             {
@@ -195,21 +195,21 @@ namespace EuroSound_Application.SoundBanksEditor
                 Textbox_InnerRadius.Text = "0";
                 Textbox_OuterRadius.Text = "0";
                 cbx_trackingtype.SelectedIndex = 0;
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("HashcodeNotFoundInSFXDataHashTable"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(GenericFunctions.resourcesManager.GetString("HashcodeNotFoundInSFXDataHashTable"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         private void Textbox_flags_Click(object sender, EventArgs e)
         {
-            using (EuroSound_FlagsForm FormFlags = new EuroSound_FlagsForm(int.Parse(textbox_flags.Text), "SoundFlags", 16))
+            using (EuroSound_FlagsForm formFlags = new EuroSound_FlagsForm(int.Parse(textbox_flags.Text), "SoundFlags", 16))
             {
-                FormFlags.Text = "Sound Flags";
-                FormFlags.Tag = Tag;
-                FormFlags.Owner = this;
+                formFlags.Text = "Sound Flags";
+                formFlags.Tag = Tag;
+                formFlags.Owner = this;
 
-                if (FormFlags.ShowDialog() == DialogResult.OK)
+                if (formFlags.ShowDialog() == DialogResult.OK)
                 {
-                    textbox_flags.Text = FormFlags.CheckedFlags.ToString();
+                    textbox_flags.Text = formFlags.CheckedFlags.ToString();
                 }
             }
         }
@@ -218,49 +218,49 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             if (List_Samples.SelectedItems.Count > 0)
             {
-                string SampleName = List_Samples.SelectedItems[0].Text;
-                uint SampleID = (uint)List_Samples.SelectedItems[0].Tag;
-                EXSample SelectedSample = EXSoundbanksFunctions.ReturnSampleFromSound(SelectedSound, SampleID);
+                string sampleName = List_Samples.SelectedItems[0].Text;
+                uint sampleID = (uint)List_Samples.SelectedItems[0].Tag;
+                EXSample selectedSample = EXSoundbanksFunctions.ReturnSampleFromSound(SelectedSound, sampleID);
 
-                if (SelectedSample != null)
+                if (selectedSample != null)
                 {
                     if (SoundSection.Equals("Sounds"))
                     {
-                        GenericFunctions.SetCurrentFileLabel(SampleName, "SBPanel_LastFile");
-                        Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(SelectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(SelectedSound.Flags))
+                        GenericFunctions.SetCurrentFileLabel(sampleName, "SBPanel_LastFile");
+                        Frm_SampleProperties formSampleProps = new Frm_SampleProperties(selectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(SelectedSound.Flags))
                         {
-                            Text = GenericFunctions.TruncateLongString(SampleName, 25) + " - Properties",
+                            Text = GenericFunctions.TruncateLongString(sampleName, 25) + " - Properties",
                             Tag = Tag,
                             Owner = this,
                             ShowInTaskbar = false
                         };
-                        FormSampleProps.ShowDialog();
-                        FormSampleProps.Dispose();
+                        formSampleProps.ShowDialog();
+                        formSampleProps.Dispose();
                     }
                     else
                     {
                         //Open form only if file exists
                         if (File.Exists(GlobalPreferences.StreamFilePath))
                         {
-                            GenericFunctions.SetCurrentFileLabel(SampleName, "SBPanel_LastFile");
-                            using (Frm_NewStreamSound AddStreamSound = new Frm_NewStreamSound(SelectedSample))
+                            GenericFunctions.SetCurrentFileLabel(sampleName, "SBPanel_LastFile");
+                            using (Frm_NewStreamSound addStreamSound = new Frm_NewStreamSound(selectedSample))
                             {
-                                AddStreamSound.Text = GenericFunctions.TruncateLongString(SampleName, 25) + " - Properties";
-                                AddStreamSound.Tag = Tag;
-                                AddStreamSound.Owner = this;
-                                AddStreamSound.ShowInTaskbar = false;
-                                AddStreamSound.ShowDialog();
+                                addStreamSound.Text = GenericFunctions.TruncateLongString(sampleName, 25) + " - Properties";
+                                addStreamSound.Tag = Tag;
+                                addStreamSound.Owner = this;
+                                addStreamSound.ShowInTaskbar = false;
+                                addStreamSound.ShowDialog();
 
-                                if (AddStreamSound.DialogResult == DialogResult.OK)
+                                if (addStreamSound.DialogResult == DialogResult.OK)
                                 {
-                                    SelectedSample.FileRef = (short)AddStreamSound.SelectedSound;
+                                    selectedSample.FileRef = (short)addStreamSound.SelectedSound;
                                 }
                             };
                         }
                         else
                         {
-                            DialogResult dialogResult = MessageBox.Show("The stream sounds file has not found, the file route is: \"" + GlobalPreferences.StreamFilePath + "\", do you want to specify another path ?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
-                            if (dialogResult == DialogResult.Yes)
+                            DialogResult specifyOtherPathQuestion = MessageBox.Show("The stream sounds file has not found, the file route is: \"" + GlobalPreferences.StreamFilePath + "\", do you want to specify another path ?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                            if (specifyOtherPathQuestion == DialogResult.Yes)
                             {
                                 GlobalPreferences.StreamFilePath = BrowsersAndDialogs.FileBrowserDialog("EuroSound Files (*.esf)|*.esf", 0, true);
                                 WindowsRegistryFunctions.SaveExternalFiles("StreamFile", "Path", GlobalPreferences.StreamFilePath);

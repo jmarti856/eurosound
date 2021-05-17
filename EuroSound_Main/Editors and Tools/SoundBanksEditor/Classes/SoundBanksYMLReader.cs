@@ -19,44 +19,44 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
         {
             Reports = new List<string>();
 
-            string[] lines = File.ReadAllLines(LevelSoundBankPath);
-            if (lines[0].Equals("#ftype:1", StringComparison.OrdinalIgnoreCase))
+            string[] fileLines = File.ReadAllLines(LevelSoundBankPath);
+            if (fileLines[0].Equals("#ftype:1", StringComparison.OrdinalIgnoreCase))
             {
-                for (int i = 0; i < lines.Length; i += 1)
+                for (int i = 0; i < fileLines.Length; i += 1)
                 {
-                    if (!lines[i].StartsWith("#"))
+                    if (!fileLines[i].StartsWith("#"))
                     {
-                        string[] line = lines[i].Split(null);
+                        string[] line = fileLines[i].Split(null);
                         if (line.Length > 1)
                         {
                             yield return Path.GetDirectoryName(FilePath) + "\\" + line[1] + "\\effectProperties.yml";
                         }
                     }
                 }
-                Array.Clear(lines, 0, lines.Length);
+                Array.Clear(fileLines, 0, fileLines.Length);
             }
             else
             {
-                Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect") + ": " + LevelSoundBankPath);
+                Reports.Add("1" + GenericFunctions.resourcesManager.GetString("Gen_ErrorReading_FileIncorrect") + ": " + LevelSoundBankPath);
             }
         }
 
         internal void LoadDataFromSwyterUnpacker(Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDict, TreeView TreeViewControl, string FilePath, ProjectFile FileProperties)
         {
-            uint SoundHashcode;
-            string SoundName;
+            uint soundHashcode;
+            string soundName;
 
             //Read sounds from the unpacker folder
-            IEnumerable<string> SoundsPaths = GetFilePathsFromList(FilePath, FilePath);
-            foreach (string path in SoundsPaths)
+            IEnumerable<string> soundsPaths = GetFilePathsFromList(FilePath, FilePath);
+            foreach (string path in soundsPaths)
             {
-                SoundName = new DirectoryInfo(Path.GetDirectoryName(path)).Name;
-                SoundHashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SFX_Defines, SoundName);
-                if (SoundHashcode == 0x00000000)
+                soundName = new DirectoryInfo(Path.GetDirectoryName(path)).Name;
+                soundHashcode = Hashcodes.GetHashcodeByLabel(Hashcodes.SFX_Defines, soundName);
+                if (soundHashcode == 0x00000000)
                 {
-                    Reports.Add(string.Join(" ", "0Hashcode not found for the sound:", SoundName));
+                    Reports.Add(string.Join(" ", "0Hashcode not found for the sound:", soundName));
                 }
-                ReadYmlFile(SoundsList, AudioDict, TreeViewControl, path, SoundName, SoundHashcode, false, FileProperties);
+                ReadYmlFile(SoundsList, AudioDict, TreeViewControl, path, soundName, soundHashcode, false, FileProperties);
             }
 
             //Collapse root nodes
@@ -75,13 +75,13 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
 
         internal void ReadYmlFile(Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDict, TreeView TreeViewControl, string FilePath, string SoundName, uint SoundHashcode, bool ShowResultsAtEnd, ProjectFile FileProperties)
         {
-            uint SoundID;
-            int[] CurrentSoundParams;
-            bool SoundNodeAdded = false;
-            Dictionary<int, int[]> SamplesProperties;
+            uint soundID;
+            int[] currentSoundParams;
+            bool soundNodeAdded = false;
+            Dictionary<int, int[]> samplesProperties;
 
             //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_ReadingYamlFile") + ": " + SoundName);
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_ReadingYamlFile") + ": " + SoundName);
 
             if (Reports == null)
             {
@@ -91,8 +91,8 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
             try
             {
                 StreamReader reader = new StreamReader(FilePath);
-                string FileCheck = reader.ReadLine();
-                if (FileCheck.Equals("#ftype:2", StringComparison.OrdinalIgnoreCase))
+                string fileCheck = reader.ReadLine();
+                if (fileCheck.Equals("#ftype:2", StringComparison.OrdinalIgnoreCase))
                 {
                     //Load the stream
                     YamlStream yaml = new YamlStream();
@@ -101,38 +101,38 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
                     //Examine the stream
                     YamlMappingNode mapping = (YamlMappingNode)yaml.Documents[0].RootNode;
 
-                    CurrentSoundParams = GetSoundParams(mapping);
-                    SamplesProperties = GetSamples(mapping);
+                    currentSoundParams = GetSoundParams(mapping);
+                    samplesProperties = GetSamples(mapping);
 
                     if (!TreeNodeFunctions.CheckIfNodeExistsByText(TreeViewControl, SoundName))
                     {
                         //--Add Sound--
-                        SoundID = GenericFunctions.GetNewObjectID(FileProperties);
+                        soundID = GenericFunctions.GetNewObjectID(FileProperties);
                         EXSound NewSound = new EXSound()
                         {
                             Hashcode = SoundHashcode,
-                            DuckerLenght = (short)CurrentSoundParams[0],
-                            MinDelay = (short)CurrentSoundParams[1],
-                            MaxDelay = (short)CurrentSoundParams[2],
-                            InnerRadiusReal = (short)CurrentSoundParams[3],
-                            OuterRadiusReal = (short)CurrentSoundParams[4],
-                            ReverbSend = (sbyte)CurrentSoundParams[5],
-                            TrackingType = (sbyte)CurrentSoundParams[6],
-                            MaxVoices = (sbyte)CurrentSoundParams[7],
-                            Priority = (sbyte)CurrentSoundParams[8],
-                            Ducker = (sbyte)CurrentSoundParams[9],
-                            MasterVolume = (sbyte)CurrentSoundParams[10],
-                            Flags = (ushort)CurrentSoundParams[11]
+                            DuckerLenght = (short)currentSoundParams[0],
+                            MinDelay = (short)currentSoundParams[1],
+                            MaxDelay = (short)currentSoundParams[2],
+                            InnerRadiusReal = (short)currentSoundParams[3],
+                            OuterRadiusReal = (short)currentSoundParams[4],
+                            ReverbSend = (sbyte)currentSoundParams[5],
+                            TrackingType = (sbyte)currentSoundParams[6],
+                            MaxVoices = (sbyte)currentSoundParams[7],
+                            Priority = (sbyte)currentSoundParams[8],
+                            Ducker = (sbyte)currentSoundParams[9],
+                            MasterVolume = (sbyte)currentSoundParams[10],
+                            Flags = (ushort)currentSoundParams[11]
                         };
 
-                        SoundsList.Add(SoundID, NewSound);
+                        SoundsList.Add(soundID, NewSound);
 
                         //--Add Sample--
-                        foreach (KeyValuePair<int, int[]> Entry in SamplesProperties)
+                        foreach (KeyValuePair<int, int[]> Entry in samplesProperties)
                         {
-                            string SampleName = "SMP_" + SoundName + Entry.Key;
-                            uint SampleID = GenericFunctions.GetNewObjectID(FileProperties);
-                            EXSample NewSample = new EXSample
+                            string sampleName = "SMP_" + SoundName + Entry.Key;
+                            uint sampleID = GenericFunctions.GetNewObjectID(FileProperties);
+                            EXSample newSample = new EXSample
                             {
                                 FileRef = (short)Entry.Value[0],
                                 PitchOffset = (short)Entry.Value[1],
@@ -145,47 +145,47 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
 
                             if (Entry.Value[0] < 0)
                             {
-                                if (!SoundNodeAdded)
+                                if (!soundNodeAdded)
                                 {
-                                    TreeNodeFunctions.TreeNodeAddNewNode("StreamedSounds", SoundID.ToString(), SoundName, 2, 2, "Sound", false, false, false, SystemColors.WindowText, TreeViewControl);
-                                    NewSample.IsStreamed = true;
-                                    SoundNodeAdded = true;
+                                    TreeNodeFunctions.TreeNodeAddNewNode("StreamedSounds", soundID.ToString(), SoundName, 2, 2, "Sound", false, false, false, SystemColors.WindowText, TreeViewControl);
+                                    newSample.IsStreamed = true;
+                                    soundNodeAdded = true;
                                 }
                             }
                             else
                             {
-                                if (!SoundNodeAdded)
+                                if (!soundNodeAdded)
                                 {
-                                    TreeNodeFunctions.TreeNodeAddNewNode("Sounds", SoundID.ToString(), SoundName, 2, 2, "Sound", false, false, false, SystemColors.WindowText, TreeViewControl);
-                                    SoundNodeAdded = true;
+                                    TreeNodeFunctions.TreeNodeAddNewNode("Sounds", soundID.ToString(), SoundName, 2, 2, "Sound", false, false, false, SystemColors.WindowText, TreeViewControl);
+                                    soundNodeAdded = true;
                                 }
 
-                                if (EXSoundbanksFunctions.SubSFXFlagChecked(CurrentSoundParams[11]))
+                                if (EXSoundbanksFunctions.SubSFXFlagChecked(currentSoundParams[11]))
                                 {
                                     uint GetHashcode = Convert.ToUInt32("0x" + Entry.Value[0].ToString("X8"), 16);
-                                    NewSample.HashcodeSubSFX = GlobalPreferences.SfxPrefix | GetHashcode;
-                                    NewSample.ComboboxSelectedAudio = "<SUB SFX>";
+                                    newSample.HashcodeSubSFX = GlobalPreferences.SfxPrefix | GetHashcode;
+                                    newSample.ComboboxSelectedAudio = "<SUB SFX>";
                                 }
                                 else
                                 {
-                                    int[] AudioProps = new int[3];
-                                    string AudioPath = GetAudioFilePath(FilePath, Entry.Key, 0);
+                                    int[] audioProps = new int[3];
+                                    string audioPath = GetAudioFilePath(FilePath, Entry.Key, 0);
 
-                                    if (File.Exists(AudioPath))
+                                    if (File.Exists(audioPath))
                                     {
-                                        string MD5AudioFilehash = GenericFunctions.CalculateMD5(AudioPath);
-                                        LoadAudio(AudioPath, AudioProps, SoundName, SampleName, TreeViewControl, AudioDict, NewSample, FilePath, Entry.Key, MD5AudioFilehash);
+                                        string MD5AudioFilehash = GenericFunctions.CalculateMD5(audioPath);
+                                        LoadAudio(audioPath, audioProps, SoundName, sampleName, TreeViewControl, AudioDict, newSample, FilePath, Entry.Key, MD5AudioFilehash);
                                     }
                                     else
                                     {
-                                        Reports.Add("0The file: " + AudioPath + " can't be loaded because does not exists.");
+                                        Reports.Add("0The file: " + audioPath + " can't be loaded because does not exists.");
                                     }
                                 }
                             }
 
                             //--Add Sample To Dictionary--
-                            NewSound.Samples.Add(SampleID, NewSample);
-                            TreeNodeFunctions.TreeNodeAddNewNode(SoundID.ToString(), SampleID.ToString(), SampleName, 4, 4, "Sample", false, false, false, SystemColors.WindowText, TreeViewControl);
+                            NewSound.Samples.Add(sampleID, newSample);
+                            TreeNodeFunctions.TreeNodeAddNewNode(soundID.ToString(), sampleID.ToString(), sampleName, 4, 4, "Sample", false, false, false, SystemColors.WindowText, TreeViewControl);
                         }
                     }
                     else
@@ -201,7 +201,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
                 }
                 else
                 {
-                    Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect"));
+                    Reports.Add("1" + GenericFunctions.resourcesManager.GetString("Gen_ErrorReading_FileIncorrect"));
                 }
 
                 reader.Close();
@@ -209,48 +209,48 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
             }
             catch
             {
-                Reports.Add("0" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorRedingFile") + FilePath);
+                Reports.Add("0" + GenericFunctions.resourcesManager.GetString("Gen_ErrorRedingFile") + FilePath);
             }
 
             //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.ResourcesManager.GetString("StatusBar_Status_Ready"));
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
         private string GetAudioFilePath(string EffectPropertiesPath, int SampleName, int type)
         {
             string alphabet_string = "abcdefghijklmnopqrstuvwxyz";
-            string AudioPath;
+            string audioPath;
 
             if (type == 0)
             {
-                AudioPath = Path.GetDirectoryName(EffectPropertiesPath) + "\\" + alphabet_string[SampleName] + ".wav";
+                audioPath = Path.GetDirectoryName(EffectPropertiesPath) + "\\" + alphabet_string[SampleName] + ".wav";
             }
             else
             {
-                AudioPath = Path.GetDirectoryName(EffectPropertiesPath) + "\\" + alphabet_string[SampleName] + ".txt";
+                audioPath = Path.GetDirectoryName(EffectPropertiesPath) + "\\" + alphabet_string[SampleName] + ".txt";
             }
 
-            return AudioPath;
+            return audioPath;
         }
 
         private int[] GetAudioProperties(string PropertiesFilePath)
         {
-            int[] Properties = new int[3];
-            string[] Lines = File.ReadAllLines(PropertiesFilePath);
+            int[] properties = new int[3];
+            string[] fileLines = File.ReadAllLines(PropertiesFilePath);
 
-            if (Lines[0].Equals("#ftype:3", StringComparison.OrdinalIgnoreCase))
+            if (fileLines[0].Equals("#ftype:3", StringComparison.OrdinalIgnoreCase))
             {
-                if (Lines.Length == 5)
+                if (fileLines.Length == 5)
                 {
-                    for (int i = 0; i < Lines.Length; i++)
+                    for (int i = 0; i < fileLines.Length; i++)
                     {
-                        if (Lines[i].StartsWith("#"))
+                        if (fileLines[i].StartsWith("#"))
                         {
                             continue;
                         }
                         else
                         {
-                            Properties[i - 2] = int.Parse(Lines[i]);
+                            properties[i - 2] = int.Parse(fileLines[i]);
                         }
                     }
                 }
@@ -261,10 +261,10 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
             }
             else
             {
-                Reports.Add("1" + GenericFunctions.ResourcesManager.GetString("Gen_ErrorReading_FileIncorrect"));
+                Reports.Add("1" + GenericFunctions.resourcesManager.GetString("Gen_ErrorReading_FileIncorrect"));
             }
 
-            return Properties;
+            return properties;
         }
 
         private int GetFlagsFromBoolArray(bool[] Flags)
@@ -282,48 +282,48 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
 
         private Dictionary<int, int[]> GetSamples(YamlMappingNode mapping)
         {
-            int SampleIndex;
+            int sampleIndex;
             int index;
 
-            Dictionary<int, int[]> Samples = new Dictionary<int, int[]>();
+            Dictionary<int, int[]> samples = new Dictionary<int, int[]>();
 
-            YamlMappingNode SampleParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("samples")];
-            foreach (KeyValuePair<YamlNode, YamlNode> entry in SampleParameters.Children)
+            YamlMappingNode sampleParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("samples")];
+            foreach (KeyValuePair<YamlNode, YamlNode> entry in sampleParameters.Children)
             {
                 //Temporal array to store values
-                int[] SampleParams = new int[7];
+                int[] sampleParams = new int[7];
 
                 //Get sample name
-                SampleIndex = int.Parse(entry.Key.ToString());
+                sampleIndex = int.Parse(entry.Key.ToString());
                 index = 0;
 
-                YamlMappingNode SampleProps = (YamlMappingNode)SampleParameters.Children[new YamlScalarNode(SampleIndex.ToString())];
-                foreach (KeyValuePair<YamlNode, YamlNode> flagsEntry in SampleProps.Children)
+                YamlMappingNode sampleProps = (YamlMappingNode)sampleParameters.Children[new YamlScalarNode(sampleIndex.ToString())];
+                foreach (KeyValuePair<YamlNode, YamlNode> flagsEntry in sampleProps.Children)
                 {
                     //Get sample properties
                     if (index < 7)
                     {
-                        SampleParams[index] = int.Parse(flagsEntry.Value.ToString());
+                        sampleParams[index] = int.Parse(flagsEntry.Value.ToString());
                         index++;
                     }
                 }
-                Samples.Add(SampleIndex, SampleParams);
+                samples.Add(sampleIndex, sampleParams);
             }
 
-            return Samples;
+            return samples;
         }
 
         private int[] GetSoundParams(YamlMappingNode mapping)
         {
-            bool[] SndFlags = new bool[12];
+            bool[] soundFlags = new bool[12];
             bool readingFlags = false;
             int[] SndParams = new int[12];
 
             int index = 0;
 
             //Sound Parameters
-            YamlMappingNode SoundParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("params")];
-            foreach (KeyValuePair<YamlNode, YamlNode> entry in SoundParameters.Children)
+            YamlMappingNode soundParameters = (YamlMappingNode)mapping.Children[new YamlScalarNode("params")];
+            foreach (KeyValuePair<YamlNode, YamlNode> entry in soundParameters.Children)
             {
                 //Read Parameters
                 if (index < 11)
@@ -367,20 +367,20 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
                 //Read Flags value
                 if (readingFlags)
                 {
-                    YamlMappingNode Flags = (YamlMappingNode)SoundParameters.Children[new YamlScalarNode("flags")];
-                    foreach (KeyValuePair<YamlNode, YamlNode> flagsEntry in Flags.Children)
+                    YamlMappingNode flags = (YamlMappingNode)soundParameters.Children[new YamlScalarNode("flags")];
+                    foreach (KeyValuePair<YamlNode, YamlNode> flagsEntry in flags.Children)
                     {
                         //Add the thirdteen flags to the array
                         if (index < 12)
                         {
-                            SndFlags[index] = Convert.ToBoolean(flagsEntry.Value.ToString());
+                            soundFlags[index] = Convert.ToBoolean(flagsEntry.Value.ToString());
                             index++;
                         }
                     }
                 }
             }
             //Array of values to number
-            SndParams[11] = GetFlagsFromBoolArray(SndFlags);
+            SndParams[11] = GetFlagsFromBoolArray(soundFlags);
 
             return SndParams;
         }
@@ -389,27 +389,27 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
         {
             if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.SoundbankChannels, GlobalPreferences.SoundbankFrequency))
             {
-                string AudioPropertiesPath = GetAudioFilePath(FilePath, SampleKey, 1);
-                if (File.Exists(AudioPropertiesPath))
+                string audioPropertiesPath = GetAudioFilePath(FilePath, SampleKey, 1);
+                if (File.Exists(audioPropertiesPath))
                 {
-                    AudioProps = GetAudioProperties(AudioPropertiesPath);
+                    AudioProps = GetAudioProperties(audioPropertiesPath);
                 }
                 else
                 {
-                    Reports.Add("1The file: " + AudioPropertiesPath + " can't be loaded because does not exists.");
+                    Reports.Add("1The file: " + audioPropertiesPath + " can't be loaded because does not exists.");
                 }
 
-                EXAudio NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);
-                if (NewAudio.PCMdata != null)
+                EXAudio newAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);
+                if (newAudio.PCMdata != null)
                 {
                     if (!AudioDict.ContainsKey(MD5Hash))
                     {
-                        NewAudio.Flags = Convert.ToUInt16(AudioProps[0]);
-                        NewAudio.PSIsample = Convert.ToUInt32(AudioProps[1]);
-                        NewAudio.LoopOffset = Convert.ToUInt32(AudioProps[2]) / 2;
+                        newAudio.Flags = Convert.ToUInt16(AudioProps[0]);
+                        newAudio.PSIsample = Convert.ToUInt32(AudioProps[1]);
+                        newAudio.LoopOffset = Convert.ToUInt32(AudioProps[2]) / 2;
 
                         //Add Audio to dictionary and tree node
-                        AudioDict.Add(MD5Hash, NewAudio);
+                        AudioDict.Add(MD5Hash, newAudio);
                         TreeNodeFunctions.TreeNodeAddNewNode("AudioData", MD5Hash, "AD_" + SampleName, 7, 7, "Audio", false, false, false, SystemColors.WindowText, TreeViewControl);
                     }
                     else

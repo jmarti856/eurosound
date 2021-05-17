@@ -65,7 +65,7 @@ namespace EuroSound_Application.Musics
             string Name = BrowsersAndDialogs.InputBoxDialog("Enter a name for new folder.", "New Folder");
             if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_MusicData, Name))
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(GenericFunctions.resourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -105,7 +105,7 @@ namespace EuroSound_Application.Musics
             string Name = BrowsersAndDialogs.InputBoxDialog("Enter a name for new a new music.", "New Music");
             if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_MusicData, Name))
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(GenericFunctions.resourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {

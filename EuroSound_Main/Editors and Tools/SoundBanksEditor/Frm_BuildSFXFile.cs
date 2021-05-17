@@ -19,7 +19,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
         //*===============================================================================================
         //* GLOBAL VARS
         //*===============================================================================================
-        private BinaryStream BWriter;
+        private BinaryStream binaryWriter;
         private ProjectFile CurrentFileProperties;
         private List<string> Reports = new List<string>();
         private string FileName;
@@ -48,10 +48,10 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
 
         private void Frm_BuildSFXFile_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (BWriter != null)
+            if (binaryWriter != null)
             {
-                BWriter.Close();
-                BWriter.Dispose();
+                binaryWriter.Close();
+                binaryWriter.Dispose();
             }
             if (BackgroundWorker_BuildSFX.IsBusy)
             {
@@ -88,25 +88,25 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 //*===============================================================================================
                 //* GLOBAL VARS
                 //*===============================================================================================
-                Dictionary<uint, EXSound> FinalSoundsDict;
-                Dictionary<string, EXAudio> FinalAudioDataDict;
-                List<uint> SoundsHashcodes = new List<uint>();
+                Dictionary<uint, EXSound> finalSoundsDict;
+                Dictionary<string, EXAudio> finalAudioDataDict;
+                List<uint> soundsHashcodes = new List<uint>();
                 GenerateSFXSoundBank SFXCreator = new GenerateSFXSoundBank();
-                Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
+                Form parentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
                 SFX_ChecksBeforeGeneration SFX_Check = new SFX_ChecksBeforeGeneration();
 
-                int TotalProgress = 1;
+                int totalProgress = 1;
 
-                BWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
+                binaryWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII);
                 //Check For Cancelation;
                 if (BackgroundWorker_BuildSFX.CancellationPending == true)
                 {
-                    BWriter.Close();
-                    BWriter.Dispose();
+                    binaryWriter.Close();
+                    binaryWriter.Dispose();
                     e.Cancel = true;
                 }
 
-                BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+                BackgroundWorker_BuildSFX.ReportProgress(totalProgress);
 
                 //*===============================================================================================
                 //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED (20%)
@@ -117,13 +117,13 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 GenericFunctions.SetLabelText(Label_CurrentTask, "Getting SFX To export");
 
                 //Update Progress Bar
-                GenericFunctions.ProgressBarSetMaximum(ProgressBar_CurrentTask, ((Frm_Soundbanks_Main)ParentForm).SoundsList.Keys.Count);
+                GenericFunctions.ProgressBarSetMaximum(ProgressBar_CurrentTask, ((Frm_Soundbanks_Main)parentForm).SoundsList.Keys.Count);
 
                 //Discard SFXs that has checked as "no output"
-                FinalSoundsDict = SFXCreator.GetFinalSoundsDictionary(((Frm_Soundbanks_Main)ParentForm).SoundsList, ProgressBar_CurrentTask, Label_CurrentTask);
+                finalSoundsDict = SFXCreator.GetFinalSoundsDictionary(((Frm_Soundbanks_Main)parentForm).SoundsList, ProgressBar_CurrentTask, Label_CurrentTask);
 
-                TotalProgress += 20;
-                BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+                totalProgress += 20;
+                BackgroundWorker_BuildSFX.ReportProgress(totalProgress);
 
                 //*===============================================================================================
                 //* STEP 2: DISCARD AUDIO DATA THAT SHOULD HAVE BEEN PURGED (40%)
@@ -133,14 +133,14 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
 
                 //Update Label
                 GenericFunctions.SetLabelText(Label_CurrentTask, "Getting Audio Data To export");
-                IEnumerable<string> UsedAudios = EXSoundbanksFunctions.GetAudiosToExport(FinalSoundsDict);
+                IEnumerable<string> usedAudiosList = EXSoundbanksFunctions.GetAudiosToExport(finalSoundsDict);
 
                 //Add data
-                FinalAudioDataDict = SFXCreator.GetFinalAudioDictionaryPCMData(UsedAudios, ((Frm_Soundbanks_Main)ParentForm).AudioDataDict, ProgressBar_CurrentTask);
+                finalAudioDataDict = SFXCreator.GetFinalAudioDictionaryPCMData(usedAudiosList, ((Frm_Soundbanks_Main)parentForm).AudioDataDict, ProgressBar_CurrentTask);
 
                 //Update Total Progress
-                TotalProgress += 20;
-                BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+                totalProgress += 20;
+                BackgroundWorker_BuildSFX.ReportProgress(totalProgress);
 
                 //*===============================================================================================
                 //* STEP 3: CHECK DATA THAT WILL BE OUTPUTED (50%)
@@ -149,23 +149,23 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 GenericFunctions.SetLabelText(Label_CurrentTask, "Checking data");
 
                 //Update Progress Bar
-                GenericFunctions.ProgressBarSetMaximum(ProgressBar_CurrentTask, FinalSoundsDict.Count + FinalAudioDataDict.Count);
+                GenericFunctions.ProgressBarSetMaximum(ProgressBar_CurrentTask, finalSoundsDict.Count + finalAudioDataDict.Count);
                 GenericFunctions.ProgressBarValue(ProgressBar_CurrentTask, 0);
 
                 //Check Data
-                bool CanOutputFile = true;
-                foreach (KeyValuePair<uint, EXSound> SoundToCheck in FinalSoundsDict)
+                bool canOutputFile = true;
+                foreach (KeyValuePair<uint, EXSound> soundToCheck in finalSoundsDict)
                 {
-                    CanOutputFile = SFX_Check.ValidateSFX(SoundToCheck.Value, FinalSoundsDict, SoundsHashcodes, ((Frm_Soundbanks_Main)ParentForm).TreeView_File.Nodes.Find(SoundToCheck.Key.ToString(), true)[0].Text, Reports);
+                    canOutputFile = SFX_Check.ValidateSFX(soundToCheck.Value, finalSoundsDict, soundsHashcodes, ((Frm_Soundbanks_Main)parentForm).TreeView_File.Nodes.Find(soundToCheck.Key.ToString(), true)[0].Text, Reports);
                     GenericFunctions.ProgressBarAddValue(ProgressBar_CurrentTask, 1);
                 }
 
-                if (CanOutputFile)
+                if (canOutputFile)
                 {
-                    foreach (KeyValuePair<string, EXAudio> AudioToCheck in FinalAudioDataDict)
+                    foreach (KeyValuePair<string, EXAudio> audioToCheck in finalAudioDataDict)
                     {
-                        CanOutputFile = SFX_Check.ValidateAudios(AudioToCheck.Value, ((Frm_Soundbanks_Main)ParentForm).TreeView_File.Nodes.Find(AudioToCheck.Key, true)[0].Text, Reports);
-                        if (CanOutputFile == false)
+                        canOutputFile = SFX_Check.ValidateAudios(audioToCheck.Value, ((Frm_Soundbanks_Main)parentForm).TreeView_File.Nodes.Find(audioToCheck.Key, true)[0].Text, Reports);
+                        if (canOutputFile == false)
                         {
                             break;
                         }
@@ -174,19 +174,19 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 }
 
                 //Update Total Progress
-                TotalProgress += 10;
-                BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+                totalProgress += 10;
+                BackgroundWorker_BuildSFX.ReportProgress(totalProgress);
 
                 //*===============================================================================================
                 //* STEP 4: START WRITTING (70%)
                 //*===============================================================================================
-                if (CanOutputFile)
+                if (canOutputFile)
                 {
                     //Check For Cancelation;
                     if (BackgroundWorker_BuildSFX.CancellationPending == true)
                     {
-                        BWriter.Close();
-                        BWriter.Dispose();
+                        binaryWriter.Close();
+                        binaryWriter.Dispose();
                         e.Cancel = true;
                     }
 
@@ -195,11 +195,11 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                     GenericFunctions.SetLabelText(Label_CurrentTask, "Writting File Header");
 
                     //Write Data
-                    SFXCreator.WriteFileHeader(BWriter, CurrentFileProperties.Hashcode, ProgressBar_CurrentTask);
+                    SFXCreator.WriteFileHeader(binaryWriter, CurrentFileProperties.Hashcode, ProgressBar_CurrentTask);
 
                     //Update Total Progress
-                    TotalProgress += 10;
-                    BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+                    totalProgress += 10;
+                    BackgroundWorker_BuildSFX.ReportProgress(totalProgress);
 
 
                     //--------------------------------------[Write SECTIONS]--------------------------------------
@@ -207,37 +207,37 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                     GenericFunctions.SetLabelText(Label_CurrentTask, "Writting File Sections");
 
                     //Write Data
-                    SFXCreator.WriteFileSections(BWriter, GenericFunctions.CountNumberOfSamples(FinalSoundsDict), ProgressBar_CurrentTask);
+                    SFXCreator.WriteFileSections(binaryWriter, GenericFunctions.CountNumberOfSamples(finalSoundsDict), ProgressBar_CurrentTask);
 
                     //Update Total Progress
-                    TotalProgress += 10;
-                    BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+                    totalProgress += 10;
+                    BackgroundWorker_BuildSFX.ReportProgress(totalProgress);
 
 
                     //--------------------------------------[SECTION SFX elements]--------------------------------------
                     //Write Data
-                    SFXCreator.WriteSFXSection(BWriter, FinalSoundsDict, FinalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
+                    SFXCreator.WriteSFXSection(binaryWriter, finalSoundsDict, finalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
 
                     //Update Total Progress
-                    TotalProgress += 10;
-                    BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+                    totalProgress += 10;
+                    BackgroundWorker_BuildSFX.ReportProgress(totalProgress);
 
 
                     //--------------------------------------[SECTION Sample info elements]--------------------------------------
                     //Write Data
-                    SFXCreator.WriteSampleInfoSection(BWriter, FinalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
+                    SFXCreator.WriteSampleInfoSection(binaryWriter, finalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
 
                     //Update Total Progress
-                    TotalProgress += 5;
-                    BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+                    totalProgress += 5;
+                    BackgroundWorker_BuildSFX.ReportProgress(totalProgress);
 
                     //--------------------------------------[SECTION Sample data]--------------------------------------
                     //Write Data
-                    SFXCreator.WriteSampleDataSection(BWriter, FinalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
+                    SFXCreator.WriteSampleDataSection(binaryWriter, finalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
 
                     //Update Total Progress
-                    TotalProgress += 5;
-                    BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+                    totalProgress += 5;
+                    BackgroundWorker_BuildSFX.ReportProgress(totalProgress);
 
 
                     //*===============================================================================================
@@ -246,8 +246,8 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                     //Check For Cancelation
                     if (BackgroundWorker_BuildSFX.CancellationPending == true)
                     {
-                        BWriter.Close();
-                        BWriter.Dispose();
+                        binaryWriter.Close();
+                        binaryWriter.Dispose();
                         e.Cancel = true;
                     }
 
@@ -255,21 +255,21 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                     GenericFunctions.SetLabelText(Label_CurrentTask, "WrittingFinalOffsets");
 
                     //Write Data
-                    SFXCreator.WriteFinalOffsets(BWriter, ProgressBar_CurrentTask, Label_CurrentTask);
+                    SFXCreator.WriteFinalOffsets(binaryWriter, ProgressBar_CurrentTask, Label_CurrentTask);
 
                 }
                 //Close Binary Writter
-                BWriter.Close();
-                BWriter.Dispose();
+                binaryWriter.Close();
+                binaryWriter.Dispose();
 
                 //Clear Temporal Dictionaries
-                FinalSoundsDict.Clear();
-                FinalAudioDataDict.Clear();
+                finalSoundsDict.Clear();
+                finalAudioDataDict.Clear();
 
                 //*===============================================================================================
                 //* STEP 6: CREATE DEBUG FILE IF REQUIRED
                 //*===============================================================================================
-                if (CanOutputFile)
+                if (canOutputFile)
                 {
                     if (DebugFlags > 0)
                     {
@@ -295,8 +295,8 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
                 GenericFunctions.SetLabelText(Label_CurrentTask, "Output Completed");
 
                 //Update Total Progress
-                TotalProgress += 9;
-                BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);
+                totalProgress += 9;
+                BackgroundWorker_BuildSFX.ReportProgress(totalProgress);
             }
             else
             {
@@ -313,11 +313,11 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
         {
             if (e.Cancelled)
             {
-                Reports.Add("2" + GenericFunctions.ResourcesManager.GetString("OutputSFXSoundbankCancelled"));
+                Reports.Add("2" + GenericFunctions.resourcesManager.GetString("OutputSFXSoundbankCancelled"));
             }
             else if (e.Error != null)
             {
-                Reports.Add("0" + GenericFunctions.ResourcesManager.GetString("OutputSFXSoundbankErrors"));
+                Reports.Add("0" + GenericFunctions.resourcesManager.GetString("OutputSFXSoundbankErrors"));
             }
 
             if (Reports.Count > 0)

@@ -13,251 +13,251 @@ namespace EuroSound_Application.SoundBanksEditor.Debug_Writer
             //*===============================================================================================
             //* Global Variables
             //*===============================================================================================
-            string FileName = Path.GetFileNameWithoutExtension(FilePath);
-            Dictionary<uint, uint> SFXElements = new Dictionary<uint, uint>();
+            string fileName = Path.GetFileNameWithoutExtension(FilePath);
+            Dictionary<uint, uint> sfxElements = new Dictionary<uint, uint>();
 
-            using (StreamWriter DebugFile = new StreamWriter(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".dbg"))
+            using (StreamWriter debugFileWriter = new StreamWriter(GlobalPreferences.SFXOutputPath + "\\" + fileName + ".dbg"))
             {
                 //Write Debug File Header
-                DebugFile.WriteLine(new String('/', 70));
-                DebugFile.WriteLine(string.Join(" ", "//", "EngineX Output", ":", FilePath));
-                DebugFile.WriteLine(string.Join(" ", "//", "Source File:", Path.GetFileName(FilePath)));
-                DebugFile.WriteLine(string.Join(" ", "//", "Output by:", Environment.UserName));
-                DebugFile.WriteLine(string.Join(" ", "//", "Output date:", DateTime.Now.ToString("dddd, MMMM dd, yyyy - HH:mm:ss")));
-                DebugFile.WriteLine(new String('/', 70));
-                DebugFile.WriteLine("");
+                debugFileWriter.WriteLine(new String('/', 70));
+                debugFileWriter.WriteLine(string.Join(" ", "//", "EngineX Output", ":", FilePath));
+                debugFileWriter.WriteLine(string.Join(" ", "//", "Source File:", Path.GetFileName(FilePath)));
+                debugFileWriter.WriteLine(string.Join(" ", "//", "Output by:", Environment.UserName));
+                debugFileWriter.WriteLine(string.Join(" ", "//", "Output date:", DateTime.Now.ToString("dddd, MMMM dd, yyyy - HH:mm:ss")));
+                debugFileWriter.WriteLine(new String('/', 70));
+                debugFileWriter.WriteLine("");
 
                 //Read File
-                using (BinaryReader BReader = new BinaryReader(File.Open(FilePath, FileMode.Open, FileAccess.Read)))
+                using (BinaryReader binaryReader = new BinaryReader(File.Open(FilePath, FileMode.Open, FileAccess.Read)))
                 {
-                    DebugFile.WriteLine(new String('/', 70));
-                    DebugFile.WriteLine(string.Join(" ", "//", "EngineXBase Header"));
-                    DebugFile.WriteLine(new String('/', 70));
-                    DebugFile.WriteLine("");
+                    debugFileWriter.WriteLine(new String('/', 70));
+                    debugFileWriter.WriteLine(string.Join(" ", "//", "EngineXBase Header"));
+                    debugFileWriter.WriteLine(new String('/', 70));
+                    debugFileWriter.WriteLine("");
 
-                    DebugFile.WriteLine(string.Join(" ", "//", "'MUSX' Marker"));
-                    BReader.ReadBytes(4);
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", "4D555358" + "h"));
-                    DebugFile.WriteLine(string.Join(" ", "//", "File HashCode"));
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
-                    DebugFile.WriteLine(string.Join(" ", "//", "Constant offset"));
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
-                    DebugFile.WriteLine(string.Join(" ", "//", "File Size"));
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                    debugFileWriter.WriteLine(string.Join(" ", "//", "'MUSX' Marker"));
+                    binaryReader.ReadBytes(4);
+                    debugFileWriter.WriteLine(string.Join(" ", "\tDD", "4D555358" + "h"));
+                    debugFileWriter.WriteLine(string.Join(" ", "//", "File HashCode"));
+                    debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
+                    debugFileWriter.WriteLine(string.Join(" ", "//", "Constant offset"));
+                    debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
+                    debugFileWriter.WriteLine(string.Join(" ", "//", "File Size"));
+                    debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                    DebugFile.WriteLine(string.Join(" ", "//", "SFX section start"));
-                    uint SFXStart = BReader.ReadUInt32();
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", SFXStart.ToString("X8") + "h"));
-                    DebugFile.WriteLine(string.Join(" ", "//", "SFX section length"));
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                    debugFileWriter.WriteLine(string.Join(" ", "//", "SFX section start"));
+                    uint sfxStart = binaryReader.ReadUInt32();
+                    debugFileWriter.WriteLine(string.Join(" ", "\tDD", sfxStart.ToString("X8") + "h"));
+                    debugFileWriter.WriteLine(string.Join(" ", "//", "SFX section length"));
+                    debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                    DebugFile.WriteLine(string.Join(" ", "//", "Sample info start"));
-                    uint SampleInfoStart = BReader.ReadUInt32();
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", SampleInfoStart.ToString("X8") + "h"));
-                    DebugFile.WriteLine(string.Join(" ", "//", "Sample info length"));
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                    debugFileWriter.WriteLine(string.Join(" ", "//", "Sample info start"));
+                    uint sampleInfoStart = binaryReader.ReadUInt32();
+                    debugFileWriter.WriteLine(string.Join(" ", "\tDD", sampleInfoStart.ToString("X8") + "h"));
+                    debugFileWriter.WriteLine(string.Join(" ", "//", "Sample info length"));
+                    debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                    DebugFile.WriteLine(string.Join(" ", "//", "Special sample info start"));
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
-                    DebugFile.WriteLine(string.Join(" ", "//", "Special sample info length"));
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                    debugFileWriter.WriteLine(string.Join(" ", "//", "Special sample info start"));
+                    debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
+                    debugFileWriter.WriteLine(string.Join(" ", "//", "Special sample info length"));
+                    debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                    DebugFile.WriteLine(string.Join(" ", "//", "Sample data start"));
-                    uint SampleDataStart = BReader.ReadUInt32();
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", SampleDataStart.ToString("X8") + "h"));
-                    DebugFile.WriteLine(string.Join(" ", "//", "Sample data length"));
-                    uint SampleDataLength = BReader.ReadUInt32();
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", SampleDataLength.ToString("X8") + "h"));
-                    DebugFile.WriteLine("");
+                    debugFileWriter.WriteLine(string.Join(" ", "//", "Sample data start"));
+                    uint sampleDataStart = binaryReader.ReadUInt32();
+                    debugFileWriter.WriteLine(string.Join(" ", "\tDD", sampleDataStart.ToString("X8") + "h"));
+                    debugFileWriter.WriteLine(string.Join(" ", "//", "Sample data length"));
+                    uint sampleDataLength = binaryReader.ReadUInt32();
+                    debugFileWriter.WriteLine(string.Join(" ", "\tDD", sampleDataLength.ToString("X8") + "h"));
+                    debugFileWriter.WriteLine("");
 
                     //Flag 0 = SFX elements
                     if (Convert.ToBoolean((DebugFlags >> 0) & 1))
                     {
                         //Write Header Section
-                        DebugFile.WriteLine(new String('/', 70));
-                        DebugFile.WriteLine(string.Join(" ", "//", "SFX elements - SFX header "));
-                        DebugFile.WriteLine(new String('/', 70));
-                        DebugFile.WriteLine("");
+                        debugFileWriter.WriteLine(new String('/', 70));
+                        debugFileWriter.WriteLine(string.Join(" ", "//", "SFX elements - SFX header "));
+                        debugFileWriter.WriteLine(new String('/', 70));
+                        debugFileWriter.WriteLine("");
 
                         //Read and print SFXCount
-                        BReader.BaseStream.Seek(SFXStart, SeekOrigin.Begin);
-                        uint SFXCount = BReader.ReadUInt32();
+                        binaryReader.BaseStream.Seek(sfxStart, SeekOrigin.Begin);
+                        uint sfxCount = binaryReader.ReadUInt32();
 
-                        DebugFile.WriteLine(string.Join(" ", "//", "SFX entry count"));
-                        DebugFile.WriteLine(string.Join(" ", "\tDD", SFXCount.ToString("X8") + "h"));
+                        debugFileWriter.WriteLine(string.Join(" ", "//", "SFX entry count"));
+                        debugFileWriter.WriteLine(string.Join(" ", "\tDD", sfxCount.ToString("X8") + "h"));
 
                         // SFXHashcode, SFXOffset;
-                        for (int i = 0; i < SFXCount; i++)
+                        for (int i = 0; i < sfxCount; i++)
                         {
                             //Read Data
-                            uint SFXHashcode = BReader.ReadUInt32();
-                            uint SFXOffset = BReader.ReadUInt32();
+                            uint SFXHashcode = binaryReader.ReadUInt32();
+                            uint SFXOffset = binaryReader.ReadUInt32();
 
                             //Add Data To Dictionary
-                            if (!SFXElements.ContainsKey(SFXOffset))
+                            if (!sfxElements.ContainsKey(SFXOffset))
                             {
-                                SFXElements.Add(SFXOffset, SFXHashcode);
+                                sfxElements.Add(SFXOffset, SFXHashcode);
                             }
 
                             //Write Debug
-                            DebugFile.WriteLine(string.Join(" ", "//", "HashCode =", Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, GlobalPreferences.SfxPrefix | SFXHashcode), "-", (GlobalPreferences.SfxPrefix | SFXHashcode).ToString("X8") + "h"));
-                            DebugFile.WriteLine(string.Join(" ", "\tHashCode", SFXHashcode.ToString("X8") + "h"));
-                            DebugFile.WriteLine(string.Join(" ", "\tOffset", SFXOffset.ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "HashCode =", Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, GlobalPreferences.SfxPrefix | SFXHashcode), "-", (GlobalPreferences.SfxPrefix | SFXHashcode).ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tHashCode", SFXHashcode.ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tOffset", SFXOffset.ToString("X8") + "h"));
                         }
-                        DebugFile.WriteLine("");
+                        debugFileWriter.WriteLine("");
 
-                        foreach (KeyValuePair<uint, uint> DictionaryItem in SFXElements)
+                        foreach (KeyValuePair<uint, uint> dictionaryItem in sfxElements)
                         {
-                            DebugFile.WriteLine(new String('/', 70));
-                            DebugFile.WriteLine(string.Join(" ", "//", Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, GlobalPreferences.SfxPrefix | DictionaryItem.Value), "-", (GlobalPreferences.SfxPrefix | DictionaryItem.Value).ToString("X8") + "h"));
-                            DebugFile.WriteLine(new String('/', 70));
-                            DebugFile.WriteLine("");
-                            BReader.BaseStream.Seek(DictionaryItem.Key + SFXStart, SeekOrigin.Begin);
+                            debugFileWriter.WriteLine(new String('/', 70));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", Hashcodes.GetHashcodeLabel(Hashcodes.SFX_Defines, GlobalPreferences.SfxPrefix | dictionaryItem.Value), "-", (GlobalPreferences.SfxPrefix | dictionaryItem.Value).ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(new String('/', 70));
+                            debugFileWriter.WriteLine("");
+                            binaryReader.BaseStream.Seek(dictionaryItem.Key + sfxStart, SeekOrigin.Begin);
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Ducker length"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadInt16().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Ducker length"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadInt16().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Min delay"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadInt16().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Min delay"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadInt16().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Max delay"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadInt16().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Max delay"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadInt16().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Inner radius real"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadInt16().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Inner radius real"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadInt16().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Outer radius real"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadInt16().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Outer radius real"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadInt16().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Reverb send"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadSByte().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Reverb send"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadSByte().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Tracking type"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadSByte().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Tracking type"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadSByte().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Max voices"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadSByte().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Max voices"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadSByte().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Priority"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadSByte().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Priority"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadSByte().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Ducker"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadSByte().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Ducker"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadSByte().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Master volume"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadSByte().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Master volume"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadSByte().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Flags"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt16().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Flags"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt16().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Sample count"));
-                            short SampleCount = BReader.ReadInt16();
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", SampleCount.ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Sample count"));
+                            short sampleCount = binaryReader.ReadInt16();
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", sampleCount.ToString("X8") + "h"));
 
-                            for (int i = 0; i < SampleCount; i++)
+                            for (int i = 0; i < sampleCount; i++)
                             {
-                                DebugFile.WriteLine(new String('/', 70));
-                                DebugFile.WriteLine(string.Join(" ", "//", "Sample", i));
-                                DebugFile.WriteLine("");
-                                DebugFile.WriteLine(string.Join(" ", "//", "File reference"));
-                                DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadInt16().ToString("X8") + "h"));
+                                debugFileWriter.WriteLine(new String('/', 70));
+                                debugFileWriter.WriteLine(string.Join(" ", "//", "Sample", i));
+                                debugFileWriter.WriteLine("");
+                                debugFileWriter.WriteLine(string.Join(" ", "//", "File reference"));
+                                debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadInt16().ToString("X8") + "h"));
 
-                                DebugFile.WriteLine(string.Join(" ", "//", "Pitch offset"));
-                                DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadInt16().ToString("X8") + "h"));
+                                debugFileWriter.WriteLine(string.Join(" ", "//", "Pitch offset"));
+                                debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadInt16().ToString("X8") + "h"));
 
-                                DebugFile.WriteLine(string.Join(" ", "//", "Random pitch offset"));
-                                DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadInt16().ToString("X8") + "h"));
+                                debugFileWriter.WriteLine(string.Join(" ", "//", "Random pitch offset"));
+                                debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadInt16().ToString("X8") + "h"));
 
-                                DebugFile.WriteLine(string.Join(" ", "//", "Base volume"));
-                                DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadSByte().ToString("X8") + "h"));
+                                debugFileWriter.WriteLine(string.Join(" ", "//", "Base volume"));
+                                debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadSByte().ToString("X8") + "h"));
 
-                                DebugFile.WriteLine(string.Join(" ", "//", "Random volume offset"));
-                                DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadSByte().ToString("X8") + "h"));
+                                debugFileWriter.WriteLine(string.Join(" ", "//", "Random volume offset"));
+                                debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadSByte().ToString("X8") + "h"));
 
-                                DebugFile.WriteLine(string.Join(" ", "//", "Pan"));
-                                DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadSByte().ToString("X8") + "h"));
+                                debugFileWriter.WriteLine(string.Join(" ", "//", "Pan"));
+                                debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadSByte().ToString("X8") + "h"));
 
-                                DebugFile.WriteLine(string.Join(" ", "//", "Random pan"));
-                                DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadSByte().ToString("X8") + "h"));
-                                BReader.ReadBytes(2);
+                                debugFileWriter.WriteLine(string.Join(" ", "//", "Random pan"));
+                                debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadSByte().ToString("X8") + "h"));
+                                binaryReader.ReadBytes(2);
                             }
-                            DebugFile.WriteLine("");
+                            debugFileWriter.WriteLine("");
                         }
                     }
                     //Flag 1 = Sample info elements
                     if (Convert.ToBoolean((DebugFlags >> 1) & 1))
                     {
                         //Write Header Section
-                        DebugFile.WriteLine(new String('/', 70));
-                        DebugFile.WriteLine(string.Join(" ", "//", "Sample info elements "));
-                        DebugFile.WriteLine(new String('/', 70));
-                        DebugFile.WriteLine("");
+                        debugFileWriter.WriteLine(new String('/', 70));
+                        debugFileWriter.WriteLine(string.Join(" ", "//", "Sample info elements "));
+                        debugFileWriter.WriteLine(new String('/', 70));
+                        debugFileWriter.WriteLine("");
 
-                        BReader.BaseStream.Seek(SampleInfoStart, SeekOrigin.Begin);
+                        binaryReader.BaseStream.Seek(sampleInfoStart, SeekOrigin.Begin);
 
-                        DebugFile.WriteLine(string.Join(" ", "//", "Sample info count"));
-                        uint SFXSamplesCount = BReader.ReadUInt32();
-                        DebugFile.WriteLine(string.Join(" ", "\tDD", SFXSamplesCount.ToString("X8") + "h"));
+                        debugFileWriter.WriteLine(string.Join(" ", "//", "Sample info count"));
+                        uint sfxSamplesCount = binaryReader.ReadUInt32();
+                        debugFileWriter.WriteLine(string.Join(" ", "\tDD", sfxSamplesCount.ToString("X8") + "h"));
 
-                        for (int i = 0; i < SFXSamplesCount; i++)
+                        for (int i = 0; i < sfxSamplesCount; i++)
                         {
-                            DebugFile.WriteLine(new String('/', 70));
-                            DebugFile.WriteLine(string.Join(" ", "//", "Sample -", i));
-                            DebugFile.WriteLine("");
-                            DebugFile.WriteLine(string.Join(" ", "//", "Flags"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(new String('/', 70));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Sample -", i));
+                            debugFileWriter.WriteLine("");
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Flags"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Address"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Address"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "PCM data size"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "PCM data size"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Frequency"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Frequency"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Real size"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Real size"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Number of channels"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Number of channels"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Bits per sample"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Bits per sample"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "PSI sample header"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "PSI sample header"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Loop offset"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Loop offset"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Duration"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
-                            DebugFile.WriteLine("");
+                            debugFileWriter.WriteLine(string.Join(" ", "//", "Duration"));
+                            debugFileWriter.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFileWriter.WriteLine("");
                         }
-                        DebugFile.WriteLine("");
+                        debugFileWriter.WriteLine("");
                     }
                     //Flag 2 = Sampla Data
                     if (Convert.ToBoolean((DebugFlags >> 2) & 1))
                     {
                         //Write Header Section
-                        DebugFile.WriteLine(new String('/', 70));
-                        DebugFile.WriteLine(string.Join(" ", "//", "Sample data"));
-                        DebugFile.WriteLine(new String('/', 70));
-                        DebugFile.WriteLine("");
+                        debugFileWriter.WriteLine(new String('/', 70));
+                        debugFileWriter.WriteLine(string.Join(" ", "//", "Sample data"));
+                        debugFileWriter.WriteLine(new String('/', 70));
+                        debugFileWriter.WriteLine("");
 
-                        BReader.BaseStream.Seek(SampleDataStart, SeekOrigin.Begin);
+                        binaryReader.BaseStream.Seek(sampleDataStart, SeekOrigin.Begin);
 
-                        byte[] SampleDataSection = BReader.ReadBytes((int)SampleDataLength);
-                        for (int i = 0; i < SampleDataSection.Length; i++)
+                        byte[] sampleDataSection = binaryReader.ReadBytes((int)sampleDataLength);
+                        for (int i = 0; i < sampleDataSection.Length; i++)
                         {
-                            DebugFile.Write(SampleDataSection[i]);
+                            debugFileWriter.Write(sampleDataSection[i]);
                         }
-                        DebugFile.WriteLine("");
+                        debugFileWriter.WriteLine("");
                     }
-                    BReader.Close();
+                    binaryReader.Close();
                 }
-                DebugFile.Close();
+                debugFileWriter.Close();
             }
         }
     }

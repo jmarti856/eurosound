@@ -39,7 +39,7 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
             }
             else
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("TreeView_Error_EditingRootNode"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(GenericFunctions.resourcesManager.GetString("TreeView_Error_EditingRootNode"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

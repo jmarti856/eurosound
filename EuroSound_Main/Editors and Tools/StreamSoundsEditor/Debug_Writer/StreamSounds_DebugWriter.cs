@@ -12,208 +12,208 @@ namespace EuroSound_Application.Editors_and_Tools.StreamSoundsEditor.Debug_Write
             //*===============================================================================================
             //* Global Variables
             //*===============================================================================================
-            string FileName = Path.GetFileNameWithoutExtension(FilePath);
-            List<uint> SoundsOffsets = new List<uint>();
+            string fileName = Path.GetFileNameWithoutExtension(FilePath);
+            List<uint> soundsOffsets = new List<uint>();
 
-            using (StreamWriter DebugFile = new StreamWriter(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".dbg"))
+            using (StreamWriter debugFile = new StreamWriter(GlobalPreferences.SFXOutputPath + "\\" + fileName + ".dbg"))
             {
                 //Write Debug File Header
-                DebugFile.WriteLine(new String('/', 70));
-                DebugFile.WriteLine(string.Join(" ", "//", "EngineX Output", ":", FilePath));
-                DebugFile.WriteLine(string.Join(" ", "//", "Source File:", Path.GetFileName(FilePath)));
-                DebugFile.WriteLine(string.Join(" ", "//", "Output by:", Environment.UserName));
-                DebugFile.WriteLine(string.Join(" ", "//", "Output date:", DateTime.Now.ToString("dddd, MMMM dd, yyyy - HH:mm:ss")));
-                DebugFile.WriteLine(new String('/', 70));
-                DebugFile.WriteLine("");
+                debugFile.WriteLine(new String('/', 70));
+                debugFile.WriteLine(string.Join(" ", "//", "EngineX Output", ":", FilePath));
+                debugFile.WriteLine(string.Join(" ", "//", "Source File:", Path.GetFileName(FilePath)));
+                debugFile.WriteLine(string.Join(" ", "//", "Output by:", Environment.UserName));
+                debugFile.WriteLine(string.Join(" ", "//", "Output date:", DateTime.Now.ToString("dddd, MMMM dd, yyyy - HH:mm:ss")));
+                debugFile.WriteLine(new String('/', 70));
+                debugFile.WriteLine("");
 
                 //Read File
-                using (BinaryReader BReader = new BinaryReader(File.Open(FilePath, FileMode.Open, FileAccess.Read)))
+                using (BinaryReader binaryReader = new BinaryReader(File.Open(FilePath, FileMode.Open, FileAccess.Read)))
                 {
-                    DebugFile.WriteLine(new String('/', 70));
-                    DebugFile.WriteLine(string.Join(" ", "//", "EngineXBase Header"));
-                    DebugFile.WriteLine(new String('/', 70));
-                    DebugFile.WriteLine("");
+                    debugFile.WriteLine(new String('/', 70));
+                    debugFile.WriteLine(string.Join(" ", "//", "EngineXBase Header"));
+                    debugFile.WriteLine(new String('/', 70));
+                    debugFile.WriteLine("");
 
-                    DebugFile.WriteLine(string.Join(" ", "//", "'MUSX' Marker"));
-                    BReader.ReadBytes(4);
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", "4D555358" + "h"));
+                    debugFile.WriteLine(string.Join(" ", "//", "'MUSX' Marker"));
+                    binaryReader.ReadBytes(4);
+                    debugFile.WriteLine(string.Join(" ", "\tDD", "4D555358" + "h"));
 
-                    DebugFile.WriteLine(string.Join(" ", "//", "File HashCode"));
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                    debugFile.WriteLine(string.Join(" ", "//", "File HashCode"));
+                    debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                    DebugFile.WriteLine(string.Join(" ", "//", "Constant offset"));
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                    debugFile.WriteLine(string.Join(" ", "//", "Constant offset"));
+                    debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                    DebugFile.WriteLine(string.Join(" ", "//", "File Size"));
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                    debugFile.WriteLine(string.Join(" ", "//", "File Size"));
+                    debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                    DebugFile.WriteLine(string.Join(" ", "//", "File start 1"));
-                    uint FileStart1 = BReader.ReadUInt32();
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", FileStart1.ToString("X8") + "h"));
+                    debugFile.WriteLine(string.Join(" ", "//", "File start 1"));
+                    uint fileStart1 = binaryReader.ReadUInt32();
+                    debugFile.WriteLine(string.Join(" ", "\tDD", fileStart1.ToString("X8") + "h"));
 
-                    DebugFile.WriteLine(string.Join(" ", "//", "File length 1"));
-                    uint FileStart1Length = BReader.ReadUInt32();
-                    uint SoundsCount = FileStart1Length / 4;
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", FileStart1Length.ToString("X8") + "h"));
+                    debugFile.WriteLine(string.Join(" ", "//", "File length 1"));
+                    uint fileStart1Length = binaryReader.ReadUInt32();
+                    uint soundsCount = fileStart1Length / 4;
+                    debugFile.WriteLine(string.Join(" ", "\tDD", fileStart1Length.ToString("X8") + "h"));
 
-                    DebugFile.WriteLine(string.Join(" ", "//", "File start 2"));
-                    uint FileStart2 = BReader.ReadUInt32();
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", FileStart2.ToString("X8") + "h"));
+                    debugFile.WriteLine(string.Join(" ", "//", "File start 2"));
+                    uint fileStart2 = binaryReader.ReadUInt32();
+                    debugFile.WriteLine(string.Join(" ", "\tDD", fileStart2.ToString("X8") + "h"));
 
-                    DebugFile.WriteLine(string.Join(" ", "//", "File length 2"));
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                    debugFile.WriteLine(string.Join(" ", "//", "File length 2"));
+                    debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                    DebugFile.WriteLine(string.Join(" ", "//", "File start 3"));
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                    debugFile.WriteLine(string.Join(" ", "//", "File start 3"));
+                    debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                    DebugFile.WriteLine(string.Join(" ", "//", "File length 3"));
-                    DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
-                    DebugFile.WriteLine("");
+                    debugFile.WriteLine(string.Join(" ", "//", "File length 3"));
+                    debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
+                    debugFile.WriteLine("");
 
                     //Read Lookup Table
-                    BReader.BaseStream.Seek(FileStart1, SeekOrigin.Begin);
-                    for (int i = 0; i < SoundsCount; i++)
+                    binaryReader.BaseStream.Seek(fileStart1, SeekOrigin.Begin);
+                    for (int i = 0; i < soundsCount; i++)
                     {
-                        SoundsOffsets.Add(BReader.ReadUInt32());
+                        soundsOffsets.Add(binaryReader.ReadUInt32());
                     }
-                    SoundsOffsets.TrimExcess();
+                    soundsOffsets.TrimExcess();
 
                     //Flag 0 = File start 1
                     if (Convert.ToBoolean((DebugFlags >> 0) & 1))
                     {
                         //Write Header Section
-                        DebugFile.WriteLine(new String('/', 70));
-                        DebugFile.WriteLine(string.Join(" ", "//", "File start 1"));
-                        DebugFile.WriteLine(new String('/', 70));
-                        DebugFile.WriteLine("");
+                        debugFile.WriteLine(new String('/', 70));
+                        debugFile.WriteLine(string.Join(" ", "//", "File start 1"));
+                        debugFile.WriteLine(new String('/', 70));
+                        debugFile.WriteLine("");
 
-                        for (int i = 0; i < SoundsOffsets.Count; i++)
+                        for (int i = 0; i < soundsOffsets.Count; i++)
                         {
-                            DebugFile.WriteLine(string.Join(" ", "//", "Sound", i));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", SoundsOffsets[i].ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Sound", i));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", soundsOffsets[i].ToString("X8") + "h"));
                         }
-                        DebugFile.WriteLine("");
+                        debugFile.WriteLine("");
                     }
 
                     //Flag 1 = File start 2
                     if (Convert.ToBoolean((DebugFlags >> 1) & 1))
                     {
                         //Write Header Section
-                        DebugFile.WriteLine(new String('/', 70));
-                        DebugFile.WriteLine(string.Join(" ", "//", "File start 2"));
-                        DebugFile.WriteLine(new String('/', 70));
-                        DebugFile.WriteLine("");
+                        debugFile.WriteLine(new String('/', 70));
+                        debugFile.WriteLine(string.Join(" ", "//", "File start 2"));
+                        debugFile.WriteLine(new String('/', 70));
+                        debugFile.WriteLine("");
 
-                        for (int i = 0; i < SoundsOffsets.Count; i++)
+                        for (int i = 0; i < soundsOffsets.Count; i++)
                         {
-                            BReader.BaseStream.Seek(SoundsOffsets[i] + FileStart2, SeekOrigin.Begin);
+                            binaryReader.BaseStream.Seek(soundsOffsets[i] + fileStart2, SeekOrigin.Begin);
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Marker size", i));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Marker size", i));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Audio offset", i));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Audio offset", i));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Audio size", i));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
-                            DebugFile.WriteLine("");
+                            debugFile.WriteLine(string.Join(" ", "//", "Audio size", i));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine("");
 
                             //Stream marker header data 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Start marker count"));
-                            uint StartMarkersCount = BReader.ReadUInt32();
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", StartMarkersCount.ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Start marker count"));
+                            uint startMarkersCount = binaryReader.ReadUInt32();
+                            debugFile.WriteLine(string.Join(" ", "\tDD", startMarkersCount.ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Marker count"));
-                            uint MarkersCount = BReader.ReadUInt32();
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", MarkersCount.ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Marker count"));
+                            uint markersCount = binaryReader.ReadUInt32();
+                            debugFile.WriteLine(string.Join(" ", "\tDD", markersCount.ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Start marker offset"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Start marker offset"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Marker offset"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Marker offset"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Base volume"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
-                            DebugFile.WriteLine("");
+                            debugFile.WriteLine(string.Join(" ", "//", "Base volume"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine("");
 
                             //Stream marker start data 
-                            DebugFile.WriteLine(new String('/', 70));
-                            DebugFile.WriteLine(string.Join(" ", "//", "Stream marker start data "));
-                            DebugFile.WriteLine("");
+                            debugFile.WriteLine(new String('/', 70));
+                            debugFile.WriteLine(string.Join(" ", "//", "Stream marker start data "));
+                            debugFile.WriteLine("");
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Name"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Name"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Position"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Position"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Music marker type"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Music marker type"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Flags"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Flags"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Extra"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Extra"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Loop start"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Loop start"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Marker count"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Marker count"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Loop marker count"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Loop marker count"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Marker position"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Marker position"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Is instant"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Is instant"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Instant buffer"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Instant buffer"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "State A"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "State A"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "State B"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "State B"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
                             //Stream marker data 
-                            DebugFile.WriteLine(new String('/', 70));
-                            DebugFile.WriteLine(string.Join(" ", "//", "Stream marker data "));
-                            DebugFile.WriteLine("");
+                            debugFile.WriteLine(new String('/', 70));
+                            debugFile.WriteLine(string.Join(" ", "//", "Stream marker data "));
+                            debugFile.WriteLine("");
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Name"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Name"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Position"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Position"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Music marker type"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Music marker type"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Flags"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Flags"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Extra"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Extra"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Loop start"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Loop start"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Marker count"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Marker count"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
 
-                            DebugFile.WriteLine(string.Join(" ", "//", "Loop marker count"));
-                            DebugFile.WriteLine(string.Join(" ", "\tDD", BReader.ReadUInt32().ToString("X8") + "h"));
+                            debugFile.WriteLine(string.Join(" ", "//", "Loop marker count"));
+                            debugFile.WriteLine(string.Join(" ", "\tDD", binaryReader.ReadUInt32().ToString("X8") + "h"));
                         }
                     }
-                    BReader.Close();
+                    binaryReader.Close();
                 }
-                DebugFile.Close();
+                debugFile.Close();
             }
         }
     }

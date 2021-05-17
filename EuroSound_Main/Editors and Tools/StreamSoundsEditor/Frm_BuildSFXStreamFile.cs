@@ -256,11 +256,11 @@ namespace EuroSound_Application.StreamSounds.BuildSFX
         {
             if (e.Cancelled)
             {
-                Reports.Add("2" + GenericFunctions.ResourcesManager.GetString("OutputSFXSoundbankCancelled"));
+                Reports.Add("2" + GenericFunctions.resourcesManager.GetString("OutputSFXSoundbankCancelled"));
             }
             else if (e.Error != null)
             {
-                Reports.Add("0" + GenericFunctions.ResourcesManager.GetString("OutputSFXSoundbankErrors"));
+                Reports.Add("0" + GenericFunctions.resourcesManager.GetString("OutputSFXSoundbankErrors"));
             }
 
             if (Reports.Count > 0)

@@ -52,7 +52,7 @@ namespace EuroSound_Application.SoundBanksEditor
             }
             else
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("AudioProperties_FileCorrupt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(GenericFunctions.resourcesManager.GetString("AudioProperties_FileCorrupt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -67,19 +67,19 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         private void Button_ReplaceAudio_Click(object sender, EventArgs e)
         {
-            string AudioPath = BrowsersAndDialogs.FileBrowserDialog("WAV Files (*.wav)|*.wav", 0, true);
-            if (!string.IsNullOrEmpty(AudioPath))
+            string audioPath = BrowsersAndDialogs.FileBrowserDialog("WAV Files (*.wav)|*.wav", 0, true);
+            if (!string.IsNullOrEmpty(audioPath))
             {
-                if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.SoundbankChannels, GlobalPreferences.SoundbankFrequency))
+                if (GenericFunctions.AudioIsValid(audioPath, GlobalPreferences.SoundbankChannels, GlobalPreferences.SoundbankFrequency))
                 {
-                    LoadAudio(AudioPath, false);
+                    LoadAudio(audioPath, false);
                 }
                 else
                 {
                     DialogResult TryToReload = MessageBox.Show(string.Join("", "Error, this audio file is not correct, the specifies are: ", GlobalPreferences.SoundbankChannels, " channels, the rate must be ", GlobalPreferences.SoundbankFrequency, "Hz, must have ", GlobalPreferences.SoundbankBits, " bits per sample and encoded in ", GlobalPreferences.SoundbankEncoding, ".\n\nDo you want that EuroSound tries to convert it to a valid format?"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (TryToReload == DialogResult.Yes)
                     {
-                        LoadAudio(AudioPath, true);
+                        LoadAudio(audioPath, true);
                     }
                 }
             }
@@ -92,17 +92,17 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void Textbox_Flags_MouseClick(object sender, MouseEventArgs e)
         {
-            EuroSound_FlagsForm FormFlags = new EuroSound_FlagsForm(int.Parse(Textbox_Flags.Text), "AudioFlags", 1)
+            EuroSound_FlagsForm formFlags = new EuroSound_FlagsForm(int.Parse(Textbox_Flags.Text), "AudioFlags", 1)
             {
                 Text = "Audio Data Flags",
                 Tag = Tag,
                 Owner = this,
             };
-            if (FormFlags.ShowDialog() == DialogResult.OK)
+            if (formFlags.ShowDialog() == DialogResult.OK)
             {
-                Textbox_Flags.Text = FormFlags.CheckedFlags.ToString();
+                Textbox_Flags.Text = formFlags.CheckedFlags.ToString();
             }
-            FormFlags.Dispose();
+            formFlags.Dispose();
         }
 
         private void Button_TestLoopOffset_Click(object sender, EventArgs e)
@@ -117,12 +117,12 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
                 catch
                 {
-                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorLoopOffsetNoValid"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(GenericFunctions.resourcesManager.GetString("ErrorLoopOffsetNoValid"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("AudioNotUseOffset"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(GenericFunctions.resourcesManager.GetString("AudioNotUseOffset"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -134,7 +134,7 @@ namespace EuroSound_Application.SoundBanksEditor
             }
             else
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("AudioProperties_FileCorrupt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(GenericFunctions.resourcesManager.GetString("AudioProperties_FileCorrupt"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -165,23 +165,23 @@ namespace EuroSound_Application.SoundBanksEditor
             //--Add The Audio to the list if has been replaced--
             if (!SelectedAudioMD5Hash.Equals(TemporalAudioHash))
             {
-                Form ParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
-                if (!((Frm_Soundbanks_Main)ParentForm).AudioDataDict.ContainsKey(TemporalAudioHash))
+                Form parentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
+                if (!((Frm_Soundbanks_Main)parentForm).AudioDataDict.ContainsKey(TemporalAudioHash))
                 {
                     //--Update Dictionary--
-                    ((Frm_Soundbanks_Main)ParentForm).AudioDataDict.Remove(SelectedAudioMD5Hash);
+                    ((Frm_Soundbanks_Main)parentForm).AudioDataDict.Remove(SelectedAudioMD5Hash);
                     if (TemporalAudio != null)
                     {
-                        ((Frm_Soundbanks_Main)ParentForm).AudioDataDict.Add(TemporalAudioHash, TemporalAudio);
+                        ((Frm_Soundbanks_Main)parentForm).AudioDataDict.Add(TemporalAudioHash, TemporalAudio);
                     }
 
                     //--Update Tree View--
-                    TreeNode[] Node = ((Frm_Soundbanks_Main)ParentForm).TreeView_File.Nodes.Find(SelectedAudioMD5Hash, true);
-                    Node[0].Name = TemporalAudioHash;
+                    TreeNode[] nodeSearchResults = ((Frm_Soundbanks_Main)parentForm).TreeView_File.Nodes.Find(SelectedAudioMD5Hash, true);
+                    nodeSearchResults[0].Name = TemporalAudioHash;
                 }
                 else
                 {
-                    MessageBox.Show(GenericFunctions.ResourcesManager.GetString("AudioPropertiesFormAudioExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show(GenericFunctions.resourcesManager.GetString("AudioPropertiesFormAudioExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
             else
@@ -249,8 +249,8 @@ namespace EuroSound_Application.SoundBanksEditor
                 AudioFunctionsLibrary.DrawAudioWaves(euroSound_WaveViewer1, TemporalAudio, 0, false);
 
                 //Ask user if wants to maintain config
-                DialogResult MaintainConfig = MessageBox.Show("Do you want to maintain the flags and loop offset values?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (MaintainConfig == DialogResult.No)
+                DialogResult maintainConfigQuestion = MessageBox.Show("Do you want to maintain the flags and loop offset values?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (maintainConfigQuestion == DialogResult.No)
                 {
                     //--Editable Data--
                     Textbox_Flags.Text = TemporalAudio.Flags.ToString();
@@ -259,7 +259,7 @@ namespace EuroSound_Application.SoundBanksEditor
             }
             else
             {
-                MessageBox.Show(GenericFunctions.ResourcesManager.GetString("ErrorReadingFileIsUsedByAnotherProcess"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(GenericFunctions.resourcesManager.GetString("ErrorReadingFileIsUsedByAnotherProcess"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
