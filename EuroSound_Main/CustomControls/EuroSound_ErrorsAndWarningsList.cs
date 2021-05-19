@@ -67,17 +67,17 @@ namespace EuroSound_Application.CustomControls.WarningsList
                     {
                         string MessageStatus;
 
-                        if (lvItem.ImageIndex == 0)
+                        switch (lvItem.ImageIndex)
                         {
-                            MessageStatus = "Error:";
-                        }
-                        else if (lvItem.ImageIndex == 1)
-                        {
-                            MessageStatus = "Warning:";
-                        }
-                        else
-                        {
-                            MessageStatus = "Info:";
+                            case 0:
+                                MessageStatus = "Error:";
+                                break;
+                            case 1:
+                                MessageStatus = "Warning:";
+                                break;
+                            default:
+                                MessageStatus = "Info:";
+                                break;
                         }
                         FinalFile += string.Format("{0} {1}\n", MessageStatus, lvItem.SubItems[1].Text);
                     }
@@ -120,18 +120,19 @@ namespace EuroSound_Application.CustomControls.WarningsList
             {
                 string MessageStatus;
 
-                if (lvItem.ImageIndex == 0)
+                switch (lvItem.ImageIndex)
                 {
-                    MessageStatus = "Error:";
+                    case 0:
+                        MessageStatus = "Error:";
+                        break;
+                    case 1:
+                        MessageStatus = "Warning:";
+                        break;
+                    default:
+                        MessageStatus = "Info:";
+                        break;
                 }
-                else if (lvItem.ImageIndex == 1)
-                {
-                    MessageStatus = "Warning:";
-                }
-                else
-                {
-                    MessageStatus = "Info:";
-                }
+
                 e.Graphics.DrawString(string.Format("{0} {1}\n", MessageStatus, lvItem.SubItems[1].Text), DefaultFont, new SolidBrush(Color.Black), 0, 0);
             }
         }

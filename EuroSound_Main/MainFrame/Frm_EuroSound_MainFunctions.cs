@@ -5,6 +5,7 @@ using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
 using Octokit;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -19,14 +20,12 @@ namespace EuroSound_Application
     {
         private void OpenFormsWithFileToLoad(string FileToLoad)
         {
-            int typeOfFileToLoad;
-
             if (!string.IsNullOrEmpty(FileToLoad))
             {
                 if (!FileIsAlreadyOpened(FileToLoad))
                 {
                     //Check File Type
-                    typeOfFileToLoad = TypeOfEuroSoundFile(FileToLoad);
+                    int typeOfFileToLoad = TypeOfEuroSoundFile(FileToLoad);
 
                     //Open form
                     if (typeOfFileToLoad == (int)GenericFunctions.ESoundFileType.SoundBanks)
@@ -134,10 +133,9 @@ namespace EuroSound_Application
 
             if (File.Exists(FileToLoad))
             {
-                EuroSoundFiles ESFFiles = new EuroSoundFiles();
                 using (BinaryReader BReader = new BinaryReader(File.Open(FileToLoad, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
                 {
-                    if (ESFFiles.FileIsCorrect(BReader))
+                    if (new EuroSoundFiles().FileIsCorrect(BReader))
                     {
                         fileType = BReader.ReadSByte();
                     }
@@ -239,11 +237,15 @@ namespace EuroSound_Application
                             string latestRelease = ESReleases[0].TagName;
                             if (!currentRelease.Equals(latestRelease))
                             {
-                                DialogResult updateQuestion = MessageBox.Show(string.Join("", "It seems that you don't have the latest version of EuroSound.\nYou have the release: ", currentRelease, " and the latest release is: ", latestRelease, ".\n\nWould you like to go to the repository page?"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                                if (updateQuestion == DialogResult.Yes)
+                                //Switch to main thread
+                                Invoke(new Action(() =>
                                 {
-                                    Process.Start(string.Join("", "https://github.com/jmarti856/eurosound/releases/tag/", latestRelease));
-                                }
+                                    DialogResult updateQuestion = MessageBox.Show(string.Join("", "It seems that you don't have the latest version of EuroSound.\nYou have the release: ", currentRelease, " and the latest release is: ", latestRelease, ".\n\nWould you like to go to the repository page?"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                                    if (updateQuestion == DialogResult.Yes)
+                                    {
+                                        Process.Start(string.Join("", "https://github.com/jmarti856/eurosound/releases/tag/", latestRelease));
+                                    }
+                                }));
                             }
                         }
                     })

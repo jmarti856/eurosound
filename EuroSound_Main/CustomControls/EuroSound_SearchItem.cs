@@ -237,14 +237,13 @@ namespace EuroSound_Application.CustomControls.SearcherForm
         //*===============================================================================================
         private void OpenSelectedItem()
         {
-            string ObjectType;
-
             if (ListViewResults.SelectedItems.Count > 0)
             {
                 if (FormToSearch != null)
                 {
                     TreeNode NodeToOpen = Results[(ListViewResults.SelectedItems[0].Index)];
-                    ObjectType = NodeToOpen.Tag.ToString();
+                    string ObjectType = NodeToOpen.Tag.ToString();
+
                     if (FormType == typeof(Frm_Soundbanks_Main))
                     {
                         if (ObjectType.Equals("Sound"))

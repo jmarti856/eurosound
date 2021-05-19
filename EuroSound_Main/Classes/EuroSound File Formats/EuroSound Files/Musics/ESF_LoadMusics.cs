@@ -14,9 +14,6 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
     {
         internal string ReadEuroSoundMusicFile(ProjectFile FileProperties, BinaryReader BReader, TreeView TreeViewControl, Dictionary<uint, EXMusic> MusicsList, int FileVersion)
         {
-            uint TreeViewDataOffset, StreamSoundsDictionaryOffset;
-            string ProfileSelected, ProfileSelectedName;
-
             //File Hashcode
             FileProperties.Hashcode = BReader.ReadUInt32();
             //Sound ID
@@ -24,17 +21,17 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
             //Sounds List Offset
             BReader.BaseStream.Position += 4;
             //TreeViewData Offset
-            TreeViewDataOffset = BReader.ReadUInt32();
+            uint TreeViewDataOffset = BReader.ReadUInt32();
             //Dictionary Data Offset
-            StreamSoundsDictionaryOffset = BReader.ReadUInt32();
+            uint StreamSoundsDictionaryOffset = BReader.ReadUInt32();
             //FileSize
             BReader.BaseStream.Position += 4;
             //File Name
             FileProperties.FileName = BReader.ReadString();
             //Profile Path
-            ProfileSelected = BReader.ReadString();
+            string ProfileSelected = BReader.ReadString();
             //Profile Name
-            ProfileSelectedName = BReader.ReadString();
+            string ProfileSelectedName = BReader.ReadString();
 
             GenericFunctions.CheckProfiles(ProfileSelected, ProfileSelectedName);
 
@@ -58,13 +55,11 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
 
         internal void ReadDictionaryData(BinaryReader BReader, Dictionary<uint, EXMusic> DictionaryData)
         {
-            int DictionaryItems, PCM_DataLength, ADPCM_DataLength;
-            uint SoundStreamKey, StartMarkersCount, MarkersCount;
+            int DictionaryItems = BReader.ReadInt32();
 
-            DictionaryItems = BReader.ReadInt32();
             for (int i = 0; i < DictionaryItems; i++)
             {
-                SoundStreamKey = BReader.ReadUInt32();
+                uint SoundStreamKey = BReader.ReadUInt32();
                 EXMusic Music = new EXMusic
                 {
                     //DisplayName = BReader.ReadString(),
@@ -80,9 +75,9 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
                 Music.Encoding_LeftChannel = BReader.ReadString();
                 Music.WAVFileMD5_LeftChannel = BReader.ReadString();
                 Music.WAVFileName_LeftChannel = BReader.ReadString();
-                PCM_DataLength = BReader.ReadInt32();
+                int PCM_DataLength = BReader.ReadInt32();
                 Music.PCM_Data_LeftChannel = BReader.ReadBytes(PCM_DataLength);
-                ADPCM_DataLength = BReader.ReadInt32();
+                int ADPCM_DataLength = BReader.ReadInt32();
                 Music.IMA_ADPCM_DATA_LeftChannel = BReader.ReadBytes(ADPCM_DataLength);
 
                 //Read Data Right Channel
@@ -100,7 +95,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
                 Music.IMA_ADPCM_DATA_RightChannel = BReader.ReadBytes(ADPCM_DataLength);
 
                 //Read Start Markers List
-                StartMarkersCount = BReader.ReadUInt32();
+                uint StartMarkersCount = BReader.ReadUInt32();
                 for (int j = 0; j < StartMarkersCount; j++)
                 {
                     EXStreamStartMarker StartMarker = new EXStreamStartMarker
@@ -123,7 +118,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
                 }
 
                 //Read Markers
-                MarkersCount = BReader.ReadUInt32();
+                uint MarkersCount = BReader.ReadUInt32();
                 for (int k = 0; k < MarkersCount; k++)
                 {
                     EXStreamMarker Marker = new EXStreamMarker
@@ -146,26 +141,22 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
 
         internal void ReadTreeViewData(BinaryReader BReader, TreeView TreeViewControl, int Version)
         {
-            int NumberOfNodes, SelectedImageIndex, ImageIndex;
-            string ParentNode, NodeName, DisplayName, Tag;
             bool ParentIsExpanded = false, NodeIsExpanded = false, NodeIsSelected = false;
-            Color NodeColor;
-
-            NumberOfNodes = BReader.ReadInt32();
+            int NumberOfNodes = BReader.ReadInt32();
 
             for (int i = 0; i < NumberOfNodes; i++)
             {
-                ParentNode = BReader.ReadString();
-                NodeName = BReader.ReadString();
-                DisplayName = BReader.ReadString();
+                string ParentNode = BReader.ReadString();
+                string NodeName = BReader.ReadString();
+                string DisplayName = BReader.ReadString();
                 //Index Unused for now
                 BReader.BaseStream.Position += 4;
                 //ImageKey Unused for now
                 BReader.ReadString();
-                SelectedImageIndex = BReader.ReadInt32();
-                ImageIndex = BReader.ReadInt32();
-                Tag = BReader.ReadString();
-                NodeColor = Color.FromArgb(BReader.ReadInt32());
+                int SelectedImageIndex = BReader.ReadInt32();
+                int ImageIndex = BReader.ReadInt32();
+                string Tag = BReader.ReadString();
+                Color NodeColor = Color.FromArgb(BReader.ReadInt32());
                 BReader.ReadBoolean();
 
                 //Check version

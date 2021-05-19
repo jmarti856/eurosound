@@ -8,7 +8,6 @@ using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Resources;
 using System.Text;
 using System.Windows.Forms;
 
@@ -18,235 +17,121 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
     {
         private uint FileVersion = 0;
 
-        internal string LoadSoundBanksDocument(TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
+        internal string LoadEuroSoundFile(TreeView treeViewControl, object dictionaryData, object dictionaryMedia, string filePath, ProjectFile projectProperties)
         {
-            string ProfileName = string.Empty;
-            sbyte TypeOfStoredData;
+            string profileName = string.Empty;
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_ReadingESFFile"));
 
             //Disable temporaly the treeview
-            if (TreeViewControl.InvokeRequired)
+            if (treeViewControl.InvokeRequired)
             {
-                TreeViewControl.Invoke((MethodInvoker)delegate
+                treeViewControl.Invoke((MethodInvoker)delegate
                 {
-                    TreeViewControl.Enabled = false;
+                    treeViewControl.Enabled = false;
                 });
             }
             else
             {
-                TreeViewControl.Enabled = false;
+                treeViewControl.Enabled = false;
             }
 
-            using (BufferedStream bs = new BufferedStream(File.Open(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read)))
+            using (BufferedStream fileBuffer = new BufferedStream(File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read)))
             {
-                using (BinaryReader BReader = new BinaryReader(bs, Encoding.ASCII))
+                using (BinaryReader BReader = new BinaryReader(fileBuffer, Encoding.ASCII))
                 {
                     //Init reader
                     if (FileIsCorrect(BReader))
                     {
-                        //Type of stored data
-                        TypeOfStoredData = BReader.ReadSByte();
-                        if (TypeOfStoredData == 0)
+                        switch (BReader.ReadSByte())
                         {
-                            ESF_LoadSoundBanks Version11Reader = new ESF_LoadSoundBanks();
-                            ProfileName = Version11Reader.ReadEuroSoundSoundBankFile(FileProperties, BReader, SoundsList, AudiosList, TreeViewControl, (int)FileVersion);
+                            case (int)GenericFunctions.ESoundFileType.SoundBanks:
+                                profileName = new ESF_LoadSoundBanks().ReadEuroSoundSoundBankFile(projectProperties, BReader, (Dictionary<uint, EXSound>)dictionaryData, (Dictionary<string, EXAudio>)dictionaryMedia, treeViewControl, (int)FileVersion);
+                                break;
+                            case (int)GenericFunctions.ESoundFileType.StreamSounds:
+                                profileName = new ESF_LoadStreamSounds().ReadEuroSoundStreamFile(projectProperties, BReader, treeViewControl, (Dictionary<uint, EXSoundStream>)dictionaryData, (int)FileVersion);
+                                break;
+                            case (int)GenericFunctions.ESoundFileType.MusicBanks:
+                                profileName = new ESF_LoadMusics().ReadEuroSoundMusicFile(projectProperties, BReader, treeViewControl, (Dictionary<uint, EXMusic>)dictionaryData, (int)FileVersion);
+                                break;
                         }
                     }
                     BReader.Close();
                 }
-                bs.Close();
+                fileBuffer.Close();
             }
 
             //Enable again the treeview
-            if (TreeViewControl.InvokeRequired)
+            if (treeViewControl.InvokeRequired)
             {
-                TreeViewControl.Invoke((MethodInvoker)delegate
+                treeViewControl.Invoke((MethodInvoker)delegate
                 {
-                    TreeViewControl.Enabled = true;
+                    treeViewControl.Enabled = true;
                 });
             }
             else
             {
-                TreeViewControl.Enabled = true;
+                treeViewControl.Enabled = true;
             }
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
 
-            return ProfileName;
+            return profileName;
         }
 
         internal string SaveSoundBanksDocument(TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
         {
             using (BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read), null, Encoding.ASCII))
             {
+                //Write header
+                WriteFileHeader(BWriter, FileProperties);
 
-                //*===============================================================================================
-                //* HEADER
-                //*===============================================================================================
-                //MAGIC
-                BWriter.Write(Encoding.ASCII.GetBytes("ESF"));
-                //FileVersion
-                BWriter.Write(Convert.ToUInt32(int.Parse(GenericFunctions.GetEuroSoundVersion().Replace(".", ""))));
-                //Type of stored data
-                BWriter.Write(Convert.ToSByte(FileProperties.TypeOfData));
+                //Write file data
+                new ESF_SaveSoundBanks().SaveSoundBanks(BWriter, TreeViewControl, SoundsList, AudiosList, FileProperties);
 
-                ESF_SaveSoundBanks SaveSoundBank = new ESF_SaveSoundBanks();
-                SaveSoundBank.SaveSoundBanks(BWriter, TreeViewControl, SoundsList, AudiosList, FileProperties);
-
+                //Close
                 BWriter.Close();
             }
 
             return FilePath;
         }
 
-        internal string LoadStreamSoundsDocument(TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, string FilePath, ProjectFile FileProperties, ResourceManager ResxM)
-        {
-            string ProfileName = string.Empty;
-            sbyte TypeOfStoredData;
-
-            //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_ReadingESFFile"));
-
-            //Disable temporaly the treeview
-            if (TreeViewControl.InvokeRequired)
-            {
-                TreeViewControl.Invoke((MethodInvoker)delegate
-                {
-                    TreeViewControl.Enabled = false;
-                });
-            }
-            else
-            {
-                TreeViewControl.Enabled = false;
-            }
-
-            //Init reader
-            using (BufferedStream bs = new BufferedStream(File.Open(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read)))
-            {
-                using (BinaryReader BReader = new BinaryReader(bs, Encoding.ASCII))
-                {
-                    if (FileIsCorrect(BReader))
-                    {
-                        //Type of stored data
-                        TypeOfStoredData = BReader.ReadSByte();
-                        if (TypeOfStoredData == 1)
-                        {
-                            ESF_LoadStreamSounds Version11Reader = new ESF_LoadStreamSounds();
-                            ProfileName = Version11Reader.ReadEuroSoundStreamFile(FileProperties, BReader, TreeViewControl, StreamSoundsList, (int)FileVersion);
-                        }
-                    }
-                    BReader.Close();
-                }
-                bs.Close();
-            }
-
-            //Enable again the treeview
-            if (TreeViewControl.InvokeRequired)
-            {
-                TreeViewControl.Invoke((MethodInvoker)delegate
-                {
-                    TreeViewControl.Enabled = true;
-                });
-            }
-            else
-            {
-                TreeViewControl.Enabled = true;
-            }
-
-            //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_Status_Ready"));
-
-            return ProfileName;
-        }
-
         internal string SaveStreamedSoundsBank(TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, string FilePath, ProjectFile FileProperties)
         {
-            BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.Create, FileAccess.Write, FileShare.Read), null, Encoding.ASCII);
-            //*===============================================================================================
-            //* HEADER
-            //*===============================================================================================
-            //MAGIC
-            BWriter.Write(Encoding.ASCII.GetBytes("ESF"));
-            //FileVersion
-            BWriter.Write(Convert.ToUInt32(int.Parse(GenericFunctions.GetEuroSoundVersion().Replace(".", ""))));
-            //Type of stored data
-            BWriter.Write(Convert.ToSByte(FileProperties.TypeOfData));
+            using (BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.Create, FileAccess.Write, FileShare.Read), null, Encoding.ASCII))
+            {
+                //Write header
+                WriteFileHeader(BWriter, FileProperties);
 
-            ESF_SaveStreamedSounds SaveSoundBank = new ESF_SaveStreamedSounds();
-            SaveSoundBank.SaveStreamedSounds(BWriter, TreeViewControl, StreamSoundsList, FileProperties);
+                //Write file data
+                new ESF_SaveStreamedSounds().SaveStreamedSounds(BWriter, TreeViewControl, StreamSoundsList, FileProperties);
 
-            BWriter.Close();
-            BWriter.Dispose();
-
+                //Close and dispose
+                BWriter.Close();
+            }
             return FilePath;
-        }
-
-        internal string LoadMusicsDocument(TreeView TreeViewControl, Dictionary<uint, EXMusic> MusicsList, string FilePath, ProjectFile FileProperties, ResourceManager ResxM)
-        {
-            sbyte TypeOfStoredData;
-            string ProfileName = string.Empty;
-
-            //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_ReadingESFFile"));
-
-            //Disable temporaly the treeview
-            if (TreeViewControl.InvokeRequired)
-            {
-                TreeViewControl.Invoke((MethodInvoker)delegate
-                {
-                    TreeViewControl.Enabled = false;
-                });
-            }
-            else
-            {
-                TreeViewControl.Enabled = false;
-            }
-
-            //Init reader
-            using (BufferedStream bs = new BufferedStream(File.Open(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read)))
-            {
-                using (BinaryReader BReader = new BinaryReader(bs, Encoding.ASCII))
-                {
-                    if (FileIsCorrect(BReader))
-                    {
-                        //Type of stored data
-                        TypeOfStoredData = BReader.ReadSByte();
-                        if (TypeOfStoredData == 2)
-                        {
-                            ESF_LoadMusics Version11Reader = new ESF_LoadMusics();
-                            ProfileName = Version11Reader.ReadEuroSoundMusicFile(FileProperties, BReader, TreeViewControl, MusicsList, (int)FileVersion);
-                        }
-                    }
-                    BReader.Close();
-                }
-                bs.Close();
-            }
-
-            //Enable again the treeview
-            if (TreeViewControl.InvokeRequired)
-            {
-                TreeViewControl.Invoke((MethodInvoker)delegate
-                {
-                    TreeViewControl.Enabled = true;
-                });
-            }
-            else
-            {
-                TreeViewControl.Enabled = true;
-            }
-
-            //Update Status Bar
-            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(ResxM.GetString("StatusBar_Status_Ready"));
-
-            return ProfileName;
         }
 
         internal string SaveMusics(TreeView TreeViewControl, Dictionary<uint, EXMusic> StreamSoundsList, string FilePath, ProjectFile FileProperties)
         {
-            BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.Create, FileAccess.Write, FileShare.Read), null, Encoding.ASCII);
+            using (BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.Create, FileAccess.Write, FileShare.Read), null, Encoding.ASCII))
+            {
+                //Write header
+                WriteFileHeader(BWriter, FileProperties);
+
+                //Write file data
+                new ESF_SaveMusics().SaveMusics(BWriter, TreeViewControl, StreamSoundsList, FileProperties);
+
+                //Close and dispose
+                BWriter.Close();
+            }
+            return FilePath;
+        }
+
+        private void WriteFileHeader(BinaryStream BWriter, ProjectFile FileProperties)
+        {
             //*===============================================================================================
             //* HEADER
             //*===============================================================================================
@@ -256,23 +141,14 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             BWriter.Write(Convert.ToUInt32(int.Parse(GenericFunctions.GetEuroSoundVersion().Replace(".", ""))));
             //Type of stored data
             BWriter.Write(Convert.ToSByte(FileProperties.TypeOfData));
-
-            ESF_SaveMusics SaveMusicBank = new ESF_SaveMusics();
-            SaveMusicBank.SaveMusics(BWriter, TreeViewControl, StreamSoundsList, FileProperties);
-
-            BWriter.Close();
-            BWriter.Dispose();
-
-            return FilePath;
         }
 
         public bool FileIsCorrect(BinaryReader BReader)
         {
-            string Magic;
             bool FileCorrect = false;
 
             //Read MAGIC
-            Magic = Encoding.ASCII.GetString(BReader.ReadBytes(3));
+            string Magic = Encoding.ASCII.GetString(BReader.ReadBytes(3));
             if (Magic.Equals("ESF"))
             {
                 //FileVersion
@@ -286,7 +162,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                     MessageBox.Show("This file was written by Eurosound v" + FileVersion + " and cannot be read by v" + GenericFunctions.GetEuroSoundVersion().Replace(".", "") + " or lower.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-
             return FileCorrect;
         }
     }

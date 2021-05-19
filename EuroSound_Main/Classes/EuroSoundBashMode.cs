@@ -148,11 +148,9 @@ namespace EuroSound_Application.BashMode
             {
                 if (File.Exists(Commands[1]))
                 {
-                    EuroSoundFiles FileReader = new EuroSoundFiles();
-
                     using (BinaryReader BReader = new BinaryReader(File.Open(Commands[1], FileMode.Open, FileAccess.Read), Encoding.ASCII))
                     {
-                        if (FileReader.FileIsCorrect(BReader))
+                        if (new EuroSoundFiles().FileIsCorrect(BReader))
                         {
                             sbyte TypeOfStoredData = BReader.ReadSByte();
 

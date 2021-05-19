@@ -13,27 +13,24 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
     {
         internal string ReadEuroSoundSoundBankFile(ProjectFile FileProperties, BinaryReader BReader, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl, int FileVersion)
         {
-            uint TreeViewDataOffset, SoundsListDataOffset, AudioDataOffset;
-            string ProfileSelected, ProfileSelectedName;
-
             //File Hashcode
             FileProperties.Hashcode = BReader.ReadUInt32();
             //Latest SoundID value
             FileProperties.SoundID = BReader.ReadUInt32();
             //TreeView Data
-            TreeViewDataOffset = BReader.ReadUInt32();
+            uint TreeViewDataOffset = BReader.ReadUInt32();
             //SoundsListData Offset
-            SoundsListDataOffset = BReader.ReadUInt32();
+            uint SoundsListDataOffset = BReader.ReadUInt32();
             //AudioData Offset
-            AudioDataOffset = BReader.ReadUInt32();
+            uint AudioDataOffset = BReader.ReadUInt32();
             //FullSize
             BReader.BaseStream.Position += 4;
             //File Name
             FileProperties.FileName = BReader.ReadString();
             //Profile Path
-            ProfileSelected = BReader.ReadString();
+            string ProfileSelected = BReader.ReadString();
             //Profile Name
-            ProfileSelectedName = BReader.ReadString();
+            string ProfileSelectedName = BReader.ReadString();
 
             GenericFunctions.CheckProfiles(ProfileSelected, ProfileSelectedName);
 
@@ -63,14 +60,11 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
 
         internal void ReadAudioDataDictionary(BinaryReader BReader, Dictionary<string, EXAudio> AudiosList)
         {
-            int TotalEntries, PCMDataLength;
-            string HashMD5;
-
-            TotalEntries = BReader.ReadInt32();
+            int TotalEntries = BReader.ReadInt32();
 
             for (int i = 0; i < TotalEntries; i++)
             {
-                HashMD5 = BReader.ReadString();
+                string HashMD5 = BReader.ReadString();
                 EXAudio AudioToAdd = new EXAudio
                 {
                     Dependencies = BReader.ReadString(),
@@ -86,7 +80,7 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
                     LoopOffset = BReader.ReadUInt32(),
                     Duration = BReader.ReadUInt32()
                 };
-                PCMDataLength = BReader.ReadInt32();
+                int PCMDataLength = BReader.ReadInt32();
                 AudioToAdd.PCMdata = BReader.ReadBytes(PCMDataLength);
 
                 AudiosList.Add(HashMD5, AudioToAdd);
@@ -95,14 +89,11 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
 
         internal void ReadSoundsListData(BinaryReader BReader, Dictionary<uint, EXSound> SoundsList)
         {
-            int NumberOfSounds, NumberOfSamples;
-            uint SoundID, SampleID;
-
-            NumberOfSounds = BReader.ReadInt32();
+            int NumberOfSounds = BReader.ReadInt32();
 
             for (int i = 0; i < NumberOfSounds; i++)
             {
-                SoundID = BReader.ReadUInt32();
+                uint SoundID = BReader.ReadUInt32();
                 EXSound NewSound = new EXSound
                 {
                     Hashcode = BReader.ReadUInt32(),
@@ -123,10 +114,10 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
                     Flags = BReader.ReadUInt16()
                 };
 
-                NumberOfSamples = BReader.ReadInt32();
+                int NumberOfSamples = BReader.ReadInt32();
                 for (int j = 0; j < NumberOfSamples; j++)
                 {
-                    SampleID = BReader.ReadUInt32();
+                    uint SampleID = BReader.ReadUInt32();
                     EXSample NewSample = new EXSample
                     {
                         IsStreamed = BReader.ReadBoolean(),
@@ -150,23 +141,20 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
 
         internal void ReadTreeViewData(BinaryReader BReader, TreeView TreeViewControl, int Version)
         {
-            int NumberOfNodes, SelectedImageIndex, ImageIndex;
-            string ParentNode, NodeName, DisplayName, Tag;
             bool NodeIsExpanded = false, NodeIsSelected = false;
             bool ParentIsExpanded = false;
-            Color NodeColor;
 
-            NumberOfNodes = BReader.ReadInt32();
+            int NumberOfNodes = BReader.ReadInt32();
 
             for (int i = 0; i < NumberOfNodes; i++)
             {
-                ParentNode = BReader.ReadString();
-                NodeName = BReader.ReadString();
-                DisplayName = BReader.ReadString();
-                SelectedImageIndex = BReader.ReadInt32();
-                ImageIndex = BReader.ReadInt32();
-                Tag = BReader.ReadString();
-                NodeColor = Color.FromArgb(BReader.ReadInt32());
+                string ParentNode = BReader.ReadString();
+                string NodeName = BReader.ReadString();
+                string DisplayName = BReader.ReadString();
+                int SelectedImageIndex = BReader.ReadInt32();
+                int ImageIndex = BReader.ReadInt32();
+                string Tag = BReader.ReadString();
+                Color NodeColor = Color.FromArgb(BReader.ReadInt32());
                 BReader.ReadBoolean();
 
                 //Check version

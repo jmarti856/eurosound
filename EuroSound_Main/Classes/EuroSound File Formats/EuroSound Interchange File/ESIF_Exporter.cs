@@ -25,7 +25,6 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         //*===============================================================================================
         internal void ExportSingleSFX(string FilePath, uint SoundKey, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
         {
-            string AudioPath;
             string MediaFolder = BrowsersAndDialogs.OpenFolderBrowser();
 
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
@@ -45,7 +44,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                         EXAudio SampleAudio = AudiosList[SFXObjectSample.Value.ComboboxSelectedAudio];
                         TreeNode AudioNode = TreeViewControl.Nodes.Find(SFXObjectSample.Value.ComboboxSelectedAudio, true)[0];
 
-                        AudioPath = Path.Combine(MediaFolder, AudioNode.Text + ".wav");
+                        string AudioPath = Path.Combine(MediaFolder, AudioNode.Text + ".wav");
 
                         //Export Audio if Not Exists
                         if (!File.Exists(AudioPath))
@@ -127,7 +126,6 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         internal void ExportProject(string FilePath, bool IncludeProjectSettings, ProjectFile ProjectSettings, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl)
         {
             int AudioIndex = 0;
-            string AudioPath;
             string MediaFolder = BrowsersAndDialogs.OpenFolderBrowser();
 
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
@@ -149,7 +147,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                 foreach (KeyValuePair<string, EXAudio> SampleAudio in AudiosList)
                 {
                     TreeNode AudioNode = TreeViewControl.Nodes.Find(SampleAudio.Key, true)[0];
-                    AudioPath = Path.Combine(MediaFolder, AudioNode.Text + ".wav");
+                    string AudioPath = Path.Combine(MediaFolder, AudioNode.Text + ".wav");
 
                     //Export Audio if Not Exists
                     if (!File.Exists(AudioPath))
@@ -251,7 +249,6 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         private Dictionary<string, EXAudio> GetUsedAudios(Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList)
         {
             Dictionary<string, EXAudio> UsedAudios = new Dictionary<string, EXAudio>();
-            string AudioKey;
 
             foreach (KeyValuePair<uint, EXSound> SFXObject in SoundsList)
             {
@@ -261,7 +258,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     {
                         if (!SFXObjectSample.Value.IsStreamed && !EXSoundbanksFunctions.SubSFXFlagChecked(SFXObject.Value.Flags))
                         {
-                            AudioKey = SFXObjectSample.Value.ComboboxSelectedAudio;
+                            string AudioKey = SFXObjectSample.Value.ComboboxSelectedAudio;
 
                             if (!UsedAudios.ContainsKey(AudioKey))
                             {
@@ -287,7 +284,6 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         //*===============================================================================================
         internal void ExportStreamSoundbank(string FilePath, uint SoundKey, Dictionary<uint, EXSoundStream> SoundsList, TreeView TreeViewControl)
         {
-            string AudioPath;
             string MediaFolder = BrowsersAndDialogs.OpenFolderBrowser();
 
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
@@ -296,7 +292,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                 TreeNode SoundNode = TreeViewControl.Nodes.Find(SoundKey.ToString(), true)[0];
 
                 //Audio Path
-                AudioPath = Path.Combine(MediaFolder, Path.GetFileNameWithoutExtension(StreamObject.WAVFileName) + ".wav");
+                string AudioPath = Path.Combine(MediaFolder, Path.GetFileNameWithoutExtension(StreamObject.WAVFileName) + ".wav");
 
                 //Export Audio if Not Exists
                 if (!File.Exists(AudioPath))
@@ -362,7 +358,6 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 
         internal void ExportProjectStream(string FilePath, ProjectFile ProjectSettings, Dictionary<uint, EXSoundStream> SoundsList, TreeView TreeViewControl)
         {
-            string AudioPath;
             string MediaFolder = BrowsersAndDialogs.OpenFolderBrowser();
 
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
@@ -381,7 +376,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     TreeNode SoundNode = TreeViewControl.Nodes.Find(StreamFileObject.Key.ToString(), true)[0];
 
                     //Audio Path
-                    AudioPath = Path.Combine(MediaFolder, Path.GetFileNameWithoutExtension(StreamFileObject.Value.WAVFileName) + ".wav");
+                    string AudioPath = Path.Combine(MediaFolder, Path.GetFileNameWithoutExtension(StreamFileObject.Value.WAVFileName) + ".wav");
 
                     //Export Audio if Not Exists
                     if (!File.Exists(AudioPath))
@@ -447,7 +442,6 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
         //*===============================================================================================
         internal void ExportMusicBank(string FilePath, uint MusicKey, Dictionary<uint, EXMusic> MusicList, TreeView TreeViewControl)
         {
-            string AudioPathLeft, AudioPathRight;
             string MediaFolder = BrowsersAndDialogs.OpenFolderBrowser();
 
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
@@ -456,8 +450,8 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                 TreeNode MusicNode = TreeViewControl.Nodes.Find(MusicKey.ToString(), true)[0];
 
                 //Audio Path
-                AudioPathLeft = Path.Combine(MediaFolder, Path.GetFileNameWithoutExtension(MusicObject.WAVFileName_LeftChannel) + ".wav");
-                AudioPathRight = Path.Combine(MediaFolder, Path.GetFileNameWithoutExtension(MusicObject.WAVFileName_RightChannel) + ".wav");
+                string AudioPathLeft = Path.Combine(MediaFolder, Path.GetFileNameWithoutExtension(MusicObject.WAVFileName_LeftChannel) + ".wav");
+                string AudioPathRight = Path.Combine(MediaFolder, Path.GetFileNameWithoutExtension(MusicObject.WAVFileName_RightChannel) + ".wav");
 
                 //Export Audio if Not Exists
                 if (!File.Exists(AudioPathLeft))
@@ -528,7 +522,6 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 
         internal void ExportProjectMusic(string FilePath, ProjectFile ProjectSettings, Dictionary<uint, EXMusic> MusicList, TreeView TreeViewControl)
         {
-            string AudioPathLeft, AudioPathRight;
             string MediaFolder = BrowsersAndDialogs.OpenFolderBrowser();
 
             using (StreamWriter TextFileWriter = File.CreateText(FilePath))
@@ -548,8 +541,8 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     TreeNode MusicNode = TreeViewControl.Nodes.Find(StreamFileObject.Key.ToString(), true)[0];
 
                     //Audio Path
-                    AudioPathLeft = Path.Combine(MediaFolder, Path.GetFileNameWithoutExtension(StreamFileObject.Value.WAVFileName_LeftChannel) + ".wav");
-                    AudioPathRight = Path.Combine(MediaFolder, Path.GetFileNameWithoutExtension(StreamFileObject.Value.WAVFileName_RightChannel) + ".wav");
+                    string AudioPathLeft = Path.Combine(MediaFolder, Path.GetFileNameWithoutExtension(StreamFileObject.Value.WAVFileName_LeftChannel) + ".wav");
+                    string AudioPathRight = Path.Combine(MediaFolder, Path.GetFileNameWithoutExtension(StreamFileObject.Value.WAVFileName_RightChannel) + ".wav");
 
                     //Export Audio if Not Exists
                     if (!File.Exists(AudioPathLeft))

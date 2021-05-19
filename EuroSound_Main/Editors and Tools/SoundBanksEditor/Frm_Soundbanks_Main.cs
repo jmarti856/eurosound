@@ -317,7 +317,7 @@ namespace EuroSound_Application.SoundBanksEditor
                             });
 
                             //Check that the profile name matches with the current one
-                            string ProfileName = EuroSoundFilesFunctions.LoadSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, CurrentFilePath, ProjectInfo);
+                            string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_File, SoundsList, AudioDataDict, CurrentFilePath, ProjectInfo);
                             if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
                             {
                                 FormMustBeClosed = true;
@@ -385,7 +385,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     else
                     {
                         //Check that the profile name matches with the current one
-                        string ProfileName = EuroSoundFilesFunctions.LoadSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, CurrentFilePath, ProjectInfo);
+                        string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_File, SoundsList, AudioDataDict, CurrentFilePath, ProjectInfo);
                         if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
                         {
                             FormMustBeClosed = true;

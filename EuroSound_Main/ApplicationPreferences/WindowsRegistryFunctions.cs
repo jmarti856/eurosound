@@ -92,61 +92,61 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* Active Document
         //*===============================================================================================
-        internal static void SaveActiveDocument(string CurrentDocument)
+        internal static void SaveActiveDocument(string currentDocument)
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("ActiveDocument", true);
             using (RegistryKey ActiveDocument = EuroSoundKey.OpenSubKey("ActiveDocument", true))
             {
-                ActiveDocument.SetValue("Pathname", CurrentDocument, RegistryValueKind.String);
+                ActiveDocument.SetValue("Pathname", currentDocument, RegistryValueKind.String);
                 ActiveDocument.Close();
             }
         }
 
         internal static string LoadActiveDocument()
         {
-            string ActiveDocument = string.Empty;
+            string activeDocument = string.Empty;
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("ActiveDocument", true);
             using (RegistryKey ActiveDocumentKey = EuroSoundKey.OpenSubKey("ActiveDocument", true))
             {
-                ActiveDocument = ActiveDocumentKey.GetValue("Pathname", string.Empty).ToString();
+                activeDocument = ActiveDocumentKey.GetValue("Pathname", string.Empty).ToString();
                 ActiveDocumentKey.Close();
             }
 
-            return ActiveDocument;
+            return activeDocument;
         }
 
         //*===============================================================================================
         //* Current Profile
         //*===============================================================================================
-        internal static void SaveCurrentProfile(string CurrentProfile, string CurrentProfileName)
+        internal static void SaveCurrentProfile(string currentProfile, string currentProfileName)
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("Profile", true);
             using (RegistryKey SaveProfile = EuroSoundKey.OpenSubKey("Profile", true))
             {
-                SaveProfile.SetValue("CurrentProfile", CurrentProfile, RegistryValueKind.String);
-                SaveProfile.SetValue("CurrentProfileName", CurrentProfileName, RegistryValueKind.String);
-                SaveProfile.SetValue("CurrentProfileMD5", GenericFunctions.CalculateMD5(CurrentProfile), RegistryValueKind.String);
+                SaveProfile.SetValue("CurrentProfile", currentProfile, RegistryValueKind.String);
+                SaveProfile.SetValue("CurrentProfileName", currentProfileName, RegistryValueKind.String);
+                SaveProfile.SetValue("CurrentProfileMD5", GenericFunctions.CalculateMD5(currentProfile), RegistryValueKind.String);
                 SaveProfile.Close();
             }
         }
 
         internal static string LoadCurrentProfie(string KeyName)
         {
-            string CurrentProfile = string.Empty;
+            string currentProfile = string.Empty;
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("Profile", true);
             using (RegistryKey LoadProfile = EuroSoundKey.OpenSubKey("Profile", true))
             {
-                CurrentProfile = LoadProfile.GetValue(KeyName, string.Empty).ToString();
+                currentProfile = LoadProfile.GetValue(KeyName, string.Empty).ToString();
                 LoadProfile.Close();
             }
 
-            return CurrentProfile;
+            return currentProfile;
         }
 
         //*===============================================================================================
@@ -165,17 +165,17 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
         internal static uint LoadHashCodesPrefixes(string KeyName)
         {
-            uint HashCodePrefix = 0;
+            uint hashcodePrefix = 0;
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("HashCodesPrefixes", true);
             using (RegistryKey LoadPrefix = EuroSoundKey.OpenSubKey("HashCodesPrefixes", true))
             {
-                HashCodePrefix = uint.Parse(LoadPrefix.GetValue(KeyName, 0).ToString());
+                hashcodePrefix = uint.Parse(LoadPrefix.GetValue(KeyName, 0).ToString());
                 LoadPrefix.Close();
             }
 
-            return HashCodePrefix;
+            return hashcodePrefix;
         }
 
         //*===============================================================================================
@@ -198,18 +198,18 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
         internal static string LoadSoundSettings(string Prefix, string KeyValueName)
         {
-            string KValue;
+            string keyValue;
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("SoundSettings", true);
             using (RegistryKey SoundSettings = EuroSoundKey.OpenSubKey("SoundSettings", true))
             {
                 //Save Values
-                KValue = SoundSettings.GetValue(Prefix + KeyValueName, "").ToString();
+                keyValue = SoundSettings.GetValue(Prefix + KeyValueName, "").ToString();
                 SoundSettings.Close();
             }
 
-            return KValue;
+            return keyValue;
         }
 
         //*===============================================================================================
@@ -230,18 +230,18 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
         internal static string LoadHashtablesFiles(string Prefix, string KeyValueName)
         {
-            string KValue;
+            string keyValue;
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("HashTablesFiles", true);
             using (RegistryKey Hashtables = EuroSoundKey.OpenSubKey("HashTablesFiles", true))
             {
                 //Save Values
-                KValue = Hashtables.GetValue(Prefix + KeyValueName, "").ToString();
+                keyValue = Hashtables.GetValue(Prefix + KeyValueName, "").ToString();
                 Hashtables.Close();
             }
 
-            return KValue;
+            return keyValue;
         }
 
         //*===============================================================================================
@@ -261,18 +261,18 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
         internal static string LoadExternalFiles(string Prefix, string KeyValueName)
         {
-            string FolderPath;
+            string folderPath;
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("ExternalFiles", true);
             using (RegistryKey ExternalFiles = EuroSoundKey.OpenSubKey("ExternalFiles", true))
             {
                 //Save Values
-                FolderPath = ExternalFiles.GetValue(Prefix + KeyValueName, "").ToString();
+                folderPath = ExternalFiles.GetValue(Prefix + KeyValueName, "").ToString();
                 ExternalFiles.Close();
             }
 
-            return FolderPath;
+            return folderPath;
         }
 
         //*===============================================================================================
@@ -292,18 +292,18 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
         internal static string LoadOutputFolders(string Prefix, string KeyValueName)
         {
-            string FolderPath;
+            string folderPath;
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("OutputFolders", true);
             using (RegistryKey OutputFolders = EuroSoundKey.OpenSubKey("OutputFolders", true))
             {
                 //Save Values
-                FolderPath = OutputFolders.GetValue(Prefix + KeyValueName, "").ToString();
+                folderPath = OutputFolders.GetValue(Prefix + KeyValueName, "").ToString();
                 OutputFolders.Close();
             }
 
-            return FolderPath;
+            return folderPath;
         }
 
         //*===============================================================================================
@@ -323,17 +323,17 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
         internal static int GetSystemConfig(string ValueName)
         {
-            int SelectedValue;
+            int selectedValue;
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
             using (RegistryKey SystemConfig = EuroSoundKey.OpenSubKey("UserSettings", true))
             {
                 //Load Values
-                SelectedValue = (int)SystemConfig.GetValue(ValueName, 0);
+                selectedValue = (int)SystemConfig.GetValue(ValueName, 0);
                 SystemConfig.Close();
             }
-            return SelectedValue;
+            return selectedValue;
         }
 
         //*===============================================================================================
@@ -357,7 +357,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
         internal static string LoadBackupSettings(string ValueName)
         {
-            string RequestValue = string.Empty;
+            string requestValue = string.Empty;
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("Backup", true);
@@ -366,20 +366,20 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 //Load Values
                 if (BackupSettings.GetValue(ValueName) != null)
                 {
-                    RequestValue = BackupSettings.GetValue(ValueName).ToString();
+                    requestValue = BackupSettings.GetValue(ValueName).ToString();
                     BackupSettings.Close();
                 }
                 //Default Values
                 else if (ValueName.Equals("BackupsFolder"))
                 {
-                    RequestValue = string.Empty;
+                    requestValue = string.Empty;
                 }
                 else
                 {
-                    RequestValue = "0";
+                    requestValue = "0";
                 }
             }
-            return RequestValue;
+            return requestValue;
         }
 
         //*===============================================================================================
@@ -403,7 +403,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
         internal static string LoadTreeViewPreferences(string ValueName)
         {
-            string RequestValue = string.Empty;
+            string requestValue = string.Empty;
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
@@ -412,36 +412,36 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 //Load Values
                 if (TreeViewPrefs.GetValue(ValueName) != null)
                 {
-                    RequestValue = TreeViewPrefs.GetValue(ValueName).ToString();
+                    requestValue = TreeViewPrefs.GetValue(ValueName).ToString();
                     TreeViewPrefs.Close();
                 }
                 //Default Values
                 else if (ValueName.Equals("TV_ShowLines"))
                 {
-                    RequestValue = "1";
+                    requestValue = "1";
                 }
                 else if (ValueName.Equals("TV_ShowRootLines"))
                 {
-                    RequestValue = "1";
+                    requestValue = "1";
                 }
                 else if (ValueName.Equals("TV_Indent"))
                 {
-                    RequestValue = "19";
+                    requestValue = "19";
                 }
                 else if (ValueName.Equals("TV_ItemHeight"))
                 {
-                    RequestValue = "16";
+                    requestValue = "16";
                 }
                 else if (ValueName.Equals("TV_SelectedFont"))
                 {
-                    RequestValue = "Microsoft Sans Serif; 8,25pt";
+                    requestValue = "Microsoft Sans Serif; 8,25pt";
                 }
                 else if (ValueName.Equals("TV_IgnoreStlyesFromESF"))
                 {
-                    RequestValue = "0";
+                    requestValue = "0";
                 }
             }
-            return RequestValue;
+            return requestValue;
         }
 
         //*===============================================================================================
@@ -462,7 +462,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
         internal static int LoadWavesControlColors(string ValueName)
         {
-            int CurrentColor = 0;
+            int currentColor = 0;
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
@@ -471,21 +471,21 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 //Load Values
                 if (WavesControlKey.GetValue(ValueName) != null)
                 {
-                    CurrentColor = (int)WavesControlKey.GetValue(ValueName);
+                    currentColor = (int)WavesControlKey.GetValue(ValueName);
                     WavesControlKey.Close();
                 }
                 //Default Values
                 else if (ValueName.Equals("WavesColors"))
                 {
-                    CurrentColor = -16777077;
+                    currentColor = -16777077;
                 }
                 else if (ValueName.Equals("BackgroundColor"))
                 {
-                    CurrentColor = -8355712;
+                    currentColor = -8355712;
                 }
             }
 
-            return CurrentColor;
+            return currentColor;
         }
 
         //*===============================================================================================
@@ -505,7 +505,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
         internal static int LoadDefaultAudioDevice()
         {
-            int AudioDeviceNum = 0;
+            int audioDeviceNum = 0;
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
@@ -514,17 +514,17 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 //Load Value
                 if (AudioDevice.GetValue("AudioDevIndex") != null)
                 {
-                    AudioDeviceNum = (int)AudioDevice.GetValue("AudioDevIndex");
+                    audioDeviceNum = (int)AudioDevice.GetValue("AudioDevIndex");
                     AudioDevice.Close();
                 }
                 //Default Values
                 else
                 {
-                    AudioDeviceNum = 0;
+                    audioDeviceNum = 0;
                 }
             }
 
-            return AudioDeviceNum;
+            return audioDeviceNum;
         }
 
         //*===============================================================================================
@@ -566,17 +566,17 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
         internal static string LoadFolderBrowserLastPath()
         {
-            string LastPath = string.Empty;
+            string lastPath = string.Empty;
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("FolderBrowserLastPath", true);
             using (RegistryKey LastSelectedPath = EuroSoundKey.OpenSubKey("FolderBrowserLastPath", true))
             {
-                LastPath = LastSelectedPath.GetValue("LastPath", "").ToString();
+                lastPath = LastSelectedPath.GetValue("LastPath", "").ToString();
                 LastSelectedPath.Close();
             }
 
-            return LastPath;
+            return lastPath;
         }
 
         //*===============================================================================================
@@ -598,16 +598,16 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
         internal static bool LoadAutomaticalyLoadLastESF(string KeyWord)
         {
-            bool LoadLastESFChecked = false;
+            bool loadLastESFChecked = false;
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
             using (RegistryKey LoadLastESF = EuroSoundKey.OpenSubKey("UserSettings", true))
             {
-                LoadLastESFChecked = Convert.ToBoolean(int.Parse(LoadLastESF.GetValue(KeyWord, "0").ToString()));
+                loadLastESFChecked = Convert.ToBoolean(int.Parse(LoadLastESF.GetValue(KeyWord, "0").ToString()));
                 LoadLastESF.Close();
             }
-            return LoadLastESFChecked;
+            return loadLastESFChecked;
         }
 
         //*===============================================================================================
@@ -627,18 +627,18 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
         internal static string LoadSaveOutputSettings(string KeyValueName, string DefaultValue)
         {
-            string FolderPath;
+            string folderPath;
 
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("UserSettings", true);
             using (RegistryKey OutputSettings = EuroSoundKey.OpenSubKey("UserSettings", true))
             {
                 //Save Values
-                FolderPath = OutputSettings.GetValue(KeyValueName, DefaultValue).ToString();
+                folderPath = OutputSettings.GetValue(KeyValueName, DefaultValue).ToString();
                 OutputSettings.Close();
             }
 
-            return FolderPath;
+            return folderPath;
         }
 
         //*===============================================================================================
@@ -660,35 +660,35 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
         internal static int[] LoadCustomColors()
         {
-            int[] CustomColors = new int[16];
+            int[] customColors = new int[16];
 
             OpenEuroSoundKeys();
             using (RegistryKey CustomColorKey = EuroSoundKey.OpenSubKey("CustomColors", true))
             {
                 if (CustomColorKey != null)
                 {
-                    for (int i = 0; i < CustomColors.Length; i++)
+                    for (int i = 0; i < customColors.Length; i++)
                     {
                         if (CustomColorKey.GetValue("CustCol" + i) != null)
                         {
-                            CustomColors[i] = int.Parse(CustomColorKey.GetValue("CustCol" + i).ToString());
+                            customColors[i] = int.Parse(CustomColorKey.GetValue("CustCol" + i).ToString());
                         }
                         else
                         {
-                            CustomColors[i] = 16777215;
+                            customColors[i] = 16777215;
                         }
                     }
                     CustomColorKey.Close();
                 }
                 else
                 {
-                    for (int i = 0; i < CustomColors.Length; i++)
+                    for (int i = 0; i < customColors.Length; i++)
                     {
-                        CustomColors[i] = 16777215;
+                        customColors[i] = 16777215;
                     }
                 }
             }
-            return CustomColors;
+            return customColors;
         }
 
         //*===============================================================================================

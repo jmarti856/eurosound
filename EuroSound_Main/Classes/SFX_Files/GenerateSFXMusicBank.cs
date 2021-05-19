@@ -152,10 +152,6 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         public void WriteFileSection2(BinaryStream BWriter, Dictionary<uint, EXMusic> MusicsDictionary, ProgressBar Bar)
         {
-            int IndexLC, IndexRC;
-            int TotalLength;
-            bool StereoInterleaving;
-
             //Update GUI
             ProgressBarReset(Bar);
             GenericFunctions.ProgressBarSetMaximum(Bar, MusicsDictionary.Count);
@@ -166,10 +162,10 @@ namespace EuroSound_Application.Musics
             foreach (KeyValuePair<uint, EXMusic> MusicToExport in MusicsDictionary)
             {
                 //Initialize variables
-                IndexLC = 0;
-                IndexRC = 0;
-                StereoInterleaving = true;
-                TotalLength = MusicToExport.Value.IMA_ADPCM_DATA_LeftChannel.Length + MusicToExport.Value.IMA_ADPCM_DATA_RightChannel.Length;
+                int IndexLC = 0;
+                int IndexRC = 0;
+                bool StereoInterleaving = true;
+                int TotalLength = MusicToExport.Value.IMA_ADPCM_DATA_LeftChannel.Length + MusicToExport.Value.IMA_ADPCM_DATA_RightChannel.Length;
 
                 //Write ima data
                 for (int i = 0; i < TotalLength; i++)

@@ -98,8 +98,6 @@ namespace EuroSound_Application.HashCodesFunctions
         #region SFX Defines && SB Defines dictionary
         internal static void ReadHashcodes(string FilePath)
         {
-            string CurrentLine;
-
             //Clear dictionaries
             SFX_Defines.Clear();
             SB_Defines.Clear();
@@ -112,6 +110,7 @@ namespace EuroSound_Application.HashCodesFunctions
                 {
                     using (StreamReader reader = new StreamReader(bs))
                     {
+                        string CurrentLine;
                         while ((CurrentLine = reader.ReadLine()) != null)
                         {
                             if (CurrentLine.StartsWith("/") || string.IsNullOrEmpty(CurrentLine))
@@ -162,8 +161,6 @@ namespace EuroSound_Application.HashCodesFunctions
         #region MFX Defines
         internal static void ReadMusicHashcodes()
         {
-            string line;
-
             //Clear dictionaries
             MFX_Defines.Clear();
 
@@ -175,15 +172,16 @@ namespace EuroSound_Application.HashCodesFunctions
                 {
                     using (StreamReader reader = new StreamReader(bs))
                     {
-                        while ((line = reader.ReadLine()) != null)
+                        string currentLine;
+                        while ((currentLine = reader.ReadLine()) != null)
                         {
-                            if (line.StartsWith("/") || string.IsNullOrEmpty(line))
+                            if (currentLine.StartsWith("/") || string.IsNullOrEmpty(currentLine))
                             {
                                 continue;
                             }
                             else
                             {
-                                MatchCollection matches = FindHashcodeLabel.Matches(line);
+                                MatchCollection matches = FindHashcodeLabel.Matches(currentLine);
                                 if (matches.Count >= 2)
                                 {
                                     string HexLabel = matches[0].Value.Trim();
@@ -220,8 +218,6 @@ namespace EuroSound_Application.HashCodesFunctions
 
         internal static void ReadMusicJumpCodes()
         {
-            string line;
-
             //Clear dictionaries
             MFX_Defines.Clear();
 
@@ -233,15 +229,16 @@ namespace EuroSound_Application.HashCodesFunctions
                 {
                     using (StreamReader reader = new StreamReader(bs))
                     {
-                        while ((line = reader.ReadLine()) != null)
+                        string currentLine;
+                        while ((currentLine = reader.ReadLine()) != null)
                         {
-                            if (line.StartsWith("/") || string.IsNullOrEmpty(line))
+                            if (currentLine.StartsWith("/") || string.IsNullOrEmpty(currentLine))
                             {
                                 continue;
                             }
                             else
                             {
-                                MatchCollection matches = FindHashcodeLabel.Matches(line);
+                                MatchCollection matches = FindHashcodeLabel.Matches(currentLine);
                                 if (matches.Count >= 2)
                                 {
                                     string HexLabel = matches[0].Value.Trim();
@@ -276,8 +273,6 @@ namespace EuroSound_Application.HashCodesFunctions
         #region SFX DATA DICTIONARY
         internal static void ReadSFXData()
         {
-            string CurrentLine;
-
             SFX_Data.Clear();
             using (FileStream fs = File.OpenRead(GlobalPreferences.HT_SoundsDataPath))
             {
@@ -285,15 +280,16 @@ namespace EuroSound_Application.HashCodesFunctions
                 {
                     using (StreamReader reader = new StreamReader(bs))
                     {
-                        while ((CurrentLine = reader.ReadLine()) != null)
+                        string currentLine;
+                        while ((currentLine = reader.ReadLine()) != null)
                         {
-                            if (CurrentLine.StartsWith("/", StringComparison.OrdinalIgnoreCase) || CurrentLine.StartsWith("SF", StringComparison.OrdinalIgnoreCase))
+                            if (currentLine.StartsWith("/", StringComparison.OrdinalIgnoreCase) || currentLine.StartsWith("SF", StringComparison.OrdinalIgnoreCase))
                             {
                                 continue;
                             }
                             else
                             {
-                                string[] SplitedLine = CurrentLine.Split(new char[] { '{', ',', '}' }, StringSplitOptions.RemoveEmptyEntries);
+                                string[] SplitedLine = currentLine.Split(new char[] { '{', ',', '}' }, StringSplitOptions.RemoveEmptyEntries);
                                 if (SplitedLine.Length >= 9)
                                 {
                                     float[] ArrayOfValues = new float[8];

@@ -287,7 +287,7 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* MAIN MENU -- RECENT FILES
         //*===============================================================================================
-        private void RecentFile_click(int number, String filename)
+        private void RecentFile_click(int number, string filename)
         {
             //Update status bar
             GlobalPreferences.StatusBar_ToolTipMode = false;

@@ -259,7 +259,7 @@ namespace EuroSound_Application.StreamSounds
                             });
 
                             //Check that the profile name matches with the current one
-                            string ProfileName = EuroSoundFilesFunctions.LoadStreamSoundsDocument(TreeView_StreamData, StreamSoundsList, CurrentFilePath, ProjectInfo, GenericFunctions.resourcesManager);
+                            string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_StreamData, StreamSoundsList, null, CurrentFilePath, ProjectInfo);
                             if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
                             {
                                 FormMustBeClosed = true;
@@ -303,7 +303,7 @@ namespace EuroSound_Application.StreamSounds
                     else
                     {
                         //Check that the profile name matches with the current one
-                        string ProfileName = EuroSoundFilesFunctions.LoadStreamSoundsDocument(TreeView_StreamData, StreamSoundsList, CurrentFilePath, ProjectInfo, GenericFunctions.resourcesManager);
+                        string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_StreamData, StreamSoundsList, null, CurrentFilePath, ProjectInfo);
                         if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
                         {
                             FormMustBeClosed = true;

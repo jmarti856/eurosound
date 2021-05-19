@@ -148,8 +148,6 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
 
         private void SaveDictionaryData(Dictionary<uint, EXSoundStream> StreamSoundsList, BinaryStream BWriter)
         {
-            uint NumberOfStartMarkers, NumberOfMarkers;
-
             BWriter.Write(StreamSoundsList.Count);
             foreach (KeyValuePair<uint, EXSoundStream> Sound in StreamSoundsList)
             {
@@ -171,7 +169,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
                 BWriter.Write(Sound.Value.RealSize);
 
                 //Start Markers List
-                NumberOfStartMarkers = (uint)Sound.Value.StartMarkers.Count;
+                uint NumberOfStartMarkers = (uint)Sound.Value.StartMarkers.Count;
                 BWriter.Write(NumberOfStartMarkers);
                 for (int i = 0; i < NumberOfStartMarkers; i++)
                 {
@@ -191,7 +189,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
                 }
 
                 //Markers List
-                NumberOfMarkers = (uint)Sound.Value.Markers.Count;
+                uint NumberOfMarkers = (uint)Sound.Value.Markers.Count;
                 BWriter.Write(NumberOfMarkers);
                 for (int j = 0; j < NumberOfMarkers; j++)
                 {

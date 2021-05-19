@@ -18,7 +18,6 @@ namespace EuroSound_Application.MarkerFiles
         internal IList<string> LoadMusicMarkersFile(string FilePath, EXMusic MusicToModify)
         {
             string[] FileLines = File.ReadAllLines(FilePath);
-            string CurrentKeyWord;
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_ReadingMRKFile"));
@@ -27,7 +26,7 @@ namespace EuroSound_Application.MarkerFiles
             if (FileLines.Length > 0)
             {
                 //Check file is correct
-                CurrentKeyWord = GetKeyWord(FileLines[0]);
+                string CurrentKeyWord = GetKeyWord(FileLines[0]);
                 if (CurrentKeyWord.Equals("EUROSOUND"))
                 {
                     for (int i = 1; i < FileLines.Length; i++)
@@ -71,14 +70,13 @@ namespace EuroSound_Application.MarkerFiles
 
         private void ReadSTRStartMarkersBlock(string[] FileLines, int CurrentIndex, EXMusic Music)
         {
-            uint Position = 0, MarkerType = 0, MarkerPos = 0, LoopStart = 0, LoopMarkerCount = 0, StateA = 0, StateB = 0;
-
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
                 string CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
                 if (CurrentKeyWord.Equals("MARKER"))
                 {
                     CurrentIndex++;
+                    uint Position = 0, MarkerType = 0, MarkerPos = 0, LoopStart = 0, LoopMarkerCount = 0, StateA = 0, StateB = 0;
                     while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
                     {
                         CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
@@ -150,14 +148,13 @@ namespace EuroSound_Application.MarkerFiles
         private void ReadMusicMarkersBlock(string[] FileLines, int CurrentIndex, EXMusic Music)
         {
             int Name = 0;
-            uint Position = 0, MarkerType = 0, MarkerCount = 0, LoopStart = 0, LoopMarkerCount = 0;
-
             while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
             {
                 string CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);
                 if (CurrentKeyWord.Equals("MARKER"))
                 {
                     CurrentIndex++;
+                    uint Position = 0, MarkerType = 0, MarkerCount = 0, LoopStart = 0, LoopMarkerCount = 0;
                     while (!FileLines[CurrentIndex].Trim().Equals("}") && CurrentIndex < FileLines.Length)
                     {
                         CurrentKeyWord = GetKeyWord(FileLines[CurrentIndex]);

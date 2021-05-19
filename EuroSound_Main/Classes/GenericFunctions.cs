@@ -129,7 +129,6 @@ namespace EuroSound_Application
                     }
                 }
             }
-
             return Results;
         }
 
@@ -250,11 +249,10 @@ namespace EuroSound_Application
         internal static float StringFloatToDouble(string Number)
         {
             float FinalNumber;
-            string num;
 
             try
             {
-                num = Number.Replace("f", string.Empty).Trim();
+                string num = Number.Replace("f", string.Empty).Trim();
                 FinalNumber = float.Parse(num, CultureInfo.GetCultureInfo("en-US"));
             }
             catch (FormatException)

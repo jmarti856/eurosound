@@ -88,10 +88,9 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             if (File.Exists(GlobalPreferences.StreamFilePath))
             {
-                EuroSoundFiles eurosoundFilesReader = new EuroSoundFiles();
                 using (BinaryReader binaryReader = new BinaryReader(File.Open(GlobalPreferences.StreamFilePath, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
                 {
-                    if (eurosoundFilesReader.FileIsCorrect(binaryReader))
+                    if (new EuroSoundFiles().FileIsCorrect(binaryReader))
                     {
                         //Type of stored data
                         sbyte typeOfStoredData = binaryReader.ReadSByte();
