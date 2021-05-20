@@ -70,8 +70,11 @@ namespace EuroSound_Application.SoundBanksEditor
             numeric_priority.Value = SelectedSound.Priority;
             numeric_ducker.Value = SelectedSound.Ducker;
             numeric_mastervolume.Value = SelectedSound.MasterVolume;
-            textbox_flags.Text = SelectedSound.Flags.ToString();
+            textbox_flags.Tag = SelectedSound.Flags;
             Checkbox_OutputThisSound.Checked = SelectedSound.OutputThisSound;
+
+            //--Print Flags--
+            textbox_flags.Text = GenericFunctions.PrintCheckedFlags("SoundFlags", 16, Convert.ToUInt16(textbox_flags.Tag));
 
             //---Print Samples--
             Thread printSampleList = new Thread(() =>
@@ -131,7 +134,7 @@ namespace EuroSound_Application.SoundBanksEditor
             SelectedSound.Priority = (sbyte)numeric_priority.Value;
             SelectedSound.Ducker = (sbyte)numeric_ducker.Value;
             SelectedSound.MasterVolume = (sbyte)numeric_mastervolume.Value;
-            SelectedSound.Flags = Convert.ToUInt16(textbox_flags.Text);
+            SelectedSound.Flags = Convert.ToUInt16(textbox_flags.Tag);
             SelectedSound.OutputThisSound = Checkbox_OutputThisSound.Checked;
 
             //--Change icon in the parent form--
@@ -201,7 +204,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void Textbox_flags_Click(object sender, EventArgs e)
         {
-            using (EuroSound_FlagsForm formFlags = new EuroSound_FlagsForm(int.Parse(textbox_flags.Text), "SoundFlags", 16))
+            using (EuroSound_FlagsForm formFlags = new EuroSound_FlagsForm(int.Parse(textbox_flags.Tag.ToString()), "SoundFlags", 16))
             {
                 formFlags.Text = "Sound Flags";
                 formFlags.Tag = Tag;
@@ -209,7 +212,8 @@ namespace EuroSound_Application.SoundBanksEditor
 
                 if (formFlags.ShowDialog() == DialogResult.OK)
                 {
-                    textbox_flags.Text = formFlags.CheckedFlags.ToString();
+                    textbox_flags.Tag = formFlags.CheckedFlags.ToString();
+                    textbox_flags.Text = formFlags.CheckedFlagsString;
                 }
             }
         }

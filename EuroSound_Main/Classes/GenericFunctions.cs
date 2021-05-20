@@ -1,6 +1,7 @@
 ﻿using CustomStatusBar;
 using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationPreferences.EuroSound_Profiles;
+using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
@@ -8,6 +9,7 @@ using EuroSound_Application.CustomControls.WarningsList;
 using EuroSound_Application.HashCodesFunctions;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.TreeViewLibraryFunctions;
+using Microsoft.Win32;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
@@ -486,6 +488,27 @@ namespace EuroSound_Application
                     }
                 }
             }
+        }
+
+        internal static string PrintCheckedFlags(string flagsSection, int NumberOfFlags, ushort checkedFlags)
+        {
+            List<string> checkedFlagsString = new List<string>();
+
+            using (RegistryKey StringFlags = WindowsRegistryFunctions.ReturnRegistryKey(flagsSection))
+            {
+                int FlagsToCheck = Convert.ToUInt16(checkedFlags);
+
+                for (int i = 0; i < NumberOfFlags; i++)
+                {
+                    if (Convert.ToBoolean((FlagsToCheck >> i) & 1))
+                    {
+                        checkedFlagsString.Add((string)StringFlags.GetValue("Flag" + (i + 1), "<Unnamed>"));
+                    }
+                }
+                checkedFlagsString.TrimExcess();
+            }
+
+            return string.Join(", ", checkedFlagsString.ToArray());
         }
     }
 }

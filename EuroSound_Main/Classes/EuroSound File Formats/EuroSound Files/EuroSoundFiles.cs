@@ -17,6 +17,28 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
     {
         private uint FileVersion = 0;
 
+        internal bool FileIsCorrect(BinaryReader BReader)
+        {
+            bool FileCorrect = false;
+
+            //Read MAGIC
+            string Magic = Encoding.ASCII.GetString(BReader.ReadBytes(3));
+            if (Magic.Equals("ESF"))
+            {
+                //FileVersion
+                FileVersion = BReader.ReadUInt32();
+                if (FileVersion <= int.Parse(GenericFunctions.GetEuroSoundVersion().Replace(".", "")))
+                {
+                    FileCorrect = true;
+                }
+                else
+                {
+                    MessageBox.Show("This file was written by Eurosound v" + FileVersion + " and cannot be read by v" + GenericFunctions.GetEuroSoundVersion().Replace(".", "") + " or lower.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            return FileCorrect;
+        }
+
         internal string LoadEuroSoundFile(TreeView treeViewControl, object dictionaryData, object dictionaryMedia, string filePath, ProjectFile projectProperties)
         {
             string profileName = string.Empty;
@@ -81,52 +103,36 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             return profileName;
         }
 
-        internal string SaveSoundBanksDocument(TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, string FilePath, ProjectFile FileProperties)
+        internal string SaveEuroSoundFile(TreeView TreeViewControl, object dictionaryData, object dictionaryMedia, string FilePath, ProjectFile FileProperties)
         {
+            //Update Status Bar
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_GenericSavingFile"));
+
             using (BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read), null, Encoding.ASCII))
             {
                 //Write header
                 WriteFileHeader(BWriter, FileProperties);
 
-                //Write file data
-                new ESF_SaveSoundBanks().SaveSoundBanks(BWriter, TreeViewControl, SoundsList, AudiosList, FileProperties);
+                switch (FileProperties.TypeOfData)
+                {
+                    case (int)GenericFunctions.ESoundFileType.SoundBanks:
+                        new ESF_SaveSoundBanks().SaveSoundBanks(BWriter, TreeViewControl, (Dictionary<uint, EXSound>)dictionaryData, (Dictionary<string, EXAudio>)dictionaryMedia, FileProperties);
+                        break;
+                    case (int)GenericFunctions.ESoundFileType.StreamSounds:
+                        new ESF_SaveStreamedSounds().SaveStreamedSounds(BWriter, TreeViewControl, (Dictionary<uint, EXSoundStream>)dictionaryData, FileProperties);
+                        break;
+                    case (int)GenericFunctions.ESoundFileType.MusicBanks:
+                        new ESF_SaveMusics().SaveMusics(BWriter, TreeViewControl, (Dictionary<uint, EXMusic>)dictionaryData, FileProperties);
+                        break;
+                }
 
                 //Close
                 BWriter.Close();
             }
 
-            return FilePath;
-        }
+            //Update Status Bar
+            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
 
-        internal string SaveStreamedSoundsBank(TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, string FilePath, ProjectFile FileProperties)
-        {
-            using (BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.Create, FileAccess.Write, FileShare.Read), null, Encoding.ASCII))
-            {
-                //Write header
-                WriteFileHeader(BWriter, FileProperties);
-
-                //Write file data
-                new ESF_SaveStreamedSounds().SaveStreamedSounds(BWriter, TreeViewControl, StreamSoundsList, FileProperties);
-
-                //Close and dispose
-                BWriter.Close();
-            }
-            return FilePath;
-        }
-
-        internal string SaveMusics(TreeView TreeViewControl, Dictionary<uint, EXMusic> StreamSoundsList, string FilePath, ProjectFile FileProperties)
-        {
-            using (BinaryStream BWriter = new BinaryStream(File.Open(FilePath, FileMode.Create, FileAccess.Write, FileShare.Read), null, Encoding.ASCII))
-            {
-                //Write header
-                WriteFileHeader(BWriter, FileProperties);
-
-                //Write file data
-                new ESF_SaveMusics().SaveMusics(BWriter, TreeViewControl, StreamSoundsList, FileProperties);
-
-                //Close and dispose
-                BWriter.Close();
-            }
             return FilePath;
         }
 
@@ -141,28 +147,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             BWriter.Write(Convert.ToUInt32(int.Parse(GenericFunctions.GetEuroSoundVersion().Replace(".", ""))));
             //Type of stored data
             BWriter.Write(Convert.ToSByte(FileProperties.TypeOfData));
-        }
-
-        public bool FileIsCorrect(BinaryReader BReader)
-        {
-            bool FileCorrect = false;
-
-            //Read MAGIC
-            string Magic = Encoding.ASCII.GetString(BReader.ReadBytes(3));
-            if (Magic.Equals("ESF"))
-            {
-                //FileVersion
-                FileVersion = BReader.ReadUInt32();
-                if (FileVersion <= int.Parse(GenericFunctions.GetEuroSoundVersion().Replace(".", "")))
-                {
-                    FileCorrect = true;
-                }
-                else
-                {
-                    MessageBox.Show("This file was written by Eurosound v" + FileVersion + " and cannot be read by v" + GenericFunctions.GetEuroSoundVersion().Replace(".", "") + " or lower.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            return FileCorrect;
         }
     }
 }

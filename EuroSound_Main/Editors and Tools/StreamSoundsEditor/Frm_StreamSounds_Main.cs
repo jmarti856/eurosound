@@ -193,7 +193,7 @@ namespace EuroSound_Application.StreamSounds
             //Save File
             if (Directory.Exists(GlobalPreferences.MakeBackupsDirectory))
             {
-                EuroSoundFilesFunctions.SaveStreamedSoundsBank(TreeView_StreamData, StreamSoundsList, Path.Combine(GlobalPreferences.MakeBackupsDirectory, string.Join("", "ES_BackUp", GlobalPreferences.MakeBackupsIndex, ".ESF")), ProjectInfo);
+                EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_StreamData, StreamSoundsList, null, Path.Combine(GlobalPreferences.MakeBackupsDirectory, string.Join("", "ES_BackUp", GlobalPreferences.MakeBackupsIndex, ".ESF")), ProjectInfo);
                 GlobalPreferences.MakeBackupsIndex++;
             }
 
@@ -404,7 +404,7 @@ namespace EuroSound_Application.StreamSounds
                         //Save Data
                         else
                         {
-                            EuroSoundFilesFunctions.SaveStreamedSoundsBank(TreeView_StreamData, StreamSoundsList, CurrentFilePath, ProjectInfo);
+                            EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_StreamData, StreamSoundsList, null, CurrentFilePath, ProjectInfo);
                         }
                         ProjectInfo.FileHasBeenModified = false;
                         MdiParent.Text = "EuroSound";
@@ -667,7 +667,7 @@ namespace EuroSound_Application.StreamSounds
             //Save Data
             else
             {
-                EuroSoundFilesFunctions.SaveStreamedSoundsBank(TreeView_StreamData, StreamSoundsList, CurrentFilePath, ProjectInfo);
+                EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_StreamData, StreamSoundsList, null, CurrentFilePath, ProjectInfo);
             }
             ProjectInfo.FileHasBeenModified = false;
 

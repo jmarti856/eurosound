@@ -20,7 +20,7 @@ namespace EuroSound_Application.Musics
             {
                 if (Directory.Exists(Path.GetDirectoryName(SavePath)))
                 {
-                    EuroSoundFilesFunctions.SaveMusics(TreeView_File, StreamSoundsList, SavePath, FileProperties);
+                    EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_File, StreamSoundsList, null, SavePath, FileProperties);
 
                     //Add file to recent list
                     RecentFilesMenu.AddFile(SavePath);

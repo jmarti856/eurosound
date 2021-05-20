@@ -23,7 +23,7 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 if (Directory.Exists(Path.GetDirectoryName(savePath)))
                 {
-                    EuroSoundFilesFunctions.SaveSoundBanksDocument(TreeView_File, SoundsList, AudioDataDict, savePath, FileProperties);
+                    EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_File, SoundsList, AudioDataDict, savePath, FileProperties);
 
                     //Add file to recent list
                     RecentFilesMenu.AddFile(savePath);

@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationRegistryFunctions;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.CustomControls.FlagsForm
@@ -12,6 +13,8 @@ namespace EuroSound_Application.CustomControls.FlagsForm
         private TextBox[] AllTextboxes;
         private int Flags, FlagsToEnable;
         private string KeyName;
+
+        public string CheckedFlagsString { get; set; }
         public int CheckedFlags { get; set; }
 
         //--Properties--
@@ -40,16 +43,18 @@ namespace EuroSound_Application.CustomControls.FlagsForm
         internal int GetFlags()
         {
             int flags = 0;
+            List<string> checkedFlags = new List<string>();
 
             for (int i = 0; i < AllCheckboxes.Length; i++)
             {
                 if (AllCheckboxes[i].Checked)
                 {
                     flags += 1 << i;
+                    checkedFlags.Add(AllTextboxes[i].Text);
                 }
                 AllCheckboxes[i].Dispose();
             }
-
+            CheckedFlagsString = string.Join(", ", checkedFlags.ToArray());
             return flags;
         }
 
@@ -86,8 +91,6 @@ namespace EuroSound_Application.CustomControls.FlagsForm
                 }
                 StringFlags.Close();
             }
-
-            AllTextboxes = null;
         }
     }
 }

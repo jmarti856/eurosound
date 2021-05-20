@@ -71,7 +71,7 @@ namespace EuroSound_Application.StreamSounds
             {
                 if (Directory.Exists(Path.GetDirectoryName(SavePath)))
                 {
-                    EuroSoundFilesFunctions.SaveStreamedSoundsBank(TreeView_File, StreamSoundsList, SavePath, FileProperties);
+                    EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_File, StreamSoundsList, null, SavePath, FileProperties);
 
                     //Add file to recent list
                     RecentFilesMenu.AddFile(SavePath);

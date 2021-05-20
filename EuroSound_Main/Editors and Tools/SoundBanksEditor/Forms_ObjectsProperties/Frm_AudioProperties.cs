@@ -41,9 +41,12 @@ namespace EuroSound_Application.SoundBanksEditor
             UpdateControls();
 
             //--Editable Data--
-            Textbox_Flags.Text = TemporalAudio.Flags.ToString();
+            Textbox_Flags.Tag = TemporalAudio.Flags;
             numeric_psi.Value = TemporalAudio.PSIsample;
             numeric_loopOffset.Value = TemporalAudio.LoopOffset;
+
+            //--Print Flags--
+            Textbox_Flags.Text = GenericFunctions.PrintCheckedFlags("AudioFlags", 1, Convert.ToUInt16(Textbox_Flags.Tag));
 
             //Draw audio waves in the UI
             if (TemporalAudio.PCMdata != null && TemporalAudio.Channels > 0)
@@ -92,7 +95,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void Textbox_Flags_MouseClick(object sender, MouseEventArgs e)
         {
-            EuroSound_FlagsForm formFlags = new EuroSound_FlagsForm(int.Parse(Textbox_Flags.Text), "AudioFlags", 1)
+            EuroSound_FlagsForm formFlags = new EuroSound_FlagsForm(int.Parse(Textbox_Flags.Tag.ToString()), "AudioFlags", 1)
             {
                 Text = "Audio Data Flags",
                 Tag = Tag,
@@ -100,7 +103,8 @@ namespace EuroSound_Application.SoundBanksEditor
             };
             if (formFlags.ShowDialog() == DialogResult.OK)
             {
-                Textbox_Flags.Text = formFlags.CheckedFlags.ToString();
+                Textbox_Flags.Tag = formFlags.CheckedFlags.ToString();
+                Textbox_Flags.Text = formFlags.CheckedFlagsString;
             }
             formFlags.Dispose();
         }
@@ -193,7 +197,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
 
                 //--Modify Temporal Audio Values--
-                TemporalAudio.Flags = Convert.ToUInt16(Textbox_Flags.Text);
+                TemporalAudio.Flags = Convert.ToUInt16(Textbox_Flags.Tag);
                 TemporalAudio.PSIsample = (uint)numeric_psi.Value;
                 TemporalAudio.LoopOffset = (uint)numeric_loopOffset.Value;
 
