@@ -118,7 +118,7 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         //* FORM EVENTS
         //*===============================================================================================
-        private void Frm_Musics_Main_Load(object sender, System.EventArgs e)
+        private void Frm_Musics_Main_Load(object sender, EventArgs e)
         {
             //Fixes bug where loading form maximised in MDI window shows incorrect icon. 
             Icon = Icon.Clone() as Icon;
@@ -155,8 +155,8 @@ namespace EuroSound_Application.Musics
                 {
                     Location = new Point(Convert.ToInt32(WindowStateConfig.GetValue("MView_PositionX", 0)), Convert.ToInt32(WindowStateConfig.GetValue("MView_PositionY", 0)));
                 }
-                Width = Convert.ToInt32(WindowStateConfig.GetValue("MView_Width", 997));
-                Height = Convert.ToInt32(WindowStateConfig.GetValue("MView_Height", 779));
+                Width = Convert.ToInt32(WindowStateConfig.GetValue("MView_Width", 974));
+                Height = Convert.ToInt32(WindowStateConfig.GetValue("MView_Height", 680));
                 WindowStateConfig.Close();
             }
 
@@ -194,7 +194,7 @@ namespace EuroSound_Application.Musics
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
         }
 
-        private void Frm_Musics_Main_Shown(object sender, System.EventArgs e)
+        private void Frm_Musics_Main_Shown(object sender, EventArgs e)
         {
             if (FormMustBeClosed)
             {
@@ -202,10 +202,13 @@ namespace EuroSound_Application.Musics
             }
             else
             {
+                //Show HashCode Group
+                Textbox_GroupHashCode.Text = string.Join("", "0x", GlobalPreferences.MusicPrefix.ToString("X8"));
+
                 //Apply Splitter Distance
                 using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
                 {
-                    SplitContainerMusicsForm.SplitterDistance = Convert.ToInt32(WindowStateConfig.GetValue("MView_SplitterDistance", 456));
+                    SplitContainerMusicsForm.SplitterDistance = Convert.ToInt32(WindowStateConfig.GetValue("MView_SplitterDistance", 370));
                     WindowStateConfig.Close();
                 }
 
@@ -980,7 +983,7 @@ namespace EuroSound_Application.Musics
                         }
 
                         //Calculate Jump HashCode
-                        uint JumpHashcode = Convert.ToUInt32((int)GlobalPreferences.SongPrefix | ((i & 0xFF) << 8) | (((int)ProjectInfo.Hashcode & 0xFF << 0)));
+                        uint JumpHashcode = Convert.ToUInt32((int)GlobalPreferences.MusicPrefix | ((i & 0xFF) << 8) | (((int)ProjectInfo.Hashcode & 0xFF << 0)));
                         if (!string.IsNullOrEmpty(JumpHashcodeLabel))
                         {
                             GenericFunctions.AppendTextToRichTextBox("#define " + JumpHashcodeLabel + " 0x" + JumpHashcode.ToString("X8") + "\n", Color.Brown, Rtbx_Jump_Music_Codes);

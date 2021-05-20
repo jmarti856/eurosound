@@ -190,17 +190,15 @@ namespace EuroSound_Application.SFXData
 
             foreach (float[] ItemValue in Hashcodes.SFX_Data)
             {
-                ListViewItem ItemToAdd = new ListViewItem(new[] { ItemValue[0].ToString(), ItemValue[1].ToString("n1"), ItemValue[2].ToString("n1"), ItemValue[3].ToString("n1"), ItemValue[4].ToString("n6"), ItemValue[5].ToString(), ItemValue[6].ToString(), ItemValue[7].ToString() })
-                {
-                    Tag = GlobalPreferences.SfxPrefix | (uint)ItemValue[0]
-                };
-
                 //Save check in case the object is disposed. 
                 try
                 {
                     ListView_HashTableData.Invoke((MethodInvoker)delegate
                     {
-                        ListView_HashTableData.Items.Add(ItemToAdd);
+                        ListView_HashTableData.Items.Add(new ListViewItem(new[] { ItemValue[0].ToString(), ItemValue[1].ToString("n1"), ItemValue[2].ToString("n1"), ItemValue[3].ToString("n1"), ItemValue[4].ToString("n6"), ItemValue[5].ToString(), ItemValue[6].ToString(), ItemValue[7].ToString() })
+                        {
+                            Tag = GlobalPreferences.SfxPrefix | (uint)ItemValue[0]
+                        });
                     });
 
                     Textbox_TotalItems.Invoke((MethodInvoker)delegate

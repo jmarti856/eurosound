@@ -162,7 +162,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
                 }
 
                 //Whenever possible use system colors
-                if (Color.Equals(NodeColor, ColorTranslator.FromHtml("#000000")) || GlobalPreferences.TV_IgnoreStlyesFromESF)
+                if (NodeColor.GetBrightness() < 0.1 || GlobalPreferences.TV_IgnoreStlyesFromESF)
                 {
                     NodeColor = SystemColors.WindowText;
                 }

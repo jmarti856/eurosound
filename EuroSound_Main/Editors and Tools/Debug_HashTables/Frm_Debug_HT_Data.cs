@@ -296,7 +296,6 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
                     await Task.Delay(50);
                     Combobox_HashCode.ValueMember = "Key";
                     Combobox_HashCode.DisplayMember = "Value";
-                    Combobox_HashCode.Update();
                     if (Combobox_HashCode.Items.Count > 0)
                     {
                         Combobox_HashCode.SelectedIndex = 0;

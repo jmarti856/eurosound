@@ -163,8 +163,8 @@ namespace EuroSound_Application.StreamSounds
                 {
                     Location = new Point(Convert.ToInt32(WindowStateConfig.GetValue("SSView_PositionX", 0)), Convert.ToInt32(WindowStateConfig.GetValue("SSView_PositionY", 0)));
                 }
-                Width = Convert.ToInt32(WindowStateConfig.GetValue("SSView_Width", 997));
-                Height = Convert.ToInt32(WindowStateConfig.GetValue("SSView_Height", 779));
+                Width = Convert.ToInt32(WindowStateConfig.GetValue("SSView_Width", 974));
+                Height = Convert.ToInt32(WindowStateConfig.GetValue("SSView_Height", 680));
                 WindowStateConfig.Close();
             }
 
@@ -210,10 +210,13 @@ namespace EuroSound_Application.StreamSounds
             }
             else
             {
+                //Show HashCode Group
+                Textbox_GroupHashCode.Text = string.Join("", "0x", GlobalPreferences.SfxPrefix.ToString("X8"));
+
                 //Apply Splitter Distance
                 using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
                 {
-                    SplitContainerStreamSoundsForm.SplitterDistance = Convert.ToInt32(WindowStateConfig.GetValue("SSView_SplitterDistance", 456));
+                    SplitContainerStreamSoundsForm.SplitterDistance = Convert.ToInt32(WindowStateConfig.GetValue("SSView_SplitterDistance", 370));
                     WindowStateConfig.Close();
                 }
 

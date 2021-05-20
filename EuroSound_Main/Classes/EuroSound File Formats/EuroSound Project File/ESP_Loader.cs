@@ -307,8 +307,8 @@ namespace EuroSound_Application.EuroSound_Profiles
                             case "SfxPrefix":
                                 GlobalPreferences.SfxPrefix = Convert.ToUInt32(LineData[1], 16);
                                 break;
-                            case "SongPrefix":
-                                GlobalPreferences.SongPrefix = Convert.ToUInt32(LineData[1], 16);
+                            case "MfxPrefix":
+                                GlobalPreferences.MusicPrefix = Convert.ToUInt32(LineData[1], 16);
                                 break;
                         }
                     }

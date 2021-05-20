@@ -151,7 +151,7 @@ namespace EuroSound_Application.SplashForm
                 GlobalPreferences.SfxPrefix = WindowsRegistryFunctions.LoadHashCodesPrefixes("SfxPrefix");
                 await Task.Delay(randomNumber.Next(minimum, maximum));
 
-                GlobalPreferences.SongPrefix = WindowsRegistryFunctions.LoadHashCodesPrefixes("SongPrefix");
+                GlobalPreferences.MusicPrefix = WindowsRegistryFunctions.LoadHashCodesPrefixes("MfxPrefix");
                 await Task.Delay(randomNumber.Next(minimum, maximum));
 
                 //[ExternalFiles]

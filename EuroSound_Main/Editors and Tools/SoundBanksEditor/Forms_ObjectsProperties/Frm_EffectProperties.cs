@@ -81,25 +81,30 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 if (SelectedSound.Samples != null)
                 {
-                    foreach (KeyValuePair<uint, EXSample> sample in SelectedSound.Samples)
+                    foreach (KeyValuePair<uint, EXSample> storedSample in SelectedSound.Samples)
                     {
-                        string sampleName = ((Frm_Soundbanks_Main)OpenForm).TreeView_File.Nodes.Find(sample.Key.ToString(), true)[0].Text;
-                        //Crate item
-                        ListViewItem ItemToAdd = new ListViewItem
-                        {
-                            Text = sampleName,
-                            Tag = sample.Key,
-                            ImageIndex = 0,
-                            StateImageIndex = 0
-                        };
+                        string sampleName = ((Frm_Soundbanks_Main)OpenForm).TreeView_File.Nodes.Find(storedSample.Key.ToString(), true)[0].Text;
 
                         //Insert item
-                        List_Samples.BeginInvoke((MethodInvoker)delegate
+                        try
                         {
-                            List_Samples.Items.Add(ItemToAdd);
-                        });
-
-                        Thread.Sleep(40);
+                            List_Samples.Invoke((MethodInvoker)delegate
+                            {
+                                List_Samples.Items.Add(new ListViewItem
+                                {
+                                    Text = sampleName,
+                                    Tag = storedSample.Key,
+                                    ImageIndex = 0,
+                                    StateImageIndex = 0
+                                });
+                            });
+                            Thread.Sleep(60);
+                        }
+                        catch
+                        {
+                            //Quit loop, probably the control is disposed
+                            break;
+                        }
                     }
                 }
             })
@@ -295,9 +300,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     await Task.Delay(50);
                     cbx_hashcode.ValueMember = "Key";
                     cbx_hashcode.DisplayMember = "Value";
-                    cbx_hashcode.Update();
                     cbx_hashcode.SelectedValue = SelectedSound.Hashcode;
-
                     cbx_hashcode.Enabled = true;
                 });
             })

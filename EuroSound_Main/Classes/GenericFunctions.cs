@@ -232,19 +232,16 @@ namespace EuroSound_Application
 
         internal static void AddItemToListView(ListViewItem ItemToAdd, ListView ListToAddItem)
         {
-            try
+            if (ListToAddItem.InvokeRequired)
             {
                 ListToAddItem.Invoke((MethodInvoker)delegate
                 {
-                    if (!ListToAddItem.IsDisposed)
-                    {
-                        ListToAddItem.Items.Add(ItemToAdd);
-                    }
+                    ListToAddItem.Items.Add(ItemToAdd);
                 });
             }
-            catch (ObjectDisposedException)
+            else
             {
-                // Ignore.  Control is disposed cannot update the UI.
+                ListToAddItem.Items.Add(ItemToAdd);
             }
         }
 

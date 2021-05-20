@@ -397,7 +397,7 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         private void AddMarkerDataToListView(EXStreamMarker MarkerItem)
         {
-            ListViewItem markerItem = new ListViewItem(new[]
+            ListView_MarkerData.Items.Add(new ListViewItem(new[]
             {
                 MarkerItem.Name.ToString(),
                 MarkerItem.Position.ToString(),
@@ -407,21 +407,19 @@ namespace EuroSound_Application.StreamSounds
                 MarkerItem.LoopStart.ToString(),
                 MarkerItem.MarkerCount.ToString(),
                 MarkerItem.LoopMarkerCount.ToString(),
-            });
-            ListView_MarkerData.Items.Add(markerItem);
+            }));
         }
 
         private void AddMarkerStartToListView(EXStreamStartMarker MarkerItem)
         {
-            ListViewItem markerItem = new ListViewItem(new[]
+            ListView_Markers.Items.Add(new ListViewItem(new[]
             {
                 MarkerItem.MarkerPos.ToString(),
                 MarkerItem.IsInstant.ToString(),
                 MarkerItem.StateA.ToString("X8"),
                 MarkerItem.StateB.ToString("X8"),
                 MarkerItem.MarkerCount.ToString()
-            });
-            ListView_Markers.Items.Add(markerItem);
+            }));
         }
 
         private void PrintStartMarkers(List<EXStreamStartMarker> StartMarkersList)

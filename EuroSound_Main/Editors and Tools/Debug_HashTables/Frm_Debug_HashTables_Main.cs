@@ -325,7 +325,7 @@ namespace EuroSound_Application.Debug_HashTables
             }
         }
 
-        private void Button_SearchOutputFolder_Click(object sender, System.EventArgs e)
+        private void Button_SearchOutputFolder_Click(object sender, EventArgs e)
         {
             //Search directory
             string SelectedPath = BrowsersAndDialogs.OpenFolderBrowser();

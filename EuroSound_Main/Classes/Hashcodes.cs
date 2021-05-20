@@ -195,7 +195,7 @@ namespace EuroSound_Application.HashCodesFunctions
                                         {
                                             uint HexNum = Convert.ToUInt32(matches[1].Value.Trim(), 16);
 
-                                            if (HexNum >= GlobalPreferences.SongPrefix)
+                                            if (HexNum >= GlobalPreferences.MusicPrefix)
                                             {
                                                 if (!MFX_Defines.ContainsKey(HexNum))
                                                 {
@@ -248,7 +248,7 @@ namespace EuroSound_Application.HashCodesFunctions
                                         {
                                             uint HexNum = Convert.ToUInt32(matches[1].Value.Trim(), 16);
 
-                                            if (HexNum >= GlobalPreferences.SongPrefix)
+                                            if (HexNum >= GlobalPreferences.MusicPrefix)
                                             {
                                                 if (!MFX_JumpCodes.ContainsKey(HexNum))
                                                 {

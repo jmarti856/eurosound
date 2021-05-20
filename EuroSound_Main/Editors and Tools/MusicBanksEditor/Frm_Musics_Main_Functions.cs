@@ -158,104 +158,115 @@ namespace EuroSound_Application.Musics
         {
             UpdateWavList = new Thread(() =>
             {
-                try
+
+                //Clear List
+                ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
                 {
-                    //Clear List
-                    ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
-                    {
-                        ListView_WavHeaderData.Items.Clear();
-                        ListView_WavHeaderData.Enabled = false;
-                    });
+                    ListView_WavHeaderData.Items.Clear();
+                    ListView_WavHeaderData.Enabled = false;
+                });
 
-                    //Disable Update IMA data button
-                    Button_UpdateIMAData.BeginInvoke((MethodInvoker)delegate
-                    {
-                        Button_UpdateIMAData.Enabled = false;
-                    });
+                //Disable Update IMA data button
+                Button_UpdateIMAData.BeginInvoke((MethodInvoker)delegate
+                {
+                    Button_UpdateIMAData.Enabled = false;
+                });
 
-                    //Disable Update button
-                    Button_UpdateProperties.BeginInvoke((MethodInvoker)delegate
-                    {
-                        Button_UpdateProperties.Enabled = false;
-                    });
+                //Disable Update button
+                Button_UpdateProperties.BeginInvoke((MethodInvoker)delegate
+                {
+                    Button_UpdateProperties.Enabled = false;
+                });
 
-                    //Add data to list
-                    foreach (KeyValuePair<uint, EXMusic> item in MusicsList)
-                    {
-                        TreeNode NodeToCheck = TreeView_MusicData.Nodes.Find(item.Key.ToString(), true)[0];
+                //Add data to list
+                foreach (KeyValuePair<uint, EXMusic> item in MusicsList)
+                {
+                    TreeNode NodeToCheck = TreeView_MusicData.Nodes.Find(item.Key.ToString(), true)[0];
 
-                        //Left Channel
-                        ListViewItem LeftChannelInfo = new ListViewItem(new[]
-                        {
-                            NodeToCheck.Text.ToString() + " L",
-                            item.Value.Frequency_LeftChannel.ToString(),
-                            item.Value.Channels_LeftChannel.ToString(),
-                            item.Value.Bits_LeftChannel.ToString(),
-                            item.Value.PCM_Data_LeftChannel.Length.ToString(),
-                            item.Value.Encoding_LeftChannel.ToString(),
-                            item.Value.Duration_LeftChannel.ToString(),
-                            item.Value.StartMarkers.Count.ToString(),
-                            item.Value.Markers.Count.ToString(),
-                        })
-                        {
-                            UseItemStyleForSubItems = false
-                        };
-                        LeftChannelInfo.Tag = NodeToCheck.Name;
+                    //Left Channel
+                    ListViewItem LeftChannelInfo = new ListViewItem(new[]
+                    {
+                        NodeToCheck.Text.ToString() + " L",
+                        item.Value.Frequency_LeftChannel.ToString(),
+                        item.Value.Channels_LeftChannel.ToString(),
+                        item.Value.Bits_LeftChannel.ToString(),
+                        item.Value.PCM_Data_LeftChannel.Length.ToString(),
+                        item.Value.Encoding_LeftChannel.ToString(),
+                        item.Value.Duration_LeftChannel.ToString(),
+                        item.Value.StartMarkers.Count.ToString(),
+                        item.Value.Markers.Count.ToString(),
+                    })
+                    {
+                        Tag = NodeToCheck.Name,
+                        UseItemStyleForSubItems = false
+                    };
+
+                    try
+                    {
                         GenericFunctions.AddItemToListView(LeftChannelInfo, ListView_WavHeaderData);
-                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking sound:", item.Value.WAVFileName_LeftChannel.ToString() }));
-
-                        //RightChannel
-                        ListViewItem RightChannelInfo = new ListViewItem(new[]
-                        {
-                            NodeToCheck.Text.ToString() + " R",
-                            item.Value.Frequency_RightChannel.ToString(),
-                            item.Value.Channels_RightChannel.ToString(),
-                            item.Value.Bits_RightChannel.ToString(),
-                            item.Value.PCM_Data_RightChannel.Length.ToString(),
-                            item.Value.Encoding_RightChannel.ToString(),
-                            item.Value.Duration_RightChannel.ToString(),
-                            item.Value.StartMarkers.Count.ToString(),
-                            item.Value.Markers.Count.ToString(),
-                        })
-                        {
-                            UseItemStyleForSubItems = false
-                        };
-                        RightChannelInfo.Tag = NodeToCheck.Name;
-                        GenericFunctions.AddItemToListView(RightChannelInfo, ListView_WavHeaderData);
-
-                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking sound:", item.Value.WAVFileName_RightChannel.ToString() }));
-                        Thread.Sleep(85);
+                    }
+                    catch
+                    {
+                        break;
                     }
 
-                    //Enable List
-                    ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
-                    {
-                        ListView_WavHeaderData.Enabled = true;
-                        Button_UpdateIMAData.Enabled = true;
-                    });
+                    GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking sound:", item.Value.WAVFileName_LeftChannel.ToString() }));
 
-                    //Enable update ima button
-                    Button_UpdateIMAData.BeginInvoke((MethodInvoker)delegate
+                    //RightChannel
+                    ListViewItem RightChannelInfo = new ListViewItem(new[]
                     {
-                        Button_UpdateIMAData.Enabled = true;
-                    });
+                        NodeToCheck.Text.ToString() + " R",
+                        item.Value.Frequency_RightChannel.ToString(),
+                        item.Value.Channels_RightChannel.ToString(),
+                        item.Value.Bits_RightChannel.ToString(),
+                        item.Value.PCM_Data_RightChannel.Length.ToString(),
+                        item.Value.Encoding_RightChannel.ToString(),
+                        item.Value.Duration_RightChannel.ToString(),
+                        item.Value.StartMarkers.Count.ToString(),
+                        item.Value.Markers.Count.ToString(),
+                    })
+                    {
+                        Tag = NodeToCheck.Name,
+                        UseItemStyleForSubItems = false
+                    };
 
-                    //Enable Update button
-                    Button_UpdateProperties.BeginInvoke((MethodInvoker)delegate
+                    try
                     {
-                        Button_UpdateProperties.Enabled = true;
-                    });
+                        GenericFunctions.AddItemToListView(RightChannelInfo, ListView_WavHeaderData);
+                    }
+                    catch
+                    {
+                        break;
+                    }
 
-                    //Update Counter
-                    Textbox_DataCount.BeginInvoke((MethodInvoker)delegate
-                    {
-                        Textbox_DataCount.Text = ListView_WavHeaderData.Items.Count.ToString();
-                    });
+                    GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking sound:", item.Value.WAVFileName_RightChannel.ToString() }));
+                    Thread.Sleep(85);
                 }
-                catch (ObjectDisposedException)
+
+                //Enable List
+                ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
                 {
+                    ListView_WavHeaderData.Enabled = true;
+                    Button_UpdateIMAData.Enabled = true;
+                });
 
-                }
+                //Enable update ima button
+                Button_UpdateIMAData.BeginInvoke((MethodInvoker)delegate
+                {
+                    Button_UpdateIMAData.Enabled = true;
+                });
+
+                //Enable Update button
+                Button_UpdateProperties.BeginInvoke((MethodInvoker)delegate
+                {
+                    Button_UpdateProperties.Enabled = true;
+                });
+
+                //Update Counter
+                Textbox_DataCount.BeginInvoke((MethodInvoker)delegate
+                {
+                    Textbox_DataCount.Text = ListView_WavHeaderData.Items.Count.ToString();
+                });
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {

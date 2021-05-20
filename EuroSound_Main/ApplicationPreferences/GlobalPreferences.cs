@@ -38,7 +38,7 @@
         //[HashCodesPrefixes]
         internal static uint StreamFileHashCode;
         internal static uint SfxPrefix;
-        internal static uint SongPrefix;
+        internal static uint MusicPrefix;
 
         //[ExternalFiles]
         internal static string StreamFilePath = string.Empty;

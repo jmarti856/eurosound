@@ -76,7 +76,7 @@ namespace EuroSound_Application.ApplicationPreferences.EuroSound_Profiles
                 //Save Data
                 WindowsRegistryFunctions.SaveHashCodesPrefixes("StreamFileHashCode", GlobalPreferences.StreamFileHashCode);
                 WindowsRegistryFunctions.SaveHashCodesPrefixes("SfxPrefix", GlobalPreferences.SfxPrefix);
-                WindowsRegistryFunctions.SaveHashCodesPrefixes("SongPrefix", GlobalPreferences.SongPrefix);
+                WindowsRegistryFunctions.SaveHashCodesPrefixes("MfxPrefix", GlobalPreferences.MusicPrefix);
 
                 //*===============================================================================================
                 //* [ExternalFiles]

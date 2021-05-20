@@ -122,79 +122,79 @@ namespace EuroSound_Application.StreamSounds
 
             UpdateWavList = new Thread(() =>
             {
-                try
+                //Clear List
+                ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
                 {
-                    //Clear List
-                    ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
-                    {
-                        ListView_WavHeaderData.Items.Clear();
-                        ListView_WavHeaderData.Enabled = false;
-                    });
+                    ListView_WavHeaderData.Items.Clear();
+                    ListView_WavHeaderData.Enabled = false;
+                });
 
-                    //Disable Update IMA data button
-                    Button_UpdateIMAData.BeginInvoke((MethodInvoker)delegate
-                    {
-                        Button_UpdateIMAData.Enabled = false;
-                    });
+                //Disable Update IMA data button
+                Button_UpdateIMAData.BeginInvoke((MethodInvoker)delegate
+                {
+                    Button_UpdateIMAData.Enabled = false;
+                });
 
-                    //Disable Update button
-                    Button_UpdateList_WavData.BeginInvoke((MethodInvoker)delegate
-                    {
-                        Button_UpdateList_WavData.Enabled = false;
-                    });
+                //Disable Update button
+                Button_UpdateList_WavData.BeginInvoke((MethodInvoker)delegate
+                {
+                    Button_UpdateList_WavData.Enabled = false;
+                });
 
-                    //Add data to list
-                    foreach (KeyValuePair<uint, EXSoundStream> item in StreamSoundsList)
+                //Add data to list
+                foreach (KeyValuePair<uint, EXSoundStream> item in StreamSoundsList)
+                {
+                    TreeNode NodeToCheck = TreeView_StreamData.Nodes.Find(item.Key.ToString(), true)[0];
+                    ListViewItem Hashcode = new ListViewItem(new[]
                     {
-                        TreeNode NodeToCheck = TreeView_StreamData.Nodes.Find(item.Key.ToString(), true)[0];
-                        ListViewItem Hashcode = new ListViewItem(new[]
-                        {
-                            NodeToCheck.Text.ToString(),
-                            Index.ToString(),
-                            item.Value.Frequency.ToString(),
-                            item.Value.Channels.ToString(),
-                            item.Value.Bits.ToString(),
-                            item.Value.PCM_Data.Length.ToString(),
-                            item.Value.Encoding.ToString(),
-                            item.Value.Duration.ToString(),
-                            item.Value.StartMarkers.Count.ToString(),
-                            item.Value.Markers.Count.ToString(),
-                        })
-                        {
-                            UseItemStyleForSubItems = false
-                        };
-                        Hashcode.Tag = NodeToCheck.Name;
+                        NodeToCheck.Text.ToString(),
+                        Index.ToString(),
+                        item.Value.Frequency.ToString(),
+                        item.Value.Channels.ToString(),
+                        item.Value.Bits.ToString(),
+                        item.Value.PCM_Data.Length.ToString(),
+                        item.Value.Encoding.ToString(),
+                        item.Value.Duration.ToString(),
+                        item.Value.StartMarkers.Count.ToString(),
+                        item.Value.Markers.Count.ToString(),
+                    })
+                    {
+                        Tag = NodeToCheck.Name,
+                        UseItemStyleForSubItems = false
+                    };
+                    try
+                    {
                         GenericFunctions.AddItemToListView(Hashcode, ListView_WavHeaderData);
-                        Index++;
-
-                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking sound:", item.Value.WAVFileName.ToString() }));
-
-                        Thread.Sleep(85);
                     }
-
-                    //Enable List
-                    ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
+                    catch
                     {
-                        ListView_WavHeaderData.Enabled = true;
-                        Button_UpdateIMAData.Enabled = true;
-                    });
+                        break;
+                    }
+                    Index++;
 
-                    //Enable update ima button
-                    Button_UpdateIMAData.BeginInvoke((MethodInvoker)delegate
-                    {
-                        Button_UpdateIMAData.Enabled = true;
-                    });
+                    GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking sound:", item.Value.WAVFileName.ToString() }));
 
-                    //Enable Update button
-                    Button_UpdateList_WavData.BeginInvoke((MethodInvoker)delegate
-                    {
-                        Button_UpdateList_WavData.Enabled = true;
-                    });
+                    Thread.Sleep(85);
                 }
-                catch (ObjectDisposedException)
+
+                //Enable List
+                ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
                 {
+                    ListView_WavHeaderData.Enabled = true;
+                    Button_UpdateIMAData.Enabled = true;
+                });
 
-                }
+                //Enable update ima button
+                Button_UpdateIMAData.BeginInvoke((MethodInvoker)delegate
+                {
+                    Button_UpdateIMAData.Enabled = true;
+                });
+
+                //Enable Update button
+                Button_UpdateList_WavData.BeginInvoke((MethodInvoker)delegate
+                {
+                    Button_UpdateList_WavData.Enabled = true;
+                });
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {
