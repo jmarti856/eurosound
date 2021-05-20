@@ -115,11 +115,9 @@ namespace EuroSound_Application.Musics
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_MusicData.SelectedNode.Name, SoundID.ToString(), Name, 2, 2, "Music", true, true, false, SystemColors.WindowText, TreeView_MusicData);
 
                     //Add Empty Music
-                    EXMusic EmptyMusic = new EXMusic();
-
                     if (!MusicsList.ContainsKey(SoundID))
                     {
-                        MusicsList.Add(SoundID, EmptyMusic);
+                        MusicsList.Add(SoundID, new EXMusic());
                     }
 
                     ProjectInfo.FileHasBeenModified = true;

@@ -15,7 +15,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 {
     internal class EuroSoundFiles
     {
-        private uint FileVersion = 0;
+        internal uint FileVersion = 0;
 
         internal bool FileIsCorrect(BinaryReader BReader)
         {

@@ -110,6 +110,11 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
                 BWriter.Write(Entry.Value.Duration);
                 BWriter.Write(Entry.Value.PCMdata.Length);
                 BWriter.Write(Entry.Value.PCMdata);
+
+                //PS2
+                BWriter.Write(Entry.Value.FrequencyPS2);
+                BWriter.Write(Entry.Value.LoopOffsetPS2);
+                BWriter.Write(Entry.Value.LoopOffsetPS2Locked);
             }
         }
 

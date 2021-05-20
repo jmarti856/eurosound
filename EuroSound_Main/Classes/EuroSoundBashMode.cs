@@ -150,7 +150,8 @@ namespace EuroSound_Application.BashMode
                 {
                     using (BinaryReader BReader = new BinaryReader(File.Open(Commands[1], FileMode.Open, FileAccess.Read), Encoding.ASCII))
                     {
-                        if (new EuroSoundFiles().FileIsCorrect(BReader))
+                        EuroSoundFiles ESoundFiles = new EuroSoundFiles();
+                        if (ESoundFiles.FileIsCorrect(BReader))
                         {
                             sbyte TypeOfStoredData = BReader.ReadSByte();
 
@@ -196,7 +197,7 @@ namespace EuroSound_Application.BashMode
 
                                 //--------------------------[AUDIO DATA]--------------------------
                                 BReader.BaseStream.Position = (AudioDataOffset);
-                                SectionsReader.ReadAudioDataDictionary(BReader, AudiosList);
+                                SectionsReader.ReadAudioDataDictionary(BReader, AudiosList, (int)ESoundFiles.FileVersion);
 
                                 //*===============================================================================================
                                 //* CREATE SFX FILE
@@ -273,7 +274,7 @@ namespace EuroSound_Application.BashMode
 
                                             //--------------------------------------[SECTION Sample data]--------------------------------------
                                             //Write Data
-                                            SFXGenerator.WriteSampleDataSection(BWriter, FinalAudioDataDict, null, null);
+                                            SFXGenerator.WriteSampleDataSectionPC(BWriter, FinalAudioDataDict, null, null);
 
                                             //*===============================================================================================
                                             //* STEP 5: WRITE FINAL OFFSETS

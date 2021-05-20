@@ -44,7 +44,7 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
             //* Audio Data
             //*===============================================================================================
             BReader.BaseStream.Position = AudioDataOffset;
-            ReadAudioDataDictionary(BReader, AudiosList);
+            ReadAudioDataDictionary(BReader, AudiosList, FileVersion);
 
             //*===============================================================================================
             //* TreeView
@@ -58,7 +58,7 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
             return ProfileSelectedName;
         }
 
-        internal void ReadAudioDataDictionary(BinaryReader BReader, Dictionary<string, EXAudio> AudiosList)
+        internal void ReadAudioDataDictionary(BinaryReader BReader, Dictionary<string, EXAudio> AudiosList, int Version)
         {
             int TotalEntries = BReader.ReadInt32();
 
@@ -82,6 +82,20 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
                 };
                 int PCMDataLength = BReader.ReadInt32();
                 AudioToAdd.PCMdata = BReader.ReadBytes(PCMDataLength);
+
+                //PS2
+                if (Version >= 1013)
+                {
+                    AudioToAdd.FrequencyPS2 = BReader.ReadUInt32();
+                    AudioToAdd.LoopOffsetPS2 = BReader.ReadUInt32();
+                    AudioToAdd.LoopOffsetPS2Locked = BReader.ReadBoolean();
+                }
+                else
+                {
+                    AudioToAdd.FrequencyPS2 = AudioToAdd.Frequency;
+                    AudioToAdd.LoopOffsetPS2 = AudioToAdd.LoopOffset;
+                    AudioToAdd.LoopOffsetPS2Locked = false;
+                }
 
                 AudiosList.Add(HashMD5, AudioToAdd);
             }

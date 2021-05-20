@@ -203,7 +203,43 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             SampleInfoLength = BWriter.BaseStream.Position - SampleInfoStartOffset;
         }
 
-        internal void WriteSampleDataSection(BinaryStream BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
+        internal void WriteSampleDataSectionPC(BinaryStream BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
+        {
+            //Align Bytes
+            BWriter.Align(16, true);
+
+            //Update UI
+            ProgressBarReset(Bar);
+            GenericFunctions.ProgressBarSetMaximum(Bar, FinalAudioDataDict.Count());
+
+            //--[Start section offset]--
+            SampleDataStartOffset = BWriter.BaseStream.Position;
+            foreach (KeyValuePair<string, EXAudio> entry in FinalAudioDataDict)
+            {
+                //--Add Sample data offset to the list--
+                SampleDataOffsets.Add(BWriter.BaseStream.Position - SampleDataStartOffset);
+
+                //--Write PCM Data--
+                BWriter.WriteBytes(entry.Value.PCMdata);
+
+                //--Align--
+                BWriter.Align(4);
+
+                //--Update UI--
+                ProgressBarUpdate(Bar, 1);
+                GenericFunctions.SetLabelText(LabelInfo, "WrittingSampleData: " + entry.Key);
+            }
+            //--Trim list--
+            SampleDataOffsets.TrimExcess();
+
+            //--Section length, current position - start position--
+            SampleDataLength = BWriter.BaseStream.Position - SampleDataStartOffset;
+
+            //Get total file size
+            WholeFileSize = BWriter.BaseStream.Position;
+        }
+
+        internal void WriteSampleDataSectionPS2(BinaryStream BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
         {
             //Align Bytes
             BWriter.Align(16, true);

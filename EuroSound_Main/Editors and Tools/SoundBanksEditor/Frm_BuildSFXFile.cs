@@ -233,7 +233,7 @@ namespace EuroSound_Application.SoundBanksEditor.BuildSFX
 
                     //--------------------------------------[SECTION Sample data]--------------------------------------
                     //Write Data
-                    SFXCreator.WriteSampleDataSection(binaryWriter, finalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
+                    SFXCreator.WriteSampleDataSectionPC(binaryWriter, finalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
 
                     //Update Total Progress
                     totalProgress += 5;

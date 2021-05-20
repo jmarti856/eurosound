@@ -90,17 +90,14 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
                 else
                 {
+                    //Get ID
                     uint SampleID = GenericFunctions.GetNewObjectID(ProjectInfo);
-                    if (TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name.Equals("StreamedSounds"))
-                    {
-                        TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SampleID.ToString(), sampleName, 4, 4, "Sample", true, true, false, SystemColors.WindowText, TreeView_File);
-                        EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(TreeView_File.SelectedNode.Name), SoundsList), SampleID, true);
-                    }
-                    else
-                    {
-                        TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SampleID.ToString(), sampleName, 4, 4, "Sample", true, true, false, SystemColors.WindowText, TreeView_File);
-                        EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(TreeView_File.SelectedNode.Name), SoundsList), SampleID, true);
-                    }
+
+                    //Add Item
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SampleID.ToString(), sampleName, 4, 4, "Sample", true, true, false, SystemColors.WindowText, TreeView_File);
+                    EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(TreeView_File.SelectedNode.Name), SoundsList), SampleID, true);
+                    
+                    //Update project status
                     ProjectInfo.FileHasBeenModified = true;
                 }
             }
@@ -121,11 +118,10 @@ namespace EuroSound_Application.SoundBanksEditor
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SoundID.ToString(), soundName, 2, 2, "Sound", true, true, false, SystemColors.WindowText, TreeView_File);
 
                     //Add Empty Sound
-                    EXSound Sound = new EXSound
+                    SoundsList.Add(SoundID, new EXSound
                     {
                         Hashcode = 0x00000000
-                    };
-                    SoundsList.Add(SoundID, Sound);
+                    });
 
                     //File has been modified
                     ProjectInfo.FileHasBeenModified = true;
