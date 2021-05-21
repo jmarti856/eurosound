@@ -192,19 +192,6 @@ namespace EuroSound_Application.SoundBanksEditor
 
             return null;
         }
-
-        internal static bool DeleteAudio(Dictionary<string, EXAudio> AudiosDictionary, string AudioKeyToRemove)
-        {
-            bool deletedSuccessfully = false;
-
-            if (AudiosDictionary.ContainsKey(AudioKeyToRemove))
-            {
-                deletedSuccessfully = true;
-                AudiosDictionary.Remove(AudioKeyToRemove);
-            }
-
-            return deletedSuccessfully;
-        }
         #endregion
 
         #region SOUNDS
@@ -250,15 +237,6 @@ namespace EuroSound_Application.SoundBanksEditor
             Sound.Samples.Add(Index, sample);
 
             return addedCorrectly;
-        }
-
-        internal static void DeleteSound(string Name, Dictionary<uint, EXSound> SoundsList)
-        {
-            EXSound itemToRemove = ReturnSoundFromDictionary(uint.Parse(Name), SoundsList);
-            if (itemToRemove != null)
-            {
-                SoundsList.Remove(uint.Parse(Name));
-            }
         }
         #endregion
 

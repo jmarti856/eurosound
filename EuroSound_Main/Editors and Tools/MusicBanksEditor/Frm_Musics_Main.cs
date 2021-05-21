@@ -691,11 +691,15 @@ namespace EuroSound_Application.Musics
             {
                 if (SelectedNode.Tag.Equals("Music"))
                 {
-                    RemoveMusicSelectedNode(TreeView_MusicData.SelectedNode);
+                    ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXMusic, TreeView_MusicData, SelectedNode, MusicsList, ProjectInfo, UndoListMusics, UndoListNodes, MenuItem_Edit_Undo);
                 }
                 if (SelectedNode.Tag.Equals("Target"))
                 {
                     ToolsCommonFunctions.RemoveTargetSelectedNode(SelectedNode, OutputTargets, TreeView_MusicData, ProjectInfo);
+                }
+                else
+                {
+                    ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXMusicFolder, TreeView_MusicData, TreeView_MusicData.SelectedNode, MusicsList, ProjectInfo, UndoListMusics, UndoListNodes, MenuItem_Edit_Undo);
                 }
             }
         }
@@ -800,7 +804,8 @@ namespace EuroSound_Application.Musics
                     }
 
                     //Enable or disable button
-                    EnableUndo();
+                    ToolsCommonFunctions.EnableUndo(MenuItem_Edit_Undo, UndoListNodes, ProjectInfo.TypeOfData);
+
                 }
             }
         }

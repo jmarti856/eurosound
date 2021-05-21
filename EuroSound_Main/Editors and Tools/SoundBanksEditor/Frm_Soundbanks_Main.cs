@@ -726,7 +726,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
 
                 //Enable or disable button
-                EnableUndo();
+                ToolsCommonFunctions.EnableUndo(MenuItem_Edit_Undo, UndoListNodes, ProjectInfo.TypeOfData);
             }
         }
 
@@ -1221,18 +1221,15 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 if (selectedNode.Tag.Equals("Sound"))
                 {
-                    RemoveSoundSelectedNode(selectedNode);
-                    ProjectInfo.FileHasBeenModified = true;
+                    ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXSound, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
                 }
                 else if (selectedNode.Tag.Equals("Sample"))
                 {
-                    RemoveSampleSelectedNode(selectedNode);
-                    ProjectInfo.FileHasBeenModified = true;
+                    ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXSample, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
                 }
                 else if (selectedNode.Tag.Equals("Audio"))
                 {
-                    RemoveAudioAndWarningDependencies(selectedNode);
-                    ProjectInfo.FileHasBeenModified = true;
+                    ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXAudio, TreeView_File, TreeView_File.SelectedNode, AudioDataDict, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
                 }
                 else if (selectedNode.Tag.Equals("Target"))
                 {
@@ -1240,8 +1237,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
                 else
                 {
-                    RemoveFolderSelectedNode(selectedNode);
-                    ProjectInfo.FileHasBeenModified = true;
+                    ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXSoundFolder, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
                 }
             }
         }

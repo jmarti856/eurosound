@@ -3,7 +3,7 @@ using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
-using EuroSound_Application.CustomControls.WarningsForm;
+using EuroSound_Application.Editors_and_Tools;
 using EuroSound_Application.Editors_and_Tools.ApplicationTargets;
 using EuroSound_Application.HashCodesFunctions;
 using EuroSound_Application.TreeViewLibraryFunctions;
@@ -161,133 +161,8 @@ namespace EuroSound_Application.SoundBanksEditor
             }
             else
             {
-                RemoveAudioSelectedNode(SelectedNode);
+                ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXAudio, TreeView_File, SelectedNode, AudioDataDict, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
             }
-        }
-
-        private void RemoveAudioSelectedNode(TreeNode SelectedNode)
-        {
-            //Show warning
-            if (GlobalPreferences.ShowWarningMessagesBox)
-            {
-                EuroSound_WarningBox warningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Audio:", SelectedNode.Text.ToString() }), "Warning", true);
-                if (warningDialog.ShowDialog() == DialogResult.OK)
-                {
-                    GlobalPreferences.ShowWarningMessagesBox = warningDialog.ShowWarningAgain;
-                    RemoveAudio();
-                }
-                warningDialog.Dispose();
-            }
-            else
-            {
-                RemoveAudio();
-            }
-        }
-
-        private void RemoveAudio()
-        {
-            TreeNode selectedNode = TreeView_File.SelectedNode;
-
-            //Save to Undo List
-            KeyValuePair<string, EXAudio> SoundtoSave = new KeyValuePair<string, EXAudio>(selectedNode.Name, AudioDataDict[selectedNode.Name]);
-            SaveSnapshot(SoundtoSave, selectedNode);
-
-            //EXObjectsFunctions.RemoveSound(TreeView_File.SelectedNode.Name, SoundsList);
-            EXSoundbanksFunctions.DeleteAudio(AudioDataDict, selectedNode.Name);
-            TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, selectedNode, selectedNode.Tag.ToString());
-        }
-
-        private void RemoveFolderSelectedNode(TreeNode SelectedNode)
-        {
-            //Check we are not trying to delete a root folder
-            if (!(SelectedNode == null || SelectedNode.Tag.Equals("Root")))
-            {
-                //Show warning
-                if (GlobalPreferences.ShowWarningMessagesBox)
-                {
-                    EuroSound_WarningBox warningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Folder:", SelectedNode.Text }), "Warning", true);
-                    if (warningDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        GlobalPreferences.ShowWarningMessagesBox = warningDialog.ShowWarningAgain;
-                        RemoveRecursivelyFolder();
-                    }
-                    warningDialog.Dispose();
-                }
-                else
-                {
-                    RemoveRecursivelyFolder();
-                }
-            }
-        }
-
-        private void RemoveRecursivelyFolder()
-        {
-            //Remove child nodes sounds and samples
-            IList<TreeNode> childNodesCollection = new List<TreeNode>();
-            foreach (TreeNode ChildNode in TreeNodeFunctions.GetNodesInsideFolder(TreeView_File, TreeView_File.SelectedNode, childNodesCollection))
-            {
-                EXSoundbanksFunctions.DeleteSound(ChildNode.Name, SoundsList);
-            }
-            TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, TreeView_File.SelectedNode, TreeView_File.SelectedNode.Tag.ToString());
-        }
-
-        private void RemoveSampleSelectedNode(TreeNode SelectedNode)
-        {
-            //Show warning
-            if (GlobalPreferences.ShowWarningMessagesBox)
-            {
-                EuroSound_WarningBox warningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Sample:", SelectedNode.Text }), "Warning", true);
-                if (warningDialog.ShowDialog() == DialogResult.OK)
-                {
-                    GlobalPreferences.ShowWarningMessagesBox = warningDialog.ShowWarningAgain;
-                    RemoveSample();
-                }
-                warningDialog.Dispose();
-            }
-            else
-            {
-                RemoveSample();
-            }
-        }
-
-        private void RemoveSample()
-        {
-            EXSound parentSound = EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(TreeView_File.SelectedNode.Parent.Name), SoundsList);
-            if (parentSound != null)
-            {
-                parentSound.Samples.Remove(uint.Parse(TreeView_File.SelectedNode.Name));
-            }
-            TreeView_File.SelectedNode.Remove();
-        }
-
-        private void RemoveSoundSelectedNode(TreeNode SelectedNode)
-        {
-            //Show warning
-            if (GlobalPreferences.ShowWarningMessagesBox)
-            {
-                EuroSound_WarningBox warningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Sound:", SelectedNode.Text }), "Warning", true);
-                if (warningDialog.ShowDialog() == DialogResult.OK)
-                {
-                    GlobalPreferences.ShowWarningMessagesBox = warningDialog.ShowWarningAgain;
-                    RemoveSound();
-                }
-                warningDialog.Dispose();
-            }
-            else
-            {
-                RemoveSound();
-            }
-        }
-
-        private void RemoveSound()
-        {
-            TreeNode selectedNode = TreeView_File.SelectedNode;
-            //Save to Undo List
-            KeyValuePair<uint, EXSound> soundtoSave = new KeyValuePair<uint, EXSound>(uint.Parse(selectedNode.Name), SoundsList[uint.Parse(selectedNode.Name)]);
-            SaveSnapshot(soundtoSave, selectedNode);
-
-            EXSoundbanksFunctions.DeleteSound(selectedNode.Name, SoundsList);
-            TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, selectedNode, TreeView_File.SelectedNode.Tag.ToString());
         }
 
         private void UpdateHashcodesValidList()
@@ -560,26 +435,6 @@ namespace EuroSound_Application.SoundBanksEditor
 
             //Update Hashcode name label
             GenericFunctions.SetCurrentFileLabel(string.Empty, "SBPanel_Hashcode");
-        }
-
-        //*===============================================================================================
-        //* UNDO AND REDO
-        //*===============================================================================================
-        // Save a snapshot in the undo list.
-        private void SaveSnapshot(object SoundToSave, TreeNode NodeToSave)
-        {
-            //Save the snapshot.
-            UndoListSounds.Push(SoundToSave);
-            UndoListNodes.Push(new KeyValuePair<string, TreeNode>(NodeToSave.Parent.Name, NodeToSave));
-
-            //Enable or disable the Undo and Redo menu items.
-            EnableUndo();
-        }
-
-        //Enable or disable the Undo and Redo menu items.
-        private void EnableUndo()
-        {
-            MenuItem_Edit_Undo.Enabled = (UndoListSounds.Count > 0);
         }
     }
 }

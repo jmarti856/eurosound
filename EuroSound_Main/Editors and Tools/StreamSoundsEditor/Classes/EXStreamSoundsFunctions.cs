@@ -10,14 +10,6 @@ namespace EuroSound_Application.StreamSounds
 {
     internal static class EXStreamSoundsFunctions
     {
-        internal static void RemoveStreamedSound(string Name, Dictionary<uint, EXSoundStream> SoundsList)
-        {
-            if (SoundsList.ContainsKey(uint.Parse(Name)))
-            {
-                SoundsList.Remove(uint.Parse(Name));
-            }
-        }
-
         internal static EXSoundStream GetSoundByName(uint NameToSearch, Dictionary<uint, EXSoundStream> SoundsList)
         {
             EXSoundStream searchedSound = null;

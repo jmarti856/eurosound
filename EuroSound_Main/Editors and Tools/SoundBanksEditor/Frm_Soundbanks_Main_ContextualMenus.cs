@@ -158,8 +158,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenu_Folders_Delete_Click(object sender, EventArgs e)
         {
-            RemoveFolderSelectedNode(TreeView_File.SelectedNode);
-            ProjectInfo.FileHasBeenModified = true;
+            ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXSoundFolder, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
         }
 
         private void MenuItem_Folder_Collapse_Click(object sender, EventArgs e)
@@ -219,8 +218,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     if (nodeToRemove != null)
                     {
                         purgedAudiosList.Add("2Purged Audio: " + nodeToRemove.Text);
-                        TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, nodeToRemove, "Audio");
-                        EXSoundbanksFunctions.DeleteAudio(AudioDataDict, nodeToRemove.Name);
+                        ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXAudio, TreeView_File, nodeToRemove, AudioDataDict, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
                     }
                 }
                 purgedAudiosList.TrimExcess();
@@ -284,9 +282,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenu_Sound_Remove_Click(object sender, EventArgs e)
         {
-            //Remove item
-            RemoveSoundSelectedNode(TreeView_File.SelectedNode);
-            ProjectInfo.FileHasBeenModified = true;
+            ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXSound, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
         }
 
         private void ContextMenu_Sound_Rename_Click(object sender, EventArgs e)
@@ -322,9 +318,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenu_Sample_Remove_Click(object sender, System.EventArgs e)
         {
-            //Remove item
-            RemoveSampleSelectedNode(TreeView_File.SelectedNode);
-            ProjectInfo.FileHasBeenModified = true;
+            ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXSample, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
         }
         private void ContextMenu_Sample_Rename_Click(object sender, System.EventArgs e)
         {

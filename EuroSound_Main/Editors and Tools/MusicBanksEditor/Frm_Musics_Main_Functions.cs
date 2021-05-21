@@ -1,10 +1,7 @@
-﻿using EuroSound_Application.ApplicationPreferences;
-using EuroSound_Application.ApplicationTargets;
+﻿using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
-using EuroSound_Application.CustomControls.WarningsForm;
 using EuroSound_Application.Editors_and_Tools.ApplicationTargets;
-using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,38 +26,6 @@ namespace EuroSound_Application.Musics
                 }
             }
             return SavePath;
-        }
-
-        private void RemoveMusicSelectedNode(TreeNode NodeToRemove)
-        {
-            //Show warning
-            if (GlobalPreferences.ShowWarningMessagesBox)
-            {
-                EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Music:", TreeView_MusicData.SelectedNode.Text }), "Warning", true);
-                if (WarningDialog.ShowDialog() == DialogResult.OK)
-                {
-                    GlobalPreferences.ShowWarningMessagesBox = WarningDialog.ShowWarningAgain;
-                    RemoveMusic(NodeToRemove);
-                }
-                WarningDialog.Dispose();
-            }
-            else
-            {
-                RemoveMusic(NodeToRemove);
-            }
-            ProjectInfo.FileHasBeenModified = true;
-        }
-
-        private void RemoveMusic(TreeNode SelectedNode)
-        {
-            if (TreeView_MusicData.SelectedNode != null)
-            {
-                EXMusic MusicToSave = MusicsList[uint.Parse(SelectedNode.Name)];
-                SaveSnapshot(uint.Parse(SelectedNode.Name), MusicToSave, SelectedNode);
-
-                EXMusicsFunctions.RemoveMusic(SelectedNode.Name, MusicsList);
-                TreeNodeFunctions.TreeNodeDeleteNode(TreeView_MusicData, SelectedNode, SelectedNode.Tag.ToString());
-            }
         }
 
         internal void OpenMusicPropertiesForm(TreeNode SelectedNode)
@@ -97,41 +62,6 @@ namespace EuroSound_Application.Musics
             }
         }
 
-        private void RemoveFolderSelectedNode(TreeNode SelectedNode)
-        {
-            //Check we are not trying to delete a root folder
-            if (!(SelectedNode == null || SelectedNode.Tag.Equals("Root")))
-            {
-                //Show warning
-                if (GlobalPreferences.ShowWarningMessagesBox)
-                {
-                    EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Folder:", SelectedNode.Text }), "Warning", true);
-                    if (WarningDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        GlobalPreferences.ShowWarningMessagesBox = WarningDialog.ShowWarningAgain;
-                        RemoveRecursivelyFolder();
-                    }
-                    WarningDialog.Dispose();
-                }
-                else
-                {
-                    RemoveRecursivelyFolder();
-                }
-                ProjectInfo.FileHasBeenModified = true;
-            }
-        }
-
-        private void RemoveRecursivelyFolder()
-        {
-            //Remove child nodes sounds and samples
-            IList<TreeNode> ChildNodesCollection = new List<TreeNode>();
-            foreach (TreeNode ChildNode in TreeNodeFunctions.GetNodesInsideFolder(TreeView_MusicData, TreeView_MusicData.SelectedNode, ChildNodesCollection))
-            {
-                EXMusicsFunctions.RemoveMusic(ChildNode.Name, MusicsList);
-            }
-            TreeNodeFunctions.TreeNodeDeleteNode(TreeView_MusicData, TreeView_MusicData.SelectedNode, TreeView_MusicData.SelectedNode.Tag.ToString());
-        }
-      
         private void UpdateIMAData()
         {
             UpdateImaData = new Thread(() =>
@@ -292,25 +222,6 @@ namespace EuroSound_Application.Musics
                 IsBackground = true
             };
             UpdateWavList.Start();
-        }
-
-        //*===============================================================================================
-        //* UNDO AND REDO
-        //*===============================================================================================
-        private void SaveSnapshot(uint ItemKey, EXMusic MusicToSave, TreeNode NodeToSave)
-        {
-            //Save the snapshot.
-            UndoListMusics.Push(new KeyValuePair<uint, EXMusic>(ItemKey, MusicToSave));
-            UndoListNodes.Push(NodeToSave);
-
-            //Enable or disable the Undo and Redo menu items.
-            EnableUndo();
-        }
-
-        //Enable or disable the Undo and Redo menu items.
-        private void EnableUndo()
-        {
-            MenuItem_Edit_Undo.Enabled = (UndoListMusics.Count > 0);
         }
     }
 }

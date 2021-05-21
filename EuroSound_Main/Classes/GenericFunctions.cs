@@ -54,12 +54,14 @@ namespace EuroSound_Application
             MusicBanks = 2
         }
 
-        internal enum EXObjectType: int
+        internal enum EXObjectType : int
         {
             EXAudio = 1,
             EXSound = 2,
             EXSample = 3,
-            EXSoundFolder = 4
+            EXMusic = 4,
+            EXSoundFolder = 5,
+            EXMusicFolder = 6
         }
 
         internal static string TruncateLongString(string str, int maxLenght)

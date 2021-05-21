@@ -22,8 +22,7 @@ namespace EuroSound_Application.Musics
 
         private void ContextMenuMusics_Delete_Click(object sender, EventArgs e)
         {
-            RemoveMusicSelectedNode(TreeView_MusicData.SelectedNode);
-            ProjectInfo.FileHasBeenModified = true;
+            ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXMusic, TreeView_MusicData, TreeView_MusicData.SelectedNode, MusicsList, ProjectInfo, UndoListMusics, UndoListNodes, MenuItem_Edit_Undo);
         }
 
         private void ContextMenuMusics_Properties_Click(object sender, EventArgs e)
@@ -84,7 +83,7 @@ namespace EuroSound_Application.Musics
 
         private void ContextMenuFolder_Delete_Click(object sender, EventArgs e)
         {
-            RemoveFolderSelectedNode(TreeView_MusicData.SelectedNode);
+            ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXMusicFolder, TreeView_MusicData, TreeView_MusicData.SelectedNode, MusicsList, ProjectInfo, UndoListMusics, UndoListNodes, MenuItem_Edit_Undo);
         }
 
         private void ContextMenuFolder_SortItems_Click(object sender, EventArgs e)

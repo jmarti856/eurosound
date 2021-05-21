@@ -17,14 +17,6 @@ namespace EuroSound_Application.Musics
             return SearchedMusic;
         }
 
-        internal static void RemoveMusic(string Name, Dictionary<uint, EXMusic> MusicsList)
-        {
-            if (MusicsList.ContainsKey(uint.Parse(Name)))
-            {
-                MusicsList.Remove(uint.Parse(Name));
-            }
-        }
-
         internal static bool MusicWillBeOutputed(Dictionary<uint, EXMusic> SoundsList, string SoundName)
         {
             bool Output = false;

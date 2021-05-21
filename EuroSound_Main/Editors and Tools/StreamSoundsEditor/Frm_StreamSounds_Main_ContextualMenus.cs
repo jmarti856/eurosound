@@ -98,8 +98,7 @@ namespace EuroSound_Application.StreamSounds
 
         private void ContextMenuSounds_Delete_Click(object sender, System.EventArgs e)
         {
-            RemoveStreamSoundSelectedNode(TreeView_StreamData.SelectedNode);
-            ProjectInfo.FileHasBeenModified = true;
+            ToolsCommonFunctions.RemoveEngineXObject(0, TreeView_StreamData, TreeView_StreamData.SelectedNode, StreamSoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
         }
 
         private void ContextMenuSounds_Properties_Click(object sender, EventArgs e)

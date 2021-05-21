@@ -593,7 +593,7 @@ namespace EuroSound_Application.StreamSounds
             {
                 if (SelectedNode.Tag.Equals("Sound"))
                 {
-                    RemoveStreamSoundSelectedNode(SelectedNode);
+                    ToolsCommonFunctions.RemoveEngineXObject(0, TreeView_StreamData, SelectedNode, StreamSoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
                 }
                 else if (SelectedNode.Tag.Equals("Target"))
                 {
@@ -853,7 +853,7 @@ namespace EuroSound_Application.StreamSounds
                     }
 
                     //Enable or disable button
-                    EnableUndo();
+                    ToolsCommonFunctions.EnableUndo(MenuItem_Edit_Undo, UndoListNodes, ProjectInfo.TypeOfData);
                 }
             }
         }

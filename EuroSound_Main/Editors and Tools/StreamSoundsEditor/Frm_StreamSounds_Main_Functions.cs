@@ -1,11 +1,8 @@
-﻿using EuroSound_Application.ApplicationPreferences;
-using EuroSound_Application.ApplicationTargets;
+﻿using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
-using EuroSound_Application.CustomControls.WarningsForm;
 using EuroSound_Application.Editors_and_Tools.ApplicationTargets;
 using EuroSound_Application.HashCodesFunctions;
-using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,37 +13,6 @@ namespace EuroSound_Application.StreamSounds
 {
     public partial class Frm_StreamSounds_Main
     {
-        private void RemoveStreamSoundSelectedNode(TreeNode NodeToRemove)
-        {
-            //Show warning
-            if (GlobalPreferences.ShowWarningMessagesBox)
-            {
-                EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Stream Sound:", TreeView_StreamData.SelectedNode.Text }), "Warning", true);
-                if (WarningDialog.ShowDialog() == DialogResult.OK)
-                {
-                    GlobalPreferences.ShowWarningMessagesBox = WarningDialog.ShowWarningAgain;
-                    RemoveSound(NodeToRemove);
-                }
-                WarningDialog.Dispose();
-            }
-            else
-            {
-                RemoveSound(NodeToRemove);
-            }
-        }
-
-        private void RemoveSound(TreeNode SelectedNode)
-        {
-            if (TreeView_StreamData.SelectedNode != null)
-            {
-                EXSoundStream SoundtoSave = StreamSoundsList[uint.Parse(SelectedNode.Name)];
-                SaveSnapshot(uint.Parse(SelectedNode.Name), SoundtoSave, SelectedNode);
-
-                EXStreamSoundsFunctions.RemoveStreamedSound(SelectedNode.Name, StreamSoundsList);
-                TreeNodeFunctions.TreeNodeDeleteNode(TreeView_StreamData, SelectedNode, SelectedNode.Tag.ToString());
-            }
-        }
-
         internal void OpenSoundPropertiesForm(TreeNode SelectedNode)
         {
             string SoundKeyInDictionary = SelectedNode.Name;
@@ -247,25 +213,6 @@ namespace EuroSound_Application.StreamSounds
 
             //Update Hashcode name label
             GenericFunctions.SetCurrentFileLabel(string.Empty, "SBPanel_Hashcode");
-        }
-
-        //*===============================================================================================
-        //* UNDO AND REDO
-        //*===============================================================================================
-        private void SaveSnapshot(uint ItemKey, EXSoundStream SoundToSave, TreeNode NodeToSave)
-        {
-            //Save the snapshot.
-            UndoListSounds.Push(new KeyValuePair<uint, EXSoundStream>(ItemKey, SoundToSave));
-            UndoListNodes.Push(NodeToSave);
-
-            //Enable or disable the Undo and Redo menu items.
-            EnableUndo();
-        }
-
-        //Enable or disable the Undo and Redo menu items.
-        private void EnableUndo()
-        {
-            MenuItem_Edit_Undo.Enabled = (UndoListSounds.Count > 0);
         }
 
         private void MoveDown(TreeNode node)
