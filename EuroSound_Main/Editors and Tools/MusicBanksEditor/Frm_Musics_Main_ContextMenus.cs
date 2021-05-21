@@ -1,4 +1,5 @@
 ﻿using EuroSound_Application.Clases;
+using EuroSound_Application.Editors_and_Tools;
 using EuroSound_Application.EuroSoundInterchangeFile;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using EuroSound_Application.TreeViewSorter;
@@ -47,14 +48,7 @@ namespace EuroSound_Application.Musics
 
         private void ContextMenuMusics_TextColor_Click(object sender, EventArgs e)
         {
-            TreeNode SelectedNode = TreeView_MusicData.SelectedNode;
-            int SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
-
-            if (SelectedColor != -1)
-            {
-                SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
-                ProjectInfo.FileHasBeenModified = true;
-            }
+            TreeNodeFunctions.ChangeNodeColor(TreeView_MusicData.SelectedNode, ProjectInfo);
         }
 
         //*===============================================================================================
@@ -91,7 +85,6 @@ namespace EuroSound_Application.Musics
         private void ContextMenuFolder_Delete_Click(object sender, EventArgs e)
         {
             RemoveFolderSelectedNode(TreeView_MusicData.SelectedNode);
-            ProjectInfo.FileHasBeenModified = true;
         }
 
         private void ContextMenuFolder_SortItems_Click(object sender, EventArgs e)
@@ -133,14 +126,30 @@ namespace EuroSound_Application.Musics
 
         private void ContextMenuFolder_TextColor_Click(object sender, EventArgs e)
         {
-            TreeNode SelectedNode = TreeView_MusicData.SelectedNode;
-            int SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
+            TreeNodeFunctions.ChangeNodeColor(TreeView_MusicData.SelectedNode, ProjectInfo);
+        }
 
-            if (SelectedColor != -1)
-            {
-                SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
-                ProjectInfo.FileHasBeenModified = true;
-            }
+        //*===============================================================================================
+        //* ContextMenu_Target
+        //*===============================================================================================
+        private void ContextMenuTargets_Delete_Click(object sender, EventArgs e)
+        {
+            ToolsCommonFunctions.RemoveTargetSelectedNode(TreeView_MusicData.SelectedNode, OutputTargets, TreeView_MusicData, ProjectInfo);
+        }
+
+        private void ContextMenuTargets_TextColor_Click(object sender, EventArgs e)
+        {
+            TreeNodeFunctions.ChangeNodeColor(TreeView_MusicData.SelectedNode, ProjectInfo);
+        }
+
+        private void ContextMenuTargets_Properties_Click(object sender, EventArgs e)
+        {
+            OpenTargetProperties(TreeView_MusicData.SelectedNode);
+        }
+
+        private void ContextMenuTargets_Output_Click(object sender, EventArgs e)
+        {
+
         }
 
         //*===============================================================================================

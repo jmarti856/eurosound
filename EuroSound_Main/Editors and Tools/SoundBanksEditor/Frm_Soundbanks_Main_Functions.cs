@@ -1,8 +1,10 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
+using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls.WarningsForm;
+using EuroSound_Application.Editors_and_Tools.ApplicationTargets;
 using EuroSound_Application.HashCodesFunctions;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
@@ -23,7 +25,7 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 if (Directory.Exists(Path.GetDirectoryName(savePath)))
                 {
-                    EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_File, SoundsList, AudioDataDict, savePath, FileProperties);
+                    EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_File, SoundsList, AudioDataDict, OutputTargets, savePath, FileProperties);
 
                     //Add file to recent list
                     RecentFilesMenu.AddFile(savePath);
@@ -135,6 +137,21 @@ namespace EuroSound_Application.SoundBanksEditor
             ProjectInfo.FileHasBeenModified = true;
         }
 
+        internal void OpenTargetProperties(TreeNode SelectedNode)
+        {
+            EXAppTarget outTarget = OutputTargets[Convert.ToUInt32(SelectedNode.Name)];
+            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget) { Owner = this })
+            {
+                newOutTarget.ShowDialog();
+
+                if (newOutTarget.DialogResult == DialogResult.OK)
+                {
+                    //File has been modified
+                    ProjectInfo.FileHasBeenModified = true;
+                }
+            }
+        }
+
         private void RemoveAudioAndWarningDependencies(TreeNode SelectedNode)
         {
             IEnumerable<string> dependencies = EXSoundbanksFunctions.GetAudioDependencies(SelectedNode.Name, SelectedNode.Text, SoundsList, TreeView_File, false);
@@ -167,6 +184,19 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
+        private void RemoveAudio()
+        {
+            TreeNode selectedNode = TreeView_File.SelectedNode;
+
+            //Save to Undo List
+            KeyValuePair<string, EXAudio> SoundtoSave = new KeyValuePair<string, EXAudio>(selectedNode.Name, AudioDataDict[selectedNode.Name]);
+            SaveSnapshot(SoundtoSave, selectedNode);
+
+            //EXObjectsFunctions.RemoveSound(TreeView_File.SelectedNode.Name, SoundsList);
+            EXSoundbanksFunctions.DeleteAudio(AudioDataDict, selectedNode.Name);
+            TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, selectedNode, selectedNode.Tag.ToString());
+        }
+
         private void RemoveFolderSelectedNode(TreeNode SelectedNode)
         {
             //Check we are not trying to delete a root folder
@@ -190,6 +220,17 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
+        private void RemoveRecursivelyFolder()
+        {
+            //Remove child nodes sounds and samples
+            IList<TreeNode> childNodesCollection = new List<TreeNode>();
+            foreach (TreeNode ChildNode in TreeNodeFunctions.GetNodesInsideFolder(TreeView_File, TreeView_File.SelectedNode, childNodesCollection))
+            {
+                EXSoundbanksFunctions.DeleteSound(ChildNode.Name, SoundsList);
+            }
+            TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, TreeView_File.SelectedNode, TreeView_File.SelectedNode.Tag.ToString());
+        }
+
         private void RemoveSampleSelectedNode(TreeNode SelectedNode)
         {
             //Show warning
@@ -209,6 +250,16 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
+        private void RemoveSample()
+        {
+            EXSound parentSound = EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(TreeView_File.SelectedNode.Parent.Name), SoundsList);
+            if (parentSound != null)
+            {
+                parentSound.Samples.Remove(uint.Parse(TreeView_File.SelectedNode.Name));
+            }
+            TreeView_File.SelectedNode.Remove();
+        }
+
         private void RemoveSoundSelectedNode(TreeNode SelectedNode)
         {
             //Show warning
@@ -226,40 +277,6 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 RemoveSound();
             }
-        }
-
-        private void RemoveAudio()
-        {
-            TreeNode selectedNode = TreeView_File.SelectedNode;
-
-            //Save to Undo List
-            KeyValuePair<string, EXAudio> SoundtoSave = new KeyValuePair<string, EXAudio>(selectedNode.Name, AudioDataDict[selectedNode.Name]);
-            SaveSnapshot(SoundtoSave, selectedNode);
-
-            //EXObjectsFunctions.RemoveSound(TreeView_File.SelectedNode.Name, SoundsList);
-            EXSoundbanksFunctions.DeleteAudio(AudioDataDict, selectedNode.Name);
-            TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, selectedNode, selectedNode.Tag.ToString());
-        }
-
-        private void RemoveRecursivelyFolder()
-        {
-            //Remove child nodes sounds and samples
-            IList<TreeNode> childNodesCollection = new List<TreeNode>();
-            foreach (TreeNode ChildNode in TreeNodeFunctions.GetNodesInsideFolder(TreeView_File, TreeView_File.SelectedNode, childNodesCollection))
-            {
-                EXSoundbanksFunctions.DeleteSound(ChildNode.Name, SoundsList);
-            }
-            TreeNodeFunctions.TreeNodeDeleteNode(TreeView_File, TreeView_File.SelectedNode, TreeView_File.SelectedNode.Tag.ToString());
-        }
-
-        private void RemoveSample()
-        {
-            EXSound parentSound = EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(TreeView_File.SelectedNode.Parent.Name), SoundsList);
-            if (parentSound != null)
-            {
-                parentSound.Samples.Remove(uint.Parse(TreeView_File.SelectedNode.Name));
-            }
-            TreeView_File.SelectedNode.Remove();
         }
 
         private void RemoveSound()

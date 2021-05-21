@@ -1,7 +1,9 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls.WarningsForm;
+using EuroSound_Application.Editors_and_Tools.ApplicationTargets;
 using EuroSound_Application.HashCodesFunctions;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
@@ -71,13 +73,28 @@ namespace EuroSound_Application.StreamSounds
             {
                 if (Directory.Exists(Path.GetDirectoryName(SavePath)))
                 {
-                    EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_File, StreamSoundsList, null, SavePath, FileProperties);
+                    EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_File, StreamSoundsList, null, OutputTargets, SavePath, FileProperties);
 
                     //Add file to recent list
                     RecentFilesMenu.AddFile(SavePath);
                 }
             }
             return SavePath;
+        }
+
+        internal void OpenTargetProperties(TreeNode SelectedNode)
+        {
+            EXAppTarget outTarget = OutputTargets[Convert.ToUInt32(SelectedNode.Name)];
+            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget) { Owner = this })
+            {
+                newOutTarget.ShowDialog();
+
+                if (newOutTarget.DialogResult == DialogResult.OK)
+                {
+                    //File has been modified
+                    ProjectInfo.FileHasBeenModified = true;
+                }
+            }
         }
 
         private void UpdateIMAData()

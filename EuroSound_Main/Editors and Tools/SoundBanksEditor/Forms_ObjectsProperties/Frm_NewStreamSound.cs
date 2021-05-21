@@ -90,18 +90,25 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 using (BinaryReader binaryReader = new BinaryReader(File.Open(GlobalPreferences.StreamFilePath, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
                 {
-                    if (new EuroSoundFiles().FileIsCorrect(binaryReader))
+                    EuroSoundFiles esfFunctions = new EuroSoundFiles();
+                    if (esfFunctions.FileIsCorrect(binaryReader))
                     {
                         //Type of stored data
                         sbyte typeOfStoredData = binaryReader.ReadSByte();
-                        if (typeOfStoredData == 1)
+                        if (typeOfStoredData == (int)GenericFunctions.ESoundFileType.StreamSounds)
                         {
-                            //File Hashcode
-                            binaryReader.ReadUInt32();
-                            //Sound ID
-                            binaryReader.ReadUInt32();
-                            //Sounds List Offset
-                            uint ListOffset = binaryReader.ReadUInt32();
+                            uint ListOffset;
+                            //Older versions, before 1.0.1.3
+                            if (esfFunctions.FileVersion < 1013)
+                            {
+                                binaryReader.BaseStream.Seek(16, SeekOrigin.Begin);
+                                ListOffset = binaryReader.ReadUInt32();
+                            }
+                            else
+                            {
+                                binaryReader.BaseStream.Seek(32, SeekOrigin.Begin);
+                                ListOffset = binaryReader.ReadUInt32();
+                            }
 
                             //Go to list offset
                             binaryReader.BaseStream.Seek(ListOffset, SeekOrigin.Begin);
@@ -117,7 +124,6 @@ namespace EuroSound_Application.SoundBanksEditor
                             }
                         }
                     }
-
                     binaryReader.Close();
                 }
             }

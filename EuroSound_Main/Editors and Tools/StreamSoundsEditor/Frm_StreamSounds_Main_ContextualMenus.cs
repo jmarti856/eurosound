@@ -1,4 +1,8 @@
-﻿using EuroSound_Application.Clases;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationTargets;
+using EuroSound_Application.Clases;
+using EuroSound_Application.Editors_and_Tools;
+using EuroSound_Application.Editors_and_Tools.ApplicationTargets;
 using EuroSound_Application.EuroSoundInterchangeFile;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
@@ -48,6 +52,30 @@ namespace EuroSound_Application.StreamSounds
             }
         }
 
+        private void ContextMenuFolder_AddTarget_Click(object sender, EventArgs e)
+        {
+            EXAppTarget outTarget = new EXAppTarget
+            {
+                BinaryName = EXAppTarget_Functions.GetBinaryName(ProjectInfo, GlobalPreferences.SelectedProfileName)
+            };
+            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget) { Owner = this })
+            {
+                newOutTarget.ShowDialog();
+
+                if (newOutTarget.DialogResult == DialogResult.OK)
+                {
+                    uint SoundID = GenericFunctions.GetNewObjectID(ProjectInfo);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_StreamData.SelectedNode.Name, SoundID.ToString(), outTarget.Name, 10, 10, "Target", true, true, false, SystemColors.WindowText, TreeView_StreamData);
+
+                    //Add Target
+                    OutputTargets.Add(SoundID, outTarget);
+
+                    //File has been modified
+                    ProjectInfo.FileHasBeenModified = true;
+                }
+            }
+        }
+
         private void ContextMenuMain_Rename_Click(object sender, EventArgs e)
         {
             TreeNodeFunctions.EditNodeLabel(TreeView_StreamData, TreeView_StreamData.SelectedNode);
@@ -56,13 +84,7 @@ namespace EuroSound_Application.StreamSounds
 
         private void ContextMenuMain_TextColor_Click(object sender, EventArgs e)
         {
-            TreeNode SelectedNode = TreeView_StreamData.SelectedNode;
-            int SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
-            if (SelectedColor != -1)
-            {
-                SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
-                ProjectInfo.FileHasBeenModified = true;
-            }
+            TreeNodeFunctions.ChangeNodeColor(TreeView_StreamData.SelectedNode, ProjectInfo);
         }
 
         //*===============================================================================================
@@ -112,14 +134,30 @@ namespace EuroSound_Application.StreamSounds
 
         private void ContextMenuSounds_TextColor_Click(object sender, EventArgs e)
         {
-            TreeNode SelectedNode = TreeView_StreamData.SelectedNode;
-            int SelectedColor = BrowsersAndDialogs.ColorPickerDialog(SelectedNode.ForeColor);
+            TreeNodeFunctions.ChangeNodeColor(TreeView_StreamData.SelectedNode, ProjectInfo);
+        }
 
-            if (SelectedColor != -1)
-            {
-                SelectedNode.ForeColor = Color.FromArgb(SelectedColor);
-                ProjectInfo.FileHasBeenModified = true;
-            }
+        //*===============================================================================================
+        //* ContextMenu_Target
+        //*===============================================================================================
+        private void ContextMenuTargets_Delete_Click(object sender, EventArgs e)
+        {
+            ToolsCommonFunctions.RemoveTargetSelectedNode(TreeView_StreamData.SelectedNode, OutputTargets, TreeView_StreamData, ProjectInfo);
+        }
+
+        private void ContextMenuTargets_TextColor_Click(object sender, EventArgs e)
+        {
+            TreeNodeFunctions.ChangeNodeColor(TreeView_StreamData.SelectedNode, ProjectInfo);
+        }
+
+        private void ContextMenuTargets_Properties_Click(object sender, EventArgs e)
+        {
+            OpenTargetProperties(TreeView_StreamData.SelectedNode);
+        }
+
+        private void ContextMenuTargets_Output_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

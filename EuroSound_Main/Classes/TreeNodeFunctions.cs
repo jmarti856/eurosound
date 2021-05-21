@@ -1,4 +1,6 @@
-﻿using EuroSound_Application.SoundBanksEditor;
+﻿using EuroSound_Application.Clases;
+using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.SoundBanksEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -198,6 +200,17 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
             {
                 Node.SelectedImageIndex = SelectedImageIndex;
                 Node.ImageIndex = ImageIndex;
+            }
+        }
+
+        internal static void ChangeNodeColor(TreeNode nodeToChange, ProjectFile ProjectInfo)
+        {
+            int selectedColor = BrowsersAndDialogs.ColorPickerDialog(nodeToChange.ForeColor);
+
+            if (selectedColor != -1)
+            {
+                nodeToChange.ForeColor = Color.FromArgb(selectedColor);
+                ProjectInfo.FileHasBeenModified = true;
             }
         }
     }

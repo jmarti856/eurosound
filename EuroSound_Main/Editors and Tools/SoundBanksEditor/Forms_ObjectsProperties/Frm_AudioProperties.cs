@@ -208,7 +208,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 TemporalAudio.LoopOffsetPS2 = (uint)Numeric_LoopOffsetPS2.Value;
                 TemporalAudio.LoopOffsetPS2Locked = CheckBox_LoopOffsetPS2_Locked.Checked;
                 TemporalAudio.FrequencyPS2 = Convert.ToUInt32(ComboBox_FrequencyPS2.SelectedItem);
-                
+
                 //--Update Selected Audio-
                 SelectedAudio.Flags = TemporalAudio.Flags;
                 SelectedAudio.PSIsample = TemporalAudio.PSIsample;

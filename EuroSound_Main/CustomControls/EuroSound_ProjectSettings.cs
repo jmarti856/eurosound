@@ -1,7 +1,9 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.HashCodesFunctions;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.CustomControls.ProjectSettings
@@ -12,11 +14,13 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
         //* Global Variables
         //*===============================================================================================
         private ProjectFile CurrentFileProperties;
+        private Dictionary<uint, EXAppTarget> currentOutputTargets;
 
-        public Frm_FileProperties(ProjectFile FileProperties)
+        public Frm_FileProperties(ProjectFile FileProperties, Dictionary<uint, EXAppTarget> outputTargets)
         {
             InitializeComponent();
             CurrentFileProperties = FileProperties;
+            currentOutputTargets = outputTargets;
         }
 
         //*===============================================================================================
@@ -109,6 +113,10 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
                     }
                 }
             }
+
+            //Update binary name 
+            string binaryName = EXAppTarget_Functions.GetBinaryName(CurrentFileProperties, GlobalPreferences.SelectedProfileName);
+            EXAppTarget_Functions.UpdateAppTargetName(binaryName, currentOutputTargets);
 
             //Close current form
             Close();

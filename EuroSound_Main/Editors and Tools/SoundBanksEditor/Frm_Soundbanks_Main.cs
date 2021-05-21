@@ -1,10 +1,12 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
+using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls.DebugTypes;
 using EuroSound_Application.CustomControls.ProjectSettings;
 using EuroSound_Application.CustomControls.SearcherForm;
+using EuroSound_Application.Editors_and_Tools;
 using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.EuroSoundInterchangeFile;
 using EuroSound_Application.HashCodesFunctions;
@@ -30,6 +32,7 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         internal Dictionary<string, EXAudio> AudioDataDict = new Dictionary<string, EXAudio>();
         internal Dictionary<uint, EXSound> SoundsList = new Dictionary<uint, EXSound>();
+        internal Dictionary<uint, EXAppTarget> OutputTargets = new Dictionary<uint, EXAppTarget>();
         internal ProjectFile ProjectInfo = new ProjectFile();
         internal string CurrentFilePath = string.Empty;
         private string ProjectName;
@@ -228,7 +231,7 @@ namespace EuroSound_Application.SoundBanksEditor
             //Save File
             if (Directory.Exists(GlobalPreferences.MakeBackupsDirectory))
             {
-                EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_File, SoundsList, AudioDataDict, Path.Combine(GlobalPreferences.MakeBackupsDirectory, string.Join("", "ES_BackUp", GlobalPreferences.MakeBackupsIndex, ".ESF")), ProjectInfo);
+                EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_File, SoundsList, AudioDataDict, OutputTargets, Path.Combine(GlobalPreferences.MakeBackupsDirectory, string.Join("", "ES_BackUp", GlobalPreferences.MakeBackupsIndex, ".ESF")), ProjectInfo);
                 GlobalPreferences.MakeBackupsIndex++;
             }
 
@@ -320,7 +323,7 @@ namespace EuroSound_Application.SoundBanksEditor
                             });
 
                             //Check that the profile name matches with the current one
-                            string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_File, SoundsList, AudioDataDict, CurrentFilePath, ProjectInfo);
+                            string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_File, SoundsList, AudioDataDict, OutputTargets, CurrentFilePath, ProjectInfo);
                             if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
                             {
                                 FormMustBeClosed = true;
@@ -388,7 +391,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     else
                     {
                         //Check that the profile name matches with the current one
-                        string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_File, SoundsList, AudioDataDict, CurrentFilePath, ProjectInfo);
+                        string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_File, SoundsList, AudioDataDict, OutputTargets, CurrentFilePath, ProjectInfo);
                         if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
                         {
                             FormMustBeClosed = true;
@@ -505,7 +508,7 @@ namespace EuroSound_Application.SoundBanksEditor
                         //Save Data
                         else
                         {
-                            EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_File, SoundsList, AudioDataDict, CurrentFilePath, ProjectInfo);
+                            EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_File, SoundsList, AudioDataDict, OutputTargets, CurrentFilePath, ProjectInfo);
                         }
                         ProjectInfo.FileHasBeenModified = false;
                         MdiParent.Text = "EuroSound";
@@ -644,7 +647,7 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             GlobalPreferences.StatusBar_ToolTipMode = false;
 
-            Frm_FileProperties filePropsForm = new Frm_FileProperties(ProjectInfo)
+            Frm_FileProperties filePropsForm = new Frm_FileProperties(ProjectInfo, OutputTargets)
             {
                 Owner = this,
                 ShowInTaskbar = false,
@@ -819,7 +822,7 @@ namespace EuroSound_Application.SoundBanksEditor
             //Save Data
             else
             {
-                EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_File, SoundsList, AudioDataDict, CurrentFilePath, ProjectInfo);
+                EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_File, SoundsList, AudioDataDict, OutputTargets, CurrentFilePath, ProjectInfo);
             }
             ProjectInfo.FileHasBeenModified = false;
 
@@ -1055,7 +1058,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 if (targetNode != null)
                 {
                     //Type of nodes that are allowed to be re-ubicated
-                    if (draggedNode.Tag.Equals("Folder") || draggedNode.Tag.Equals("Sound") || draggedNode.Tag.Equals("Audio"))
+                    if (draggedNode.Tag.Equals("Folder") || draggedNode.Tag.Equals("Sound") || draggedNode.Tag.Equals("Audio") || draggedNode.Tag.Equals("Target"))
                     {
                         e.Effect = DragDropEffects.Move;
                     }
@@ -1127,13 +1130,21 @@ namespace EuroSound_Application.SoundBanksEditor
                         ContextMenu_Folders.Show(Cursor.Position);
                         if (TreeNodeFunctions.FindRootNode(selectedTreeViewNode).Name.Equals("AudioData"))
                         {
-                            ContextMenuFolder_AddSound.Visible = false;
                             ContextMenuFolder_AddAudio.Visible = true;
+                            ContextMenuFolder_AddTarget.Visible = false;
+                            ContextMenuFolder_AddSound.Visible = false;
+                        }
+                        else if (TreeNodeFunctions.FindRootNode(selectedTreeViewNode).Name.Equals("AppTargets"))
+                        {
+                            ContextMenuFolder_AddTarget.Visible = true;
+                            ContextMenuFolder_AddSound.Visible = false;
+                            ContextMenuFolder_AddAudio.Visible = false;
                         }
                         else
                         {
                             ContextMenuFolder_AddSound.Visible = true;
                             ContextMenuFolder_AddAudio.Visible = false;
+                            ContextMenuFolder_AddTarget.Visible = false;
                         }
                     }
                     else if (selectedTreeViewNode.Tag.Equals("Sound"))
@@ -1147,6 +1158,10 @@ namespace EuroSound_Application.SoundBanksEditor
                     else if (selectedTreeViewNode.Tag.Equals("Audio"))
                     {
                         ContextMenu_Audio.Show(Cursor.Position);
+                    }
+                    else if (selectedTreeViewNode.Tag.Equals("Target"))
+                    {
+                        ContextMenu_Targets.Show(Cursor.Position);
                     }
                 }
             }
@@ -1171,6 +1186,9 @@ namespace EuroSound_Application.SoundBanksEditor
                         break;
                     case "Sound":
                         OpenSoundProperties(selectedTreeViewNode);
+                        break;
+                    case "Target":
+                        OpenTargetProperties(selectedTreeViewNode);
                         break;
                 }
             }
@@ -1215,6 +1233,10 @@ namespace EuroSound_Application.SoundBanksEditor
                 {
                     RemoveAudioAndWarningDependencies(selectedNode);
                     ProjectInfo.FileHasBeenModified = true;
+                }
+                else if (selectedNode.Tag.Equals("Target"))
+                {
+                    ToolsCommonFunctions.RemoveTargetSelectedNode(selectedNode, OutputTargets, TreeView_File, ProjectInfo);
                 }
                 else
                 {

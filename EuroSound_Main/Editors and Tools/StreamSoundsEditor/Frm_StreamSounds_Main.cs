@@ -1,11 +1,13 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
+using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls.DebugTypes;
 using EuroSound_Application.CustomControls.ProjectSettings;
 using EuroSound_Application.CustomControls.SearcherForm;
+using EuroSound_Application.Editors_and_Tools;
 using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.EuroSoundInterchangeFile;
 using EuroSound_Application.HashCodesFunctions;
@@ -28,6 +30,7 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
+        internal Dictionary<uint, EXAppTarget> OutputTargets = new Dictionary<uint, EXAppTarget>();
         public Dictionary<uint, EXSoundStream> StreamSoundsList = new Dictionary<uint, EXSoundStream>();
         public ProjectFile ProjectInfo = new ProjectFile();
         internal string CurrentFilePath = string.Empty;
@@ -193,7 +196,7 @@ namespace EuroSound_Application.StreamSounds
             //Save File
             if (Directory.Exists(GlobalPreferences.MakeBackupsDirectory))
             {
-                EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_StreamData, StreamSoundsList, null, Path.Combine(GlobalPreferences.MakeBackupsDirectory, string.Join("", "ES_BackUp", GlobalPreferences.MakeBackupsIndex, ".ESF")), ProjectInfo);
+                EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_StreamData, StreamSoundsList, null, OutputTargets, Path.Combine(GlobalPreferences.MakeBackupsDirectory, string.Join("", "ES_BackUp", GlobalPreferences.MakeBackupsIndex, ".ESF")), ProjectInfo);
                 GlobalPreferences.MakeBackupsIndex++;
             }
 
@@ -262,7 +265,7 @@ namespace EuroSound_Application.StreamSounds
                             });
 
                             //Check that the profile name matches with the current one
-                            string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_StreamData, StreamSoundsList, null, CurrentFilePath, ProjectInfo);
+                            string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_StreamData, StreamSoundsList, null, OutputTargets, CurrentFilePath, ProjectInfo);
                             if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
                             {
                                 FormMustBeClosed = true;
@@ -306,7 +309,7 @@ namespace EuroSound_Application.StreamSounds
                     else
                     {
                         //Check that the profile name matches with the current one
-                        string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_StreamData, StreamSoundsList, null, CurrentFilePath, ProjectInfo);
+                        string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_StreamData, StreamSoundsList, null, OutputTargets, CurrentFilePath, ProjectInfo);
                         if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
                         {
                             FormMustBeClosed = true;
@@ -407,7 +410,7 @@ namespace EuroSound_Application.StreamSounds
                         //Save Data
                         else
                         {
-                            EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_StreamData, StreamSoundsList, null, CurrentFilePath, ProjectInfo);
+                            EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_StreamData, StreamSoundsList, null, OutputTargets, CurrentFilePath, ProjectInfo);
                         }
                         ProjectInfo.FileHasBeenModified = false;
                         MdiParent.Text = "EuroSound";
@@ -590,8 +593,11 @@ namespace EuroSound_Application.StreamSounds
             {
                 if (SelectedNode.Tag.Equals("Sound"))
                 {
-                    RemoveStreamSoundSelectedNode(TreeView_StreamData.SelectedNode);
-                    ProjectInfo.FileHasBeenModified = true;
+                    RemoveStreamSoundSelectedNode(SelectedNode);
+                }
+                else if (SelectedNode.Tag.Equals("Target"))
+                {
+                    ToolsCommonFunctions.RemoveTargetSelectedNode(SelectedNode, OutputTargets, TreeView_StreamData, ProjectInfo);
                 }
             }
         }
@@ -609,10 +615,24 @@ namespace EuroSound_Application.StreamSounds
                 if (SelectedTreeViewNode.Tag.Equals("Folder") || SelectedTreeViewNode.Tag.Equals("Root"))
                 {
                     ContextMenu_Folders.Show(Cursor.Position);
+                    if (TreeNodeFunctions.FindRootNode(SelectedTreeViewNode).Name.Equals("Sounds"))
+                    {
+                        ContextMenuFolder_AddTarget.Visible = false;
+                        ContextMenuFolder_AddSound.Visible = true;
+                    }
+                    else if (TreeNodeFunctions.FindRootNode(SelectedTreeViewNode).Name.Equals("AppTargets"))
+                    {
+                        ContextMenuFolder_AddTarget.Visible = true;
+                        ContextMenuFolder_AddSound.Visible = false;
+                    }
                 }
                 else if (SelectedTreeViewNode.Tag.Equals("Sound"))
                 {
                     ContextMenu_Sounds.Show(Cursor.Position);
+                }
+                else if (SelectedTreeViewNode.Tag.Equals("Target"))
+                {
+                    ContextMenu_Targets.Show(Cursor.Position);
                 }
             }
         }
@@ -626,10 +646,14 @@ namespace EuroSound_Application.StreamSounds
             if (SelectedTreeViewNode != null)
             {
                 //Open Properties
-                if (SelectedTreeViewNode.Tag.Equals("Sound"))
+                switch (SelectedTreeViewNode.Tag)
                 {
-                    OpenSoundPropertiesForm(SelectedTreeViewNode);
-                    ProjectInfo.FileHasBeenModified = true;
+                    case "Sound":
+                        OpenSoundPropertiesForm(SelectedTreeViewNode);
+                        break;
+                    case "Target":
+                        OpenTargetProperties(SelectedTreeViewNode);
+                        break;
                 }
             }
         }
@@ -670,7 +694,7 @@ namespace EuroSound_Application.StreamSounds
             //Save Data
             else
             {
-                EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_StreamData, StreamSoundsList, null, CurrentFilePath, ProjectInfo);
+                EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_StreamData, StreamSoundsList, null, OutputTargets, CurrentFilePath, ProjectInfo);
             }
             ProjectInfo.FileHasBeenModified = false;
 
@@ -792,7 +816,7 @@ namespace EuroSound_Application.StreamSounds
         {
             GlobalPreferences.StatusBar_ToolTipMode = false;
 
-            Frm_FileProperties Props = new Frm_FileProperties(ProjectInfo)
+            Frm_FileProperties Props = new Frm_FileProperties(ProjectInfo, OutputTargets)
             {
                 Owner = this,
                 ShowInTaskbar = false,

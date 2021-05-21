@@ -1,4 +1,8 @@
-﻿using EuroSound_Application.CurrentProjectFunctions;
+﻿using EuroSound_Application.ApplicationTargets;
+using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.EuroSoundFilesFunctions.NewVersion.Musicbanks;
+using EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks;
+using EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile;
 using EuroSound_Application.EuroSoundMusicFilesFunctions;
 using EuroSound_Application.EuroSoundSoundBanksFilesFunctions;
 using EuroSound_Application.Musics;
@@ -39,7 +43,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             return FileCorrect;
         }
 
-        internal string LoadEuroSoundFile(TreeView treeViewControl, object dictionaryData, object dictionaryMedia, string filePath, ProjectFile projectProperties)
+        internal string LoadEuroSoundFile(TreeView treeViewControl, object dictionaryData, object dictionaryMedia, Dictionary<uint, EXAppTarget> OutputTargets, string filePath, ProjectFile projectProperties)
         {
             string profileName = string.Empty;
 
@@ -66,17 +70,37 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                     //Init reader
                     if (FileIsCorrect(BReader))
                     {
-                        switch (BReader.ReadSByte())
+                        //Older versions, before 1.0.1.3
+                        if (FileVersion < 1013)
                         {
-                            case (int)GenericFunctions.ESoundFileType.SoundBanks:
-                                profileName = new ESF_LoadSoundBanks().ReadEuroSoundSoundBankFile(projectProperties, BReader, (Dictionary<uint, EXSound>)dictionaryData, (Dictionary<string, EXAudio>)dictionaryMedia, treeViewControl, (int)FileVersion);
-                                break;
-                            case (int)GenericFunctions.ESoundFileType.StreamSounds:
-                                profileName = new ESF_LoadStreamSounds().ReadEuroSoundStreamFile(projectProperties, BReader, treeViewControl, (Dictionary<uint, EXSoundStream>)dictionaryData, (int)FileVersion);
-                                break;
-                            case (int)GenericFunctions.ESoundFileType.MusicBanks:
-                                profileName = new ESF_LoadMusics().ReadEuroSoundMusicFile(projectProperties, BReader, treeViewControl, (Dictionary<uint, EXMusic>)dictionaryData, (int)FileVersion);
-                                break;
+                            switch (BReader.ReadSByte())
+                            {
+                                case (int)GenericFunctions.ESoundFileType.SoundBanks:
+                                    profileName = new ESF_LoadSoundBanks().ReadEuroSoundSoundBankFile(projectProperties, BReader, (Dictionary<uint, EXSound>)dictionaryData, (Dictionary<string, EXAudio>)dictionaryMedia, treeViewControl, (int)FileVersion);
+                                    break;
+                                case (int)GenericFunctions.ESoundFileType.StreamSounds:
+                                    profileName = new ESF_LoadStreamSounds().ReadEuroSoundStreamFile(projectProperties, BReader, treeViewControl, (Dictionary<uint, EXSoundStream>)dictionaryData, (int)FileVersion);
+                                    break;
+                                case (int)GenericFunctions.ESoundFileType.MusicBanks:
+                                    profileName = new ESF_LoadMusics().ReadEuroSoundMusicFile(projectProperties, BReader, treeViewControl, (Dictionary<uint, EXMusic>)dictionaryData, (int)FileVersion);
+                                    break;
+                            }
+                        }
+                        //Newer versions, from 1.0.1.3
+                        else
+                        {
+                            switch (BReader.ReadSByte())
+                            {
+                                case (int)GenericFunctions.ESoundFileType.SoundBanks:
+                                    profileName = new ESF_LoadSoundBanks_New().ReadEuroSoundSoundBankFile(projectProperties, BReader, (Dictionary<uint, EXSound>)dictionaryData, (Dictionary<string, EXAudio>)dictionaryMedia, OutputTargets, treeViewControl);
+                                    break;
+                                case (int)GenericFunctions.ESoundFileType.StreamSounds:
+                                    profileName = new ESF_LoadStreamFile_New().ReadEuroSoundStreamFile(projectProperties, BReader, treeViewControl, (Dictionary<uint, EXSoundStream>)dictionaryData, OutputTargets);
+                                    break;
+                                case (int)GenericFunctions.ESoundFileType.MusicBanks:
+                                    profileName = new ESF_LoadMusicBanks_New().ReadEuroSoundMusicFile(projectProperties, BReader, treeViewControl, (Dictionary<uint, EXMusic>)dictionaryData, OutputTargets);
+                                    break;
+                            }
                         }
                     }
                     BReader.Close();
@@ -103,7 +127,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             return profileName;
         }
 
-        internal string SaveEuroSoundFile(TreeView TreeViewControl, object dictionaryData, object dictionaryMedia, string FilePath, ProjectFile FileProperties)
+        internal string SaveEuroSoundFile(TreeView TreeViewControl, object dictionaryData, object dictionaryMedia, Dictionary<uint, EXAppTarget> OutputTargets, string FilePath, ProjectFile FileProperties)
         {
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_GenericSavingFile"));
@@ -116,13 +140,13 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                 switch (FileProperties.TypeOfData)
                 {
                     case (int)GenericFunctions.ESoundFileType.SoundBanks:
-                        new ESF_SaveSoundBanks().SaveSoundBanks(BWriter, TreeViewControl, (Dictionary<uint, EXSound>)dictionaryData, (Dictionary<string, EXAudio>)dictionaryMedia, FileProperties);
+                        new ESF_SaveSoundBanks().SaveSoundBanks(BWriter, TreeViewControl, (Dictionary<uint, EXSound>)dictionaryData, (Dictionary<string, EXAudio>)dictionaryMedia, OutputTargets, FileProperties);
                         break;
                     case (int)GenericFunctions.ESoundFileType.StreamSounds:
-                        new ESF_SaveStreamedSounds().SaveStreamedSounds(BWriter, TreeViewControl, (Dictionary<uint, EXSoundStream>)dictionaryData, FileProperties);
+                        new ESF_SaveStreamFile().SaveStreamedSounds(BWriter, TreeViewControl, (Dictionary<uint, EXSoundStream>)dictionaryData, OutputTargets, FileProperties);
                         break;
                     case (int)GenericFunctions.ESoundFileType.MusicBanks:
-                        new ESF_SaveMusics().SaveMusics(BWriter, TreeViewControl, (Dictionary<uint, EXMusic>)dictionaryData, FileProperties);
+                        new ESF_SaveMusicBanks().SaveMusics(BWriter, TreeViewControl, (Dictionary<uint, EXMusic>)dictionaryData, OutputTargets, FileProperties);
                         break;
                 }
 
@@ -144,9 +168,13 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
             //MAGIC
             BWriter.Write(Encoding.ASCII.GetBytes("ESF"));
             //FileVersion
-            BWriter.Write(Convert.ToUInt32(int.Parse(GenericFunctions.GetEuroSoundVersion().Replace(".", ""))));
+            BWriter.WriteUInt32(Convert.ToUInt32(int.Parse(GenericFunctions.GetEuroSoundVersion().Replace(".", ""))));
             //Type of stored data
-            BWriter.Write(Convert.ToSByte(FileProperties.TypeOfData));
+            BWriter.WriteSByte(FileProperties.TypeOfData);
+            //HashCode
+            BWriter.WriteUInt32(FileProperties.Hashcode);
+            //LastObject ID
+            BWriter.WriteUInt32(FileProperties.ObjectID);
         }
     }
 }

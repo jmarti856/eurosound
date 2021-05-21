@@ -1,7 +1,10 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CustomControls.MoveMultiplesNodesForm;
 using EuroSound_Application.CustomControls.ObjectInstancesForm;
+using EuroSound_Application.Editors_and_Tools;
+using EuroSound_Application.Editors_and_Tools.ApplicationTargets;
 using EuroSound_Application.EuroSoundInterchangeFile;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using EuroSound_Application.TreeViewSorter;
@@ -96,7 +99,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     //Add Item
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SampleID.ToString(), sampleName, 4, 4, "Sample", true, true, false, SystemColors.WindowText, TreeView_File);
                     EXSoundbanksFunctions.AddSampleToSound(EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(TreeView_File.SelectedNode.Name), SoundsList), SampleID, true);
-                    
+
                     //Update project status
                     ProjectInfo.FileHasBeenModified = true;
                 }
@@ -129,6 +132,30 @@ namespace EuroSound_Application.SoundBanksEditor
             }
         }
 
+        private void ContextMenuFolder_AddTarget_Click(object sender, EventArgs e)
+        {
+            EXAppTarget outTarget = new EXAppTarget
+            {
+                BinaryName = EXAppTarget_Functions.GetBinaryName(ProjectInfo, GlobalPreferences.SelectedProfileName)
+            };
+            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget) { Owner = this })
+            {
+                newOutTarget.ShowDialog();
+
+                if (newOutTarget.DialogResult == DialogResult.OK)
+                {
+                    uint SoundID = GenericFunctions.GetNewObjectID(ProjectInfo);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, SoundID.ToString(), outTarget.Name, 10, 10, "Target", true, true, false, SystemColors.WindowText, TreeView_File);
+
+                    //Add Target
+                    OutputTargets.Add(SoundID, outTarget);
+
+                    //File has been modified
+                    ProjectInfo.FileHasBeenModified = true;
+                }
+            }
+        }
+
         private void ContextMenu_Folders_Delete_Click(object sender, EventArgs e)
         {
             RemoveFolderSelectedNode(TreeView_File.SelectedNode);
@@ -147,13 +174,12 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenu_Folders_Move_Click(object sender, EventArgs e)
         {
-            EuroSound_NodesToFolder SoundsToFolders = new EuroSound_NodesToFolder(TreeView_File, TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name, TreeView_File.SelectedNode.Name)
+            using (EuroSound_NodesToFolder SoundsToFolders = new EuroSound_NodesToFolder(TreeView_File, TreeNodeFunctions.FindRootNode(TreeView_File.SelectedNode).Name, TreeView_File.SelectedNode.Name) { Owner = this })
             {
-                Owner = this
-            };
-            SoundsToFolders.ShowDialog();
-            SoundsToFolders.Dispose();
-            ProjectInfo.FileHasBeenModified = true;
+                SoundsToFolders.ShowDialog();
+                ProjectInfo.FileHasBeenModified = true;
+            }
+
         }
 
         private void ContextMenu_Folders_New_Click(object sender, EventArgs e)
@@ -215,14 +241,7 @@ namespace EuroSound_Application.SoundBanksEditor
         }
         private void ContextMenuFolders_TextColor_Click(object sender, EventArgs e)
         {
-            TreeNode selectedNode = TreeView_File.SelectedNode;
-            int SelectedColor = BrowsersAndDialogs.ColorPickerDialog(selectedNode.ForeColor);
-
-            if (SelectedColor != -1)
-            {
-                selectedNode.ForeColor = Color.FromArgb(SelectedColor);
-                ProjectInfo.FileHasBeenModified = true;
-            }
+            TreeNodeFunctions.ChangeNodeColor(TreeView_File.SelectedNode, ProjectInfo);
         }
 
         private void ContextMenuFolder_ExportSounds_Click(object sender, EventArgs e)
@@ -278,14 +297,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenu_Sound_TextColor_Click(object sender, EventArgs e)
         {
-            TreeNode selectedNode = TreeView_File.SelectedNode;
-            int selectedColor = BrowsersAndDialogs.ColorPickerDialog(selectedNode.ForeColor);
-
-            if (selectedColor != -1)
-            {
-                selectedNode.ForeColor = Color.FromArgb(selectedColor);
-                ProjectInfo.FileHasBeenModified = true;
-            }
+            TreeNodeFunctions.ChangeNodeColor(TreeView_File.SelectedNode, ProjectInfo);
         }
 
         private void ContextMenuSound_ExportSingle_Click(object sender, EventArgs e)
@@ -322,14 +334,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenu_Sample_TextColor_Click(object sender, System.EventArgs e)
         {
-            TreeNode selectedNode = TreeView_File.SelectedNode;
-            int selectedColor = BrowsersAndDialogs.ColorPickerDialog(selectedNode.ForeColor);
-
-            if (selectedColor != -1)
-            {
-                selectedNode.ForeColor = Color.FromArgb(selectedColor);
-                ProjectInfo.FileHasBeenModified = true;
-            }
+            TreeNodeFunctions.ChangeNodeColor(TreeView_File.SelectedNode, ProjectInfo);
         }
 
         //*===============================================================================================
@@ -355,14 +360,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenuAudio_TextColor_Click(object sender, EventArgs e)
         {
-            TreeNode selectedNode = TreeView_File.SelectedNode;
-            int selectedColor = BrowsersAndDialogs.ColorPickerDialog(selectedNode.ForeColor);
-
-            if (selectedColor != -1)
-            {
-                selectedNode.ForeColor = Color.FromArgb(selectedColor);
-                ProjectInfo.FileHasBeenModified = true;
-            }
+            TreeNodeFunctions.ChangeNodeColor(TreeView_File.SelectedNode, ProjectInfo);
         }
 
         private void ContextMenuAudio_Usage_Click(object sender, EventArgs e)
@@ -382,6 +380,29 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 MessageBox.Show(GenericFunctions.resourcesManager.GetString("ItemHasNoDependencies"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        //*===============================================================================================
+        //* ContextMenu_Target
+        //*===============================================================================================
+        private void ContextMenuTargets_Delete_Click(object sender, EventArgs e)
+        {
+            ToolsCommonFunctions.RemoveTargetSelectedNode(TreeView_File.SelectedNode, OutputTargets, TreeView_File, ProjectInfo);
+        }
+
+        private void ContextMenuTargets_TextColor_Click(object sender, EventArgs e)
+        {
+            TreeNodeFunctions.ChangeNodeColor(TreeView_File.SelectedNode, ProjectInfo);
+        }
+
+        private void ContextMenuTargets_Properties_Click(object sender, EventArgs e)
+        {
+            OpenTargetProperties(TreeView_File.SelectedNode);
+        }
+
+        private void ContextMenuTargets_Output_Click(object sender, EventArgs e)
+        {
+
         }
 
         //*===============================================================================================

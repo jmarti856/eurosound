@@ -1,11 +1,14 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
+using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls.DebugTypes;
 using EuroSound_Application.CustomControls.ProjectSettings;
 using EuroSound_Application.CustomControls.SearcherForm;
+using EuroSound_Application.Editors_and_Tools;
+using EuroSound_Application.Editors_and_Tools.ApplicationTargets;
 using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.EuroSoundInterchangeFile;
 using EuroSound_Application.HashCodesFunctions;
@@ -27,6 +30,7 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         //* Global Variables
         //*===============================================================================================
+        internal Dictionary<uint, EXAppTarget> OutputTargets = new Dictionary<uint, EXAppTarget>();
         public Dictionary<uint, EXMusic> MusicsList = new Dictionary<uint, EXMusic>();
         public ProjectFile ProjectInfo = new ProjectFile();
         internal string CurrentFilePath = string.Empty;
@@ -85,7 +89,7 @@ namespace EuroSound_Application.Musics
             ContextMenuFolder_SortItems.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("ContextMenuFolder_Sort")); };
             ContextMenuFolder_ExpandAll.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("ContextMenuFolder_ExpandAll")); };
             ContextMenuFolder_CollapseAll.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("ContextMenuFolder_CollapseAll")); };
-            ContextMenuFolder_AddSound.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("ContextMenuFolder_AddSound")); };
+            ContextMenuFolder_AddMusic.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("ContextMenuFolder_AddSound")); };
             ContextMenuFolder_Rename.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("ContextMenuFolder_Rename")); };
             ContextMenuFolder_TextColor.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("ContextMenuFolder_TextColor")); };
             ContextMenu_Folders.Closing += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
@@ -186,7 +190,7 @@ namespace EuroSound_Application.Musics
             //Save File
             if (Directory.Exists(GlobalPreferences.MakeBackupsDirectory))
             {
-                EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_MusicData, MusicsList, null, Path.Combine(GlobalPreferences.MakeBackupsDirectory, string.Join("", "ES_BackUp", GlobalPreferences.MakeBackupsIndex, ".ESF")), ProjectInfo);
+                EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_MusicData, MusicsList, null, OutputTargets, Path.Combine(GlobalPreferences.MakeBackupsDirectory, string.Join("", "ES_BackUp", GlobalPreferences.MakeBackupsIndex, ".ESF")), ProjectInfo);
                 GlobalPreferences.MakeBackupsIndex++;
             }
 
@@ -260,7 +264,7 @@ namespace EuroSound_Application.Musics
                             });
 
                             //Check that the profile name matches with the current one
-                            string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_MusicData, MusicsList, null, CurrentFilePath, ProjectInfo);
+                            string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_MusicData, MusicsList, null, OutputTargets, CurrentFilePath, ProjectInfo);
                             if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
                             {
                                 FormMustBeClosed = true;
@@ -310,7 +314,7 @@ namespace EuroSound_Application.Musics
                     else
                     {
                         //Check that the profile name matches with the current one
-                        string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_MusicData, MusicsList, null, CurrentFilePath, ProjectInfo);
+                        string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_MusicData, MusicsList, null, OutputTargets, CurrentFilePath, ProjectInfo);
                         if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
                         {
                             FormMustBeClosed = true;
@@ -415,7 +419,7 @@ namespace EuroSound_Application.Musics
                         //Save Data
                         else
                         {
-                            EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_MusicData, MusicsList, null, CurrentFilePath, ProjectInfo);
+                            EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_MusicData, MusicsList, null, OutputTargets, CurrentFilePath, ProjectInfo);
                         }
                         ProjectInfo.FileHasBeenModified = false;
                         MdiParent.Text = "EuroSound";
@@ -477,7 +481,7 @@ namespace EuroSound_Application.Musics
         {
             GlobalPreferences.StatusBar_ToolTipMode = false;
 
-            Frm_FileProperties Props = new Frm_FileProperties(ProjectInfo)
+            Frm_FileProperties Props = new Frm_FileProperties(ProjectInfo, OutputTargets)
             {
                 Owner = this,
                 ShowInTaskbar = false,
@@ -505,7 +509,7 @@ namespace EuroSound_Application.Musics
             //Save Data
             else
             {
-                EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_MusicData, MusicsList, null, CurrentFilePath, ProjectInfo);
+                EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_MusicData, MusicsList, null, OutputTargets, CurrentFilePath, ProjectInfo);
             }
             ProjectInfo.FileHasBeenModified = false;
 
@@ -688,7 +692,10 @@ namespace EuroSound_Application.Musics
                 if (SelectedNode.Tag.Equals("Music"))
                 {
                     RemoveMusicSelectedNode(TreeView_MusicData.SelectedNode);
-                    ProjectInfo.FileHasBeenModified = true;
+                }
+                if (SelectedNode.Tag.Equals("Target"))
+                {
+                    ToolsCommonFunctions.RemoveTargetSelectedNode(SelectedNode, OutputTargets, TreeView_MusicData, ProjectInfo);
                 }
             }
         }
@@ -706,22 +713,44 @@ namespace EuroSound_Application.Musics
                 if (SelectedNode.Tag.Equals("Folder") || SelectedNode.Tag.Equals("Root"))
                 {
                     ContextMenu_Folders.Show(Cursor.Position);
+                    if (TreeNodeFunctions.FindRootNode(SelectedNode).Name.Equals("Musics"))
+                    {
+                        ContextMenuFolder_AddMusic.Visible = true;
+                        ContextMenuFolder_AddTarget.Visible = false;
+                    }
+                    else if (TreeNodeFunctions.FindRootNode(SelectedNode).Name.Equals("AppTargets"))
+                    {
+                        ContextMenuFolder_AddTarget.Visible = true;
+                        ContextMenuFolder_AddMusic.Visible = false;
+                    }
                 }
                 else if (SelectedNode.Tag.Equals("Music"))
                 {
                     ContextMenu_Musics.Show(Cursor.Position);
+                }
+                else if (SelectedNode.Tag.Equals("Target"))
+                {
+                    ContextMenu_Targets.Show(Cursor.Position);
                 }
             }
         }
 
         private void TreeView_MusicData_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (TreeView_MusicData.SelectedNode != null)
+            //Get node
+            TreeNode selectedTreeViewNode = TreeView_MusicData.SelectedNode;
+
+            if (selectedTreeViewNode != null)
             {
-                if (TreeView_MusicData.SelectedNode.Tag.Equals("Music"))
+                //Open Properties
+                switch (selectedTreeViewNode.Tag)
                 {
-                    OpenMusicPropertiesForm(TreeView_MusicData.SelectedNode);
-                    ProjectInfo.FileHasBeenModified = true;
+                    case "Music":
+                        OpenMusicPropertiesForm(selectedTreeViewNode);
+                        break;
+                    case "Target":
+                        OpenTargetProperties(selectedTreeViewNode);
+                        break;
                 }
             }
         }
@@ -838,7 +867,7 @@ namespace EuroSound_Application.Musics
                 if (targetNode != null)
                 {
                     //Type of nodes that are allowed to be re-ubicated
-                    if (draggedNode.Tag.Equals("Folder") || draggedNode.Tag.Equals("Music"))
+                    if (draggedNode.Tag.Equals("Folder") || draggedNode.Tag.Equals("Music") || draggedNode.Tag.Equals("Target"))
                     {
                         e.Effect = DragDropEffects.Move;
                     }
@@ -950,7 +979,7 @@ namespace EuroSound_Application.Musics
                     uint LoopPos = 0;
                     for (int j = 0; j < Music.Markers.Count; j++)
                     {
-                        if (Music.Markers[j].MusicMakerType == (int)GenericFunctions.ESoundMarkers.Goto)
+                        if (Music.Markers[j].MusicMakerType == (int)GenericFunctions.EXMarkerType.Goto)
                         {
                             LoopPos = Music.Markers[j].LoopStart;
                         }
@@ -961,11 +990,11 @@ namespace EuroSound_Application.Musics
                     for (int i = 0; i < Music.Markers.Count; i++)
                     {
                         string JumpHashcodeLabel = string.Empty;
-                        if (Music.Markers[i].MusicMakerType == (int)GenericFunctions.ESoundMarkers.Goto)
+                        if (Music.Markers[i].MusicMakerType == (int)GenericFunctions.EXMarkerType.Goto)
                         {
                             JumpHashcodeLabel = string.Join("", "JMP_GOTO_", MusicName, "_LOOP");
                         }
-                        if (Music.Markers[i].MusicMakerType == (int)GenericFunctions.ESoundMarkers.Start && Music.Markers[i].Position != LoopPos)
+                        if (Music.Markers[i].MusicMakerType == (int)GenericFunctions.EXMarkerType.Start && Music.Markers[i].Position != LoopPos)
                         {
                             if (i == 0)
                             {
@@ -977,7 +1006,7 @@ namespace EuroSound_Application.Musics
                                 StartMarkersCount++;
                             }
                         }
-                        if (Music.Markers[i].MusicMakerType == (int)GenericFunctions.ESoundMarkers.Start && Music.Markers[i].Position == LoopPos)
+                        if (Music.Markers[i].MusicMakerType == (int)GenericFunctions.EXMarkerType.Start && Music.Markers[i].Position == LoopPos)
                         {
                             JumpHashcodeLabel = string.Join("", "JMP_", MusicName, "_LOOP");
                         }
@@ -989,6 +1018,31 @@ namespace EuroSound_Application.Musics
                             GenericFunctions.AppendTextToRichTextBox("#define " + JumpHashcodeLabel + " 0x" + JumpHashcode.ToString("X8") + "\n", Color.Brown, Rtbx_Jump_Music_Codes);
                         }
                     }
+                }
+            }
+        }
+
+        private void ContextMenuFolder_AddTarget_Click(object sender, EventArgs e)
+        {
+            EXAppTarget outTarget = new EXAppTarget
+            {
+                BinaryName = EXAppTarget_Functions.GetBinaryName(ProjectInfo, GlobalPreferences.SelectedProfileName)
+            };
+
+            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget) { Owner = this })
+            {
+                newOutTarget.ShowDialog();
+
+                if (newOutTarget.DialogResult == DialogResult.OK)
+                {
+                    uint SoundID = GenericFunctions.GetNewObjectID(ProjectInfo);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_MusicData.SelectedNode.Name, SoundID.ToString(), outTarget.Name, 10, 10, "Target", true, true, false, SystemColors.WindowText, TreeView_MusicData);
+
+                    //Add Target
+                    OutputTargets.Add(SoundID, outTarget);
+
+                    //File has been modified
+                    ProjectInfo.FileHasBeenModified = true;
                 }
             }
         }

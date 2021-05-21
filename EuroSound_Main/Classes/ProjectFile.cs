@@ -10,9 +10,7 @@ namespace EuroSound_Application.CurrentProjectFunctions
         public string FileName = "Unnamed";
         public sbyte TypeOfData = 0;
         public uint Hashcode = 0x00000000;
-        public uint SoundID = 0;
-        public uint SampleID = 0;
-        public uint AudioID = 0;
+        public uint ObjectID = 0;
         public bool FileHasBeenModified = false;
 
         public void ClearSoundBankStoredData(Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, TreeView TreeViewControl)

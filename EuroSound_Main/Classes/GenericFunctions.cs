@@ -37,7 +37,7 @@ namespace EuroSound_Application
         internal static StatusBarToolTips ParentFormStatusBar;
         internal static Dictionary<string, string> AvailableProfiles = new Dictionary<string, string>();
 
-        internal enum ESoundMarkers : uint
+        internal enum EXMarkerType : uint
         {
             Start = 10,
             End = 9,
@@ -52,6 +52,14 @@ namespace EuroSound_Application
             SoundBanks = 0,
             StreamSounds = 1,
             MusicBanks = 2
+        }
+
+        internal enum EXObjectType: int
+        {
+            EXAudio = 1,
+            EXSound = 2,
+            EXSample = 3,
+            EXSoundFolder = 4
         }
 
         internal static string TruncateLongString(string str, int maxLenght)
@@ -148,7 +156,7 @@ namespace EuroSound_Application
 
         internal static uint GetNewObjectID(ProjectFile FileProperties)
         {
-            uint index = (FileProperties.SoundID += 1);
+            uint index = (FileProperties.ObjectID += 1);
 
             return index;
         }

@@ -1,61 +1,75 @@
-﻿using EuroSound_Application.ApplicationPreferences;
+﻿using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.Musics;
 using EuroSound_Application.StreamSounds;
-using EuroSound_Application.TreeViewLibraryFunctions;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace EuroSound_Application.EuroSoundMusicFilesFunctions
+namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.Musicbanks
 {
-    public class ESF_LoadMusics
+    internal class ESF_LoadMusicBanks_New
     {
-        internal string ReadEuroSoundMusicFile(ProjectFile FileProperties, BinaryReader BReader, TreeView TreeViewControl, Dictionary<uint, EXMusic> MusicsList, int FileVersion)
+        internal string ReadEuroSoundMusicFile(ProjectFile FileProperties, BinaryReader BReader, TreeView TreeViewControl, Dictionary<uint, EXMusic> MusicsList, Dictionary<uint, EXAppTarget> OutputTargets)
         {
+            EuroSoundFiles_CommonFunctions ESF_CommonFunctions = new EuroSoundFiles_CommonFunctions();
+
             //File Hashcode
             FileProperties.Hashcode = BReader.ReadUInt32();
-            //Sound ID
-            FileProperties.SoundID = BReader.ReadUInt32();
-            //Sounds List Offset
-            BReader.BaseStream.Position += 4;
-            //TreeViewData Offset
-            uint TreeViewDataOffset = BReader.ReadUInt32();
+            //Latest SoundID value
+            FileProperties.ObjectID = BReader.ReadUInt32();
+            //File Size
+            BReader.ReadUInt32();
             //Dictionary Data Offset
-            uint StreamSoundsDictionaryOffset = BReader.ReadUInt32();
-            //FileSize
-            BReader.BaseStream.Position += 4;
-            //File Name
+            uint mediaDictionaryOffset = BReader.ReadUInt32();
+            //TreeViewData Offset
+            uint treeViewDataOffset = BReader.ReadUInt32();
+            //Target App 
+            uint targetDictionaryOffset = BReader.ReadUInt32();
+            //File Section 4
+            BReader.ReadUInt32();
+            //File Section 5
+            BReader.ReadUInt32();
+            //File Section 6
+            BReader.ReadUInt32();
+            //Project Name
             FileProperties.FileName = BReader.ReadString();
-            //Profile Path
-            string ProfileSelected = BReader.ReadString();
+            //Project Description
+            BReader.ReadString();
             //Profile Name
-            string ProfileSelectedName = BReader.ReadString();
+            string profileSelectedName = BReader.ReadString();
+            //Profile Path
+            string profileSelected = BReader.ReadString();
 
-            GenericFunctions.CheckProfiles(ProfileSelected, ProfileSelectedName);
+            GenericFunctions.CheckProfiles(profileSelected, profileSelectedName);
 
             //*===============================================================================================
             //* Dictionary Info
             //*===============================================================================================
-            BReader.BaseStream.Position = StreamSoundsDictionaryOffset;
+            BReader.BaseStream.Seek(mediaDictionaryOffset, SeekOrigin.Begin);
             ReadDictionaryData(BReader, MusicsList);
 
             //*===============================================================================================
             //* TreeView
             //*===============================================================================================
-            BReader.BaseStream.Position = TreeViewDataOffset;
-            ReadTreeViewData(BReader, TreeViewControl, FileVersion);
+            BReader.BaseStream.Seek(treeViewDataOffset, SeekOrigin.Begin);
+            ESF_CommonFunctions.ReadTreeViewData(BReader, TreeViewControl);
+
+            //*===============================================================================================
+            //* APP Target
+            //*===============================================================================================
+            BReader.BaseStream.Seek(targetDictionaryOffset, SeekOrigin.Begin);
+            ESF_CommonFunctions.ReadAppTargetData(BReader, OutputTargets);
 
             //Close Reader
             BReader.Close();
 
-            return ProfileSelectedName;
+            return profileSelectedName;
         }
 
         internal void ReadDictionaryData(BinaryReader BReader, Dictionary<uint, EXMusic> DictionaryData)
         {
-            int DictionaryItems = BReader.ReadInt32();
+            uint DictionaryItems = BReader.ReadUInt32();
 
             for (int i = 0; i < DictionaryItems; i++)
             {
@@ -67,32 +81,32 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
                 };
 
                 //Read Data Left Channel
-                Music.Frequency_LeftChannel = BReader.ReadUInt32();
                 Music.Channels_LeftChannel = BReader.ReadByte();
+                Music.Frequency_LeftChannel = BReader.ReadUInt32();
                 Music.Bits_LeftChannel = BReader.ReadUInt32();
                 Music.Duration_LeftChannel = BReader.ReadUInt32();
                 Music.RealSize_LeftChannel = BReader.ReadUInt32();
                 Music.Encoding_LeftChannel = BReader.ReadString();
                 Music.WAVFileMD5_LeftChannel = BReader.ReadString();
                 Music.WAVFileName_LeftChannel = BReader.ReadString();
-                int PCM_DataLength = BReader.ReadInt32();
-                Music.PCM_Data_LeftChannel = BReader.ReadBytes(PCM_DataLength);
-                int ADPCM_DataLength = BReader.ReadInt32();
-                Music.IMA_ADPCM_DATA_LeftChannel = BReader.ReadBytes(ADPCM_DataLength);
+                uint PCM_DataLength = BReader.ReadUInt32();
+                Music.PCM_Data_LeftChannel = BReader.ReadBytes((int)PCM_DataLength);
+                uint ADPCM_DataLength = BReader.ReadUInt32();
+                Music.IMA_ADPCM_DATA_LeftChannel = BReader.ReadBytes((int)ADPCM_DataLength);
 
                 //Read Data Right Channel
-                Music.Frequency_RightChannel = BReader.ReadUInt32();
                 Music.Channels_RightChannel = BReader.ReadByte();
+                Music.Frequency_RightChannel = BReader.ReadUInt32();
                 Music.Bits_RightChannel = BReader.ReadUInt32();
                 Music.Duration_RightChannel = BReader.ReadUInt32();
                 Music.RealSize_RightChannel = BReader.ReadUInt32();
                 Music.Encoding_RightChannel = BReader.ReadString();
                 Music.WAVFileMD5_RightChannel = BReader.ReadString();
                 Music.WAVFileName_RightChannel = BReader.ReadString();
-                PCM_DataLength = BReader.ReadInt32();
-                Music.PCM_Data_RightChannel = BReader.ReadBytes(PCM_DataLength);
-                ADPCM_DataLength = BReader.ReadInt32();
-                Music.IMA_ADPCM_DATA_RightChannel = BReader.ReadBytes(ADPCM_DataLength);
+                PCM_DataLength = BReader.ReadUInt32();
+                Music.PCM_Data_RightChannel = BReader.ReadBytes((int)PCM_DataLength);
+                ADPCM_DataLength = BReader.ReadUInt32();
+                Music.IMA_ADPCM_DATA_RightChannel = BReader.ReadBytes((int)ADPCM_DataLength);
 
                 //Read Start Markers List
                 uint StartMarkersCount = BReader.ReadUInt32();
@@ -136,52 +150,6 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
                 }
                 Music.OutputThisSound = BReader.ReadBoolean();
                 DictionaryData.Add(SoundStreamKey, Music);
-            }
-        }
-
-        internal void ReadTreeViewData(BinaryReader BReader, TreeView TreeViewControl, int Version)
-        {
-            bool ParentIsExpanded = false, NodeIsExpanded = false, NodeIsSelected = false;
-            int NumberOfNodes = BReader.ReadInt32();
-
-            for (int i = 0; i < NumberOfNodes; i++)
-            {
-                string ParentNode = BReader.ReadString();
-                string NodeName = BReader.ReadString();
-                string DisplayName = BReader.ReadString();
-                //Index Unused for now
-                BReader.BaseStream.Position += 4;
-                //ImageKey Unused for now
-                BReader.ReadString();
-                int SelectedImageIndex = BReader.ReadInt32();
-                int ImageIndex = BReader.ReadInt32();
-                string Tag = BReader.ReadString();
-                Color NodeColor = Color.FromArgb(BReader.ReadInt32());
-                BReader.ReadBoolean();
-
-                //Check version
-                if (Version >= 1008)
-                {
-                    ParentIsExpanded = BReader.ReadBoolean();
-                    NodeIsExpanded = BReader.ReadBoolean();
-                    NodeIsSelected = BReader.ReadBoolean();
-                }
-
-                //Ignore state
-                if (GlobalPreferences.TV_IgnoreStlyesFromESF)
-                {
-                    ParentIsExpanded = false;
-                    NodeIsExpanded = false;
-                    NodeIsSelected = false;
-                }
-
-                //Whenever possible use system colors
-                if (NodeColor.GetBrightness() < 0.1 || GlobalPreferences.TV_IgnoreStlyesFromESF)
-                {
-                    NodeColor = SystemColors.WindowText;
-                }
-
-                TreeNodeFunctions.TreeNodeAddNewNode(ParentNode, NodeName, DisplayName, SelectedImageIndex, ImageIndex, Tag, ParentIsExpanded, NodeIsExpanded, NodeIsSelected, NodeColor, TreeViewControl);
             }
         }
     }

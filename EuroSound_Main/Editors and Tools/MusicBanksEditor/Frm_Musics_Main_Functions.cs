@@ -1,7 +1,9 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls.WarningsForm;
+using EuroSound_Application.Editors_and_Tools.ApplicationTargets;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
 using System.Collections.Generic;
@@ -20,7 +22,7 @@ namespace EuroSound_Application.Musics
             {
                 if (Directory.Exists(Path.GetDirectoryName(SavePath)))
                 {
-                    EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_File, StreamSoundsList, null, SavePath, FileProperties);
+                    EuroSoundFilesFunctions.SaveEuroSoundFile(TreeView_File, StreamSoundsList, null, OutputTargets, SavePath, FileProperties);
 
                     //Add file to recent list
                     RecentFilesMenu.AddFile(SavePath);
@@ -46,6 +48,7 @@ namespace EuroSound_Application.Musics
             {
                 RemoveMusic(NodeToRemove);
             }
+            ProjectInfo.FileHasBeenModified = true;
         }
 
         private void RemoveMusic(TreeNode SelectedNode)
@@ -79,6 +82,21 @@ namespace EuroSound_Application.Musics
             }
         }
 
+        internal void OpenTargetProperties(TreeNode SelectedNode)
+        {
+            EXAppTarget outTarget = OutputTargets[Convert.ToUInt32(SelectedNode.Name)];
+            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget) { Owner = this })
+            {
+                newOutTarget.ShowDialog();
+
+                if (newOutTarget.DialogResult == DialogResult.OK)
+                {
+                    //File has been modified
+                    ProjectInfo.FileHasBeenModified = true;
+                }
+            }
+        }
+
         private void RemoveFolderSelectedNode(TreeNode SelectedNode)
         {
             //Check we are not trying to delete a root folder
@@ -99,6 +117,7 @@ namespace EuroSound_Application.Musics
                 {
                     RemoveRecursivelyFolder();
                 }
+                ProjectInfo.FileHasBeenModified = true;
             }
         }
 
@@ -112,7 +131,7 @@ namespace EuroSound_Application.Musics
             }
             TreeNodeFunctions.TreeNodeDeleteNode(TreeView_MusicData, TreeView_MusicData.SelectedNode, TreeView_MusicData.SelectedNode.Tag.ToString());
         }
-
+      
         private void UpdateIMAData()
         {
             UpdateImaData = new Thread(() =>

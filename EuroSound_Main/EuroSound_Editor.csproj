@@ -168,9 +168,22 @@
     <Compile Include="ApplicationPreferences\Preferences Forms\Frm_MainPreferences.Designer.cs">
       <DependentUpon>Frm_MainPreferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSound Files %28New Version%29\ESF_LoadMusicBanks_New.cs" />
+    <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSound Files %28New Version%29\ESF_LoadSoundBanks_New.cs" />
+    <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSound Files %28New Version%29\ESF_LoadStreamFile_New.cs" />
+    <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSoundFiles_CommonFunctions.cs" />
+    <Compile Include="Editors and Tools\ApplicationTargets\EuroSound_OutputTargetSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editors and Tools\ApplicationTargets\EuroSound_OutputTargetSelector.Designer.cs">
+      <DependentUpon>EuroSound_OutputTargetSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editors and Tools\ApplicationTargets\EXAppTarget.cs" />
     <Compile Include="Classes\BrowsersAndDialogs.cs" />
-    <Compile Include="Classes\EuroSound File Formats\EuroSound Files\Musics\ESF_LoadMusics.cs" />
-    <Compile Include="Classes\EuroSound File Formats\EuroSound Files\Musics\ESF_SaveMusics.cs" />
+    <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSound Files %28New Version%29\ESF_SaveMusicBanks.cs" />
+    <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSound Files %28New Version%29\ESF_SaveStreamFile.cs" />
+    <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSound Files %28New Version%29\ESF_SaveSoundBanks.cs" />
+    <Compile Include="Classes\EuroSound File Formats\EuroSound Files\Old Versions\ESF_LoadMusics.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Interchange File\ESIF_Exporter.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Interchange File\ESIF_Loader.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Markers File\MarkerFilesMusic_Loader.cs" />
@@ -192,19 +205,24 @@
     <Compile Include="CustomControls\EuroSound_WebBrowser.Designer.cs">
       <DependentUpon>EuroSound_WebBrowser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Editors and Tools\ApplicationTargets\EXAppTarget_Functions.cs" />
+    <Compile Include="Editors and Tools\ApplicationTargets\Frm_ApplicationTarget.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editors and Tools\ApplicationTargets\Frm_ApplicationTarget.Designer.cs">
+      <DependentUpon>Frm_ApplicationTarget.cs</DependentUpon>
+    </Compile>
     <Compile Include="Editors and Tools\AudioConverter\Frm_AudioConverter.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Editors and Tools\AudioConverter\Frm_AudioConverter.Designer.cs">
       <DependentUpon>Frm_AudioConverter.cs</DependentUpon>
     </Compile>
-    <Compile Include="Classes\AudioFunctions.cs" />
+    <Compile Include="Classes\Audio\AudioFunctions.cs" />
     <Compile Include="Classes\EuroSoundBashMode.cs" />
-    <Compile Include="Classes\EuroSound File Formats\EuroSound Files\StreamSounds\ESF_LoadStreamSounds.cs" />
-    <Compile Include="Classes\EuroSound File Formats\EuroSound Files\SoundBanks\ESF_SaveSoundBanks.cs" />
-    <Compile Include="Classes\EuroSound File Formats\EuroSound Files\SoundBanks\ESF_LoadSoundBanks.cs" />
-    <Compile Include="Classes\EuroSound File Formats\EuroSound Files\StreamSounds\ESF_SaveStreamedSounds.cs" />
-    <Compile Include="Classes\LoopStream.cs" />
+    <Compile Include="Classes\EuroSound File Formats\EuroSound Files\Old Versions\ESF_LoadStreamSounds.cs" />
+    <Compile Include="Classes\EuroSound File Formats\EuroSound Files\Old Versions\ESF_LoadSoundBanks.cs" />
+    <Compile Include="Classes\Audio\LoopStream.cs" />
     <Compile Include="Classes\GenericFunctions.cs" />
     <Compile Include="Classes\Hashcodes.cs" />
     <Compile Include="Classes\Reflection.cs" />
@@ -325,6 +343,7 @@
     <Compile Include="Classes\EuroSound File Formats\EuroSound Markers File\MarkerFiles_Loader.cs" />
     <Compile Include="Editors and Tools\MarkersFunctions.cs" />
     <Compile Include="Editors and Tools\StreamSoundsEditor\Debug_Writer\StreamSounds_DebugWriter.cs" />
+    <Compile Include="Editors and Tools\ToolsCommonFunctions.cs" />
     <Compile Include="MainFrame\Frm_AboutEuroSound.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -476,8 +495,14 @@
     <EmbeddedResource Include="CustomControls\EuroSound_DebugTypes.resx">
       <DependentUpon>EuroSound_DebugTypes.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Editors and Tools\ApplicationTargets\EuroSound_OutputTargetSelector.resx">
+      <DependentUpon>EuroSound_OutputTargetSelector.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\EuroSound_WebBrowser.resx">
       <DependentUpon>EuroSound_WebBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editors and Tools\ApplicationTargets\Frm_ApplicationTarget.resx">
+      <DependentUpon>Frm_ApplicationTarget.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editors and Tools\AudioConverter\Frm_AudioConverter.resx">
       <DependentUpon>Frm_AudioConverter.cs</DependentUpon>
