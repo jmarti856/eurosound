@@ -71,7 +71,7 @@ namespace EuroSound_Application.Debug_HashTables
         private void Frm_Debug_HashTables_Main_Shown(object sender, EventArgs e)
         {
             //Output Folder
-            Textbox_OutputFolder.Text = GlobalPreferences.DebugFilesFolder;
+            Textbox_OutputFolder.Text = GlobalPreferences.DebugFilesOutputDirectory;
 
             //Update Title bar
             if (WindowState != FormWindowState.Maximized)
@@ -332,13 +332,13 @@ namespace EuroSound_Application.Debug_HashTables
             if (!string.IsNullOrEmpty(SelectedPath))
             {
                 //Update var
-                GlobalPreferences.DebugFilesFolder = SelectedPath;
+                GlobalPreferences.DebugFilesOutputDirectory = SelectedPath;
 
                 //Save new path
-                WindowsRegistryFunctions.SaveOutputFolders("DebugFilesFolder", "Path", GlobalPreferences.DebugFilesFolder);
+                WindowsRegistryFunctions.SaveOutputFolders("DebugFilesOutputDirectory", "Path", GlobalPreferences.DebugFilesOutputDirectory);
 
                 //Show path
-                Textbox_OutputFolder.Text = GlobalPreferences.DebugFilesFolder;
+                Textbox_OutputFolder.Text = GlobalPreferences.DebugFilesOutputDirectory;
             }
         }
     }

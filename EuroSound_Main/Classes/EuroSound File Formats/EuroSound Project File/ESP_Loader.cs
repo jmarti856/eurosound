@@ -395,17 +395,11 @@ namespace EuroSound_Application.EuroSound_Profiles
                         string[] LineData = line.Trim().Split('=');
                         switch (LineData[0])
                         {
-                            case "MusicOutputDirectory":
-                                GlobalPreferences.MusicOutputPath = RemoveCharactersFromPathString.Replace(LineData[1], "");
+                            case "OutputDirectory":
+                                GlobalPreferences.OutputDirectory = RemoveCharactersFromPathString.Replace(LineData[1], "");
                                 break;
-                            case "SoundsOutputDirectory":
-                                GlobalPreferences.SFXOutputPath = RemoveCharactersFromPathString.Replace(LineData[1], "");
-                                break;
-                            case "StreamSoundsOutputDirectory":
-                                GlobalPreferences.StreamFileOutputPath = RemoveCharactersFromPathString.Replace(LineData[1], "");
-                                break;
-                            case "DebugFilesFolder":
-                                GlobalPreferences.DebugFilesFolder = RemoveCharactersFromPathString.Replace(LineData[1], "");
+                            case "DebugFilesOutputDirectory":
+                                GlobalPreferences.DebugFilesOutputDirectory = RemoveCharactersFromPathString.Replace(LineData[1], "");
                                 break;
                         }
                     }

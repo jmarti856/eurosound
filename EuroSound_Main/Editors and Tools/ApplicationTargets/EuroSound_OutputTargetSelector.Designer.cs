@@ -29,10 +29,33 @@ namespace EuroSound_Application.CustomControls
         /// </summary>
         private void InitializeComponent()
         {
-            this.ListView_TargetsList = new System.Windows.Forms.ListView();
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
+            this.ListView_TargetsList = new System.Windows.Forms.ListView();
             this.SuspendLayout();
+            // 
+            // Button_OK
+            // 
+            this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_OK.Enabled = false;
+            this.Button_OK.Location = new System.Drawing.Point(323, 243);
+            this.Button_OK.Name = "Button_OK";
+            this.Button_OK.Size = new System.Drawing.Size(75, 23);
+            this.Button_OK.TabIndex = 1;
+            this.Button_OK.Text = "OK";
+            this.Button_OK.UseVisualStyleBackColor = true;
+            this.Button_OK.Click += new System.EventHandler(this.Button_OK_Click);
+            // 
+            // Button_Cancel
+            // 
+            this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Button_Cancel.Location = new System.Drawing.Point(404, 243);
+            this.Button_Cancel.Name = "Button_Cancel";
+            this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
+            this.Button_Cancel.TabIndex = 2;
+            this.Button_Cancel.Text = "Cancel";
+            this.Button_Cancel.UseVisualStyleBackColor = true;
             // 
             // ListView_TargetsList
             // 
@@ -47,27 +70,7 @@ namespace EuroSound_Application.CustomControls
             this.ListView_TargetsList.TabIndex = 0;
             this.ListView_TargetsList.UseCompatibleStateImageBehavior = false;
             this.ListView_TargetsList.View = System.Windows.Forms.View.List;
-            // 
-            // Button_OK
-            // 
-            this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_OK.Location = new System.Drawing.Point(323, 243);
-            this.Button_OK.Name = "Button_OK";
-            this.Button_OK.Size = new System.Drawing.Size(75, 23);
-            this.Button_OK.TabIndex = 1;
-            this.Button_OK.Text = "OK";
-            this.Button_OK.UseVisualStyleBackColor = true;
-            // 
-            // Button_Cancel
-            // 
-            this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_Cancel.Location = new System.Drawing.Point(404, 243);
-            this.Button_Cancel.Name = "Button_Cancel";
-            this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
-            this.Button_Cancel.TabIndex = 2;
-            this.Button_Cancel.Text = "Cancel";
-            this.Button_Cancel.UseVisualStyleBackColor = true;
+            this.ListView_TargetsList.SelectedIndexChanged += new System.EventHandler(this.ListView_TargetsList_SelectedIndexChanged);
             // 
             // EuroSound_OutputTargetSelector
             // 
@@ -86,14 +89,14 @@ namespace EuroSound_Application.CustomControls
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Output Target";
+            this.Load += new System.EventHandler(this.EuroSound_OutputTargetSelector_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.ListView ListView_TargetsList;
         private System.Windows.Forms.Button Button_OK;
         private System.Windows.Forms.Button Button_Cancel;
+        private System.Windows.Forms.ListView ListView_TargetsList;
     }
 }

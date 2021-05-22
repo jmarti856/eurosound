@@ -163,10 +163,8 @@ namespace EuroSound_Application.SplashForm
 
                 //[OutputFolders]
                 Label_Status.Text = "Loading output folders paths, please wait...";
-                GlobalPreferences.SFXOutputPath = WindowsRegistryFunctions.LoadOutputFolders("SoundsOutputDirectory", "Path");
-                GlobalPreferences.StreamFileOutputPath = WindowsRegistryFunctions.LoadOutputFolders("StreamSoundsOutputDirectory", "Path");
-                GlobalPreferences.MusicOutputPath = WindowsRegistryFunctions.LoadOutputFolders("MusicOutputDirectory", "Path");
-                GlobalPreferences.DebugFilesFolder = WindowsRegistryFunctions.LoadOutputFolders("DebugFilesFolder", "Path");
+                GlobalPreferences.OutputDirectory = WindowsRegistryFunctions.LoadOutputFolders("OutputDirectory", "Path");
+                GlobalPreferences.DebugFilesOutputDirectory = WindowsRegistryFunctions.LoadOutputFolders("DebugFilesOutputDirectory", "Path");
                 await Task.Delay(randomNumber.Next(minimum, maximum));
 
                 //[OutputSettings]

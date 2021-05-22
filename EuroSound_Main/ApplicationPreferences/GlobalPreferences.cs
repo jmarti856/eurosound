@@ -46,10 +46,8 @@
         internal static string MkFileList2Path = string.Empty;
 
         //[OutputFolders]
-        internal static string SFXOutputPath = string.Empty;
-        internal static string MusicOutputPath = string.Empty;
-        internal static string StreamFileOutputPath = string.Empty;
-        internal static string DebugFilesFolder = string.Empty;
+        internal static string OutputDirectory = string.Empty;
+        internal static string DebugFilesOutputDirectory = string.Empty;
 
         //[Frm_OutputSettings]
         internal static bool PlaySoundWhenOutput = false;

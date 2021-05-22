@@ -96,10 +96,8 @@ namespace EuroSound_Application.ApplicationPreferences.EuroSound_Profiles
                 ProfilesLoader.ReadOutputFolders(FileLines);
 
                 //Save Data
-                WindowsRegistryFunctions.SaveOutputFolders("SoundsOutputDirectory", "Path", GlobalPreferences.SFXOutputPath);
-                WindowsRegistryFunctions.SaveOutputFolders("StreamSoundsOutputDirectory", "Path", GlobalPreferences.StreamFileOutputPath);
-                WindowsRegistryFunctions.SaveOutputFolders("MusicOutputDirectory", "Path", GlobalPreferences.MusicOutputPath);
-                WindowsRegistryFunctions.SaveOutputFolders("DebugFilesFolder", "Path", GlobalPreferences.DebugFilesFolder);
+                WindowsRegistryFunctions.SaveOutputFolders("OutputDirectory", "Path", GlobalPreferences.OutputDirectory);
+                WindowsRegistryFunctions.SaveOutputFolders("DebugFilesOutputDirectory", "Path", GlobalPreferences.DebugFilesOutputDirectory);
 
                 //*===============================================================================================
                 //* [SoundFlags]

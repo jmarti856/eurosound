@@ -14,9 +14,10 @@ namespace EuroSound_Application.SoundBanksEditor.Debug_Writer
             //* Global Variables
             //*===============================================================================================
             string fileName = Path.GetFileNameWithoutExtension(FilePath);
+            string directoryName = Path.GetDirectoryName(FilePath);
             Dictionary<uint, uint> sfxElements = new Dictionary<uint, uint>();
 
-            using (StreamWriter debugFileWriter = new StreamWriter(GlobalPreferences.SFXOutputPath + "\\" + fileName + ".dbg"))
+            using (StreamWriter debugFileWriter = new StreamWriter(Path.Combine(directoryName, fileName, ".dbg")))
             {
                 //Write Debug File Header
                 debugFileWriter.WriteLine(new String('/', 70));

@@ -224,7 +224,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_GenericSavingFile"));
 
             //Check directory
-            if (Directory.Exists(GlobalPreferences.DebugFilesFolder))
+            if (Directory.Exists(GlobalPreferences.DebugFilesOutputDirectory))
             {
                 //Disable button
                 Button_Generate.Invoke((MethodInvoker)delegate
@@ -233,7 +233,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
                 });
 
                 // Create a file to write to.
-                using (StreamWriter sw = File.CreateText(Path.Combine(GlobalPreferences.DebugFilesFolder, "MFX_Data.h")))
+                using (StreamWriter sw = File.CreateText(Path.Combine(GlobalPreferences.DebugFilesOutputDirectory, "MFX_Data.h")))
                 {
                     sw.WriteLine("// Music Data table from EuroSound 1");
                     sw.WriteLine("// " + DateTime.Now.ToString("dd MMMM yyyy"));

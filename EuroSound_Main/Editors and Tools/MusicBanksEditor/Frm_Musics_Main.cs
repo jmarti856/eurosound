@@ -4,6 +4,7 @@ using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.CustomControls;
 using EuroSound_Application.CustomControls.DebugTypes;
 using EuroSound_Application.CustomControls.ProjectSettings;
 using EuroSound_Application.CustomControls.SearcherForm;
@@ -538,42 +539,32 @@ namespace EuroSound_Application.Musics
 
         private void MenuItem_File_Export_Click(object sender, EventArgs e)
         {
-            if (ProjectInfo.Hashcode != 0x00000000)
+            int debugOptions = 0;
+            //Debug options form
+            if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
-                //Apply bytes mask, example: 0x1BE0005C -> 0x0000005C
-                string FileName = "HCE" + (ProjectInfo.Hashcode & 0x000fffff).ToString("X8").Substring(3);
-
-                //---[Output with debug options
-                if ((ModifierKeys & Keys.Control) == Keys.Control)
+                using (EuroSound_DebugTypes DebugOpts = new EuroSound_DebugTypes(new string[] { "File start 1", "File start 2" }))
                 {
-                    using (EuroSound_DebugTypes DebugOpts = new EuroSound_DebugTypes(new string[] { "File start 1", "File start 2" }))
+                    DebugOpts.Owner = Owner;
+                    if (DebugOpts.ShowDialog() == DialogResult.OK)
                     {
-                        DebugOpts.Owner = Owner;
-                        if (DebugOpts.ShowDialog() == DialogResult.OK)
-                        {
-                            BuildSfxForm(FileName, DebugOpts.CheckedOptions);
-                        }
+                        debugOptions = DebugOpts.CheckedOptions;
                     }
                 }
-                else
+            }
+            //Target Selector
+            using (EuroSound_OutputTargetSelector targetsSelector = new EuroSound_OutputTargetSelector(OutputTargets) { Owner = this })
+            {
+                targetsSelector.ShowDialog();
+                if (targetsSelector.DialogResult == DialogResult.OK)
                 {
-                    BuildSfxForm(FileName, 0);
+                    //Build form file
+                    using (Frm_OutputTargetFileBuilder buildSFX = new Frm_OutputTargetFileBuilder(ProjectInfo, targetsSelector.SelectedTarget, OutputTargets, debugOptions, Tag.ToString()) { Owner = this })
+                    {
+                        buildSFX.ShowDialog();
+                    }
                 }
             }
-            else
-            {
-                MessageBox.Show(GenericFunctions.resourcesManager.GetString("Error_BuildSFX_NoHashcode"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void BuildSfxForm(string FileName, int DebugFlags)
-        {
-            Frm_BuildSFXMusicFile BuildFile = new Frm_BuildSFXMusicFile(ProjectInfo, FileName, DebugFlags)
-            {
-                Tag = Tag,
-                Owner = Owner
-            };
-            BuildFile.ShowDialog();
         }
 
         //*===============================================================================================

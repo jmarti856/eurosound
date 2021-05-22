@@ -95,12 +95,12 @@ namespace EuroSound_Application.StreamSounds
             this.Button_ExportInterchangeFile = new System.Windows.Forms.Button();
             this.SplitContainerStreamSoundsForm = new System.Windows.Forms.SplitContainer();
             this.ContextMenu_Targets = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ContextMenuTargets_Delete = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuTargets_Properties = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuTargets_Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuTargets_Output = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuTargets_Separator2 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuTargets_TextColor = new System.Windows.Forms.ToolStripMenuItem();
-            this.ContextMenuTargets_Delete = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenu_Folders.SuspendLayout();
             this.MainMenu.SuspendLayout();
             this.GroupBox_StreamData.SuspendLayout();
@@ -421,7 +421,7 @@ namespace EuroSound_Application.StreamSounds
             // 
             this.Textbox_GroupHashCode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Textbox_GroupHashCode.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_GroupHashCode.Location = new System.Drawing.Point(103, 559);
+            this.Textbox_GroupHashCode.Location = new System.Drawing.Point(103, 560);
             this.Textbox_GroupHashCode.Name = "Textbox_GroupHashCode";
             this.Textbox_GroupHashCode.ReadOnly = true;
             this.Textbox_GroupHashCode.Size = new System.Drawing.Size(100, 20);
@@ -432,7 +432,7 @@ namespace EuroSound_Application.StreamSounds
             this.Label_GroupHashCode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Label_GroupHashCode.AutoSize = true;
             this.Label_GroupHashCode.ForeColor = System.Drawing.Color.Blue;
-            this.Label_GroupHashCode.Location = new System.Drawing.Point(6, 562);
+            this.Label_GroupHashCode.Location = new System.Drawing.Point(6, 563);
             this.Label_GroupHashCode.Name = "Label_GroupHashCode";
             this.Label_GroupHashCode.Size = new System.Drawing.Size(91, 13);
             this.Label_GroupHashCode.TabIndex = 1;
@@ -660,45 +660,45 @@ namespace EuroSound_Application.StreamSounds
             this.ContextMenuTargets_Separator2,
             this.ContextMenuTargets_TextColor});
             this.ContextMenu_Targets.Name = "ContextMenu_Targets";
-            this.ContextMenu_Targets.Size = new System.Drawing.Size(181, 126);
+            this.ContextMenu_Targets.Size = new System.Drawing.Size(137, 104);
+            // 
+            // ContextMenuTargets_Delete
+            // 
+            this.ContextMenuTargets_Delete.Name = "ContextMenuTargets_Delete";
+            this.ContextMenuTargets_Delete.Size = new System.Drawing.Size(136, 22);
+            this.ContextMenuTargets_Delete.Text = "Delete";
+            this.ContextMenuTargets_Delete.Click += new System.EventHandler(this.ContextMenuTargets_Delete_Click);
             // 
             // ContextMenuTargets_Properties
             // 
             this.ContextMenuTargets_Properties.Name = "ContextMenuTargets_Properties";
-            this.ContextMenuTargets_Properties.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuTargets_Properties.Size = new System.Drawing.Size(136, 22);
             this.ContextMenuTargets_Properties.Text = "Properties...";
             this.ContextMenuTargets_Properties.Click += new System.EventHandler(this.ContextMenuTargets_Properties_Click);
             // 
             // ContextMenuTargets_Separator1
             // 
             this.ContextMenuTargets_Separator1.Name = "ContextMenuTargets_Separator1";
-            this.ContextMenuTargets_Separator1.Size = new System.Drawing.Size(177, 6);
+            this.ContextMenuTargets_Separator1.Size = new System.Drawing.Size(133, 6);
             // 
             // ContextMenuTargets_Output
             // 
             this.ContextMenuTargets_Output.Name = "ContextMenuTargets_Output";
-            this.ContextMenuTargets_Output.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuTargets_Output.Size = new System.Drawing.Size(136, 22);
             this.ContextMenuTargets_Output.Text = "Output";
             this.ContextMenuTargets_Output.Click += new System.EventHandler(this.ContextMenuTargets_Output_Click);
             // 
             // ContextMenuTargets_Separator2
             // 
             this.ContextMenuTargets_Separator2.Name = "ContextMenuTargets_Separator2";
-            this.ContextMenuTargets_Separator2.Size = new System.Drawing.Size(177, 6);
+            this.ContextMenuTargets_Separator2.Size = new System.Drawing.Size(133, 6);
             // 
             // ContextMenuTargets_TextColor
             // 
             this.ContextMenuTargets_TextColor.Name = "ContextMenuTargets_TextColor";
-            this.ContextMenuTargets_TextColor.Size = new System.Drawing.Size(180, 22);
+            this.ContextMenuTargets_TextColor.Size = new System.Drawing.Size(136, 22);
             this.ContextMenuTargets_TextColor.Text = "Text Color...";
             this.ContextMenuTargets_TextColor.Click += new System.EventHandler(this.ContextMenuTargets_TextColor_Click);
-            // 
-            // ContextMenuTargets_Delete
-            // 
-            this.ContextMenuTargets_Delete.Name = "ContextMenuTargets_Delete";
-            this.ContextMenuTargets_Delete.Size = new System.Drawing.Size(180, 22);
-            this.ContextMenuTargets_Delete.Text = "Delete";
-            this.ContextMenuTargets_Delete.Click += new System.EventHandler(this.ContextMenuTargets_Delete_Click);
             // 
             // Frm_StreamSounds_Main
             // 

@@ -12,10 +12,12 @@ namespace EuroSound_Application.Editors_and_Tools.StreamSoundsEditor.Debug_Write
             //*===============================================================================================
             //* Global Variables
             //*===============================================================================================
-            string fileName = Path.GetFileNameWithoutExtension(FilePath);
             List<uint> soundsOffsets = new List<uint>();
 
-            using (StreamWriter debugFile = new StreamWriter(GlobalPreferences.SFXOutputPath + "\\" + fileName + ".dbg"))
+            string fileName = Path.GetFileNameWithoutExtension(FilePath);
+            string directoryName = Path.GetDirectoryName(FilePath);
+
+            using (StreamWriter debugFile = new StreamWriter(Path.Combine(directoryName, fileName, ".dbg")))
             {
                 //Write Debug File Header
                 debugFile.WriteLine(new String('/', 70));

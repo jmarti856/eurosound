@@ -93,9 +93,7 @@ namespace EuroSound_Application.BashMode
                 GlobalPreferences.HT_MusicMD5 = WindowsRegistryFunctions.LoadHashtablesFiles("HT_MusicEvent", "MD5");
 
                 //[OutputFolders]
-                GlobalPreferences.SFXOutputPath = WindowsRegistryFunctions.LoadOutputFolders("SoundsOutputDirectory", "Path");
-                GlobalPreferences.StreamFileOutputPath = WindowsRegistryFunctions.LoadOutputFolders("StreamSoundsOutputDirectory", "Path");
-                GlobalPreferences.MusicOutputPath = WindowsRegistryFunctions.LoadOutputFolders("MusicOutputDirectory", "Path");
+                GlobalPreferences.OutputDirectory = WindowsRegistryFunctions.LoadOutputFolders("StreamSoundsOutputDirectory", "Path");
             }
 
             //*===============================================================================================
@@ -204,9 +202,9 @@ namespace EuroSound_Application.BashMode
                                 //*===============================================================================================
                                 string FileName = "HC" + File_Hashcode.ToString("X8").Substring(2);
 
-                                if (Directory.Exists(GlobalPreferences.SFXOutputPath))
+                                if (Directory.Exists(GlobalPreferences.OutputDirectory))
                                 {
-                                    using (BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.SFXOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
+                                    using (BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.OutputDirectory + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                                     {
                                         //*===============================================================================================
                                         //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED
@@ -331,9 +329,9 @@ namespace EuroSound_Application.BashMode
                                 //*===============================================================================================
                                 string FileName = "HC" + File_Hashcode.ToString("X8").Substring(2);
 
-                                if (Directory.Exists(GlobalPreferences.StreamFileOutputPath))
+                                if (Directory.Exists(GlobalPreferences.OutputDirectory))
                                 {
-                                    using (BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.StreamFileOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
+                                    using (BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.OutputDirectory + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                                     {
                                         //*===============================================================================================
                                         //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED
@@ -434,9 +432,9 @@ namespace EuroSound_Application.BashMode
                                 //*===============================================================================================
                                 string FileName = "HC" + File_Hashcode.ToString("X8").Substring(2);
 
-                                if (Directory.Exists(GlobalPreferences.MusicOutputPath))
+                                if (Directory.Exists(GlobalPreferences.OutputDirectory))
                                 {
-                                    using (BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.MusicOutputPath + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
+                                    using (BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.OutputDirectory + "\\" + FileName + ".SFX", FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                                     {
                                         //*===============================================================================================
                                         //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED

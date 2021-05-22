@@ -1,5 +1,8 @@
-﻿using EuroSound_Application.Clases;
+﻿using EuroSound_Application.ApplicationTargets;
+using EuroSound_Application.Clases;
+using EuroSound_Application.CustomControls.DebugTypes;
 using EuroSound_Application.Editors_and_Tools;
+using EuroSound_Application.Editors_and_Tools.ApplicationTargets;
 using EuroSound_Application.EuroSoundInterchangeFile;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using EuroSound_Application.TreeViewSorter;
@@ -148,7 +151,26 @@ namespace EuroSound_Application.Musics
 
         private void ContextMenuTargets_Output_Click(object sender, EventArgs e)
         {
+            //Debug options form
+            int debugOptions = 0;
+            if ((ModifierKeys & Keys.Control) == Keys.Control)
+            {
+                using (EuroSound_DebugTypes DebugOpts = new EuroSound_DebugTypes(new string[] { "File start 1", "File start 2" }))
+                {
+                    DebugOpts.Owner = Owner;
+                    if (DebugOpts.ShowDialog() == DialogResult.OK)
+                    {
+                        debugOptions = DebugOpts.CheckedOptions;
+                    }
+                }
+            }
 
+            //Build form file
+            EXAppTarget selectedTarget = OutputTargets[uint.Parse(TreeView_MusicData.SelectedNode.Name.ToString())];
+            using (Frm_OutputTargetFileBuilder buildSFX = new Frm_OutputTargetFileBuilder(ProjectInfo, selectedTarget, OutputTargets, debugOptions, Tag.ToString()) { Owner = this })
+            {
+                buildSFX.ShowDialog();
+            }
         }
 
         //*===============================================================================================

@@ -7,6 +7,7 @@ using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.Editors_and_Tools
@@ -210,6 +211,61 @@ namespace EuroSound_Application.Editors_and_Tools
                 case (int)GenericFunctions.ESoundFileType.SoundBanks:
                     MenuItem_Edit_Undo.Enabled = (((Stack<KeyValuePair<string, TreeNode>>)UndoListNodes).Count > 0);
                     break;
+            }
+        }
+
+        //*===============================================================================================
+        //* Progress Bar
+        //*===============================================================================================
+        internal static void ProgressBarReset(ProgressBar progressBarToReset)
+        {
+            if (progressBarToReset != null)
+            {
+                //Update Progress Bar
+                if (progressBarToReset.InvokeRequired)
+                {
+                    try
+                    {
+                        progressBarToReset.Invoke((MethodInvoker)delegate
+                        {
+                            progressBarToReset.Value = 0;
+                        });
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                else
+                {
+                    progressBarToReset.Value = 0;
+                }
+            }
+        }
+
+        internal static void ProgressBarAddValue(ProgressBar progressBarToModify, int valueToAdd)
+        {
+            //Update Progress Bar
+            if (progressBarToModify != null)
+            {
+                if (progressBarToModify.InvokeRequired)
+                {
+                    try
+                    {
+                        progressBarToModify.Invoke((MethodInvoker)delegate
+                        {
+                            progressBarToModify.Value += valueToAdd;
+                        });
+                    }
+                    catch 
+                    { 
+
+                    }
+                }
+                else
+                {
+                    progressBarToModify.Value += valueToAdd;
+                }
             }
         }
     }

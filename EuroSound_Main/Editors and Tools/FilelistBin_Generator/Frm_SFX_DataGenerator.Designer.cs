@@ -50,6 +50,8 @@ namespace EuroSound_Application.SFXData
             this.col_looping = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.col_tracking3d = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.col_samplestreamed = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.label1 = new System.Windows.Forms.Label();
+            this.Textbox_OutputDirectory = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label_hashcode
@@ -212,11 +214,31 @@ namespace EuroSound_Application.SFXData
             this.col_samplestreamed.Text = "Sample Streamed";
             this.col_samplestreamed.Width = 109;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(183, 558);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(87, 13);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Output Directory:";
+            // 
+            // Textbox_OutputDirectory
+            // 
+            this.Textbox_OutputDirectory.BackColor = System.Drawing.SystemColors.Window;
+            this.Textbox_OutputDirectory.Location = new System.Drawing.Point(276, 555);
+            this.Textbox_OutputDirectory.Name = "Textbox_OutputDirectory";
+            this.Textbox_OutputDirectory.ReadOnly = true;
+            this.Textbox_OutputDirectory.Size = new System.Drawing.Size(222, 20);
+            this.Textbox_OutputDirectory.TabIndex = 11;
+            // 
             // Frm_SFX_DataGenerator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(739, 588);
+            this.Controls.Add(this.Textbox_OutputDirectory);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.Textbox_TotalItems);
             this.Controls.Add(this.Label_TotalItems);
             this.Controls.Add(this.Button_Search);
@@ -262,5 +284,7 @@ namespace EuroSound_Application.SFXData
         private System.Windows.Forms.Button Button_Search;
         private System.Windows.Forms.Label Label_TotalItems;
         private System.Windows.Forms.TextBox Textbox_TotalItems;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox Textbox_OutputDirectory;
     }
 }

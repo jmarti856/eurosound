@@ -11,9 +11,10 @@ namespace EuroSound_Application.Musics
             //*===============================================================================================
             //* Global Variables
             //*===============================================================================================
-            string FileName = Path.GetFileNameWithoutExtension(FilePath);
+            string fileName = Path.GetFileNameWithoutExtension(FilePath);
+            string directoryName = Path.GetDirectoryName(FilePath);
 
-            using (StreamWriter DebugFile = new StreamWriter(GlobalPreferences.MusicOutputPath + "\\" + FileName + ".dbg"))
+            using (StreamWriter DebugFile = new StreamWriter(Path.Combine(directoryName, fileName, ".dbg")))
             {
                 //Write Debug File Header
                 DebugFile.WriteLine(new String('/', 70));

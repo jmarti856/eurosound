@@ -83,6 +83,9 @@ namespace EuroSound_Application.SFXData
 
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
 
+            //Show Output Directory
+            Textbox_OutputDirectory.Text = GlobalPreferences.DebugFilesOutputDirectory;
+
             //Start Thread
             LoadSfxDataTable = new Thread(LoadDataFromHashtable)
             {

@@ -13,9 +13,9 @@ namespace EuroSound_Application.GenerateDataBinaryFile
     {
         internal IEnumerable<string> GenerateSFXDataBinaryFile()
         {
-            if (Directory.Exists(GlobalPreferences.MusicOutputPath))
+            if (Directory.Exists(GlobalPreferences.DebugFilesOutputDirectory))
             {
-                using (BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.MusicOutputPath + "\\SFX_Data.bin", FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
+                using (BinaryStream BWriter = new BinaryStream(File.Open(GlobalPreferences.DebugFilesOutputDirectory + "\\SFX_Data.bin", FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                 {
                     foreach (float[] Values in Hashcodes.SFX_Data)
                     {
@@ -43,7 +43,7 @@ namespace EuroSound_Application.GenerateDataBinaryFile
             }
             else
             {
-                yield return string.Join("", new string[] { "0Unable to open: ", GlobalPreferences.MusicOutputPath, "\\SFX_Data.bin" });
+                yield return string.Join("", new string[] { "0Unable to open: ", GlobalPreferences.DebugFilesOutputDirectory, "\\SFX_Data.bin" });
             }
         }
 

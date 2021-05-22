@@ -89,9 +89,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             HT_MusicPathTEMPORAL = GlobalPreferences.HT_MusicPath;
             HT_SoundsDataPathTEMPORAL = GlobalPreferences.HT_SoundsDataPath;
             HT_SoundsPathTEMPORAL = GlobalPreferences.HT_SoundsPath;
-            MusicOutputPathTEMPORAL = GlobalPreferences.MusicOutputPath;
             SelectedFontTEMPORAL = GlobalPreferences.TV_SelectedFont;
-            SFXOutputPathTEMPORAL = GlobalPreferences.SFXOutputPath;
             ShowLinesTEMPORAL = GlobalPreferences.TV_ShowLines;
             ShowRootLinesTEMPORAL = GlobalPreferences.TV_ShowRootLines;
             StreamFilePathTEMPORAL = GlobalPreferences.StreamFilePath;

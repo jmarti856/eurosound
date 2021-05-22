@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.Clases;
+using EuroSound_Application.CustomControls.DebugTypes;
 using EuroSound_Application.CustomControls.MoveMultiplesNodesForm;
 using EuroSound_Application.CustomControls.ObjectInstancesForm;
 using EuroSound_Application.Editors_and_Tools;
@@ -396,7 +397,26 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenuTargets_Output_Click(object sender, EventArgs e)
         {
+            //Debug options form
+            int debugOptions = 0;
+            if ((ModifierKeys & Keys.Control) == Keys.Control)
+            {
+                using (EuroSound_DebugTypes DebugOpts = new EuroSound_DebugTypes(new string[] { "SFX Elements", "Sample info elements", "Sample Data" }))
+                {
+                    DebugOpts.Owner = Owner;
+                    if (DebugOpts.ShowDialog() == DialogResult.OK)
+                    {
+                        debugOptions = DebugOpts.CheckedOptions;
+                    }
+                }
+            }
 
+            //Build form file
+            EXAppTarget selectedTarget = OutputTargets[uint.Parse(TreeView_File.SelectedNode.Name.ToString())];
+            using (Frm_OutputTargetFileBuilder buildSFX = new Frm_OutputTargetFileBuilder(ProjectInfo, selectedTarget, OutputTargets, debugOptions, Tag.ToString()) { Owner = this })
+            {
+                buildSFX.ShowDialog();
+            }
         }
 
         //*===============================================================================================
