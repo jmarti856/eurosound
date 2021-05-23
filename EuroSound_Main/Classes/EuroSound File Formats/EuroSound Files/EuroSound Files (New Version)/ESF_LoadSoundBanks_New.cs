@@ -85,7 +85,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
                     LoadedFileName = BReader.ReadString(),
                     Encoding = BReader.ReadString(),
                     Flags = BReader.ReadUInt16(),
-                    DataSize = BReader.ReadUInt32(),
                     Frequency = BReader.ReadUInt32(),
                     RealSize = BReader.ReadUInt32(),
                     Channels = BReader.ReadUInt32(),

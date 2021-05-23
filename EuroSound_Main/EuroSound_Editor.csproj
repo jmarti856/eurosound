@@ -168,6 +168,9 @@
     <Compile Include="ApplicationPreferences\Preferences Forms\Frm_MainPreferences.Designer.cs">
       <DependentUpon>Frm_MainPreferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="BashMode\BashMode_OutputFilesOldVersion.cs" />
+    <Compile Include="BashMode\BashMode_CommonFunctions.cs" />
+    <Compile Include="BashMode\BashMode_OutputFilesNewVersion.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSound Files %28New Version%29\ESF_LoadMusicBanks_New.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSound Files %28New Version%29\ESF_LoadSoundBanks_New.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSound Files %28New Version%29\ESF_LoadStreamFile_New.cs" />
@@ -228,7 +231,7 @@
       <DependentUpon>Frm_AudioConverter.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\Audio\AudioFunctions.cs" />
-    <Compile Include="Classes\EuroSoundBashMode.cs" />
+    <Compile Include="BashMode\EuroSoundBashMode.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\Old Versions\ESF_LoadStreamSounds.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\Old Versions\ESF_LoadSoundBanks.cs" />
     <Compile Include="Classes\Audio\LoopStream.cs" />
@@ -627,6 +630,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="EuroSoundIcon.ico" />
+    <Content Include="Includes\psxsdk.dll" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

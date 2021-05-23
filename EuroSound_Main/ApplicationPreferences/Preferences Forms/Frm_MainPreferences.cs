@@ -27,8 +27,6 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         internal bool LoadLastLoadedESFTEMPORAL;
 
         //Frm_GeneralPreferences
-        internal string SFXOutputPathTEMPORAL;
-        internal string MusicOutputPathTEMPORAL;
         internal int ColorWavesControlTEMPORAL;
         internal int BackColorWavesControlTEMPORAL;
         internal bool UseThreadingWhenLoadTEMPORAL;

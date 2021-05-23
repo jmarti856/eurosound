@@ -70,16 +70,16 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
                     Dependencies = BReader.ReadString(),
                     LoadedFileName = BReader.ReadString(),
                     Encoding = BReader.ReadString(),
-                    Flags = BReader.ReadUInt16(),
-                    DataSize = BReader.ReadUInt32(),
-                    Frequency = BReader.ReadUInt32(),
-                    RealSize = BReader.ReadUInt32(),
-                    Channels = BReader.ReadUInt32(),
-                    Bits = BReader.ReadUInt32(),
-                    PSIsample = BReader.ReadUInt32(),
-                    LoopOffset = BReader.ReadUInt32(),
-                    Duration = BReader.ReadUInt32()
+                    Flags = BReader.ReadUInt16()
                 };
+                BReader.ReadUInt32();
+                AudioToAdd.Frequency = BReader.ReadUInt32();
+                AudioToAdd.RealSize = BReader.ReadUInt32();
+                AudioToAdd.Channels = BReader.ReadUInt32();
+                AudioToAdd.Bits = BReader.ReadUInt32();
+                AudioToAdd.PSIsample = BReader.ReadUInt32();
+                AudioToAdd.LoopOffset = BReader.ReadUInt32();
+                AudioToAdd.Duration = BReader.ReadUInt32();
                 int PCMDataLength = BReader.ReadInt32();
                 AudioToAdd.PCMdata = BReader.ReadBytes(PCMDataLength);
 

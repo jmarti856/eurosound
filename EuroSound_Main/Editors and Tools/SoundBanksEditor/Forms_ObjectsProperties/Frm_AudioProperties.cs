@@ -285,7 +285,7 @@ namespace EuroSound_Application.SoundBanksEditor
             Textbox_MD5Hash.Text = SelectedAudioMD5Hash;
 
             //Audio Properties
-            Textbox_DataSize.Text = string.Join(" ", new string[] { TemporalAudio.DataSize.ToString(), "bytes" });
+            Textbox_DataSize.Text = string.Join(" ", new string[] { TemporalAudio.PCMdata.Length.ToString(), "bytes" });
             Textbox_RealSize.Text = string.Join(" ", new string[] { TemporalAudio.RealSize.ToString(), "bytes" });
             Textbox_Frequency.Text = string.Join(" ", new string[] { TemporalAudio.Frequency.ToString(), "Hz" });
             Textbox_Channels.Text = TemporalAudio.Channels.ToString();

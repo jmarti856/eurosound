@@ -487,42 +487,7 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         private void TreeView_StreamData_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            //Check that we have selected a node, and we have not selected the root folder
-            if (e.Node.Parent != null && !e.Node.Tag.Equals("Root"))
-            {
-                //Check label is not null, sometimes can crash without this check
-                if (e.Label != null)
-                {
-                    //Get text label
-                    string LabelText = e.Label.Trim();
-
-                    //Check we are not renaming with an empty string
-                    if (string.IsNullOrEmpty(LabelText))
-                    {
-                        //Cancel edit
-                        e.CancelEdit = true;
-                    }
-                    else
-                    {
-                        //Check that not exists an item with the same name
-                        if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_StreamData, LabelText))
-                        {
-                            MessageBox.Show(GenericFunctions.resourcesManager.GetString("Error_Rename_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            e.CancelEdit = true;
-                        }
-                        else
-                        {
-                            //Update tree node props
-                            e.Node.Text = LabelText;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                //Cancel edit
-                e.CancelEdit = true;
-            }
+            ToolsCommonFunctions.TreeViewNodeRename(TreeView_StreamData, e);
         }
 
         private void TreeView_StreamData_BeforeCollapse(object sender, TreeViewCancelEventArgs e)

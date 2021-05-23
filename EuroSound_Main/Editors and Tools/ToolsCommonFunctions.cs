@@ -6,8 +6,10 @@ using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
 using EuroSound_Application.TreeViewLibraryFunctions;
+using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.Editors_and_Tools
@@ -257,14 +259,165 @@ namespace EuroSound_Application.Editors_and_Tools
                             progressBarToModify.Value += valueToAdd;
                         });
                     }
-                    catch 
-                    { 
+                    catch
+                    {
 
                     }
                 }
                 else
                 {
                     progressBarToModify.Value += valueToAdd;
+                }
+            }
+        }
+
+        //*===============================================================================================
+        //* Tree View
+        //*===============================================================================================
+        internal static void TreeViewNodeRename(TreeView treeViewControl, NodeLabelEditEventArgs e)
+        {
+            //Check that we have selected a node, and we have not selected the root folder
+            if (e.Node.Parent != null && !e.Node.Tag.Equals("Root"))
+            {
+                //Check label is not null, sometimes can crash without this check
+                if (e.Label != null)
+                {
+                    //Get text label
+                    string labelText = e.Label.Trim();
+
+                    //Check we are not renaming with an empty string
+                    if (string.IsNullOrEmpty(labelText))
+                    {
+                        //Cancel edit
+                        e.CancelEdit = true;
+                    }
+                    else
+                    {
+                        //Check that not exists an item with the same name
+                        if (TreeNodeFunctions.CheckIfNodeExistsByText(treeViewControl, labelText))
+                        {
+                            MessageBox.Show(GenericFunctions.resourcesManager.GetString("Error_Rename_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            e.CancelEdit = true;
+                        }
+                        else
+                        {
+                            //Update tree node props
+                            e.Node.Text = labelText;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //Cancel edit
+                e.CancelEdit = true;
+            }
+        }
+
+        [DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
+
+        internal static void NodesDragginOver(TreeView treeViewControl, DragEventArgs e)
+        {
+            const float scrollRegion = 20;
+
+            Point p = treeViewControl.PointToClient(new Point(e.X, e.Y));
+
+            //See if we need to scroll up or down
+            if ((p.Y + scrollRegion) > treeViewControl.Height)
+            {
+                //Call the API to scroll down
+                SendMessage(treeViewControl.Handle, 277, 1, 0);
+            }
+            else if (p.Y < scrollRegion)
+            {
+                //Call thje API to scroll up
+                SendMessage(treeViewControl.Handle, 277, 0, 0);
+            }
+
+            TreeNode node = treeViewControl.GetNodeAt(p.X, p.Y);
+            treeViewControl.SelectedNode = node;
+        }
+
+        internal static void NodesDragginDrop(ProjectFile projectInfo, TreeView treeViewControl, DragEventArgs e)
+        {
+            //Retrieve the client coordinates of the drop location.
+            Point targetPoint = treeViewControl.PointToClient(new Point(e.X, e.Y));
+
+            //Retrieve the node at the drop location.
+            TreeNode targetNode = treeViewControl.GetNodeAt(targetPoint);
+            TreeNode findTargetNode = TreeNodeFunctions.FindRootNode(targetNode);
+
+            TreeNode parentNode = targetNode;
+
+            if (findTargetNode != null)
+            {
+                string destSection = findTargetNode.Text;
+                string destNodeType = targetNode.Tag.ToString();
+
+                //Retrieve the node that was dragged
+                TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
+                string sourceSection = TreeNodeFunctions.FindRootNode(draggedNode).Text;
+
+                //Confirm that the node at the drop location is not
+                //the dragged node and that target node isn't null
+                //(for example if you drag outside the control)
+                if (!draggedNode.Equals(targetNode) && draggedNode != null && targetNode != null)
+                {
+                    bool canDrop = true;
+                    while (canDrop && (parentNode != null))
+                    {
+                        canDrop = !Object.ReferenceEquals(draggedNode, parentNode);
+                        parentNode = parentNode.Parent;
+                    }
+
+                    if (canDrop)
+                    {
+                        /*
+                        Confirm we are not outside the node section and that the destination place is a folder or the root
+                        node section
+                        */
+                        if (sourceSection.Equals(destSection) && (destNodeType.Equals("Folder") || destNodeType.Equals("Root")))
+                        {
+                            //Remove the node from its current
+                            //location and add it to the node at the drop location.
+                            draggedNode.Remove();
+                            targetNode.Nodes.Add(draggedNode);
+                            targetNode.Expand();
+                            treeViewControl.SelectedNode = draggedNode;
+                            projectInfo.FileHasBeenModified = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        internal static void NodesDraggin_Enter(ProjectFile projectInfo, TreeView treeViewControl, DragEventArgs e)
+        {
+            TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
+            if (draggedNode != null)
+            {
+                Point targetPoint = treeViewControl.PointToClient(new Point(e.X, e.Y));
+                TreeNode targetNode = treeViewControl.GetNodeAt(targetPoint);
+
+                if (targetNode != null)
+                {
+                    //Type of nodes that are allowed to be re-ubicated
+                    if (projectInfo.TypeOfData == (int)GenericFunctions.ESoundFileType.SoundBanks)
+                    {
+                        if (draggedNode.Tag.Equals("Folder") || draggedNode.Tag.Equals("Sound") || draggedNode.Tag.Equals("Audio") || draggedNode.Tag.Equals("Target"))
+                        {
+                            e.Effect = DragDropEffects.Move;
+                        }
+                    }
+                    else if (projectInfo.TypeOfData == (int)GenericFunctions.ESoundFileType.MusicBanks)
+                    {
+                        if (draggedNode.Tag.Equals("Folder") || draggedNode.Tag.Equals("Music") || draggedNode.Tag.Equals("Target"))
+                        {
+                            e.Effect = DragDropEffects.Move;
+                        }
+                    }
+                    treeViewControl.SelectedNode = targetNode;
                 }
             }
         }

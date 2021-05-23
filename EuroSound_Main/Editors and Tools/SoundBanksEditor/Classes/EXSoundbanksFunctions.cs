@@ -112,7 +112,6 @@ namespace EuroSound_Application.SoundBanksEditor
                     EXAudio Audio = new EXAudio
                     {
                         LoadedFileName = Path.GetFileName(FilePath),
-                        DataSize = (uint)audioReader.Length,
                         Frequency = (uint)audioReader.WaveFormat.SampleRate,
                         RealSize = (uint)new FileInfo(FilePath).Length,
                         Channels = (uint)audioReader.WaveFormat.Channels,
@@ -178,7 +177,6 @@ namespace EuroSound_Application.SoundBanksEditor
                         }
 
                         //Get Properties
-                        Audio.DataSize = (uint)Audio.PCMdata.Length;
                         Audio.Duration = (uint)(decimal.Divide(Audio.PCMdata.Length, conversionStream.WaveFormat.AverageBytesPerSecond) * 1000);
 
                         return Audio;

@@ -108,7 +108,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                             {
                                 case (int)GenericFunctions.ESoundFileType.SoundBanks:
                                     string filePath = Path.Combine(directoryPath, "_Eng", selectedTarget.BinaryName);
-                                    BuildSFXSoundBank_Sphinx(directoryPath, filePath, parentFormTag, e);
+                                    BuildSFXSoundBank_Sphinx(directoryPath, filePath, parentFormTag, storedTarget.Name, e);
                                     break;
                                 case (int)GenericFunctions.ESoundFileType.StreamSounds:
                                     filePath = Path.Combine(directoryPath, "_Eng", selectedTarget.BinaryName);
@@ -140,7 +140,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                         {
                             case (int)GenericFunctions.ESoundFileType.SoundBanks:
                                 string filePath = Path.Combine(directoryPath, "_Eng", selectedTarget.BinaryName);
-                                BuildSFXSoundBank_Sphinx(directoryPath, filePath, parentFormTag, e);
+                                BuildSFXSoundBank_Sphinx(directoryPath, filePath, parentFormTag, selectedTarget.Name, e);
                                 break;
                             case (int)GenericFunctions.ESoundFileType.StreamSounds:
                                 filePath = Path.Combine(directoryPath, "_Eng", selectedTarget.BinaryName);

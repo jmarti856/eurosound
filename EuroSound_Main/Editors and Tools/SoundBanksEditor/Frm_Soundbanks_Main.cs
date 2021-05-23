@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
@@ -546,9 +545,6 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         //* FORM CONTROLS EVENTS
         //*===============================================================================================
-        [DllImport("user32.dll")]
-        private static extern int SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
-
         private void Button_GenerateList_Click(object sender, EventArgs e)
         {
             GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false);
@@ -885,41 +881,7 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         private void TreeView_File_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            //Check that we have selected a node, and we have not selected the root folder
-            if (e.Node.Parent != null && !e.Node.Tag.Equals("Root"))
-            {
-                //Check label is not null, sometimes can crash without this check
-                if (e.Label != null)
-                {
-                    //Get text label
-                    string labelText = e.Label.Trim();
-
-                    //Check we are not renaming with an empty string
-                    if (string.IsNullOrEmpty(labelText))
-                    {
-                        //Cancel edit
-                        e.CancelEdit = true;
-                    }
-                    else
-                    {
-                        //Check that not exists an item with the same name
-                        if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, labelText))
-                        {
-                            MessageBox.Show(GenericFunctions.resourcesManager.GetString("Error_Rename_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            e.CancelEdit = true;
-                        }
-                        else
-                        {
-                            e.Node.Text = labelText;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                //Cancel edit
-                e.CancelEdit = true;
-            }
+            ToolsCommonFunctions.TreeViewNodeRename(TreeView_File, e);
         }
 
         //---------------------------------------------[Change Nodes Images]---------------------------------------------
@@ -987,97 +949,17 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void TreeView_File_DragDrop(object sender, DragEventArgs e)
         {
-            //Retrieve the client coordinates of the drop location.
-            Point targetPoint = TreeView_File.PointToClient(new Point(e.X, e.Y));
-
-            //Retrieve the node at the drop location.
-            TreeNode targetNode = TreeView_File.GetNodeAt(targetPoint);
-            TreeNode findTargetNode = TreeNodeFunctions.FindRootNode(targetNode);
-
-            TreeNode parentNode = targetNode;
-
-            if (findTargetNode != null)
-            {
-                string destSection = findTargetNode.Text;
-                string destNodeType = targetNode.Tag.ToString();
-
-                //Retrieve the node that was dragged
-                TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
-                string sourceSection = TreeNodeFunctions.FindRootNode(draggedNode).Text;
-
-                //Confirm that the node at the drop location is not
-                //the dragged node and that target node isn't null
-                //(for example if you drag outside the control)
-                if (!draggedNode.Equals(targetNode) && draggedNode != null && targetNode != null)
-                {
-                    bool canDrop = true;
-                    while (canDrop && (parentNode != null))
-                    {
-                        canDrop = !Object.ReferenceEquals(draggedNode, parentNode);
-                        parentNode = parentNode.Parent;
-                    }
-
-                    if (canDrop)
-                    {
-                        /*
-                        Confirm we are not outside the node section and that the destination place is a folder or the root
-                        node section
-                        */
-                        if (sourceSection.Equals(destSection) && (destNodeType.Equals("Folder") || destNodeType.Equals("Root")))
-                        {
-                            //Remove the node from its current
-                            //location and add it to the node at the drop location.
-                            draggedNode.Remove();
-                            targetNode.Nodes.Add(draggedNode);
-                            targetNode.Expand();
-                            TreeView_File.SelectedNode = draggedNode;
-                            ProjectInfo.FileHasBeenModified = true;
-                        }
-                    }
-                }
-            }
+            ToolsCommonFunctions.NodesDragginDrop(ProjectInfo, TreeView_File, e);
         }
 
         private void TreeView_File_DragEnter(object sender, DragEventArgs e)
         {
-            TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
-            if (draggedNode != null)
-            {
-                Point targetPoint = TreeView_File.PointToClient(new Point(e.X, e.Y));
-                TreeNode targetNode = TreeView_File.GetNodeAt(targetPoint);
-
-                if (targetNode != null)
-                {
-                    //Type of nodes that are allowed to be re-ubicated
-                    if (draggedNode.Tag.Equals("Folder") || draggedNode.Tag.Equals("Sound") || draggedNode.Tag.Equals("Audio") || draggedNode.Tag.Equals("Target"))
-                    {
-                        e.Effect = DragDropEffects.Move;
-                    }
-                    TreeView_File.SelectedNode = targetNode;
-                }
-            }
+            ToolsCommonFunctions.NodesDraggin_Enter(ProjectInfo, TreeView_File, e);
         }
 
         private void TreeView_File_DragOver(object sender, DragEventArgs e)
         {
-            const float scrollRegion = 20;
-
-            Point p = TreeView_File.PointToClient(new Point(e.X, e.Y));
-
-            //See if we need to scroll up or down
-            if ((p.Y + scrollRegion) > TreeView_File.Height)
-            {
-                //Call the API to scroll down
-                SendMessage(TreeView_File.Handle, 277, 1, 0);
-            }
-            else if (p.Y < scrollRegion)
-            {
-                //Call thje API to scroll up
-                SendMessage(TreeView_File.Handle, 277, 0, 0);
-            }
-
-            TreeNode node = TreeView_File.GetNodeAt(p.X, p.Y);
-            TreeView_File.SelectedNode = node;
+            ToolsCommonFunctions.NodesDragginOver(TreeView_File, e);
         }
 
         private void TreeView_File_MouseDown(object sender, MouseEventArgs e)

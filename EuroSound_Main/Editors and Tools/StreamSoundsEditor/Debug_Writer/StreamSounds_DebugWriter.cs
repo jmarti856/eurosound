@@ -1,5 +1,4 @@
-﻿using EuroSound_Application.ApplicationPreferences;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -17,7 +16,7 @@ namespace EuroSound_Application.Editors_and_Tools.StreamSoundsEditor.Debug_Write
             string fileName = Path.GetFileNameWithoutExtension(FilePath);
             string directoryName = Path.GetDirectoryName(FilePath);
 
-            using (StreamWriter debugFile = new StreamWriter(Path.Combine(directoryName, fileName, ".dbg")))
+            using (StreamWriter debugFile = new StreamWriter(Path.Combine(directoryName, fileName + ".DBG")))
             {
                 //Write Debug File Header
                 debugFile.WriteLine(new String('/', 70));

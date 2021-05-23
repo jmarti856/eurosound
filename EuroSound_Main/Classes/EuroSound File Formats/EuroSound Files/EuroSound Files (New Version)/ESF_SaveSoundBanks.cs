@@ -108,7 +108,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
                 binaryWriter.WriteString(entry.Value.LoadedFileName);
                 binaryWriter.WriteString(entry.Value.Encoding);
                 binaryWriter.WriteUInt16(entry.Value.Flags);
-                binaryWriter.WriteUInt32(entry.Value.DataSize);
                 binaryWriter.WriteUInt32(entry.Value.Frequency);
                 binaryWriter.WriteUInt32(entry.Value.RealSize);
                 binaryWriter.WriteUInt32(entry.Value.Channels);

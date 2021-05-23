@@ -193,5 +193,36 @@ namespace EuroSound_Application.AudioFunctionsLibrary
                 WavFile.Close();
             }
         }
+
+        internal byte[] WavToVag(string inputFilePath, string outputFilePath, int Frequency, int outputFrequency, byte[] PCMData)
+        {
+            byte[] convertedData;
+
+            if (!File.Exists(inputFilePath))
+            {
+                AudioSample = new MemoryStream(PCMData);
+                IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency, 16, 1));
+                if (outputFrequency == 0)
+                {
+                    outputFrequency = 11025;
+                }
+                using (MediaFoundationResampler conversionStream = new MediaFoundationResampler(provider, new WaveFormat(outputFrequency, 16, 1)))
+                {
+                    WaveFileWriter.CreateWaveFile(inputFilePath, conversionStream);
+                }
+            }
+            //var t = ExternalCHelper.get_vag_file(inputFilePath, outputFilePath, Frequency);
+            using (BinaryReader BReader = new BinaryReader(File.Open(outputFilePath, FileMode.Open, FileAccess.Read, FileShare.Read)))
+            {
+                BReader.BaseStream.Seek(0x40, SeekOrigin.Begin);
+                int dataLength = (int)BReader.BaseStream.Length - 0x40;
+                convertedData = BReader.ReadBytes(dataLength);
+
+                //Close Reader
+                BReader.Close();
+            }
+
+            return convertedData;
+        }
     }
 }

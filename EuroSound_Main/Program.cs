@@ -35,9 +35,10 @@ namespace EuroSound_Application
         private static void Main(string[] args)
         {
             /*
-            args = new string[2];
+            args = new string[3];
             args[0] = "/o";
-            args[1] = @"C:\Users\Jordi Martinez\Desktop\Sphinx and the shadow of set\SoundBanks\Files\Abydos\Abydos_North.esf";
+            args[1] = "PC";
+            args[2] = @"C:\Users\Jordi Martinez\Desktop\Sphinx and the shadow of set\SoundBanks\Files\Abydos\Abydos_North.esf";
             */
 
             /*--Check For .NET Framework v4.5--*/

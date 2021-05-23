@@ -187,9 +187,9 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                 //--[Write data]--
                 BWriter.WriteUInt32(entry.Value.Flags);
                 BWriter.WriteUInt32(00000000);
-                BWriter.WriteUInt32(entry.Value.DataSize);
+                BWriter.WriteUInt32((uint)entry.Value.PCMdata.Length);
                 BWriter.WriteUInt32(entry.Value.Frequency);
-                BWriter.WriteUInt32(entry.Value.DataSize);
+                BWriter.WriteUInt32((uint)entry.Value.PCMdata.Length);
                 BWriter.WriteUInt32(entry.Value.Channels);
                 BWriter.WriteUInt32(entry.Value.Bits);
                 BWriter.WriteUInt32(entry.Value.PSIsample);
