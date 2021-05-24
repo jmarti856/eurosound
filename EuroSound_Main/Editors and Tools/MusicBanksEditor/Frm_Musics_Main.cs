@@ -128,7 +128,7 @@ namespace EuroSound_Application.Musics
             Icon = Icon.Clone() as Icon;
 
             //Type of data that creates this form
-            ProjectInfo.TypeOfData = (int)GenericFunctions.ESoundFileType.MusicBanks;
+            ProjectInfo.TypeOfData = (int)Enumerations.ESoundFileType.MusicBanks;
 
             //Check Hashcodes are not null
             if (Hashcodes.MFX_Defines.Keys.Count == 0)
@@ -574,7 +574,7 @@ namespace EuroSound_Application.Musics
             if (CanExpandChildNodes)
             {
                 //Change node images depending of the type
-                if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
+                if (e.Node.Tag.Equals("Folder") || e.Node.Level == 0)
                 {
                     TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 0, 0);
                 }
@@ -601,7 +601,7 @@ namespace EuroSound_Application.Musics
             if (CanExpandChildNodes)
             {
                 //Change node images depending of the type
-                if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
+                if (e.Node.Tag.Equals("Folder") || e.Node.Level == 0)
                 {
                     TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 1, 1);
                 }
@@ -630,28 +630,32 @@ namespace EuroSound_Application.Musics
 
         private void TreeView_MusicData_KeyDown(object sender, KeyEventArgs e)
         {
-            TreeNode SelectedNode = TreeView_MusicData.SelectedNode;
+            TreeNode selectedNode = TreeView_MusicData.SelectedNode;
 
             //Rename selected Node
             if (e.KeyCode == Keys.F2)
             {
-                TreeNodeFunctions.EditNodeLabel(TreeView_MusicData, SelectedNode);
+                TreeNodeFunctions.EditNodeLabel(TreeView_MusicData, selectedNode);
                 ProjectInfo.FileHasBeenModified = true;
             }
             //Delete selected Node
             if (e.KeyCode == Keys.Delete)
             {
-                if (SelectedNode.Tag.Equals("Music"))
+                //Check that is not a root node
+                if (selectedNode.Level > 0)
                 {
-                    ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXMusic, TreeView_MusicData, SelectedNode, MusicsList, ProjectInfo, UndoListMusics, UndoListNodes, MenuItem_Edit_Undo);
-                }
-                if (SelectedNode.Tag.Equals("Target"))
-                {
-                    ToolsCommonFunctions.RemoveTargetSelectedNode(SelectedNode, OutputTargets, TreeView_MusicData, ProjectInfo);
-                }
-                else
-                {
-                    ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXMusicFolder, TreeView_MusicData, TreeView_MusicData.SelectedNode, MusicsList, ProjectInfo, UndoListMusics, UndoListNodes, MenuItem_Edit_Undo);
+                    if (selectedNode.Tag.Equals("Music"))
+                    {
+                        ToolsCommonFunctions.RemoveEngineXObject("Remove music:", (int)Enumerations.EXObjectType.EXMusic, TreeView_MusicData, selectedNode, MusicsList, ProjectInfo, UndoListMusics, UndoListNodes, MenuItem_Edit_Undo);
+                    }
+                    if (selectedNode.Tag.Equals("Target"))
+                    {
+                        ToolsCommonFunctions.RemoveTargetSelectedNode(selectedNode, OutputTargets, TreeView_MusicData, ProjectInfo);
+                    }
+                    else
+                    {
+                        ToolsCommonFunctions.RemoveEngineXObject("Remove folder:", (int)Enumerations.EXObjectType.EXMusicFolder, TreeView_MusicData, TreeView_MusicData.SelectedNode, MusicsList, ProjectInfo, UndoListMusics, UndoListNodes, MenuItem_Edit_Undo);
+                    }
                 }
             }
         }
@@ -666,7 +670,7 @@ namespace EuroSound_Application.Musics
                 TreeView_MusicData.SelectedNode = SelectedNode;
 
                 //Open contextual menu
-                if (SelectedNode.Tag.Equals("Folder") || SelectedNode.Tag.Equals("Root"))
+                if (SelectedNode.Tag.Equals("Folder") || SelectedNode.Level == 0)
                 {
                     ContextMenu_Folders.Show(Cursor.Position);
                     if (TreeNodeFunctions.FindRootNode(SelectedNode).Name.Equals("Musics"))
@@ -721,7 +725,7 @@ namespace EuroSound_Application.Musics
                 //Double click
                 if (e.Clicks > 1)
                 {
-                    if (!(TreeView_MusicData.SelectedNode.Tag.Equals("Folder") || TreeView_MusicData.SelectedNode.Tag.Equals("Root")))
+                    if (!(TreeView_MusicData.SelectedNode.Tag.Equals("Folder") || TreeView_MusicData.SelectedNode.Level == 0))
                     {
                         CanExpandChildNodes = false;
                     }
@@ -858,7 +862,7 @@ namespace EuroSound_Application.Musics
                     uint LoopPos = 0;
                     for (int j = 0; j < Music.Markers.Count; j++)
                     {
-                        if (Music.Markers[j].MusicMakerType == (int)GenericFunctions.EXMarkerType.Goto)
+                        if (Music.Markers[j].MusicMakerType == (int)Enumerations.EXMarkerType.Goto)
                         {
                             LoopPos = Music.Markers[j].LoopStart;
                         }
@@ -869,11 +873,11 @@ namespace EuroSound_Application.Musics
                     for (int i = 0; i < Music.Markers.Count; i++)
                     {
                         string JumpHashcodeLabel = string.Empty;
-                        if (Music.Markers[i].MusicMakerType == (int)GenericFunctions.EXMarkerType.Goto)
+                        if (Music.Markers[i].MusicMakerType == (int)Enumerations.EXMarkerType.Goto)
                         {
                             JumpHashcodeLabel = string.Join("", "JMP_GOTO_", MusicName, "_LOOP");
                         }
-                        if (Music.Markers[i].MusicMakerType == (int)GenericFunctions.EXMarkerType.Start && Music.Markers[i].Position != LoopPos)
+                        if (Music.Markers[i].MusicMakerType == (int)Enumerations.EXMarkerType.Start && Music.Markers[i].Position != LoopPos)
                         {
                             if (i == 0)
                             {
@@ -885,7 +889,7 @@ namespace EuroSound_Application.Musics
                                 StartMarkersCount++;
                             }
                         }
-                        if (Music.Markers[i].MusicMakerType == (int)GenericFunctions.EXMarkerType.Start && Music.Markers[i].Position == LoopPos)
+                        if (Music.Markers[i].MusicMakerType == (int)Enumerations.EXMarkerType.Start && Music.Markers[i].Position == LoopPos)
                         {
                             JumpHashcodeLabel = string.Join("", "JMP_", MusicName, "_LOOP");
                         }

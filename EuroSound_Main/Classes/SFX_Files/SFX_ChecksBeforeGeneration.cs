@@ -21,16 +21,16 @@ namespace EuroSound_Application.Classes.SFX_Files
             {
                 switch (MarkersList[i].MusicMakerType)
                 {
-                    case (int)GenericFunctions.EXMarkerType.Start:
+                    case (int)Enumerations.EXMarkerType.Start:
                         StartMarkers++;
                         break;
-                    case (int)GenericFunctions.EXMarkerType.End:
+                    case (int)Enumerations.EXMarkerType.End:
                         EndMarkers++;
                         break;
-                    case (int)GenericFunctions.EXMarkerType.Goto:
+                    case (int)Enumerations.EXMarkerType.Goto:
                         GotoMarkers++;
                         break;
-                    case (int)GenericFunctions.EXMarkerType.Loop:
+                    case (int)Enumerations.EXMarkerType.Loop:
                         LoopMarkers++;
                         break;
                 }

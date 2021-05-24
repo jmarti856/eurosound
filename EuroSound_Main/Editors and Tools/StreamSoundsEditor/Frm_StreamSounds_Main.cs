@@ -128,7 +128,7 @@ namespace EuroSound_Application.StreamSounds
             Icon = Icon.Clone() as Icon;
 
             //Type of data that creates this form
-            ProjectInfo.TypeOfData = (int)GenericFunctions.ESoundFileType.StreamSounds;
+            ProjectInfo.TypeOfData = (int)Enumerations.ESoundFileType.StreamSounds;
 
             //Check Hashcodes are not null
             if (Hashcodes.SFX_Defines.Keys.Count == 0 || Hashcodes.SFX_Data.Count == 0)
@@ -495,7 +495,7 @@ namespace EuroSound_Application.StreamSounds
             if (CanExpandChildNodes)
             {
                 //Change node images depending of the type
-                if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
+                if (e.Node.Tag.Equals("Folder") || e.Node.Level == 0)
                 {
                     TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 0, 0);
                 }
@@ -522,7 +522,7 @@ namespace EuroSound_Application.StreamSounds
             if (CanExpandChildNodes)
             {
                 //Change node images depending of the type
-                if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
+                if (e.Node.Tag.Equals("Folder") || e.Node.Level == 0)
                 {
                     TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 1, 1);
                 }
@@ -546,24 +546,28 @@ namespace EuroSound_Application.StreamSounds
 
         private void TreeView_StreamData_KeyDown(object sender, KeyEventArgs e)
         {
-            TreeNode SelectedNode = TreeView_StreamData.SelectedNode;
+            TreeNode selectedNode = TreeView_StreamData.SelectedNode;
 
             //Rename selected Node
             if (e.KeyCode == Keys.F2)
             {
-                TreeNodeFunctions.EditNodeLabel(TreeView_StreamData, SelectedNode);
+                TreeNodeFunctions.EditNodeLabel(TreeView_StreamData, selectedNode);
                 ProjectInfo.FileHasBeenModified = true;
             }
             //Delete selected Node
             if (e.KeyCode == Keys.Delete)
             {
-                if (SelectedNode.Tag.Equals("Sound"))
+                //Check that is not a root node
+                if (selectedNode.Level > 0)
                 {
-                    ToolsCommonFunctions.RemoveEngineXObject(0, TreeView_StreamData, SelectedNode, StreamSoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
-                }
-                else if (SelectedNode.Tag.Equals("Target"))
-                {
-                    ToolsCommonFunctions.RemoveTargetSelectedNode(SelectedNode, OutputTargets, TreeView_StreamData, ProjectInfo);
+                    if (selectedNode.Tag.Equals("Sound"))
+                    {
+                        ToolsCommonFunctions.RemoveEngineXObject("Remove sound:", 0, TreeView_StreamData, selectedNode, StreamSoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
+                    }
+                    else if (selectedNode.Tag.Equals("Target"))
+                    {
+                        ToolsCommonFunctions.RemoveTargetSelectedNode(selectedNode, OutputTargets, TreeView_StreamData, ProjectInfo);
+                    }
                 }
             }
         }
@@ -578,7 +582,7 @@ namespace EuroSound_Application.StreamSounds
                 TreeView_StreamData.SelectedNode = SelectedTreeViewNode;
 
                 //Open contextual menu
-                if (SelectedTreeViewNode.Tag.Equals("Folder") || SelectedTreeViewNode.Tag.Equals("Root"))
+                if (SelectedTreeViewNode.Tag.Equals("Folder") || SelectedTreeViewNode.Level == 0)
                 {
                     ContextMenu_Folders.Show(Cursor.Position);
                     if (TreeNodeFunctions.FindRootNode(SelectedTreeViewNode).Name.Equals("Sounds"))
@@ -634,7 +638,7 @@ namespace EuroSound_Application.StreamSounds
                 //Double click
                 if (e.Clicks > 1)
                 {
-                    if (!(TreeView_StreamData.SelectedNode.Tag.Equals("Folder") || TreeView_StreamData.SelectedNode.Tag.Equals("Root")))
+                    if (!(TreeView_StreamData.SelectedNode.Tag.Equals("Folder") || TreeView_StreamData.SelectedNode.Level == 0))
                     {
                         CanExpandChildNodes = false;
                     }

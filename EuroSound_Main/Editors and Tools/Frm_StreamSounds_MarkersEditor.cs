@@ -38,12 +38,12 @@ namespace EuroSound_Application.StreamSounds
             ComboBox_MarkerType.DisplayMember = "Text";
             ComboBox_MarkerType.ValueMember = "Value";
 
-            ComboBox_MarkerType.Items.Add(new { Text = "Stream Start Marker", Value = (int)GenericFunctions.EXMarkerType.Start });
-            ComboBox_MarkerType.Items.Add(new { Text = "Stream End Marker", Value = (int)GenericFunctions.EXMarkerType.End });
-            ComboBox_MarkerType.Items.Add(new { Text = "Stream Goto Marker", Value = (int)GenericFunctions.EXMarkerType.Goto });
-            ComboBox_MarkerType.Items.Add(new { Text = "Stream Start Loop", Value = (int)GenericFunctions.EXMarkerType.Loop });
-            ComboBox_MarkerType.Items.Add(new { Text = "Stream Pause Marker", Value = (int)GenericFunctions.EXMarkerType.Pause });
-            ComboBox_MarkerType.Items.Add(new { Text = "Stream Jump Marker", Value = (int)GenericFunctions.EXMarkerType.Jump });
+            ComboBox_MarkerType.Items.Add(new { Text = "Stream Start Marker", Value = (int)Enumerations.EXMarkerType.Start });
+            ComboBox_MarkerType.Items.Add(new { Text = "Stream End Marker", Value = (int)Enumerations.EXMarkerType.End });
+            ComboBox_MarkerType.Items.Add(new { Text = "Stream Goto Marker", Value = (int)Enumerations.EXMarkerType.Goto });
+            ComboBox_MarkerType.Items.Add(new { Text = "Stream Start Loop", Value = (int)Enumerations.EXMarkerType.Loop });
+            ComboBox_MarkerType.Items.Add(new { Text = "Stream Pause Marker", Value = (int)Enumerations.EXMarkerType.Pause });
+            ComboBox_MarkerType.Items.Add(new { Text = "Stream Jump Marker", Value = (int)Enumerations.EXMarkerType.Jump });
 
             ComboBox_MarkerType.SelectedIndex = 0;
 
@@ -171,14 +171,14 @@ namespace EuroSound_Application.StreamSounds
                 position = (uint)Numeric_Position.Value * 4;
                 v_MarkerName = TemporalSelectedMusic.StartMarkers.Count;
 
-                if (markerType == (int)GenericFunctions.EXMarkerType.End)
+                if (markerType == (int)Enumerations.EXMarkerType.End)
                 {
                     //--------------------------------------------------[Markers]---------------------------------------------------
                     //----Add End Marker----
                     EXStreamMarker MarkerStart = MarkerFunctions.CreateMarker(TemporalSelectedMusic.Markers, (TemporalSelectedMusic.StartMarkers.Count - 1), position, markerType, 0, (uint)TemporalSelectedMusic.StartMarkers.Count, 0, 0);
                     AddMarkerDataToListView(MarkerStart);
                 }
-                else if (markerType == (int)GenericFunctions.EXMarkerType.Loop)
+                else if (markerType == (int)Enumerations.EXMarkerType.Loop)
                 {
                     //Calculate States --Loop Start Control--
                     IMA_States = MarkerFunctions.GetEngineXMarkerStates_Stereo(TemporalSelectedMusic.IMA_ADPCM_DATA_LeftChannel, TemporalSelectedMusic.IMA_ADPCM_DATA_RightChannel, (int)loopStart);
@@ -214,7 +214,7 @@ namespace EuroSound_Application.StreamSounds
                     Numeric_Position.Value = 0;
                     Numeric_MarkerLoopStart.Value = 0;
                 }
-                else if (markerType == (int)GenericFunctions.EXMarkerType.Goto)
+                else if (markerType == (int)Enumerations.EXMarkerType.Goto)
                 {
                     //Calculate States --Position Control--
                     IMA_States = MarkerFunctions.GetEngineXMarkerStates_Stereo(TemporalSelectedMusic.IMA_ADPCM_DATA_LeftChannel, TemporalSelectedMusic.IMA_ADPCM_DATA_RightChannel, (int)position);
@@ -248,7 +248,7 @@ namespace EuroSound_Application.StreamSounds
 
                 v_MarkerName = TemporalSelectedSound.StartMarkers.Count;
 
-                if (markerType == (int)GenericFunctions.EXMarkerType.End)
+                if (markerType == (int)Enumerations.EXMarkerType.End)
                 {
                     //--------------------------------------------------[Markers]--------------------------------------------------------
                     //----Add End Marker----
@@ -256,7 +256,7 @@ namespace EuroSound_Application.StreamSounds
                     AddMarkerDataToListView(MarkerStart);
 
                 }
-                else if (markerType == (int)GenericFunctions.EXMarkerType.Loop)
+                else if (markerType == (int)Enumerations.EXMarkerType.Loop)
                 {
                     //Calculate States --Loop Start Control--
                     IMA_States = MarkerFunctions.GetEngineXMarkerStates_Mono(TemporalSelectedSound.IMA_ADPCM_DATA, (int)loopStart);
@@ -292,7 +292,7 @@ namespace EuroSound_Application.StreamSounds
                     Numeric_Position.Value = 0;
                     Numeric_MarkerLoopStart.Value = 0;
                 }
-                else if (markerType == (int)GenericFunctions.EXMarkerType.Goto)
+                else if (markerType == (int)Enumerations.EXMarkerType.Goto)
                 {
                     //Calculate States --Position Control--
                     IMA_States = MarkerFunctions.GetEngineXMarkerStates_Mono(TemporalSelectedSound.IMA_ADPCM_DATA, (int)loopStart);
@@ -305,7 +305,7 @@ namespace EuroSound_Application.StreamSounds
                     EXStreamMarker Marker = MarkerFunctions.CreateMarker(TemporalSelectedSound.Markers, v_MarkerName, position, 7, 2, (uint)TemporalSelectedSound.Markers.Count, loopStart, 1);
                     AddMarkerDataToListView(Marker);
                 }
-                else if (markerType == (int)GenericFunctions.EXMarkerType.Pause)
+                else if (markerType == (int)Enumerations.EXMarkerType.Pause)
                 {
                     //--------------------------------------------------[Markers]--------------------------------------------------------
                     //----Add End Marker----

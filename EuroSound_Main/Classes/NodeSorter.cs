@@ -6,16 +6,36 @@ namespace EuroSound_Application.TreeViewSorter
     // Create a node sorter that implements the IComparer interface.
     public class NodeSorter : IComparer
     {
-        // Compare the length of the strings, or the strings
-        // themselves, if they are the same length.
         public int Compare(object x, object y)
         {
-            //int index = 2;
+            TreeNode nx = x as TreeNode;
+            TreeNode ny = y as TreeNode;
 
-            TreeNode tx = x as TreeNode;
-            TreeNode ty = y as TreeNode;
+            // Keep the order of the root nodes...
+            if (nx.Level == 0 || ny.Level == 0) return 1;
 
-            return string.Compare(tx.Text, ty.Text);
+            // If x is Folder...
+            if (nx.Tag is string sx && sx == "Folder")
+            {
+                // And y is Folder...
+                if (ny.Tag is string sy && sy == "Folder")
+                {
+                    // Then, sort them...
+                    return string.Compare(nx.Text, ny.Text, true);
+                }
+
+                // Otherwise, x precedes y...
+                return -1;
+            }
+            // If y is Folder...
+            else if (ny.Tag is string sy && sy == "Folder")
+            {
+                // Then, x follows y...
+                return 1;
+            }
+
+            // Sort the other nodes...
+            return string.Compare(nx.Text, ny.Text, true);
         }
     }
 }

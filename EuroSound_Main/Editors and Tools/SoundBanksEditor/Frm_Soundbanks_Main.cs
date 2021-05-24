@@ -166,7 +166,7 @@ namespace EuroSound_Application.SoundBanksEditor
             Icon = Icon.Clone() as Icon;
 
             //Type of data that creates this form
-            ProjectInfo.TypeOfData = (int)GenericFunctions.ESoundFileType.SoundBanks;
+            ProjectInfo.TypeOfData = (int)Enumerations.ESoundFileType.SoundBanks;
 
             //Check Hashcodes are not null
             if (Hashcodes.SFX_Defines.Keys.Count == 0 || Hashcodes.SFX_Data.Count == 0)
@@ -890,7 +890,7 @@ namespace EuroSound_Application.SoundBanksEditor
             if (CanExpandChildNodes)
             {
                 //Change node images depending of the type
-                if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
+                if (e.Node.Tag.Equals("Folder") || e.Node.Level == 0)
                 {
                     TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 0, 0);
                 }
@@ -921,7 +921,7 @@ namespace EuroSound_Application.SoundBanksEditor
             if (CanExpandChildNodes)
             {
                 //Change node images depending of the type
-                if (e.Node.Tag.Equals("Folder") || e.Node.Tag.Equals("Root"))
+                if (e.Node.Tag.Equals("Folder") || e.Node.Level == 0)
                 {
                     TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 1, 1);
                 }
@@ -972,7 +972,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 //Double click
                 if (e.Clicks > 1)
                 {
-                    if (!(TreeView_File.SelectedNode.Tag.Equals("Folder") || TreeView_File.SelectedNode.Tag.Equals("Root")))
+                    if (!(TreeView_File.SelectedNode.Tag.Equals("Folder") || TreeView_File.SelectedNode.Level == 0))
                     {
                         CanExpandChildNodes = false;
                     }
@@ -998,7 +998,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 if (selectedTreeViewNode != null)
                 {
                     //Check the selected node
-                    if (selectedTreeViewNode.Tag.Equals("Folder") || selectedTreeViewNode.Tag.Equals("Root"))
+                    if (selectedTreeViewNode.Tag.Equals("Folder") || selectedTreeViewNode.Level == 0)
                     {
                         ContextMenu_Folders.Show(Cursor.Position);
                         if (TreeNodeFunctions.FindRootNode(selectedTreeViewNode).Name.Equals("AudioData"))
@@ -1092,25 +1092,29 @@ namespace EuroSound_Application.SoundBanksEditor
             //Delete selected Node
             if (e.KeyCode == Keys.Delete)
             {
-                if (selectedNode.Tag.Equals("Sound"))
+                //Check that is not a root node
+                if (selectedNode.Level > 0)
                 {
-                    ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXSound, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
-                }
-                else if (selectedNode.Tag.Equals("Sample"))
-                {
-                    ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXSample, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
-                }
-                else if (selectedNode.Tag.Equals("Audio"))
-                {
-                    ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXAudio, TreeView_File, TreeView_File.SelectedNode, AudioDataDict, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
-                }
-                else if (selectedNode.Tag.Equals("Target"))
-                {
-                    ToolsCommonFunctions.RemoveTargetSelectedNode(selectedNode, OutputTargets, TreeView_File, ProjectInfo);
-                }
-                else
-                {
-                    ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXSoundFolder, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
+                    if (selectedNode.Tag.Equals("Sound"))
+                    {
+                        ToolsCommonFunctions.RemoveEngineXObject("Remove sound:", (int)Enumerations.EXObjectType.EXSound, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
+                    }
+                    else if (selectedNode.Tag.Equals("Sample"))
+                    {
+                        ToolsCommonFunctions.RemoveEngineXObject("Remove sample:", (int)Enumerations.EXObjectType.EXSample, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
+                    }
+                    else if (selectedNode.Tag.Equals("Audio"))
+                    {
+                        ToolsCommonFunctions.RemoveEngineXObject("Remove audio:", (int)Enumerations.EXObjectType.EXAudio, TreeView_File, TreeView_File.SelectedNode, AudioDataDict, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
+                    }
+                    else if (selectedNode.Tag.Equals("Target"))
+                    {
+                        ToolsCommonFunctions.RemoveTargetSelectedNode(selectedNode, OutputTargets, TreeView_File, ProjectInfo);
+                    }
+                    else
+                    {
+                        ToolsCommonFunctions.RemoveEngineXObject("Remove folder:", (int)Enumerations.EXObjectType.EXSoundFolder, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
+                    }
                 }
             }
         }

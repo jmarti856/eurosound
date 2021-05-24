@@ -95,7 +95,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     {
                         //Type of stored data
                         sbyte typeOfStoredData = binaryReader.ReadSByte();
-                        if (typeOfStoredData == (int)GenericFunctions.ESoundFileType.StreamSounds)
+                        if (typeOfStoredData == (int)Enumerations.ESoundFileType.StreamSounds)
                         {
                             uint ListOffset;
                             //Older versions, before 1.0.1.3

@@ -38,7 +38,7 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
         private void Frm_FileProperties_Shown(object sender, EventArgs e)
         {
             //Datasource Combobox
-            if (CurrentFileProperties.TypeOfData != (int)GenericFunctions.ESoundFileType.MusicBanks)
+            if (CurrentFileProperties.TypeOfData != (int)Enumerations.ESoundFileType.MusicBanks)
             {
                 Hashcodes.AddDataToCombobox(Combobox_FileHashcode, Hashcodes.SB_Defines);
             }
@@ -82,7 +82,7 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
                 uint SelectedHashcode = Convert.ToUInt32(Combobox_FileHashcode.SelectedValue.ToString());
 
                 //Soundbanks and Music project types can't have the hashcode 0x0000FFFF
-                if (CurrentFileProperties.TypeOfData != (int)GenericFunctions.ESoundFileType.StreamSounds)
+                if (CurrentFileProperties.TypeOfData != (int)Enumerations.ESoundFileType.StreamSounds)
                 {
                     if (SelectedHashcode == GlobalPreferences.StreamFileHashCode)
                     {
@@ -94,7 +94,7 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
                         CurrentFileProperties.Hashcode = SelectedHashcode;
 
                         //Update Hashcode File Label
-                        if (CurrentFileProperties.TypeOfData == (int)GenericFunctions.ESoundFileType.MusicBanks)
+                        if (CurrentFileProperties.TypeOfData == (int)Enumerations.ESoundFileType.MusicBanks)
                         {
                             string SelectedHashcodeLabel = Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, CurrentFileProperties.Hashcode);
                             if (SelectedHashcodeLabel.StartsWith("JMP"))

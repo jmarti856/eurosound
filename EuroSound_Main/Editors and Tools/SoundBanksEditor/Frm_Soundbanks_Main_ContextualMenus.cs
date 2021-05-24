@@ -75,6 +75,9 @@ namespace EuroSound_Application.SoundBanksEditor
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, MD5Hash, AudioName, 7, 7, "Audio", true, true, false, SystemColors.WindowText, TreeView_File);
 
                     ProjectInfo.FileHasBeenModified = true;
+
+                    //Sort tree view
+                    TreeView_File.TreeViewNodeSorter = new NodeSorter();
                 }
             }
             else
@@ -129,6 +132,9 @@ namespace EuroSound_Application.SoundBanksEditor
 
                     //File has been modified
                     ProjectInfo.FileHasBeenModified = true;
+
+                    //Sort tree view
+                    TreeView_File.TreeViewNodeSorter = new NodeSorter();
                 }
             }
         }
@@ -153,13 +159,19 @@ namespace EuroSound_Application.SoundBanksEditor
 
                     //File has been modified
                     ProjectInfo.FileHasBeenModified = true;
+
+                    //Sort tree view
+                    TreeView_File.TreeViewNodeSorter = new NodeSorter();
                 }
             }
         }
 
         private void ContextMenu_Folders_Delete_Click(object sender, EventArgs e)
         {
-            ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXSoundFolder, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
+            if (TreeView_File.SelectedNode.Level > 0)
+            {
+                ToolsCommonFunctions.RemoveEngineXObject("Delete folder:", (int)Enumerations.EXObjectType.EXSoundFolder, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
+            }
         }
 
         private void MenuItem_Folder_Collapse_Click(object sender, EventArgs e)
@@ -179,7 +191,6 @@ namespace EuroSound_Application.SoundBanksEditor
                 SoundsToFolders.ShowDialog();
                 ProjectInfo.FileHasBeenModified = true;
             }
-
         }
 
         private void ContextMenu_Folders_New_Click(object sender, EventArgs e)
@@ -196,13 +207,15 @@ namespace EuroSound_Application.SoundBanksEditor
                     uint FolderID = GenericFunctions.GetNewObjectID(ProjectInfo);
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, FolderID.ToString(), folderName, 0, 0, "Folder", true, true, false, SystemColors.WindowText, TreeView_File);
                     ProjectInfo.FileHasBeenModified = true;
+
+                    //Sort tree view
+                    TreeView_File.TreeViewNodeSorter = new NodeSorter();
                 }
             }
         }
 
         private void ContextMenu_Folders_Sort_Click(object sender, EventArgs e)
         {
-            //TreeView_File.Sort();
             TreeView_File.TreeViewNodeSorter = new NodeSorter();
         }
 
@@ -219,7 +232,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     if (nodeToRemove != null)
                     {
                         purgedAudiosList.Add("2Purged Audio: " + nodeToRemove.Text);
-                        ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXAudio, TreeView_File, nodeToRemove, AudioDataDict, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
+                        ToolsCommonFunctions.RemoveEngineXObject("Purge:", (int)Enumerations.EXObjectType.EXAudio, TreeView_File, nodeToRemove, AudioDataDict, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
                     }
                 }
                 purgedAudiosList.TrimExcess();
@@ -283,7 +296,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenu_Sound_Remove_Click(object sender, EventArgs e)
         {
-            ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXSound, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
+            ToolsCommonFunctions.RemoveEngineXObject("Remove SFX:", (int)Enumerations.EXObjectType.EXSound, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
         }
 
         private void ContextMenu_Sound_Rename_Click(object sender, EventArgs e)
@@ -312,14 +325,14 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         //* ContextMenu_Sample
         //*===============================================================================================
-        private void ContextMenu_Sample_Properties_Click(object sender, System.EventArgs e)
+        private void ContextMenu_Sample_Properties_Click(object sender, EventArgs e)
         {
             OpenSelectedNodeSampleProperties(TreeView_File.SelectedNode);
         }
 
-        private void ContextMenu_Sample_Remove_Click(object sender, System.EventArgs e)
+        private void ContextMenu_Sample_Remove_Click(object sender, EventArgs e)
         {
-            ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXSample, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
+            ToolsCommonFunctions.RemoveEngineXObject("Remove sample:", (int)Enumerations.EXObjectType.EXSample, TreeView_File, TreeView_File.SelectedNode, SoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
         }
         private void ContextMenu_Sample_Rename_Click(object sender, System.EventArgs e)
         {
@@ -327,7 +340,7 @@ namespace EuroSound_Application.SoundBanksEditor
             ProjectInfo.FileHasBeenModified = true;
         }
 
-        private void ContextMenu_Sample_TextColor_Click(object sender, System.EventArgs e)
+        private void ContextMenu_Sample_TextColor_Click(object sender, EventArgs e)
         {
             TreeNodeFunctions.ChangeNodeColor(TreeView_File.SelectedNode, ProjectInfo);
         }

@@ -28,7 +28,7 @@ namespace EuroSound_Application
                     int typeOfFileToLoad = TypeOfEuroSoundFile(FileToLoad);
 
                     //Open form
-                    if (typeOfFileToLoad == (int)GenericFunctions.ESoundFileType.SoundBanks)
+                    if (typeOfFileToLoad == (int)Enumerations.ESoundFileType.SoundBanks)
                     {
                         //Add file to recent list
                         RecentFilesMenu.AddFile(FileToLoad);
@@ -46,7 +46,7 @@ namespace EuroSound_Application
                         SoundBanksForm.Show();
                         FormID++;
                     }
-                    else if (typeOfFileToLoad == (int)GenericFunctions.ESoundFileType.StreamSounds)
+                    else if (typeOfFileToLoad == (int)Enumerations.ESoundFileType.StreamSounds)
                     {
                         //Add file to recent list
                         RecentFilesMenu.AddFile(FileToLoad);
@@ -64,7 +64,7 @@ namespace EuroSound_Application
                         StreamSoundsForm.Show();
                         FormID++;
                     }
-                    else if (typeOfFileToLoad == (int)GenericFunctions.ESoundFileType.MusicBanks)
+                    else if (typeOfFileToLoad == (int)Enumerations.ESoundFileType.MusicBanks)
                     {
                         //Add file to recent list
                         RecentFilesMenu.AddFile(FileToLoad);
@@ -92,7 +92,7 @@ namespace EuroSound_Application
 
         private void OpenEmptyForms(string ProjectName, int TypeOfdata)
         {
-            if (TypeOfdata == (int)GenericFunctions.ESoundFileType.SoundBanks)
+            if (TypeOfdata == (int)Enumerations.ESoundFileType.SoundBanks)
             {
                 Frm_Soundbanks_Main SoundBanksForms = new Frm_Soundbanks_Main(ProjectName, string.Empty, RecentFilesMenu)
                 {
@@ -103,7 +103,7 @@ namespace EuroSound_Application
                 SoundBanksForms.Show();
                 FormID++;
             }
-            else if (TypeOfdata == (int)GenericFunctions.ESoundFileType.StreamSounds)
+            else if (TypeOfdata == (int)Enumerations.ESoundFileType.StreamSounds)
             {
                 Frm_StreamSounds_Main SoundBanksForms = new Frm_StreamSounds_Main(ProjectName, string.Empty, RecentFilesMenu)
                 {
@@ -114,7 +114,7 @@ namespace EuroSound_Application
                 SoundBanksForms.Show();
                 FormID++;
             }
-            else if (TypeOfdata == (int)GenericFunctions.ESoundFileType.MusicBanks)
+            else if (TypeOfdata == (int)Enumerations.ESoundFileType.MusicBanks)
             {
                 Frm_Musics_Main MusicsForms = new Frm_Musics_Main(ProjectName, string.Empty, RecentFilesMenu)
                 {

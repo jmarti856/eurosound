@@ -81,7 +81,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion
 
         private void SaveTreeNodes(TreeNode treeNodeToExport, BinaryStream BWriter)
         {
-            if (!treeNodeToExport.Tag.Equals("Root"))
+            if (treeNodeToExport.Level > 0)
             {
                 BWriter.WriteString(treeNodeToExport.Parent.Name);
                 BWriter.WriteString(treeNodeToExport.Name);

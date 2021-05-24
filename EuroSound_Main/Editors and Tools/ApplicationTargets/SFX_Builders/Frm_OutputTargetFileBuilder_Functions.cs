@@ -114,7 +114,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                 foreach (KeyValuePair<uint, EXSound> soundToCheck in finalSoundsDict)
                 {
                     canOutputFile = SFX_Check.ValidateSFX(soundToCheck.Value, finalSoundsDict, soundsHashcodes, ((Frm_Soundbanks_Main)parentForm).TreeView_File.Nodes.Find(soundToCheck.Key.ToString(), true)[0].Text, Reports);
-                    GenericFunctions.ProgressBarAddValue(ProgressBar_CurrentTask, 1);
+                    ToolsCommonFunctions.ProgressBarAddValue(ProgressBar_CurrentTask, 1);
                 }
 
                 if (canOutputFile)
@@ -126,7 +126,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                         {
                             break;
                         }
-                        GenericFunctions.ProgressBarAddValue(ProgressBar_CurrentTask, 1);
+                        ToolsCommonFunctions.ProgressBarAddValue(ProgressBar_CurrentTask, 1);
                     }
                 }
 
@@ -318,7 +318,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                             break;
                         }
                     }
-                    GenericFunctions.ProgressBarAddValue(ProgressBar_CurrentTask, 1);
+                    ToolsCommonFunctions.ProgressBarAddValue(ProgressBar_CurrentTask, 1);
                 }
 
                 //Update Total Progress
@@ -507,7 +507,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                             break;
                         }
                     }
-                    GenericFunctions.ProgressBarAddValue(ProgressBar_CurrentTask, 1);
+                    ToolsCommonFunctions.ProgressBarAddValue(ProgressBar_CurrentTask, 1);
                 }
 
                 //Update Total Progress

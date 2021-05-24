@@ -106,15 +106,15 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                             string directoryPath = Path.Combine(storedTarget.OutputDirectory, string.Join("", "_bin_", storedTarget.Name));
                             switch (CurrentFileProperties.TypeOfData)
                             {
-                                case (int)GenericFunctions.ESoundFileType.SoundBanks:
+                                case (int)Enumerations.ESoundFileType.SoundBanks:
                                     string filePath = Path.Combine(directoryPath, "_Eng", selectedTarget.BinaryName);
                                     BuildSFXSoundBank_Sphinx(directoryPath, filePath, parentFormTag, storedTarget.Name, e);
                                     break;
-                                case (int)GenericFunctions.ESoundFileType.StreamSounds:
+                                case (int)Enumerations.ESoundFileType.StreamSounds:
                                     filePath = Path.Combine(directoryPath, "_Eng", selectedTarget.BinaryName);
                                     BuildSFXStreamBank_Sphinx(directoryPath, filePath, parentFormTag, e);
                                     break;
-                                case (int)GenericFunctions.ESoundFileType.MusicBanks:
+                                case (int)Enumerations.ESoundFileType.MusicBanks:
                                     filePath = Path.Combine(directoryPath, "Music", selectedTarget.BinaryName);
                                     BuildMusicBank_Sphinx(directoryPath, filePath, parentFormTag, e);
                                     break;
@@ -138,15 +138,15 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                     {
                         switch (CurrentFileProperties.TypeOfData)
                         {
-                            case (int)GenericFunctions.ESoundFileType.SoundBanks:
+                            case (int)Enumerations.ESoundFileType.SoundBanks:
                                 string filePath = Path.Combine(directoryPath, "_Eng", selectedTarget.BinaryName);
                                 BuildSFXSoundBank_Sphinx(directoryPath, filePath, parentFormTag, selectedTarget.Name, e);
                                 break;
-                            case (int)GenericFunctions.ESoundFileType.StreamSounds:
+                            case (int)Enumerations.ESoundFileType.StreamSounds:
                                 filePath = Path.Combine(directoryPath, "_Eng", selectedTarget.BinaryName);
                                 BuildSFXStreamBank_Sphinx(directoryPath, filePath, parentFormTag, e);
                                 break;
-                            case (int)GenericFunctions.ESoundFileType.MusicBanks:
+                            case (int)Enumerations.ESoundFileType.MusicBanks:
                                 filePath = Path.Combine(directoryPath, "Music", selectedTarget.BinaryName);
                                 BuildMusicBank_Sphinx(directoryPath, filePath, parentFormTag, e);
                                 break;

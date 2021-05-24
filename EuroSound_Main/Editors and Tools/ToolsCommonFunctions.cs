@@ -55,12 +55,12 @@ namespace EuroSound_Application.Editors_and_Tools
         //*===============================================================================================
         //* Remove EngineXObject
         //*===============================================================================================
-        internal static void RemoveEngineXObject(uint objectID, TreeView treeViewControl, TreeNode selectedNode, object dataDictionary, ProjectFile currentProject, Stack<object> UndoListSounds, object UndoListNodes, ToolStripMenuItem MenuItem_Edit_Undo)
+        internal static void RemoveEngineXObject(string warningText, uint objectID, TreeView treeViewControl, TreeNode selectedNode, object dataDictionary, ProjectFile currentProject, Stack<object> UndoListSounds, object UndoListNodes, ToolStripMenuItem MenuItem_Edit_Undo)
         {
             //Show warning
             if (GlobalPreferences.ShowWarningMessagesBox)
             {
-                EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Music:", treeViewControl.SelectedNode.Text }), "Warning", true);
+                EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { warningText, treeViewControl.SelectedNode.Text }), "Warning", true);
                 if (WarningDialog.ShowDialog() == DialogResult.OK)
                 {
                     GlobalPreferences.ShowWarningMessagesBox = WarningDialog.ShowWarningAgain;
@@ -76,21 +76,21 @@ namespace EuroSound_Application.Editors_and_Tools
 
         private static void RemoveObject(uint objectType, TreeView treeViewControl, TreeNode selectedNode, object dataDictionary, ProjectFile currentProject, Stack<object> UndoListSounds, object UndoListNodes, ToolStripMenuItem MenuItem_Edit_Undo)
         {
-            if (currentProject.TypeOfData == (int)GenericFunctions.ESoundFileType.MusicBanks)
+            if (currentProject.TypeOfData == (int)Enumerations.ESoundFileType.MusicBanks)
             {
                 Dictionary<uint, EXMusic> MusicsDictionary = (Dictionary<uint, EXMusic>)dataDictionary;
                 //Remove Item
-                if (objectType == (int)GenericFunctions.EXObjectType.EXMusic)
+                if (objectType == (int)Enumerations.EXObjectType.EXMusic)
                 {
                     uint objectKey = uint.Parse(selectedNode.Name);
                     if (MusicsDictionary.ContainsKey(objectKey))
                     {
                         SaveSnapshot(selectedNode.Name, MusicsDictionary[objectKey], selectedNode, currentProject.TypeOfData, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
                         MusicsDictionary.Remove(objectKey);
-                        TreeNodeFunctions.TreeNodeDeleteNode(treeViewControl, selectedNode, selectedNode.Tag.ToString());
+                        TreeNodeFunctions.TreeNodeDeleteNode(treeViewControl, selectedNode);
                     }
                 }
-                else if (objectType == (int)GenericFunctions.EXObjectType.EXMusicFolder)
+                else if (objectType == (int)Enumerations.EXObjectType.EXMusicFolder)
                 {
                     //Remove child nodes sounds and samples
                     IList<TreeNode> ChildNodesCollection = new List<TreeNode>();
@@ -102,10 +102,10 @@ namespace EuroSound_Application.Editors_and_Tools
                             MusicsDictionary.Remove(objectKey);
                         }
                     }
-                    TreeNodeFunctions.TreeNodeDeleteNode(treeViewControl, selectedNode, selectedNode.Tag.ToString());
+                    TreeNodeFunctions.TreeNodeDeleteNode(treeViewControl, selectedNode);
                 }
             }
-            if (currentProject.TypeOfData == (int)GenericFunctions.ESoundFileType.StreamSounds)
+            if (currentProject.TypeOfData == (int)Enumerations.ESoundFileType.StreamSounds)
             {
                 //Remove Item
                 Dictionary<uint, EXSoundStream> StreamSoundsDictionary = (Dictionary<uint, EXSoundStream>)dataDictionary;
@@ -114,22 +114,22 @@ namespace EuroSound_Application.Editors_and_Tools
                 {
                     SaveSnapshot(selectedNode.Name, StreamSoundsDictionary[objectKey], selectedNode, currentProject.TypeOfData, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
                     StreamSoundsDictionary.Remove(objectKey);
-                    TreeNodeFunctions.TreeNodeDeleteNode(treeViewControl, selectedNode, selectedNode.Tag.ToString());
+                    TreeNodeFunctions.TreeNodeDeleteNode(treeViewControl, selectedNode);
                 }
             }
-            if (currentProject.TypeOfData == (int)GenericFunctions.ESoundFileType.SoundBanks)
+            if (currentProject.TypeOfData == (int)Enumerations.ESoundFileType.SoundBanks)
             {
-                if (objectType == (int)GenericFunctions.EXObjectType.EXAudio)//Audio
+                if (objectType == (int)Enumerations.EXObjectType.EXAudio)
                 {
                     Dictionary<string, EXAudio> audioDictionary = (Dictionary<string, EXAudio>)dataDictionary;
                     if (audioDictionary.ContainsKey(selectedNode.Name))
                     {
                         SaveSnapshot(selectedNode.Name, audioDictionary[selectedNode.Name], selectedNode, currentProject.TypeOfData, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
                         audioDictionary.Remove(selectedNode.Name);
-                        TreeNodeFunctions.TreeNodeDeleteNode(treeViewControl, selectedNode, selectedNode.Tag.ToString());
+                        TreeNodeFunctions.TreeNodeDeleteNode(treeViewControl, selectedNode);
                     }
                 }
-                else if (objectType == (int)GenericFunctions.EXObjectType.EXSample)//Sample
+                else if (objectType == (int)Enumerations.EXObjectType.EXSample)
                 {
                     EXSound parentSound = EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(selectedNode.Parent.Name), (Dictionary<uint, EXSound>)dataDictionary);
                     if (parentSound != null)
@@ -138,7 +138,7 @@ namespace EuroSound_Application.Editors_and_Tools
                     }
                     selectedNode.Remove();
                 }
-                else if (objectType == (int)GenericFunctions.EXObjectType.EXSound)//Sound
+                else if (objectType == (int)Enumerations.EXObjectType.EXSound)
                 {
                     Dictionary<uint, EXSound> soundsDictionary = (Dictionary<uint, EXSound>)dataDictionary;
                     uint objectKey = uint.Parse(selectedNode.Name);
@@ -146,10 +146,10 @@ namespace EuroSound_Application.Editors_and_Tools
                     {
                         SaveSnapshot(selectedNode.Name, soundsDictionary[objectKey], selectedNode, currentProject.TypeOfData, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
                         soundsDictionary.Remove(objectKey);
-                        TreeNodeFunctions.TreeNodeDeleteNode(treeViewControl, selectedNode, selectedNode.Tag.ToString());
+                        TreeNodeFunctions.TreeNodeDeleteNode(treeViewControl, selectedNode);
                     }
                 }
-                else if (objectType == (int)GenericFunctions.EXObjectType.EXSoundFolder)//Folder
+                else if (objectType == (int)Enumerations.EXObjectType.EXSoundFolder)
                 {
                     //Remove child nodes sounds and samples
                     IList<TreeNode> childNodesCollection = new List<TreeNode>();
@@ -161,7 +161,7 @@ namespace EuroSound_Application.Editors_and_Tools
                             soundsDictionary.Remove(uint.Parse(ChildNode.Name));
                         }
                     }
-                    TreeNodeFunctions.TreeNodeDeleteNode(treeViewControl, selectedNode, selectedNode.Tag.ToString());
+                    TreeNodeFunctions.TreeNodeDeleteNode(treeViewControl, selectedNode);
                 }
             }
             currentProject.FileHasBeenModified = true;
@@ -174,15 +174,15 @@ namespace EuroSound_Application.Editors_and_Tools
         {
             switch (typeOfFile)
             {
-                case (int)GenericFunctions.ESoundFileType.StreamSounds:
+                case (int)Enumerations.ESoundFileType.StreamSounds:
                     UndoListSounds.Push(new KeyValuePair<uint, EXSoundStream>(uint.Parse(ItemKey), (EXSoundStream)SoundToSave));
                     ((Stack<TreeNode>)UndoListNodes).Push(NodeToSave);
                     break;
-                case (int)GenericFunctions.ESoundFileType.MusicBanks:
+                case (int)Enumerations.ESoundFileType.MusicBanks:
                     UndoListSounds.Push(new KeyValuePair<uint, EXMusic>(uint.Parse(ItemKey), (EXMusic)SoundToSave));
                     ((Stack<TreeNode>)UndoListNodes).Push(NodeToSave);
                     break;
-                case (int)GenericFunctions.ESoundFileType.SoundBanks:
+                case (int)Enumerations.ESoundFileType.SoundBanks:
                     if (SoundToSave.GetType() == typeof(EXSound))
                     {
                         UndoListSounds.Push(new KeyValuePair<uint, EXSound>(uint.Parse(ItemKey), (EXSound)SoundToSave));
@@ -204,13 +204,13 @@ namespace EuroSound_Application.Editors_and_Tools
         {
             switch (typeOfFile)
             {
-                case (int)GenericFunctions.ESoundFileType.StreamSounds:
+                case (int)Enumerations.ESoundFileType.StreamSounds:
                     MenuItem_Edit_Undo.Enabled = (((Stack<TreeNode>)UndoListNodes).Count > 0);
                     break;
-                case (int)GenericFunctions.ESoundFileType.MusicBanks:
+                case (int)Enumerations.ESoundFileType.MusicBanks:
                     MenuItem_Edit_Undo.Enabled = (((Stack<TreeNode>)UndoListNodes).Count > 0);
                     break;
-                case (int)GenericFunctions.ESoundFileType.SoundBanks:
+                case (int)Enumerations.ESoundFileType.SoundBanks:
                     MenuItem_Edit_Undo.Enabled = (((Stack<KeyValuePair<string, TreeNode>>)UndoListNodes).Count > 0);
                     break;
             }
@@ -277,7 +277,7 @@ namespace EuroSound_Application.Editors_and_Tools
         internal static void TreeViewNodeRename(TreeView treeViewControl, NodeLabelEditEventArgs e)
         {
             //Check that we have selected a node, and we have not selected the root folder
-            if (e.Node.Parent != null && !e.Node.Tag.Equals("Root"))
+            if (e.Node.Parent != null && e.Node.Level > 0)
             {
                 //Check label is not null, sometimes can crash without this check
                 if (e.Label != null)
@@ -377,7 +377,7 @@ namespace EuroSound_Application.Editors_and_Tools
                         Confirm we are not outside the node section and that the destination place is a folder or the root
                         node section
                         */
-                        if (sourceSection.Equals(destSection) && (destNodeType.Equals("Folder") || destNodeType.Equals("Root")))
+                        if (sourceSection.Equals(destSection) && (destNodeType.Equals("Folder") || targetNode.Level == 0))
                         {
                             //Remove the node from its current
                             //location and add it to the node at the drop location.
@@ -403,14 +403,14 @@ namespace EuroSound_Application.Editors_and_Tools
                 if (targetNode != null)
                 {
                     //Type of nodes that are allowed to be re-ubicated
-                    if (projectInfo.TypeOfData == (int)GenericFunctions.ESoundFileType.SoundBanks)
+                    if (projectInfo.TypeOfData == (int)Enumerations.ESoundFileType.SoundBanks)
                     {
                         if (draggedNode.Tag.Equals("Folder") || draggedNode.Tag.Equals("Sound") || draggedNode.Tag.Equals("Audio") || draggedNode.Tag.Equals("Target"))
                         {
                             e.Effect = DragDropEffects.Move;
                         }
                     }
-                    else if (projectInfo.TypeOfData == (int)GenericFunctions.ESoundFileType.MusicBanks)
+                    else if (projectInfo.TypeOfData == (int)Enumerations.ESoundFileType.MusicBanks)
                     {
                         if (draggedNode.Tag.Equals("Folder") || draggedNode.Tag.Equals("Music") || draggedNode.Tag.Equals("Target"))
                         {

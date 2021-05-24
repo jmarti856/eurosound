@@ -37,33 +37,6 @@ namespace EuroSound_Application
         internal static StatusBarToolTips ParentFormStatusBar;
         internal static Dictionary<string, string> AvailableProfiles = new Dictionary<string, string>();
 
-        internal enum EXMarkerType : uint
-        {
-            Start = 10,
-            End = 9,
-            Goto = 7,
-            Loop = 6,
-            Pause = 5,
-            Jump = 0
-        }
-
-        internal enum ESoundFileType : int
-        {
-            SoundBanks = 0,
-            StreamSounds = 1,
-            MusicBanks = 2
-        }
-
-        internal enum EXObjectType : int
-        {
-            EXAudio = 1,
-            EXSound = 2,
-            EXSample = 3,
-            EXMusic = 4,
-            EXSoundFolder = 5,
-            EXMusicFolder = 6
-        }
-
         internal static string TruncateLongString(string str, int maxLenght)
         {
             if (str.Length > maxLenght)
@@ -377,14 +350,21 @@ namespace EuroSound_Application
         //*===============================================================================================
         //* PROGRESS BAR FUNCTIONS
         //*===============================================================================================
-        internal static void ProgressBarSetMaximum(ProgressBar BarToChange, int Maximum)
+        internal static void ProgressBarSetMaximum(ProgressBar BarToChange, int maxValue)
         {
             if (BarToChange != null)
             {
-                BarToChange.Invoke((MethodInvoker)delegate
+                if (BarToChange.InvokeRequired)
                 {
-                    BarToChange.Maximum = Maximum;
-                });
+                    BarToChange.Invoke((MethodInvoker)delegate
+                    {
+                        BarToChange.Maximum = maxValue;
+                    });
+                }
+                else
+                {
+                    BarToChange.Maximum = maxValue;
+                }
             }
         }
 
@@ -392,21 +372,17 @@ namespace EuroSound_Application
         {
             if (BarToChange != null)
             {
-                BarToChange.Invoke((MethodInvoker)delegate
+                if (BarToChange.InvokeRequired)
+                {
+                    BarToChange.Invoke((MethodInvoker)delegate
+                    {
+                        BarToChange.Value = value;
+                    });
+                }
+                else
                 {
                     BarToChange.Value = value;
-                });
-            }
-        }
-
-        internal static void ProgressBarAddValue(ProgressBar BarToChange, int value)
-        {
-            if (BarToChange != null)
-            {
-                BarToChange.Invoke((MethodInvoker)delegate
-                {
-                    BarToChange.Value += value;
-                });
+                }
             }
         }
 

@@ -12,7 +12,7 @@ namespace EuroSound_Application.ApplicationTargets
 
             if (ProfileName.Equals("Sphinx", StringComparison.OrdinalIgnoreCase))
             {
-                if (currentProjectInfo.TypeOfData == (int)GenericFunctions.ESoundFileType.SoundBanks || currentProjectInfo.TypeOfData == (int)GenericFunctions.ESoundFileType.StreamSounds)
+                if (currentProjectInfo.TypeOfData == (int)Enumerations.ESoundFileType.SoundBanks || currentProjectInfo.TypeOfData == (int)Enumerations.ESoundFileType.StreamSounds)
                 {
                     fileName = string.Join("", "HC", currentProjectInfo.Hashcode.ToString("X8").Substring(2), ".SFX");
                 }

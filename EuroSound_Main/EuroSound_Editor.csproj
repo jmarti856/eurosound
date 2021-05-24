@@ -171,6 +171,7 @@
     <Compile Include="BashMode\BashMode_OutputFilesOldVersion.cs" />
     <Compile Include="BashMode\BashMode_CommonFunctions.cs" />
     <Compile Include="BashMode\BashMode_OutputFilesNewVersion.cs" />
+    <Compile Include="Classes\Enumerations.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSound Files %28New Version%29\ESF_LoadMusicBanks_New.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSound Files %28New Version%29\ESF_LoadSoundBanks_New.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSound Files %28New Version%29\ESF_LoadStreamFile_New.cs" />

@@ -182,14 +182,15 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
             }
         }
 
-        internal static void TreeNodeDeleteNode(TreeView TreeViewFile, TreeNode Name, string NodeTag)
+        internal static void TreeNodeDeleteNode(TreeView TreeViewFile, TreeNode nodeToCheck)
         {
-            //--Root node can't be deleted--
-            if (!NodeTag.Equals("Root"))
+            if (nodeToCheck != null)
             {
-                if (Name != null)
+                //--Root node can't be deleted--
+                if (nodeToCheck.Level > 0)
                 {
-                    TreeViewFile.Nodes.Remove(Name);
+
+                    TreeViewFile.Nodes.Remove(nodeToCheck);
                 }
             }
         }

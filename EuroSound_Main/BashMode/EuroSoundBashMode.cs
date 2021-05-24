@@ -154,13 +154,13 @@ namespace EuroSound_Application.BashMode
                                     BashMode_OutputFilesOldVersion bashFunctions = new BashMode_OutputFilesOldVersion();
                                     switch (TypeOfStoredData)
                                     {
-                                        case (int)GenericFunctions.ESoundFileType.SoundBanks:
+                                        case (int)Enumerations.ESoundFileType.SoundBanks:
                                             bashFunctions.OutputSoundBank(BReader, Path.Combine(GlobalPreferences.OutputDirectory, "_bin_PC", "_eng"));
                                             break;
-                                        case (int)GenericFunctions.ESoundFileType.StreamSounds:
+                                        case (int)Enumerations.ESoundFileType.StreamSounds:
                                             bashFunctions.OutputStreamFile(BReader, Path.Combine(GlobalPreferences.OutputDirectory, "_bin_PC", "_eng"));
                                             break;
-                                        case (int)GenericFunctions.ESoundFileType.MusicBanks:
+                                        case (int)Enumerations.ESoundFileType.MusicBanks:
                                             bashFunctions.OutputMusicBank(BReader, Path.Combine(GlobalPreferences.OutputDirectory, "_bin_PC", "music"));
                                             break;
                                     }
@@ -171,13 +171,13 @@ namespace EuroSound_Application.BashMode
                                     BashMode_OutputFilesNewVersion bashFunctions = new BashMode_OutputFilesNewVersion();
                                     switch (TypeOfStoredData)
                                     {
-                                        case (int)GenericFunctions.ESoundFileType.SoundBanks:
+                                        case (int)Enumerations.ESoundFileType.SoundBanks:
                                             bashFunctions.OutputSoundBank(BReader, Commands[1]);
                                             break;
-                                        case (int)GenericFunctions.ESoundFileType.StreamSounds:
+                                        case (int)Enumerations.ESoundFileType.StreamSounds:
                                             bashFunctions.OutputStreamFile(BReader, Commands[1]);
                                             break;
-                                        case (int)GenericFunctions.ESoundFileType.MusicBanks:
+                                        case (int)Enumerations.ESoundFileType.MusicBanks:
                                             bashFunctions.OutputMusicBank(BReader, Commands[1]);
                                             break;
                                     }

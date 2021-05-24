@@ -75,13 +75,13 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                         {
                             switch (BReader.ReadSByte())
                             {
-                                case (int)GenericFunctions.ESoundFileType.SoundBanks:
+                                case (int)Enumerations.ESoundFileType.SoundBanks:
                                     profileName = new ESF_LoadSoundBanks().ReadEuroSoundSoundBankFile(projectProperties, BReader, (Dictionary<uint, EXSound>)dictionaryData, (Dictionary<string, EXAudio>)dictionaryMedia, treeViewControl, (int)FileVersion);
                                     break;
-                                case (int)GenericFunctions.ESoundFileType.StreamSounds:
+                                case (int)Enumerations.ESoundFileType.StreamSounds:
                                     profileName = new ESF_LoadStreamSounds().ReadEuroSoundStreamFile(projectProperties, BReader, treeViewControl, (Dictionary<uint, EXSoundStream>)dictionaryData, (int)FileVersion);
                                     break;
-                                case (int)GenericFunctions.ESoundFileType.MusicBanks:
+                                case (int)Enumerations.ESoundFileType.MusicBanks:
                                     profileName = new ESF_LoadMusics().ReadEuroSoundMusicFile(projectProperties, BReader, treeViewControl, (Dictionary<uint, EXMusic>)dictionaryData, (int)FileVersion);
                                     break;
                             }
@@ -91,13 +91,13 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                         {
                             switch (BReader.ReadSByte())
                             {
-                                case (int)GenericFunctions.ESoundFileType.SoundBanks:
+                                case (int)Enumerations.ESoundFileType.SoundBanks:
                                     profileName = new ESF_LoadSoundBanks_New().ReadEuroSoundSoundBankFile(projectProperties, BReader, (Dictionary<uint, EXSound>)dictionaryData, (Dictionary<string, EXAudio>)dictionaryMedia, OutputTargets, treeViewControl);
                                     break;
-                                case (int)GenericFunctions.ESoundFileType.StreamSounds:
+                                case (int)Enumerations.ESoundFileType.StreamSounds:
                                     profileName = new ESF_LoadStreamFile_New().ReadEuroSoundStreamFile(projectProperties, BReader, treeViewControl, (Dictionary<uint, EXSoundStream>)dictionaryData, OutputTargets);
                                     break;
-                                case (int)GenericFunctions.ESoundFileType.MusicBanks:
+                                case (int)Enumerations.ESoundFileType.MusicBanks:
                                     profileName = new ESF_LoadMusicBanks_New().ReadEuroSoundMusicFile(projectProperties, BReader, treeViewControl, (Dictionary<uint, EXMusic>)dictionaryData, OutputTargets);
                                     break;
                             }
@@ -139,13 +139,13 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 
                 switch (FileProperties.TypeOfData)
                 {
-                    case (int)GenericFunctions.ESoundFileType.SoundBanks:
+                    case (int)Enumerations.ESoundFileType.SoundBanks:
                         new ESF_SaveSoundBanks().SaveSoundBanks(BWriter, TreeViewControl, (Dictionary<uint, EXSound>)dictionaryData, (Dictionary<string, EXAudio>)dictionaryMedia, OutputTargets, FileProperties);
                         break;
-                    case (int)GenericFunctions.ESoundFileType.StreamSounds:
+                    case (int)Enumerations.ESoundFileType.StreamSounds:
                         new ESF_SaveStreamFile().SaveStreamedSounds(BWriter, TreeViewControl, (Dictionary<uint, EXSoundStream>)dictionaryData, OutputTargets, FileProperties);
                         break;
-                    case (int)GenericFunctions.ESoundFileType.MusicBanks:
+                    case (int)Enumerations.ESoundFileType.MusicBanks:
                         new ESF_SaveMusicBanks().SaveMusics(BWriter, TreeViewControl, (Dictionary<uint, EXMusic>)dictionaryData, OutputTargets, FileProperties);
                         break;
                 }

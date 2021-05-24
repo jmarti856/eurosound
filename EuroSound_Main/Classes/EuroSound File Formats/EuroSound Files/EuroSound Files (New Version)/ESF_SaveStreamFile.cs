@@ -167,7 +167,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
 
         private void SaveOnlyNodeName(TreeNode SelectedNode, BinaryStream BWriter)
         {
-            if (!SelectedNode.Tag.Equals("Root"))
+            if (SelectedNode.Level > 0)
             {
                 BWriter.WriteString(SelectedNode.Text);
             }

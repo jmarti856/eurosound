@@ -161,7 +161,7 @@ namespace EuroSound_Application.SoundBanksEditor
             }
             else
             {
-                ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXAudio, TreeView_File, SelectedNode, AudioDataDict, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
+                ToolsCommonFunctions.RemoveEngineXObject("Remove audio:", (int)Enumerations.EXObjectType.EXAudio, TreeView_File, SelectedNode, AudioDataDict, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
             }
         }
 

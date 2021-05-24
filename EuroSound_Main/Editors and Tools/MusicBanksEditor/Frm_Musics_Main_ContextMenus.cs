@@ -25,7 +25,7 @@ namespace EuroSound_Application.Musics
 
         private void ContextMenuMusics_Delete_Click(object sender, EventArgs e)
         {
-            ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXMusic, TreeView_MusicData, TreeView_MusicData.SelectedNode, MusicsList, ProjectInfo, UndoListMusics, UndoListNodes, MenuItem_Edit_Undo);
+            ToolsCommonFunctions.RemoveEngineXObject("Remove music:", (int)Enumerations.EXObjectType.EXMusic, TreeView_MusicData, TreeView_MusicData.SelectedNode, MusicsList, ProjectInfo, UndoListMusics, UndoListNodes, MenuItem_Edit_Undo);
         }
 
         private void ContextMenuMusics_Properties_Click(object sender, EventArgs e)
@@ -43,8 +43,7 @@ namespace EuroSound_Application.Musics
 
             if (!string.IsNullOrEmpty(ExportPath))
             {
-                ESIF_Exporter ESIF_Exp = new ESIF_Exporter();
-                ESIF_Exp.ExportMusicBank(ExportPath, uint.Parse(SelectedNode.Name), MusicsList, TreeView_MusicData);
+                new ESIF_Exporter().ExportMusicBank(ExportPath, uint.Parse(SelectedNode.Name), MusicsList, TreeView_MusicData);
             }
         }
 
@@ -70,6 +69,9 @@ namespace EuroSound_Application.Musics
                     uint FolderID = GenericFunctions.GetNewObjectID(ProjectInfo);
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_MusicData.SelectedNode.Name, FolderID.ToString(), Name, 0, 0, "Folder", true, true, false, SystemColors.WindowText, TreeView_MusicData);
                     ProjectInfo.FileHasBeenModified = true;
+
+                    //Sort tree view
+                    TreeView_MusicData.TreeViewNodeSorter = new NodeSorter();
                 }
             }
         }
@@ -86,12 +88,14 @@ namespace EuroSound_Application.Musics
 
         private void ContextMenuFolder_Delete_Click(object sender, EventArgs e)
         {
-            ToolsCommonFunctions.RemoveEngineXObject((int)GenericFunctions.EXObjectType.EXMusicFolder, TreeView_MusicData, TreeView_MusicData.SelectedNode, MusicsList, ProjectInfo, UndoListMusics, UndoListNodes, MenuItem_Edit_Undo);
+            if (TreeView_MusicData.SelectedNode.Level > 0)
+            {
+                ToolsCommonFunctions.RemoveEngineXObject("Remove folder:", (int)Enumerations.EXObjectType.EXMusicFolder, TreeView_MusicData, TreeView_MusicData.SelectedNode, MusicsList, ProjectInfo, UndoListMusics, UndoListNodes, MenuItem_Edit_Undo);
+            }
         }
 
         private void ContextMenuFolder_SortItems_Click(object sender, EventArgs e)
         {
-            //TreeView_File.Sort();
             TreeView_MusicData.TreeViewNodeSorter = new NodeSorter();
         }
 
@@ -116,6 +120,9 @@ namespace EuroSound_Application.Musics
                     }
 
                     ProjectInfo.FileHasBeenModified = true;
+
+                    //Sort tree view
+                    TreeView_MusicData.TreeViewNodeSorter = new NodeSorter();
                 }
             }
         }
