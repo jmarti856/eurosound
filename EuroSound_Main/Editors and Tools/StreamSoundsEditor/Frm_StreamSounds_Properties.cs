@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.Clases;
+using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using NAudio.Wave;
 using System;
@@ -17,14 +18,16 @@ namespace EuroSound_Application.StreamSounds
         private WaveOut _waveOut = new WaveOut();
         private EXSoundStream SelectedSound, TemporalSound;
         private string SelectedSoundKey, SoundName;
+        private ProjectFile fileProperties;
         private AudioFunctions AudioLibrary = new AudioFunctions();
 
-        public Frm_StreamSounds_Properties(EXSoundStream SoundToCheck, string SoundKey, string CurrentSoundName)
+        public Frm_StreamSounds_Properties(EXSoundStream SoundToCheck, string SoundKey, string CurrentSoundName, ProjectFile FileProperties)
         {
             InitializeComponent();
             SelectedSound = SoundToCheck;
             SelectedSoundKey = SoundKey;
             SoundName = CurrentSoundName;
+            fileProperties = FileProperties;
         }
 
         //*===============================================================================================
@@ -154,6 +157,9 @@ namespace EuroSound_Application.StreamSounds
                     TreeNodeFunctions.TreeNodeSetNodeImage(Results[0], 5, 5);
                 }
             }
+
+            //Update project status variable
+            fileProperties.FileHasBeenModified = true;
 
             //--Close this form--
             Close();

@@ -70,6 +70,9 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
                 });
             }
 
+            //Update project status variable
+            FileProperties.FileHasBeenModified = true;
+
             ShowErrorsWarningsList(FilePath);
         }
 
@@ -147,7 +150,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
                             {
                                 if (!soundNodeAdded)
                                 {
-                                    TreeNodeFunctions.TreeNodeAddNewNode("StreamedSounds", soundID.ToString(), SoundName, 2, 2, "Sound", false, false, false, SystemColors.WindowText, TreeViewControl);
+                                    TreeNodeFunctions.TreeNodeAddNewNode("StreamedSounds", soundID.ToString(), SoundName, 2, 2, (byte)Enumerations.TreeNodeType.Sound, false, false, false, SystemColors.WindowText, TreeViewControl);
                                     newSample.IsStreamed = true;
                                     soundNodeAdded = true;
                                 }
@@ -156,7 +159,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
                             {
                                 if (!soundNodeAdded)
                                 {
-                                    TreeNodeFunctions.TreeNodeAddNewNode("Sounds", soundID.ToString(), SoundName, 2, 2, "Sound", false, false, false, SystemColors.WindowText, TreeViewControl);
+                                    TreeNodeFunctions.TreeNodeAddNewNode("Sounds", soundID.ToString(), SoundName, 2, 2, (byte)Enumerations.TreeNodeType.Sound, false, false, false, SystemColors.WindowText, TreeViewControl);
                                     soundNodeAdded = true;
                                 }
 
@@ -174,7 +177,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
                                     if (File.Exists(audioPath))
                                     {
                                         string MD5AudioFilehash = GenericFunctions.CalculateMD5(audioPath);
-                                        LoadAudio(audioPath, audioProps, SoundName, sampleName, TreeViewControl, AudioDict, newSample, FilePath, Entry.Key, MD5AudioFilehash);
+                                        LoadAudio(FileProperties, audioPath, audioProps, SoundName, sampleName, TreeViewControl, AudioDict, newSample, FilePath, Entry.Key, MD5AudioFilehash);
                                     }
                                     else
                                     {
@@ -185,7 +188,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
 
                             //--Add Sample To Dictionary--
                             NewSound.Samples.Add(sampleID, newSample);
-                            TreeNodeFunctions.TreeNodeAddNewNode(soundID.ToString(), sampleID.ToString(), sampleName, 4, 4, "Sample", false, false, false, SystemColors.WindowText, TreeViewControl);
+                            TreeNodeFunctions.TreeNodeAddNewNode(soundID.ToString(), sampleID.ToString(), sampleName, 4, 4, (byte)Enumerations.TreeNodeType.Sample, false, false, false, SystemColors.WindowText, TreeViewControl);
                         }
                     }
                     else
@@ -385,7 +388,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
             return SndParams;
         }
 
-        private void LoadAudio(string AudioPath, int[] AudioProps, string SoundName, string SampleName, TreeView TreeViewControl, Dictionary<string, EXAudio> AudioDict, EXSample NewSample, string FilePath, int SampleKey, string MD5Hash)
+        private void LoadAudio(ProjectFile currentFile, string AudioPath, int[] AudioProps, string SoundName, string SampleName, TreeView TreeViewControl, Dictionary<string, EXAudio> AudioDict, EXSample NewSample, string FilePath, int SampleKey, string MD5Hash)
         {
             if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.SoundbankChannels, GlobalPreferences.SoundbankFrequency))
             {
@@ -410,7 +413,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
 
                         //Add Audio to dictionary and tree node
                         AudioDict.Add(MD5Hash, newAudio);
-                        TreeNodeFunctions.TreeNodeAddNewNode("AudioData", MD5Hash, "AD_" + SampleName, 7, 7, "Audio", false, false, false, SystemColors.WindowText, TreeViewControl);
+                        TreeNodeFunctions.TreeNodeAddNewNode("AudioData", MD5Hash, "AD_" + SampleName, 7, 7, (byte)Enumerations.TreeNodeType.Audio, false, false, false, SystemColors.WindowText, TreeViewControl);
                     }
                     else
                     {

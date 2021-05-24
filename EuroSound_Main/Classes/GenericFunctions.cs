@@ -215,16 +215,19 @@ namespace EuroSound_Application
 
         internal static void AddItemToListView(ListViewItem ItemToAdd, ListView ListToAddItem)
         {
-            if (ListToAddItem.InvokeRequired)
+            if (!(ListToAddItem.Disposing || ListToAddItem.IsDisposed))
             {
-                ListToAddItem.Invoke((MethodInvoker)delegate
+                if (ListToAddItem.InvokeRequired)
+                {
+                    ListToAddItem.Invoke((MethodInvoker)delegate
+                    {
+                        ListToAddItem.Items.Add(ItemToAdd);
+                    });
+                }
+                else
                 {
                     ListToAddItem.Items.Add(ItemToAdd);
-                });
-            }
-            else
-            {
-                ListToAddItem.Items.Add(ItemToAdd);
+                }
             }
         }
 

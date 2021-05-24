@@ -20,7 +20,7 @@ namespace EuroSound_Application.StreamSounds
             if (SelectedSound != null)
             {
                 GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "SBPanel_LastFile");
-                Frm_StreamSounds_Properties FormAudioProps = new Frm_StreamSounds_Properties(SelectedSound, SoundKeyInDictionary, SelectedNode.Text)
+                Frm_StreamSounds_Properties FormAudioProps = new Frm_StreamSounds_Properties(SelectedSound, SoundKeyInDictionary, SelectedNode.Text, ProjectInfo)
                 {
                     Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
                     Tag = Tag,
@@ -145,18 +145,11 @@ namespace EuroSound_Application.StreamSounds
                         Tag = NodeToCheck.Name,
                         UseItemStyleForSubItems = false
                     };
-                    try
-                    {
-                        GenericFunctions.AddItemToListView(Hashcode, ListView_WavHeaderData);
-                    }
-                    catch
-                    {
-                        break;
-                    }
+
+                    GenericFunctions.AddItemToListView(Hashcode, ListView_WavHeaderData);
                     Index++;
 
                     GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking sound:", item.Value.WAVFileName.ToString() }));
-
                     Thread.Sleep(85);
                 }
 
@@ -164,7 +157,6 @@ namespace EuroSound_Application.StreamSounds
                 ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
                 {
                     ListView_WavHeaderData.Enabled = true;
-                    Button_UpdateIMAData.Enabled = true;
                 });
 
                 //Enable update ima button
@@ -193,6 +185,8 @@ namespace EuroSound_Application.StreamSounds
                 UpdateWavList.Abort();
                 ListView_WavHeaderData.Items.Clear();
                 ListView_WavHeaderData.Enabled = true;
+                Button_UpdateIMAData.Enabled = true;
+                Button_UpdateList_WavData.Enabled = true;
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             }
         }

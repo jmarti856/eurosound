@@ -125,12 +125,12 @@ namespace EuroSound_Application.StreamSounds
             treeNode1.ImageIndex = 0;
             treeNode1.Name = "Sounds";
             treeNode1.SelectedImageIndex = 0;
-            treeNode1.Tag = "Root";
+            treeNode1.Tag = "8";
             treeNode1.Text = "Sounds";
             treeNode2.ImageIndex = 0;
             treeNode2.Name = "AppTargets";
             treeNode2.SelectedImageIndex = 0;
-            treeNode2.Tag = "Root";
+            treeNode2.Tag = "8";
             treeNode2.Text = "App Targets";
             this.TreeView_StreamData.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,

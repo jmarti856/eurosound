@@ -39,15 +39,16 @@ namespace EuroSound_Application.StreamSounds
                 if (!string.IsNullOrEmpty(Name))
                 {
                     uint SoundID = GenericFunctions.GetNewObjectID(ProjectInfo);
-                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_StreamData.SelectedNode.Name, SoundID.ToString(), Name, 2, 2, "Sound", true, true, false, SystemColors.WindowText, TreeView_StreamData);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_StreamData.SelectedNode.Name, SoundID.ToString(), Name, 2, 2, (byte)Enumerations.TreeNodeType.Sound, true, true, false, SystemColors.WindowText, TreeView_StreamData);
+                    
                     //Add Empty Sound
                     EXSoundStream Sound = new EXSoundStream();
-
                     if (!StreamSoundsList.ContainsKey(SoundID))
                     {
                         StreamSoundsList.Add(SoundID, Sound);
                     }
 
+                    //Update project status variable
                     ProjectInfo.FileHasBeenModified = true;
                 }
             }
@@ -66,12 +67,12 @@ namespace EuroSound_Application.StreamSounds
                 if (newOutTarget.DialogResult == DialogResult.OK)
                 {
                     uint SoundID = GenericFunctions.GetNewObjectID(ProjectInfo);
-                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_StreamData.SelectedNode.Name, SoundID.ToString(), outTarget.Name, 10, 10, "Target", true, true, false, SystemColors.WindowText, TreeView_StreamData);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_StreamData.SelectedNode.Name, SoundID.ToString(), outTarget.Name, 10, 10, (byte)Enumerations.TreeNodeType.Target, true, true, false, SystemColors.WindowText, TreeView_StreamData);
 
                     //Add Target
                     OutputTargets.Add(SoundID, outTarget);
 
-                    //File has been modified
+                    //Update project status variable
                     ProjectInfo.FileHasBeenModified = true;
                 }
             }
@@ -80,7 +81,6 @@ namespace EuroSound_Application.StreamSounds
         private void ContextMenuMain_Rename_Click(object sender, EventArgs e)
         {
             TreeNodeFunctions.EditNodeLabel(TreeView_StreamData, TreeView_StreamData.SelectedNode);
-            ProjectInfo.FileHasBeenModified = true;
         }
 
         private void ContextMenuMain_TextColor_Click(object sender, EventArgs e)
@@ -94,7 +94,6 @@ namespace EuroSound_Application.StreamSounds
         private void ContextMenuSounds_Rename_Click(object sender, EventArgs e)
         {
             TreeNodeFunctions.EditNodeLabel(TreeView_StreamData, TreeView_StreamData.SelectedNode);
-            ProjectInfo.FileHasBeenModified = true;
         }
 
         private void ContextMenuSounds_Delete_Click(object sender, System.EventArgs e)

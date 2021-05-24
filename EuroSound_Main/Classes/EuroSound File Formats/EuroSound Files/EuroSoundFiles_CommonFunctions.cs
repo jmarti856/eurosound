@@ -1,7 +1,9 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationTargets;
+using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using Syroot.BinaryData;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -14,7 +16,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion
         //*===============================================================================================
         //* Read Functions
         //*===============================================================================================
-        internal void ReadTreeViewData(BinaryReader BReader, TreeView TreeViewControl)
+        internal void ReadTreeViewData(ProjectFile currentProject, BinaryReader BReader, TreeView TreeViewControl)
         {
             uint NumberOfNodes = BReader.ReadUInt32();
 
@@ -23,7 +25,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion
                 string parentNode = BReader.ReadString();
                 string nodeName = BReader.ReadString();
                 string displayName = BReader.ReadString();
-                string nodeTag = BReader.ReadString();
+                byte nodeTag = BReader.ReadByte();
                 int selectedImageIndex = BReader.ReadInt32();
                 int imageIndex = BReader.ReadInt32();
                 Color nodeColor = Color.FromArgb(BReader.ReadInt32());
@@ -86,7 +88,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion
                 BWriter.WriteString(treeNodeToExport.Parent.Name);
                 BWriter.WriteString(treeNodeToExport.Name);
                 BWriter.WriteString(treeNodeToExport.Text);
-                BWriter.WriteString(treeNodeToExport.Tag.ToString());
+                BWriter.WriteByte(Convert.ToByte(treeNodeToExport.Tag));
                 BWriter.WriteInt32(treeNodeToExport.SelectedImageIndex);
                 BWriter.WriteInt32(treeNodeToExport.ImageIndex);
                 BWriter.WriteInt32(treeNodeToExport.ForeColor.ToArgb());

@@ -63,11 +63,11 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
             TreeNodeCollection NodesCollection = Selected.Nodes;
             for (int i = 0; i < NodesCollection.Count; i++)
             {
-                if (NodesCollection[i].Tag.Equals("Sound"))
+                if (Convert.ToByte(NodesCollection[i].Tag) == (byte)Enumerations.TreeNodeType.Sound)
                 {
                     Childs.Add(NodesCollection[i]);
                 }
-                else if (NodesCollection[i].Tag.Equals("Folder"))
+                else if (Convert.ToByte(NodesCollection[i].Tag) == (byte)Enumerations.TreeNodeType.Folder)
                 {
                     GetNodesInsideFolder(SearchControl, NodesCollection[i], Childs);
                 }
@@ -109,9 +109,9 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
             return null;
         }
 
-        internal static void TreeNodeAddNewNode(string Parent, string n_Name, string DisplayName, int SelectedImageIndex, int ImageIndex, string Tag, bool ParentIsExpanded, bool NodeIsExpanded, bool NodeIsSelected, Color TextColor, TreeView TreeViewToEdit)
+        internal static void TreeNodeAddNewNode(string Parent, string n_Name, string displayName, int selectedImageIndex, int imageIndex, byte nodeTag, bool parentIsExpanded, bool nodeIsExpanded, bool nodeIsSelected, Color textColor, TreeView treeViewToEdit)
         {
-            TreeNode[] ParentNode = TreeViewToEdit.Nodes.Find(Parent, true);
+            TreeNode[] ParentNode = treeViewToEdit.Nodes.Find(Parent, true);
 
             if (ParentNode.Length > 0)
             {
@@ -119,36 +119,36 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
                 TreeNode NewNode = new TreeNode
                 {
                     Name = n_Name,
-                    Text = DisplayName,
-                    ForeColor = TextColor,
-                    Tag = Tag,
-                    SelectedImageIndex = SelectedImageIndex,
-                    ImageIndex = ImageIndex
+                    Text = displayName,
+                    ForeColor = textColor,
+                    Tag = nodeTag,
+                    SelectedImageIndex = selectedImageIndex,
+                    ImageIndex = imageIndex
                 };
 
                 //--Add element to the tree node--
-                if (TreeViewToEdit.InvokeRequired)
+                if (treeViewToEdit.InvokeRequired)
                 {
                     try
                     {
-                        TreeViewToEdit.Invoke((MethodInvoker)delegate
+                        treeViewToEdit.Invoke((MethodInvoker)delegate
                         {
                             ParentNode[0].Nodes.Add(NewNode);
 
                             //--Apply Node State--
-                            if (ParentIsExpanded)
+                            if (parentIsExpanded)
                             {
                                 NewNode.Parent.Expand();
                             }
 
-                            if (NodeIsExpanded)
+                            if (nodeIsExpanded)
                             {
                                 NewNode.Expand();
                             }
 
-                            if (NodeIsSelected)
+                            if (nodeIsSelected)
                             {
-                                TreeViewToEdit.SelectedNode = NewNode;
+                                treeViewToEdit.SelectedNode = NewNode;
                                 NewNode.EnsureVisible();
                             }
                         });
@@ -163,19 +163,19 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
                     ParentNode[0].Nodes.Add(NewNode);
 
                     //--Apply Node State--
-                    if (ParentIsExpanded)
+                    if (parentIsExpanded)
                     {
                         NewNode.Parent.Expand();
                     }
 
-                    if (NodeIsExpanded)
+                    if (nodeIsExpanded)
                     {
                         NewNode.Expand();
                     }
 
-                    if (NodeIsSelected)
+                    if (nodeIsSelected)
                     {
-                        TreeViewToEdit.SelectedNode = NewNode;
+                        treeViewToEdit.SelectedNode = NewNode;
                         NewNode.EnsureVisible();
                     }
                 }
@@ -211,6 +211,8 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
             if (selectedColor != -1)
             {
                 nodeToChange.ForeColor = Color.FromArgb(selectedColor);
+
+                //Update project status variable
                 ProjectInfo.FileHasBeenModified = true;
             }
         }

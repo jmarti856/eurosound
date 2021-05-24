@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.Clases;
+using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.EuroSoundFilesFunctions;
 using System;
 using System.IO;
@@ -16,11 +17,13 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         public int SelectedSound { get; set; } = 0;
         private EXSample SelectedSample;
+        private ProjectFile fileProperties;
 
-        public Frm_NewStreamSound(EXSample Sample)
+        public Frm_NewStreamSound(EXSample Sample, ProjectFile FileProperties)
         {
             InitializeComponent();
             SelectedSample = Sample;
+            fileProperties = FileProperties;
         }
 
         //*===============================================================================================
@@ -68,6 +71,11 @@ namespace EuroSound_Application.SoundBanksEditor
             SelectedSample.RandomPan = (sbyte)(numeric_randompan.Value * 100);
 
             SelectedSound = (ListBox_StreamSounds.SelectedIndex + 1) * -1;
+
+            //Update project status variable
+            fileProperties.FileHasBeenModified = true;
+
+            //--Close this form--
             Close();
         }
 

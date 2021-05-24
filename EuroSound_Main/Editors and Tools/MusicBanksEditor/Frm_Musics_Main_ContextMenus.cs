@@ -20,7 +20,6 @@ namespace EuroSound_Application.Musics
         private void ContextMenuMusics_Rename_Click(object sender, EventArgs e)
         {
             TreeNodeFunctions.EditNodeLabel(TreeView_MusicData, TreeView_MusicData.SelectedNode);
-            ProjectInfo.FileHasBeenModified = true;
         }
 
         private void ContextMenuMusics_Delete_Click(object sender, EventArgs e)
@@ -67,11 +66,13 @@ namespace EuroSound_Application.Musics
                 if (!string.IsNullOrEmpty(Name))
                 {
                     uint FolderID = GenericFunctions.GetNewObjectID(ProjectInfo);
-                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_MusicData.SelectedNode.Name, FolderID.ToString(), Name, 0, 0, "Folder", true, true, false, SystemColors.WindowText, TreeView_MusicData);
-                    ProjectInfo.FileHasBeenModified = true;
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_MusicData.SelectedNode.Name, FolderID.ToString(), Name, 0, 0, (byte)Enumerations.TreeNodeType.Folder, true, true, false, SystemColors.WindowText, TreeView_MusicData);
 
                     //Sort tree view
                     TreeView_MusicData.TreeViewNodeSorter = new NodeSorter();
+
+                    //Update project status variable
+                    ProjectInfo.FileHasBeenModified = true;
                 }
             }
         }
@@ -111,7 +112,7 @@ namespace EuroSound_Application.Musics
                 if (!string.IsNullOrEmpty(Name))
                 {
                     uint SoundID = GenericFunctions.GetNewObjectID(ProjectInfo);
-                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_MusicData.SelectedNode.Name, SoundID.ToString(), Name, 2, 2, "Music", true, true, false, SystemColors.WindowText, TreeView_MusicData);
+                    TreeNodeFunctions.TreeNodeAddNewNode(TreeView_MusicData.SelectedNode.Name, SoundID.ToString(), Name, 2, 2, (byte)Enumerations.TreeNodeType.Music, true, true, false, SystemColors.WindowText, TreeView_MusicData);
 
                     //Add Empty Music
                     if (!MusicsList.ContainsKey(SoundID))
@@ -119,10 +120,11 @@ namespace EuroSound_Application.Musics
                         MusicsList.Add(SoundID, new EXMusic());
                     }
 
-                    ProjectInfo.FileHasBeenModified = true;
-
                     //Sort tree view
                     TreeView_MusicData.TreeViewNodeSorter = new NodeSorter();
+
+                    //Update project status variable
+                    ProjectInfo.FileHasBeenModified = true;
                 }
             }
         }
@@ -130,7 +132,6 @@ namespace EuroSound_Application.Musics
         private void ContextMenuFolder_Rename_Click(object sender, EventArgs e)
         {
             TreeNodeFunctions.EditNodeLabel(TreeView_MusicData, TreeView_MusicData.SelectedNode);
-            ProjectInfo.FileHasBeenModified = true;
         }
 
         private void ContextMenuFolder_TextColor_Click(object sender, EventArgs e)

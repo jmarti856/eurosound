@@ -336,7 +336,7 @@ namespace EuroSound_Application.CustomControls.SearcherForm
                 else
                 {
                     //Search inside folders
-                    if (ChildNode.Level == 0 || ChildNode.Tag.Equals("Folder"))
+                    if (ChildNode.Level == 0 || Convert.ToByte(ChildNode.Tag) == (byte)Enumerations.TreeNodeType.Folder)
                     {
                         SearchNodeRecursiveByText(ChildNode.Nodes, searchFor, TreeViewControl, MatchOnly, Matches, e);
                     }

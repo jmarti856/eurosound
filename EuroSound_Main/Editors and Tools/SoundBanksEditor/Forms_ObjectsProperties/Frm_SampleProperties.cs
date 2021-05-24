@@ -1,5 +1,6 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.AudioFunctionsLibrary;
+using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.HashCodesFunctions;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using NAudio.Wave;
@@ -20,13 +21,15 @@ namespace EuroSound_Application.SoundBanksEditor
         private WaveOut _waveOut = new WaveOut();
         private AudioFunctions AudioFunctionsLibrary;
         private Form SoundsParentForm;
+        private ProjectFile fileProperties;
         private bool IsSubSFX;
 
-        public Frm_SampleProperties(EXSample Sample, bool SubSFX)
+        public Frm_SampleProperties(EXSample Sample, ProjectFile FileProperties, bool SubSFX)
         {
             InitializeComponent();
             SelectedSample = Sample;
             IsSubSFX = SubSFX;
+            fileProperties = FileProperties;
         }
 
         //*===============================================================================================
@@ -38,12 +41,6 @@ namespace EuroSound_Application.SoundBanksEditor
 
             //Get Parent form
             SoundsParentForm = GenericFunctions.GetFormByName("Frm_Soundbanks_Main", Tag.ToString());
-
-            //Sound defines
-            if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsMD5, GlobalPreferences.HT_SoundsPath))
-            {
-                Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
-            }
         }
 
         private void Frm_SampleProperties_Shown(object sender, EventArgs e)
@@ -111,6 +108,10 @@ namespace EuroSound_Application.SoundBanksEditor
                 SelectedSample.HashcodeSubSFX = (uint)Combobox_Hashcode.SelectedValue;
             }
 
+            //Update project status variable
+            fileProperties.FileHasBeenModified = true;
+
+            //Close current form
             Close();
         }
 
@@ -133,6 +134,12 @@ namespace EuroSound_Application.SoundBanksEditor
                 Combobox_SelectedAudio.Enabled = Invert;
                 Combobox_Hashcode.Enabled = IsSubSFX;
 
+                //Reload HashTable if required
+                if (GenericFunctions.FileIsModified(GlobalPreferences.HT_SoundsMD5, GlobalPreferences.HT_SoundsPath))
+                {
+                    Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
+                }
+
                 //Set subsfx hashcode to the combobox
                 AddHashcodesToCombobox();
             }
@@ -153,7 +160,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     EXAudio SelectedSound = ((Frm_Soundbanks_Main)SoundsParentForm).AudioDataDict[AudioKey];
                     if (SelectedSound != null)
                     {
-                        Frm_AudioProperties FormAudioProps = new Frm_AudioProperties(SelectedSound, AudioKey)
+                        Frm_AudioProperties FormAudioProps = new Frm_AudioProperties(SelectedSound, fileProperties, AudioKey)
                         {
                             Text = "Audio Properties",
                             Tag = Tag,

@@ -150,7 +150,7 @@ namespace EuroSound_Application.StreamSounds.YMLReader
                     soundID = GenericFunctions.GetNewObjectID(FileProperties);
                     SoundsList.Add(soundID, soundToAdd);
 
-                    TreeNodeFunctions.TreeNodeAddNewNode("Sounds", soundID.ToString(), SoundName, 2, 2, "Sound", false, false, false, SystemColors.WindowText, TreeViewControl);
+                    TreeNodeFunctions.TreeNodeAddNewNode("Sounds", soundID.ToString(), SoundName, 2, 2, (byte)Enumerations.TreeNodeType.Sound, false, false, false, SystemColors.WindowText, TreeViewControl);
                 }
                 catch
                 {
@@ -164,6 +164,9 @@ namespace EuroSound_Application.StreamSounds.YMLReader
 
             reader.Close();
             reader.Dispose();
+
+            //Update project status variable
+            FileProperties.FileHasBeenModified = true;
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));

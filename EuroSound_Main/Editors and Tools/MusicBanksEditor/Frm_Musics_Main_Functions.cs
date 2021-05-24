@@ -35,7 +35,7 @@ namespace EuroSound_Application.Musics
             if (SelectedMusic != null)
             {
                 GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "SBPanel_LastFile");
-                Frm_Musics_Properties FormAudioProps = new Frm_Musics_Properties(SelectedMusic, MusicKeyInDictionary, SelectedNode.Text)
+                Frm_Musics_Properties FormAudioProps = new Frm_Musics_Properties(SelectedMusic, ProjectInfo, MusicKeyInDictionary, SelectedNode.Text)
                 {
                     Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
                     Tag = Tag,
@@ -107,7 +107,6 @@ namespace EuroSound_Application.Musics
         {
             UpdateWavList = new Thread(() =>
             {
-
                 //Clear List
                 ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
                 {
@@ -150,15 +149,7 @@ namespace EuroSound_Application.Musics
                         UseItemStyleForSubItems = false
                     };
 
-                    try
-                    {
-                        GenericFunctions.AddItemToListView(LeftChannelInfo, ListView_WavHeaderData);
-                    }
-                    catch
-                    {
-                        break;
-                    }
-
+                    GenericFunctions.AddItemToListView(LeftChannelInfo, ListView_WavHeaderData);
                     GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking sound:", item.Value.WAVFileName_LeftChannel.ToString() }));
 
                     //RightChannel
@@ -179,14 +170,7 @@ namespace EuroSound_Application.Musics
                         UseItemStyleForSubItems = false
                     };
 
-                    try
-                    {
-                        GenericFunctions.AddItemToListView(RightChannelInfo, ListView_WavHeaderData);
-                    }
-                    catch
-                    {
-                        break;
-                    }
+                    GenericFunctions.AddItemToListView(RightChannelInfo, ListView_WavHeaderData);
 
                     GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking sound:", item.Value.WAVFileName_RightChannel.ToString() }));
                     Thread.Sleep(85);
@@ -196,7 +180,6 @@ namespace EuroSound_Application.Musics
                 ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
                 {
                     ListView_WavHeaderData.Enabled = true;
-                    Button_UpdateIMAData.Enabled = true;
                 });
 
                 //Enable update ima button

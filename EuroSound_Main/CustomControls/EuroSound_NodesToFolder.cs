@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.TreeViewLibraryFunctions;
+﻿using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +14,16 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
         //*===============================================================================================
         private Dictionary<string, string> SoundsDictionary = new Dictionary<string, string>();
         private TreeView ParentTreeViewControl;
+        private ProjectFile fileProperties;
         private string CurrentLoadedData, DestinationFolder;
 
-        public EuroSound_NodesToFolder(TreeView TreeViewControl, string Section, string Destination)
+        public EuroSound_NodesToFolder(TreeView TreeViewControl, ProjectFile FileProperties, string Section, string Destination)
         {
             InitializeComponent();
             ParentTreeViewControl = TreeViewControl;
             CurrentLoadedData = Section;
             DestinationFolder = Destination;
+            fileProperties = FileProperties;
         }
 
         //*===============================================================================================
@@ -65,15 +68,18 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
                 {
                     TreeNode NodeToMove = ParentTreeViewControl.Nodes.Find(item.Key.ToString(), true)[0];
                     ParentTreeViewControl.Nodes.Remove(NodeToMove);
-                    TreeNodeFunctions.TreeNodeAddNewNode(NewParentNode.Name, NodeToMove.Name, NodeToMove.Text, NodeToMove.SelectedImageIndex, NodeToMove.ImageIndex, NodeToMove.Tag.ToString(), false, false, false, NodeToMove.ForeColor, ParentTreeViewControl);
+                    TreeNodeFunctions.TreeNodeAddNewNode(NewParentNode.Name, NodeToMove.Name, NodeToMove.Text, NodeToMove.SelectedImageIndex, NodeToMove.ImageIndex, (byte)NodeToMove.Tag, false, false, false, NodeToMove.ForeColor, ParentTreeViewControl);
                     if (NodeToMove.Nodes.Count > 0)
                     {
                         foreach (TreeNode child in NodeToMove.Nodes)
                         {
-                            TreeNodeFunctions.TreeNodeAddNewNode(child.Parent.Name, child.Name, child.Text, child.SelectedImageIndex, child.ImageIndex, child.Tag.ToString(), false, false, false, child.ForeColor, ParentTreeViewControl);
+                            TreeNodeFunctions.TreeNodeAddNewNode(child.Parent.Name, child.Name, child.Text, child.SelectedImageIndex, child.ImageIndex, (byte)child.Tag, false, false, false, child.ForeColor, ParentTreeViewControl);
                         }
                     }
                 }
+
+                //Update project status variable
+                fileProperties.FileHasBeenModified = true;
             }
         }
 
@@ -107,7 +113,7 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
                 {
                     if (node.Name.Equals(CurrentLoadedData))
                     {
-                        GetObjectsName(node, "Sound");
+                        GetObjectsName(node, (byte)Enumerations.TreeNodeType.Sound);
                     }
                 }
             }
@@ -118,7 +124,7 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
                 {
                     if (node.Name.Equals(CurrentLoadedData))
                     {
-                        GetObjectsName(node, "Audio");
+                        GetObjectsName(node, (byte)Enumerations.TreeNodeType.Audio);
                     }
                 }
             }
@@ -146,7 +152,7 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
 
         private void GetFolders(TreeNode node, Dictionary<string, string> foldersList)
         {
-            if (node.Tag.Equals("Folder"))
+            if (Convert.ToByte(node.Tag) == (byte)Enumerations.TreeNodeType.Folder)
             {
                 foldersList.Add(node.Name, node.Text);
             }
@@ -156,15 +162,15 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
             }
         }
 
-        private void GetObjectsName(TreeNode node, string TagName)
+        private void GetObjectsName(TreeNode nodeToCheck, byte tagToCheck)
         {
-            if (node.Tag.Equals(TagName))
+            if ((byte)nodeToCheck.Tag == tagToCheck)
             {
-                SoundsDictionary.Add(node.Name, node.Text);
+                SoundsDictionary.Add(nodeToCheck.Name, nodeToCheck.Text);
             }
-            foreach (TreeNode tn in node.Nodes)
+            foreach (TreeNode tn in nodeToCheck.Nodes)
             {
-                GetObjectsName(tn, TagName);
+                GetObjectsName(tn, tagToCheck);
             }
         }
 

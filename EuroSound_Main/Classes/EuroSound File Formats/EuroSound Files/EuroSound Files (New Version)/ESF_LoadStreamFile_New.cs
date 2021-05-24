@@ -52,7 +52,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
             //* TreeView
             //*===============================================================================================
             BReader.BaseStream.Seek(treeViewDataOffset, SeekOrigin.Begin);
-            ESF_CommonFunctions.ReadTreeViewData(BReader, TreeViewControl);
+            ESF_CommonFunctions.ReadTreeViewData(FileProperties, BReader, TreeViewControl);
 
             //*===============================================================================================
             //* APP Target

@@ -450,7 +450,6 @@ namespace EuroSound_Application.StreamSounds
         private void Button_UpdateIMAData_Click(object sender, System.EventArgs e)
         {
             //Update File Status
-            ProjectInfo.FileHasBeenModified = true;
             UpdateIMAData();
         }
 
@@ -487,7 +486,7 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         private void TreeView_StreamData_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            ToolsCommonFunctions.TreeViewNodeRename(TreeView_StreamData, e);
+            ToolsCommonFunctions.TreeViewNodeRename(TreeView_StreamData, ProjectInfo, e);
         }
 
         private void TreeView_StreamData_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
@@ -495,11 +494,11 @@ namespace EuroSound_Application.StreamSounds
             if (CanExpandChildNodes)
             {
                 //Change node images depending of the type
-                if (e.Node.Tag.Equals("Folder") || e.Node.Level == 0)
+                if (Convert.ToByte(e.Node.Tag) == (byte)Enumerations.TreeNodeType.Folder || e.Node.Level == 0)
                 {
                     TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 0, 0);
                 }
-                else if (e.Node.Tag.Equals("Sound"))
+                else if (Convert.ToByte(e.Node.Tag) == (byte)Enumerations.TreeNodeType.Sound)
                 {
                     if (EXStreamSoundsFunctions.SoundWillBeOutputed(StreamSoundsList, e.Node.Name))
                     {
@@ -522,11 +521,11 @@ namespace EuroSound_Application.StreamSounds
             if (CanExpandChildNodes)
             {
                 //Change node images depending of the type
-                if (e.Node.Tag.Equals("Folder") || e.Node.Level == 0)
+                if (Convert.ToByte(e.Node.Tag) == (byte)Enumerations.TreeNodeType.Folder || e.Node.Level == 0)
                 {
                     TreeNodeFunctions.TreeNodeSetNodeImage(e.Node, 1, 1);
                 }
-                else if (e.Node.Tag.Equals("Sound"))
+                else if (Convert.ToByte(e.Node.Tag) == (byte)Enumerations.TreeNodeType.Sound)
                 {
                     if (EXStreamSoundsFunctions.SoundWillBeOutputed(StreamSoundsList, e.Node.Name))
                     {
@@ -552,7 +551,6 @@ namespace EuroSound_Application.StreamSounds
             if (e.KeyCode == Keys.F2)
             {
                 TreeNodeFunctions.EditNodeLabel(TreeView_StreamData, selectedNode);
-                ProjectInfo.FileHasBeenModified = true;
             }
             //Delete selected Node
             if (e.KeyCode == Keys.Delete)
@@ -560,11 +558,11 @@ namespace EuroSound_Application.StreamSounds
                 //Check that is not a root node
                 if (selectedNode.Level > 0)
                 {
-                    if (selectedNode.Tag.Equals("Sound"))
+                    if (Convert.ToByte(selectedNode.Tag) == (byte)Enumerations.TreeNodeType.Sound)
                     {
                         ToolsCommonFunctions.RemoveEngineXObject("Remove sound:", 0, TreeView_StreamData, selectedNode, StreamSoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
                     }
-                    else if (selectedNode.Tag.Equals("Target"))
+                    else if (Convert.ToByte(selectedNode.Tag) == (byte)Enumerations.TreeNodeType.Target)
                     {
                         ToolsCommonFunctions.RemoveTargetSelectedNode(selectedNode, OutputTargets, TreeView_StreamData, ProjectInfo);
                     }
@@ -582,7 +580,7 @@ namespace EuroSound_Application.StreamSounds
                 TreeView_StreamData.SelectedNode = SelectedTreeViewNode;
 
                 //Open contextual menu
-                if (SelectedTreeViewNode.Tag.Equals("Folder") || SelectedTreeViewNode.Level == 0)
+                if (Convert.ToByte(SelectedTreeViewNode.Tag) == (byte)Enumerations.TreeNodeType.Folder || SelectedTreeViewNode.Level == 0)
                 {
                     ContextMenu_Folders.Show(Cursor.Position);
                     if (TreeNodeFunctions.FindRootNode(SelectedTreeViewNode).Name.Equals("Sounds"))
@@ -596,11 +594,11 @@ namespace EuroSound_Application.StreamSounds
                         ContextMenuFolder_AddSound.Visible = false;
                     }
                 }
-                else if (SelectedTreeViewNode.Tag.Equals("Sound"))
+                else if (Convert.ToByte(SelectedTreeViewNode.Tag) == (byte)Enumerations.TreeNodeType.Sound)
                 {
                     ContextMenu_Sounds.Show(Cursor.Position);
                 }
-                else if (SelectedTreeViewNode.Tag.Equals("Target"))
+                else if (Convert.ToByte(SelectedTreeViewNode.Tag) == (byte)Enumerations.TreeNodeType.Target)
                 {
                     ContextMenu_Targets.Show(Cursor.Position);
                 }
@@ -616,12 +614,12 @@ namespace EuroSound_Application.StreamSounds
             if (SelectedTreeViewNode != null)
             {
                 //Open Properties
-                switch (SelectedTreeViewNode.Tag)
+                switch (Convert.ToByte(SelectedTreeViewNode.Tag))
                 {
-                    case "Sound":
+                    case (byte)Enumerations.TreeNodeType.Sound:
                         OpenSoundPropertiesForm(SelectedTreeViewNode);
                         break;
-                    case "Target":
+                    case (byte)Enumerations.TreeNodeType.Target:
                         OpenTargetProperties(SelectedTreeViewNode);
                         break;
                 }
@@ -638,7 +636,7 @@ namespace EuroSound_Application.StreamSounds
                 //Double click
                 if (e.Clicks > 1)
                 {
-                    if (!(TreeView_StreamData.SelectedNode.Tag.Equals("Folder") || TreeView_StreamData.SelectedNode.Level == 0))
+                    if (!(Convert.ToByte(TreeView_StreamData.SelectedNode.Tag) == (byte)Enumerations.TreeNodeType.Folder || TreeView_StreamData.SelectedNode.Level == 0))
                     {
                         CanExpandChildNodes = false;
                     }
@@ -731,8 +729,6 @@ namespace EuroSound_Application.StreamSounds
                 {
                     GenericFunctions.ShowErrorsAndWarningsList(ImportResults, "Import Results", this);
                 }
-
-                ProjectInfo.FileHasBeenModified = true;
             }
         }
 
@@ -755,8 +751,6 @@ namespace EuroSound_Application.StreamSounds
                     IsBackground = true
                 };
                 LoadYamlFile.Start();
-
-                ProjectInfo.FileHasBeenModified = true;
             }
         }
 
@@ -767,7 +761,6 @@ namespace EuroSound_Application.StreamSounds
             {
                 string SoundName = Path.GetFileNameWithoutExtension(FilePath);
                 LibYamlReader.ReadYmlFile(StreamSoundsList, TreeView_StreamData, FilePath, SoundName, ProjectInfo);
-                ProjectInfo.FileHasBeenModified = true;
             }
         }
 
@@ -785,7 +778,6 @@ namespace EuroSound_Application.StreamSounds
                 Tag = Tag
             };
             Props.ShowDialog();
-            ProjectInfo.FileHasBeenModified = true;
         }
 
         private void MenuItem_Edit_Undo_Click(object sender, System.EventArgs e)

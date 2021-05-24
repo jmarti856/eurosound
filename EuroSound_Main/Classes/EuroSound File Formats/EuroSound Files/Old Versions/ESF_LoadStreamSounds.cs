@@ -44,7 +44,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
             //* TreeView
             //*===============================================================================================
             BReader.BaseStream.Position = TreeViewDataOffset;
-            ReadTreeViewData(BReader, TreeViewControl, FileVersion);
+            ReadTreeViewData(BReader, TreeViewControl, FileVersion, FileProperties);
 
             //Close Reader
             BReader.Close();
@@ -124,7 +124,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
             }
         }
 
-        internal void ReadTreeViewData(BinaryReader BReader, TreeView TreeViewControl, int Version)
+        internal void ReadTreeViewData(BinaryReader BReader, TreeView TreeViewControl, int Version, ProjectFile FileProperties)
         {
             bool ParentIsExpanded = false, NodeIsExpanded = false, NodeIsSelected = false;
 
@@ -167,7 +167,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
                     NodeColor = SystemColors.WindowText;
                 }
 
-                TreeNodeFunctions.TreeNodeAddNewNode(ParentNode, NodeName, DisplayName, SelectedImageIndex, ImageIndex, Tag, ParentIsExpanded, NodeIsExpanded, NodeIsSelected, NodeColor, TreeViewControl);
+                TreeNodeFunctions.TreeNodeAddNewNode(ParentNode, NodeName, DisplayName, SelectedImageIndex, ImageIndex, Enumerations.GetTreeNodeType(Tag), ParentIsExpanded, NodeIsExpanded, NodeIsSelected, NodeColor, TreeViewControl);
             }
         }
     }

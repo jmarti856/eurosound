@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.Clases;
+using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls.FlagsForm;
 using EuroSound_Application.HashCodesFunctions;
 using EuroSound_Application.TreeViewLibraryFunctions;
@@ -22,14 +23,16 @@ namespace EuroSound_Application.SoundBanksEditor
         private Form OpenForm;
         private EXSound SelectedSound;
         private Thread DataToCombobox;
+        private ProjectFile fileProperties;
         private string TreeNodeSoundName, SoundSection;
 
-        public Frm_EffectProperties(EXSound SoundToCheck, string SoundName, string Section)
+        public Frm_EffectProperties(EXSound SoundToCheck, ProjectFile FileProperties, string SoundName, string Section)
         {
             InitializeComponent();
             SelectedSound = SoundToCheck;
             TreeNodeSoundName = SoundName;
             SoundSection = Section;
+            fileProperties = FileProperties;
         }
 
         //*===============================================================================================
@@ -155,6 +158,11 @@ namespace EuroSound_Application.SoundBanksEditor
                     TreeNodeFunctions.TreeNodeSetNodeImage(nodeSearchResults[0], 5, 5);
                 }
             }
+
+            //Update project status variable
+            fileProperties.FileHasBeenModified = true;
+
+            //Close current form
             Close();
         }
 
@@ -236,7 +244,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     if (SoundSection.Equals("Sounds"))
                     {
                         GenericFunctions.SetCurrentFileLabel(sampleName, "SBPanel_LastFile");
-                        Frm_SampleProperties formSampleProps = new Frm_SampleProperties(selectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(SelectedSound.Flags))
+                        Frm_SampleProperties formSampleProps = new Frm_SampleProperties(selectedSample, fileProperties, EXSoundbanksFunctions.SubSFXFlagChecked(SelectedSound.Flags))
                         {
                             Text = GenericFunctions.TruncateLongString(sampleName, 25) + " - Properties",
                             Tag = Tag,
@@ -252,7 +260,7 @@ namespace EuroSound_Application.SoundBanksEditor
                         if (File.Exists(GlobalPreferences.StreamFilePath))
                         {
                             GenericFunctions.SetCurrentFileLabel(sampleName, "SBPanel_LastFile");
-                            using (Frm_NewStreamSound addStreamSound = new Frm_NewStreamSound(selectedSample))
+                            using (Frm_NewStreamSound addStreamSound = new Frm_NewStreamSound(selectedSample, fileProperties))
                             {
                                 addStreamSound.Text = GenericFunctions.TruncateLongString(sampleName, 25) + " - Properties";
                                 addStreamSound.Tag = Tag;

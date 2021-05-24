@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.Clases;
+using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls.FlagsForm;
 using NAudio.Wave;
 using System;
@@ -18,14 +19,16 @@ namespace EuroSound_Application.SoundBanksEditor
         private WaveOut _waveOut = new WaveOut();
         private EXAudio SelectedAudio, TemporalAudio;
         private AudioFunctions AudioFunctionsLibrary;
+        private ProjectFile fileProperties;
         private string SelectedAudioMD5Hash, TemporalAudioHash;
 
-        public Frm_AudioProperties(EXAudio AudioToCheck, string AudioKey)
+        public Frm_AudioProperties(EXAudio AudioToCheck, ProjectFile FileProperties, string AudioKey)
         {
             InitializeComponent();
             SelectedAudio = AudioToCheck;
             TemporalAudioHash = AudioKey;
             SelectedAudioMD5Hash = AudioKey;
+            fileProperties = FileProperties;
         }
 
         //*===============================================================================================
@@ -220,6 +223,9 @@ namespace EuroSound_Application.SoundBanksEditor
 
             //--Stop Audio and liberate Memmory
             AudioFunctionsLibrary.StopAudio(_waveOut);
+
+            //Update project status variable
+            fileProperties.FileHasBeenModified = true;
 
             //--Close this form--
             Close();

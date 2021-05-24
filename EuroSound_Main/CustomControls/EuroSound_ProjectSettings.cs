@@ -118,6 +118,9 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
             string binaryName = EXAppTarget_Functions.GetBinaryName(CurrentFileProperties, GlobalPreferences.SelectedProfileName);
             EXAppTarget_Functions.UpdateAppTargetName(binaryName, currentOutputTargets);
 
+            //Update project status variable
+            CurrentFileProperties.FileHasBeenModified = true;
+
             //Close current form
             Close();
         }

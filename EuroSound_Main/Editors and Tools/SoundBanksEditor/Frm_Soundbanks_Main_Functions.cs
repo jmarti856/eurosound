@@ -40,7 +40,7 @@ namespace EuroSound_Application.SoundBanksEditor
             if (selectedSound != null)
             {
                 GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "SBPanel_LastFile");
-                Frm_AudioProperties FormAudioProps = new Frm_AudioProperties(selectedSound, SelectedNode.Name)
+                Frm_AudioProperties FormAudioProps = new Frm_AudioProperties(selectedSound, ProjectInfo, SelectedNode.Name)
                 {
                     Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
                     Tag = Tag,
@@ -49,7 +49,6 @@ namespace EuroSound_Application.SoundBanksEditor
                 };
                 FormAudioProps.ShowDialog();
                 FormAudioProps.Dispose();
-                ProjectInfo.FileHasBeenModified = true;
             }
         }
 
@@ -65,7 +64,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 if (File.Exists(GlobalPreferences.StreamFilePath))
                 {
                     GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "SBPanel_LastFile");
-                    using (Frm_NewStreamSound addStreamSound = new Frm_NewStreamSound(selectedSample))
+                    using (Frm_NewStreamSound addStreamSound = new Frm_NewStreamSound(selectedSample, ProjectInfo))
                     {
                         addStreamSound.Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties";
                         addStreamSound.Tag = Tag;
@@ -92,7 +91,7 @@ namespace EuroSound_Application.SoundBanksEditor
             else
             {
                 GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "SBPanel_LastFile");
-                Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(selectedSample, EXSoundbanksFunctions.SubSFXFlagChecked(parentSound.Flags))
+                Frm_SampleProperties FormSampleProps = new Frm_SampleProperties(selectedSample, ProjectInfo, EXSoundbanksFunctions.SubSFXFlagChecked(parentSound.Flags))
                 {
                     Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
                     Tag = Tag,
@@ -102,22 +101,6 @@ namespace EuroSound_Application.SoundBanksEditor
                 FormSampleProps.ShowDialog();
                 FormSampleProps.Dispose();
             }
-            ProjectInfo.FileHasBeenModified = true;
-        }
-
-        private void OpenSelectedNodeSampleProperties(TreeNode SelectedNode)
-        {
-            if (SelectedNode != null)
-            {
-                if (SelectedNode.Tag.Equals("Sound"))
-                {
-                    OpenSoundProperties(SelectedNode);
-                }
-                else if (SelectedNode.Tag.Equals("Sample"))
-                {
-                    OpenSampleProperties(SelectedNode);
-                }
-            }
         }
 
         internal void OpenSoundProperties(TreeNode SelectedNode)
@@ -125,7 +108,7 @@ namespace EuroSound_Application.SoundBanksEditor
             string soundSection = TreeNodeFunctions.FindRootNode(SelectedNode).Name;
             EXSound selectedSound = EXSoundbanksFunctions.ReturnSoundFromDictionary(uint.Parse(SelectedNode.Name), SoundsList);
             GenericFunctions.SetCurrentFileLabel(SelectedNode.Text, "SBPanel_LastFile");
-            Frm_EffectProperties formSoundProps = new Frm_EffectProperties(selectedSound, SelectedNode.Name, soundSection)
+            Frm_EffectProperties formSoundProps = new Frm_EffectProperties(selectedSound, ProjectInfo, SelectedNode.Name, soundSection)
             {
                 Text = GenericFunctions.TruncateLongString(SelectedNode.Text, 25) + " - Properties",
                 Tag = Tag,
@@ -134,7 +117,6 @@ namespace EuroSound_Application.SoundBanksEditor
             };
             formSoundProps.ShowDialog();
             formSoundProps.Dispose();
-            ProjectInfo.FileHasBeenModified = true;
         }
 
         internal void OpenTargetProperties(TreeNode SelectedNode)
@@ -192,16 +174,9 @@ namespace EuroSound_Application.SoundBanksEditor
                 levelHashcodeItem.UseItemStyleForSubItems = false;
                 levelHashcodeItem.Tag = "Project";
 
-                try
-                {
-                    GenericFunctions.AddItemToListView(levelHashcodeItem, ListView_Hashcodes);
-                }
-                catch
-                {
-                }
+                GenericFunctions.AddItemToListView(levelHashcodeItem, ListView_Hashcodes);
 
                 //Sounds Hashcodes
-
                 foreach (KeyValuePair<uint, EXSound> soundItem in SoundsList)
                 {
                     TreeNode DisplayName = TreeView_File.Nodes.Find(soundItem.Key.ToString(), true)[0];
@@ -221,15 +196,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     Hashcode.UseItemStyleForSubItems = false;
                     Hashcode.Tag = DisplayName.Name.ToString();
 
-                    try
-                    {
-                        GenericFunctions.AddItemToListView(Hashcode, ListView_Hashcodes);
-                    }
-                    catch
-                    {
-                        break;
-                    }
-
+                    GenericFunctions.AddItemToListView(Hashcode, ListView_Hashcodes);
                     GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking hashcode:", Hashcode.SubItems[2].Text }));
 
                     //Show Items Count
@@ -269,7 +236,6 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             UpdateStreamDataList = new Thread(() =>
             {
-
                 //Clear List
                 ListView_StreamData.BeginInvoke((MethodInvoker)delegate
                 {
@@ -292,19 +258,9 @@ namespace EuroSound_Application.SoundBanksEditor
                                 SoundDisplayName,
                                 "HC00FFFF"
                             })
-                            {
-                                UseItemStyleForSubItems = false
-                            };
-                            ItemStreamed.Tag = NodeToCheck.Name;
-                            try
-                            {
-                                GenericFunctions.AddItemToListView(ItemStreamed, ListView_StreamData);
-                            }
-                            catch
-                            {
-                                break;
-                            }
+                            { UseItemStyleForSubItems = false, Tag = NodeToCheck.Name };
 
+                            GenericFunctions.AddItemToListView(ItemStreamed, ListView_StreamData);
                             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking Sample:", NodeToCheck.Text }));
 
                             //Show Items Count
@@ -319,7 +275,7 @@ namespace EuroSound_Application.SoundBanksEditor
                 }
 
                 //Enable List
-                ListView_StreamData.BeginInvoke((MethodInvoker)delegate
+                ListView_StreamData.Invoke((MethodInvoker)delegate
                 {
                     ListView_StreamData.Enabled = true;
                 });
@@ -347,7 +303,6 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             UpdateWavList = new Thread(() =>
             {
-
                 //Clear List
                 ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
                 {
@@ -374,23 +329,15 @@ namespace EuroSound_Application.SoundBanksEditor
                         Tag = NodeToCheck.Name,
                         UseItemStyleForSubItems = false
                     };
-                    try
-                    {
-                        GenericFunctions.AddItemToListView(Hashcode, ListView_WavHeaderData);
-                    }
-                    catch
-                    {
-                        break;
-                    }
 
+                    GenericFunctions.AddItemToListView(Hashcode, ListView_WavHeaderData);
                     GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking Audio:", audioItem.Value.LoadedFileName.ToString() }));
 
                     //Show Items Count
-                    Textbox_DataCount.Invoke((MethodInvoker)delegate
+                    Textbox_DataCount.BeginInvoke((MethodInvoker)delegate
                     {
                         Textbox_DataCount.Text = ListView_WavHeaderData.Items.Count.ToString();
                     });
-
                     Thread.Sleep(25);
                 }
 

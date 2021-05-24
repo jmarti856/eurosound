@@ -28,18 +28,17 @@ namespace EuroSound_Application.Editors_and_Tools
                 if (warningDialog.ShowDialog() == DialogResult.OK)
                 {
                     GlobalPreferences.ShowWarningMessagesBox = warningDialog.ShowWarningAgain;
-                    RemoveTarget(OutputTargets, formTreeView);
+                    RemoveTarget(OutputTargets, formTreeView, currrentProject);
                 }
                 warningDialog.Dispose();
             }
             else
             {
-                RemoveTarget(OutputTargets, formTreeView);
+                RemoveTarget(OutputTargets, formTreeView, currrentProject);
             }
-            currrentProject.FileHasBeenModified = true;
         }
 
-        private static void RemoveTarget(Dictionary<uint, EXAppTarget> OutputTargets, TreeView formTreeView)
+        private static void RemoveTarget(Dictionary<uint, EXAppTarget> OutputTargets, TreeView formTreeView, ProjectFile currrentProject)
         {
             EXAppTarget parentTarget = EXAppTarget_Functions.ReturnTargetFromDictionary(uint.Parse(formTreeView.SelectedNode.Name), OutputTargets);
             if (parentTarget != null)
@@ -50,6 +49,7 @@ namespace EuroSound_Application.Editors_and_Tools
                 }
             }
             formTreeView.SelectedNode.Remove();
+            currrentProject.FileHasBeenModified = true;
         }
 
         //*===============================================================================================
@@ -164,6 +164,8 @@ namespace EuroSound_Application.Editors_and_Tools
                     TreeNodeFunctions.TreeNodeDeleteNode(treeViewControl, selectedNode);
                 }
             }
+
+            //Update project status variable
             currentProject.FileHasBeenModified = true;
         }
 
@@ -274,7 +276,7 @@ namespace EuroSound_Application.Editors_and_Tools
         //*===============================================================================================
         //* Tree View
         //*===============================================================================================
-        internal static void TreeViewNodeRename(TreeView treeViewControl, NodeLabelEditEventArgs e)
+        internal static void TreeViewNodeRename(TreeView treeViewControl, ProjectFile currentProject, NodeLabelEditEventArgs e)
         {
             //Check that we have selected a node, and we have not selected the root folder
             if (e.Node.Parent != null && e.Node.Level > 0)
@@ -303,6 +305,9 @@ namespace EuroSound_Application.Editors_and_Tools
                         {
                             //Update tree node props
                             e.Node.Text = labelText;
+
+                            //Update project status variable
+                            currentProject.FileHasBeenModified = true;
                         }
                     }
                 }
@@ -403,16 +408,17 @@ namespace EuroSound_Application.Editors_and_Tools
                 if (targetNode != null)
                 {
                     //Type of nodes that are allowed to be re-ubicated
+                    byte tagToCheck = (byte)draggedNode.Tag;
                     if (projectInfo.TypeOfData == (int)Enumerations.ESoundFileType.SoundBanks)
                     {
-                        if (draggedNode.Tag.Equals("Folder") || draggedNode.Tag.Equals("Sound") || draggedNode.Tag.Equals("Audio") || draggedNode.Tag.Equals("Target"))
+                        if (tagToCheck == (byte)Enumerations.TreeNodeType.Folder || tagToCheck == (byte)Enumerations.TreeNodeType.Sound || tagToCheck == (byte)Enumerations.TreeNodeType.Audio || tagToCheck == (byte)Enumerations.TreeNodeType.Target)
                         {
                             e.Effect = DragDropEffects.Move;
                         }
                     }
                     else if (projectInfo.TypeOfData == (int)Enumerations.ESoundFileType.MusicBanks)
                     {
-                        if (draggedNode.Tag.Equals("Folder") || draggedNode.Tag.Equals("Music") || draggedNode.Tag.Equals("Target"))
+                        if (tagToCheck == (byte)Enumerations.TreeNodeType.Folder || tagToCheck == (byte)Enumerations.TreeNodeType.Music || tagToCheck == (byte)Enumerations.TreeNodeType.Target)
                         {
                             e.Effect = DragDropEffects.Move;
                         }
