@@ -53,7 +53,7 @@ namespace EuroSound_Application
             {
                 ParentFormStatusBar.Invoke((MethodInvoker)delegate
                 {
-                    ParentFormStatusBar.Panels[strPanelName].Text = TextToShow;
+                    ParentFormStatusBar.Panels[strPanelName].Text = TruncateLongString(TextToShow, 64);
                 });
             }
             TextToShow = null;
@@ -391,7 +391,7 @@ namespace EuroSound_Application
 
         internal static bool CheckForInternetConnection()
         {
-            return InternetGetConnectedState(out int Desc, 0);
+            return InternetGetConnectedState(out _, 0);
         }
 
         //*===============================================================================================

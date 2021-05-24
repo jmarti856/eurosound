@@ -85,6 +85,10 @@
         //ShowAlerts
         internal static bool ShowUpdatesAlerts = true;
 
+        //Editing
+        internal static bool AutomaticallySortNodes = true;
+        internal static bool UseExtendedColorPicker = false;
+
         //*===============================================================================================
         //* TEMPORAL PROPERTIES
         //*===============================================================================================

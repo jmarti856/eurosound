@@ -73,6 +73,9 @@
     <Reference Include="NAudio, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.10.0\lib\net35\NAudio.dll</HintPath>
     </Reference>
+    <Reference Include="NetSpell.SpellChecker">
+      <HintPath>..\RichTextBoxEditor\bin\Release\NetSpell.SpellChecker.dll</HintPath>
+    </Reference>
     <Reference Include="Octokit, Version=0.40.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Octokit.0.40.0\lib\net45\Octokit.dll</HintPath>
     </Reference>
@@ -123,6 +126,12 @@
     </Compile>
     <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_AutoBackUps.Designer.cs">
       <DependentUpon>Frm_AutoBackUps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_EditingOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_EditingOptions.Designer.cs">
+      <DependentUpon>Frm_EditingOptions.cs</DependentUpon>
     </Compile>
     <Compile Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_OutputSettings.cs">
       <SubType>Form</SubType>
@@ -176,6 +185,12 @@
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSound Files %28New Version%29\ESF_LoadSoundBanks_New.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSound Files %28New Version%29\ESF_LoadStreamFile_New.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSoundFiles_CommonFunctions.cs" />
+    <Compile Include="CustomControls\EuroSound_ProjectsDesc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomControls\EuroSound_ProjectsDesc.Designer.cs">
+      <DependentUpon>EuroSound_ProjectsDesc.cs</DependentUpon>
+    </Compile>
     <Compile Include="Editors and Tools\ApplicationTargets\EuroSound_OutputTargetSelector.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -465,6 +480,9 @@
     <EmbeddedResource Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_AutoBackUps.resx">
       <DependentUpon>Frm_AutoBackUps.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_EditingOptions.resx">
+      <DependentUpon>Frm_EditingOptions.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ApplicationPreferences\Preferences Forms\Sub-Forms\Frm_OutputSettings.resx">
       <DependentUpon>Frm_OutputSettings.cs</DependentUpon>
     </EmbeddedResource>
@@ -489,6 +507,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\EuroSound_DebugTypes.resx">
       <DependentUpon>EuroSound_DebugTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomControls\EuroSound_ProjectsDesc.resx">
+      <DependentUpon>EuroSound_ProjectsDesc.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editors and Tools\ApplicationTargets\EuroSound_OutputTargetSelector.resx">
       <DependentUpon>EuroSound_OutputTargetSelector.cs</DependentUpon>
@@ -627,6 +648,14 @@
     <ProjectReference Include="..\EngineXImaAdpcm\EngineXImaAdpcm.csproj">
       <Project>{b8992d74-f65b-44a2-b49d-77246d7c5ca1}</Project>
       <Name>EngineXImaAdpcm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenPainter.ColorPicker\OpenPainter.ColorPicker.csproj">
+      <Project>{3e33bc0f-af32-4bc8-831e-0a94d0e78e0f}</Project>
+      <Name>OpenPainter.ColorPicker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RichTextBoxEditor\RichTextBoxEditor.csproj">
+      <Project>{954A4DCF-2B13-47DE-8207-7FBC7985E8A0}</Project>
+      <Name>RichTextBoxEditor</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

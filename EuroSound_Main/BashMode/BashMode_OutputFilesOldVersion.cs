@@ -63,7 +63,7 @@ namespace EuroSound_Application.BashMode
             {
                 using (BinaryStream BWriter = new BinaryStream(File.Open(Path.Combine(filePath, FileName + ".SFX"), FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                 {
-                    new BashMode_CommonFunctions().CreateSFXSoundBanks(BWriter, SoundsList, AudiosList, File_Hashcode, "PC");
+                    new BashMode_CommonFunctions().CreateSFXSoundBanks(BWriter, SoundsList, AudiosList, File_Hashcode);
                 }
             }
         }
@@ -109,7 +109,7 @@ namespace EuroSound_Application.BashMode
             {
                 using (BinaryStream BWriter = new BinaryStream(File.Open(Path.Combine(filePath, FileName + ".SFX"), FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                 {
-                    new BashMode_CommonFunctions().CreateSFXStreamFie(BWriter, DictionaryData, File_Hashcode, "PC");
+                    new BashMode_CommonFunctions().CreateSFXStreamFie(BWriter, DictionaryData, File_Hashcode);
                 }
             }
         }
@@ -157,7 +157,7 @@ namespace EuroSound_Application.BashMode
             {
                 using (BinaryStream BWriter = new BinaryStream(File.Open(Path.Combine(filePath, FileName + ".SFX"), FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                 {
-                    new BashMode_CommonFunctions().CreateSFXMusicFile(BWriter, DictionaryData, File_Hashcode, "PC");
+                    new BashMode_CommonFunctions().CreateSFXMusicFile(BWriter, DictionaryData, File_Hashcode);
                 }
             }
         }

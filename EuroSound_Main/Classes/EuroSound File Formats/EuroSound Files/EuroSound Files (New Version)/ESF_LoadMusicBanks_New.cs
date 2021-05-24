@@ -35,7 +35,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.Musicbanks
             //Project Name
             FileProperties.FileName = BReader.ReadString();
             //Project Description
-            BReader.ReadString();
+            FileProperties.ProjectDescription = BReader.ReadString();
             //Profile Name
             string profileSelectedName = BReader.ReadString();
             //Profile Path
@@ -53,7 +53,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.Musicbanks
             //* TreeView
             //*===============================================================================================
             BReader.BaseStream.Seek(treeViewDataOffset, SeekOrigin.Begin);
-            ESF_CommonFunctions.ReadTreeViewData(FileProperties, BReader, TreeViewControl);
+            ESF_CommonFunctions.ReadTreeViewData(BReader, TreeViewControl);
 
             //*===============================================================================================
             //* APP Target

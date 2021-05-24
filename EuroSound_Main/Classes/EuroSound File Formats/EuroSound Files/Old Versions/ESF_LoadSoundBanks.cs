@@ -50,7 +50,7 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
             //* TreeView
             //*===============================================================================================
             BReader.BaseStream.Position = TreeViewDataOffset;
-            ReadTreeViewData(FileProperties, BReader, TreeViewControl, FileVersion);
+            ReadTreeViewData(BReader, TreeViewControl, FileVersion);
 
             //Close Reader
             BReader.Close();
@@ -153,7 +153,7 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
             }
         }
 
-        internal void ReadTreeViewData(ProjectFile currentFile, BinaryReader BReader, TreeView TreeViewControl, int Version)
+        internal void ReadTreeViewData(BinaryReader BReader, TreeView TreeViewControl, int Version)
         {
             bool NodeIsExpanded = false, NodeIsSelected = false;
             bool ParentIsExpanded = false;

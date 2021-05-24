@@ -207,7 +207,6 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
         internal static void ChangeNodeColor(TreeNode nodeToChange, ProjectFile ProjectInfo)
         {
             int selectedColor = BrowsersAndDialogs.ColorPickerDialog(nodeToChange.ForeColor);
-
             if (selectedColor != -1)
             {
                 nodeToChange.ForeColor = Color.FromArgb(selectedColor);

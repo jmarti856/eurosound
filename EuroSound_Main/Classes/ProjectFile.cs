@@ -12,6 +12,7 @@ namespace EuroSound_Application.CurrentProjectFunctions
         public uint Hashcode = 0x00000000;
         public uint ObjectID = 0;
         public bool FileHasBeenModified = false;
+        public string ProjectDescription;
 
         public void ClearSoundBankStoredData(Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudioDataDict, TreeView TreeViewControl)
         {

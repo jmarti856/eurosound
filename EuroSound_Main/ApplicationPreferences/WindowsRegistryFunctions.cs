@@ -119,6 +119,36 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         }
 
         //*===============================================================================================
+        //* Editing Options
+        //*===============================================================================================
+        internal static void SaveEditingOptions()
+        {
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("Editing", true);
+            using (RegistryKey SaveEditing = EuroSoundKey.OpenSubKey("Editing", true))
+            {
+                SaveEditing.SetValue("AutoSortNodes", GlobalPreferences.AutomaticallySortNodes, RegistryValueKind.DWord);
+                SaveEditing.SetValue("UseExtColorPicker", GlobalPreferences.UseExtendedColorPicker, RegistryValueKind.String);
+                SaveEditing.Close();
+            }
+        }
+
+        internal static bool LoadEditingOptions(string keyName)
+        {
+            bool editOption = false;
+
+            OpenEuroSoundKeys();
+            CreateEuroSoundSubkeyIfNotExists("Editing", true);
+            using (RegistryKey EditingOptions = EuroSoundKey.OpenSubKey("Editing", true))
+            {
+                editOption = Convert.ToBoolean(EditingOptions.GetValue(keyName, false));
+                EditingOptions.Close();
+            }
+
+            return editOption;
+        }
+
+        //*===============================================================================================
         //* Current Profile
         //*===============================================================================================
         internal static void SaveCurrentProfile(string currentProfile, string currentProfileName)

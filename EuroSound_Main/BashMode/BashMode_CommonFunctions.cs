@@ -12,7 +12,7 @@ namespace EuroSound_Application.Classes.BashMode
     {
         private SFX_ChecksBeforeGeneration SFX_Check = new SFX_ChecksBeforeGeneration();
 
-        internal void CreateSFXSoundBanks(BinaryStream BWriter, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, uint File_Hashcode, string outputTarget)
+        internal void CreateSFXSoundBanks(BinaryStream BWriter, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, uint File_Hashcode)
         {
             GenerateSFXSoundBank SFXGenerator = new GenerateSFXSoundBank();
 
@@ -95,7 +95,7 @@ namespace EuroSound_Application.Classes.BashMode
             BWriter.Close();
         }
 
-        internal void CreateSFXStreamFie(BinaryStream BWriter, Dictionary<uint, EXSoundStream> DictionaryData, uint File_Hashcode, string outputTarget)
+        internal void CreateSFXStreamFie(BinaryStream BWriter, Dictionary<uint, EXSoundStream> DictionaryData, uint File_Hashcode)
         {
             GenerateSFXStreamedSounds SFXGenerator = new GenerateSFXStreamedSounds();
 
@@ -146,13 +146,13 @@ namespace EuroSound_Application.Classes.BashMode
 
                 //*===============================================================================================
                 //* STEP 4: WRITE FINAL OFFSETS
-                //*===============================================================================================                                //Write Offsets
+                //*===============================================================================================
                 SFXGenerator.WriteFinalOffsets(BWriter, null);
             }
             BWriter.Close();
         }
 
-        internal void CreateSFXMusicFile(BinaryStream BWriter, Dictionary<uint, EXMusic> DictionaryData, uint File_Hashcode, string outputTarget)
+        internal void CreateSFXMusicFile(BinaryStream BWriter, Dictionary<uint, EXMusic> DictionaryData, uint File_Hashcode)
         {
             GenerateSFXMusicBank SFXCreator = new GenerateSFXMusicBank();
 

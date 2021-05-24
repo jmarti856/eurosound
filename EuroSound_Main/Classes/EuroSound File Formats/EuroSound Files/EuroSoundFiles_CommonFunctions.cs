@@ -1,6 +1,5 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationTargets;
-using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using Syroot.BinaryData;
 using System;
@@ -16,7 +15,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion
         //*===============================================================================================
         //* Read Functions
         //*===============================================================================================
-        internal void ReadTreeViewData(ProjectFile currentProject, BinaryReader BReader, TreeView TreeViewControl)
+        internal void ReadTreeViewData(BinaryReader BReader, TreeView TreeViewControl)
         {
             uint NumberOfNodes = BReader.ReadUInt32();
 

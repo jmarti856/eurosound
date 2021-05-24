@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{954A4DCF-2B13-47DE-8207-7FBC7985E8A0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RichTextBoxEditor</RootNamespace>
+    <AssemblyName>rtbe</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NetSpell.SpellChecker, Version=2.1.7.41329, Culture=neutral, PublicKeyToken=318b389f0db66e46">
+      <HintPath>..\packages\NetSpell.2.1.7\lib\NetSpell.SpellChecker.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FindForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FindForm.Designer.cs">
+      <DependentUpon>FindForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ReplaceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReplaceForm.Designer.cs">
+      <DependentUpon>ReplaceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RicherTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RichTextBoxEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RichTextBoxEditor.Designer.cs">
+      <DependentUpon>RichTextBoxEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl1.Designer.cs">
+      <DependentUpon>RicherTextBox.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FindForm.resx">
+      <DependentUpon>FindForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReplaceForm.resx">
+      <DependentUpon>ReplaceForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RicherTextBox.resx">
+      <DependentUpon>RicherTextBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RichTextBoxEditor.resx">
+      <DependentUpon>RichTextBoxEditor.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AlignTableCellMiddleCenterHS.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AlignTableCellMiddleLeftJustHS.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AlignTableCellMiddleRightHS.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FindHS.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FindNextHS.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IndentHS.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InsertPictureHS.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\List_BulletsHS.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OutdentHS.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomIn.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomOut.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AlignTableCellMiddleCenterHS1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AlignTableCellMiddleLeftJustHS1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AlignTableCellMiddleRightHS1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FindHS1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FindNextHS1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IndentHS1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InsertPictureHS1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\List_BulletsHS1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OutdentHS1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomIn1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomOut1.bmp" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

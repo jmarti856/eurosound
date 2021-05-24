@@ -32,7 +32,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.Musicbanks
             //Project Name
             BWriter.WriteString(FileProperties.FileName);
             //Project Description
-            BWriter.WriteString(string.Empty);
+            BWriter.WriteString(FileProperties.ProjectDescription);
             //Profile Name
             BWriter.WriteString(GlobalPreferences.SelectedProfileName);
             //Profile Path

@@ -227,7 +227,7 @@ namespace EngineXImaAdpcm
 
                 /* Step 3 - Separate sign and magnitude */
                 sign = delta & 8;
-                delta = delta & 7;
+                delta &= 7;
 
                 /* Step 4 - Compute difference and new predicted value */
                 /*

@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.ApplicationRegistryFunctions;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.CustomControls.InputBoxForm;
 using System.Drawing;
 using System.Windows.Forms;
@@ -92,16 +93,30 @@ namespace EuroSound_Application.Clases
         {
             int SelectedColor = -1;
 
-            using (ColorDialog ColorDiag = new ColorDialog())
+            if (GlobalPreferences.UseExtendedColorPicker)
             {
-                ColorDiag.Color = SelectedUserColor;
-                ColorDiag.AllowFullOpen = true;
-                ColorDiag.FullOpen = true;
-                ColorDiag.CustomColors = WindowsRegistryFunctions.LoadCustomColors();
-                if (ColorDiag.ShowDialog() == DialogResult.OK)
+                using (OpenPainter.ColorPicker.FrmColorPicker frm = new OpenPainter.ColorPicker.FrmColorPicker(SelectedUserColor))
                 {
-                    SelectedColor = ColorDiag.Color.ToArgb();
-                    WindowsRegistryFunctions.SaveCustomColors(ColorDiag.CustomColors);
+                    frm.Font = SystemFonts.DialogFont;
+                    if (frm.ShowDialog() == DialogResult.OK)
+                    {
+                        SelectedColor = frm.PrimaryColor.ToArgb();
+                    }
+                }
+            }
+            else
+            {
+                using (ColorDialog ColorDiag = new ColorDialog())
+                {
+                    ColorDiag.Color = SelectedUserColor;
+                    ColorDiag.AllowFullOpen = true;
+                    ColorDiag.FullOpen = true;
+                    ColorDiag.CustomColors = WindowsRegistryFunctions.LoadCustomColors();
+                    if (ColorDiag.ShowDialog() == DialogResult.OK)
+                    {
+                        SelectedColor = ColorDiag.Color.ToArgb();
+                        WindowsRegistryFunctions.SaveCustomColors(ColorDiag.CustomColors);
+                    }
                 }
             }
 

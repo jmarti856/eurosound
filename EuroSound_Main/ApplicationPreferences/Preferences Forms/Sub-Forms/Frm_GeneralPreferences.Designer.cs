@@ -74,10 +74,10 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Groupbox_Waves.Controls.Add(this.Label_ColorBackground);
             this.Groupbox_Waves.Controls.Add(this.Button_WavesColorControl);
             this.Groupbox_Waves.Controls.Add(this.Label_ColorWaves);
-            this.Groupbox_Waves.Location = new System.Drawing.Point(12, 187);
+            this.Groupbox_Waves.Location = new System.Drawing.Point(12, 189);
             this.Groupbox_Waves.Name = "Groupbox_Waves";
             this.Groupbox_Waves.Size = new System.Drawing.Size(489, 103);
-            this.Groupbox_Waves.TabIndex = 3;
+            this.Groupbox_Waves.TabIndex = 6;
             this.Groupbox_Waves.TabStop = false;
             this.Groupbox_Waves.Text = "Audio Waves Viewer:";
             // 
@@ -137,7 +137,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.GroupBox_LoadingOptions.Controls.Add(this.CheckBox_UseThreading);
             this.GroupBox_LoadingOptions.Controls.Add(this.CheckBox_IgnoreLookTree);
             this.GroupBox_LoadingOptions.Controls.Add(this.CheckBox_ReloadLastESF);
-            this.GroupBox_LoadingOptions.Location = new System.Drawing.Point(12, 88);
+            this.GroupBox_LoadingOptions.Location = new System.Drawing.Point(12, 90);
             this.GroupBox_LoadingOptions.Name = "GroupBox_LoadingOptions";
             this.GroupBox_LoadingOptions.Size = new System.Drawing.Size(489, 93);
             this.GroupBox_LoadingOptions.TabIndex = 4;

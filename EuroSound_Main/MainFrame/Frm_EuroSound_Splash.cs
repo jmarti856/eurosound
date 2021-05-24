@@ -247,6 +247,11 @@ namespace EuroSound_Application.SplashForm
             GlobalPreferences.MakeBackupsIndex = int.Parse(WindowsRegistryFunctions.LoadBackupSettings("NextBackup"));
             await Task.Delay(randomNumber.Next(minimum, maximum));
 
+            //-----------------------------------------[Editing Settings]----------------------------------------
+            Label_Status.Text = "Loading settings, please wait...";
+            GlobalPreferences.AutomaticallySortNodes = WindowsRegistryFunctions.LoadEditingOptions("AutoSortNodes");
+            GlobalPreferences.UseExtendedColorPicker = WindowsRegistryFunctions.LoadEditingOptions("UseExtColorPicker");
+
             //-----------------------------------------[Open Form]----------------------------------------
             Label_Status.Text = "Starting application, please wait...";
             DialogResult = DialogResult.OK;

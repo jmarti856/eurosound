@@ -74,12 +74,7 @@ namespace EuroSound_Application
 
         protected void Init(ToolStripMenuItem recentFileMenuItem, ClickedHandler clickedHandler, string registryKeyName, bool loadFromRegistry, int maxEntries)
         {
-            if (recentFileMenuItem == null)
-            {
-                throw new ArgumentNullException("recentFileMenuItem");
-            }
-
-            this.recentFileMenuItem = recentFileMenuItem;
+            this.recentFileMenuItem = recentFileMenuItem ?? throw new ArgumentNullException("recentFileMenuItem");
             this.recentFileMenuItem.Checked = false;
             this.recentFileMenuItem.Enabled = false;
 

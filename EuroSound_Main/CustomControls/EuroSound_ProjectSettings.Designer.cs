@@ -48,6 +48,7 @@
             this.Button_Cancel = new System.Windows.Forms.Button();
             this.Label_DataType = new System.Windows.Forms.Label();
             this.Combobox_TypeOfData = new System.Windows.Forms.ComboBox();
+            this.Button_EditDescription = new System.Windows.Forms.Button();
             this.GroupBox_HashTable.SuspendLayout();
             this.GroupBox_HashTableConfig.SuspendLayout();
             this.SuspendLayout();
@@ -77,7 +78,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GroupBox_HashTable.Controls.Add(this.Combobox_FileHashcode);
             this.GroupBox_HashTable.Controls.Add(this.Label_HashTableEntry);
-            this.GroupBox_HashTable.Location = new System.Drawing.Point(12, 294);
+            this.GroupBox_HashTable.Location = new System.Drawing.Point(12, 305);
             this.GroupBox_HashTable.Name = "GroupBox_HashTable";
             this.GroupBox_HashTable.Size = new System.Drawing.Size(464, 61);
             this.GroupBox_HashTable.TabIndex = 5;
@@ -123,7 +124,7 @@
             this.GroupBox_HashTableConfig.Controls.Add(this.Label_HT_Sound);
             this.GroupBox_HashTableConfig.Location = new System.Drawing.Point(12, 71);
             this.GroupBox_HashTableConfig.Name = "GroupBox_HashTableConfig";
-            this.GroupBox_HashTableConfig.Size = new System.Drawing.Size(464, 217);
+            this.GroupBox_HashTableConfig.Size = new System.Drawing.Size(464, 228);
             this.GroupBox_HashTableConfig.TabIndex = 4;
             this.GroupBox_HashTableConfig.TabStop = false;
             this.GroupBox_HashTableConfig.Text = "Hash Table Configuration:";
@@ -232,10 +233,10 @@
             // Button_OK
             // 
             this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_OK.Location = new System.Drawing.Point(320, 367);
+            this.Button_OK.Location = new System.Drawing.Point(320, 372);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
-            this.Button_OK.TabIndex = 6;
+            this.Button_OK.TabIndex = 7;
             this.Button_OK.Text = "OK";
             this.Button_OK.UseVisualStyleBackColor = true;
             this.Button_OK.Click += new System.EventHandler(this.Button_OK_Click);
@@ -244,10 +245,10 @@
             // 
             this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_Cancel.Location = new System.Drawing.Point(401, 367);
+            this.Button_Cancel.Location = new System.Drawing.Point(401, 372);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
-            this.Button_Cancel.TabIndex = 7;
+            this.Button_Cancel.TabIndex = 8;
             this.Button_Cancel.Text = "Cancel";
             this.Button_Cancel.UseVisualStyleBackColor = true;
             this.Button_Cancel.Click += new System.EventHandler(this.Button_Cancel_Click);
@@ -277,6 +278,17 @@
             this.Combobox_TypeOfData.Size = new System.Drawing.Size(363, 21);
             this.Combobox_TypeOfData.TabIndex = 3;
             // 
+            // Button_EditDescription
+            // 
+            this.Button_EditDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Button_EditDescription.Location = new System.Drawing.Point(12, 372);
+            this.Button_EditDescription.Name = "Button_EditDescription";
+            this.Button_EditDescription.Size = new System.Drawing.Size(75, 23);
+            this.Button_EditDescription.TabIndex = 6;
+            this.Button_EditDescription.Text = "Description";
+            this.Button_EditDescription.UseVisualStyleBackColor = true;
+            this.Button_EditDescription.Click += new System.EventHandler(this.Button_EditDescription_Click);
+            // 
             // Frm_FileProperties
             // 
             this.AcceptButton = this.Button_OK;
@@ -284,6 +296,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Button_Cancel;
             this.ClientSize = new System.Drawing.Size(488, 407);
+            this.Controls.Add(this.Button_EditDescription);
             this.Controls.Add(this.Combobox_TypeOfData);
             this.Controls.Add(this.Label_DataType);
             this.Controls.Add(this.Button_Cancel);
@@ -333,5 +346,6 @@
         private System.Windows.Forms.Label Label_MusicEvents_Path;
         private System.Windows.Forms.Label Label_SectionMusic;
         private System.Windows.Forms.Label Label_Hashcodes;
+        private System.Windows.Forms.Button Button_EditDescription;
     }
 }

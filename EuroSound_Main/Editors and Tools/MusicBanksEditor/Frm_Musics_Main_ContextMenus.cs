@@ -1,4 +1,5 @@
-﻿using EuroSound_Application.ApplicationTargets;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CustomControls.DebugTypes;
 using EuroSound_Application.Editors_and_Tools;
@@ -69,7 +70,10 @@ namespace EuroSound_Application.Musics
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_MusicData.SelectedNode.Name, FolderID.ToString(), Name, 0, 0, (byte)Enumerations.TreeNodeType.Folder, true, true, false, SystemColors.WindowText, TreeView_MusicData);
 
                     //Sort tree view
-                    TreeView_MusicData.TreeViewNodeSorter = new NodeSorter();
+                    if (GlobalPreferences.AutomaticallySortNodes)
+                    {
+                        TreeView_MusicData.TreeViewNodeSorter = new NodeSorter();
+                    }
 
                     //Update project status variable
                     ProjectInfo.FileHasBeenModified = true;
@@ -121,7 +125,10 @@ namespace EuroSound_Application.Musics
                     }
 
                     //Sort tree view
-                    TreeView_MusicData.TreeViewNodeSorter = new NodeSorter();
+                    if (GlobalPreferences.AutomaticallySortNodes)
+                    {
+                        TreeView_MusicData.TreeViewNodeSorter = new NodeSorter();
+                    }
 
                     //Update project status variable
                     ProjectInfo.FileHasBeenModified = true;

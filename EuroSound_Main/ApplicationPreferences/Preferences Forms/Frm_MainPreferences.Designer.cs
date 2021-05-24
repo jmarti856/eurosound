@@ -30,13 +30,14 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         private void InitializeComponent()
         {
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Auto-Backup");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("ESF Tree");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Audio Devices");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("General", new System.Windows.Forms.TreeNode[] {
-            treeNode3});
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Output");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Profile");
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("System");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Editing");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("ESF Tree");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Audio Devices");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("General", new System.Windows.Forms.TreeNode[] {
+            treeNode4});
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Output");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Profile");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("System");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_MainPreferences));
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
@@ -88,25 +89,28 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.TreeViewPreferences.Name = "TreeViewPreferences";
             treeNode1.Name = "AutoBackup";
             treeNode1.Text = "Auto-Backup";
-            treeNode2.Name = "ESFTree";
-            treeNode2.Text = "ESF Tree";
-            treeNode3.Name = "AudioDevices";
-            treeNode3.Text = "Audio Devices";
-            treeNode4.Name = "General";
-            treeNode4.Text = "General";
-            treeNode5.Name = "Output";
-            treeNode5.Text = "Output";
-            treeNode6.Name = "Profile";
-            treeNode6.Text = "Profile";
-            treeNode7.Name = "System";
-            treeNode7.Text = "System";
+            treeNode2.Name = "Editing";
+            treeNode2.Text = "Editing";
+            treeNode3.Name = "ESFTree";
+            treeNode3.Text = "ESF Tree";
+            treeNode4.Name = "AudioDevices";
+            treeNode4.Text = "Audio Devices";
+            treeNode5.Name = "General";
+            treeNode5.Text = "General";
+            treeNode6.Name = "Output";
+            treeNode6.Text = "Output";
+            treeNode7.Name = "Profile";
+            treeNode7.Text = "Profile";
+            treeNode8.Name = "System";
+            treeNode8.Text = "System";
             this.TreeViewPreferences.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,
-            treeNode4,
+            treeNode3,
             treeNode5,
             treeNode6,
-            treeNode7});
+            treeNode7,
+            treeNode8});
             this.TreeViewPreferences.Size = new System.Drawing.Size(177, 424);
             this.TreeViewPreferences.TabIndex = 0;
             this.TreeViewPreferences.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeViewPreferences_AfterSelect);

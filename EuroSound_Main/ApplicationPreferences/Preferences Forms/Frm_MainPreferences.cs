@@ -54,6 +54,10 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         internal int MakeBackupsMaxNumberTEMPORAL;
         internal int MakeBackupsIntervalTEMPORAL;
 
+        //Frm_EditingOptions
+        internal bool AutomaticallySortNodesTEMPORAL;
+        internal bool UseExtendedColorPickerTEMPORAL;
+
         //*===============================================================================================
         //* GLOBAL VARS
         //*===============================================================================================
@@ -64,6 +68,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         private Frm_Profiles ProfilesForm;
         private Frm_OutputSettings OutputSettingsForm;
         private Frm_AutoBackUps BackupsSettingsForm;
+        private Frm_EditingOptions EditingOptionsForm;
         private bool FrmGeneralPreferencesOpened = false;
         private bool FrmTreeViewPrefsOpened = false;
         private bool FrmSystemPreferencesOpened = false;
@@ -71,6 +76,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         private bool FrmProfilesFormOpened = false;
         private bool FrmOutputSettingsFormOpened = false;
         private bool FrmBackupsSettingsFormOpened = false;
+        private bool EditingOptionsFormOpened = false;
 
         public Frm_MainPreferences()
         {
@@ -105,6 +111,8 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             MakeBackupsDirectoryTEMPORAL = GlobalPreferences.MakeBackupsDirectory;
             MakeBackupsMaxNumberTEMPORAL = GlobalPreferences.MakeBackupsMaxNumber;
             MakeBackupsIntervalTEMPORAL = GlobalPreferences.MakeBackupsInterval;
+            AutomaticallySortNodesTEMPORAL = GlobalPreferences.AutomaticallySortNodes;
+            UseExtendedColorPickerTEMPORAL = GlobalPreferences.UseExtendedColorPicker;
 
             TreeViewPreferences.ExpandAll();
         }
@@ -255,6 +263,20 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 FrmBackupsSettingsFormOpened = false;
             }
 
+            //-----------------[Frm_EditingOptions]-----------------
+            if (EditingOptionsFormOpened)
+            {
+                //Update Variables 
+                GlobalPreferences.AutomaticallySortNodes = AutomaticallySortNodesTEMPORAL;
+                GlobalPreferences.UseExtendedColorPicker = UseExtendedColorPickerTEMPORAL;
+
+                //Save config in Registry
+                WindowsRegistryFunctions.SaveEditingOptions();
+
+                //Update Boolean 
+                EditingOptionsFormOpened = false;
+            }
+
             Close();
         }
 
@@ -263,86 +285,74 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             //Open Sub-Form "Frm_TreeViewPrefs"
             if (string.Equals(e.Node.Name, "ESFTree"))
             {
-                if (!Panel_SecondaryForms.Controls.Contains(TreeViewPrefs))
+                RemoveAllFormsInsidePanel(Panel_SecondaryForms);
+
+                TreeViewPrefs = new Frm_TreeViewPrefs
                 {
-                    RemoveAllFormsInsidePanel(Panel_SecondaryForms);
+                    TopLevel = false,
+                    AutoScroll = true,
+                    Tag = Tag
+                };
+                Panel_SecondaryForms.Controls.Add(TreeViewPrefs);
+                TreeViewPrefs.Dock = DockStyle.Fill;
+                TreeViewPrefs.Show();
 
-                    TreeViewPrefs = new Frm_TreeViewPrefs
-                    {
-                        TopLevel = false,
-                        AutoScroll = true,
-                        Tag = Tag
-                    };
-                    Panel_SecondaryForms.Controls.Add(TreeViewPrefs);
-                    TreeViewPrefs.Dock = DockStyle.Fill;
-                    TreeViewPrefs.Show();
-
-                    //Update Boolean
-                    FrmTreeViewPrefsOpened = true;
-                }
+                //Update Boolean
+                FrmTreeViewPrefsOpened = true;
             }
             //Open Sub-Form "Frm_GeneralPreferences"
             else if (string.Equals(e.Node.Name, "General"))
             {
-                if (!Panel_SecondaryForms.Controls.Contains(GeneralPreferences))
+                RemoveAllFormsInsidePanel(Panel_SecondaryForms);
+
+                GeneralPreferences = new Frm_General
                 {
-                    RemoveAllFormsInsidePanel(Panel_SecondaryForms);
+                    TopLevel = false,
+                    AutoScroll = true,
+                    Tag = Tag
+                };
+                Panel_SecondaryForms.Controls.Add(GeneralPreferences);
+                GeneralPreferences.Dock = DockStyle.Fill;
+                GeneralPreferences.Show();
 
-                    GeneralPreferences = new Frm_General
-                    {
-                        TopLevel = false,
-                        AutoScroll = true,
-                        Tag = Tag
-                    };
-                    Panel_SecondaryForms.Controls.Add(GeneralPreferences);
-                    GeneralPreferences.Dock = DockStyle.Fill;
-                    GeneralPreferences.Show();
-
-                    //Update Boolean
-                    FrmGeneralPreferencesOpened = true;
-                }
+                //Update Boolean
+                FrmGeneralPreferencesOpened = true;
             }
             //Open Sub-Form "Frm_System"
             else if (string.Equals(e.Node.Name, "System"))
             {
-                if (!Panel_SecondaryForms.Controls.Contains(SystemPreferences))
+                RemoveAllFormsInsidePanel(Panel_SecondaryForms);
+
+                SystemPreferences = new Frm_System
                 {
-                    RemoveAllFormsInsidePanel(Panel_SecondaryForms);
+                    TopLevel = false,
+                    AutoScroll = true,
+                    Tag = Tag
+                };
+                Panel_SecondaryForms.Controls.Add(SystemPreferences);
+                SystemPreferences.Dock = DockStyle.Fill;
+                SystemPreferences.Show();
 
-                    SystemPreferences = new Frm_System
-                    {
-                        TopLevel = false,
-                        AutoScroll = true,
-                        Tag = Tag
-                    };
-                    Panel_SecondaryForms.Controls.Add(SystemPreferences);
-                    SystemPreferences.Dock = DockStyle.Fill;
-                    SystemPreferences.Show();
-
-                    //Update Boolean
-                    FrmSystemPreferencesOpened = true;
-                }
+                //Update Boolean
+                FrmSystemPreferencesOpened = true;
             }
             //Open Sub-Form "Frm_OutputDevices"
             else if (string.Equals(e.Node.Name, "AudioDevices"))
             {
-                if (!Panel_SecondaryForms.Controls.Contains(AudioDevices))
+                RemoveAllFormsInsidePanel(Panel_SecondaryForms);
+
+                AudioDevices = new Frm_OutputDevices
                 {
-                    RemoveAllFormsInsidePanel(Panel_SecondaryForms);
+                    TopLevel = false,
+                    AutoScroll = true,
+                    Tag = Tag
+                };
+                Panel_SecondaryForms.Controls.Add(AudioDevices);
+                AudioDevices.Dock = DockStyle.Fill;
+                AudioDevices.Show();
 
-                    AudioDevices = new Frm_OutputDevices
-                    {
-                        TopLevel = false,
-                        AutoScroll = true,
-                        Tag = Tag
-                    };
-                    Panel_SecondaryForms.Controls.Add(AudioDevices);
-                    AudioDevices.Dock = DockStyle.Fill;
-                    AudioDevices.Show();
-
-                    //Update Boolean
-                    FrmAudioDevicesOpened = true;
-                }
+                //Update Boolean
+                FrmAudioDevicesOpened = true;
             }
             //Open Sub-Form "Frm_Profiles"
             else if (string.Equals(e.Node.Name, "Profile"))
@@ -397,6 +407,24 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
                 //Update Boolean
                 FrmBackupsSettingsFormOpened = true;
+            }
+            //Open Sub-Form "Frm_EditingOptions"
+            else if (string.Equals(e.Node.Name, "Editing"))
+            {
+                RemoveAllFormsInsidePanel(Panel_SecondaryForms);
+
+                EditingOptionsForm = new Frm_EditingOptions
+                {
+                    TopLevel = false,
+                    AutoScroll = true,
+                    Tag = Tag
+                };
+                Panel_SecondaryForms.Controls.Add(EditingOptionsForm);
+                EditingOptionsForm.Dock = DockStyle.Fill;
+                EditingOptionsForm.Show();
+
+                //Update Boolean
+                EditingOptionsFormOpened = true;
             }
         }
 

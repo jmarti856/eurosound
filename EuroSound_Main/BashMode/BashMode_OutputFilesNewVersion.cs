@@ -19,7 +19,7 @@ namespace EuroSound_Application.BashMode
     {
         private EuroSoundFiles_CommonFunctions ESF_CommonFunctions = new EuroSoundFiles_CommonFunctions();
 
-        private EXAppTarget getRequestedAppTarget(string targetName, Dictionary<uint, EXAppTarget> OutputTargets)
+        private EXAppTarget GetRequestedAppTarget(string targetName, Dictionary<uint, EXAppTarget> OutputTargets)
         {
             EXAppTarget targetToUse = null;
 
@@ -96,7 +96,7 @@ namespace EuroSound_Application.BashMode
             //* CREATE SFX FILE
             //*===============================================================================================
             //Get target
-            EXAppTarget requestedTarget = getRequestedAppTarget(selectedTarget, OutputTargets);
+            EXAppTarget requestedTarget = GetRequestedAppTarget(selectedTarget, OutputTargets);
 
             //Output file
             if (requestedTarget != null)
@@ -108,7 +108,7 @@ namespace EuroSound_Application.BashMode
                 {
                     using (BinaryStream BWriter = new BinaryStream(File.Open(filePath, FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                     {
-                        new BashMode_CommonFunctions().CreateSFXSoundBanks(BWriter, SoundsList, AudiosList, File_Hashcode, requestedTarget.Name);
+                        new BashMode_CommonFunctions().CreateSFXSoundBanks(BWriter, SoundsList, AudiosList, File_Hashcode);
                     }
                 }
             }
@@ -168,7 +168,7 @@ namespace EuroSound_Application.BashMode
             //* CREATE SFX FILE
             //*===============================================================================================
             //Get target
-            EXAppTarget requestedTarget = getRequestedAppTarget(selectedTarget, OutputTargets);
+            EXAppTarget requestedTarget = GetRequestedAppTarget(selectedTarget, OutputTargets);
 
             //Output file
             if (requestedTarget != null)
@@ -180,7 +180,7 @@ namespace EuroSound_Application.BashMode
                 {
                     using (BinaryStream BWriter = new BinaryStream(File.Open(filePath, FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                     {
-                        new BashMode_CommonFunctions().CreateSFXStreamFie(BWriter, DictionaryData, fileHashcode, requestedTarget.Name);
+                        new BashMode_CommonFunctions().CreateSFXStreamFie(BWriter, DictionaryData, fileHashcode);
                     }
                 }
             }
@@ -240,7 +240,7 @@ namespace EuroSound_Application.BashMode
             //* CREATE SFX FILE
             //*===============================================================================================
             //Get target
-            EXAppTarget requestedTarget = getRequestedAppTarget(selectedTarget, OutputTargets);
+            EXAppTarget requestedTarget = GetRequestedAppTarget(selectedTarget, OutputTargets);
 
             //Output file
             if (requestedTarget != null)
@@ -252,7 +252,7 @@ namespace EuroSound_Application.BashMode
                 {
                     using (BinaryStream BWriter = new BinaryStream(File.Open(filePath, FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                     {
-                        new BashMode_CommonFunctions().CreateSFXMusicFile(BWriter, DictionaryData, fileHashcode, requestedTarget.Name);
+                        new BashMode_CommonFunctions().CreateSFXMusicFile(BWriter, DictionaryData, fileHashcode);
                     }
                 }
             }

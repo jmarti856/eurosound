@@ -75,7 +75,10 @@ namespace EuroSound_Application.SoundBanksEditor
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, MD5Hash, AudioName, 7, 7, (byte)Enumerations.TreeNodeType.Audio, true, true, false, SystemColors.WindowText, TreeView_File);
 
                     //Sort tree view
-                    TreeView_File.TreeViewNodeSorter = new NodeSorter();
+                    if (GlobalPreferences.AutomaticallySortNodes)
+                    {
+                        TreeView_File.TreeViewNodeSorter = new NodeSorter();
+                    }
 
                     //Update project status variable
                     ProjectInfo.FileHasBeenModified = true;
@@ -132,7 +135,10 @@ namespace EuroSound_Application.SoundBanksEditor
                     });
 
                     //Sort tree view
-                    TreeView_File.TreeViewNodeSorter = new NodeSorter();
+                    if (GlobalPreferences.AutomaticallySortNodes)
+                    {
+                        TreeView_File.TreeViewNodeSorter = new NodeSorter();
+                    }
 
                     //Update project status variable
                     ProjectInfo.FileHasBeenModified = true;
@@ -159,7 +165,10 @@ namespace EuroSound_Application.SoundBanksEditor
                     OutputTargets.Add(SoundID, outTarget);
 
                     //Sort tree view
-                    TreeView_File.TreeViewNodeSorter = new NodeSorter();
+                    if (GlobalPreferences.AutomaticallySortNodes)
+                    {
+                        TreeView_File.TreeViewNodeSorter = new NodeSorter();
+                    }
 
                     //Update project status variable
                     ProjectInfo.FileHasBeenModified = true;
@@ -208,7 +217,10 @@ namespace EuroSound_Application.SoundBanksEditor
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, FolderID.ToString(), folderName, 0, 0, (byte)Enumerations.TreeNodeType.Folder, true, true, false, SystemColors.WindowText, TreeView_File);
 
                     //Sort tree view
-                    TreeView_File.TreeViewNodeSorter = new NodeSorter();
+                    if (GlobalPreferences.AutomaticallySortNodes)
+                    {
+                        TreeView_File.TreeViewNodeSorter = new NodeSorter();
+                    }
 
                     //Update project status variable
                     ProjectInfo.FileHasBeenModified = true;

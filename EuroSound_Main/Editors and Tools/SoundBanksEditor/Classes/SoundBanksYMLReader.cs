@@ -177,7 +177,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
                                     if (File.Exists(audioPath))
                                     {
                                         string MD5AudioFilehash = GenericFunctions.CalculateMD5(audioPath);
-                                        LoadAudio(FileProperties, audioPath, audioProps, SoundName, sampleName, TreeViewControl, AudioDict, newSample, FilePath, Entry.Key, MD5AudioFilehash);
+                                        LoadAudio(audioPath, audioProps, SoundName, sampleName, TreeViewControl, AudioDict, newSample, FilePath, Entry.Key, MD5AudioFilehash);
                                     }
                                     else
                                     {
@@ -388,7 +388,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
             return SndParams;
         }
 
-        private void LoadAudio(ProjectFile currentFile, string AudioPath, int[] AudioProps, string SoundName, string SampleName, TreeView TreeViewControl, Dictionary<string, EXAudio> AudioDict, EXSample NewSample, string FilePath, int SampleKey, string MD5Hash)
+        private void LoadAudio(string AudioPath, int[] AudioProps, string SoundName, string SampleName, TreeView TreeViewControl, Dictionary<string, EXAudio> AudioDict, EXSample NewSample, string FilePath, int SampleKey, string MD5Hash)
         {
             if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.SoundbankChannels, GlobalPreferences.SoundbankFrequency))
             {
