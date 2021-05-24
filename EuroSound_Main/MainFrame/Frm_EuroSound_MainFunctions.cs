@@ -4,11 +4,11 @@ using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
-using Octokit;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -227,25 +227,44 @@ namespace EuroSound_Application
             {
                 if (GenericFunctions.CheckForInternetConnection())
                 {
-                    CheckUpdates = new Thread(async () =>
+                    CheckUpdates = new Thread(() =>
                     {
-                        GitHubClient github = new GitHubClient(new ProductHeaderValue("EuroSound-Editor"));
-                        IReadOnlyList<Release> ESReleases = await github.Repository.Release.GetAll("jmarti856", "eurosound");
-                        if (ESReleases.Count > 0)
+                        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+                        HttpWebRequest webRequest = WebRequest.Create("https://api.github.com/repos/jmarti856/eurosound/releases/latest") as HttpWebRequest;
+                        if (webRequest != null)
                         {
-                            string currentRelease = GenericFunctions.GetEuroSoundVersion();
-                            string latestRelease = ESReleases[0].TagName;
-                            if (!currentRelease.Equals(latestRelease))
+                            webRequest.Method = "GET";
+                            webRequest.UserAgent = "EuroSound User";
+                            webRequest.ServicePoint.Expect100Continue = false;
+
+                            try
                             {
-                                //Switch to main thread
-                                Invoke(new Action(() =>
+                                using (StreamReader responseReader = new StreamReader(webRequest.GetResponse().GetResponseStream()))
                                 {
-                                    DialogResult updateQuestion = MessageBox.Show(string.Join("", "It seems that you don't have the latest version of EuroSound.\nYou have the release: ", currentRelease, " and the latest release is: ", latestRelease, ".\n\nWould you like to go to the repository page?"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                                    if (updateQuestion == DialogResult.Yes)
+                                    JObject json = JObject.Parse(responseReader.ReadToEnd());
+                                    if (json["tag_name"] != null)
                                     {
-                                        Process.Start(string.Join("", "https://github.com/jmarti856/eurosound/releases/tag/", latestRelease));
+                                        string lastReleaseVersion = json["tag_name"].Value<string>();
+                                        string currentRelease = GenericFunctions.GetEuroSoundVersion();
+                                        if (int.Parse(currentRelease.Replace(".", "")) < int.Parse(lastReleaseVersion.Replace(".", "")))
+                                        {
+                                            //Switch to main thread
+                                            Invoke(new Action(() =>
+                                            {
+                                                DialogResult updateQuestion = MessageBox.Show(string.Join("", "It seems that you don't have the latest version of EuroSound.\nYou have the release: ", currentRelease, " and the latest release is: ", lastReleaseVersion, ".\n\nWould you like to go to the repository page?"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                                                if (updateQuestion == DialogResult.Yes)
+                                                {
+                                                    Process.Start(string.Join("", "https://github.com/jmarti856/eurosound/releases/tag/", lastReleaseVersion));
+                                                }
+                                            }));
+                                        }
                                     }
-                                }));
+                                    responseReader.Close();
+                                }
+                            }
+                            catch
+                            {
+
                             }
                         }
                     })
