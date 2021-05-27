@@ -1,6 +1,8 @@
-﻿using EuroSound_Application.Editors_and_Tools;
+﻿using EuroSound_Application.AudioFunctionsLibrary;
+using EuroSound_Application.Editors_and_Tools;
 using EuroSound_Application.HashCodesFunctions;
 using EuroSound_Application.SoundBanksEditor;
+using NAudio.Wave;
 using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
@@ -21,6 +23,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
         private long SFXlength, SampleInfoLength, SampleDataLength;
         private long[,] HashcodeOffsetM;
         private List<long> SampleDataOffsets = new List<long>();
+        private List<long> DataSizeOffsets = new List<long>();
 
         internal void WriteFileHeader(BinaryStream BWriter, uint FileHashcode, ProgressBar Bar)
         {
@@ -187,13 +190,13 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                 //--[Write data]--
                 BWriter.WriteUInt32(entry.Value.Flags);
                 BWriter.WriteUInt32(00000000);
-                BWriter.WriteUInt32((uint)entry.Value.PCMdata.Length);
+                BWriter.WriteUInt32(00000000);
                 BWriter.WriteUInt32(entry.Value.Frequency);
                 BWriter.WriteUInt32((uint)entry.Value.PCMdata.Length);
                 BWriter.WriteUInt32(entry.Value.Channels);
                 BWriter.WriteUInt32(entry.Value.Bits);
                 BWriter.WriteUInt32(entry.Value.PSIsample);
-                BWriter.WriteUInt32(entry.Value.LoopOffset * 2);
+                BWriter.WriteUInt32(entry.Value.LoopOffset);
                 BWriter.WriteUInt32(entry.Value.Duration);
 
                 ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
@@ -204,7 +207,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             SampleInfoLength = BWriter.BaseStream.Position - SampleInfoStartOffset;
         }
 
-        internal void WriteSampleDataSectionPC(BinaryStream BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
+        internal void WriteSampleDataSectionPC(BinaryStream BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, int blockAlign, ProgressBar Bar, Label LabelInfo)
         {
             //Align Bytes
             BWriter.Align(16, true);
@@ -218,49 +221,17 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             foreach (KeyValuePair<string, EXAudio> entry in FinalAudioDataDict)
             {
                 //--Add Sample data offset to the list--
-                SampleDataOffsets.Add(BWriter.BaseStream.Position - SampleDataStartOffset);
+                long StartOffset = BWriter.BaseStream.Position;
+                SampleDataOffsets.Add(StartOffset - SampleDataStartOffset);
 
                 //--Write PCM Data--
                 BWriter.WriteBytes(entry.Value.PCMdata);
 
                 //--Align--
-                BWriter.Align(4);
+                BWriter.Align(blockAlign);
 
-                //--Update UI--
-                ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
-                GenericFunctions.SetLabelText(LabelInfo, "WrittingSampleData: " + entry.Key);
-            }
-            //--Trim list--
-            SampleDataOffsets.TrimExcess();
-
-            //--Section length, current position - start position--
-            SampleDataLength = BWriter.BaseStream.Position - SampleDataStartOffset;
-
-            //Get total file size
-            WholeFileSize = BWriter.BaseStream.Position;
-        }
-
-        internal void WriteSampleDataSectionPS2(BinaryStream BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
-        {
-            //Align Bytes
-            BWriter.Align(16, true);
-
-            //Update UI
-            ToolsCommonFunctions.ProgressBarReset(Bar);
-            GenericFunctions.ProgressBarSetMaximum(Bar, FinalAudioDataDict.Count());
-
-            //--[Start section offset]--
-            SampleDataStartOffset = BWriter.BaseStream.Position;
-            foreach (KeyValuePair<string, EXAudio> entry in FinalAudioDataDict)
-            {
-                //--Add Sample data offset to the list--
-                SampleDataOffsets.Add(BWriter.BaseStream.Position - SampleDataStartOffset);
-
-                //--Write PCM Data--
-                BWriter.WriteBytes(entry.Value.PCMdata);
-
-                //--Align--
-                BWriter.Align(4);
+                //--Add Data Size offset to the list--
+                DataSizeOffsets.Add(BWriter.BaseStream.Position - StartOffset);
 
                 //--Update UI--
                 ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
@@ -330,19 +301,22 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             //* WRITE FINAL OFFSETS TO SAMPLE DATA
             //*===============================================================================================
             BWriter.BaseStream.Seek(SampleInfoStartOffset + 4, SeekOrigin.Begin);
-            foreach (long item in SampleDataOffsets)
+            for (int i = 0; i < SampleDataOffsets.Count; i++)
             {
                 //--Skip numsamples and flags--
                 BWriter.BaseStream.Seek(BWriter.BaseStream.Position + 4, SeekOrigin.Begin);
 
-                //--Calculate Relative Offset--
-                BWriter.WriteUInt32((uint)item);
+                //--Write Relative Offset To Audio Data--
+                BWriter.WriteUInt32((uint)SampleDataOffsets[i]);
+
+                //--Write Data Size, with paddings--
+                BWriter.WriteUInt32((uint)DataSizeOffsets[i]);
 
                 //--Skip other properties--
-                BWriter.BaseStream.Seek(BWriter.BaseStream.Position + 32, SeekOrigin.Begin);
+                BWriter.BaseStream.Seek(BWriter.BaseStream.Position + 28, SeekOrigin.Begin);
 
                 ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
-                GenericFunctions.SetLabelText(LabelInfo, "WrittingFinalOffsets: " + item);
+                GenericFunctions.SetLabelText(LabelInfo, "WrittingFinalOffsets: " + SampleDataOffsets[i]);
             }
         }
 
@@ -374,11 +348,10 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                     }
                 }
             }
-
             return FinalSortedDict;
         }
 
-        internal Dictionary<string, EXAudio> GetFinalAudioDictionaryPCMData(IEnumerable<string> UsedAudios, Dictionary<string, EXAudio> AudiosList, ProgressBar Bar)
+        internal Dictionary<string, EXAudio> GetFinalAudioDictionaryPCMData(IEnumerable<string> UsedAudios, Dictionary<string, EXAudio> AudiosList, ProgressBar Bar, string outputTarget)
         {
             Dictionary<string, EXAudio> FinalAudioDataDict = new Dictionary<string, EXAudio>();
 
@@ -396,13 +369,70 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                     {
                         if (!FinalAudioDataDict.ContainsKey(element))
                         {
-                            FinalAudioDataDict.Add(element, AudiosList[element]);
+                            EXAudio audioToExport = AudiosList[element];
+                            if (outputTarget.Equals("PC", StringComparison.OrdinalIgnoreCase))
+                            {
+                                audioToExport.LoopOffset *= 2;
+                                FinalAudioDataDict.Add(element, audioToExport);
+                            }
+                            else if (outputTarget.Equals("PS2", StringComparison.OrdinalIgnoreCase))
+                            {
+                                //Output audio in WAV
+                                byte[] pcmData;
+                                AudioFunctions audiof = new AudioFunctions();
+                                MemoryStream AudioSample = new MemoryStream(audioToExport.PCMdata);
+                                IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat((int)audioToExport.Frequency, (int)audioToExport.Bits, (int)audioToExport.Channels));
+                                using (MediaFoundationResampler conversionStream = new MediaFoundationResampler(provider, new WaveFormat((int)audioToExport.FrequencyPS2, (int)audioToExport.Bits, (int)audioToExport.Channels)))
+                                {
+                                    //Get PCM Data Stereo
+                                    using (MemoryStream outStream = new MemoryStream())
+                                    {
+                                        byte[] bytes = new byte[conversionStream.WaveFormat.AverageBytesPerSecond * 4];
+                                        while (true)
+                                        {
+                                            int bytesRead = conversionStream.Read(bytes, 0, bytes.Length);
+                                            if (bytesRead == 0)
+                                            {
+                                                break;
+                                            }
+                                            outStream.Write(bytes, 0, bytesRead);
+                                        }
+                                        pcmData = outStream.ToArray();
+                                    }
+                                }
+
+                                VAG_Encoder_Decoder.VagFunctions vagF = new VAG_Encoder_Decoder.VagFunctions();
+
+                                //Check loopOffset
+                                uint loopOffset = 0;
+                                bool UseLoopOffset = Convert.ToBoolean(audioToExport.Flags > 0);
+                                if (UseLoopOffset)
+                                {
+                                    loopOffset = vagF.CalculateLoopOffset(audioToExport.LoopOffset, audioToExport.Frequency, audioToExport.FrequencyPS2);
+                                }
+
+                                //Parse audio to VAG
+                                byte[] encodedVagData = vagF.VAGEncoder(audiof.ConvertPCMDataToShortArray(pcmData), 16, loopOffset, UseLoopOffset);
+
+                                //Create audio
+                                EXAudio ps2Audio = new EXAudio
+                                {
+                                    Flags = audioToExport.Flags,
+                                    Frequency = audioToExport.FrequencyPS2,
+                                    Channels = audioToExport.Channels,
+                                    Bits = 4,
+                                    PSIsample = audioToExport.PSIsample,
+                                    LoopOffset = (uint)(loopOffset & -128),
+                                    Duration = audioToExport.Duration,
+                                    PCMdata = encodedVagData
+                                };
+                                FinalAudioDataDict.Add(element, ps2Audio);
+                            }
                         }
                     }
                     ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
                 }
             }
-
             return FinalAudioDataDict;
         }
 

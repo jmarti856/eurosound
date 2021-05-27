@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenPainter.ColorPicker", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RichTextBoxEditor", "RichTextBoxEditor\RichTextBoxEditor.csproj", "{954A4DCF-2B13-47DE-8207-7FBC7985E8A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VAG_Encoder_Decoder", "VAG_Encoder_Decoder\VAG_Encoder_Decoder.csproj", "{D07166BA-DA95-474D-95DA-97F59D1E4B3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{954A4DCF-2B13-47DE-8207-7FBC7985E8A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{954A4DCF-2B13-47DE-8207-7FBC7985E8A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{954A4DCF-2B13-47DE-8207-7FBC7985E8A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D07166BA-DA95-474D-95DA-97F59D1E4B3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D07166BA-DA95-474D-95DA-97F59D1E4B3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D07166BA-DA95-474D-95DA-97F59D1E4B3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D07166BA-DA95-474D-95DA-97F59D1E4B3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

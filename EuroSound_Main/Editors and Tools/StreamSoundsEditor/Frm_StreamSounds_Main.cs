@@ -368,20 +368,6 @@ namespace EuroSound_Application.StreamSounds
 
         private void Frm_StreamSoundsEditorMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //Stop Threads
-            if (UpdateImaData != null)
-            {
-                UpdateImaData.Abort();
-            }
-            if (UpdateWavList != null)
-            {
-                UpdateWavList.Abort();
-            }
-            if (LoadStreamFile != null)
-            {
-                LoadStreamFile.Abort();
-            }
-
             //Stop timer
             if (TimerBackups != null)
             {

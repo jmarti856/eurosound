@@ -230,8 +230,7 @@ namespace EuroSound_Application
                     CheckUpdates = new Thread(() =>
                     {
                         ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
-                        HttpWebRequest webRequest = WebRequest.Create("https://api.github.com/repos/jmarti856/eurosound/releases/latest") as HttpWebRequest;
-                        if (webRequest != null)
+                        if (WebRequest.Create("https://api.github.com/repos/jmarti856/eurosound/releases/latest") is HttpWebRequest webRequest)
                         {
                             webRequest.Method = "GET";
                             webRequest.UserAgent = "EuroSound User";

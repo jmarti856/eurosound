@@ -17,6 +17,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
@@ -495,6 +496,26 @@ namespace EuroSound_Application
             }
 
             return string.Join(", ", checkedFlagsString.ToArray());
+        }
+
+        internal static void ExtractZip(string zipFile, string unpackPath)
+        {
+            using (ZipArchive files = ZipFile.OpenRead(zipFile))
+            {
+                foreach (ZipArchiveEntry ZipFiles in files.Entries)
+                {
+                    //Is Folder
+                    if (ZipFiles.FullName.EndsWith("/"))
+                    {
+                        Directory.CreateDirectory(Path.Combine(unpackPath, ZipFiles.FullName));
+                    }
+                    //Is File
+                    else
+                    {
+                        ZipFiles.ExtractToFile(Path.Combine(unpackPath, ZipFiles.FullName), true);
+                    }
+                }
+            }
         }
     }
 }

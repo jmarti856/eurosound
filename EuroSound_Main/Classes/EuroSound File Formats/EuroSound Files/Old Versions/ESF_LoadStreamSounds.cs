@@ -77,7 +77,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
                 StreamSound.Encoding = BReader.ReadString();
                 StreamSound.WAVFileMD5 = BReader.ReadString();
                 StreamSound.WAVFileName = BReader.ReadString();
-                StreamSound.RealSize = BReader.ReadUInt32();
+                BReader.ReadUInt32();
 
                 //Read Start Markers List
                 uint StartMarkersCount = BReader.ReadUInt32();

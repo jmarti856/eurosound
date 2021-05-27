@@ -82,7 +82,6 @@ namespace EuroSound_Application.StreamSounds
                     {
                         TemporalSound.Channels = (byte)conversionStream.WaveFormat.Channels;
                         TemporalSound.Frequency = (uint)conversionStream.WaveFormat.SampleRate;
-                        TemporalSound.RealSize = (uint)new FileInfo(AudioPath).Length;
                         TemporalSound.Bits = (uint)conversionStream.WaveFormat.BitsPerSample;
                         TemporalSound.Encoding = conversionStream.WaveFormat.Encoding.ToString();
 
@@ -113,7 +112,6 @@ namespace EuroSound_Application.StreamSounds
                 {
                     TemporalSound.Channels = (byte)AudioReader.WaveFormat.Channels;
                     TemporalSound.Frequency = (uint)AudioReader.WaveFormat.SampleRate;
-                    TemporalSound.RealSize = (uint)new FileInfo(AudioPath).Length;
                     TemporalSound.Bits = (uint)AudioReader.WaveFormat.BitsPerSample;
                     TemporalSound.Encoding = AudioReader.WaveFormat.Encoding.ToString();
                     TemporalSound.Duration = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1);

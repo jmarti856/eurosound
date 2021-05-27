@@ -108,7 +108,7 @@ namespace EuroSound_Application.BashMode
                 {
                     using (BinaryStream BWriter = new BinaryStream(File.Open(filePath, FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                     {
-                        new BashMode_CommonFunctions().CreateSFXSoundBanks(BWriter, SoundsList, AudiosList, File_Hashcode);
+                        new BashMode_CommonFunctions().CreateSFXSoundBanks(BWriter, SoundsList, AudiosList, File_Hashcode, requestedTarget.Name);
                     }
                 }
             }

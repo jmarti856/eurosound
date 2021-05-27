@@ -99,7 +99,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.Musicbanks
                 BWriter.WriteUInt32(Music.Value.Frequency_LeftChannel);
                 BWriter.WriteUInt32(Music.Value.Bits_LeftChannel);
                 BWriter.WriteUInt32(Music.Value.Duration_LeftChannel);
-                BWriter.WriteUInt32(Music.Value.RealSize_LeftChannel);
                 BWriter.WriteString(Music.Value.Encoding_LeftChannel);
                 BWriter.WriteString(Music.Value.WAVFileMD5_LeftChannel);
                 BWriter.WriteString(Music.Value.WAVFileName_LeftChannel);
@@ -113,7 +112,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.Musicbanks
                 BWriter.WriteUInt32(Music.Value.Frequency_RightChannel);
                 BWriter.WriteUInt32(Music.Value.Bits_RightChannel);
                 BWriter.WriteUInt32(Music.Value.Duration_RightChannel);
-                BWriter.WriteUInt32(Music.Value.RealSize_RightChannel);
                 BWriter.WriteString(Music.Value.Encoding_RightChannel);
                 BWriter.WriteString(Music.Value.WAVFileMD5_RightChannel);
                 BWriter.WriteString(Music.Value.WAVFileName_RightChannel);

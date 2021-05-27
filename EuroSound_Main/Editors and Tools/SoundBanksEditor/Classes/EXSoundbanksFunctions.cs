@@ -113,7 +113,6 @@ namespace EuroSound_Application.SoundBanksEditor
                     {
                         LoadedFileName = Path.GetFileName(FilePath),
                         Frequency = (uint)audioReader.WaveFormat.SampleRate,
-                        RealSize = (uint)new FileInfo(FilePath).Length,
                         Channels = (uint)audioReader.WaveFormat.Channels,
                         Bits = (uint)audioReader.WaveFormat.BitsPerSample,
                         Duration = (uint)Math.Round(audioReader.TotalTime.TotalMilliseconds, 1),
@@ -151,7 +150,6 @@ namespace EuroSound_Application.SoundBanksEditor
                         {
                             LoadedFileName = Path.GetFileName(SourcePath),
                             Frequency = (uint)conversionStream.WaveFormat.SampleRate,
-                            RealSize = (uint)new FileInfo(SourcePath).Length,
                             Channels = (uint)conversionStream.WaveFormat.Channels,
                             Bits = (uint)conversionStream.WaveFormat.BitsPerSample,
                             Encoding = conversionStream.WaveFormat.Encoding.ToString(),

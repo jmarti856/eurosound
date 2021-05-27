@@ -13,7 +13,6 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.IO.Compression;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -337,22 +336,7 @@ namespace EuroSound_Application
             }
 
             //Extract Zip File
-            using (ZipArchive files = ZipFile.OpenRead(zipFilePath))
-            {
-                foreach (ZipArchiveEntry ZipFiles in files.Entries)
-                {
-                    //Is Folder
-                    if (ZipFiles.FullName.EndsWith("/"))
-                    {
-                        Directory.CreateDirectory(Path.Combine(unpackPath, ZipFiles.FullName));
-                    }
-                    //Is File
-                    else
-                    {
-                        ZipFiles.ExtractToFile(Path.Combine(unpackPath, ZipFiles.FullName), true);
-                    }
-                }
-            }
+            GenericFunctions.ExtractZip(zipFilePath, unpackPath);
 
             //Open Web Browser
             if (!GenericFunctions.CheckChildFormIsOpened("EuroSound_WebBrowser", "WebBrowser"))

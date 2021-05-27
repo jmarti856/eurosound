@@ -12,7 +12,7 @@ namespace EuroSound_Application.Classes.BashMode
     {
         private SFX_ChecksBeforeGeneration SFX_Check = new SFX_ChecksBeforeGeneration();
 
-        internal void CreateSFXSoundBanks(BinaryStream BWriter, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, uint File_Hashcode)
+        internal void CreateSFXSoundBanks(BinaryStream BWriter, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, uint File_Hashcode, string target)
         {
             GenerateSFXSoundBank SFXGenerator = new GenerateSFXSoundBank();
 
@@ -28,7 +28,7 @@ namespace EuroSound_Application.Classes.BashMode
             IEnumerable<string> UsedAudios = EXSoundbanksFunctions.GetAudiosToExport(FinalSoundsDict);
 
             //Add data
-            Dictionary<string, EXAudio> FinalAudioDataDict = SFXGenerator.GetFinalAudioDictionaryPCMData(UsedAudios, AudiosList, null);
+            Dictionary<string, EXAudio> FinalAudioDataDict = SFXGenerator.GetFinalAudioDictionaryPCMData(UsedAudios, AudiosList, null, target);
 
             //*===============================================================================================
             //* STEP 3: CHECK DATA THAT WILL BE OUTPUTED
@@ -82,7 +82,12 @@ namespace EuroSound_Application.Classes.BashMode
 
                 //--------------------------------------[SECTION Sample data]--------------------------------------
                 //Write Data
-                SFXGenerator.WriteSampleDataSectionPC(BWriter, FinalAudioDataDict, null, null);
+                int blockAlign = 4;
+                if (target.Equals("PS2", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    blockAlign = 128;
+                }
+                SFXGenerator.WriteSampleDataSectionPC(BWriter, FinalAudioDataDict, blockAlign, null, null);
 
                 //*===============================================================================================
                 //* STEP 5: WRITE FINAL OFFSETS

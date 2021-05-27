@@ -74,7 +74,7 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
                 };
                 BReader.ReadUInt32();
                 AudioToAdd.Frequency = BReader.ReadUInt32();
-                AudioToAdd.RealSize = BReader.ReadUInt32();
+                BReader.ReadUInt32();
                 AudioToAdd.Channels = BReader.ReadUInt32();
                 AudioToAdd.Bits = BReader.ReadUInt32();
                 AudioToAdd.PSIsample = BReader.ReadUInt32();

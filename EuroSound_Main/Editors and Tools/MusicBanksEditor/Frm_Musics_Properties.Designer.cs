@@ -44,8 +44,6 @@ namespace EuroSound_Application.Musics
             this.WaveViewer_LeftChannel = new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer();
             this.Textbox_Duration_LeftChannel = new System.Windows.Forms.TextBox();
             this.Label_Duration_LeftChannel = new System.Windows.Forms.Label();
-            this.Textbox_RealSize_LeftChannel = new System.Windows.Forms.TextBox();
-            this.Label_RealSize_LeftChannel = new System.Windows.Forms.Label();
             this.Button_Stop_LeftChannel = new System.Windows.Forms.Button();
             this.Button_Play_LeftChannel = new System.Windows.Forms.Button();
             this.Textbox_Encoding_LeftChannel = new System.Windows.Forms.TextBox();
@@ -78,8 +76,6 @@ namespace EuroSound_Application.Musics
             this.Label_DataSize_RightChannel = new System.Windows.Forms.Label();
             this.Textbox_Duration_RightChannel = new System.Windows.Forms.TextBox();
             this.Label_Duration_RightChannel = new System.Windows.Forms.Label();
-            this.Textbox_RealSize_RightChannel = new System.Windows.Forms.TextBox();
-            this.Label_RealSize_RightChannel = new System.Windows.Forms.Label();
             this.Textbox_Encoding_RightChannel = new System.Windows.Forms.TextBox();
             this.Label_Encoding_RightChannel = new System.Windows.Forms.Label();
             this.Textbox_Bits_RightChannel = new System.Windows.Forms.TextBox();
@@ -178,8 +174,6 @@ namespace EuroSound_Application.Musics
             this.GroupBox_LeftChannel_Properties.Controls.Add(this.WaveViewer_LeftChannel);
             this.GroupBox_LeftChannel_Properties.Controls.Add(this.Textbox_Duration_LeftChannel);
             this.GroupBox_LeftChannel_Properties.Controls.Add(this.Label_Duration_LeftChannel);
-            this.GroupBox_LeftChannel_Properties.Controls.Add(this.Textbox_RealSize_LeftChannel);
-            this.GroupBox_LeftChannel_Properties.Controls.Add(this.Label_RealSize_LeftChannel);
             this.GroupBox_LeftChannel_Properties.Controls.Add(this.Button_Stop_LeftChannel);
             this.GroupBox_LeftChannel_Properties.Controls.Add(this.Button_Play_LeftChannel);
             this.GroupBox_LeftChannel_Properties.Controls.Add(this.Textbox_Encoding_LeftChannel);
@@ -267,24 +261,6 @@ namespace EuroSound_Application.Musics
             this.Label_Duration_LeftChannel.TabIndex = 4;
             this.Label_Duration_LeftChannel.Text = "Duration:";
             // 
-            // Textbox_RealSize_LeftChannel
-            // 
-            this.Textbox_RealSize_LeftChannel.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_RealSize_LeftChannel.Location = new System.Drawing.Point(401, 19);
-            this.Textbox_RealSize_LeftChannel.Name = "Textbox_RealSize_LeftChannel";
-            this.Textbox_RealSize_LeftChannel.ReadOnly = true;
-            this.Textbox_RealSize_LeftChannel.Size = new System.Drawing.Size(87, 20);
-            this.Textbox_RealSize_LeftChannel.TabIndex = 13;
-            // 
-            // Label_RealSize_LeftChannel
-            // 
-            this.Label_RealSize_LeftChannel.AutoSize = true;
-            this.Label_RealSize_LeftChannel.Location = new System.Drawing.Point(340, 22);
-            this.Label_RealSize_LeftChannel.Name = "Label_RealSize_LeftChannel";
-            this.Label_RealSize_LeftChannel.Size = new System.Drawing.Size(55, 13);
-            this.Label_RealSize_LeftChannel.TabIndex = 12;
-            this.Label_RealSize_LeftChannel.Text = "Real Size:";
-            // 
             // Button_Stop_LeftChannel
             // 
             this.Button_Stop_LeftChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -328,7 +304,7 @@ namespace EuroSound_Application.Musics
             // Textbox_Bits_LeftChannel
             // 
             this.Textbox_Bits_LeftChannel.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Bits_LeftChannel.Location = new System.Drawing.Point(401, 45);
+            this.Textbox_Bits_LeftChannel.Location = new System.Drawing.Point(400, 19);
             this.Textbox_Bits_LeftChannel.Name = "Textbox_Bits_LeftChannel";
             this.Textbox_Bits_LeftChannel.ReadOnly = true;
             this.Textbox_Bits_LeftChannel.Size = new System.Drawing.Size(87, 20);
@@ -337,7 +313,7 @@ namespace EuroSound_Application.Musics
             // Label_Bits_LeftChannel
             // 
             this.Label_Bits_LeftChannel.AutoSize = true;
-            this.Label_Bits_LeftChannel.Location = new System.Drawing.Point(368, 48);
+            this.Label_Bits_LeftChannel.Location = new System.Drawing.Point(367, 22);
             this.Label_Bits_LeftChannel.Name = "Label_Bits_LeftChannel";
             this.Label_Bits_LeftChannel.Size = new System.Drawing.Size(27, 13);
             this.Label_Bits_LeftChannel.TabIndex = 14;
@@ -580,8 +556,6 @@ namespace EuroSound_Application.Musics
             this.GroupBox_RightChannel_Properties.Controls.Add(this.Label_DataSize_RightChannel);
             this.GroupBox_RightChannel_Properties.Controls.Add(this.Textbox_Duration_RightChannel);
             this.GroupBox_RightChannel_Properties.Controls.Add(this.Label_Duration_RightChannel);
-            this.GroupBox_RightChannel_Properties.Controls.Add(this.Textbox_RealSize_RightChannel);
-            this.GroupBox_RightChannel_Properties.Controls.Add(this.Label_RealSize_RightChannel);
             this.GroupBox_RightChannel_Properties.Controls.Add(this.Textbox_Encoding_RightChannel);
             this.GroupBox_RightChannel_Properties.Controls.Add(this.Label_Encoding_RightChannel);
             this.GroupBox_RightChannel_Properties.Controls.Add(this.Textbox_Bits_RightChannel);
@@ -652,24 +626,6 @@ namespace EuroSound_Application.Musics
             this.Label_Duration_RightChannel.TabIndex = 30;
             this.Label_Duration_RightChannel.Text = "Duration:";
             // 
-            // Textbox_RealSize_RightChannel
-            // 
-            this.Textbox_RealSize_RightChannel.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_RealSize_RightChannel.Location = new System.Drawing.Point(401, 19);
-            this.Textbox_RealSize_RightChannel.Name = "Textbox_RealSize_RightChannel";
-            this.Textbox_RealSize_RightChannel.ReadOnly = true;
-            this.Textbox_RealSize_RightChannel.Size = new System.Drawing.Size(87, 20);
-            this.Textbox_RealSize_RightChannel.TabIndex = 27;
-            // 
-            // Label_RealSize_RightChannel
-            // 
-            this.Label_RealSize_RightChannel.AutoSize = true;
-            this.Label_RealSize_RightChannel.Location = new System.Drawing.Point(340, 22);
-            this.Label_RealSize_RightChannel.Name = "Label_RealSize_RightChannel";
-            this.Label_RealSize_RightChannel.Size = new System.Drawing.Size(55, 13);
-            this.Label_RealSize_RightChannel.TabIndex = 26;
-            this.Label_RealSize_RightChannel.Text = "Real Size:";
-            // 
             // Textbox_Encoding_RightChannel
             // 
             this.Textbox_Encoding_RightChannel.BackColor = System.Drawing.SystemColors.Window;
@@ -691,7 +647,7 @@ namespace EuroSound_Application.Musics
             // Textbox_Bits_RightChannel
             // 
             this.Textbox_Bits_RightChannel.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_Bits_RightChannel.Location = new System.Drawing.Point(401, 45);
+            this.Textbox_Bits_RightChannel.Location = new System.Drawing.Point(400, 19);
             this.Textbox_Bits_RightChannel.Name = "Textbox_Bits_RightChannel";
             this.Textbox_Bits_RightChannel.ReadOnly = true;
             this.Textbox_Bits_RightChannel.Size = new System.Drawing.Size(87, 20);
@@ -700,7 +656,7 @@ namespace EuroSound_Application.Musics
             // Label_Bits_RightChannel
             // 
             this.Label_Bits_RightChannel.AutoSize = true;
-            this.Label_Bits_RightChannel.Location = new System.Drawing.Point(368, 48);
+            this.Label_Bits_RightChannel.Location = new System.Drawing.Point(367, 22);
             this.Label_Bits_RightChannel.Name = "Label_Bits_RightChannel";
             this.Label_Bits_RightChannel.Size = new System.Drawing.Size(27, 13);
             this.Label_Bits_RightChannel.TabIndex = 28;
@@ -870,8 +826,6 @@ namespace EuroSound_Application.Musics
         private System.Windows.Forms.Button Button_ReplaceAudio_LeftChannel;
         private System.Windows.Forms.TextBox Textbox_IMA_ADPCM_LeftChannel;
         private System.Windows.Forms.GroupBox GroupBox_LeftChannel_Properties;
-        private System.Windows.Forms.TextBox Textbox_RealSize_LeftChannel;
-        private System.Windows.Forms.Label Label_RealSize_LeftChannel;
         private System.Windows.Forms.Button Button_Stop_LeftChannel;
         private System.Windows.Forms.Button Button_Play_LeftChannel;
         private System.Windows.Forms.TextBox Textbox_Encoding_LeftChannel;
@@ -914,8 +868,6 @@ namespace EuroSound_Application.Musics
         private System.Windows.Forms.Label Label_DataSize_RightChannel;
         private System.Windows.Forms.TextBox Textbox_Duration_RightChannel;
         private System.Windows.Forms.Label Label_Duration_RightChannel;
-        private System.Windows.Forms.TextBox Textbox_RealSize_RightChannel;
-        private System.Windows.Forms.Label Label_RealSize_RightChannel;
         private System.Windows.Forms.TextBox Textbox_Encoding_RightChannel;
         private System.Windows.Forms.Label Label_Encoding_RightChannel;
         private System.Windows.Forms.TextBox Textbox_Bits_RightChannel;

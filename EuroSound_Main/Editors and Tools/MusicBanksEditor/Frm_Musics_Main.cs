@@ -376,20 +376,6 @@ namespace EuroSound_Application.Musics
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_StoppingThreads"));
 
-            //Stop Threads
-            if (UpdateImaData != null)
-            {
-                UpdateImaData.Abort();
-            }
-            if (UpdateWavList != null)
-            {
-                UpdateWavList.Abort();
-            }
-            if (LoadMusicFile != null)
-            {
-                LoadMusicFile.Abort();
-            }
-
             //Stop timer
             if (TimerBackups != null)
             {

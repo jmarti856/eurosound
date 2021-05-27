@@ -184,7 +184,6 @@ namespace EuroSound_Application.Musics
                 SelectedMusic.Channels_LeftChannel = TemporalMusic.Channels_LeftChannel;
                 SelectedMusic.Bits_LeftChannel = TemporalMusic.Bits_LeftChannel;
                 SelectedMusic.Duration_LeftChannel = TemporalMusic.Duration_LeftChannel;
-                SelectedMusic.RealSize_LeftChannel = TemporalMusic.RealSize_LeftChannel;
                 SelectedMusic.Encoding_LeftChannel = TemporalMusic.Encoding_LeftChannel;
                 SelectedMusic.WAVFileMD5_LeftChannel = TemporalMusic.WAVFileMD5_LeftChannel;
                 SelectedMusic.WAVFileName_LeftChannel = TemporalMusic.WAVFileName_LeftChannel;
@@ -198,7 +197,6 @@ namespace EuroSound_Application.Musics
                 SelectedMusic.Channels_RightChannel = TemporalMusic.Channels_RightChannel;
                 SelectedMusic.Bits_RightChannel = TemporalMusic.Bits_RightChannel;
                 SelectedMusic.Duration_RightChannel = TemporalMusic.Duration_RightChannel;
-                SelectedMusic.RealSize_RightChannel = TemporalMusic.RealSize_RightChannel;
                 SelectedMusic.Encoding_RightChannel = TemporalMusic.Encoding_RightChannel;
                 SelectedMusic.WAVFileMD5_RightChannel = TemporalMusic.WAVFileMD5_RightChannel;
                 SelectedMusic.WAVFileName_RightChannel = TemporalMusic.WAVFileName_RightChannel;
@@ -257,7 +255,6 @@ namespace EuroSound_Application.Musics
                     {
                         TemporalMusic.Channels_LeftChannel = (byte)conversionStream.WaveFormat.Channels;
                         TemporalMusic.Frequency_LeftChannel = (uint)conversionStream.WaveFormat.SampleRate;
-                        TemporalMusic.RealSize_LeftChannel = (uint)new FileInfo(AudioPath).Length;
                         TemporalMusic.Bits_LeftChannel = (uint)conversionStream.WaveFormat.BitsPerSample;
                         TemporalMusic.Encoding_LeftChannel = conversionStream.WaveFormat.Encoding.ToString();
 
@@ -288,7 +285,6 @@ namespace EuroSound_Application.Musics
                 {
                     TemporalMusic.Channels_LeftChannel = (byte)AudioReader.WaveFormat.Channels;
                     TemporalMusic.Frequency_LeftChannel = (uint)AudioReader.WaveFormat.SampleRate;
-                    TemporalMusic.RealSize_LeftChannel = (uint)new FileInfo(AudioPath).Length;
                     TemporalMusic.Bits_LeftChannel = (uint)AudioReader.WaveFormat.BitsPerSample;
                     TemporalMusic.Encoding_LeftChannel = AudioReader.WaveFormat.Encoding.ToString();
                     TemporalMusic.Duration_LeftChannel = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1);
@@ -327,7 +323,6 @@ namespace EuroSound_Application.Musics
                     {
                         TemporalMusic.Channels_RightChannel = (byte)conversionStream.WaveFormat.Channels;
                         TemporalMusic.Frequency_RightChannel = (uint)conversionStream.WaveFormat.SampleRate;
-                        TemporalMusic.RealSize_RightChannel = (uint)new FileInfo(AudioPath).Length;
                         TemporalMusic.Bits_RightChannel = (uint)conversionStream.WaveFormat.BitsPerSample;
                         TemporalMusic.Encoding_RightChannel = conversionStream.WaveFormat.Encoding.ToString();
 
@@ -358,7 +353,6 @@ namespace EuroSound_Application.Musics
                 {
                     TemporalMusic.Channels_RightChannel = (byte)AudioReader.WaveFormat.Channels;
                     TemporalMusic.Frequency_RightChannel = (uint)AudioReader.WaveFormat.SampleRate;
-                    TemporalMusic.RealSize_RightChannel = (uint)new FileInfo(AudioPath).Length;
                     TemporalMusic.Bits_RightChannel = (uint)AudioReader.WaveFormat.BitsPerSample;
                     TemporalMusic.Encoding_RightChannel = AudioReader.WaveFormat.Encoding.ToString();
                     TemporalMusic.Duration_RightChannel = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1);
@@ -392,7 +386,6 @@ namespace EuroSound_Application.Musics
             //Properties
             Textbox_IMA_ADPCM_Size_LeftChannels.Text = string.Join(" ", new string[] { TemporalMusic.IMA_ADPCM_DATA_LeftChannel.Length.ToString(), "bytes" });
             Textbox_DataSize_LeftChannel.Text = string.Join(" ", new string[] { TemporalMusic.PCM_Data_LeftChannel.Length.ToString(), "bytes" });
-            Textbox_RealSize_LeftChannel.Text = string.Join(" ", new string[] { TemporalMusic.RealSize_LeftChannel.ToString(), "bytes" });
             Textbox_Frequency_LeftChannel.Text = string.Join(" ", new string[] { TemporalMusic.Frequency_LeftChannel.ToString(), "Hz" });
             Textbox_Channels_LeftChannel.Text = TemporalMusic.Channels_LeftChannel.ToString();
             Textbox_Bits_LeftChannel.Text = TemporalMusic.Bits_LeftChannel.ToString();
@@ -415,7 +408,6 @@ namespace EuroSound_Application.Musics
             //Properties
             Textbox_IMA_ADPCM_Size_RightChannels.Text = string.Join(" ", new string[] { TemporalMusic.IMA_ADPCM_DATA_RightChannel.Length.ToString(), "bytes" });
             Textbox_DataSize_RightChannel.Text = string.Join(" ", new string[] { TemporalMusic.PCM_Data_RightChannel.Length.ToString(), "bytes" });
-            Textbox_RealSize_RightChannel.Text = string.Join(" ", new string[] { TemporalMusic.RealSize_RightChannel.ToString(), "bytes" });
             Textbox_Frequency_RightChannel.Text = string.Join(" ", new string[] { TemporalMusic.Frequency_RightChannel.ToString(), "Hz" });
             Textbox_Channels_RightChannel.Text = TemporalMusic.Channels_RightChannel.ToString();
             Textbox_Bits_RightChannel.Text = TemporalMusic.Bits_RightChannel.ToString();

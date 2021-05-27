@@ -121,14 +121,6 @@ namespace EuroSound_Application.Classes.SFX_Files
                         Reports.Add("0Error in \"" + ObjectName + "\", the frequency between channels does not match.");
                     }
                 }
-                if (MusicToOutput.RealSize_LeftChannel != MusicToOutput.RealSize_RightChannel)
-                {
-                    MusicIsCorrect = false;
-                    if (Reports != null)
-                    {
-                        Reports.Add("0Error in \"" + ObjectName + "\", the real size between channels does not match.");
-                    }
-                }
                 if (MusicToOutput.Bits_LeftChannel != MusicToOutput.Bits_RightChannel)
                 {
                     MusicIsCorrect = false;

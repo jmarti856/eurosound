@@ -1,5 +1,4 @@
-﻿using EuroSound_Application.AudioFunctionsLibrary;
-using EuroSound_Application.Classes.SFX_Files;
+﻿using EuroSound_Application.Classes.SFX_Files;
 using EuroSound_Application.Editors_and_Tools.StreamSoundsEditor.Debug_Writer;
 using EuroSound_Application.GenerateSoundBankSFX;
 using EuroSound_Application.Musics;
@@ -72,32 +71,11 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                 IEnumerable<string> usedAudiosList = EXSoundbanksFunctions.GetAudiosToExport(finalSoundsDict);
 
                 //Add data
-                finalAudioDataDict = SFXCreator.GetFinalAudioDictionaryPCMData(usedAudiosList, ((Frm_Soundbanks_Main)parentForm).AudioDataDict, ProgressBar_CurrentTask);
+                finalAudioDataDict = SFXCreator.GetFinalAudioDictionaryPCMData(usedAudiosList, ((Frm_Soundbanks_Main)parentForm).AudioDataDict, ProgressBar_CurrentTask, target);
 
                 //Update Total Progress
                 totalProgress += 20;
                 BackgroundWorker_BuildSFX.ReportProgress(totalProgress);
-
-                //PS2
-                if (target.Equals("PS2", System.StringComparison.OrdinalIgnoreCase))
-                {
-                    string OutputPath = GenericFunctions.CreateTemporalFolder();
-                    AudioFunctions audioVagTemp = new AudioFunctions();
-                    foreach (KeyValuePair<string, EXAudio> audioItem in finalAudioDataDict)
-                    {
-                        audioItem.Value.PCMdata = audioVagTemp.WavToVag(Path.Combine(OutputPath, audioItem.Key + ".WAV"), Path.Combine(OutputPath, audioItem.Key + ".VAG"), (int)audioItem.Value.Frequency, (int)audioItem.Value.FrequencyPS2, audioItem.Value.PCMdata);
-                        if (audioItem.Value.FrequencyPS2 == 0)
-                        {
-                            audioItem.Value.Frequency = 11025;
-                        }
-                        else
-                        {
-                            audioItem.Value.Frequency = audioItem.Value.FrequencyPS2;
-                        }
-                        audioItem.Value.Bits = 4;
-                    }
-
-                }
 
                 //*===============================================================================================
                 //* STEP 3: CHECK DATA THAT WILL BE OUTPUTED (50%)
@@ -190,7 +168,12 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
 
                     //--------------------------------------[SECTION Sample data]--------------------------------------
                     //Write Data
-                    SFXCreator.WriteSampleDataSectionPC(binaryWriter, finalAudioDataDict, ProgressBar_CurrentTask, Label_CurrentTask);
+                    int blockAlign = 4;
+                    if (target.Equals("PS2", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        blockAlign = 128;
+                    }
+                    SFXCreator.WriteSampleDataSectionPC(binaryWriter, finalAudioDataDict, blockAlign, ProgressBar_CurrentTask, Label_CurrentTask);
 
                     //Update Total Progress
                     totalProgress += 5;

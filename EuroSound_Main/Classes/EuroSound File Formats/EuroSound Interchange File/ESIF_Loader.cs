@@ -726,7 +726,6 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                 {
                                     NewSSound.Channels = (byte)AudioReader.WaveFormat.Channels;
                                     NewSSound.Frequency = (uint)AudioReader.WaveFormat.SampleRate;
-                                    NewSSound.RealSize = (uint)new FileInfo(AudioPath).Length;
                                     NewSSound.Bits = (uint)AudioReader.WaveFormat.BitsPerSample;
                                     NewSSound.Encoding = AudioReader.WaveFormat.Encoding.ToString();
                                     NewSSound.Duration = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1);
@@ -1097,7 +1096,6 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                 {
                                     NewMusicBank.Channels_LeftChannel = (byte)AudioReader.WaveFormat.Channels;
                                     NewMusicBank.Frequency_LeftChannel = (uint)AudioReader.WaveFormat.SampleRate;
-                                    NewMusicBank.RealSize_LeftChannel = (uint)new FileInfo(AudioPath).Length;
                                     NewMusicBank.Bits_LeftChannel = (uint)AudioReader.WaveFormat.BitsPerSample;
                                     NewMusicBank.Encoding_LeftChannel = AudioReader.WaveFormat.Encoding.ToString();
                                     NewMusicBank.Duration_LeftChannel = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1);
@@ -1137,7 +1135,6 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                 {
                                     NewMusicBank.Channels_RightChannel = (byte)AudioReader.WaveFormat.Channels;
                                     NewMusicBank.Frequency_RightChannel = (uint)AudioReader.WaveFormat.SampleRate;
-                                    NewMusicBank.RealSize_RightChannel = (uint)new FileInfo(AudioPath).Length;
                                     NewMusicBank.Bits_RightChannel = (uint)AudioReader.WaveFormat.BitsPerSample;
                                     NewMusicBank.Encoding_RightChannel = AudioReader.WaveFormat.Encoding.ToString();
                                     NewMusicBank.Duration_RightChannel = (uint)Math.Round(AudioReader.TotalTime.TotalMilliseconds, 1);

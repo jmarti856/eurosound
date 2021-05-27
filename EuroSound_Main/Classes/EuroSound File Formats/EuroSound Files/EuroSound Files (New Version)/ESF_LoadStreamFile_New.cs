@@ -87,7 +87,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
                 uint ADPCM_DataLength = BReader.ReadUInt32();
                 StreamSound.IMA_ADPCM_DATA = BReader.ReadBytes((int)ADPCM_DataLength);
                 StreamSound.Frequency = BReader.ReadUInt32();
-                StreamSound.RealSize = BReader.ReadUInt32();
                 StreamSound.Bits = BReader.ReadUInt32();
                 StreamSound.Duration = BReader.ReadUInt32();
                 StreamSound.Channels = BReader.ReadByte();

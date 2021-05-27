@@ -453,32 +453,6 @@ namespace EuroSound_Application.SoundBanksEditor
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_StoppingThreads"));
 
-            //Stop Threads
-            if (UpdateList != null)
-            {
-                UpdateList.Abort();
-            }
-
-            if (UpdateWavList != null)
-            {
-                UpdateWavList.Abort();
-            }
-
-            if (UpdateStreamDataList != null)
-            {
-                UpdateStreamDataList.Abort();
-            }
-
-            if (LoadYamlFile != null)
-            {
-                LoadYamlFile.Abort();
-            }
-
-            if (LoadSoundBankFile != null)
-            {
-                LoadSoundBankFile.Abort();
-            }
-
             //Stop timer
             if (TimerBackups != null)
             {

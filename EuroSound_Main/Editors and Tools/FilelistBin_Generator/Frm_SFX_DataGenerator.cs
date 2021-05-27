@@ -127,15 +127,6 @@ namespace EuroSound_Application.SFXData
 
         private void Frm_SFX_DataGenerator_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //Stop thread
-            LoadSfxDataTable.Abort();
-
-            //Dispose buttons
-            button_generateFile.Dispose();
-            Button_Reload.Dispose();
-            ListView_HashTableData.Dispose();
-            Combobox_LabelHashcodes.Dispose();
-
             //Clear array
             SFXDataBin_Generator = null;
 

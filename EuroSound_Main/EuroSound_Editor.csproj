@@ -537,6 +537,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\EuroSound_Instances.resx">
       <DependentUpon>EuroSound_Instances.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\EuroSound_ItemUsage.resx">
       <DependentUpon>EuroSound_ItemUsage.cs</DependentUpon>
@@ -549,6 +550,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\EuroSound_SearchItem.resx">
       <DependentUpon>EuroSound_SearchItem.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\EuroSound_WarningBox.resx">
       <DependentUpon>EuroSound_WarningBox.cs</DependentUpon>
@@ -576,6 +578,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainFrame\Frm_EuroSound_Main.resx">
       <DependentUpon>Frm_EuroSound_Main.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainFrame\Frm_EuroSound_Splash.resx">
       <DependentUpon>Frm_EuroSound_Splash.cs</DependentUpon>
@@ -657,10 +660,13 @@
       <Project>{954A4DCF-2B13-47DE-8207-7FBC7985E8A0}</Project>
       <Name>RichTextBoxEditor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VAG_Encoder_Decoder\VAG_Encoder_Decoder.csproj">
+      <Project>{d07166ba-da95-474d-95da-97f59d1e4b3f}</Project>
+      <Name>VAG_Encoder_Decoder</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="EuroSoundIcon.ico" />
-    <Content Include="Includes\psxsdk.dll" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

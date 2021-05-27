@@ -119,7 +119,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void Button_TestLoopOffset_Click(object sender, EventArgs e)
         {
-            if (byte.Parse(Textbox_Flags.Text) == 1)
+            if (byte.Parse(Textbox_Flags.Tag.ToString()) == 1)
             {
                 try
                 {
@@ -292,7 +292,6 @@ namespace EuroSound_Application.SoundBanksEditor
 
             //Audio Properties
             Textbox_DataSize.Text = string.Join(" ", new string[] { TemporalAudio.PCMdata.Length.ToString(), "bytes" });
-            Textbox_RealSize.Text = string.Join(" ", new string[] { TemporalAudio.RealSize.ToString(), "bytes" });
             Textbox_Frequency.Text = string.Join(" ", new string[] { TemporalAudio.Frequency.ToString(), "Hz" });
             Textbox_Channels.Text = TemporalAudio.Channels.ToString();
             Textbox_Bits.Text = TemporalAudio.Bits.ToString();

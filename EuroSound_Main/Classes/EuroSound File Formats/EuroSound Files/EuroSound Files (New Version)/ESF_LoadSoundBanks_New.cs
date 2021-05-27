@@ -86,7 +86,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
                     Encoding = BReader.ReadString(),
                     Flags = BReader.ReadUInt16(),
                     Frequency = BReader.ReadUInt32(),
-                    RealSize = BReader.ReadUInt32(),
                     Channels = BReader.ReadUInt32(),
                     Bits = BReader.ReadUInt32(),
                     PSIsample = BReader.ReadUInt32(),

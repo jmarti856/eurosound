@@ -17,7 +17,6 @@ namespace EuroSound_Application.StreamSounds
         public byte Channels { get; set; }
         public uint Bits { get; set; }
         public uint Duration { get; set; }
-        public uint RealSize { get; set; }
         public string Encoding { get; set; } = string.Empty;
         public string WAVFileMD5 { get; set; } = string.Empty;
         public string WAVFileName { get; set; } = string.Empty;

@@ -111,7 +111,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
                 BWriter.WriteUInt32((uint)Sound.Value.IMA_ADPCM_DATA.Length);
                 BWriter.WriteBytes(Sound.Value.IMA_ADPCM_DATA);
                 BWriter.WriteUInt32(Sound.Value.Frequency);
-                BWriter.WriteUInt32(Sound.Value.RealSize);
                 BWriter.WriteUInt32(Sound.Value.Bits);
                 BWriter.WriteUInt32(Sound.Value.Duration);
                 BWriter.WriteByte(Sound.Value.Channels);

@@ -137,7 +137,6 @@ namespace EuroSound_Application.StreamSounds
                 SelectedSound.WAVFileName = TemporalSound.WAVFileName;
                 SelectedSound.PCM_Data = TemporalSound.PCM_Data;
                 SelectedSound.IMA_ADPCM_DATA = TemporalSound.IMA_ADPCM_DATA;
-                SelectedSound.RealSize = TemporalSound.RealSize;
                 SelectedSound.StartMarkers = new List<EXStreamStartMarker>(TemporalSound.StartMarkers);
                 SelectedSound.Markers = new List<EXStreamMarker>(TemporalSound.Markers);
             }
@@ -182,7 +181,6 @@ namespace EuroSound_Application.StreamSounds
             //Sound Properties
             Textbox_IMA_Data_Lenght.Text = string.Join(" ", new string[] { TemporalSound.IMA_ADPCM_DATA.Length.ToString(), "bytes" });
             Textbox_DataSize.Text = string.Join(" ", new string[] { TemporalSound.PCM_Data.Length.ToString(), "bytes" });
-            Textbox_RealSize.Text = string.Join(" ", new string[] { TemporalSound.RealSize.ToString(), "bytes" });
             Textbox_Frequency.Text = string.Join(" ", new string[] { TemporalSound.Frequency.ToString(), "Hz" });
             Textbox_Channels.Text = TemporalSound.Channels.ToString();
             Textbox_Bits.Text = TemporalSound.Bits.ToString();

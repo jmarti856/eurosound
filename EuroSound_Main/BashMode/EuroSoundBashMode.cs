@@ -155,7 +155,7 @@ namespace EuroSound_Application.BashMode
                                     switch (TypeOfStoredData)
                                     {
                                         case (int)Enumerations.ESoundFileType.SoundBanks:
-                                            bashFunctions.OutputSoundBank(BReader, Path.Combine(GlobalPreferences.OutputDirectory, "_bin_PC", "_eng"));
+                                            bashFunctions.OutputSoundBank(BReader, Path.Combine(GlobalPreferences.OutputDirectory, "_bin_PC", "_eng"), "PC");
                                             break;
                                         case (int)Enumerations.ESoundFileType.StreamSounds:
                                             bashFunctions.OutputStreamFile(BReader, Path.Combine(GlobalPreferences.OutputDirectory, "_bin_PC", "_eng"));

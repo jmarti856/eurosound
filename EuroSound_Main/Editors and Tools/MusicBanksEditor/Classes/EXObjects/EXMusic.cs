@@ -19,7 +19,6 @@ namespace EuroSound_Application.Musics
         public byte Channels_LeftChannel { get; set; }
         public uint Bits_LeftChannel { get; set; }
         public uint Duration_LeftChannel { get; set; }
-        public uint RealSize_LeftChannel { get; set; }
         public string Encoding_LeftChannel { get; set; } = string.Empty;
         public string WAVFileMD5_LeftChannel { get; set; } = string.Empty;
         public string WAVFileName_LeftChannel { get; set; } = string.Empty;
@@ -33,7 +32,6 @@ namespace EuroSound_Application.Musics
         public byte Channels_RightChannel { get; set; }
         public uint Bits_RightChannel { get; set; }
         public uint Duration_RightChannel { get; set; }
-        public uint RealSize_RightChannel { get; set; }
         public string Encoding_RightChannel { get; set; } = string.Empty;
         public string WAVFileMD5_RightChannel { get; set; } = string.Empty;
         public string WAVFileName_RightChannel { get; set; } = string.Empty;

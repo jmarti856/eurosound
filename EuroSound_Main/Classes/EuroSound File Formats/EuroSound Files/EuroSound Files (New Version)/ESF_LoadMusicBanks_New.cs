@@ -85,7 +85,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.Musicbanks
                 Music.Frequency_LeftChannel = BReader.ReadUInt32();
                 Music.Bits_LeftChannel = BReader.ReadUInt32();
                 Music.Duration_LeftChannel = BReader.ReadUInt32();
-                Music.RealSize_LeftChannel = BReader.ReadUInt32();
                 Music.Encoding_LeftChannel = BReader.ReadString();
                 Music.WAVFileMD5_LeftChannel = BReader.ReadString();
                 Music.WAVFileName_LeftChannel = BReader.ReadString();
@@ -99,7 +98,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.Musicbanks
                 Music.Frequency_RightChannel = BReader.ReadUInt32();
                 Music.Bits_RightChannel = BReader.ReadUInt32();
                 Music.Duration_RightChannel = BReader.ReadUInt32();
-                Music.RealSize_RightChannel = BReader.ReadUInt32();
                 Music.Encoding_RightChannel = BReader.ReadString();
                 Music.WAVFileMD5_RightChannel = BReader.ReadString();
                 Music.WAVFileName_RightChannel = BReader.ReadString();
