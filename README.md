@@ -1,7 +1,7 @@
 [![License](https://img.shields.io/github/license/jmarti856/eurosound.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![Issues](https://img.shields.io/github/issues/jmarti856/eurosound.svg)](https://github.com/jmarti856/eurosound/issues)
-[![GitHub contributors](https://img.shields.io/github/contributors/jmarti856/eurosound.svg)]()
-[![GitHub Release](https://img.shields.io/github/v/release/jmarti856/eurosound.svg)]()
+[![GitHub contributors](https://img.shields.io/github/contributors/jmarti856/eurosound.svg)](https://github.com/jmarti856/eurosound/contributors)
+[![GitHub Release](https://img.shields.io/github/v/release/jmarti856/eurosound.svg)](https://github.com/jmarti856/eurosound/releases/latest)
 [![GitHub Release-Date](https://img.shields.io/github/release-date/jmarti856/eurosound.svg)]()
 
 # EuroSound Editor
@@ -17,4 +17,5 @@ In the Sphinx wiki you can see more in detail each file documentation: https://s
 
 ### Download
 If you just want to use it or looking for setup file, click here to download:
-https://github.com/jmarti856/eurosound/releases/tag/1.0.1.2
+
+[![GitHub All Releases](https://img.shields.io/github/v/release/jmarti856/eurosound.svg?style=for-the-badge)](https://github.com/jmarti856/eurosound/releases/latest)
