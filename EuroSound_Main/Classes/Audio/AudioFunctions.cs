@@ -157,7 +157,7 @@ namespace EuroSound_Application.AudioFunctionsLibrary
                     BWritter.Write(Encoding.UTF8.GetBytes("WAVE")); //Format
                     BWritter.Write(Encoding.UTF8.GetBytes("fmt ")); //Subchunk1 ID
                     BWritter.Write((uint)16); //Subchunk1 Size
-                    BWritter.Write((ushort)1); //Audio Format
+                    BWritter.Write((ushort)WaveFormatEncoding.Pcm); //Audio Format
                     BWritter.Write((ushort)NumberOfChannels); //Num Channels
                     BWritter.Write((uint)(Frequency)); //Sample Rate
                     BWritter.Write((uint)((Frequency * NumberOfChannels * BitsPerChannel) / 8)); //Byte Rate

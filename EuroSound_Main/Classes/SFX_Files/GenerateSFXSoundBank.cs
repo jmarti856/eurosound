@@ -239,6 +239,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             }
             //--Trim list--
             SampleDataOffsets.TrimExcess();
+            DataSizeOffsets.TrimExcess();
 
             //--Section length, current position - start position--
             SampleDataLength = BWriter.BaseStream.Position - SampleDataStartOffset;
