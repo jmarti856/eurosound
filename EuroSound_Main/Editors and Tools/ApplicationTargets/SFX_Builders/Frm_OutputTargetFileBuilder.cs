@@ -97,69 +97,48 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                 {
                     foreach (EXAppTarget storedTarget in currentProjectTargets.Values)
                     {
-                        if (string.IsNullOrEmpty(storedTarget.BinaryName))
-                        {
-                            Reports.Add("0File name is empty");
-                        }
-                        else
-                        {
-                            string directoryPath = Path.Combine(storedTarget.OutputDirectory, string.Join("", "_bin_", storedTarget.Name));
-                            switch (CurrentFileProperties.TypeOfData)
-                            {
-                                case (int)Enumerations.ESoundFileType.SoundBanks:
-                                    string filePath = Path.Combine(directoryPath, "_Eng", selectedTarget.BinaryName);
-                                    BuildSFXSoundBank_Sphinx(directoryPath, filePath, parentFormTag, storedTarget.Name, e);
-                                    break;
-                                case (int)Enumerations.ESoundFileType.StreamSounds:
-                                    filePath = Path.Combine(directoryPath, "_Eng", selectedTarget.BinaryName);
-                                    BuildSFXStreamBank_Sphinx(directoryPath, filePath, parentFormTag, e);
-                                    break;
-                                case (int)Enumerations.ESoundFileType.MusicBanks:
-                                    filePath = Path.Combine(directoryPath, "Music", selectedTarget.BinaryName);
-                                    BuildMusicBank_Sphinx(directoryPath, filePath, parentFormTag, e);
-                                    break;
-                            }
-
-                            if (selectedTarget.UpdateFileList)
-                            {
-                                GenericFunctions.BuildSphinxFilelist();
-                            }
-                        }
+                        string directoryPath = Path.Combine(storedTarget.OutputDirectory, string.Join("", "_bin_", storedTarget.Name));
+                        OutputTarget(selectedTarget, directoryPath, e);
                     }
                 }
                 else
                 {
                     string directoryPath = Path.Combine(selectedTarget.OutputDirectory, string.Join("", "_bin_", selectedTarget.Name));
-                    if (string.IsNullOrEmpty(selectedTarget.BinaryName))
-                    {
-                        Reports.Add("0File name is empty");
-                    }
-                    else
-                    {
-                        switch (CurrentFileProperties.TypeOfData)
-                        {
-                            case (int)Enumerations.ESoundFileType.SoundBanks:
-                                string filePath = Path.Combine(directoryPath, "_Eng", selectedTarget.BinaryName);
-                                BuildSFXSoundBank_Sphinx(directoryPath, filePath, parentFormTag, selectedTarget.Name, e);
-                                break;
-                            case (int)Enumerations.ESoundFileType.StreamSounds:
-                                filePath = Path.Combine(directoryPath, "_Eng", selectedTarget.BinaryName);
-                                BuildSFXStreamBank_Sphinx(directoryPath, filePath, parentFormTag, e);
-                                break;
-                            case (int)Enumerations.ESoundFileType.MusicBanks:
-                                filePath = Path.Combine(directoryPath, "Music", selectedTarget.BinaryName);
-                                BuildMusicBank_Sphinx(directoryPath, filePath, parentFormTag, e);
-                                break;
-                        }
-
-                        if (selectedTarget.UpdateFileList)
-                        {
-                            GenericFunctions.BuildSphinxFilelist();
-                        }
-                    }
+                    OutputTarget(selectedTarget, directoryPath, e);
                 }
             }
 
+        }
+
+        private void OutputTarget(EXAppTarget storedTarget, string directoryPath, DoWorkEventArgs e)
+        {
+            if (string.IsNullOrEmpty(storedTarget.BinaryName))
+            {
+                Reports.Add("0File name is empty");
+            }
+            else
+            {
+                switch (CurrentFileProperties.TypeOfData)
+                {
+                    case (int)Enumerations.ESoundFileType.SoundBanks:
+                        string filePath = Path.Combine(directoryPath, "_Eng", selectedTarget.BinaryName);
+                        BuildSFXSoundBank_Sphinx(directoryPath, filePath, parentFormTag, storedTarget.Name, e);
+                        break;
+                    case (int)Enumerations.ESoundFileType.StreamSounds:
+                        filePath = Path.Combine(directoryPath, "_Eng", selectedTarget.BinaryName);
+                        BuildSFXStreamBank_Sphinx(directoryPath, filePath, parentFormTag, e);
+                        break;
+                    case (int)Enumerations.ESoundFileType.MusicBanks:
+                        filePath = Path.Combine(directoryPath, "Music", selectedTarget.BinaryName);
+                        BuildMusicBank_Sphinx(directoryPath, filePath, parentFormTag, e);
+                        break;
+                }
+
+                if (selectedTarget.UpdateFileList)
+                {
+                    GenericFunctions.BuildSphinxFilelist();
+                }
+            }
         }
 
         private void BackgroundWorker_BuildSFX_ProgressChanged(object sender, ProgressChangedEventArgs e)
