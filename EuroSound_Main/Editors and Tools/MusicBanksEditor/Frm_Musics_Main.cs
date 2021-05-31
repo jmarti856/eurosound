@@ -274,34 +274,49 @@ namespace EuroSound_Application.Musics
                             UpdateStatusBarLabels();
 
                             //Disable button
-                            Button_Generate_Hashcodes.Invoke((MethodInvoker)delegate
+                            if (!(Button_Generate_Hashcodes.Disposing || Button_Generate_Hashcodes.IsDisposed))
                             {
-                                Button_Generate_Hashcodes.Enabled = true;
-                            });
+                                Button_Generate_Hashcodes.Invoke((MethodInvoker)delegate
+                                {
+                                    Button_Generate_Hashcodes.Enabled = true;
+                                });
+                            }
 
                             //Disable button
-                            Button_UpdateProperties.Invoke((MethodInvoker)delegate
+                            if (!(Button_UpdateProperties.Disposing || Button_UpdateProperties.IsDisposed))
                             {
-                                Button_UpdateProperties.Enabled = true;
-                            });
+                                Button_UpdateProperties.Invoke((MethodInvoker)delegate
+                                {
+                                    Button_UpdateProperties.Enabled = true;
+                                });
+                            }
 
                             //Disable button
-                            Button_StopUpdate.Invoke((MethodInvoker)delegate
+                            if (!(Button_StopUpdate.Disposing || Button_StopUpdate.IsDisposed))
                             {
-                                Button_StopUpdate.Enabled = true;
-                            });
+                                Button_StopUpdate.Invoke((MethodInvoker)delegate
+                                {
+                                    Button_StopUpdate.Enabled = true;
+                                });
+                            }
 
                             //Disable button
-                            Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
+                            if (!(Button_ExportInterchangeFile.Disposing || Button_ExportInterchangeFile.IsDisposed))
                             {
-                                Button_ExportInterchangeFile.Enabled = true;
-                            });
+                                Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
+                                {
+                                    Button_ExportInterchangeFile.Enabled = true;
+                                });
+                            }
 
                             //Disable button
-                            Button_UpdateIMAData.Invoke((MethodInvoker)delegate
+                            if (!(Button_UpdateIMAData.Disposing || Button_UpdateIMAData.IsDisposed))
                             {
-                                Button_UpdateIMAData.Enabled = true;
-                            });
+                                Button_UpdateIMAData.Invoke((MethodInvoker)delegate
+                                {
+                                    Button_UpdateIMAData.Enabled = true;
+                                });
+                            }
 
                             //Set Program status
                             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
@@ -919,7 +934,7 @@ namespace EuroSound_Application.Musics
             string FilePath = BrowsersAndDialogs.FileBrowserDialog("EuroSound Interchange File (*.ESIF)|*.esif", 0, true);
             if (!string.IsNullOrEmpty(FilePath))
             {
-                ESIF_Loader EuroSoundPropertiesFileLoader = new ESIF_Loader();
+                ESIF_MusicBankFile EuroSoundPropertiesFileLoader = new ESIF_MusicBankFile();
                 IList<string> ImportResults = EuroSoundPropertiesFileLoader.LoadMusicBank_File(FilePath, ProjectInfo, MusicsList, TreeView_MusicData);
                 if (ImportResults.Count > 0)
                 {

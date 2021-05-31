@@ -13,6 +13,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
     {
         public void SaveStreamedSounds(BinaryStream BWriter, TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, Dictionary<uint, EXAppTarget> OutputTargets, ProjectFile FileProperties)
         {
+            int SpaceBetweenBlocks = 512;
             EuroSoundFiles_CommonFunctions ESF_CommonFunctions = new EuroSoundFiles_CommonFunctions();
 
             //File Size
@@ -38,8 +39,8 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
             //Profile Path
             BWriter.WriteString(GlobalPreferences.SelectedProfile);
 
-            //Go to section
-            BWriter.Seek(2048, SeekOrigin.Current);
+            //Space between sections
+            GenericFunctions.CustomSeek(2048, BWriter, (byte)'«');
 
             //*===============================================================================================
             //* Dictionary Data
@@ -51,6 +52,12 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
             long dictionaryDataOffset = BWriter.BaseStream.Position;
             SaveDictionaryData(StreamSoundsList, BWriter);
 
+            //Align Bytes
+            BWriter.Align(16, true);
+
+            //Space between sections
+            GenericFunctions.CustomSeek(SpaceBetweenBlocks, BWriter, (byte)'«');
+
             //*===============================================================================================
             //* TreeView
             //*===============================================================================================
@@ -61,6 +68,12 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
             long TreeViewDataOffset = BWriter.BaseStream.Position;
             ESF_CommonFunctions.SaveTreeViewData(TreeViewControl, BWriter, 2);
 
+            //Align Bytes
+            BWriter.Align(16, true);
+
+            //Space between sections
+            GenericFunctions.CustomSeek(SpaceBetweenBlocks, BWriter, (byte)'«');
+
             //*===============================================================================================
             //* APP Target
             //*===============================================================================================
@@ -70,6 +83,12 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
             //Write Data
             long AppTargetDataOffset = BWriter.BaseStream.Position;
             ESF_CommonFunctions.SaveAppTargetData(OutputTargets, BWriter);
+
+            //Align Bytes
+            BWriter.Align(16, true);
+
+            //Space between sections
+            GenericFunctions.CustomSeek(SpaceBetweenBlocks, BWriter, (byte)'«');
 
             //*===============================================================================================
             //* NamesList

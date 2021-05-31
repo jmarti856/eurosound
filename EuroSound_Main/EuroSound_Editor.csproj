@@ -185,6 +185,9 @@
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSound Files %28New Version%29\ESF_LoadSoundBanks_New.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSound Files %28New Version%29\ESF_LoadStreamFile_New.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSoundFiles_CommonFunctions.cs" />
+    <Compile Include="Classes\EuroSound File Formats\EuroSound Interchange File\Loader\EISF_SoundBankFiles.cs" />
+    <Compile Include="Classes\EuroSound File Formats\EuroSound Interchange File\Loader\ESIF_MusicBankFile.cs" />
+    <Compile Include="Classes\EuroSound File Formats\EuroSound Interchange File\Loader\ESIF_StreamBankFile.cs" />
     <Compile Include="CustomControls\EuroSound_ProjectsDesc.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -204,7 +207,7 @@
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\EuroSound Files %28New Version%29\ESF_SaveSoundBanks.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Files\Old Versions\ESF_LoadMusics.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Interchange File\ESIF_Exporter.cs" />
-    <Compile Include="Classes\EuroSound File Formats\EuroSound Interchange File\ESIF_Loader.cs" />
+    <Compile Include="Classes\EuroSound File Formats\EuroSound Interchange File\ESIF_LoaderFunctions.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Markers File\MarkerFilesMusic_Loader.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Markers File\MarkerFilesMusic_Exporter.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Project File\ESP_Loader.cs" />

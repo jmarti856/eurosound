@@ -92,7 +92,7 @@
         //*===============================================================================================
         //* TEMPORAL PROPERTIES
         //*===============================================================================================
-        internal static bool ShowWarningMessagesBox = true;
+        internal static bool NoWarningMessagesBox = false;
         internal static bool StatusBar_ToolTipMode;
     }
 }

@@ -4,20 +4,19 @@ namespace EuroSound_Application.CustomControls.WarningsForm
 {
     public partial class EuroSound_WarningBox : Form
     {
-        public bool ShowWarningAgain { get; set; }
+        public bool NoWarnings { get; set; }
 
-        public EuroSound_WarningBox(string LabelText, string Title, bool ShowWarningAgainCheckbox)
+        public EuroSound_WarningBox(string LabelText, string Title, bool warningsStatus)
         {
             InitializeComponent();
             Label_Text.Text = LabelText;
             ShowInTaskbar = false;
             Text = Title;
-            Checkbox_ShowAgain.Visible = ShowWarningAgainCheckbox;
+            Checkbox_ShowAgain.Visible = warningsStatus;
         }
 
         private void Button_Cancel_Click(object sender, System.EventArgs e)
         {
-            ShowWarningAgain = Checkbox_ShowAgain.Checked = !Checkbox_ShowAgain.Checked;
             DialogResult = DialogResult.Cancel;
             Close();
             Dispose();
@@ -25,7 +24,7 @@ namespace EuroSound_Application.CustomControls.WarningsForm
 
         private void Button_OK_Click(object sender, System.EventArgs e)
         {
-            ShowWarningAgain = Checkbox_ShowAgain.Checked = !Checkbox_ShowAgain.Checked;
+            NoWarnings = Checkbox_ShowAgain.Checked;
             DialogResult = DialogResult.OK;
             Close();
             Dispose();

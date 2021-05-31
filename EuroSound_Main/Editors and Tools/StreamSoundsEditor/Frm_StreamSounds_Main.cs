@@ -276,28 +276,40 @@ namespace EuroSound_Application.StreamSounds
                             UpdateStatusBarLabels();
 
                             //Enable Button
-                            Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
+                            if (!(Button_UpdateList_WavData.Disposing || Button_UpdateList_WavData.IsDisposed))
                             {
-                                Button_UpdateList_WavData.Enabled = true;
-                            });
+                                Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
+                                {
+                                    Button_UpdateList_WavData.Enabled = true;
+                                });
+                            }
 
                             //Enable Button
-                            Button_StopUpdate.Invoke((MethodInvoker)delegate
+                            if (!(Button_StopUpdate.Disposing || Button_StopUpdate.IsDisposed))
                             {
-                                Button_StopUpdate.Enabled = true;
-                            });
+                                Button_StopUpdate.Invoke((MethodInvoker)delegate
+                                {
+                                    Button_StopUpdate.Enabled = true;
+                                });
+                            }
 
                             //Enable Button
-                            Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
+                            if (!(Button_ExportInterchangeFile.Disposing || Button_ExportInterchangeFile.IsDisposed))
                             {
-                                Button_ExportInterchangeFile.Enabled = true;
-                            });
+                                Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
+                                {
+                                    Button_ExportInterchangeFile.Enabled = true;
+                                });
+                            }
 
                             //Enable Button
-                            Button_UpdateIMAData.Invoke((MethodInvoker)delegate
+                            if (!(Button_UpdateIMAData.Disposing || Button_UpdateIMAData.IsDisposed))
                             {
-                                Button_UpdateIMAData.Enabled = true;
-                            });
+                                Button_UpdateIMAData.Invoke((MethodInvoker)delegate
+                                {
+                                    Button_UpdateIMAData.Enabled = true;
+                                });
+                            }
 
                             //Set Program status
                             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
@@ -709,7 +721,7 @@ namespace EuroSound_Application.StreamSounds
             string FilePath = BrowsersAndDialogs.FileBrowserDialog("EuroSound Interchange File (*.ESIF)|*.esif", 0, true);
             if (!string.IsNullOrEmpty(FilePath))
             {
-                ESIF_Loader EuroSoundPropertiesFileLoader = new ESIF_Loader();
+                ESIF_StreamBankFile EuroSoundPropertiesFileLoader = new ESIF_StreamBankFile();
                 IList<string> ImportResults = EuroSoundPropertiesFileLoader.LoadStreamSoundBank_File(FilePath, ProjectInfo, StreamSoundsList, TreeView_StreamData);
                 if (ImportResults.Count > 0)
                 {

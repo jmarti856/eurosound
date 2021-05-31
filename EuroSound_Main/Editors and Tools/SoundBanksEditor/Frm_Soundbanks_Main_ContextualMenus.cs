@@ -290,7 +290,7 @@ namespace EuroSound_Application.SoundBanksEditor
             string filePath = BrowsersAndDialogs.FileBrowserDialog("EuroSound Interchange File (*.ESIF)|*.esif", 0, true);
             if (!string.IsNullOrEmpty(filePath))
             {
-                ESIF_Loader euroSoundPropsFileLoader = new ESIF_Loader();
+                EISF_SoundBankFiles euroSoundPropsFileLoader = new EISF_SoundBankFiles();
                 IList<string> importResults = euroSoundPropsFileLoader.LoadSFX_File(filePath, ProjectInfo, SoundsList, AudioDataDict, TreeView_File);
                 if (importResults.Count > 0)
                 {

@@ -130,7 +130,7 @@ namespace EuroSound_Application.StreamSounds
                     TreeNode NodeToCheck = TreeView_StreamData.Nodes.Find(item.Key.ToString(), true)[0];
                     ListViewItem Hashcode = new ListViewItem(new[]
                     {
-                        NodeToCheck.Text.ToString(),
+                        NodeToCheck.Text,
                         Index.ToString(),
                         item.Value.Frequency.ToString(),
                         item.Value.Channels.ToString(),

@@ -155,6 +155,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.ContextMenuTargets_Output = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuTargets_Separator2 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuTargets_TextColor = new System.Windows.Forms.ToolStripMenuItem();
+            this.Col_Flags = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ContextMenu_Folders.SuspendLayout();
             this.ContextMenu_Sound.SuspendLayout();
             this.MainMenu.SuspendLayout();
@@ -939,6 +940,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.ListView_WavHeaderData.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Col_Name,
             this.Col_LoopOffset,
+            this.Col_Flags,
             this.Col_Frequency,
             this.Col_Channels,
             this.Col_Bits,
@@ -1242,6 +1244,10 @@ namespace EuroSound_Application.SoundBanksEditor
             this.ContextMenuTargets_TextColor.Text = "Text Color...";
             this.ContextMenuTargets_TextColor.Click += new System.EventHandler(this.ContextMenuTargets_TextColor_Click);
             // 
+            // Col_Flags
+            // 
+            this.Col_Flags.Text = "Flags";
+            // 
             // Frm_Soundbanks_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1404,5 +1410,6 @@ namespace EuroSound_Application.SoundBanksEditor
         private System.Windows.Forms.ToolStripSeparator ContextMenuTargets_Separator2;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuTargets_TextColor;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuTargets_Delete;
+        private System.Windows.Forms.ColumnHeader Col_Flags;
     }
 }

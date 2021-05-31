@@ -316,8 +316,9 @@ namespace EuroSound_Application.SoundBanksEditor
                     TreeNode NodeToCheck = TreeView_File.Nodes.Find(audioItem.Key, true)[0];
                     ListViewItem Hashcode = new ListViewItem(new[]
                     {
-                        NodeToCheck.Text.ToString(),
+                        NodeToCheck.Text,
                         audioItem.Value.LoopOffset.ToString(),
+                        audioItem.Value.Flags.ToString(),
                         audioItem.Value.Frequency.ToString(),
                         audioItem.Value.Channels.ToString(),
                         audioItem.Value.Bits.ToString(),

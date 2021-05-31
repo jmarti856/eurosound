@@ -22,12 +22,12 @@ namespace EuroSound_Application.Editors_and_Tools
         internal static void RemoveTargetSelectedNode(TreeNode SelectedNode, Dictionary<uint, EXAppTarget> OutputTargets, TreeView formTreeView, ProjectFile currrentProject)
         {
             //Show warning
-            if (GlobalPreferences.ShowWarningMessagesBox)
+            if (!GlobalPreferences.NoWarningMessagesBox)
             {
                 EuroSound_WarningBox warningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { "Delete Target:", SelectedNode.Text }), "Warning", true);
                 if (warningDialog.ShowDialog() == DialogResult.OK)
                 {
-                    GlobalPreferences.ShowWarningMessagesBox = warningDialog.ShowWarningAgain;
+                    GlobalPreferences.NoWarningMessagesBox = warningDialog.NoWarnings;
                     RemoveTarget(OutputTargets, formTreeView, currrentProject);
                 }
                 warningDialog.Dispose();
@@ -58,12 +58,12 @@ namespace EuroSound_Application.Editors_and_Tools
         internal static void RemoveEngineXObject(string warningText, uint objectID, TreeView treeViewControl, TreeNode selectedNode, object dataDictionary, ProjectFile currentProject, Stack<object> UndoListSounds, object UndoListNodes, ToolStripMenuItem MenuItem_Edit_Undo)
         {
             //Show warning
-            if (GlobalPreferences.ShowWarningMessagesBox)
+            if (!GlobalPreferences.NoWarningMessagesBox)
             {
                 EuroSound_WarningBox WarningDialog = new EuroSound_WarningBox(string.Join(" ", new string[] { warningText, treeViewControl.SelectedNode.Text }), "Warning", true);
                 if (WarningDialog.ShowDialog() == DialogResult.OK)
                 {
-                    GlobalPreferences.ShowWarningMessagesBox = WarningDialog.ShowWarningAgain;
+                    GlobalPreferences.NoWarningMessagesBox = WarningDialog.NoWarnings;
                     RemoveObject(objectID, treeViewControl, selectedNode, dataDictionary, currentProject, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
                 }
                 WarningDialog.Dispose();

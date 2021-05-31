@@ -333,52 +333,76 @@ namespace EuroSound_Application.SoundBanksEditor
                             UpdateStatusBarLabels();
 
                             //Enable Button
-                            Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
+                            if (!(Button_UpdateList_WavData.Disposing || Button_UpdateList_WavData.IsDisposed))
                             {
-                                Button_UpdateList_WavData.Enabled = true;
-                            });
+                                Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
+                                {
+                                    Button_UpdateList_WavData.Enabled = true;
+                                });
+                            }
 
                             //Enable Button
-                            Button_Stop_WavUpdate.Invoke((MethodInvoker)delegate
+                            if (!(Button_Stop_WavUpdate.Disposing || Button_Stop_WavUpdate.IsDisposed))
                             {
-                                Button_Stop_WavUpdate.Enabled = true;
-                            });
+                                Button_Stop_WavUpdate.Invoke((MethodInvoker)delegate
+                                {
+                                    Button_Stop_WavUpdate.Enabled = true;
+                                });
+                            }
 
                             //Enable Button
-                            Button_UpdateList_Hashcodes.Invoke((MethodInvoker)delegate
+                            if (!(Button_UpdateList_Hashcodes.Disposing || Button_UpdateList_Hashcodes.IsDisposed))
                             {
-                                Button_UpdateList_Hashcodes.Enabled = true;
-                            });
+                                Button_UpdateList_Hashcodes.Invoke((MethodInvoker)delegate
+                                {
+                                    Button_UpdateList_Hashcodes.Enabled = true;
+                                });
+                            }
 
                             //Enable Button
-                            Button_StopHashcodeUpdate.Invoke((MethodInvoker)delegate
+                            if (!(Button_StopHashcodeUpdate.Disposing || Button_StopHashcodeUpdate.IsDisposed))
                             {
-                                Button_StopHashcodeUpdate.Enabled = true;
-                            });
+                                Button_StopHashcodeUpdate.Invoke((MethodInvoker)delegate
+                                {
+                                    Button_StopHashcodeUpdate.Enabled = true;
+                                });
+                            }
 
                             //Enable Button
-                            Button_UpdateList_StreamData.Invoke((MethodInvoker)delegate
+                            if (!(Button_UpdateList_StreamData.Disposing || Button_UpdateList_StreamData.IsDisposed))
                             {
-                                Button_UpdateList_StreamData.Enabled = true;
-                            });
+                                Button_UpdateList_StreamData.Invoke((MethodInvoker)delegate
+                                {
+                                    Button_UpdateList_StreamData.Enabled = true;
+                                });
+                            }
 
                             //Enable Button
-                            Button_StopStreamData.Invoke((MethodInvoker)delegate
+                            if (!(Button_StopStreamData.Disposing || Button_StopStreamData.IsDisposed))
                             {
-                                Button_StopStreamData.Enabled = true;
-                            });
+                                Button_StopStreamData.Invoke((MethodInvoker)delegate
+                                {
+                                    Button_StopStreamData.Enabled = true;
+                                });
+                            }
 
                             //Enable Button
-                            Button_GenerateList.Invoke((MethodInvoker)delegate
+                            if (!(Button_GenerateList.Disposing || Button_GenerateList.IsDisposed))
                             {
-                                Button_GenerateList.Enabled = true;
-                            });
+                                Button_GenerateList.Invoke((MethodInvoker)delegate
+                                {
+                                    Button_GenerateList.Enabled = true;
+                                });
+                            }
 
                             //Enable Button
-                            Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
+                            if (!(Button_ExportInterchangeFile.Disposing || Button_ExportInterchangeFile.IsDisposed))
                             {
-                                Button_ExportInterchangeFile.Enabled = true;
-                            });
+                                Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
+                                {
+                                    Button_ExportInterchangeFile.Enabled = true;
+                                });
+                            }
 
                             //Set Program status
                             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
@@ -718,7 +742,7 @@ namespace EuroSound_Application.SoundBanksEditor
             string filePath = BrowsersAndDialogs.FileBrowserDialog("EuroSound Interchange File (*.ESIF)|*.esif", 0, true);
             if (!string.IsNullOrEmpty(filePath))
             {
-                ESIF_Loader euroSoundPropsFileLoader = new ESIF_Loader();
+                EISF_SoundBankFiles euroSoundPropsFileLoader = new EISF_SoundBankFiles();
                 IList<string> importResultsList = euroSoundPropsFileLoader.LoadSFX_File(filePath, ProjectInfo, SoundsList, AudioDataDict, TreeView_File);
                 if (importResultsList.Count > 0)
                 {

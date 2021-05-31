@@ -17,16 +17,19 @@ namespace CustomStatusBar
             ToolTipMode = Action;
             if (ToolTipMode)
             {
-                if (InvokeRequired)
+                if (!(Disposing || IsDisposed))
                 {
-                    BeginInvoke((MethodInvoker)delegate
+                    if (InvokeRequired)
+                    {
+                        BeginInvoke((MethodInvoker)delegate
+                        {
+                            StatusPanel.Text = "";
+                        });
+                    }
+                    else
                     {
                         StatusPanel.Text = "";
-                    });
-                }
-                else
-                {
-                    StatusPanel.Text = "";
+                    }
                 }
             }
             else
@@ -39,16 +42,19 @@ namespace CustomStatusBar
         {
             if (ToolTipMode)
             {
-                if (InvokeRequired)
+                if (!(Disposing || IsDisposed))
                 {
-                    BeginInvoke((MethodInvoker)delegate
+                    if (InvokeRequired)
+                    {
+                        BeginInvoke((MethodInvoker)delegate
+                        {
+                            StatusPanel.Text = TextToShow;
+                        });
+                    }
+                    else
                     {
                         StatusPanel.Text = TextToShow;
-                    });
-                }
-                else
-                {
-                    StatusPanel.Text = TextToShow;
+                    }
                 }
             }
         }
@@ -58,18 +64,21 @@ namespace CustomStatusBar
             ProgramStatus = TextToShow;
             if (!ToolTipMode)
             {
-                if (InvokeRequired)
+                if (!(Disposing || IsDisposed))
                 {
-                    BeginInvoke((MethodInvoker)delegate
+                    if (InvokeRequired)
                     {
-                        StatusPanel.Text = ProgramStatus;
-                    });
-                }
-                else
-                {
-                    if (StatusPanel != null)
+                        BeginInvoke((MethodInvoker)delegate
+                        {
+                            StatusPanel.Text = ProgramStatus;
+                        });
+                    }
+                    else
                     {
-                        StatusPanel.Text = ProgramStatus;
+                        if (StatusPanel != null)
+                        {
+                            StatusPanel.Text = ProgramStatus;
+                        }
                     }
                 }
             }
@@ -79,16 +88,19 @@ namespace CustomStatusBar
         {
             if (!ToolTipMode)
             {
-                if (InvokeRequired)
+                if (!(Disposing || IsDisposed))
                 {
-                    BeginInvoke((MethodInvoker)delegate
+                    if (InvokeRequired)
+                    {
+                        BeginInvoke((MethodInvoker)delegate
+                        {
+                            StatusPanel.Text = ProgramStatus;
+                        });
+                    }
+                    else
                     {
                         StatusPanel.Text = ProgramStatus;
-                    });
-                }
-                else
-                {
-                    StatusPanel.Text = ProgramStatus;
+                    }
                 }
             }
         }

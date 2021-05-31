@@ -242,33 +242,33 @@ namespace EuroSound_Application.CustomControls.SearcherForm
                 if (FormToSearch != null)
                 {
                     TreeNode NodeToOpen = Results[(ListViewResults.SelectedItems[0].Index)];
-                    string ObjectType = NodeToOpen.Tag.ToString();
+                    byte ObjectType = Convert.ToByte(NodeToOpen.Tag);
 
                     if (FormType == typeof(Frm_Soundbanks_Main))
                     {
-                        if (ObjectType.Equals("Sound"))
+                        if (ObjectType == (byte)Enumerations.TreeNodeType.Sound)
                         {
                             ((Frm_Soundbanks_Main)FormToSearch).OpenSoundProperties(NodeToOpen);
                         }
-                        else if (ObjectType.Equals("Sample"))
+                        else if (ObjectType == (byte)Enumerations.TreeNodeType.Sample)
                         {
                             ((Frm_Soundbanks_Main)FormToSearch).OpenSampleProperties(NodeToOpen);
                         }
-                        else if (ObjectType.Equals("Audio"))
+                        else if (ObjectType == (byte)Enumerations.TreeNodeType.Audio)
                         {
                             ((Frm_Soundbanks_Main)FormToSearch).OpenAudioProperties(NodeToOpen);
                         }
                     }
                     else if (FormType == typeof(Frm_StreamSounds_Main))
                     {
-                        if (ObjectType.Equals("Sound"))
+                        if (ObjectType == (byte)Enumerations.TreeNodeType.Sound || ObjectType == (byte)Enumerations.TreeNodeType.StreamSound)
                         {
                             ((Frm_StreamSounds_Main)FormToSearch).OpenSoundPropertiesForm(NodeToOpen);
                         }
                     }
                     else if (FormType == typeof(Frm_Musics_Main))
                     {
-                        if (ObjectType.Equals("Music"))
+                        if (ObjectType == (byte)Enumerations.TreeNodeType.Music)
                         {
                             ((Frm_Musics_Main)FormToSearch).OpenMusicPropertiesForm(NodeToOpen);
                         }
@@ -289,16 +289,35 @@ namespace EuroSound_Application.CustomControls.SearcherForm
                 }
                 else
                 {
-                    ListViewItem ItemToAdd = new ListViewItem(new[] { NodeToSearch.Text, "", NodeToSearch.Tag.ToString(), NodeToSearch.Parent.Text });
+                    //Get type
+                    string objectType = NodeToSearch.Tag.ToString();
+                    switch(Convert.ToByte(NodeToSearch.Tag))
+                    {
+                        case (byte)Enumerations.TreeNodeType.Audio:
+                            objectType = "Audio";
+                            break;
+                        case (byte)Enumerations.TreeNodeType.Music:
+                            objectType = "Music";
+                            break;
+                        case (byte)Enumerations.TreeNodeType.Sample:
+                            objectType = "Sample";
+                            break;
+                        case (byte)Enumerations.TreeNodeType.Sound:
+                            objectType = "Sound";
+                            break;
+                        case (byte)Enumerations.TreeNodeType.StreamSound:
+                            objectType = "Stream Sound";
+                            break;
+                    }
+
+                    //Create Item
+                    ListViewItem ItemToAdd = new ListViewItem(new[] { NodeToSearch.Text, "", objectType, NodeToSearch.Parent.Text });
                     ItemToAdd.SubItems[1].BackColor = NodeToSearch.ForeColor;
                     ItemToAdd.UseItemStyleForSubItems = false;
 
                     try
                     {
-                        ListViewResults.BeginInvoke((MethodInvoker)delegate
-                        {
-                            ListViewResults.Items.Add(ItemToAdd);
-                        });
+                        GenericFunctions.AddItemToListView(ItemToAdd, ListViewResults);
 
                         //Results Count
                         ListViewResults.BeginInvoke((MethodInvoker)delegate

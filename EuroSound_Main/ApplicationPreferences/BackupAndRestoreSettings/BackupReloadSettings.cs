@@ -55,15 +55,12 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
 
         private bool FileIsCorrect(BinaryReader BReader)
         {
-            string MAGIC;
-            sbyte Version;
             bool FileIsCorrect = false;
-
-            MAGIC = Encoding.ASCII.GetString(BReader.ReadBytes(4));
+            string MAGIC = Encoding.ASCII.GetString(BReader.ReadBytes(4));
 
             if (MAGIC.Equals("ESRF"))
             {
-                Version = BReader.ReadSByte();
+                sbyte Version = BReader.ReadSByte();
                 if (Version == 10)
                 {
                     FileIsCorrect = true;

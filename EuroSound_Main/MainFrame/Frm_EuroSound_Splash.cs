@@ -39,8 +39,8 @@ namespace EuroSound_Application.SplashForm
             //*===============================================================================================
             Label_EuroSoundVersion.Text = string.Join(" ", new string[] { AssemblyDescription, "Version", GenericFunctions.GetEuroSoundVersion()[0].ToString() });
 
-            minimum = randomNumber.Next(2, 10);
-            maximum = randomNumber.Next(20, 60);
+            minimum = randomNumber.Next(2, 5);
+            maximum = randomNumber.Next(18, 55);
 
             //*===============================================================================================
             //* Load INI FIle

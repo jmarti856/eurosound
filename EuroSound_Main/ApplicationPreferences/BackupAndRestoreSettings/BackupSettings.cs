@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using Syroot.BinaryData;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -11,38 +10,38 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
     {
         public void Save(string SavePath, RegistryKey EuroSoundKey)
         {
-            byte ValueKind = 0;
             List<long> SectionOffsets = new List<long>();
             List<long> FinalSectionOffsets = new List<long>();
 
             using (BinaryStream BWriter = new BinaryStream(File.Open(SavePath, FileMode.Create, FileAccess.Write, FileShare.Read), null, Encoding.ASCII))
             {
                 //--magic--
-                BWriter.Write(Encoding.ASCII.GetBytes("ESRF"));
+                BWriter.WriteBytes(Encoding.ASCII.GetBytes("ESRF"));
                 //--WriteFileVersion--
-                BWriter.Write((sbyte)10);
+                BWriter.WriteSByte(10);
                 //--WirteNumberOfSubKeys
                 uint NumberOfSubKeys = (uint)EuroSoundKey.SubKeyCount;
-                BWriter.Write(NumberOfSubKeys);
-
+                BWriter.WriteUInt32(NumberOfSubKeys);
+                //Align Bytes
+                BWriter.Align(16);
+                GenericFunctions.CustomSeek(32, BWriter, (byte)'«');
 
                 //Write SubKeys Names
                 foreach (string value in EuroSoundKey.GetSubKeyNames())
                 {
                     //Subkey Name
-                    BWriter.Write(value);
+                    BWriter.WriteString(value);
 
                     //Save Position
                     SectionOffsets.Add(BWriter.BaseStream.Position);
 
                     //SubKey Offset
-                    BWriter.Write(Convert.ToUInt32(00000000));
+                    BWriter.WriteUInt32(0);
                 }
 
                 //Align Bytes
-                long AlignOffset = (BWriter.BaseStream.Position + 512) & (512 - 1);
-                BWriter.Seek(AlignOffset, SeekOrigin.Current);
                 BWriter.Align(16);
+                GenericFunctions.CustomSeek(128, BWriter, (byte)'«');
 
                 //Subkeys Values
                 foreach (string Value in EuroSoundKey.GetSubKeyNames())
@@ -52,10 +51,10 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                     {
                         if (KeyToSave != null)
                         {
-                            BWriter.Write((uint)KeyToSave.ValueCount);
+                            BWriter.WriteUInt32((uint)KeyToSave.ValueCount);
                             foreach (string SubKeyValue in KeyToSave.GetValueNames())
                             {
-                                string KeyName = SubKeyValue;
+                                byte ValueKind = 0;
                                 string KeyType = KeyToSave.GetValueKind(SubKeyValue).ToString();
                                 if (KeyType.Equals("DWord"))
                                 {
@@ -67,29 +66,27 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                                 }
 
                                 //Write Key name
-                                BWriter.Write(KeyName);
+                                BWriter.WriteString(SubKeyValue);
 
                                 //Write type of data that follows
-                                BWriter.Write(ValueKind);
+                                BWriter.WriteByte(ValueKind);
 
                                 //Write SubKey Value
                                 if (ValueKind == 1)
                                 {
                                     int NumericKeyValue = int.Parse(KeyToSave.GetValue(SubKeyValue).ToString());
-                                    BWriter.Write(NumericKeyValue);
+                                    BWriter.WriteInt32(NumericKeyValue);
                                 }
                                 else if (ValueKind == 2)
                                 {
                                     string KeyValue = KeyToSave.GetValue(SubKeyValue).ToString();
-                                    BWriter.Write(KeyValue);
+                                    BWriter.WriteString(KeyValue);
                                 }
                             }
                         }
                         KeyToSave.Close();
                     };
                     //Align Bytes
-                    AlignOffset = (BWriter.BaseStream.Position + 1024) & (1024 - 1);
-                    BWriter.Seek(AlignOffset, SeekOrigin.Current);
                     BWriter.Align(16);
                 }
 
@@ -97,9 +94,14 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 for (int i = 0; i < SectionOffsets.Count; i++)
                 {
                     BWriter.Seek((int)SectionOffsets[i], SeekOrigin.Begin);
-                    BWriter.Write(Convert.ToUInt32(FinalSectionOffsets[i]));
+                    BWriter.WriteUInt32((uint)FinalSectionOffsets[i]);
                 }
 
+                //Align Bytes
+                BWriter.Seek(BWriter.BaseStream.Length);
+                BWriter.Align(16);
+
+                //Close
                 BWriter.Close();
             }
         }

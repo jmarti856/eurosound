@@ -134,7 +134,7 @@ namespace EuroSound_Application.Musics
                     //Left Channel
                     ListViewItem LeftChannelInfo = new ListViewItem(new[]
                     {
-                        NodeToCheck.Text.ToString() + " L",
+                        NodeToCheck.Text + " L",
                         item.Value.Frequency_LeftChannel.ToString(),
                         item.Value.Channels_LeftChannel.ToString(),
                         item.Value.Bits_LeftChannel.ToString(),
@@ -155,7 +155,7 @@ namespace EuroSound_Application.Musics
                     //RightChannel
                     ListViewItem RightChannelInfo = new ListViewItem(new[]
                     {
-                        NodeToCheck.Text.ToString() + " R",
+                        NodeToCheck.Text + " R",
                         item.Value.Frequency_RightChannel.ToString(),
                         item.Value.Channels_RightChannel.ToString(),
                         item.Value.Bits_RightChannel.ToString(),

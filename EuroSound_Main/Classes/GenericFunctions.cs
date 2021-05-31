@@ -11,6 +11,7 @@ using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using Microsoft.Win32;
 using NAudio.Wave;
+using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -515,6 +516,15 @@ namespace EuroSound_Application
                         ZipFiles.ExtractToFile(Path.Combine(unpackPath, ZipFiles.FullName), true);
                     }
                 }
+            }
+        }
+
+        internal static void CustomSeek(long bytes, BinaryStream binaryWriter, byte seekChar)
+        {
+            for (int i = 0; i < bytes; i++)
+            {
+                binaryWriter.WriteByte(seekChar);
+
             }
         }
     }

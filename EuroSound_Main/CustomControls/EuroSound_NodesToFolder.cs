@@ -164,7 +164,7 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
 
         private void GetObjectsName(TreeNode nodeToCheck, byte tagToCheck)
         {
-            if ((byte)nodeToCheck.Tag == tagToCheck)
+            if (Convert.ToByte(nodeToCheck.Tag) == tagToCheck)
             {
                 SoundsDictionary.Add(nodeToCheck.Name, nodeToCheck.Text);
             }
