@@ -50,6 +50,8 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
             // 
             // Combobox_DataType
             // 
+            this.Combobox_DataType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Combobox_DataType.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.Combobox_DataType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.Combobox_DataType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -60,7 +62,7 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
             "StreamedSounds"});
             this.Combobox_DataType.Location = new System.Drawing.Point(90, 12);
             this.Combobox_DataType.Name = "Combobox_DataType";
-            this.Combobox_DataType.Size = new System.Drawing.Size(265, 21);
+            this.Combobox_DataType.Size = new System.Drawing.Size(279, 21);
             this.Combobox_DataType.TabIndex = 1;
             this.Combobox_DataType.SelectedIndexChanged += new System.EventHandler(this.Combobox_DataType_SelectedIndexChanged);
             // 
@@ -74,7 +76,7 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
             this.ListBox_Items.Location = new System.Drawing.Point(12, 66);
             this.ListBox_Items.Name = "ListBox_Items";
             this.ListBox_Items.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.ListBox_Items.Size = new System.Drawing.Size(343, 316);
+            this.ListBox_Items.Size = new System.Drawing.Size(357, 329);
             this.ListBox_Items.Sorted = true;
             this.ListBox_Items.TabIndex = 2;
             // 
@@ -89,20 +91,22 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
             // 
             // Combobox_AvailableFolders
             // 
+            this.Combobox_AvailableFolders.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Combobox_AvailableFolders.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.Combobox_AvailableFolders.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.Combobox_AvailableFolders.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Combobox_AvailableFolders.FormattingEnabled = true;
             this.Combobox_AvailableFolders.Location = new System.Drawing.Point(90, 39);
             this.Combobox_AvailableFolders.Name = "Combobox_AvailableFolders";
-            this.Combobox_AvailableFolders.Size = new System.Drawing.Size(265, 21);
+            this.Combobox_AvailableFolders.Size = new System.Drawing.Size(279, 21);
             this.Combobox_AvailableFolders.TabIndex = 4;
             // 
             // Button_OK
             // 
             this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_OK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_OK.Location = new System.Drawing.Point(199, 388);
+            this.Button_OK.Location = new System.Drawing.Point(213, 407);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
             this.Button_OK.TabIndex = 5;
@@ -114,7 +118,7 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
             // 
             this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_Cancel.Location = new System.Drawing.Point(280, 388);
+            this.Button_Cancel.Location = new System.Drawing.Point(294, 407);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.Button_Cancel.TabIndex = 6;
@@ -128,7 +132,7 @@ namespace EuroSound_Application.CustomControls.MoveMultiplesNodesForm
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Button_Cancel;
-            this.ClientSize = new System.Drawing.Size(367, 424);
+            this.ClientSize = new System.Drawing.Size(381, 442);
             this.Controls.Add(this.Button_Cancel);
             this.Controls.Add(this.Button_OK);
             this.Controls.Add(this.Combobox_AvailableFolders);

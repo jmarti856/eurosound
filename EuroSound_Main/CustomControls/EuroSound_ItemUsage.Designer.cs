@@ -40,6 +40,9 @@ namespace EuroSound_Application.CustomControls.ObjectInstancesForm
             // 
             // ListView_ItemUsage
             // 
+            this.ListView_ItemUsage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ListView_ItemUsage.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Col_Item,
             this.Col_Usage});
@@ -48,7 +51,7 @@ namespace EuroSound_Application.CustomControls.ObjectInstancesForm
             this.ListView_ItemUsage.HideSelection = false;
             this.ListView_ItemUsage.Location = new System.Drawing.Point(12, 12);
             this.ListView_ItemUsage.Name = "ListView_ItemUsage";
-            this.ListView_ItemUsage.Size = new System.Drawing.Size(390, 248);
+            this.ListView_ItemUsage.Size = new System.Drawing.Size(409, 314);
             this.ListView_ItemUsage.SmallImageList = this.ImageList_ListView;
             this.ListView_ItemUsage.TabIndex = 0;
             this.ListView_ItemUsage.UseCompatibleStateImageBehavior = false;
@@ -74,7 +77,7 @@ namespace EuroSound_Application.CustomControls.ObjectInstancesForm
             // Button_OK
             // 
             this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_OK.Location = new System.Drawing.Point(327, 266);
+            this.Button_OK.Location = new System.Drawing.Point(346, 332);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
             this.Button_OK.TabIndex = 1;
@@ -86,7 +89,7 @@ namespace EuroSound_Application.CustomControls.ObjectInstancesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(414, 301);
+            this.ClientSize = new System.Drawing.Size(433, 367);
             this.Controls.Add(this.Button_OK);
             this.Controls.Add(this.ListView_ItemUsage);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;

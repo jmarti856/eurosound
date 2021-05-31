@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.CustomControls.ObjectInstancesForm;
 using EuroSound_Application.CustomControls.WarningsForm;
 using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;
@@ -9,6 +10,7 @@ using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -55,7 +57,7 @@ namespace EuroSound_Application.Editors_and_Tools
         //*===============================================================================================
         //* Remove EngineXObject
         //*===============================================================================================
-        internal static void RemoveEngineXObject(string warningText, uint objectID, TreeView treeViewControl, TreeNode selectedNode, object dataDictionary, ProjectFile currentProject, Stack<object> UndoListSounds, object UndoListNodes, ToolStripMenuItem MenuItem_Edit_Undo)
+        internal static void RemoveEngineXObject(string warningText, uint objectID, TreeView treeViewControl, TreeNode selectedNode, object dataDictionary, object dataDictionary2, ProjectFile currentProject, Stack<object> UndoListSounds, object UndoListNodes, ToolStripMenuItem MenuItem_Edit_Undo, string formTag)
         {
             //Show warning
             if (!GlobalPreferences.NoWarningMessagesBox)
@@ -64,17 +66,17 @@ namespace EuroSound_Application.Editors_and_Tools
                 if (WarningDialog.ShowDialog() == DialogResult.OK)
                 {
                     GlobalPreferences.NoWarningMessagesBox = WarningDialog.NoWarnings;
-                    RemoveObject(objectID, treeViewControl, selectedNode, dataDictionary, currentProject, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
+                    RemoveObject(objectID, treeViewControl, selectedNode, dataDictionary, dataDictionary2, currentProject, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo, formTag);
                 }
                 WarningDialog.Dispose();
             }
             else
             {
-                RemoveObject(objectID, treeViewControl, selectedNode, dataDictionary, currentProject, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
+                RemoveObject(objectID, treeViewControl, selectedNode, dataDictionary, dataDictionary2, currentProject, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo, formTag);
             }
         }
 
-        private static void RemoveObject(uint objectType, TreeView treeViewControl, TreeNode selectedNode, object dataDictionary, ProjectFile currentProject, Stack<object> UndoListSounds, object UndoListNodes, ToolStripMenuItem MenuItem_Edit_Undo)
+        private static void RemoveObject(uint objectType, TreeView treeViewControl, TreeNode selectedNode, object dataDictionary, object dataDictionary2, ProjectFile currentProject, Stack<object> UndoListSounds, object UndoListNodes, ToolStripMenuItem MenuItem_Edit_Undo, string formTag)
         {
             if (currentProject.TypeOfData == (int)Enumerations.ESoundFileType.MusicBanks)
             {
@@ -121,12 +123,23 @@ namespace EuroSound_Application.Editors_and_Tools
             {
                 if (objectType == (int)Enumerations.EXObjectType.EXAudio)
                 {
-                    Dictionary<string, EXAudio> audioDictionary = (Dictionary<string, EXAudio>)dataDictionary;
-                    if (audioDictionary.ContainsKey(selectedNode.Name))
+                    IEnumerable<string> dependenciesList = EXSoundbanksFunctions.GetAudioDependencies(selectedNode.Name, selectedNode.Text, (Dictionary<uint, EXSound>)dataDictionary2, treeViewControl, true);
+                    if (dependenciesList.Any())
                     {
-                        SaveSnapshot(selectedNode.Name, audioDictionary[selectedNode.Name], selectedNode, currentProject.TypeOfData, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
-                        audioDictionary.Remove(selectedNode.Name);
-                        TreeNodeFunctions.TreeNodeDeleteNode(treeViewControl, selectedNode);
+                        using (EuroSound_ItemUsage showWarnings = new EuroSound_ItemUsage(dependenciesList, formTag) { Text = "Audio Usage"})
+                        {
+                            showWarnings.ShowDialog();
+                        }
+                    }
+                    else
+                    {
+                        Dictionary<string, EXAudio> audioDictionary = (Dictionary<string, EXAudio>)dataDictionary;
+                        if (audioDictionary.ContainsKey(selectedNode.Name))
+                        {
+                            SaveSnapshot(selectedNode.Name, audioDictionary[selectedNode.Name], selectedNode, currentProject.TypeOfData, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
+                            audioDictionary.Remove(selectedNode.Name);
+                            TreeNodeFunctions.TreeNodeDeleteNode(treeViewControl, selectedNode);
+                        }
                     }
                 }
                 else if (objectType == (int)Enumerations.EXObjectType.EXSample)

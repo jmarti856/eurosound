@@ -558,7 +558,7 @@ namespace EuroSound_Application.StreamSounds
                 {
                     if (Convert.ToByte(selectedNode.Tag) == (byte)Enumerations.TreeNodeType.Sound)
                     {
-                        ToolsCommonFunctions.RemoveEngineXObject("Remove sound:", 0, TreeView_StreamData, selectedNode, StreamSoundsList, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo);
+                        ToolsCommonFunctions.RemoveEngineXObject("Remove sound:", 0, TreeView_StreamData, selectedNode, StreamSoundsList, null, ProjectInfo, UndoListSounds, UndoListNodes, MenuItem_Edit_Undo, Tag.ToString());
                     }
                     else if (Convert.ToByte(selectedNode.Tag) == (byte)Enumerations.TreeNodeType.Target)
                     {

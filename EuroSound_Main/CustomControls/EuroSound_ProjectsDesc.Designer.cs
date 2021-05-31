@@ -37,7 +37,7 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
             // Button_OK
             // 
             this.Button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_OK.Location = new System.Drawing.Point(735, 496);
+            this.Button_OK.Location = new System.Drawing.Point(519, 387);
             this.Button_OK.Name = "Button_OK";
             this.Button_OK.Size = new System.Drawing.Size(75, 23);
             this.Button_OK.TabIndex = 1;
@@ -49,7 +49,7 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
             // 
             this.Button_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Button_Cancel.Location = new System.Drawing.Point(816, 496);
+            this.Button_Cancel.Location = new System.Drawing.Point(600, 387);
             this.Button_Cancel.Name = "Button_Cancel";
             this.Button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.Button_Cancel.TabIndex = 2;
@@ -88,9 +88,9 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
             this.RichTextbox_Desc.Location = new System.Drawing.Point(12, 12);
             this.RichTextbox_Desc.Name = "RichTextbox_Desc";
             this.RichTextbox_Desc.OutdentVisible = true;
-            this.RichTextbox_Desc.Rtf = "{\\rtf1\\ansi\\deff0\\nouicompat{\\fonttbl{\\f0\\fnil\\fcharset204 Microsoft Sans Serif;}" +
-    "}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\pard\\f0\\fs18\\lang3082 ric" +
-    "herTextBox1\\par\r\n}\r\n";
+            this.RichTextbox_Desc.Rtf = "{\\rtf1\\ansi\\ansicpg1251\\deff0\\nouicompat{\\fonttbl{\\f0\\fnil\\fcharset204 Microsoft " +
+    "Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\pard\\f0\\fs18\\" +
+    "lang1049 richerTextBox1\\par\r\n}\r\n";
             this.RichTextbox_Desc.SaveVisible = true;
             this.RichTextbox_Desc.SeparatorAlignVisible = true;
             this.RichTextbox_Desc.SeparatorBoldUnderlineItalicVisible = true;
@@ -99,7 +99,7 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
             this.RichTextbox_Desc.SeparatorIndentAndBulletsVisible = true;
             this.RichTextbox_Desc.SeparatorInsertVisible = true;
             this.RichTextbox_Desc.SeparatorSaveLoadVisible = true;
-            this.RichTextbox_Desc.Size = new System.Drawing.Size(879, 478);
+            this.RichTextbox_Desc.Size = new System.Drawing.Size(663, 369);
             this.RichTextbox_Desc.TabIndex = 3;
             this.RichTextbox_Desc.ToolStripVisible = true;
             this.RichTextbox_Desc.UnderlineVisible = true;
@@ -113,7 +113,7 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Button_Cancel;
-            this.ClientSize = new System.Drawing.Size(903, 531);
+            this.ClientSize = new System.Drawing.Size(687, 422);
             this.Controls.Add(this.RichTextbox_Desc);
             this.Controls.Add(this.Button_Cancel);
             this.Controls.Add(this.Button_OK);
