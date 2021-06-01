@@ -63,42 +63,6 @@ namespace EuroSound_Application.StreamSounds
             }
         }
 
-        private void UpdateIMAData()
-        {
-            UpdateImaData = new Thread(() =>
-            {
-                try
-                {
-                    EngineXImaAdpcm.ImaADPCM_Functions ImaADPCM = new EngineXImaAdpcm.ImaADPCM_Functions();
-                    foreach (KeyValuePair<uint, EXSoundStream> SoundToUpdate in StreamSoundsList)
-                    {
-                        //Get IMA ADPCM Data
-                        short[] ShortArrayPCMData = AudioLibrary.ConvertPCMDataToShortArray(SoundToUpdate.Value.PCM_Data);
-                        SoundToUpdate.Value.IMA_ADPCM_DATA = ImaADPCM.EncodeIMA_ADPCM(ShortArrayPCMData, SoundToUpdate.Value.PCM_Data.Length / 2);
-
-                        //Update Status Bar
-                        GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking:", SoundToUpdate.Key.ToString() }));
-                    }
-
-                    MessageBox.Show(GenericFunctions.resourcesManager.GetString("StreamSoundsUpdatedSuccess"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch
-                {
-                    //Update Status Bar
-                    GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
-                    MessageBox.Show(GenericFunctions.resourcesManager.GetString("StreamSoundsUpdatedError"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-
-                //Update Status Bar
-                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
-
-            })
-            {
-                IsBackground = true
-            };
-            UpdateImaData.Start();
-        }
-
         private void UpdateWavDataList()
         {
             int Index = 1;
@@ -110,12 +74,6 @@ namespace EuroSound_Application.StreamSounds
                 {
                     ListView_WavHeaderData.Items.Clear();
                     ListView_WavHeaderData.Enabled = false;
-                });
-
-                //Disable Update IMA data button
-                Button_UpdateIMAData.BeginInvoke((MethodInvoker)delegate
-                {
-                    Button_UpdateIMAData.Enabled = false;
                 });
 
                 //Disable Update button
@@ -159,12 +117,6 @@ namespace EuroSound_Application.StreamSounds
                     ListView_WavHeaderData.Enabled = true;
                 });
 
-                //Enable update ima button
-                Button_UpdateIMAData.BeginInvoke((MethodInvoker)delegate
-                {
-                    Button_UpdateIMAData.Enabled = true;
-                });
-
                 //Enable Update button
                 Button_UpdateList_WavData.BeginInvoke((MethodInvoker)delegate
                 {
@@ -185,7 +137,6 @@ namespace EuroSound_Application.StreamSounds
                 UpdateWavList.Abort();
                 ListView_WavHeaderData.Items.Clear();
                 ListView_WavHeaderData.Enabled = true;
-                Button_UpdateIMAData.Enabled = true;
                 Button_UpdateList_WavData.Enabled = true;
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             }

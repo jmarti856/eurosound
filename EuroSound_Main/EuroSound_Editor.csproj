@@ -188,12 +188,6 @@
     <Compile Include="Classes\EuroSound File Formats\EuroSound Interchange File\Loader\EISF_SoundBankFiles.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Interchange File\Loader\ESIF_MusicBankFile.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Interchange File\Loader\ESIF_StreamBankFile.cs" />
-    <Compile Include="CustomControls\EuroSound_ProjectsDesc.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CustomControls\EuroSound_ProjectsDesc.Designer.cs">
-      <DependentUpon>EuroSound_ProjectsDesc.cs</DependentUpon>
-    </Compile>
     <Compile Include="Editors and Tools\ApplicationTargets\EuroSound_OutputTargetSelector.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -511,9 +505,6 @@
     <EmbeddedResource Include="CustomControls\EuroSound_DebugTypes.resx">
       <DependentUpon>EuroSound_DebugTypes.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomControls\EuroSound_ProjectsDesc.resx">
-      <DependentUpon>EuroSound_ProjectsDesc.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Editors and Tools\ApplicationTargets\EuroSound_OutputTargetSelector.resx">
       <DependentUpon>EuroSound_OutputTargetSelector.cs</DependentUpon>
     </EmbeddedResource>
@@ -658,10 +649,6 @@
     <ProjectReference Include="..\OpenPainter.ColorPicker\OpenPainter.ColorPicker.csproj">
       <Project>{3e33bc0f-af32-4bc8-831e-0a94d0e78e0f}</Project>
       <Name>OpenPainter.ColorPicker</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RichTextBoxEditor\RichTextBoxEditor.csproj">
-      <Project>{954A4DCF-2B13-47DE-8207-7FBC7985E8A0}</Project>
-      <Name>RichTextBoxEditor</Name>
     </ProjectReference>
     <ProjectReference Include="..\VAG_Encoder_Decoder\VAG_Encoder_Decoder.csproj">
       <Project>{d07166ba-da95-474d-95da-97f59d1e4b3f}</Project>

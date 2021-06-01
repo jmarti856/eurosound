@@ -84,7 +84,7 @@ namespace EuroSound_Application.Musics
             }
         }
 
-        private void Button_SaveAudio_LeftChannel_Click(object sender, System.EventArgs e)
+        private void Button_SaveAudio_LeftChannel_Click(object sender, EventArgs e)
         {
             GenericFunctions.SaveAudio(AudioLibrary, TemporalMusic.WAVFileName_LeftChannel, (int)TemporalMusic.Frequency_LeftChannel, (int)TemporalMusic.Bits_LeftChannel, TemporalMusic.Channels_LeftChannel, TemporalMusic.PCM_Data_LeftChannel);
         }
@@ -114,7 +114,7 @@ namespace EuroSound_Application.Musics
             GenericFunctions.SaveAudio(AudioLibrary, TemporalMusic.WAVFileName_RightChannel, (int)TemporalMusic.Frequency_RightChannel, (int)TemporalMusic.Bits_RightChannel, TemporalMusic.Channels_RightChannel, TemporalMusic.PCM_Data_RightChannel);
         }
 
-        private void Button_MarkersEditor_Click(object sender, System.EventArgs e)
+        private void Button_MarkersEditor_Click(object sender, EventArgs e)
         {
             AudioLibrary.StopAudio(_waveOut);
             Frm_StreamSounds_MarkersEditor MarkersEditr = new Frm_StreamSounds_MarkersEditor(null, TemporalMusic, true)
@@ -128,7 +128,7 @@ namespace EuroSound_Application.Musics
             MarkersEditr.Dispose();
         }
 
-        private void Button_Play_LeftChannel_Click(object sender, System.EventArgs e)
+        private void Button_Play_LeftChannel_Click(object sender, EventArgs e)
         {
             if (TemporalMusic.PCM_Data_LeftChannel != null)
             {
@@ -140,7 +140,7 @@ namespace EuroSound_Application.Musics
             }
         }
 
-        private void Button_Stop_LeftChannel_Click(object sender, System.EventArgs e)
+        private void Button_Stop_LeftChannel_Click(object sender, EventArgs e)
         {
             AudioLibrary.StopAudio(_waveOut);
         }
@@ -172,7 +172,7 @@ namespace EuroSound_Application.Musics
             AudioLibrary.StopAudio(_waveOut);
         }
 
-        private void Button_OK_Click(object sender, System.EventArgs e)
+        private void Button_OK_Click(object sender, EventArgs e)
         {
             SelectedMusic.BaseVolume = (uint)(Numeric_BaseVolume.Value * 100);
             SelectedMusic.OutputThisSound = CheckBox_OutputThisMusic.Checked;
@@ -233,7 +233,7 @@ namespace EuroSound_Application.Musics
             Close();
         }
 
-        private void Button_Cancel_Click(object sender, System.EventArgs e)
+        private void Button_Cancel_Click(object sender, EventArgs e)
         {
             Close();
         }
@@ -276,9 +276,6 @@ namespace EuroSound_Application.Musics
 
                         //Other props
                         TemporalMusic.Duration_LeftChannel = (uint)(decimal.Divide(TemporalMusic.PCM_Data_LeftChannel.Length, conversionStream.WaveFormat.AverageBytesPerSecond) * 1000);
-
-                        //Get IMA ADPCM Data
-                        TemporalMusic.IMA_ADPCM_DATA_LeftChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_LeftChannel), TemporalMusic.PCM_Data_LeftChannel.Length / 2);
                     }
                 }
                 else
@@ -292,10 +289,11 @@ namespace EuroSound_Application.Musics
                     //Get PCM Data Stereo
                     TemporalMusic.PCM_Data_LeftChannel = new byte[AudioReader.Length];
                     AudioReader.Read(TemporalMusic.PCM_Data_LeftChannel, 0, (int)AudioReader.Length);
-
-                    //Get IMA ADPCM Data
-                    TemporalMusic.IMA_ADPCM_DATA_LeftChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_LeftChannel), TemporalMusic.PCM_Data_LeftChannel.Length / 2);
                 }
+                //Get IMA ADPCM Data
+                TemporalMusic.IMA_ADPCM_DATA_LeftChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_LeftChannel), TemporalMusic.PCM_Data_LeftChannel.Length / 2);
+
+                //Close
                 AudioReader.Close();
             }
 
@@ -344,9 +342,6 @@ namespace EuroSound_Application.Musics
 
                         //Other props
                         TemporalMusic.Duration_RightChannel = (uint)(decimal.Divide(TemporalMusic.PCM_Data_RightChannel.Length, conversionStream.WaveFormat.AverageBytesPerSecond) * 1000);
-
-                        //Get IMA ADPCM Data
-                        TemporalMusic.IMA_ADPCM_DATA_RightChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_RightChannel), TemporalMusic.PCM_Data_RightChannel.Length / 2);
                     }
                 }
                 else
@@ -360,10 +355,11 @@ namespace EuroSound_Application.Musics
                     //Get PCM Data Stereo
                     TemporalMusic.PCM_Data_RightChannel = new byte[AudioReader.Length];
                     AudioReader.Read(TemporalMusic.PCM_Data_RightChannel, 0, (int)AudioReader.Length);
-
-                    //Get IMA ADPCM Data
-                    TemporalMusic.IMA_ADPCM_DATA_RightChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_RightChannel), TemporalMusic.PCM_Data_RightChannel.Length / 2);
                 }
+                //Get IMA ADPCM Data
+                TemporalMusic.IMA_ADPCM_DATA_RightChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_RightChannel), TemporalMusic.PCM_Data_RightChannel.Length / 2);
+
+                //Close 
                 AudioReader.Close();
             }
 

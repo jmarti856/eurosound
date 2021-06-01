@@ -496,7 +496,7 @@ namespace EuroSound_Application
                 checkedFlagsString.TrimExcess();
             }
 
-            return string.Join(", ", checkedFlagsString.ToArray());
+            return string.Join("| ", checkedFlagsString.ToArray());
         }
 
         internal static void ExtractZip(string zipFile, string unpackPath)

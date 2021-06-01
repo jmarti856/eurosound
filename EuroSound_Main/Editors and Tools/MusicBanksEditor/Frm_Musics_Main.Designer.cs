@@ -102,7 +102,6 @@ namespace EuroSound_Application.Musics
             this.RichTextBox_SelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.RichTextBox_Separator2 = new System.Windows.Forms.ToolStripSeparator();
             this.Button_Generate_Hashcodes = new System.Windows.Forms.Button();
-            this.Button_UpdateIMAData = new System.Windows.Forms.Button();
             this.Button_ExportInterchangeFile = new System.Windows.Forms.Button();
             this.ContextMenu_Targets = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ContextMenuTargets_Delete = new System.Windows.Forms.ToolStripMenuItem();
@@ -485,7 +484,6 @@ namespace EuroSound_Application.Musics
             // 
             this.SplitContainerMusicsForm.Panel2.Controls.Add(this.GroupBox_StreamData);
             this.SplitContainerMusicsForm.Panel2.Controls.Add(this.GroupBox_MusicHashcodes);
-            this.SplitContainerMusicsForm.Panel2.Controls.Add(this.Button_UpdateIMAData);
             this.SplitContainerMusicsForm.Panel2.Controls.Add(this.Button_ExportInterchangeFile);
             this.SplitContainerMusicsForm.Size = new System.Drawing.Size(958, 641);
             this.SplitContainerMusicsForm.SplitterDistance = 369;
@@ -756,21 +754,10 @@ namespace EuroSound_Application.Musics
             this.Button_Generate_Hashcodes.UseVisualStyleBackColor = true;
             this.Button_Generate_Hashcodes.Click += new System.EventHandler(this.Button_Generate_Hashcodes_Click);
             // 
-            // Button_UpdateIMAData
-            // 
-            this.Button_UpdateIMAData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_UpdateIMAData.Location = new System.Drawing.Point(453, 606);
-            this.Button_UpdateIMAData.Name = "Button_UpdateIMAData";
-            this.Button_UpdateIMAData.Size = new System.Drawing.Size(120, 23);
-            this.Button_UpdateIMAData.TabIndex = 4;
-            this.Button_UpdateIMAData.Text = "Update ADPCM Data";
-            this.Button_UpdateIMAData.UseVisualStyleBackColor = true;
-            this.Button_UpdateIMAData.Click += new System.EventHandler(this.Button_UpdateIMAData_Click);
-            // 
             // Button_ExportInterchangeFile
             // 
             this.Button_ExportInterchangeFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_ExportInterchangeFile.Location = new System.Drawing.Point(321, 606);
+            this.Button_ExportInterchangeFile.Location = new System.Drawing.Point(456, 606);
             this.Button_ExportInterchangeFile.Name = "Button_ExportInterchangeFile";
             this.Button_ExportInterchangeFile.Size = new System.Drawing.Size(126, 23);
             this.Button_ExportInterchangeFile.TabIndex = 3;
@@ -905,7 +892,6 @@ namespace EuroSound_Application.Musics
         protected internal System.Windows.Forms.TreeView TreeView_MusicData;
         private System.Windows.Forms.GroupBox GroupBox_MusicHashcodes;
         private System.Windows.Forms.Button Button_Generate_Hashcodes;
-        private System.Windows.Forms.Button Button_UpdateIMAData;
         private System.Windows.Forms.Button Button_ExportInterchangeFile;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_NewFolder;
         private System.Windows.Forms.ToolStripSeparator ContextMenuFolder_Separator1;

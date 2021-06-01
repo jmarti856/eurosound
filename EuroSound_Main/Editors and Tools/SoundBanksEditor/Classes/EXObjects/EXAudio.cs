@@ -16,7 +16,5 @@
 
         //---PS2----
         public uint FrequencyPS2 { get; set; } = 11025;
-        public uint LoopOffsetPS2 { get; set; } = 0;
-        public bool LoopOffsetPS2Locked { get; set; } = false;
     }
 }

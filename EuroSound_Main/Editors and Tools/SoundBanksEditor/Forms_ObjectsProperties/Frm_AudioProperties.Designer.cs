@@ -67,15 +67,12 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Button_OK = new System.Windows.Forms.Button();
             this.tabControlTargets = new System.Windows.Forms.TabControl();
             this.tabPagePC = new System.Windows.Forms.TabPage();
-            this.euroSound_WaveViewer1 = new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer();
             this.tabPagePS2 = new System.Windows.Forms.TabPage();
             this.Textbox_PS2_Encoding = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.Numeric_LoopOffsetPS2 = new System.Windows.Forms.NumericUpDown();
-            this.CheckBox_LoopOffsetPS2_Locked = new System.Windows.Forms.CheckBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.ComboBox_FrequencyPS2 = new System.Windows.Forms.ComboBox();
             this.Label_FrequencyPS2 = new System.Windows.Forms.Label();
+            this.euroSound_WaveViewer1 = new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_psi)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_loopOffset)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -83,7 +80,6 @@ namespace EuroSound_Application.SoundBanksEditor
             this.tabControlTargets.SuspendLayout();
             this.tabPagePC.SuspendLayout();
             this.tabPagePS2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Numeric_LoopOffsetPS2)).BeginInit();
             this.SuspendLayout();
             // 
             // numeric_psi
@@ -447,6 +443,68 @@ namespace EuroSound_Application.SoundBanksEditor
             this.tabPagePC.TabIndex = 0;
             this.tabPagePC.Text = "PC";
             // 
+            // tabPagePS2
+            // 
+            this.tabPagePS2.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPagePS2.Controls.Add(this.Textbox_PS2_Encoding);
+            this.tabPagePS2.Controls.Add(this.label1);
+            this.tabPagePS2.Controls.Add(this.ComboBox_FrequencyPS2);
+            this.tabPagePS2.Controls.Add(this.Label_FrequencyPS2);
+            this.tabPagePS2.Location = new System.Drawing.Point(4, 22);
+            this.tabPagePS2.Name = "tabPagePS2";
+            this.tabPagePS2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPagePS2.Size = new System.Drawing.Size(506, 323);
+            this.tabPagePS2.TabIndex = 1;
+            this.tabPagePS2.Text = "PS2";
+            // 
+            // Textbox_PS2_Encoding
+            // 
+            this.Textbox_PS2_Encoding.BackColor = System.Drawing.SystemColors.Window;
+            this.Textbox_PS2_Encoding.Location = new System.Drawing.Point(200, 105);
+            this.Textbox_PS2_Encoding.Name = "Textbox_PS2_Encoding";
+            this.Textbox_PS2_Encoding.ReadOnly = true;
+            this.Textbox_PS2_Encoding.Size = new System.Drawing.Size(130, 20);
+            this.Textbox_PS2_Encoding.TabIndex = 1;
+            this.Textbox_PS2_Encoding.Text = "Sony VAG Version 2";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(139, 108);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(55, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Encoding:";
+            // 
+            // ComboBox_FrequencyPS2
+            // 
+            this.ComboBox_FrequencyPS2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBox_FrequencyPS2.FormattingEnabled = true;
+            this.ComboBox_FrequencyPS2.Items.AddRange(new object[] {
+            "22050",
+            "18000",
+            "16000",
+            "15000",
+            "13000",
+            "11025",
+            "10000",
+            "8000",
+            "6000",
+            "3000"});
+            this.ComboBox_FrequencyPS2.Location = new System.Drawing.Point(200, 131);
+            this.ComboBox_FrequencyPS2.Name = "ComboBox_FrequencyPS2";
+            this.ComboBox_FrequencyPS2.Size = new System.Drawing.Size(130, 21);
+            this.ComboBox_FrequencyPS2.TabIndex = 3;
+            // 
+            // Label_FrequencyPS2
+            // 
+            this.Label_FrequencyPS2.AutoSize = true;
+            this.Label_FrequencyPS2.Location = new System.Drawing.Point(134, 134);
+            this.Label_FrequencyPS2.Name = "Label_FrequencyPS2";
+            this.Label_FrequencyPS2.Size = new System.Drawing.Size(60, 13);
+            this.Label_FrequencyPS2.TabIndex = 2;
+            this.Label_FrequencyPS2.Text = "Frequency:";
+            // 
             // euroSound_WaveViewer1
             // 
             this.euroSound_WaveViewer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -466,102 +524,6 @@ namespace EuroSound_Application.SoundBanksEditor
             this.euroSound_WaveViewer1.TabIndex = 21;
             this.euroSound_WaveViewer1.WaveStream = null;
             this.euroSound_WaveViewer1.OnLineDrawEvent += new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer.OnLineDrawHandler(this.EuroSound_WaveViewer1_OnLineDrawEvent);
-            // 
-            // tabPagePS2
-            // 
-            this.tabPagePS2.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPagePS2.Controls.Add(this.Textbox_PS2_Encoding);
-            this.tabPagePS2.Controls.Add(this.label1);
-            this.tabPagePS2.Controls.Add(this.Numeric_LoopOffsetPS2);
-            this.tabPagePS2.Controls.Add(this.CheckBox_LoopOffsetPS2_Locked);
-            this.tabPagePS2.Controls.Add(this.label2);
-            this.tabPagePS2.Controls.Add(this.ComboBox_FrequencyPS2);
-            this.tabPagePS2.Controls.Add(this.Label_FrequencyPS2);
-            this.tabPagePS2.Location = new System.Drawing.Point(4, 22);
-            this.tabPagePS2.Name = "tabPagePS2";
-            this.tabPagePS2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePS2.Size = new System.Drawing.Size(506, 323);
-            this.tabPagePS2.TabIndex = 1;
-            this.tabPagePS2.Text = "PS2";
-            // 
-            // Textbox_PS2_Encoding
-            // 
-            this.Textbox_PS2_Encoding.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_PS2_Encoding.Location = new System.Drawing.Point(200, 93);
-            this.Textbox_PS2_Encoding.Name = "Textbox_PS2_Encoding";
-            this.Textbox_PS2_Encoding.ReadOnly = true;
-            this.Textbox_PS2_Encoding.Size = new System.Drawing.Size(130, 20);
-            this.Textbox_PS2_Encoding.TabIndex = 1;
-            this.Textbox_PS2_Encoding.Text = "Sony VAG";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(139, 96);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Encoding:";
-            // 
-            // Numeric_LoopOffsetPS2
-            // 
-            this.Numeric_LoopOffsetPS2.Location = new System.Drawing.Point(200, 146);
-            this.Numeric_LoopOffsetPS2.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.Numeric_LoopOffsetPS2.Name = "Numeric_LoopOffsetPS2";
-            this.Numeric_LoopOffsetPS2.Size = new System.Drawing.Size(130, 20);
-            this.Numeric_LoopOffsetPS2.TabIndex = 5;
-            // 
-            // CheckBox_LoopOffsetPS2_Locked
-            // 
-            this.CheckBox_LoopOffsetPS2_Locked.AutoSize = true;
-            this.CheckBox_LoopOffsetPS2_Locked.Location = new System.Drawing.Point(200, 172);
-            this.CheckBox_LoopOffsetPS2_Locked.Name = "CheckBox_LoopOffsetPS2_Locked";
-            this.CheckBox_LoopOffsetPS2_Locked.Size = new System.Drawing.Size(231, 17);
-            this.CheckBox_LoopOffsetPS2_Locked.TabIndex = 6;
-            this.CheckBox_LoopOffsetPS2_Locked.Text = "Don\'t change although frequency changes.";
-            this.CheckBox_LoopOffsetPS2_Locked.UseVisualStyleBackColor = true;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(135, 148);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Loop Start:";
-            // 
-            // ComboBox_FrequencyPS2
-            // 
-            this.ComboBox_FrequencyPS2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ComboBox_FrequencyPS2.FormattingEnabled = true;
-            this.ComboBox_FrequencyPS2.Items.AddRange(new object[] {
-            "22050",
-            "18000",
-            "16000",
-            "15000",
-            "13000",
-            "11025",
-            "10000",
-            "8000",
-            "6000",
-            "3000"});
-            this.ComboBox_FrequencyPS2.Location = new System.Drawing.Point(200, 119);
-            this.ComboBox_FrequencyPS2.Name = "ComboBox_FrequencyPS2";
-            this.ComboBox_FrequencyPS2.Size = new System.Drawing.Size(130, 21);
-            this.ComboBox_FrequencyPS2.TabIndex = 3;
-            // 
-            // Label_FrequencyPS2
-            // 
-            this.Label_FrequencyPS2.AutoSize = true;
-            this.Label_FrequencyPS2.Location = new System.Drawing.Point(134, 122);
-            this.Label_FrequencyPS2.Name = "Label_FrequencyPS2";
-            this.Label_FrequencyPS2.Size = new System.Drawing.Size(60, 13);
-            this.Label_FrequencyPS2.TabIndex = 2;
-            this.Label_FrequencyPS2.Text = "Frequency:";
             // 
             // Frm_AudioProperties
             // 
@@ -595,7 +557,6 @@ namespace EuroSound_Application.SoundBanksEditor
             this.tabPagePC.PerformLayout();
             this.tabPagePS2.ResumeLayout(false);
             this.tabPagePS2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Numeric_LoopOffsetPS2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -638,11 +599,8 @@ namespace EuroSound_Application.SoundBanksEditor
         private System.Windows.Forms.TabControl tabControlTargets;
         private System.Windows.Forms.TabPage tabPagePC;
         private System.Windows.Forms.TabPage tabPagePS2;
-        private System.Windows.Forms.CheckBox CheckBox_LoopOffsetPS2_Locked;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox ComboBox_FrequencyPS2;
         private System.Windows.Forms.Label Label_FrequencyPS2;
-        private System.Windows.Forms.NumericUpDown Numeric_LoopOffsetPS2;
         private System.Windows.Forms.TextBox Textbox_PS2_Encoding;
         private System.Windows.Forms.Label label1;
     }

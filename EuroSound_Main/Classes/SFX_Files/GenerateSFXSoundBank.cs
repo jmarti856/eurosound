@@ -423,7 +423,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                                     Channels = audioToExport.Channels,
                                     Bits = 4,
                                     PSIsample = audioToExport.PSIsample,
-                                    LoopOffset = (uint)(loopOffset & -128),
+                                    LoopOffset = loopOffset,
                                     Duration = audioToExport.Duration,
                                     PCMdata = encodedVagData
                                 };

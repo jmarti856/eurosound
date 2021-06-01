@@ -291,7 +291,7 @@ namespace EuroSound_Application.CustomControls.SearcherForm
                 {
                     //Get type
                     string objectType = NodeToSearch.Tag.ToString();
-                    switch(Convert.ToByte(NodeToSearch.Tag))
+                    switch (Convert.ToByte(NodeToSearch.Tag))
                     {
                         case (byte)Enumerations.TreeNodeType.Audio:
                             objectType = "Audio";

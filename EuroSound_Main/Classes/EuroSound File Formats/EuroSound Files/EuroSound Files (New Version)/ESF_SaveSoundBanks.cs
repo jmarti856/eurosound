@@ -131,10 +131,8 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
                 binaryWriter.WriteUInt32(entry.Value.LoopOffset);
                 binaryWriter.WriteUInt32(entry.Value.Duration);
                 binaryWriter.WriteUInt32(entry.Value.FrequencyPS2);
-                binaryWriter.WriteUInt32(entry.Value.LoopOffsetPS2);
                 binaryWriter.WriteUInt32((uint)entry.Value.PCMdata.Length);
                 binaryWriter.WriteBytes(entry.Value.PCMdata);
-                binaryWriter.WriteBoolean(entry.Value.LoopOffsetPS2Locked);
             }
         }
 

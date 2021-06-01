@@ -87,14 +87,12 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
                 if (Version >= 1013)
                 {
                     AudioToAdd.FrequencyPS2 = BReader.ReadUInt32();
-                    AudioToAdd.LoopOffsetPS2 = BReader.ReadUInt32();
-                    AudioToAdd.LoopOffsetPS2Locked = BReader.ReadBoolean();
+                    BReader.ReadUInt32();
+                    BReader.ReadBoolean();
                 }
                 else
                 {
                     AudioToAdd.FrequencyPS2 = AudioToAdd.Frequency;
-                    AudioToAdd.LoopOffsetPS2 = AudioToAdd.LoopOffset;
-                    AudioToAdd.LoopOffsetPS2Locked = false;
                 }
 
                 AudiosList.Add(HashMD5, AudioToAdd);

@@ -126,7 +126,7 @@ namespace EuroSound_Application.Editors_and_Tools
                     IEnumerable<string> dependenciesList = EXSoundbanksFunctions.GetAudioDependencies(selectedNode.Name, selectedNode.Text, (Dictionary<uint, EXSound>)dataDictionary2, treeViewControl, true);
                     if (dependenciesList.Any())
                     {
-                        using (EuroSound_ItemUsage showWarnings = new EuroSound_ItemUsage(dependenciesList, formTag) { Text = "Audio Usage"})
+                        using (EuroSound_ItemUsage showWarnings = new EuroSound_ItemUsage(dependenciesList, formTag) { Text = "Audio Usage" })
                         {
                             showWarnings.ShowDialog();
                         }

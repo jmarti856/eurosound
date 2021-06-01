@@ -54,7 +54,7 @@ namespace EuroSound_Application.CustomControls.FlagsForm
                 }
                 AllCheckboxes[i].Dispose();
             }
-            CheckedFlagsString = string.Join(", ", checkedFlags.ToArray());
+            CheckedFlagsString = string.Join("| ", checkedFlags.ToArray());
             return flags;
         }
 

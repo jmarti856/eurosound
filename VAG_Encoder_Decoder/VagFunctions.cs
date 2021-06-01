@@ -353,7 +353,6 @@ namespace VAG_Encoder_Decoder
             uint loopOffsetVAG = loopOffset / 4;
             uint loopOffsetVAGAligned = (uint)((loopOffsetVAG) + (-loopOffsetVAG & (16 - 1)));
 
-
             return loopOffsetVAGAligned;
         }
     }

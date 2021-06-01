@@ -1,7 +1,6 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.ApplicationTargets;
-using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls;
@@ -40,8 +39,7 @@ namespace EuroSound_Application.StreamSounds
         private bool CanExpandChildNodes = true;
         private EuroSoundFiles EuroSoundFilesFunctions = new EuroSoundFiles();
         private StreamSoundsYMLReader LibYamlReader = new StreamSoundsYMLReader();
-        private AudioFunctions AudioLibrary = new AudioFunctions();
-        private Thread UpdateImaData, UpdateWavList, LoadStreamFile;
+        private Thread UpdateWavList, LoadStreamFile;
         private MostRecentFilesMenu RecentFilesMenu;
         private System.Timers.Timer TimerBackups;
 
@@ -93,9 +91,6 @@ namespace EuroSound_Application.StreamSounds
             Button_StopUpdate.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("ButtonStopListUpdate")); };
             Button_StopUpdate.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
 
-            Button_UpdateIMAData.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("ButtonUpdateIMAData")); };
-            Button_UpdateIMAData.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
-
             Button_ExportInterchangeFile.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("Button_ExportInterchangeFile")); };
             Button_ExportInterchangeFile.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
 
@@ -116,7 +111,6 @@ namespace EuroSound_Application.StreamSounds
             ContextMenuSounds_MoveDown.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("ContextMenuStreamSound_MoveDown")); };
             ContextMenuSounds_MoveUp.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("ContextMenuStreamSound_MoveUp")); };
             ContextMenu_Sounds.Closing += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
-
         }
 
         //*===============================================================================================
@@ -259,12 +253,6 @@ namespace EuroSound_Application.StreamSounds
                                 Button_ExportInterchangeFile.Enabled = false;
                             });
 
-                            //Disable Button
-                            Button_UpdateIMAData.Invoke((MethodInvoker)delegate
-                            {
-                                Button_UpdateIMAData.Enabled = false;
-                            });
-
                             //Check that the profile name matches with the current one
                             string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_StreamData, StreamSoundsList, null, OutputTargets, CurrentFilePath, ProjectInfo);
                             if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
@@ -299,15 +287,6 @@ namespace EuroSound_Application.StreamSounds
                                 Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
                                 {
                                     Button_ExportInterchangeFile.Enabled = true;
-                                });
-                            }
-
-                            //Enable Button
-                            if (!(Button_UpdateIMAData.Disposing || Button_UpdateIMAData.IsDisposed))
-                            {
-                                Button_UpdateIMAData.Invoke((MethodInvoker)delegate
-                                {
-                                    Button_UpdateIMAData.Enabled = true;
                                 });
                             }
 
@@ -445,11 +424,6 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         //* FORM CONTROLS EVENTS
         //*===============================================================================================
-        private void Button_UpdateIMAData_Click(object sender, System.EventArgs e)
-        {
-            //Update File Status
-            UpdateIMAData();
-        }
 
         private void Button_ExportInterchangeFile_Click(object sender, EventArgs e)
         {

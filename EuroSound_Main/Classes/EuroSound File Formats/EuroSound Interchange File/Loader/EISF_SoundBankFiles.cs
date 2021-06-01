@@ -98,7 +98,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     {
                         EXAudio NewAudio = null;
                         ushort AudioFlags = 0;
-                        uint AudioPSI = 0, LoopOffset = 0;
+                        uint AudioPSI = 0, LoopOffset = 0, FrequencyPS2 = 0;
                         int FileRef = int.Parse(KeyWordValues[1]);
 
                         CurrentIndex++;
@@ -108,68 +108,74 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                             KeyWordValues = LoaderFunctions.GetKeyValues(FileLines[CurrentIndex]);
                             if (KeyWordValues.Length > 0)
                             {
-                                if (CurrentKeyWord.Equals("PATH"))
+                                switch (CurrentKeyWord)
                                 {
-                                    AudioPath = LoaderFunctions.RemoveCharactersFromPathString.Replace(KeyWordValues[0], "");
-                                    if (File.Exists(AudioPath))
-                                    {
-                                        if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.SoundbankChannels, GlobalPreferences.SoundbankFrequency))
+                                    case "PATH":
+                                        AudioPath = LoaderFunctions.RemoveCharactersFromPathString.Replace(KeyWordValues[0], "");
+                                        if (File.Exists(AudioPath))
                                         {
-                                            MD5AudioFilehash = GenericFunctions.CalculateMD5(AudioPath);
-                                            NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);
+                                            if (GenericFunctions.AudioIsValid(AudioPath, GlobalPreferences.SoundbankChannels, GlobalPreferences.SoundbankFrequency))
+                                            {
+                                                MD5AudioFilehash = GenericFunctions.CalculateMD5(AudioPath);
+                                                NewAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);
+                                            }
+                                            else
+                                            {
+                                                ImportResults.Add(string.Join("", "1", "The file: ", AudioPath, " does not have a valid value and will not be loaded"));
+                                            }
                                         }
                                         else
                                         {
-                                            ImportResults.Add(string.Join("", "1", "The file: ", AudioPath, " does not have a valid value and will not be loaded"));
+                                            ImportResults.Add(string.Join("", "1", "The file: ", AudioPath, " was not found"));
                                         }
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join("", "1", "The file: ", AudioPath, " was not found"));
-                                    }
-                                }
-                                if (CurrentKeyWord.Equals("NODECOLOR"))
-                                {
-                                    int[] RGBColors = KeyWordValues[0].Split(' ').Select(n => int.Parse(n)).ToArray();
-                                    if (RGBColors.Length == 3)
-                                    {
-                                        DefaultNodeColor = Color.FromArgb(1, RGBColors[0], RGBColors[1], RGBColors[2]);
-                                    }
-                                }
-                                if (CurrentKeyWord.Equals("FLAGS"))
-                                {
-
-                                    if (ushort.TryParse(KeyWordValues[0], out ushort Flags))
-                                    {
-                                        AudioFlags = Flags;
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid ushort value type"));
-                                    }
-                                }
-                                if (CurrentKeyWord.Equals("LOOPOFFSET"))
-                                {
-
-                                    if (uint.TryParse(KeyWordValues[0], out uint LoopOffst))
-                                    {
-                                        LoopOffset = LoopOffst;
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
-                                    }
-                                }
-                                if (CurrentKeyWord.Equals("PSI"))
-                                {
-                                    if (uint.TryParse(KeyWordValues[0], out uint PSIValue))
-                                    {
-                                        AudioPSI = PSIValue;
-                                    }
-                                    else
-                                    {
-                                        ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
-                                    }
+                                        break;
+                                    case "NODECOLOR":
+                                        int[] RGBColors = KeyWordValues[0].Split(' ').Select(n => int.Parse(n)).ToArray();
+                                        if (RGBColors.Length == 3)
+                                        {
+                                            DefaultNodeColor = Color.FromArgb(1, RGBColors[0], RGBColors[1], RGBColors[2]);
+                                        }
+                                        break;
+                                    case "FLAGS":
+                                        if (ushort.TryParse(KeyWordValues[0], out ushort Flags))
+                                        {
+                                            AudioFlags = Flags;
+                                        }
+                                        else
+                                        {
+                                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid ushort value type"));
+                                        }
+                                        break;
+                                    case "LOOPOFFSET":
+                                        if (uint.TryParse(KeyWordValues[0], out uint LoopOffst))
+                                        {
+                                            LoopOffset = LoopOffst;
+                                        }
+                                        else
+                                        {
+                                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                        }
+                                        break;
+                                    case "PSI":
+                                        if (uint.TryParse(KeyWordValues[0], out uint PSIValue))
+                                        {
+                                            AudioPSI = PSIValue;
+                                        }
+                                        else
+                                        {
+                                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                        }
+                                        break;
+                                    case "PS2FREQUENCY":
+                                        if (uint.TryParse(KeyWordValues[0], out uint PS2Frequ))
+                                        {
+                                            FrequencyPS2 = PS2Frequ;
+                                        }
+                                        else
+                                        {
+                                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
+                                        }
+                                        break;
                                 }
                             }
                             else
@@ -201,6 +207,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                 NewAudio.LoopOffset = LoopOffset / 2;
                                 NewAudio.Flags = AudioFlags;
                                 NewAudio.PSIsample = AudioPSI;
+                                NewAudio.FrequencyPS2 = FrequencyPS2;
 
                                 //Add Audio to dictionary
                                 AudiosList.Add(MD5AudioFilehash, NewAudio);

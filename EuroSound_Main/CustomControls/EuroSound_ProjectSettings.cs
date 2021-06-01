@@ -64,11 +64,6 @@ namespace EuroSound_Application.CustomControls.ProjectSettings
         //*===============================================================================================
         private void Button_EditDescription_Click(object sender, EventArgs e)
         {
-            using (EuroSound_ProjectsDesc projectDesc = new EuroSound_ProjectsDesc(CurrentFileProperties))
-            {
-                projectDesc.Owner = Owner;
-                projectDesc.ShowDialog();
-            }
         }
 
         private void Button_Cancel_Click(object sender, EventArgs e)

@@ -91,12 +91,10 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
                     PSIsample = BReader.ReadUInt32(),
                     LoopOffset = BReader.ReadUInt32(),
                     Duration = BReader.ReadUInt32(),
-                    FrequencyPS2 = BReader.ReadUInt32(),
-                    LoopOffsetPS2 = BReader.ReadUInt32()
+                    FrequencyPS2 = BReader.ReadUInt32()
                 };
                 int PCMDataLength = BReader.ReadInt32();
                 AudioToAdd.PCMdata = BReader.ReadBytes(PCMDataLength);
-                AudioToAdd.LoopOffsetPS2Locked = BReader.ReadBoolean();
 
                 //Add object
                 AudiosList.Add(HashMD5, AudioToAdd);

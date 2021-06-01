@@ -51,7 +51,6 @@ namespace EuroSound_Application.SoundBanksEditor
             //--PS2
             ComboBox_FrequencyPS2.SelectedIndex = 0;
             ComboBox_FrequencyPS2.SelectedItem = TemporalAudio.FrequencyPS2.ToString();
-            Numeric_LoopOffsetPS2.Value = TemporalAudio.LoopOffsetPS2;
 
             //--Print Flags--
             Textbox_Flags.Text = GenericFunctions.PrintCheckedFlags("AudioFlags", 1, Convert.ToUInt16(Textbox_Flags.Tag));
@@ -208,16 +207,12 @@ namespace EuroSound_Application.SoundBanksEditor
                 TemporalAudio.Flags = Convert.ToUInt16(Textbox_Flags.Tag);
                 TemporalAudio.PSIsample = (uint)numeric_psi.Value;
                 TemporalAudio.LoopOffset = (uint)numeric_loopOffset.Value;
-                TemporalAudio.LoopOffsetPS2 = (uint)Numeric_LoopOffsetPS2.Value;
-                TemporalAudio.LoopOffsetPS2Locked = CheckBox_LoopOffsetPS2_Locked.Checked;
                 TemporalAudio.FrequencyPS2 = Convert.ToUInt32(ComboBox_FrequencyPS2.SelectedItem);
 
                 //--Update Selected Audio-
                 SelectedAudio.Flags = TemporalAudio.Flags;
                 SelectedAudio.PSIsample = TemporalAudio.PSIsample;
                 SelectedAudio.LoopOffset = TemporalAudio.LoopOffset;
-                SelectedAudio.LoopOffsetPS2 = TemporalAudio.LoopOffsetPS2;
-                SelectedAudio.LoopOffsetPS2Locked = TemporalAudio.LoopOffsetPS2Locked;
                 SelectedAudio.FrequencyPS2 = TemporalAudio.FrequencyPS2;
             }
 
@@ -297,9 +292,6 @@ namespace EuroSound_Application.SoundBanksEditor
             Textbox_Bits.Text = TemporalAudio.Bits.ToString();
             Textbox_Duration.Text = string.Join(" ", new string[] { TemporalAudio.Duration.ToString(), "ms" });
             Textbox_Encoding.Text = TemporalAudio.Encoding.ToUpper();
-
-            //PS2
-            CheckBox_LoopOffsetPS2_Locked.Checked = TemporalAudio.LoopOffsetPS2Locked;
         }
     }
 }

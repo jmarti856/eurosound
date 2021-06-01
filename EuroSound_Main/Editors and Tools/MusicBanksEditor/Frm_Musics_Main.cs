@@ -1,7 +1,6 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.ApplicationTargets;
-using EuroSound_Application.AudioFunctionsLibrary;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.CustomControls;
@@ -39,8 +38,7 @@ namespace EuroSound_Application.Musics
         private bool CanExpandChildNodes = true;
         private EuroSoundFiles EuroSoundFilesFunctions = new EuroSoundFiles();
         private MostRecentFilesMenu RecentFilesMenu;
-        private AudioFunctions AudioLibrary = new AudioFunctions();
-        private Thread UpdateImaData, UpdateWavList, LoadMusicFile;
+        private Thread UpdateWavList, LoadMusicFile;
         private System.Timers.Timer TimerBackups;
 
         // The undo and redo history lists.
@@ -108,9 +106,6 @@ namespace EuroSound_Application.Musics
 
             Button_StopUpdate.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("ButtonStopListUpdate")); };
             Button_StopUpdate.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
-
-            Button_UpdateIMAData.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("ButtonUpdateIMAData")); };
-            Button_UpdateIMAData.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
 
             Button_Generate_Hashcodes.MouseDown += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(true); GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("ButtonCalculateJumpCodes")); };
             Button_Generate_Hashcodes.MouseUp += (se, ev) => { GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false); };
@@ -257,12 +252,6 @@ namespace EuroSound_Application.Musics
                                 Button_ExportInterchangeFile.Enabled = false;
                             });
 
-                            //Disable button
-                            Button_UpdateIMAData.Invoke((MethodInvoker)delegate
-                            {
-                                Button_UpdateIMAData.Enabled = false;
-                            });
-
                             //Check that the profile name matches with the current one
                             string ProfileName = EuroSoundFilesFunctions.LoadEuroSoundFile(TreeView_MusicData, MusicsList, null, OutputTargets, CurrentFilePath, ProjectInfo);
                             if (!ProfileName.Equals(GlobalPreferences.SelectedProfileName))
@@ -309,15 +298,6 @@ namespace EuroSound_Application.Musics
                                 });
                             }
 
-                            //Disable button
-                            if (!(Button_UpdateIMAData.Disposing || Button_UpdateIMAData.IsDisposed))
-                            {
-                                Button_UpdateIMAData.Invoke((MethodInvoker)delegate
-                                {
-                                    Button_UpdateIMAData.Enabled = true;
-                                });
-                            }
-
                             //Set Program status
                             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
                         })
@@ -360,7 +340,7 @@ namespace EuroSound_Application.Musics
             }
         }
 
-        private void Frm_Musics_Main_Enter(object sender, System.EventArgs e)
+        private void Frm_Musics_Main_Enter(object sender, EventArgs e)
         {
             UpdateStatusBarLabels();
 
@@ -374,7 +354,7 @@ namespace EuroSound_Application.Musics
             }
         }
 
-        private void Frm_Musics_Main_SizeChanged(object sender, System.EventArgs e)
+        private void Frm_Musics_Main_SizeChanged(object sender, EventArgs e)
         {
             if (WindowState == FormWindowState.Maximized)
             {
@@ -815,11 +795,6 @@ namespace EuroSound_Application.Musics
                 Textbox_DataCount.Text = "0";
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             }
-        }
-
-        private void Button_UpdateIMAData_Click(object sender, EventArgs e)
-        {
-            UpdateIMAData();
         }
 
         private void Button_ExportInterchangeFile_Click(object sender, EventArgs e)

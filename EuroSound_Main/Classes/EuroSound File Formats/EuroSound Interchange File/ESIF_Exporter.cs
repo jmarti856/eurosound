@@ -64,6 +64,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                         TextFileWriter.WriteLine("\t\t*PSI {0}", SampleAudio.PSIsample);
                         TextFileWriter.WriteLine("\t\t*CHANNELS {0}", SampleAudio.Channels);
                         TextFileWriter.WriteLine("\t\t*FREQUENCY {0}", SampleAudio.Frequency);
+                        TextFileWriter.WriteLine("\t\t*PS2FREQUENCY {0}", SampleAudio.FrequencyPS2);
                         TextFileWriter.WriteLine("\t}");
                     }
                 }
