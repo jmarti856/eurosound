@@ -58,6 +58,10 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         internal bool AutomaticallySortNodesTEMPORAL;
         internal bool UseExtendedColorPickerTEMPORAL;
 
+
+        //Performance
+        internal bool EnableAppVisualStylesTEMPORAL = true;
+
         //*===============================================================================================
         //* GLOBAL VARS
         //*===============================================================================================
@@ -113,6 +117,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             MakeBackupsIntervalTEMPORAL = GlobalPreferences.MakeBackupsInterval;
             AutomaticallySortNodesTEMPORAL = GlobalPreferences.AutomaticallySortNodes;
             UseExtendedColorPickerTEMPORAL = GlobalPreferences.UseExtendedColorPicker;
+            EnableAppVisualStylesTEMPORAL = GlobalPreferences.EnableAppVisualStyles;
 
             TreeViewPreferences.ExpandAll();
         }
@@ -160,6 +165,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
                 GlobalPreferences.LoadLastLoadedESF = LoadLastLoadedESFTEMPORAL;
                 GlobalPreferences.TV_IgnoreStlyesFromESF = TV_IgnoreStlyesFromESFTEMPORAL;
                 GlobalPreferences.UseThreadingWhenLoad = UseThreadingWhenLoadTEMPORAL;
+                GlobalPreferences.EnableAppVisualStyles = EnableAppVisualStylesTEMPORAL;
 
                 //SaveConfig in Registry
                 WindowsRegistryFunctions.SaveWavesControlColors();

@@ -1,4 +1,6 @@
-﻿using EuroSound_Application.BashMode;
+﻿using EuroSound_Application.ApplicationPreferences;
+using EuroSound_Application.ApplicationRegistryFunctions;
+using EuroSound_Application.BashMode;
 using EuroSound_Application.CustomControls.ProgramInstancesForm;
 using EuroSound_Application.SplashForm;
 using Microsoft.Win32;
@@ -8,6 +10,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace EuroSound_Application
 {
@@ -139,6 +142,20 @@ namespace EuroSound_Application
 
         private static void StartApplicationMDI(string[] Arguments)
         {
+            //Enable or not visual styles
+            GlobalPreferences.EnableAppVisualStyles = WindowsRegistryFunctions.LoadAutomaticalyLoadLastESF("UseVisualStyles");
+            if (GlobalPreferences.EnableAppVisualStyles)
+            {
+                if (Application.VisualStyleState != VisualStyleState.ClientAndNonClientAreasEnabled)
+                {
+                    Application.VisualStyleState = VisualStyleState.ClientAndNonClientAreasEnabled;
+                }
+            }
+            else
+            {
+                Application.VisualStyleState = VisualStyleState.NonClientAreaEnabled;
+            }
+
             Process[] EuroSoundInstances = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location));
             //We have more instances
             if (EuroSoundInstances.Length > 1)

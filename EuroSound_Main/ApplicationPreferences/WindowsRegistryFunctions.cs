@@ -622,6 +622,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 LoadLastESF.SetValue("AutomaticalyLoadLastESF", GlobalPreferences.LoadLastLoadedESF, RegistryValueKind.DWord);
                 LoadLastESF.SetValue("TV_IgnoreStlyesFromESF", GlobalPreferences.TV_IgnoreStlyesFromESF, RegistryValueKind.DWord);
                 LoadLastESF.SetValue("UseThreadingWhenLoad", GlobalPreferences.UseThreadingWhenLoad, RegistryValueKind.DWord);
+                LoadLastESF.SetValue("UseVisualStyles", GlobalPreferences.EnableAppVisualStyles, RegistryValueKind.DWord);
                 LoadLastESF.Close();
             }
         }

@@ -350,9 +350,7 @@ namespace VAG_Encoder_Decoder
         {
             //Vag samples
             uint loopOffset = ((wavNewRate * wavLoopOffset) / wavRate);
-            uint loopOffsetVAG = loopOffset / 4;
-            uint loopOffsetVAGAligned = (uint)((loopOffsetVAG) + (-loopOffsetVAG & (16 - 1)));
-
+            uint loopOffsetVAGAligned = (loopOffset / 16) * 16;
             return loopOffsetVAGAligned;
         }
     }

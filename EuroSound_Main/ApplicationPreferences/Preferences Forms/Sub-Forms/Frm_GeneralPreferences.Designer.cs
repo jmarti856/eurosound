@@ -41,9 +41,12 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.CheckBox_UseThreading = new System.Windows.Forms.CheckBox();
             this.CheckBox_IgnoreLookTree = new System.Windows.Forms.CheckBox();
             this.CheckBox_ReloadLastESF = new System.Windows.Forms.CheckBox();
+            this.GroupBox_Performance = new System.Windows.Forms.GroupBox();
+            this.checkBox_VisualStyles = new System.Windows.Forms.CheckBox();
             this.Panel_Title.SuspendLayout();
             this.Groupbox_Waves.SuspendLayout();
             this.GroupBox_LoadingOptions.SuspendLayout();
+            this.GroupBox_Performance.SuspendLayout();
             this.SuspendLayout();
             // 
             // Panel_Title
@@ -74,7 +77,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Groupbox_Waves.Controls.Add(this.Label_ColorBackground);
             this.Groupbox_Waves.Controls.Add(this.Button_WavesColorControl);
             this.Groupbox_Waves.Controls.Add(this.Label_ColorWaves);
-            this.Groupbox_Waves.Location = new System.Drawing.Point(12, 189);
+            this.Groupbox_Waves.Location = new System.Drawing.Point(12, 223);
             this.Groupbox_Waves.Name = "Groupbox_Waves";
             this.Groupbox_Waves.Size = new System.Drawing.Size(489, 103);
             this.Groupbox_Waves.TabIndex = 6;
@@ -137,10 +140,10 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.GroupBox_LoadingOptions.Controls.Add(this.CheckBox_UseThreading);
             this.GroupBox_LoadingOptions.Controls.Add(this.CheckBox_IgnoreLookTree);
             this.GroupBox_LoadingOptions.Controls.Add(this.CheckBox_ReloadLastESF);
-            this.GroupBox_LoadingOptions.Location = new System.Drawing.Point(12, 90);
+            this.GroupBox_LoadingOptions.Location = new System.Drawing.Point(12, 124);
             this.GroupBox_LoadingOptions.Name = "GroupBox_LoadingOptions";
             this.GroupBox_LoadingOptions.Size = new System.Drawing.Size(489, 93);
-            this.GroupBox_LoadingOptions.TabIndex = 4;
+            this.GroupBox_LoadingOptions.TabIndex = 5;
             this.GroupBox_LoadingOptions.TabStop = false;
             this.GroupBox_LoadingOptions.Text = "Loading Options:";
             // 
@@ -175,11 +178,35 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.CheckBox_ReloadLastESF.Text = "Automatically reload last ESF file.";
             this.CheckBox_ReloadLastESF.UseVisualStyleBackColor = true;
             // 
+            // GroupBox_Performance
+            // 
+            this.GroupBox_Performance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox_Performance.Controls.Add(this.checkBox_VisualStyles);
+            this.GroupBox_Performance.Location = new System.Drawing.Point(12, 60);
+            this.GroupBox_Performance.Name = "GroupBox_Performance";
+            this.GroupBox_Performance.Size = new System.Drawing.Size(489, 58);
+            this.GroupBox_Performance.TabIndex = 4;
+            this.GroupBox_Performance.TabStop = false;
+            this.GroupBox_Performance.Text = "Performance:";
+            // 
+            // checkBox_VisualStyles
+            // 
+            this.checkBox_VisualStyles.AutoSize = true;
+            this.checkBox_VisualStyles.Location = new System.Drawing.Point(19, 19);
+            this.checkBox_VisualStyles.Name = "checkBox_VisualStyles";
+            this.checkBox_VisualStyles.Size = new System.Drawing.Size(172, 17);
+            this.checkBox_VisualStyles.TabIndex = 0;
+            this.checkBox_VisualStyles.Text = "Enable application visual styles";
+            this.checkBox_VisualStyles.UseVisualStyleBackColor = true;
+            this.checkBox_VisualStyles.CheckedChanged += new System.EventHandler(this.checkBox_VisualStyles_CheckedChanged);
+            // 
             // Frm_General
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(513, 395);
+            this.Controls.Add(this.GroupBox_Performance);
             this.Controls.Add(this.GroupBox_LoadingOptions);
             this.Controls.Add(this.Groupbox_Waves);
             this.Controls.Add(this.Panel_Title);
@@ -194,6 +221,8 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             this.Groupbox_Waves.PerformLayout();
             this.GroupBox_LoadingOptions.ResumeLayout(false);
             this.GroupBox_LoadingOptions.PerformLayout();
+            this.GroupBox_Performance.ResumeLayout(false);
+            this.GroupBox_Performance.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -212,5 +241,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         private System.Windows.Forms.CheckBox CheckBox_ReloadLastESF;
         private System.Windows.Forms.CheckBox CheckBox_IgnoreLookTree;
         private System.Windows.Forms.CheckBox CheckBox_UseThreading;
+        private System.Windows.Forms.GroupBox GroupBox_Performance;
+        private System.Windows.Forms.CheckBox checkBox_VisualStyles;
     }
 }

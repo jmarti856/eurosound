@@ -38,7 +38,7 @@ namespace EuroSound_Application.Musics
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
 
             //--fulls[Size of the whole file, in bytes. Unused. ]--
-            BWriter.WriteUInt32(00000000);
+            BWriter.WriteUInt32(0);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
         }
 
@@ -54,21 +54,21 @@ namespace EuroSound_Application.Musics
             BWriter.WriteUInt32(FileStart1);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
             //--File length 1[size of the first section, in bytes]--
-            BWriter.WriteUInt32(00000000);
+            BWriter.WriteUInt32(0);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
 
             //--File start 2[offset to the second section with the sample data]--
             BWriter.WriteUInt32(FileStart2);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
             //--File length 2[size of the second section, in bytes]--
-            BWriter.WriteUInt32(00000000);
+            BWriter.WriteUInt32(0);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
 
             //--File start 3[unused and uses the same sample data offset as dummy for some reason]--
-            BWriter.WriteUInt32(00000000);
+            BWriter.WriteUInt32(0);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
             //--File length 3[unused and set to zero]--
-            BWriter.WriteUInt32(00000000);
+            BWriter.WriteUInt32(0);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
         }
 
@@ -93,9 +93,9 @@ namespace EuroSound_Application.Musics
                 //Marker count
                 BWriter.WriteUInt32((uint)MusicToExport.Value.Markers.Count);
                 //Start marker offset
-                BWriter.WriteUInt32(00000000);
+                BWriter.WriteUInt32(0);
                 //Marker offset
-                BWriter.WriteUInt32(00000000);
+                BWriter.WriteUInt32(0);
                 //Base volume
                 BWriter.WriteUInt32(MusicToExport.Value.BaseVolume);
 

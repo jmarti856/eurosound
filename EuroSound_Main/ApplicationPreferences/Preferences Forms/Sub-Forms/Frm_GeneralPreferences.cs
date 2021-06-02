@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace EuroSound_Application.ApplicationPreferencesForms
 {
@@ -29,6 +30,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             CheckBox_IgnoreLookTree.Checked = ((Frm_MainPreferences)OpenForm).TV_IgnoreStlyesFromESFTEMPORAL;
             CheckBox_ReloadLastESF.Checked = ((Frm_MainPreferences)OpenForm).LoadLastLoadedESFTEMPORAL;
             CheckBox_UseThreading.Checked = ((Frm_MainPreferences)OpenForm).UseThreadingWhenLoadTEMPORAL;
+            checkBox_VisualStyles.Checked = ((Frm_MainPreferences)OpenForm).EnableAppVisualStylesTEMPORAL;
         }
 
         private void Frm_TreeViewPrefs_FormClosing(object sender, FormClosingEventArgs e)
@@ -38,6 +40,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             ((Frm_MainPreferences)OpenForm).TV_IgnoreStlyesFromESFTEMPORAL = CheckBox_IgnoreLookTree.Checked;
             ((Frm_MainPreferences)OpenForm).LoadLastLoadedESFTEMPORAL = CheckBox_ReloadLastESF.Checked;
             ((Frm_MainPreferences)OpenForm).UseThreadingWhenLoadTEMPORAL = CheckBox_UseThreading.Checked;
+            ((Frm_MainPreferences)OpenForm).EnableAppVisualStylesTEMPORAL = checkBox_VisualStyles.Checked;
         }
 
         //*===============================================================================================
@@ -112,6 +115,24 @@ namespace EuroSound_Application.ApplicationPreferencesForms
         {
             //Update Boolean
             MouseDownButtonBackColor = false;
+        }
+
+        private void checkBox_VisualStyles_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_VisualStyles.Checked)
+            {
+                if (Application.VisualStyleState != VisualStyleState.ClientAndNonClientAreasEnabled)
+                {
+                    Application.VisualStyleState = VisualStyleState.ClientAndNonClientAreasEnabled;
+                }
+            }
+            else
+            {
+                if (Application.VisualStyleState != VisualStyleState.NonClientAreaEnabled)
+                {
+                    Application.VisualStyleState = VisualStyleState.NonClientAreaEnabled;
+                }
+            }
         }
 
         private void Button_WavesBackColor_MouseDown(object sender, MouseEventArgs e)

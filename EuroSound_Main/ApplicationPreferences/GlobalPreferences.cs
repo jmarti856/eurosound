@@ -89,6 +89,9 @@
         internal static bool AutomaticallySortNodes = true;
         internal static bool UseExtendedColorPicker = false;
 
+        //Performance
+        internal static bool EnableAppVisualStyles = true;
+
         //*===============================================================================================
         //* TEMPORAL PROPERTIES
         //*===============================================================================================

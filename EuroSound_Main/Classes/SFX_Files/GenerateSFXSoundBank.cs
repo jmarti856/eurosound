@@ -16,7 +16,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
     internal class GenerateSFXSoundBank
     {
         //--[Global vars]--
-        private const uint SFXStartSection = 0x800;
+        private const uint SectionAlign = 0x800;
         private int ItemIndex;
         private long WholeFileSize;
         private long SampleInfoStartOffset, SampleDataStartOffset;
@@ -46,7 +46,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
 
             //--fulls[Size of the whole file, in bytes. Unused. ]--
-            BWriter.WriteUInt32(00000000);
+            BWriter.WriteUInt32(0);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
         }
 
@@ -56,34 +56,34 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             GenericFunctions.ProgressBarSetMaximum(Bar, 9);
 
             //--sfxstart[an offset that points to the section where soundbanks are stored, always 0x800]--
-            BWriter.WriteUInt32(SFXStartSection);
+            BWriter.WriteUInt32(SectionAlign);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
             //--sfxlength[size of the first section, in bytes]--
-            BWriter.WriteUInt32(00000000);
+            BWriter.WriteUInt32(0);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
 
             //--sampleinfostart[offset to the second section where the sample properties are stored]--
-            BWriter.WriteUInt32(00000000);
+            BWriter.WriteUInt32(0);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
             //--sampleinfolen[size of the second section, in bytes]--
             BWriter.WriteUInt32((uint)NumberOfSamples);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
 
             //--specialsampleinfostart[unused and uses the same sample data offset as dummy for some reason]--
-            BWriter.WriteUInt32(00000000);
+            BWriter.WriteUInt32(0);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
             //--specialsampleinfolen[unused and set to zero]--
-            BWriter.WriteUInt32(00000000);
+            BWriter.WriteUInt32(0);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
 
             //--sampledatastart[Offset that points to the beginning of the PCM data, where sound is actually stored]--
-            BWriter.WriteUInt32(00000000);
+            BWriter.WriteUInt32(0);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
             //--sampledatalen[Size of the block, in bytes]--
-            BWriter.WriteUInt32(00000000);
+            BWriter.WriteUInt32(0);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
 
-            BWriter.Seek(SFXStartSection, SeekOrigin.Begin);
+            BWriter.Seek(SectionAlign, SeekOrigin.Begin);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
         }
 
@@ -117,7 +117,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             foreach (KeyValuePair<uint, EXSound> Sound in FinalSoundsDict)
             {
                 //--[Add hashcode offset to the dictionary]--
-                HashcodeOffsetM[index, 1] = BWriter.BaseStream.Position - SFXStartSection;
+                HashcodeOffsetM[index, 1] = BWriter.BaseStream.Position - SectionAlign;
 
                 //--[Write data]--
                 BWriter.WriteInt16(Sound.Value.DuckerLenght);
@@ -168,13 +168,13 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             }
 
             //--[Section length, current position - start position]--
-            SFXlength = BWriter.BaseStream.Position - SFXStartSection;
+            SFXlength = BWriter.BaseStream.Position - SectionAlign;
         }
 
         internal void WriteSampleInfoSection(BinaryStream BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, ProgressBar Bar, Label LabelInfo)
         {
             //--[Align Bytes]--
-            BWriter.Align(16, true);
+            BWriter.Align(SectionAlign);
 
             ToolsCommonFunctions.ProgressBarReset(Bar);
             GenericFunctions.ProgressBarSetMaximum(Bar, FinalAudioDataDict.Count());
@@ -189,8 +189,8 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             {
                 //--[Write data]--
                 BWriter.WriteUInt32(entry.Value.Flags);
-                BWriter.WriteUInt32(00000000);
-                BWriter.WriteUInt32(00000000);
+                BWriter.WriteUInt32(0);
+                BWriter.WriteUInt32(0);
                 BWriter.WriteUInt32(entry.Value.Frequency);
                 BWriter.WriteUInt32((uint)entry.Value.PCMdata.Length);
                 BWriter.WriteUInt32(entry.Value.Channels);
@@ -210,7 +210,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
         internal void WriteSampleDataSectionPC(BinaryStream BWriter, Dictionary<string, EXAudio> FinalAudioDataDict, int blockAlign, ProgressBar Bar, Label LabelInfo)
         {
             //Align Bytes
-            BWriter.Align(16, true);
+            BWriter.Align(SectionAlign);
 
             //Update UI
             ToolsCommonFunctions.ProgressBarReset(Bar);
@@ -275,7 +275,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             //--Special sample info start--
             BWriter.BaseStream.Seek(0x20, SeekOrigin.Begin);
             BWriter.WriteUInt32((uint)SampleDataStartOffset);
-            BWriter.WriteUInt32(00000000);
+            BWriter.WriteUInt32(0);
             ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
 
             //--Sample Data Start--
@@ -374,6 +374,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                             if (outputTarget.Equals("PC", StringComparison.OrdinalIgnoreCase))
                             {
                                 audioToExport.LoopOffset *= 2;
+                                audioToExport.Bits = 4;
                                 FinalAudioDataDict.Add(element, audioToExport);
                             }
                             else if (outputTarget.Equals("PS2", StringComparison.OrdinalIgnoreCase))
@@ -415,6 +416,13 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                                 //Parse audio to VAG
                                 byte[] encodedVagData = vagF.VAGEncoder(audiof.ConvertPCMDataToShortArray(pcmData), 16, loopOffset, UseLoopOffset);
 
+                                //Aligned loop
+                                int alignedOffset = ((int)(((loopOffset - 16) / 32) * 32));
+                                if (alignedOffset < 0)
+                                {
+                                    alignedOffset = 0;
+                                }
+
                                 //Create audio
                                 EXAudio ps2Audio = new EXAudio
                                 {
@@ -423,7 +431,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                                     Channels = audioToExport.Channels,
                                     Bits = 4,
                                     PSIsample = audioToExport.PSIsample,
-                                    LoopOffset = loopOffset,
+                                    LoopOffset = (uint)alignedOffset,
                                     Duration = audioToExport.Duration,
                                     PCMdata = encodedVagData
                                 };
