@@ -363,6 +363,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             //Add Data
             using (IEnumerator<string> enumerator = UsedAudios.GetEnumerator())
             {
+                int currentIndex = 0;
                 while (enumerator.MoveNext())
                 {
                     string element = enumerator.Current;
@@ -375,6 +376,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                             {
                                 audioToExport.LoopOffset *= 2;
                                 audioToExport.Bits = 4;
+                                audioToExport.PSIsample = (uint)(currentIndex * 96);
                                 FinalAudioDataDict.Add(element, audioToExport);
                             }
                             else if (outputTarget.Equals("PS2", StringComparison.OrdinalIgnoreCase))
@@ -407,17 +409,18 @@ namespace EuroSound_Application.GenerateSoundBankSFX
 
                                 //Check loopOffset
                                 uint loopOffset = 0;
+                                uint ParsedLoopOffset = 0;
                                 bool UseLoopOffset = Convert.ToBoolean(audioToExport.Flags > 0);
                                 if (UseLoopOffset)
                                 {
-                                    loopOffset = vagF.CalculateLoopOffset(audioToExport.LoopOffset, audioToExport.Frequency, audioToExport.FrequencyPS2);
+                                    ParsedLoopOffset = audiof.ParseWavLoopOffset((uint)audioToExport.PCMdata.Length, audioToExport.LoopOffset, (uint)pcmData.Length);
+                                    byte[] temp = vagF.VAGEncoder(audiof.ConvertPCMDataToShortArray(pcmData), 16, 0, UseLoopOffset);
+                                    loopOffset = vagF.CalculateLoopOffsetSFX(temp.Length, ParsedLoopOffset, pcmData.Length) * 2;
+
                                 }
 
-                                //Aligned loop
-                                uint alignedOffset = ((uint)((loopOffset) + (-loopOffset & (128 - 1))));
-
                                 //Parse audio to VAG
-                                byte[] encodedVagData = vagF.VAGEncoder(audiof.ConvertPCMDataToShortArray(pcmData), 16, alignedOffset, UseLoopOffset);
+                                byte[] encodedVagData = vagF.VAGEncoder(audiof.ConvertPCMDataToShortArray(pcmData), 16, loopOffset, UseLoopOffset);
 
                                 //Create audio
                                 EXAudio ps2Audio = new EXAudio
@@ -426,13 +429,14 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                                     Frequency = audioToExport.FrequencyPS2,
                                     Channels = audioToExport.Channels,
                                     Bits = 4,
-                                    PSIsample = audioToExport.PSIsample,
-                                    LoopOffset = loopOffset,
+                                    PSIsample = (uint)(currentIndex * 96),
+                                    LoopOffset = ParsedLoopOffset,
                                     Duration = audioToExport.Duration,
                                     PCMdata = encodedVagData
                                 };
                                 FinalAudioDataDict.Add(element, ps2Audio);
                             }
+                            currentIndex++;
                         }
                     }
                     ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);

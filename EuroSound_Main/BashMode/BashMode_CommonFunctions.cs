@@ -100,14 +100,14 @@ namespace EuroSound_Application.Classes.BashMode
             BWriter.Close();
         }
 
-        internal void CreateSFXStreamFie(BinaryStream BWriter, Dictionary<uint, EXSoundStream> DictionaryData, uint File_Hashcode)
+        internal void CreateSFXStreamFie(BinaryStream BWriter, Dictionary<uint, EXSoundStream> DictionaryData, uint File_Hashcode, string target)
         {
             GenerateSFXStreamedSounds SFXGenerator = new GenerateSFXStreamedSounds();
 
             //*===============================================================================================
             //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED
             //*===============================================================================================
-            Dictionary<uint, EXSoundStream> FinalSoundsDict = SFXGenerator.GetFinalSoundsDictionary(DictionaryData, null, null);
+            Dictionary<uint, EXSoundStream> FinalSoundsDict = SFXGenerator.GetFinalSoundsDictionary(DictionaryData, null, null, target);
 
             //*===============================================================================================
             //* STEP 2: CHECK DATA THAT WILL BE OUTPUTED

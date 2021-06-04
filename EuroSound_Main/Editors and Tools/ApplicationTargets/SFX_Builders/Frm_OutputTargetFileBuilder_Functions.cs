@@ -235,7 +235,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
             }
         }
 
-        private void BuildSFXStreamBank_Sphinx(string directoryPath, string fullFilePath, string parentFormTag, DoWorkEventArgs e)
+        private void BuildSFXStreamBank_Sphinx(string directoryPath, string fullFilePath, string parentFormTag, string target, DoWorkEventArgs e)
         {
             if (Directory.Exists(directoryPath))
             {
@@ -268,7 +268,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                 GenericFunctions.ProgressBarSetMaximum(ProgressBar_CurrentTask, ((Frm_StreamSounds_Main)ParentForm).StreamSoundsList.Keys.Count);
 
                 //Discard SFXs that has checked as "no output"
-                FinalSoundsDict = SFXCreator.GetFinalSoundsDictionary(((Frm_StreamSounds_Main)ParentForm).StreamSoundsList, ProgressBar_CurrentTask, Label_CurrentTask);
+                FinalSoundsDict = SFXCreator.GetFinalSoundsDictionary(((Frm_StreamSounds_Main)ParentForm).StreamSoundsList, ProgressBar_CurrentTask, Label_CurrentTask, target);
 
                 TotalProgress += 20;
                 BackgroundWorker_BuildSFX.ReportProgress(TotalProgress);

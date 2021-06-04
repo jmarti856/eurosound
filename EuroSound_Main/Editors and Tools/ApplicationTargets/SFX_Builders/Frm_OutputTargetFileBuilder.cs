@@ -126,7 +126,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                         break;
                     case (int)Enumerations.ESoundFileType.StreamSounds:
                         filePath = Path.Combine(directoryPath, "_Eng", selectedTarget.BinaryName);
-                        BuildSFXStreamBank_Sphinx(directoryPath, filePath, parentFormTag, e);
+                        BuildSFXStreamBank_Sphinx(directoryPath, filePath, parentFormTag, storedTarget.Name, e);
                         break;
                     case (int)Enumerations.ESoundFileType.MusicBanks:
                         filePath = Path.Combine(directoryPath, "Music", selectedTarget.BinaryName);

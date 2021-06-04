@@ -1,5 +1,7 @@
-﻿using EuroSound_Application.Editors_and_Tools;
+﻿using EuroSound_Application.AudioFunctionsLibrary;
+using EuroSound_Application.Editors_and_Tools;
 using Syroot.BinaryData;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -87,7 +89,6 @@ namespace EuroSound_Application.StreamSounds
                 BWriter.WriteUInt32(0);
                 ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
             }
-
             FileLength1 = BWriter.BaseStream.Position - FileStart1;
         }
 
@@ -111,9 +112,9 @@ namespace EuroSound_Application.StreamSounds
                 //Realign if necessary
                 if (soundStart > 0)
                 {
-                    if ((BWriter.BaseStream.Position - mediaStart) < 0x800)
+                    if ((BWriter.BaseStream.Position - mediaStart) < FileStart1)
                     {
-                        uint Offset = ((uint)(BWriter.BaseStream.Position + 0x800 & ~(0x800 - 1)));
+                        uint Offset = ((uint)(BWriter.BaseStream.Position + FileStart1 & ~(FileStart1 - 1)));
                         BWriter.Seek(Offset, SeekOrigin.Begin);
                     }
                 }
@@ -180,9 +181,9 @@ namespace EuroSound_Application.StreamSounds
                 //Realign if necessary
                 if (soundEnd > 0)
                 {
-                    if ((BWriter.BaseStream.Position - soundEnd) < 0x800)
+                    if ((BWriter.BaseStream.Position - soundEnd) < FileStart1)
                     {
-                        uint Offset = ((uint)(BWriter.BaseStream.Position + 0x800 & ~(0x800 - 1)));
+                        uint Offset = ((uint)(BWriter.BaseStream.Position + FileStart1 & ~(FileStart1 - 1)));
                         BWriter.Seek(Offset, SeekOrigin.Begin);
                     }
                 }
@@ -244,7 +245,7 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         //* FUNCTIONS
         //*===============================================================================================
-        internal Dictionary<uint, EXSoundStream> GetFinalSoundsDictionary(Dictionary<uint, EXSoundStream> SoundsList, ProgressBar Bar, Label LabelInfo)
+        internal Dictionary<uint, EXSoundStream> GetFinalSoundsDictionary(Dictionary<uint, EXSoundStream> SoundsList, ProgressBar Bar, Label LabelInfo, string outputTarget)
         {
             Dictionary<uint, EXSoundStream> FinalSoundsDict = new Dictionary<uint, EXSoundStream>();
 
@@ -256,7 +257,40 @@ namespace EuroSound_Application.StreamSounds
             {
                 if (SoundToCheck.Value.OutputThisSound)
                 {
-                    FinalSoundsDict.Add(SoundToCheck.Key, SoundToCheck.Value);
+                    EXSoundStream soundToExport = SoundToCheck.Value;
+                    if (outputTarget.Equals("PC", StringComparison.OrdinalIgnoreCase))
+                    {
+                        FinalSoundsDict.Add(SoundToCheck.Key, soundToExport);
+                    }
+                    else if (outputTarget.Equals("PS2", StringComparison.OrdinalIgnoreCase))
+                    {
+                        AudioFunctions audiof = new AudioFunctions();
+                        VAG_Encoder_Decoder.VagFunctions vagF = new VAG_Encoder_Decoder.VagFunctions();
+
+                        //Parse audio to VAG
+                        byte[] encodedVAGData = vagF.VAGEncoder(audiof.ConvertPCMDataToShortArray(soundToExport.PCM_Data), 16, 0, false);
+
+                        //Set markers to 0 and calculate loop offset
+                        foreach (EXStreamStartMarker strtMarker in soundToExport.StartMarkers)
+                        {
+                            strtMarker.StateA = 0;
+                            strtMarker.StateB = 0;
+                            strtMarker.Position = vagF.CalculateLoopOffsetStereo(encodedVAGData.Length, strtMarker.Position, soundToExport.PCM_Data.Length);
+                            strtMarker.LoopStart = vagF.CalculateLoopOffsetStereo(encodedVAGData.Length, strtMarker.LoopStart, soundToExport.PCM_Data.Length);
+                        }
+
+                        //Calculate loop offset
+                        foreach (EXStreamMarker dataMarker in soundToExport.Markers)
+                        {
+                            dataMarker.Position = vagF.CalculateLoopOffsetStereo(encodedVAGData.Length, dataMarker.Position, soundToExport.PCM_Data.Length);
+                            dataMarker.LoopStart = vagF.CalculateLoopOffsetStereo(encodedVAGData.Length, dataMarker.LoopStart, soundToExport.PCM_Data.Length);
+                        }
+
+                        //Change data
+                        soundToExport.IMA_ADPCM_DATA = encodedVAGData;
+
+                        FinalSoundsDict.Add(SoundToCheck.Key, soundToExport);
+                    }
                 }
                 GenericFunctions.SetLabelText(LabelInfo, "Checking Stream Data");
                 ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);

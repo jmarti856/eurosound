@@ -68,7 +68,7 @@ namespace EuroSound_Application.BashMode
             }
         }
 
-        internal void OutputStreamFile(BinaryStream BReader, string filePath)
+        internal void OutputStreamFile(BinaryStream BReader, string filePath, string target)
         {
             ESF_LoadStreamSounds SectionsReader = new ESF_LoadStreamSounds();
             Dictionary<uint, EXSoundStream> DictionaryData = new Dictionary<uint, EXSoundStream>();
@@ -109,7 +109,7 @@ namespace EuroSound_Application.BashMode
             {
                 using (BinaryStream BWriter = new BinaryStream(File.Open(Path.Combine(filePath, FileName + ".SFX"), FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                 {
-                    new BashMode_CommonFunctions().CreateSFXStreamFie(BWriter, DictionaryData, File_Hashcode);
+                    new BashMode_CommonFunctions().CreateSFXStreamFie(BWriter, DictionaryData, File_Hashcode, target);
                 }
             }
         }

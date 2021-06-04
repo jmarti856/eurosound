@@ -33,8 +33,6 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_AudioProperties));
-            this.numeric_psi = new System.Windows.Forms.NumericUpDown();
-            this.Label_PSI = new System.Windows.Forms.Label();
             this.Button_StopAudio = new System.Windows.Forms.Button();
             this.numeric_loopOffset = new System.Windows.Forms.NumericUpDown();
             this.Label_Flags = new System.Windows.Forms.Label();
@@ -67,13 +65,12 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Button_OK = new System.Windows.Forms.Button();
             this.tabControlTargets = new System.Windows.Forms.TabControl();
             this.tabPagePC = new System.Windows.Forms.TabPage();
+            this.euroSound_WaveViewer1 = new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer();
             this.tabPagePS2 = new System.Windows.Forms.TabPage();
             this.Textbox_PS2_Encoding = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.ComboBox_FrequencyPS2 = new System.Windows.Forms.ComboBox();
             this.Label_FrequencyPS2 = new System.Windows.Forms.Label();
-            this.euroSound_WaveViewer1 = new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer();
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_psi)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_loopOffset)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.ContextMenu_SaveAudio.SuspendLayout();
@@ -82,34 +79,13 @@ namespace EuroSound_Application.SoundBanksEditor
             this.tabPagePS2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // numeric_psi
-            // 
-            this.numeric_psi.Location = new System.Drawing.Point(413, 62);
-            this.numeric_psi.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.numeric_psi.Name = "numeric_psi";
-            this.numeric_psi.Size = new System.Drawing.Size(87, 20);
-            this.numeric_psi.TabIndex = 17;
-            // 
-            // Label_PSI
-            // 
-            this.Label_PSI.AutoSize = true;
-            this.Label_PSI.Location = new System.Drawing.Point(380, 64);
-            this.Label_PSI.Name = "Label_PSI";
-            this.Label_PSI.Size = new System.Drawing.Size(27, 13);
-            this.Label_PSI.TabIndex = 16;
-            this.Label_PSI.Text = "PSI:";
-            // 
             // Button_StopAudio
             // 
             this.Button_StopAudio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_StopAudio.Location = new System.Drawing.Point(425, 88);
             this.Button_StopAudio.Name = "Button_StopAudio";
             this.Button_StopAudio.Size = new System.Drawing.Size(75, 23);
-            this.Button_StopAudio.TabIndex = 20;
+            this.Button_StopAudio.TabIndex = 18;
             this.Button_StopAudio.Text = "Stop Audio";
             this.Button_StopAudio.UseVisualStyleBackColor = true;
             this.Button_StopAudio.Click += new System.EventHandler(this.Button_StopAudio_Click);
@@ -150,7 +126,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Button_PlayAudio.Location = new System.Drawing.Point(344, 88);
             this.Button_PlayAudio.Name = "Button_PlayAudio";
             this.Button_PlayAudio.Size = new System.Drawing.Size(75, 23);
-            this.Button_PlayAudio.TabIndex = 19;
+            this.Button_PlayAudio.TabIndex = 17;
             this.Button_PlayAudio.Text = "Play Audio";
             this.Button_PlayAudio.UseVisualStyleBackColor = true;
             this.Button_PlayAudio.Click += new System.EventHandler(this.Button_PlayAudio_Click);
@@ -253,7 +229,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Button_TestLoopOffset.Location = new System.Drawing.Point(234, 88);
             this.Button_TestLoopOffset.Name = "Button_TestLoopOffset";
             this.Button_TestLoopOffset.Size = new System.Drawing.Size(104, 23);
-            this.Button_TestLoopOffset.TabIndex = 18;
+            this.Button_TestLoopOffset.TabIndex = 16;
             this.Button_TestLoopOffset.Text = "Check Loop Offset";
             this.Button_TestLoopOffset.UseVisualStyleBackColor = true;
             this.Button_TestLoopOffset.Click += new System.EventHandler(this.Button_TestLoopOffset_Click);
@@ -420,8 +396,6 @@ namespace EuroSound_Application.SoundBanksEditor
             this.tabPagePC.Controls.Add(this.Textbox_Flags);
             this.tabPagePC.Controls.Add(this.Button_StopAudio);
             this.tabPagePC.Controls.Add(this.Button_PlayAudio);
-            this.tabPagePC.Controls.Add(this.numeric_psi);
-            this.tabPagePC.Controls.Add(this.Label_PSI);
             this.tabPagePC.Controls.Add(this.Label_DataSize);
             this.tabPagePC.Controls.Add(this.Textbox_Encoding);
             this.tabPagePC.Controls.Add(this.Label_Channels);
@@ -442,6 +416,26 @@ namespace EuroSound_Application.SoundBanksEditor
             this.tabPagePC.Size = new System.Drawing.Size(506, 323);
             this.tabPagePC.TabIndex = 0;
             this.tabPagePC.Text = "PC";
+            // 
+            // euroSound_WaveViewer1
+            // 
+            this.euroSound_WaveViewer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.euroSound_WaveViewer1.AutoScroll = true;
+            this.euroSound_WaveViewer1.BackColor = System.Drawing.Color.Gray;
+            this.euroSound_WaveViewer1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.euroSound_WaveViewer1.ContextMenuStrip = this.ContextMenu_SaveAudio;
+            this.euroSound_WaveViewer1.CurrentWaveImage = null;
+            this.euroSound_WaveViewer1.Location = new System.Drawing.Point(6, 117);
+            this.euroSound_WaveViewer1.Name = "euroSound_WaveViewer1";
+            this.euroSound_WaveViewer1.PenWidth = 1F;
+            this.euroSound_WaveViewer1.SamplesPerPixel = 128;
+            this.euroSound_WaveViewer1.Size = new System.Drawing.Size(494, 200);
+            this.euroSound_WaveViewer1.StartPosition = ((long)(0));
+            this.euroSound_WaveViewer1.TabIndex = 19;
+            this.euroSound_WaveViewer1.WaveStream = null;
+            this.euroSound_WaveViewer1.OnLineDrawEvent += new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer.OnLineDrawHandler(this.EuroSound_WaveViewer1_OnLineDrawEvent);
             // 
             // tabPagePS2
             // 
@@ -505,26 +499,6 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Label_FrequencyPS2.TabIndex = 2;
             this.Label_FrequencyPS2.Text = "Frequency:";
             // 
-            // euroSound_WaveViewer1
-            // 
-            this.euroSound_WaveViewer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.euroSound_WaveViewer1.AutoScroll = true;
-            this.euroSound_WaveViewer1.BackColor = System.Drawing.Color.Gray;
-            this.euroSound_WaveViewer1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.euroSound_WaveViewer1.ContextMenuStrip = this.ContextMenu_SaveAudio;
-            this.euroSound_WaveViewer1.CurrentWaveImage = null;
-            this.euroSound_WaveViewer1.Location = new System.Drawing.Point(6, 117);
-            this.euroSound_WaveViewer1.Name = "euroSound_WaveViewer1";
-            this.euroSound_WaveViewer1.PenWidth = 1F;
-            this.euroSound_WaveViewer1.SamplesPerPixel = 128;
-            this.euroSound_WaveViewer1.Size = new System.Drawing.Size(494, 200);
-            this.euroSound_WaveViewer1.StartPosition = ((long)(0));
-            this.euroSound_WaveViewer1.TabIndex = 21;
-            this.euroSound_WaveViewer1.WaveStream = null;
-            this.euroSound_WaveViewer1.OnLineDrawEvent += new EuroSound_Application.CustomControls.WavesViewerForm.EuroSound_WaveViewer.OnLineDrawHandler(this.EuroSound_WaveViewer1_OnLineDrawEvent);
-            // 
             // Frm_AudioProperties
             // 
             this.AcceptButton = this.Button_OK;
@@ -547,7 +521,6 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Text = "Frm_AudioProperties";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_AudioProperties_FormClosing);
             this.Load += new System.EventHandler(this.Frm_AudioProperties_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_psi)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_loopOffset)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -562,9 +535,6 @@ namespace EuroSound_Application.SoundBanksEditor
         }
 
         #endregion
-
-        private System.Windows.Forms.NumericUpDown numeric_psi;
-        private System.Windows.Forms.Label Label_PSI;
         private System.Windows.Forms.Button Button_StopAudio;
         private System.Windows.Forms.NumericUpDown numeric_loopOffset;
         private System.Windows.Forms.Label Label_Flags;

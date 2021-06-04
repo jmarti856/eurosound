@@ -162,7 +162,6 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     TextFileWriter.WriteLine("\t\t*NODECOLOR {0} {1} {2}", AudioNode.ForeColor.R, AudioNode.ForeColor.G, AudioNode.ForeColor.B);
                     TextFileWriter.WriteLine("\t\t*FLAGS {0}", SampleAudio.Value.Flags);
                     TextFileWriter.WriteLine("\t\t*LOOPOFFSET {0}", SampleAudio.Value.LoopOffset);
-                    TextFileWriter.WriteLine("\t\t*PSI {0}", SampleAudio.Value.PSIsample);
                     TextFileWriter.WriteLine("\t\t*CHANNELS {0}", SampleAudio.Value.Channels);
                     TextFileWriter.WriteLine("\t\t*FREQUENCY {0}", SampleAudio.Value.Frequency);
                     TextFileWriter.WriteLine("\t}");

@@ -345,11 +345,18 @@ namespace VAG_Encoder_Decoder
             return ChannelData;
         }
 
-        public uint CalculateLoopOffset(uint wavLoopOffset, uint wavRate, uint wavNewRate)
+        public uint CalculateLoopOffsetStereo(int EncodedVagDataLength, uint WavOffset, int PCMDataBytesLength)
         {
-            //Vag samples
-            uint loopOffset = ((wavNewRate * wavLoopOffset) / wavRate);
-            return loopOffset;
+            uint position = (uint)((EncodedVagDataLength * WavOffset) / (PCMDataBytesLength));
+            uint positionAligned = (position / 16) * 16;
+            return positionAligned;
+        }
+
+        public uint CalculateLoopOffsetSFX(int EncodedVagDataLength, uint WavOffset, int PCMDataBytesLength)
+        {
+            uint position = (uint)((EncodedVagDataLength * WavOffset) / (PCMDataBytesLength));
+            uint positionAligned = ((uint)((position) + (-position & (128 - 1))));
+            return positionAligned;
         }
     }
 }

@@ -156,16 +156,6 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                             ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
                                         }
                                         break;
-                                    case "PSI":
-                                        if (uint.TryParse(KeyWordValues[0], out uint PSIValue))
-                                        {
-                                            AudioPSI = PSIValue;
-                                        }
-                                        else
-                                        {
-                                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid uint value type"));
-                                        }
-                                        break;
                                     case "PS2FREQUENCY":
                                         if (uint.TryParse(KeyWordValues[0], out uint PS2Frequ))
                                         {

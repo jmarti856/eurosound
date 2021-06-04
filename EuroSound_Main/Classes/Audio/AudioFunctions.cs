@@ -145,6 +145,13 @@ namespace EuroSound_Application.AudioFunctionsLibrary
             return samplesShort;
         }
 
+        internal uint ParseWavLoopOffset(uint OriginalWavBytesSize, uint OriginalWavLoopOffset, uint NewWavBytesSize)
+        {
+            uint NewLoopOffset = (NewWavBytesSize * OriginalWavLoopOffset) / OriginalWavBytesSize;
+            uint positionAligned = (NewLoopOffset / 16) * 16;
+            return positionAligned;
+        }
+
         internal void CreateWavFile(int Frequency, int BitsPerChannel, int NumberOfChannels, byte[] PCMData, string FilePath)
         {
             using (FileStream WavFile = new FileStream(FilePath, FileMode.Create))

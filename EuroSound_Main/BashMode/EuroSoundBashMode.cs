@@ -171,7 +171,7 @@ namespace EuroSound_Application.BashMode
                                     bashFunctions.OutputSoundBank(BReader, Path.Combine(GlobalPreferences.OutputDirectory, "_bin_PC", "_eng"), "PC");
                                     break;
                                 case (int)Enumerations.ESoundFileType.StreamSounds:
-                                    bashFunctions.OutputStreamFile(BReader, Path.Combine(GlobalPreferences.OutputDirectory, "_bin_PC", "_eng"));
+                                    bashFunctions.OutputStreamFile(BReader, Path.Combine(GlobalPreferences.OutputDirectory, "_bin_PC", "_eng"), "PC");
                                     break;
                                 case (int)Enumerations.ESoundFileType.MusicBanks:
                                     bashFunctions.OutputMusicBank(BReader, Path.Combine(GlobalPreferences.OutputDirectory, "_bin_PC", "music"), "PC");

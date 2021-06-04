@@ -45,7 +45,6 @@ namespace EuroSound_Application.SoundBanksEditor
 
             //--Editable Data--
             Textbox_Flags.Tag = TemporalAudio.Flags;
-            numeric_psi.Value = TemporalAudio.PSIsample;
             numeric_loopOffset.Value = TemporalAudio.LoopOffset;
 
             //--PS2
@@ -205,7 +204,6 @@ namespace EuroSound_Application.SoundBanksEditor
 
                 //--Modify Temporal Audio Values--
                 TemporalAudio.Flags = Convert.ToUInt16(Textbox_Flags.Tag);
-                TemporalAudio.PSIsample = (uint)numeric_psi.Value;
                 TemporalAudio.LoopOffset = (uint)numeric_loopOffset.Value;
                 TemporalAudio.FrequencyPS2 = Convert.ToUInt32(ComboBox_FrequencyPS2.SelectedItem);
 
@@ -258,7 +256,6 @@ namespace EuroSound_Application.SoundBanksEditor
             if (TemporalAudio != null && TemporalAudio.PCMdata != null)
             {
                 UpdateControls();
-                numeric_psi.Value = TemporalAudio.PSIsample;
                 Textbox_MD5Hash.Text = TemporalAudioHash;
 
                 //Draw audio waves in the UI

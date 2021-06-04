@@ -180,7 +180,7 @@ namespace EuroSound_Application.BashMode
                 {
                     using (BinaryStream BWriter = new BinaryStream(File.Open(filePath, FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                     {
-                        new BashMode_CommonFunctions().CreateSFXStreamFie(BWriter, DictionaryData, fileHashcode);
+                        new BashMode_CommonFunctions().CreateSFXStreamFie(BWriter, DictionaryData, fileHashcode, requestedTarget.Name);
                     }
                 }
             }

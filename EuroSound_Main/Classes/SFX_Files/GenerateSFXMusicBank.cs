@@ -277,17 +277,27 @@ namespace EuroSound_Application.Musics
                         AudioFunctions audiof = new AudioFunctions();
                         VAG_Encoder_Decoder.VagFunctions vagF = new VAG_Encoder_Decoder.VagFunctions();
 
-                        //Set markers to 0
-                        foreach (EXStreamStartMarker strtMarker in musicToExport.StartMarkers)
-                        {
-                            strtMarker.StateA = 0;
-                            strtMarker.StateB = 0;
-                        }
-
                         //Parse audio to VAG
                         byte[] encodedVagDataL = vagF.VAGEncoder(audiof.ConvertPCMDataToShortArray(musicToExport.PCM_Data_LeftChannel), 16, 0, false);
                         byte[] encodedVagDataR = vagF.VAGEncoder(audiof.ConvertPCMDataToShortArray(musicToExport.PCM_Data_RightChannel), 16, 0, false);
 
+                        //Set markers to 0 and calculate loop offset
+                        foreach (EXStreamStartMarker strtMarker in musicToExport.StartMarkers)
+                        {
+                            strtMarker.StateA = 0;
+                            strtMarker.StateB = 0;
+                            strtMarker.Position = vagF.CalculateLoopOffsetStereo(encodedVagDataL.Length, strtMarker.Position, musicToExport.PCM_Data_LeftChannel.Length);
+                            strtMarker.LoopStart = vagF.CalculateLoopOffsetStereo(encodedVagDataL.Length, strtMarker.LoopStart, musicToExport.PCM_Data_LeftChannel.Length);
+                        }
+
+                        //Calculate loop offset
+                        foreach (EXStreamMarker dataMarker in musicToExport.Markers)
+                        {
+                            dataMarker.Position = vagF.CalculateLoopOffsetStereo(encodedVagDataL.Length, dataMarker.Position, musicToExport.PCM_Data_LeftChannel.Length);
+                            dataMarker.LoopStart = vagF.CalculateLoopOffsetStereo(encodedVagDataL.Length, dataMarker.LoopStart, musicToExport.PCM_Data_LeftChannel.Length);
+                        }
+
+                        //Change data
                         musicToExport.IMA_ADPCM_DATA_RightChannel = encodedVagDataR;
                         musicToExport.IMA_ADPCM_DATA_LeftChannel = encodedVagDataL;
 
