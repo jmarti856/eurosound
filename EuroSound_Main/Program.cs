@@ -40,8 +40,8 @@ namespace EuroSound_Application
             /*
             args = new string[3];
             args[0] = "/o";
-            args[1] = "PC";
-            args[2] = @"C:\Users\Jordi Martinez\Desktop\Sphinx and the shadow of set\SoundBanks\Files\Abydos\Abydos_North.esf";
+            args[1] = "ALL";
+            args[2] = @"C:\Users\<>\Desktop\Sphinx and the shadow of set\SoundBanks\Files\Heliopolis\Hel_CaveDoor2.esf";
             */
 
             /*--Check For .NET Framework v4.5--*/

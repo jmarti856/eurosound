@@ -320,6 +320,7 @@ namespace EuroSound_Application.SoundBanksEditor
                         audioItem.Value.LoopOffset.ToString(),
                         audioItem.Value.Flags.ToString(),
                         audioItem.Value.Frequency.ToString(),
+                        audioItem.Value.FrequencyPS2.ToString(),
                         audioItem.Value.Channels.ToString(),
                         audioItem.Value.Bits.ToString(),
                         audioItem.Value.PCMdata.Length.ToString(),

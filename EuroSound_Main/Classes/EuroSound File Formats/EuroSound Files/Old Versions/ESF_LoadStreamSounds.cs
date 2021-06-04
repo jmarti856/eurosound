@@ -2,16 +2,16 @@
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.StreamSounds;
 using EuroSound_Application.TreeViewLibraryFunctions;
+using Syroot.BinaryData;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.EuroSoundMusicFilesFunctions
 {
     public class ESF_LoadStreamSounds
     {
-        internal string ReadEuroSoundStreamFile(ProjectFile FileProperties, BinaryReader BReader, TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, int FileVersion)
+        internal string ReadEuroSoundStreamFile(ProjectFile FileProperties, BinaryStream BReader, TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, int FileVersion)
         {
             //File Hashcode
             FileProperties.Hashcode = BReader.ReadUInt32();
@@ -52,7 +52,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
             return ProfileSelectedName;
         }
 
-        internal void ReadDictionaryData(BinaryReader BReader, Dictionary<uint, EXSoundStream> DictionaryData)
+        internal void ReadDictionaryData(BinaryStream BReader, Dictionary<uint, EXSoundStream> DictionaryData)
         {
             int DictionaryItems = BReader.ReadInt32();
 
@@ -71,7 +71,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
                 int ADPCM_DataLength = BReader.ReadInt32();
                 StreamSound.IMA_ADPCM_DATA = BReader.ReadBytes(ADPCM_DataLength);
                 StreamSound.Frequency = BReader.ReadUInt32();
-                StreamSound.Channels = BReader.ReadByte();
+                StreamSound.Channels = BReader.Read1Byte();
                 StreamSound.Bits = BReader.ReadUInt32();
                 StreamSound.Duration = BReader.ReadUInt32();
                 StreamSound.Encoding = BReader.ReadString();
@@ -124,7 +124,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
             }
         }
 
-        internal void ReadTreeViewData(BinaryReader BReader, TreeView TreeViewControl, int Version)
+        internal void ReadTreeViewData(BinaryStream BReader, TreeView TreeViewControl, int Version)
         {
             bool ParentIsExpanded = false, NodeIsExpanded = false, NodeIsSelected = false;
 

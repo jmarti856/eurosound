@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.StreamSounds;
+using Syroot.BinaryData;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
@@ -9,7 +10,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
 {
     internal class ESF_LoadStreamFile_New
     {
-        internal string ReadEuroSoundStreamFile(ProjectFile FileProperties, BinaryReader BReader, TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, Dictionary<uint, EXAppTarget> OutputTargets)
+        internal string ReadEuroSoundStreamFile(ProjectFile FileProperties, BinaryStream BReader, TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, Dictionary<uint, EXAppTarget> OutputTargets)
         {
             EuroSoundFiles_CommonFunctions ESF_CommonFunctions = new EuroSoundFiles_CommonFunctions();
 
@@ -45,22 +46,23 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
             //*===============================================================================================
             //* Dictionary Info
             //*===============================================================================================
-            BReader.BaseStream.Seek(mediaDictionaryOffset, SeekOrigin.Begin);
+            long sectionPos = mediaDictionaryOffset - BReader.Position;
+            BReader.BaseStream.Seek(sectionPos, SeekOrigin.Current);
             ReadDictionaryData(BReader, StreamSoundsList);
 
             //*===============================================================================================
             //* TreeView
             //*===============================================================================================
-            BReader.BaseStream.Seek(treeViewDataOffset, SeekOrigin.Begin);
+            sectionPos = treeViewDataOffset - BReader.Position;
+            BReader.BaseStream.Seek(sectionPos, SeekOrigin.Current);
             ESF_CommonFunctions.ReadTreeViewData(BReader, TreeViewControl);
 
             //*===============================================================================================
             //* APP Target
             //*===============================================================================================
-            BReader.BaseStream.Seek(targetDictionaryOffset, SeekOrigin.Begin);
+            sectionPos = targetDictionaryOffset - BReader.Position;
+            BReader.BaseStream.Seek(sectionPos, SeekOrigin.Current);
             ESF_CommonFunctions.ReadAppTargetData(BReader, OutputTargets);
-
-
 
             //Close Reader
             BReader.Close();
@@ -68,7 +70,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
             return profileSelectedName;
         }
 
-        internal void ReadDictionaryData(BinaryReader BReader, Dictionary<uint, EXSoundStream> DictionaryData)
+        internal void ReadDictionaryData(BinaryStream BReader, Dictionary<uint, EXSoundStream> DictionaryData)
         {
             uint DictionaryItems = BReader.ReadUInt32();
 
@@ -89,7 +91,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
                 StreamSound.Frequency = BReader.ReadUInt32();
                 StreamSound.Bits = BReader.ReadUInt32();
                 StreamSound.Duration = BReader.ReadUInt32();
-                StreamSound.Channels = BReader.ReadByte();
+                StreamSound.Channels = BReader.Read1Byte();
                 StreamSound.Encoding = BReader.ReadString();
                 StreamSound.WAVFileMD5 = BReader.ReadString();
                 StreamSound.WAVFileName = BReader.ReadString();

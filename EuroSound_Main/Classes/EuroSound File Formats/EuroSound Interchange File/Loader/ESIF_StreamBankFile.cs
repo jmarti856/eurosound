@@ -136,7 +136,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     //Get IMA ADPCM Data
                                     ImaADPCM_Functions ImaADPCM = new ImaADPCM_Functions();
                                     short[] ShortArrayPCMData = AudioLibrary.ConvertPCMDataToShortArray(NewSSound.PCM_Data);
-                                    NewSSound.IMA_ADPCM_DATA = ImaADPCM.EncodeIMA_ADPCM(ShortArrayPCMData, NewSSound.PCM_Data.Length / 2);
+                                    NewSSound.IMA_ADPCM_DATA = ImaADPCM.EncodeIMA_ADPCM(ShortArrayPCMData);
                                 }
                             }
                             else

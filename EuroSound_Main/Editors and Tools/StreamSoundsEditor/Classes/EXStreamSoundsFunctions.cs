@@ -105,7 +105,7 @@ namespace EuroSound_Application.StreamSounds
                         TemporalSound.Duration = (uint)(decimal.Divide(TemporalSound.PCM_Data.Length, conversionStream.WaveFormat.AverageBytesPerSecond) * 1000);
 
                         //Get IMA ADPCM Data
-                        TemporalSound.IMA_ADPCM_DATA = imaADPCMFunctions.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalSound.PCM_Data), TemporalSound.PCM_Data.Length / 2);
+                        TemporalSound.IMA_ADPCM_DATA = imaADPCMFunctions.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalSound.PCM_Data));
                     }
                 }
                 else
@@ -121,7 +121,7 @@ namespace EuroSound_Application.StreamSounds
                     AudioReader.Read(TemporalSound.PCM_Data, 0, (int)AudioReader.Length);
 
                     //Get IMA ADPCM Data
-                    TemporalSound.IMA_ADPCM_DATA = imaADPCMFunctions.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalSound.PCM_Data), TemporalSound.PCM_Data.Length / 2);
+                    TemporalSound.IMA_ADPCM_DATA = imaADPCMFunctions.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalSound.PCM_Data));
                 }
                 AudioReader.Close();
             }

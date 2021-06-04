@@ -160,15 +160,6 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Open an existing HashTable file.
-        /// </summary>
-        internal static string Button_OpenHashTable {
-            get {
-                return ResourceManager.GetString("Button_OpenHashTable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Busca una cadena traducida similar a Calculates the Jump Codes for each music in this project..
         /// </summary>
         internal static string ButtonCalculateJumpCodes {
@@ -228,15 +219,6 @@ namespace EuroSound_Application.Properties {
         internal static string ButtonStopListUpdate {
             get {
                 return ResourceManager.GetString("ButtonStopListUpdate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a Clears and generates again the IMA ADPCM data from each object in the project..
-        /// </summary>
-        internal static string ButtonUpdateIMAData {
-            get {
-                return ResourceManager.GetString("ButtonUpdateIMAData", resourceCulture);
             }
         }
         
@@ -547,15 +529,6 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Can&apos;t build the soundbank file without a hashcode. Please set the hashcode for this file in the file preferences..
-        /// </summary>
-        internal static string Error_BuildSFX_NoHashcode {
-            get {
-                return ResourceManager.GetString("Error_BuildSFX_NoHashcode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Busca una cadena traducida similar a Sorry, cannot rename this item, an item with this name already exists.
         /// </summary>
         internal static string Error_Rename_AlreadyExists {
@@ -616,15 +589,6 @@ namespace EuroSound_Application.Properties {
         internal static string Gen_DirectoryNotExists {
             get {
                 return ResourceManager.GetString("Gen_DirectoryNotExists", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a The name can&apos;t be empty.
-        /// </summary>
-        internal static string Gen_Error_NameIsEmpty {
-            get {
-                return ResourceManager.GetString("Gen_Error_NameIsEmpty", resourceCulture);
             }
         }
         
@@ -697,33 +661,6 @@ namespace EuroSound_Application.Properties {
         internal static string Gen_TemporalFilesRemovedSuccess {
             get {
                 return ResourceManager.GetString("Gen_TemporalFilesRemovedSuccess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a This sound should not be added here, is checked as a &quot;Sample Streamed Sound&quot; in the &quot;SFX_Data.h&quot; file. You should add it as a reference in &quot;Streamed Sounds&quot; section and add it to the common file..
-        /// </summary>
-        internal static string Gen_Warning_StreamedSound {
-            get {
-                return ResourceManager.GetString("Gen_Warning_StreamedSound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a The hashtable paths are not correct, please fix them first before continue..
-        /// </summary>
-        internal static string GenericHashtablesNotCorrect {
-            get {
-                return ResourceManager.GetString("GenericHashtablesNotCorrect", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a The selected file is not valid, please choose a file with a valid extension.
-        /// </summary>
-        internal static string GenericUploadedFileWrongExt {
-            get {
-                return ResourceManager.GetString("GenericUploadedFileWrongExt", resourceCulture);
             }
         }
         
@@ -1133,24 +1070,6 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a The path assigned to SoX (Sound eXchange) is invalid, can not find the executable file, please correct it before start or load a project..
-        /// </summary>
-        internal static string SoXInvalidPath {
-            get {
-                return ResourceManager.GetString("SoXInvalidPath", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a There&apos;s no path assigned to SoX (Sound eXchange), please set a path to the application before start or load a project..
-        /// </summary>
-        internal static string SoXNoPath {
-            get {
-                return ResourceManager.GetString("SoXNoPath", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Busca una cadena traducida similar a Reading ESF File.
         /// </summary>
         internal static string StatusBar_ReadingESFFile {
@@ -1205,24 +1124,6 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Reading hashcodes data file.
-        /// </summary>
-        internal static string StatusBar_Status_RadingDataHashcodes {
-            get {
-                return ResourceManager.GetString("StatusBar_Status_RadingDataHashcodes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a Reading hashcodes sound file.
-        /// </summary>
-        internal static string StatusBar_Status_RadingSoundHashcodes {
-            get {
-                return ResourceManager.GetString("StatusBar_Status_RadingSoundHashcodes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Busca una cadena traducida similar a Reading Directory.
         /// </summary>
         internal static string StatusBar_Status_ReadingDirectory {
@@ -1264,33 +1165,6 @@ namespace EuroSound_Application.Properties {
         internal static string StatusBar_Status_StoppingThreads {
             get {
                 return ResourceManager.GetString("StatusBar_Status_StoppingThreads", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a The stream sounds file has not been found. Please ensure that the path is correct in the application preferences (view -&gt; preferences).
-        /// </summary>
-        internal static string StreamFileNotFound {
-            get {
-                return ResourceManager.GetString("StreamFileNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a An error ocurred updating the sounds.
-        /// </summary>
-        internal static string StreamSoundsUpdatedError {
-            get {
-                return ResourceManager.GetString("StreamSoundsUpdatedError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a All sounds has been updated successfully.
-        /// </summary>
-        internal static string StreamSoundsUpdatedSuccess {
-            get {
-                return ResourceManager.GetString("StreamSoundsUpdatedSuccess", resourceCulture);
             }
         }
         

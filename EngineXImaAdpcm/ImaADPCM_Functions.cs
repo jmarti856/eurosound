@@ -62,11 +62,10 @@ namespace EngineXImaAdpcm
             15289, 16818, 18500, 20350, 22385, 24623, 27086, 29794, 32767
         };
 
-        public byte[] EncodeIMA_ADPCM(short[] input, int numSamples)
+        public byte[] EncodeIMA_ADPCM(short[] input)
         {
             byte[] EncodedIMAData;
             int val;                /* Current input sample value */
-            int inp;                /* Input buffer pointer */
             int sign;               /* Current adpcm sign bit */
             int delta;              /* Current adpcm output value */
             int diff;               /* Difference between val and valprev */
@@ -83,18 +82,15 @@ namespace EngineXImaAdpcm
             {
                 using (BinaryWriter BWriter = new BinaryWriter(DecodedData))
                 {
-                    inp = 0;
-
                     valpred = m_state.valprev;
                     index = m_state.index;
                     step = stepsizeTable[index];
 
                     bufferstep = true;
 
-                    for (; numSamples > 0; numSamples--)
+                    for (int i = 0; i < input.Length; i++)
                     {
-                        val = input[inp];
-                        inp++;
+                        val = input[i];
 
                         /* Step 1 - compute difference with previous value */
                         diff = val - valpred;

@@ -130,7 +130,7 @@ namespace EuroSound_Application.SFXData
             //Clear array
             SFXDataBin_Generator = null;
 
-            WindowsRegistryFunctions.SaveWindowState("SFXData", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, 0);
+            WindowsRegistryFunctions.SaveWindowState("SFXData", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, 0, 0);
 
             //Reset title
             MdiParent.Text = "EuroSound";

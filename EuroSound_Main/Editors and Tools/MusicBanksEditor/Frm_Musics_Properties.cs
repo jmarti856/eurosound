@@ -291,7 +291,7 @@ namespace EuroSound_Application.Musics
                     AudioReader.Read(TemporalMusic.PCM_Data_LeftChannel, 0, (int)AudioReader.Length);
                 }
                 //Get IMA ADPCM Data
-                TemporalMusic.IMA_ADPCM_DATA_LeftChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_LeftChannel), TemporalMusic.PCM_Data_LeftChannel.Length / 2);
+                TemporalMusic.IMA_ADPCM_DATA_LeftChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_LeftChannel));
 
                 //Close
                 AudioReader.Close();
@@ -357,7 +357,7 @@ namespace EuroSound_Application.Musics
                     AudioReader.Read(TemporalMusic.PCM_Data_RightChannel, 0, (int)AudioReader.Length);
                 }
                 //Get IMA ADPCM Data
-                TemporalMusic.IMA_ADPCM_DATA_RightChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_RightChannel), TemporalMusic.PCM_Data_RightChannel.Length / 2);
+                TemporalMusic.IMA_ADPCM_DATA_RightChannel = ImaADPCM.EncodeIMA_ADPCM(AudioLibrary.ConvertPCMDataToShortArray(TemporalMusic.PCM_Data_RightChannel));
 
                 //Close 
                 AudioReader.Close();

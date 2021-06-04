@@ -3,16 +3,16 @@ using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.Musics;
 using EuroSound_Application.StreamSounds;
 using EuroSound_Application.TreeViewLibraryFunctions;
+using Syroot.BinaryData;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.EuroSoundMusicFilesFunctions
 {
     public class ESF_LoadMusics
     {
-        internal string ReadEuroSoundMusicFile(ProjectFile FileProperties, BinaryReader BReader, TreeView TreeViewControl, Dictionary<uint, EXMusic> MusicsList, int FileVersion)
+        internal string ReadEuroSoundMusicFile(ProjectFile FileProperties, BinaryStream BReader, TreeView TreeViewControl, Dictionary<uint, EXMusic> MusicsList, int FileVersion)
         {
             //File Hashcode
             FileProperties.Hashcode = BReader.ReadUInt32();
@@ -53,7 +53,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
             return ProfileSelectedName;
         }
 
-        internal void ReadDictionaryData(BinaryReader BReader, Dictionary<uint, EXMusic> DictionaryData)
+        internal void ReadDictionaryData(BinaryStream BReader, Dictionary<uint, EXMusic> DictionaryData)
         {
             int DictionaryItems = BReader.ReadInt32();
 
@@ -68,7 +68,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
 
                 //Read Data Left Channel
                 Music.Frequency_LeftChannel = BReader.ReadUInt32();
-                Music.Channels_LeftChannel = BReader.ReadByte();
+                Music.Channels_LeftChannel = BReader.Read1Byte();
                 Music.Bits_LeftChannel = BReader.ReadUInt32();
                 Music.Duration_LeftChannel = BReader.ReadUInt32();
                 BReader.ReadUInt32();
@@ -82,7 +82,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
 
                 //Read Data Right Channel
                 Music.Frequency_RightChannel = BReader.ReadUInt32();
-                Music.Channels_RightChannel = BReader.ReadByte();
+                Music.Channels_RightChannel = BReader.Read1Byte();
                 Music.Bits_RightChannel = BReader.ReadUInt32();
                 Music.Duration_RightChannel = BReader.ReadUInt32();
                 BReader.ReadUInt32();
@@ -139,7 +139,7 @@ namespace EuroSound_Application.EuroSoundMusicFilesFunctions
             }
         }
 
-        internal void ReadTreeViewData(BinaryReader BReader, TreeView TreeViewControl, int Version)
+        internal void ReadTreeViewData(BinaryStream BReader, TreeView TreeViewControl, int Version)
         {
             bool ParentIsExpanded = false, NodeIsExpanded = false, NodeIsSelected = false;
             int NumberOfNodes = BReader.ReadInt32();

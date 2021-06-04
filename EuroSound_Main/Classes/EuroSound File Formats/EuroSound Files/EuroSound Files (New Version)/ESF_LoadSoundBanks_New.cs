@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.SoundBanksEditor;
+using Syroot.BinaryData;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
@@ -9,7 +10,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
 {
     internal class ESF_LoadSoundBanks_New
     {
-        internal string ReadEuroSoundSoundBankFile(ProjectFile FileProperties, BinaryReader BReader, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, Dictionary<uint, EXAppTarget> OutputTargets, TreeView TreeViewControl)
+        internal string ReadEuroSoundSoundBankFile(ProjectFile FileProperties, BinaryStream BReader, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, Dictionary<uint, EXAppTarget> OutputTargets, TreeView TreeViewControl)
         {
             EuroSoundFiles_CommonFunctions ESF_CommonFunctions = new EuroSoundFiles_CommonFunctions();
 
@@ -45,25 +46,29 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
             //*===============================================================================================
             //* Audio Data
             //*===============================================================================================
-            BReader.BaseStream.Seek(audioDictionaryOffset, SeekOrigin.Begin);
+            long sectionPos = audioDictionaryOffset - BReader.Position;
+            BReader.BaseStream.Seek(sectionPos, SeekOrigin.Current);
             ReadAudioDataDictionary(BReader, AudiosList);
 
             //*===============================================================================================
             //* Sounds List Data
             //*===============================================================================================
-            BReader.BaseStream.Seek(soundDictionaryOffset, SeekOrigin.Begin);
+            sectionPos = soundDictionaryOffset - BReader.Position;
+            BReader.BaseStream.Seek(sectionPos, SeekOrigin.Current);
             ReadSoundsListData(BReader, SoundsList);
 
             //*===============================================================================================
             //* TreeView
             //*===============================================================================================
-            BReader.BaseStream.Seek(treeViewDataOffset, SeekOrigin.Begin);
+            sectionPos = treeViewDataOffset - BReader.Position;
+            BReader.BaseStream.Seek(sectionPos, SeekOrigin.Current);
             ESF_CommonFunctions.ReadTreeViewData(BReader, TreeViewControl);
 
             //*===============================================================================================
             //* APP Target
             //*===============================================================================================
-            BReader.BaseStream.Seek(targetDictionaryOffset, SeekOrigin.Begin);
+            sectionPos = targetDictionaryOffset - BReader.Position;
+            BReader.BaseStream.Seek(sectionPos, SeekOrigin.Current);
             ESF_CommonFunctions.ReadAppTargetData(BReader, OutputTargets);
 
             //Close Reader
@@ -72,7 +77,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
             return profileSelectedName;
         }
 
-        internal void ReadAudioDataDictionary(BinaryReader BReader, Dictionary<string, EXAudio> AudiosList)
+        internal void ReadAudioDataDictionary(BinaryStream BReader, Dictionary<string, EXAudio> AudiosList)
         {
             uint TotalEntries = BReader.ReadUInt32();
 
@@ -101,7 +106,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
             }
         }
 
-        internal void ReadSoundsListData(BinaryReader BReader, Dictionary<uint, EXSound> SoundsList)
+        internal void ReadSoundsListData(BinaryStream BReader, Dictionary<uint, EXSound> SoundsList)
         {
             uint NumberOfSounds = BReader.ReadUInt32();
 

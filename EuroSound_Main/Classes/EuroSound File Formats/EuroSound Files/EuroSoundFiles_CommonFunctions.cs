@@ -5,7 +5,6 @@ using Syroot.BinaryData;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion
@@ -15,7 +14,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion
         //*===============================================================================================
         //* Read Functions
         //*===============================================================================================
-        internal void ReadTreeViewData(BinaryReader BReader, TreeView TreeViewControl)
+        internal void ReadTreeViewData(BinaryStream BReader, TreeView TreeViewControl)
         {
             uint NumberOfNodes = BReader.ReadUInt32();
 
@@ -24,7 +23,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion
                 string parentNode = BReader.ReadString();
                 string nodeName = BReader.ReadString();
                 string displayName = BReader.ReadString();
-                byte nodeTag = BReader.ReadByte();
+                byte nodeTag = BReader.Read1Byte();
                 int selectedImageIndex = BReader.ReadInt32();
                 int imageIndex = BReader.ReadInt32();
                 Color nodeColor = Color.FromArgb(BReader.ReadInt32());
@@ -50,7 +49,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion
             }
         }
 
-        internal void ReadAppTargetData(BinaryReader BReader, Dictionary<uint, EXAppTarget> outputTargets)
+        internal void ReadAppTargetData(BinaryStream BReader, Dictionary<uint, EXAppTarget> outputTargets)
         {
             uint ouputTargetsCount = BReader.ReadUInt32();
             for (int i = 0; i < ouputTargetsCount; i++)

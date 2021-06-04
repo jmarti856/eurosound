@@ -2,6 +2,7 @@
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.Musics;
 using EuroSound_Application.StreamSounds;
+using Syroot.BinaryData;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
@@ -10,7 +11,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.Musicbanks
 {
     internal class ESF_LoadMusicBanks_New
     {
-        internal string ReadEuroSoundMusicFile(ProjectFile FileProperties, BinaryReader BReader, TreeView TreeViewControl, Dictionary<uint, EXMusic> MusicsList, Dictionary<uint, EXAppTarget> OutputTargets)
+        internal string ReadEuroSoundMusicFile(ProjectFile FileProperties, BinaryStream BReader, TreeView TreeViewControl, Dictionary<uint, EXMusic> MusicsList, Dictionary<uint, EXAppTarget> OutputTargets)
         {
             EuroSoundFiles_CommonFunctions ESF_CommonFunctions = new EuroSoundFiles_CommonFunctions();
 
@@ -46,19 +47,22 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.Musicbanks
             //*===============================================================================================
             //* Dictionary Info
             //*===============================================================================================
-            BReader.BaseStream.Seek(mediaDictionaryOffset, SeekOrigin.Begin);
+            long sectionPos = mediaDictionaryOffset - BReader.Position;
+            BReader.BaseStream.Seek(sectionPos, SeekOrigin.Current);
             ReadDictionaryData(BReader, MusicsList);
 
             //*===============================================================================================
             //* TreeView
             //*===============================================================================================
-            BReader.BaseStream.Seek(treeViewDataOffset, SeekOrigin.Begin);
+            sectionPos = treeViewDataOffset - BReader.Position;
+            BReader.BaseStream.Seek(sectionPos, SeekOrigin.Current);
             ESF_CommonFunctions.ReadTreeViewData(BReader, TreeViewControl);
 
             //*===============================================================================================
             //* APP Target
             //*===============================================================================================
-            BReader.BaseStream.Seek(targetDictionaryOffset, SeekOrigin.Begin);
+            sectionPos = targetDictionaryOffset - BReader.Position;
+            BReader.BaseStream.Seek(sectionPos, SeekOrigin.Current);
             ESF_CommonFunctions.ReadAppTargetData(BReader, OutputTargets);
 
             //Close Reader
@@ -67,7 +71,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.Musicbanks
             return profileSelectedName;
         }
 
-        internal void ReadDictionaryData(BinaryReader BReader, Dictionary<uint, EXMusic> DictionaryData)
+        internal void ReadDictionaryData(BinaryStream BReader, Dictionary<uint, EXMusic> DictionaryData)
         {
             uint DictionaryItems = BReader.ReadUInt32();
 
@@ -81,7 +85,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.Musicbanks
                 };
 
                 //Read Data Left Channel
-                Music.Channels_LeftChannel = BReader.ReadByte();
+                Music.Channels_LeftChannel = BReader.Read1Byte();
                 Music.Frequency_LeftChannel = BReader.ReadUInt32();
                 Music.Bits_LeftChannel = BReader.ReadUInt32();
                 Music.Duration_LeftChannel = BReader.ReadUInt32();
@@ -94,7 +98,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.Musicbanks
                 Music.IMA_ADPCM_DATA_LeftChannel = BReader.ReadBytes((int)ADPCM_DataLength);
 
                 //Read Data Right Channel
-                Music.Channels_RightChannel = BReader.ReadByte();
+                Music.Channels_RightChannel = BReader.Read1Byte();
                 Music.Frequency_RightChannel = BReader.ReadUInt32();
                 Music.Bits_RightChannel = BReader.ReadUInt32();
                 Music.Duration_RightChannel = BReader.ReadUInt32();

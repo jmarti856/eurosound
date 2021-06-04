@@ -425,7 +425,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
             }
         }
 
-        private void BuildMusicBank_Sphinx(string directoryPath, string fullFilePath, string parentFormTag, DoWorkEventArgs e)
+        private void BuildMusicBank_Sphinx(string directoryPath, string fullFilePath, string parentFormTag, string target, DoWorkEventArgs e)
         {
             if (Directory.Exists(directoryPath))
             {
@@ -459,7 +459,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                 GenericFunctions.ProgressBarSetMaximum(ProgressBar_CurrentTask, ((Frm_Musics_Main)ParentForm).MusicsList.Keys.Count);
 
                 //Discard SFXs that has checked as "no output"
-                FinalMusicsDict = SFXCreator.GetFinalMusicsDictionary(((Frm_Musics_Main)ParentForm).MusicsList, ProgressBar_CurrentTask, Label_CurrentTask);
+                FinalMusicsDict = SFXCreator.GetFinalMusicsDictionary(((Frm_Musics_Main)ParentForm).MusicsList, ProgressBar_CurrentTask, Label_CurrentTask, target);
                 GenericFunctions.ProgressBarValue(ProgressBar_CurrentTask, 1);
 
                 //*===============================================================================================
@@ -553,7 +553,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                         GenericFunctions.SetLabelText(Label_CurrentTask, "Writting IMA ADPCM Data");
 
                         //Write Data
-                        SFXCreator.WriteFileSection2(BWriter, FinalMusicsDict, ProgressBar_CurrentTask);
+                        SFXCreator.WriteFileSection2(BWriter, FinalMusicsDict, ProgressBar_CurrentTask, target);
 
                         //Update Total Progress
                         TotalProgress += 10;

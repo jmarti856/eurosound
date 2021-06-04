@@ -5,11 +5,11 @@ using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
 using Newtonsoft.Json.Linq;
+using Syroot.BinaryData;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using Application = System.Windows.Forms.Application;
@@ -133,7 +133,7 @@ namespace EuroSound_Application
 
             if (File.Exists(FileToLoad))
             {
-                using (BinaryReader BReader = new BinaryReader(File.Open(FileToLoad, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
+                using (BinaryStream BReader = new BinaryStream(File.Open(FileToLoad, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read)))
                 {
                     if (new EuroSoundFiles().FileIsCorrect(BReader))
                     {

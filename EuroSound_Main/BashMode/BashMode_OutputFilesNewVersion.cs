@@ -34,7 +34,7 @@ namespace EuroSound_Application.BashMode
             return targetToUse;
         }
 
-        internal void OutputSoundBank(BinaryReader BReader, string selectedTarget)
+        internal void OutputSoundBank(BinaryStream BReader, string selectedTarget)
         {
             ESF_LoadSoundBanks_New SectionsReader = new ESF_LoadSoundBanks_New();
 
@@ -114,7 +114,7 @@ namespace EuroSound_Application.BashMode
             }
         }
 
-        internal void OutputStreamFile(BinaryReader BReader, string selectedTarget)
+        internal void OutputStreamFile(BinaryStream BReader, string selectedTarget)
         {
             ESF_LoadStreamFile_New SectionsReader = new ESF_LoadStreamFile_New();
             Dictionary<uint, EXAppTarget> OutputTargets = new Dictionary<uint, EXAppTarget>();
@@ -186,7 +186,7 @@ namespace EuroSound_Application.BashMode
             }
         }
 
-        internal void OutputMusicBank(BinaryReader BReader, string selectedTarget)
+        internal void OutputMusicBank(BinaryStream BReader, string selectedTarget)
         {
             ESF_LoadMusicBanks_New SectionsReader = new ESF_LoadMusicBanks_New();
             Dictionary<uint, EXMusic> DictionaryData = new Dictionary<uint, EXMusic>();
@@ -252,7 +252,7 @@ namespace EuroSound_Application.BashMode
                 {
                     using (BinaryStream BWriter = new BinaryStream(File.Open(filePath, FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                     {
-                        new BashMode_CommonFunctions().CreateSFXMusicFile(BWriter, DictionaryData, fileHashcode);
+                        new BashMode_CommonFunctions().CreateSFXMusicFile(BWriter, DictionaryData, fileHashcode, requestedTarget.Name);
                     }
                 }
             }

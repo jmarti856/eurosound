@@ -412,7 +412,7 @@ namespace EuroSound_Application.StreamSounds
 
                 ClearStatusBarLabels();
             }
-            WindowsRegistryFunctions.SaveWindowState("SSView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, SplitContainerStreamSoundsForm.SplitterDistance);
+            WindowsRegistryFunctions.SaveWindowState("SSView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, SplitContainerStreamSoundsForm.SplitterDistance, 0);
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));

@@ -135,7 +135,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     //Get IMA ADPCM Data
                                     ImaADPCM_Functions ImaADPCM = new ImaADPCM_Functions();
                                     short[] ShortArrayPCMData = AudioLibrary.ConvertPCMDataToShortArray(NewMusicBank.PCM_Data_LeftChannel);
-                                    NewMusicBank.IMA_ADPCM_DATA_LeftChannel = ImaADPCM.EncodeIMA_ADPCM(ShortArrayPCMData, NewMusicBank.PCM_Data_LeftChannel.Length / 2);
+                                    NewMusicBank.IMA_ADPCM_DATA_LeftChannel = ImaADPCM.EncodeIMA_ADPCM(ShortArrayPCMData);
                                 }
                             }
                             else
@@ -174,7 +174,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     //Get IMA ADPCM Data
                                     ImaADPCM_Functions ImaADPCM = new ImaADPCM_Functions();
                                     short[] ShortArrayPCMData = AudioLibrary.ConvertPCMDataToShortArray(NewMusicBank.PCM_Data_RightChannel);
-                                    NewMusicBank.IMA_ADPCM_DATA_RightChannel = ImaADPCM.EncodeIMA_ADPCM(ShortArrayPCMData, NewMusicBank.PCM_Data_RightChannel.Length / 2);
+                                    NewMusicBank.IMA_ADPCM_DATA_RightChannel = ImaADPCM.EncodeIMA_ADPCM(ShortArrayPCMData);
                                 }
                             }
                             else

@@ -149,7 +149,7 @@ namespace EuroSound_Application.Debug_HashTables.HT_Data
             UpdateStatusBarLabels();
 
             //Save form location and size
-            WindowsRegistryFunctions.SaveWindowState("DBDView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, 0);
+            WindowsRegistryFunctions.SaveWindowState("DBDView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, 0, 0);
 
             //Set Program status
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));

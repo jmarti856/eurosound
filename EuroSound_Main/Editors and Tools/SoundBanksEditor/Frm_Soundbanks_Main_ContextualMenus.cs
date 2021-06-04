@@ -6,6 +6,7 @@ using EuroSound_Application.CustomControls.MoveMultiplesNodesForm;
 using EuroSound_Application.CustomControls.ObjectInstancesForm;
 using EuroSound_Application.Editors_and_Tools;
 using EuroSound_Application.Editors_and_Tools.ApplicationTargets;
+using EuroSound_Application.EuroSound_Audio_File;
 using EuroSound_Application.EuroSoundInterchangeFile;
 using EuroSound_Application.TreeViewLibraryFunctions;
 using EuroSound_Application.TreeViewSorter;
@@ -296,6 +297,16 @@ namespace EuroSound_Application.SoundBanksEditor
                 {
                     GenericFunctions.ShowErrorsAndWarningsList(importResults, "Import Results", this);
                 }
+            }
+        }
+
+        private void ContextMenuFolder_ImportESAF_Click(object sender, EventArgs e)
+        {
+            string filePath = BrowsersAndDialogs.FileBrowserDialog("EuroSound Audio Frequencies File (*.ESAF)|*.esaf", 0, true);
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                ESAF_Loader EuroSoundOffsetFile = new ESAF_Loader();
+                EuroSoundOffsetFile.LoadSFX_File(filePath, ProjectInfo, SoundsList, AudioDataDict);
             }
         }
 

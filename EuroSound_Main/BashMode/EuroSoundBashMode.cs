@@ -4,9 +4,9 @@ using EuroSound_Application.ApplicationPreferences.Ini_File;
 using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.EuroSoundFilesFunctions;
 using EuroSound_Application.HashCodesFunctions;
+using Syroot.BinaryData;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.BashMode
@@ -138,59 +138,69 @@ namespace EuroSound_Application.BashMode
             {
                 if (Commands[1].Equals("PC", System.StringComparison.OrdinalIgnoreCase) || Commands[1].Equals("PS2", System.StringComparison.OrdinalIgnoreCase))
                 {
-                    if (File.Exists(Commands[2]))
-                    {
-                        using (BinaryReader BReader = new BinaryReader(File.Open(Commands[2], FileMode.Open, FileAccess.Read), Encoding.ASCII))
-                        {
-                            EuroSoundFiles ESoundFiles = new EuroSoundFiles();
-                            if (ESoundFiles.FileIsCorrect(BReader))
-                            {
-                                sbyte TypeOfStoredData = BReader.ReadSByte();
-                                uint fileVersion = ESoundFiles.FileVersion;
-
-                                //Older versions, before 1.0.1.3
-                                if (fileVersion < 1013)
-                                {
-                                    BashMode_OutputFilesOldVersion bashFunctions = new BashMode_OutputFilesOldVersion();
-                                    switch (TypeOfStoredData)
-                                    {
-                                        case (int)Enumerations.ESoundFileType.SoundBanks:
-                                            bashFunctions.OutputSoundBank(BReader, Path.Combine(GlobalPreferences.OutputDirectory, "_bin_PC", "_eng"), "PC");
-                                            break;
-                                        case (int)Enumerations.ESoundFileType.StreamSounds:
-                                            bashFunctions.OutputStreamFile(BReader, Path.Combine(GlobalPreferences.OutputDirectory, "_bin_PC", "_eng"));
-                                            break;
-                                        case (int)Enumerations.ESoundFileType.MusicBanks:
-                                            bashFunctions.OutputMusicBank(BReader, Path.Combine(GlobalPreferences.OutputDirectory, "_bin_PC", "music"));
-                                            break;
-                                    }
-                                }
-                                //Newer versions, from 1.0.1.3
-                                else
-                                {
-                                    BashMode_OutputFilesNewVersion bashFunctions = new BashMode_OutputFilesNewVersion();
-                                    switch (TypeOfStoredData)
-                                    {
-                                        case (int)Enumerations.ESoundFileType.SoundBanks:
-                                            bashFunctions.OutputSoundBank(BReader, Commands[1]);
-                                            break;
-                                        case (int)Enumerations.ESoundFileType.StreamSounds:
-                                            bashFunctions.OutputStreamFile(BReader, Commands[1]);
-                                            break;
-                                        case (int)Enumerations.ESoundFileType.MusicBanks:
-                                            bashFunctions.OutputMusicBank(BReader, Commands[1]);
-                                            break;
-                                    }
-                                }
-                            }
-
-                            //Close File
-                            BReader.Close();
-                        }
-                    }
+                    OutputFile(Commands[1], Commands[2]);
+                }
+                if (Commands[1].Equals("ALL", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    OutputFile("PC", Commands[2]);
+                    OutputFile("PS2", Commands[2]);
                 }
             }
             Application.Exit();
+        }
+
+        internal void OutputFile(string target, string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                using (BinaryStream BReader = new BinaryStream(File.Open(filePath, FileMode.Open, FileAccess.Read)))
+                {
+                    EuroSoundFiles ESoundFiles = new EuroSoundFiles();
+                    if (ESoundFiles.FileIsCorrect(BReader))
+                    {
+                        sbyte TypeOfStoredData = BReader.ReadSByte();
+                        uint fileVersion = ESoundFiles.FileVersion;
+
+                        //Older versions, before 1.0.1.3
+                        if (fileVersion < 1013)
+                        {
+                            BashMode_OutputFilesOldVersion bashFunctions = new BashMode_OutputFilesOldVersion();
+                            switch (TypeOfStoredData)
+                            {
+                                case (int)Enumerations.ESoundFileType.SoundBanks:
+                                    bashFunctions.OutputSoundBank(BReader, Path.Combine(GlobalPreferences.OutputDirectory, "_bin_PC", "_eng"), "PC");
+                                    break;
+                                case (int)Enumerations.ESoundFileType.StreamSounds:
+                                    bashFunctions.OutputStreamFile(BReader, Path.Combine(GlobalPreferences.OutputDirectory, "_bin_PC", "_eng"));
+                                    break;
+                                case (int)Enumerations.ESoundFileType.MusicBanks:
+                                    bashFunctions.OutputMusicBank(BReader, Path.Combine(GlobalPreferences.OutputDirectory, "_bin_PC", "music"), "PC");
+                                    break;
+                            }
+                        }
+                        //Newer versions, from 1.0.1.3
+                        else
+                        {
+                            BashMode_OutputFilesNewVersion bashFunctions = new BashMode_OutputFilesNewVersion();
+                            switch (TypeOfStoredData)
+                            {
+                                case (int)Enumerations.ESoundFileType.SoundBanks:
+                                    bashFunctions.OutputSoundBank(BReader, target);
+                                    break;
+                                case (int)Enumerations.ESoundFileType.StreamSounds:
+                                    bashFunctions.OutputStreamFile(BReader, target);
+                                    break;
+                                case (int)Enumerations.ESoundFileType.MusicBanks:
+                                    bashFunctions.OutputMusicBank(BReader, target);
+                                    break;
+                            }
+                        }
+                    }
+
+                    //Close File
+                    BReader.Close();
+                }
+            }
         }
     }
 }

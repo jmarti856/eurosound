@@ -156,9 +156,6 @@
   <data name="ButtonStopListUpdate" xml:space="preserve">
     <value>Stops and clears the update of the list.</value>
   </data>
-  <data name="ButtonUpdateIMAData" xml:space="preserve">
-    <value>Clears and generates again the IMA ADPCM data from each object in the project.</value>
-  </data>
   <data name="Button_AddItem" xml:space="preserve">
     <value>Add new item to the list</value>
   </data>
@@ -173,9 +170,6 @@
   </data>
   <data name="Button_Gen_GenerateHashTable" xml:space="preserve">
     <value>Generate HashTable</value>
-  </data>
-  <data name="Button_OpenHashTable" xml:space="preserve">
-    <value>Open an existing HashTable file</value>
   </data>
   <data name="ColorDialogRemoveColor" xml:space="preserve">
     <value>Remove color from item?</value>
@@ -285,9 +279,6 @@
   <data name="Error_Adding_AudioExists" xml:space="preserve">
     <value>This audio can't be loaded because already exists in this project.</value>
   </data>
-  <data name="Error_BuildSFX_NoHashcode" xml:space="preserve">
-    <value>Can't build the soundbank file without a hashcode. Please set the hashcode for this file in the file preferences.</value>
-  </data>
   <data name="Error_Rename_AlreadyExists" xml:space="preserve">
     <value>Sorry, cannot rename this item, an item with this name already exists</value>
   </data>
@@ -301,12 +292,6 @@
   <data name="EuroSoundFile-TypesRegisterdOK" xml:space="preserve">
     <value>EuroSound File-Types registered with the Shell</value>
   </data>
-  <data name="GenericHashtablesNotCorrect" xml:space="preserve">
-    <value>The hashtable paths are not correct, please fix them first before continue.</value>
-  </data>
-  <data name="GenericUploadedFileWrongExt" xml:space="preserve">
-    <value>The selected file is not valid, please choose a file with a valid extension</value>
-  </data>
   <data name="GenSearchOutputFolder" xml:space="preserve">
     <value>Search an output folder</value>
   </data>
@@ -318,9 +303,6 @@
   </data>
   <data name="Gen_ErrorRedingFile" xml:space="preserve">
     <value>An unexcepted error ocurred while reading the file:</value>
-  </data>
-  <data name="Gen_Error_NameIsEmpty" xml:space="preserve">
-    <value>The name can't be empty</value>
   </data>
   <data name="Gen_FileNotExists" xml:space="preserve">
     <value>The specified file does not exists.</value>
@@ -339,9 +321,6 @@
   </data>
   <data name="Gen_TemporalFilesRemovedSuccess" xml:space="preserve">
     <value>Temporal files cleared successfully</value>
-  </data>
-  <data name="Gen_Warning_StreamedSound" xml:space="preserve">
-    <value>This sound should not be added here, is checked as a "Sample Streamed Sound" in the "SFX_Data.h" file. You should add it as a reference in "Streamed Sounds" section and add it to the common file.</value>
   </data>
   <data name="HashcodeNotFoundInSFXDataHashTable" xml:space="preserve">
     <value>The selected hashcode is not defined in the "SFX_Data" hashtable, some properties values are picked from this file. Please add the hashcode to the hashtable before continue. This sound effect will not work correctly in the game without that properties.</value>
@@ -475,12 +454,6 @@
   <data name="SFXDataHashcodeNotFound" xml:space="preserve">
     <value>The hashcode has not been found, please add it to the hashtable and click on "Reload Hashtable"</value>
   </data>
-  <data name="SoXInvalidPath" xml:space="preserve">
-    <value>The path assigned to SoX (Sound eXchange) is invalid, can not find the executable file, please correct it before start or load a project.</value>
-  </data>
-  <data name="SoXNoPath" xml:space="preserve">
-    <value>There's no path assigned to SoX (Sound eXchange), please set a path to the application before start or load a project.</value>
-  </data>
   <data name="StatusBar_ReadingESFFile" xml:space="preserve">
     <value>Reading ESF File</value>
   </data>
@@ -499,12 +472,6 @@
   <data name="StatusBar_Status_GenericSavingFile" xml:space="preserve">
     <value>Saving file</value>
   </data>
-  <data name="StatusBar_Status_RadingDataHashcodes" xml:space="preserve">
-    <value>Reading hashcodes data file</value>
-  </data>
-  <data name="StatusBar_Status_RadingSoundHashcodes" xml:space="preserve">
-    <value>Reading hashcodes sound file</value>
-  </data>
   <data name="StatusBar_Status_ReadingDirectory" xml:space="preserve">
     <value>Reading Directory</value>
   </data>
@@ -519,15 +486,6 @@
   </data>
   <data name="StatusBar_Status_StoppingThreads" xml:space="preserve">
     <value>Stopping Threads</value>
-  </data>
-  <data name="StreamFileNotFound" xml:space="preserve">
-    <value>The stream sounds file has not been found. Please ensure that the path is correct in the application preferences (view -&gt; preferences)</value>
-  </data>
-  <data name="StreamSoundsUpdatedError" xml:space="preserve">
-    <value>An error ocurred updating the sounds</value>
-  </data>
-  <data name="StreamSoundsUpdatedSuccess" xml:space="preserve">
-    <value>All sounds has been updated successfully</value>
   </data>
   <data name="TreeView_Error_EditingRootNode" xml:space="preserve">
     <value>No tree node selected or selected node is a root node, editing root nodes is not allowed.</value>

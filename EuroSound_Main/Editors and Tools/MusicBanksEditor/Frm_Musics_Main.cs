@@ -425,7 +425,7 @@ namespace EuroSound_Application.Musics
                 ClearStatusBarLabels();
             }
 
-            WindowsRegistryFunctions.SaveWindowState("MView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, SplitContainerMusicsForm.SplitterDistance);
+            WindowsRegistryFunctions.SaveWindowState("MView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, SplitContainerMusicsForm.SplitterDistance, 0);
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));

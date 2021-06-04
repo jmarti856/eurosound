@@ -1,5 +1,8 @@
-﻿using EuroSound_Application.Editors_and_Tools;
+﻿using EuroSound_Application.AudioFunctionsLibrary;
+using EuroSound_Application.Editors_and_Tools;
+using EuroSound_Application.StreamSounds;
 using Syroot.BinaryData;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -150,7 +153,7 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         //* FILE SECTION 2
         //*===============================================================================================
-        public void WriteFileSection2(BinaryStream BWriter, Dictionary<uint, EXMusic> MusicsDictionary, ProgressBar Bar)
+        public void WriteFileSection2(BinaryStream BWriter, Dictionary<uint, EXMusic> MusicsDictionary, ProgressBar Bar, string Target)
         {
             //Update GUI
             ToolsCommonFunctions.ProgressBarReset(Bar);
@@ -167,20 +170,53 @@ namespace EuroSound_Application.Musics
                 bool StereoInterleaving = true;
                 int TotalLength = MusicToExport.Value.IMA_ADPCM_DATA_LeftChannel.Length + MusicToExport.Value.IMA_ADPCM_DATA_RightChannel.Length;
 
-                //Write ima data
-                for (int i = 0; i < TotalLength; i++)
+                if (Target.Equals("PC", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (StereoInterleaving)
+                    //Write ima data
+                    for (int i = 0; i < TotalLength; i++)
                     {
-                        BWriter.Write(MusicToExport.Value.IMA_ADPCM_DATA_LeftChannel[IndexLC]);
-                        IndexLC++;
+                        if (StereoInterleaving)
+                        {
+                            BWriter.Write(MusicToExport.Value.IMA_ADPCM_DATA_LeftChannel[IndexLC]);
+                            IndexLC++;
+                        }
+                        else
+                        {
+                            BWriter.Write(MusicToExport.Value.IMA_ADPCM_DATA_RightChannel[IndexRC]);
+                            IndexRC++;
+                        }
+                        StereoInterleaving = !StereoInterleaving;
                     }
-                    else
+                }
+                else if (Target.Equals("PS2", StringComparison.OrdinalIgnoreCase))
+                {
+                    //Write vag data
+                    for (int i = 0; i < TotalLength; i++)
                     {
-                        BWriter.Write(MusicToExport.Value.IMA_ADPCM_DATA_RightChannel[IndexRC]);
-                        IndexRC++;
+                        if (StereoInterleaving)
+                        {
+                            for (int j = 0; j < 128; j++)
+                            {
+                                if (IndexLC < MusicToExport.Value.IMA_ADPCM_DATA_LeftChannel.Length)
+                                {
+                                    BWriter.Write(MusicToExport.Value.IMA_ADPCM_DATA_LeftChannel[IndexLC]);
+                                    IndexLC++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (int j = 0; j < 128; j++)
+                            {
+                                if (IndexRC < MusicToExport.Value.IMA_ADPCM_DATA_RightChannel.Length)
+                                {
+                                    BWriter.Write(MusicToExport.Value.IMA_ADPCM_DATA_RightChannel[IndexRC]);
+                                    IndexRC++;
+                                }
+                            }
+                        }
+                        StereoInterleaving = !StereoInterleaving;
                     }
-                    StereoInterleaving = !StereoInterleaving;
                 }
 
                 FileLength2 = TotalLength;
@@ -219,7 +255,7 @@ namespace EuroSound_Application.Musics
         //*===============================================================================================
         //* FUNCTIONS
         //*===============================================================================================
-        internal Dictionary<uint, EXMusic> GetFinalMusicsDictionary(Dictionary<uint, EXMusic> MusicsList, ProgressBar Bar, Label LabelInfo)
+        internal Dictionary<uint, EXMusic> GetFinalMusicsDictionary(Dictionary<uint, EXMusic> MusicsList, ProgressBar Bar, Label LabelInfo, string outputTarget)
         {
             Dictionary<uint, EXMusic> FinalSoundsDict = new Dictionary<uint, EXMusic>();
 
@@ -231,7 +267,32 @@ namespace EuroSound_Application.Musics
             {
                 if (MusicToCheck.Value.OutputThisSound)
                 {
-                    FinalSoundsDict.Add(MusicToCheck.Key, MusicToCheck.Value);
+                    EXMusic musicToExport = MusicToCheck.Value;
+                    if (outputTarget.Equals("PC", StringComparison.OrdinalIgnoreCase))
+                    {
+                        FinalSoundsDict.Add(MusicToCheck.Key, musicToExport);
+                    }
+                    else if (outputTarget.Equals("PS2", StringComparison.OrdinalIgnoreCase))
+                    {
+                        AudioFunctions audiof = new AudioFunctions();
+                        VAG_Encoder_Decoder.VagFunctions vagF = new VAG_Encoder_Decoder.VagFunctions();
+
+                        //Set markers to 0
+                        foreach (EXStreamStartMarker strtMarker in musicToExport.StartMarkers)
+                        {
+                            strtMarker.StateA = 0;
+                            strtMarker.StateB = 0;
+                        }
+
+                        //Parse audio to VAG
+                        byte[] encodedVagDataL = vagF.VAGEncoder(audiof.ConvertPCMDataToShortArray(musicToExport.PCM_Data_LeftChannel), 16, 0, false);
+                        byte[] encodedVagDataR = vagF.VAGEncoder(audiof.ConvertPCMDataToShortArray(musicToExport.PCM_Data_RightChannel), 16, 0, false);
+
+                        musicToExport.IMA_ADPCM_DATA_RightChannel = encodedVagDataR;
+                        musicToExport.IMA_ADPCM_DATA_LeftChannel = encodedVagDataL;
+
+                        FinalSoundsDict.Add(MusicToCheck.Key, musicToExport);
+                    }
                 }
                 GenericFunctions.SetLabelText(LabelInfo, "Checking Stream Data");
                 ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);

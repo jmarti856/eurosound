@@ -126,7 +126,7 @@ namespace EuroSound_Application.AudioConverter
 
         private void Frm_AudioConverter_FormClosing(object sender, FormClosingEventArgs e)
         {
-            WindowsRegistryFunctions.SaveWindowState("ACView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, 0);
+            WindowsRegistryFunctions.SaveWindowState("ACView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, 0, 0);
 
             //Update Text
             MdiParent.Text = "EuroSound";

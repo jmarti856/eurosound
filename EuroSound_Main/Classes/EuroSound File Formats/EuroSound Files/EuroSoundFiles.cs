@@ -21,7 +21,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
     {
         internal uint FileVersion = 0;
 
-        internal bool FileIsCorrect(BinaryReader BReader)
+        internal bool FileIsCorrect(BinaryStream BReader)
         {
             bool FileCorrect = false;
 
@@ -65,7 +65,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
 
             using (BufferedStream fileBuffer = new BufferedStream(File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read)))
             {
-                using (BinaryReader BReader = new BinaryReader(fileBuffer, Encoding.ASCII))
+                using (BinaryStream BReader = new BinaryStream(fileBuffer))
                 {
                     //Init reader
                     if (FileIsCorrect(BReader))

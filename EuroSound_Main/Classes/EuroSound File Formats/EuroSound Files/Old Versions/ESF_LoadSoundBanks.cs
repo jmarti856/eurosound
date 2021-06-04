@@ -2,16 +2,16 @@
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.TreeViewLibraryFunctions;
+using Syroot.BinaryData;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
 {
     internal class ESF_LoadSoundBanks
     {
-        internal string ReadEuroSoundSoundBankFile(ProjectFile FileProperties, BinaryReader BReader, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl, int FileVersion)
+        internal string ReadEuroSoundSoundBankFile(ProjectFile FileProperties, BinaryStream BReader, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, TreeView TreeViewControl, int FileVersion)
         {
             //File Hashcode
             FileProperties.Hashcode = BReader.ReadUInt32();
@@ -58,7 +58,7 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
             return ProfileSelectedName;
         }
 
-        internal void ReadAudioDataDictionary(BinaryReader BReader, Dictionary<string, EXAudio> AudiosList, int Version)
+        internal void ReadAudioDataDictionary(BinaryStream BReader, Dictionary<string, EXAudio> AudiosList, int Version)
         {
             int TotalEntries = BReader.ReadInt32();
 
@@ -99,7 +99,7 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
             }
         }
 
-        internal void ReadSoundsListData(BinaryReader BReader, Dictionary<uint, EXSound> SoundsList)
+        internal void ReadSoundsListData(BinaryStream BReader, Dictionary<uint, EXSound> SoundsList)
         {
             int NumberOfSounds = BReader.ReadInt32();
 
@@ -151,7 +151,7 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
             }
         }
 
-        internal void ReadTreeViewData(BinaryReader BReader, TreeView TreeViewControl, int Version)
+        internal void ReadTreeViewData(BinaryStream BReader, TreeView TreeViewControl, int Version)
         {
             bool NodeIsExpanded = false, NodeIsSelected = false;
             bool ParentIsExpanded = false;

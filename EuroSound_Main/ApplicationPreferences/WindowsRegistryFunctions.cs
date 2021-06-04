@@ -560,7 +560,7 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
         //*===============================================================================================
         //* OTHERS -> WINDOW STATE
         //*===============================================================================================
-        internal static void SaveWindowState(string WindowName, int LocationX, int LocationY, int Width, int Height, bool IsIconic, bool IsMaximized, int SplitterDist)
+        internal static void SaveWindowState(string WindowName, int LocationX, int LocationY, int Width, int Height, bool IsIconic, bool IsMaximized, int SplitterDist, int SplitterInfoDist)
         {
             OpenEuroSoundKeys();
             CreateEuroSoundSubkeyIfNotExists("WindowState", true);
@@ -575,6 +575,10 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 if (SplitterDist > 0)
                 {
                     SaveWindowState.SetValue(WindowName + "_SplitterDistance", SplitterDist, RegistryValueKind.DWord);
+                }
+                if (SplitterInfoDist > 0)
+                {
+                    SaveWindowState.SetValue(WindowName + "_SplitterInfoDistance", SplitterInfoDist, RegistryValueKind.DWord);
                 }
                 SaveWindowState.Close();
             }

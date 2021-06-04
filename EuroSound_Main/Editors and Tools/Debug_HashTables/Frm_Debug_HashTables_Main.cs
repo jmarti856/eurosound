@@ -139,7 +139,7 @@ namespace EuroSound_Application.Debug_HashTables
             Hashcodes.MFX_JumpCodes.Clear();
 
             //Save Form Position
-            WindowsRegistryFunctions.SaveWindowState("DBView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, 0);
+            WindowsRegistryFunctions.SaveWindowState("DBView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, 0, 0);
 
             //Set Program status
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));

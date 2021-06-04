@@ -13,7 +13,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
     {
         public void SaveStreamedSounds(BinaryStream BWriter, TreeView TreeViewControl, Dictionary<uint, EXSoundStream> StreamSoundsList, Dictionary<uint, EXAppTarget> OutputTargets, ProjectFile FileProperties)
         {
-            int SpaceBetweenBlocks = 512;
+            int SpaceBetweenBlocks = 2048;
             EuroSoundFiles_CommonFunctions ESF_CommonFunctions = new EuroSoundFiles_CommonFunctions();
 
             //File Size
@@ -39,14 +39,11 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
             //Profile Path
             BWriter.WriteString(GlobalPreferences.SelectedProfile);
 
-            //Space between sections
-            GenericFunctions.CustomSeek(2048, BWriter, (byte)'«');
-
             //*===============================================================================================
             //* Dictionary Data
             //*===============================================================================================
-            //Align Bytes
-            BWriter.Align(16);
+            //Align Section
+            BWriter.Align(SpaceBetweenBlocks);
 
             //Write Data
             long dictionaryDataOffset = BWriter.BaseStream.Position;
@@ -55,14 +52,11 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
             //Align Bytes
             BWriter.Align(16, true);
 
-            //Space between sections
-            GenericFunctions.CustomSeek(SpaceBetweenBlocks, BWriter, (byte)'«');
-
             //*===============================================================================================
             //* TreeView
             //*===============================================================================================
-            //Align Bytes
-            BWriter.Align(16, true);
+            //Align Section
+            BWriter.Align(SpaceBetweenBlocks);
 
             //Write Data
             long TreeViewDataOffset = BWriter.BaseStream.Position;
@@ -71,14 +65,11 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
             //Align Bytes
             BWriter.Align(16, true);
 
-            //Space between sections
-            GenericFunctions.CustomSeek(SpaceBetweenBlocks, BWriter, (byte)'«');
-
             //*===============================================================================================
             //* APP Target
             //*===============================================================================================
-            //Align Bytes
-            BWriter.Align(16, true);
+            //Align Section
+            BWriter.Align(SpaceBetweenBlocks);
 
             //Write Data
             long AppTargetDataOffset = BWriter.BaseStream.Position;
@@ -87,18 +78,17 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.StreamFile
             //Align Bytes
             BWriter.Align(16, true);
 
-            //Space between sections
-            GenericFunctions.CustomSeek(SpaceBetweenBlocks, BWriter, (byte)'«');
-
             //*===============================================================================================
             //* NamesList
             //*===============================================================================================
-            //Align Bytes
-            BWriter.Align(16, true);
+            //Align Section
+            BWriter.Align(SpaceBetweenBlocks);
 
             //Write Data
             long StreamSoundsListOffset = BWriter.BaseStream.Position;
             SaveSoundsLisNames(TreeViewControl, BWriter);
+
+            //Align Bytes
             BWriter.Align(16, true);
 
             long FileSize = BWriter.BaseStream.Position;

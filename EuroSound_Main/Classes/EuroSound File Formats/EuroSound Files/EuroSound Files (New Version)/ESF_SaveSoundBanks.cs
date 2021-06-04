@@ -13,7 +13,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
     {
         internal void SaveSoundBanks(BinaryStream BWriter, TreeView TreeViewControl, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, Dictionary<uint, EXAppTarget> OutputTargets, ProjectFile FileProperties)
         {
-            int SpaceBetweenBlocks = 256;
+            const int SpaceBetweenBlocks = 2048;
             EuroSoundFiles_CommonFunctions ESF_CommonFunctions = new EuroSoundFiles_CommonFunctions();
 
             //File Size
@@ -39,64 +39,45 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
             //Profile Path
             BWriter.WriteString(GlobalPreferences.SelectedProfile);
 
-            //Space between sections
-            GenericFunctions.CustomSeek(2048, BWriter, (byte)'«');
-
             //*===============================================================================================
             //* Audio Data
             //*===============================================================================================
-            //Align Bytes
-            BWriter.Align(16, true);
+            //Align Section
+            BWriter.Align(SpaceBetweenBlocks);
 
             //Write Section Data
             long AudioDataOffset = BWriter.BaseStream.Position;
             SaveAudiosData(AudiosList, BWriter);
 
-            //Align Bytes
-            BWriter.Align(16, true);
-
-            //Space between sections
-            GenericFunctions.CustomSeek(SpaceBetweenBlocks, BWriter, (byte)'«');
-
             //*===============================================================================================
             //* Sounds List Data
             //*===============================================================================================
-            //Align Bytes
-            BWriter.Align(16, true);
+            //Align Section
+            BWriter.Align(SpaceBetweenBlocks);
 
             //Write Section Data
             long SoundsListDataOffset = BWriter.BaseStream.Position;
             SaveSoundsListData(SoundsList, BWriter);
 
-            //Align Bytes
-            BWriter.Align(16, true);
-
-            //Space between sections
-            GenericFunctions.CustomSeek(SpaceBetweenBlocks, BWriter, (byte)'«');
-
             //*===============================================================================================
             //* TreeView
             //*===============================================================================================
-            //Align Bytes
-            BWriter.Align(16, true);
+            //Align Section
+            BWriter.Align(SpaceBetweenBlocks);
 
             //Write Section Data
             long TreeViewDataOffset = BWriter.BaseStream.Position;
             ESF_CommonFunctions.SaveTreeViewData(TreeViewControl, BWriter, 4);
 
-            //Align Bytes
-            BWriter.Align(16, true);
-
-            //Space between sections
-            GenericFunctions.CustomSeek(SpaceBetweenBlocks, BWriter, (byte)'«');
-
             //*===============================================================================================
             //* APP Target
             //*===============================================================================================
-            //Write Data
+            //Align Section
+            BWriter.Align(SpaceBetweenBlocks);
+
+            //Write Section Data
             long AppTargetDataOffset = BWriter.BaseStream.Position;
             ESF_CommonFunctions.SaveAppTargetData(OutputTargets, BWriter);
-            BWriter.Align(16, true);
 
             long FileSize = BWriter.BaseStream.Position;
 

@@ -3,9 +3,9 @@ using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
 using EuroSound_Application.EuroSoundFilesFunctions;
+using Syroot.BinaryData;
 using System;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.SoundBanksEditor
@@ -96,7 +96,7 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             if (File.Exists(GlobalPreferences.StreamFilePath))
             {
-                using (BinaryReader binaryReader = new BinaryReader(File.Open(GlobalPreferences.StreamFilePath, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
+                using (BinaryStream binaryReader = new BinaryStream(File.Open(GlobalPreferences.StreamFilePath, FileMode.Open, FileAccess.Read, FileShare.Read)))
                 {
                     EuroSoundFiles esfFunctions = new EuroSoundFiles();
                     if (esfFunctions.FileIsCorrect(binaryReader))

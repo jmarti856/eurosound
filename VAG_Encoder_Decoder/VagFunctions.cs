@@ -117,14 +117,14 @@ namespace VAG_Encoder_Decoder
                                 {
                                     double sample = wavBuf[k * numChannels + ch];
 
-                                    if (sample > 30719.0)
+                                    if (sample > 30719)
                                     {
-                                        sample = 30719.0;
+                                        sample = 30719;
                                     }
 
-                                    if (sample < -30720.0)
+                                    if (sample < -30720)
                                     {
-                                        sample = -30720.0;
+                                        sample = -30720;
                                     }
 
                                     predictBuf[j, k] = sample - s1[j] * (VAGLut[j, 0] / 64) - s2[j] * (VAGLut[j, 1] / 64);
@@ -157,19 +157,18 @@ namespace VAG_Encoder_Decoder
 
                             // so shift==12 if none found...
                             VAGstruct.predict_shift = (byte)(((predict << 4) & 0xF0) | (shift & 0xF));
-                            VAGstruct.flag = ((byte)(numSamples - pos >= 28 ? 0 : 1));
+                            VAGstruct.flag = ((byte)(numSamples - pos >= VAG_SAMPLE_NIBBL ? 0 : 1));
 
-                            sbyte[] outBuf = new sbyte[28];
+                            sbyte[] outBuf = new sbyte[VAG_SAMPLE_NIBBL];
 
                             for (int k = 0; k < VAG_SAMPLE_NIBBL; k++)
                             {
                                 double s_double_trans = predictBuf[predict, k] - factors2[ch * 2] * (VAGLut[predict, 0] / 64) - factors2[ch * 2 + 1] * (VAGLut[predict, 1] / 64);
-                                int sample = (int)(((((int)Math.Round(s_double_trans)) << shift) + 0x800) & 0xFFFFF000);
+                                int sample = (int)(((Convert.ToInt32(Math.Round(s_double_trans)) << shift) + 0x800) & 0xFFFFF000);
                                 if (sample > 32767)
                                 {
                                     sample = 32767;
                                 }
-
                                 if (sample < -32768)
                                 {
                                     sample = -32768;
@@ -182,7 +181,7 @@ namespace VAG_Encoder_Decoder
 
                             for (int k = 0; k < VAG_SAMPLE_BYTES; k++)
                             {
-                                VAGstruct.s[k] = Convert.ToByte(((outBuf[k * 2 + 1] << 4) & 0xF0) | (outBuf[k * 2] & 0xF));
+                                VAGstruct.s[k] = Convert.ToByte(((outBuf[k * 2 + 1] << 4) & 0xF0) | (outBuf[k * 2] & 0x0F));
                             }
                             ChunksList.Add(VAGstruct);
                         }
@@ -350,8 +349,7 @@ namespace VAG_Encoder_Decoder
         {
             //Vag samples
             uint loopOffset = ((wavNewRate * wavLoopOffset) / wavRate);
-            uint loopOffsetVAGAligned = (loopOffset / 16) * 16;
-            return loopOffsetVAGAligned;
+            return loopOffset;
         }
     }
 }

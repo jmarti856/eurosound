@@ -130,7 +130,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                         break;
                     case (int)Enumerations.ESoundFileType.MusicBanks:
                         filePath = Path.Combine(directoryPath, "Music", selectedTarget.BinaryName);
-                        BuildMusicBank_Sphinx(directoryPath, filePath, parentFormTag, e);
+                        BuildMusicBank_Sphinx(directoryPath, filePath, parentFormTag, storedTarget.Name, e);
                         break;
                 }
 

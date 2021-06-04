@@ -157,14 +157,14 @@ namespace EuroSound_Application.Classes.BashMode
             BWriter.Close();
         }
 
-        internal void CreateSFXMusicFile(BinaryStream BWriter, Dictionary<uint, EXMusic> DictionaryData, uint File_Hashcode)
+        internal void CreateSFXMusicFile(BinaryStream BWriter, Dictionary<uint, EXMusic> DictionaryData, uint File_Hashcode, string target)
         {
             GenerateSFXMusicBank SFXCreator = new GenerateSFXMusicBank();
 
             //*===============================================================================================
             //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED
             //*===============================================================================================
-            Dictionary<uint, EXMusic> FinalMusicsDict = SFXCreator.GetFinalMusicsDictionary(DictionaryData, null, null);
+            Dictionary<uint, EXMusic> FinalMusicsDict = SFXCreator.GetFinalMusicsDictionary(DictionaryData, null, null, target);
 
             //*===============================================================================================
             //* STEP 2: CHECK DATA THAT WILL BE OUTPUTED
@@ -204,7 +204,7 @@ namespace EuroSound_Application.Classes.BashMode
                 SFXCreator.WriteFileSection1(BWriter, FinalMusicsDict, null);
 
                 //Write Data
-                SFXCreator.WriteFileSection2(BWriter, FinalMusicsDict, null);
+                SFXCreator.WriteFileSection2(BWriter, FinalMusicsDict, null, target);
 
                 //*===============================================================================================
                 //* STEP 4: WRITE FINAL OFFSETS
