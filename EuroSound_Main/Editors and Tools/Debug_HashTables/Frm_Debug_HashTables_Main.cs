@@ -206,7 +206,7 @@ namespace EuroSound_Application.Debug_HashTables
             }
             else
             {
-                Textbox_Console.Text += "The specified directory does not exists or is not valid: " + Textbox_OutputFolder.Text;
+                Textbox_Console.Text += "The specified directory does not exist or is not valid: " + Textbox_OutputFolder.Text;
             }
 
             //Set Program status
@@ -321,7 +321,7 @@ namespace EuroSound_Application.Debug_HashTables
             }
             else
             {
-                Textbox_Console.Text += "The specified directory does not exists or is not valid: " + Textbox_OutputFolder.Text;
+                Textbox_Console.Text += "The specified directory does not exist or is not valid: " + Textbox_OutputFolder.Text;
             }
         }
 

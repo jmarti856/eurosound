@@ -151,12 +151,19 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             UpdateList = new Thread(() =>
             {
+                //Update status bar
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Updating list..");
+
                 //Clear List
                 ListView_Hashcodes.BeginInvoke((MethodInvoker)delegate
                 {
                     ListView_Hashcodes.Items.Clear();
+                    ListView_Hashcodes.BeginUpdate();
                     ListView_Hashcodes.Enabled = false;
                 });
+
+                //Array of items
+                ListViewItem[] itemsToAdd = new ListViewItem[SoundsList.Count + 1];
 
                 //Level Hashcode
                 ListViewItem levelHashcodeItem = new ListViewItem(new[] { "", string.Join("", new string[] { "0x", ProjectInfo.Hashcode.ToString("X8") }), "<Label Not Found>", "File Properties" });
@@ -174,9 +181,10 @@ namespace EuroSound_Application.SoundBanksEditor
                 levelHashcodeItem.UseItemStyleForSubItems = false;
                 levelHashcodeItem.Tag = "Project";
 
-                GenericFunctions.AddItemToListView(levelHashcodeItem, ListView_Hashcodes);
+                itemsToAdd[0] = levelHashcodeItem;
 
-                //Sounds Hashcodes
+                //Add data to list
+                int counter = 1;
                 foreach (KeyValuePair<uint, EXSound> soundItem in SoundsList)
                 {
                     TreeNode DisplayName = TreeView_File.Nodes.Find(soundItem.Key.ToString(), true)[0];
@@ -196,23 +204,29 @@ namespace EuroSound_Application.SoundBanksEditor
                     }
                     Hashcode.UseItemStyleForSubItems = false;
                     Hashcode.Tag = DisplayName.Name.ToString();
-                    
-                    GenericFunctions.AddItemToListView(Hashcode, ListView_Hashcodes);
-                    GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking hashcode:", Hashcode.SubItems[2].Text }));
 
-                    //Show Items Count
-                    Textbox_HashcodesCount.BeginInvoke((MethodInvoker)delegate
-                    {
-                        Textbox_HashcodesCount.Text = ListView_Hashcodes.Items.Count.ToString();
-                    });
-                    Thread.Sleep(30);
+                    itemsToAdd[counter] = Hashcode;
+                    counter++;
                 }
 
                 //Enable List
                 ListView_Hashcodes.BeginInvoke((MethodInvoker)delegate
                 {
+                    ListView_Hashcodes.Items.AddRange(itemsToAdd);
+                    ListView_Hashcodes.EndUpdate();
                     ListView_Hashcodes.Enabled = true;
                 });
+
+                //Show Items Count
+                if (!(Textbox_HashcodesCount.IsDisposed || Textbox_HashcodesCount.Disposing))
+                {
+                    Textbox_HashcodesCount.BeginInvoke((MethodInvoker)delegate
+                    {
+                        Textbox_HashcodesCount.Text = ListView_Hashcodes.Items.Count.ToString();
+                    });
+                }
+
+                //Update status bar
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {
@@ -237,13 +251,33 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             UpdateStreamDataList = new Thread(() =>
             {
+                //Update status bar
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Updating list..");
+
                 //Clear List
                 ListView_StreamData.BeginInvoke((MethodInvoker)delegate
                 {
                     ListView_StreamData.Items.Clear();
+                    ListView_StreamData.BeginUpdate();
                     ListView_StreamData.Enabled = false;
                 });
 
+                //Get stream sounds count
+                int StreamedSounds = 0;
+                foreach (KeyValuePair<uint, EXSound> soundItem in SoundsList)
+                {
+                    foreach (KeyValuePair<uint, EXSample> Sample in soundItem.Value.Samples)
+                    {
+                        if (Sample.Value.FileRef < 0)
+                        {
+                            StreamedSounds++;
+                        }
+                    }
+                }
+
+                //Add data to list
+                int counter = 0;
+                ListViewItem[] itemsToAdd = new ListViewItem[StreamedSounds];
                 foreach (KeyValuePair<uint, EXSound> soundItem in SoundsList)
                 {
                     string SoundDisplayName = TreeView_File.Nodes.Find(soundItem.Key.ToString(), true)[0].Text;
@@ -259,27 +293,38 @@ namespace EuroSound_Application.SoundBanksEditor
                                 SoundDisplayName,
                                 "HC00FFFF"
                             })
-                            { UseItemStyleForSubItems = false, Tag = NodeToCheck.Name };
+                            { 
+                                UseItemStyleForSubItems = false,
+                                Tag = NodeToCheck.Name
+                            };
 
-                            GenericFunctions.AddItemToListView(ItemStreamed, ListView_StreamData);
-                            GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking Sample:", NodeToCheck.Text }));
-
-                            //Show Items Count
-                            Textbox_StreamFilesCount.BeginInvoke((MethodInvoker)delegate
-                            {
-                                Textbox_StreamFilesCount.Text = ListView_StreamData.Items.Count.ToString();
-                            });
-
-                            Thread.Sleep(35);
+                            itemsToAdd[counter] = ItemStreamed;
+                            counter++;
                         }
                     }
                 }
 
                 //Enable List
-                ListView_StreamData.Invoke((MethodInvoker)delegate
+                if (!(ListView_StreamData.IsDisposed || ListView_StreamData.Disposing))
                 {
-                    ListView_StreamData.Enabled = true;
-                });
+                    ListView_StreamData.BeginInvoke((MethodInvoker)delegate
+                    {
+                        ListView_StreamData.Items.AddRange(itemsToAdd);
+                        ListView_StreamData.EndUpdate();
+                        ListView_StreamData.Enabled = true;
+                    });
+                }
+
+                //Show Items Count
+                if (!(Textbox_StreamFilesCount.IsDisposed || Textbox_StreamFilesCount.Disposing))
+                {
+                    Textbox_StreamFilesCount.BeginInvoke((MethodInvoker)delegate
+                    {
+                        Textbox_StreamFilesCount.Text = counter.ToString();
+                    });
+                }
+
+                //Update status bar
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {
@@ -304,18 +349,24 @@ namespace EuroSound_Application.SoundBanksEditor
         {
             UpdateWavList = new Thread(() =>
             {
+                //Update status bar
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Updating list..");
+
                 //Clear List
                 ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
                 {
                     ListView_WavHeaderData.Items.Clear();
+                    ListView_WavHeaderData.BeginUpdate();
                     ListView_WavHeaderData.Enabled = false;
                 });
 
                 //Add data to list
+                int counter = 0;
+                ListViewItem[] itemsToAdd = new ListViewItem[AudioDataDict.Count];
                 foreach (KeyValuePair<string, EXAudio> audioItem in AudioDataDict)
                 {
                     TreeNode NodeToCheck = TreeView_File.Nodes.Find(audioItem.Key, true)[0];
-                    ListViewItem Hashcode = new ListViewItem(new[]
+                    ListViewItem listItem = new ListViewItem(new[]
                     {
                         NodeToCheck.Text,
                         audioItem.Value.LoopOffset.ToString(),
@@ -332,23 +383,28 @@ namespace EuroSound_Application.SoundBanksEditor
                         Tag = NodeToCheck.Name,
                         UseItemStyleForSubItems = false
                     };
-
-                    GenericFunctions.AddItemToListView(Hashcode, ListView_WavHeaderData);
-                    GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking Audio:", audioItem.Value.LoadedFileName.ToString() }));
-
-                    //Show Items Count
-                    Textbox_DataCount.BeginInvoke((MethodInvoker)delegate
-                    {
-                        Textbox_DataCount.Text = ListView_WavHeaderData.Items.Count.ToString();
-                    });
-                    Thread.Sleep(25);
+                    itemsToAdd[counter] = listItem;
+                    counter++;
                 }
 
                 //Enable List
                 ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
                 {
+                    ListView_WavHeaderData.Items.AddRange(itemsToAdd);
+                    ListView_WavHeaderData.EndUpdate();
                     ListView_WavHeaderData.Enabled = true;
                 });
+                
+                //Show Items Count
+                if (!(Textbox_DataCount.IsDisposed || Textbox_DataCount.Disposing))
+                {
+                    Textbox_DataCount.BeginInvoke((MethodInvoker)delegate
+                    {
+                        Textbox_DataCount.Text = counter.ToString();
+                    });
+                }
+
+                //Update status bar
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {

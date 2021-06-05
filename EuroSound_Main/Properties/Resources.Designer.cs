@@ -584,7 +584,7 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a The specified directory does not exists..
+        ///   Busca una cadena traducida similar a The specified directory does not exist..
         /// </summary>
         internal static string Gen_DirectoryNotExists {
             get {
@@ -611,7 +611,7 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a The specified file does not exists..
+        ///   Busca una cadena traducida similar a The specified file does not exist..
         /// </summary>
         internal static string Gen_FileNotExists {
             get {
@@ -629,7 +629,7 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a There are no temporal files to clear.
+        ///   Busca una cadena traducida similar a There are no temporary files to clear.
         /// </summary>
         internal static string Gen_NoTemporalFilesStored {
             get {
@@ -656,7 +656,7 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Temporal files cleared successfully.
+        ///   Busca una cadena traducida similar a Temporary files cleared successfully.
         /// </summary>
         internal static string Gen_TemporalFilesRemovedSuccess {
             get {

@@ -285,7 +285,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
 
                                         if (short.TryParse(KeyWordValues[0], out DuckLength))
                                         {
-                                            SFXSound.DuckerLenght = DuckLength;
+                                            SFXSound.DuckerLength = DuckLength;
                                         }
                                         else
                                         {

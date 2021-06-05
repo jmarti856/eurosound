@@ -179,7 +179,7 @@ namespace EuroSound_Application.StreamSounds
             Textbox_MD5_Hash.Text = TemporalSound.WAVFileMD5;
 
             //Sound Properties
-            Textbox_IMA_Data_Lenght.Text = string.Join(" ", new string[] { TemporalSound.IMA_ADPCM_DATA.Length.ToString(), "bytes" });
+            Textbox_IMA_Data_Length.Text = string.Join(" ", new string[] { TemporalSound.IMA_ADPCM_DATA.Length.ToString(), "bytes" });
             Textbox_DataSize.Text = string.Join(" ", new string[] { TemporalSound.PCM_Data.Length.ToString(), "bytes" });
             Textbox_Frequency.Text = string.Join(" ", new string[] { TemporalSound.Frequency.ToString(), "Hz" });
             Textbox_Channels.Text = TemporalSound.Channels.ToString();

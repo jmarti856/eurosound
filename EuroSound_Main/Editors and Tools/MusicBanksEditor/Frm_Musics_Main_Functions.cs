@@ -66,10 +66,14 @@ namespace EuroSound_Application.Musics
         {
             UpdateWavList = new Thread(() =>
             {
+                //Update status bar
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Updating list..");
+
                 //Clear List
                 ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
                 {
                     ListView_WavHeaderData.Items.Clear();
+                    ListView_WavHeaderData.BeginUpdate();
                     ListView_WavHeaderData.Enabled = false;
                 });
 
@@ -79,7 +83,11 @@ namespace EuroSound_Application.Musics
                     Button_UpdateProperties.Enabled = false;
                 });
 
+                //Array of items
+                ListViewItem[] itemsToAdd = new ListViewItem[MusicsList.Count * 2];
+
                 //Add data to list
+                int counter = 0;
                 foreach (KeyValuePair<uint, EXMusic> item in MusicsList)
                 {
                     TreeNode NodeToCheck = TreeView_MusicData.Nodes.Find(item.Key.ToString(), true)[0];
@@ -101,9 +109,8 @@ namespace EuroSound_Application.Musics
                         Tag = NodeToCheck.Name,
                         UseItemStyleForSubItems = false
                     };
-
-                    GenericFunctions.AddItemToListView(LeftChannelInfo, ListView_WavHeaderData);
-                    GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking sound:", item.Value.WAVFileName_LeftChannel.ToString() }));
+                    itemsToAdd[counter] = LeftChannelInfo;
+                    counter++;
 
                     //RightChannel
                     ListViewItem RightChannelInfo = new ListViewItem(new[]
@@ -122,16 +129,15 @@ namespace EuroSound_Application.Musics
                         Tag = NodeToCheck.Name,
                         UseItemStyleForSubItems = false
                     };
-
-                    GenericFunctions.AddItemToListView(RightChannelInfo, ListView_WavHeaderData);
-
-                    GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking sound:", item.Value.WAVFileName_RightChannel.ToString() }));
-                    Thread.Sleep(85);
+                    itemsToAdd[counter] = RightChannelInfo;
+                    counter++;
                 }
 
                 //Enable List
                 ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
                 {
+                    ListView_WavHeaderData.Items.AddRange(itemsToAdd);
+                    ListView_WavHeaderData.EndUpdate();
                     ListView_WavHeaderData.Enabled = true;
                 });
 

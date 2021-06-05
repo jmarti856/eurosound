@@ -120,7 +120,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                 HashcodeOffsetM[index, 1] = BWriter.BaseStream.Position - SectionAlign;
 
                 //--[Write data]--
-                BWriter.WriteInt16(Sound.Value.DuckerLenght);
+                BWriter.WriteInt16(Sound.Value.DuckerLength);
                 BWriter.WriteInt16(Sound.Value.MinDelay);
                 BWriter.WriteInt16(Sound.Value.MaxDelay);
                 BWriter.WriteInt16(Sound.Value.InnerRadiusReal);

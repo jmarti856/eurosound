@@ -141,7 +141,7 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
                 {
                     if (!treeViewToEdit.Disposing || treeViewToEdit.IsDisposed)
                     {
-                        treeViewToEdit.Invoke((MethodInvoker)delegate
+                        treeViewToEdit.BeginInvoke((MethodInvoker)delegate
                         {
                             ParentNode[0].Nodes.Add(NewNode);
 

@@ -65,14 +65,13 @@ namespace EuroSound_Application.StreamSounds
 
         private void UpdateWavDataList()
         {
-            int Index = 1;
-
             UpdateWavList = new Thread(() =>
             {
                 //Clear List
                 ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
                 {
                     ListView_WavHeaderData.Items.Clear();
+                    ListView_WavHeaderData.BeginUpdate();
                     ListView_WavHeaderData.Enabled = false;
                 });
 
@@ -82,6 +81,10 @@ namespace EuroSound_Application.StreamSounds
                     Button_UpdateList_WavData.Enabled = false;
                 });
 
+                //Array of items
+                int counter = 1;
+                ListViewItem[] itemsToAdd = new ListViewItem[StreamSoundsList.Count];
+
                 //Add data to list
                 foreach (KeyValuePair<uint, EXSoundStream> item in StreamSoundsList)
                 {
@@ -89,7 +92,7 @@ namespace EuroSound_Application.StreamSounds
                     ListViewItem Hashcode = new ListViewItem(new[]
                     {
                         NodeToCheck.Text,
-                        Index.ToString(),
+                        counter.ToString(),
                         item.Value.Frequency.ToString(),
                         item.Value.Channels.ToString(),
                         item.Value.Bits.ToString(),
@@ -104,24 +107,29 @@ namespace EuroSound_Application.StreamSounds
                         UseItemStyleForSubItems = false
                     };
 
-                    GenericFunctions.AddItemToListView(Hashcode, ListView_WavHeaderData);
-                    Index++;
-
-                    GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking sound:", item.Value.WAVFileName.ToString() }));
-                    Thread.Sleep(85);
+                    itemsToAdd[counter - 1] = Hashcode;
+                    counter++;
                 }
 
                 //Enable List
-                ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
+                if (!(ListView_WavHeaderData.Disposing || ListView_WavHeaderData.IsDisposed))
                 {
-                    ListView_WavHeaderData.Enabled = true;
-                });
+                    ListView_WavHeaderData.BeginInvoke((MethodInvoker)delegate
+                    {
+                        ListView_WavHeaderData.Items.AddRange(itemsToAdd);
+                        ListView_WavHeaderData.EndUpdate();
+                        ListView_WavHeaderData.Enabled = true;
+                    });
+                }
 
                 //Enable Update button
-                Button_UpdateList_WavData.BeginInvoke((MethodInvoker)delegate
+                if (!(Button_UpdateList_WavData.Disposing || Button_UpdateList_WavData.IsDisposed))
                 {
-                    Button_UpdateList_WavData.Enabled = true;
-                });
+                    Button_UpdateList_WavData.BeginInvoke((MethodInvoker)delegate
+                    {
+                        Button_UpdateList_WavData.Enabled = true;
+                    });
+                }
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {

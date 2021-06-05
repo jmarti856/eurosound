@@ -686,7 +686,7 @@ namespace EuroSound_Application.SoundBanksEditor
                         }
                         else
                         {
-                            MessageBox.Show(string.Format("The object \"{0}\" could not be recovered because their parent \"{1}\" does not exists", NodeToAdd.Text, itemWithTreeNode.Key), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            MessageBox.Show(string.Format("The object \"{0}\" could not be recovered because their parent \"{1}\" does not exist", NodeToAdd.Text, itemWithTreeNode.Key), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         }
                     }
                 }
@@ -715,7 +715,7 @@ namespace EuroSound_Application.SoundBanksEditor
                         }
                         else
                         {
-                            MessageBox.Show(string.Format("The object \"{0}\" could not be recovered because their parent \"{1}\" does not exists", NodeToAdd.Text, itemWithTreeNode.Key), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            MessageBox.Show(string.Format("The object \"{0}\" could not be recovered because their parent \"{1}\" does not exist", NodeToAdd.Text, itemWithTreeNode.Key), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         }
                     }
                 }

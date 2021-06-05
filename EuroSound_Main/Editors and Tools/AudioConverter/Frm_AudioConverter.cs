@@ -324,12 +324,12 @@ namespace EuroSound_Application.AudioConverter
                             }
                             else
                             {
-                                Reports.Add(string.Join("", new string[] { "0", "The directory: ", Textbox_OutputFolder.Text, " does not exists" }));
+                                Reports.Add(string.Join("", new string[] { "0", "The directory: ", Textbox_OutputFolder.Text, " does not exist" }));
                             }
                         }
                         else
                         {
-                            Reports.Add(string.Join("", new string[] { "0", "The file: ", InputFilePath, " does not exists" }));
+                            Reports.Add(string.Join("", new string[] { "0", "The file: ", InputFilePath, " does not exist" }));
                         }
                     }
                 }

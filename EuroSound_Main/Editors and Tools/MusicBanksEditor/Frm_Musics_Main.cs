@@ -208,6 +208,7 @@ namespace EuroSound_Application.Musics
                 using (RegistryKey WindowStateConfig = WindowsRegistryFunctions.ReturnRegistryKey("WindowState"))
                 {
                     SplitContainerMusicsForm.SplitterDistance = Convert.ToInt32(WindowStateConfig.GetValue("MView_SplitterDistance", 370));
+                    SplitContainer_LateralPanels.SplitterDistance = Convert.ToInt32(WindowStateConfig.GetValue("MView_SplitterInfoDistance", 260));
                     WindowStateConfig.Close();
                 }
 
@@ -425,7 +426,7 @@ namespace EuroSound_Application.Musics
                 ClearStatusBarLabels();
             }
 
-            WindowsRegistryFunctions.SaveWindowState("MView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, SplitContainerMusicsForm.SplitterDistance, 0);
+            WindowsRegistryFunctions.SaveWindowState("MView", Location.X, Location.Y, Width, Height, WindowState == FormWindowState.Minimized, WindowState == FormWindowState.Maximized, SplitContainerMusicsForm.SplitterDistance, SplitContainer_LateralPanels.SplitterDistance);
 
             //Update Status Bar
             GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));

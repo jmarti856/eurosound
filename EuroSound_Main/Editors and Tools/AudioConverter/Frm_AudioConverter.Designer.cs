@@ -67,6 +67,7 @@ namespace EuroSound_Application.AudioConverter
             this.MenuItem_Separator2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItem_Delete = new System.Windows.Forms.ToolStripMenuItem();
             this.Groupbox_ConvertOptions = new System.Windows.Forms.GroupBox();
+            this.Button_LoadPresets = new System.Windows.Forms.Button();
             this.RadioButton_Stereo = new System.Windows.Forms.RadioButton();
             this.RadioButton_Mono = new System.Windows.Forms.RadioButton();
             this.Label_Channels = new System.Windows.Forms.Label();
@@ -79,7 +80,6 @@ namespace EuroSound_Application.AudioConverter
             this.Label_Status = new System.Windows.Forms.Label();
             this.Background_ConvertAudios = new System.ComponentModel.BackgroundWorker();
             this.Button_Cancel = new System.Windows.Forms.Button();
-            this.Button_LoadPresets = new System.Windows.Forms.Button();
             this.Groupbox_OutputDirectory.SuspendLayout();
             this.AudioConverter_MainMenu.SuspendLayout();
             this.Groupbox_Files.SuspendLayout();
@@ -188,7 +188,7 @@ namespace EuroSound_Application.AudioConverter
             this.MenuItemEdit_SelectAll,
             this.MenuItemEdit_SelectNone,
             this.MenuItemEdit_InvertSelection});
-            this.MainMenu_Edit.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.MainMenu_Edit.MergeAction = System.Windows.Forms.MergeAction.MatchOnly;
             this.MainMenu_Edit.MergeIndex = 1;
             this.MainMenu_Edit.Name = "MainMenu_Edit";
             this.MainMenu_Edit.Size = new System.Drawing.Size(39, 20);
@@ -228,7 +228,7 @@ namespace EuroSound_Application.AudioConverter
             // MenuItemLoad_Presets
             // 
             this.MenuItemLoad_Presets.Name = "MenuItemLoad_Presets";
-            this.MenuItemLoad_Presets.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemLoad_Presets.Size = new System.Drawing.Size(156, 22);
             this.MenuItemLoad_Presets.Text = "Convert Presets";
             this.MenuItemLoad_Presets.Click += new System.EventHandler(this.MenuItemLoad_Presets_Click);
             // 
@@ -405,6 +405,17 @@ namespace EuroSound_Application.AudioConverter
             this.Groupbox_ConvertOptions.TabStop = false;
             this.Groupbox_ConvertOptions.Text = "Convert Options:";
             // 
+            // Button_LoadPresets
+            // 
+            this.Button_LoadPresets.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_LoadPresets.Location = new System.Drawing.Point(241, 46);
+            this.Button_LoadPresets.Name = "Button_LoadPresets";
+            this.Button_LoadPresets.Size = new System.Drawing.Size(131, 23);
+            this.Button_LoadPresets.TabIndex = 7;
+            this.Button_LoadPresets.Text = "Load Presets";
+            this.Button_LoadPresets.UseVisualStyleBackColor = true;
+            this.Button_LoadPresets.Click += new System.EventHandler(this.Button_LoadPresets_Click);
+            // 
             // RadioButton_Stereo
             // 
             this.RadioButton_Stereo.AutoSize = true;
@@ -531,17 +542,6 @@ namespace EuroSound_Application.AudioConverter
             this.Button_Cancel.Text = "Cancel";
             this.Button_Cancel.UseVisualStyleBackColor = true;
             this.Button_Cancel.Click += new System.EventHandler(this.Button_Cancel_Click);
-            // 
-            // Button_LoadPresets
-            // 
-            this.Button_LoadPresets.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_LoadPresets.Location = new System.Drawing.Point(241, 46);
-            this.Button_LoadPresets.Name = "Button_LoadPresets";
-            this.Button_LoadPresets.Size = new System.Drawing.Size(131, 23);
-            this.Button_LoadPresets.TabIndex = 7;
-            this.Button_LoadPresets.Text = "Load Presets";
-            this.Button_LoadPresets.UseVisualStyleBackColor = true;
-            this.Button_LoadPresets.Click += new System.EventHandler(this.Button_LoadPresets_Click);
             // 
             // Frm_AudioConverter
             // 

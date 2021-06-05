@@ -51,7 +51,7 @@ namespace EuroSound_Application.EuroSound_Profiles
 
             foreach (string line in lines)
             {
-                if (string.IsNullOrEmpty(line))
+                if (string.IsNullOrEmpty(line)||line.Trim().StartsWith("#"))
                 {
                     continue;
                 }
@@ -110,7 +110,7 @@ namespace EuroSound_Application.EuroSound_Profiles
 
             foreach (string line in lines)
             {
-                if (string.IsNullOrEmpty(line))
+                if (string.IsNullOrEmpty(line) || line.Trim().StartsWith("#"))
                 {
                     continue;
                 }
@@ -169,7 +169,7 @@ namespace EuroSound_Application.EuroSound_Profiles
 
             foreach (string line in lines)
             {
-                if (string.IsNullOrEmpty(line))
+                if (string.IsNullOrEmpty(line) || line.Trim().StartsWith("#"))
                 {
                     continue;
                 }
@@ -228,7 +228,7 @@ namespace EuroSound_Application.EuroSound_Profiles
 
             foreach (string line in lines)
             {
-                if (string.IsNullOrEmpty(line))
+                if (string.IsNullOrEmpty(line) || line.Trim().StartsWith("#"))
                 {
                     continue;
                 }
@@ -275,7 +275,7 @@ namespace EuroSound_Application.EuroSound_Profiles
 
             foreach (string line in lines)
             {
-                if (string.IsNullOrEmpty(line))
+                if (string.IsNullOrEmpty(line) || line.Trim().StartsWith("#"))
                 {
                     continue;
                 }
@@ -322,7 +322,7 @@ namespace EuroSound_Application.EuroSound_Profiles
 
             foreach (string line in lines)
             {
-                if (string.IsNullOrEmpty(line))
+                if (string.IsNullOrEmpty(line) || line.Trim().StartsWith("#"))
                 {
                     continue;
                 }
@@ -369,7 +369,7 @@ namespace EuroSound_Application.EuroSound_Profiles
 
             foreach (string line in lines)
             {
-                if (string.IsNullOrEmpty(line))
+                if (string.IsNullOrEmpty(line) || line.Trim().StartsWith("#"))
                 {
                     continue;
                 }
@@ -415,7 +415,7 @@ namespace EuroSound_Application.EuroSound_Profiles
 
             foreach (string line in lines)
             {
-                if (string.IsNullOrEmpty(line))
+                if (string.IsNullOrEmpty(line) || line.Trim().StartsWith("#"))
                 {
                     continue;
                 }

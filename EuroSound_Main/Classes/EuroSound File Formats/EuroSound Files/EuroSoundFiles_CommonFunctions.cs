@@ -18,6 +18,10 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion
         {
             uint NumberOfNodes = BReader.ReadUInt32();
 
+            //Disable control
+            TreeViewControl.BeginUpdate();
+
+            //Add nodes
             for (int i = 0; i < NumberOfNodes; i++)
             {
                 string parentNode = BReader.ReadString();
@@ -47,6 +51,9 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion
 
                 TreeNodeFunctions.TreeNodeAddNewNode(parentNode, nodeName, displayName, selectedImageIndex, imageIndex, nodeTag, parentIsExpanded, isExpanded, nodeIsSelected, nodeColor, TreeViewControl);
             }
+
+            //Enable control
+            TreeViewControl.EndUpdate();
         }
 
         internal void ReadAppTargetData(BinaryStream BReader, Dictionary<uint, EXAppTarget> outputTargets)

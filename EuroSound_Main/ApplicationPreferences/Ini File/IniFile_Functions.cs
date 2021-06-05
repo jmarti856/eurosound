@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace EuroSound_Application.ApplicationPreferences.Ini_File
 {
     internal class IniFile_Functions
     {
-        internal Dictionary<string, string> GetAvailableProfiles(string FilePath)
+        internal Dictionary<string, string> GetAvailableProfiles(string iniFilePath)
         {
             string ProjectName = string.Empty, ProjectFilePath = string.Empty;
             Regex RemoveCharactersFromPathString = new Regex(@"[\p{Cc}\p{Cf}\p{Mn}\p{Me}\p{Zl}\p{Zp}]");
             Regex PatternForProjects = new Regex(@"(?<=\[).+?(?=\])");
             Dictionary<string, string> ProfilesDictionary = new Dictionary<string, string>();
 
-            IEnumerable<string> FileLines = File.ReadLines(FilePath);
+            IEnumerable<string> FileLines = File.ReadLines(iniFilePath);
             foreach (string CurrentLine in FileLines)
             {
                 if (string.IsNullOrEmpty(CurrentLine))
@@ -46,7 +47,13 @@ namespace EuroSound_Application.ApplicationPreferences.Ini_File
                         {
                             if (!ProfilesDictionary.ContainsKey(ProjectName))
                             {
-                                ProfilesDictionary.Add(ProjectName, RemoveCharactersFromPathString.Replace(ProjectFilePath, ""));
+                                string projectFilePath = RemoveCharactersFromPathString.Replace(ProjectFilePath, "");
+                                string rootedFilePath = projectFilePath;
+                                if (!Path.IsPathRooted(rootedFilePath))
+                                {
+                                    rootedFilePath = Path.GetFullPath(Application.StartupPath + rootedFilePath);
+                                }
+                                ProfilesDictionary.Add(ProjectName, rootedFilePath);
                                 ProjectFilePath = string.Empty;
                                 ProjectName = string.Empty;
                             }
@@ -75,7 +82,6 @@ namespace EuroSound_Application.ApplicationPreferences.Ini_File
                         string[] LineData = CurrentLine.Split('=');
                         if (LineData.Length > 1)
                         {
-                            //MatchCollection Preset = Regex.Matches(LineData[1].Trim(), @"\{\s*""(.*)""\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\}");
                             MatchCollection Preset = Regex.Matches(LineData[1], @"\{\s*""(.*)""\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*""(.*)""\s*\}");
                             if (Preset.Count > 0 && Preset[0].Groups.Count == 6)
                             {

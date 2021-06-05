@@ -5,7 +5,7 @@ namespace EuroSound_Application.SoundBanksEditor
     public class EXSound
     {
         public sbyte Ducker;
-        public short DuckerLenght;
+        public short DuckerLength;
         public ushort Flags;
         public uint Hashcode;
         public short InnerRadiusReal;

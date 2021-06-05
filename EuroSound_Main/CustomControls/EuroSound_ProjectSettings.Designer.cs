@@ -77,10 +77,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GroupBox_HashTable.Controls.Add(this.Combobox_FileHashcode);
             this.GroupBox_HashTable.Controls.Add(this.Label_HashTableEntry);
-            this.GroupBox_HashTable.Location = new System.Drawing.Point(12, 305);
+            this.GroupBox_HashTable.Location = new System.Drawing.Point(12, 65);
             this.GroupBox_HashTable.Name = "GroupBox_HashTable";
             this.GroupBox_HashTable.Size = new System.Drawing.Size(464, 61);
-            this.GroupBox_HashTable.TabIndex = 5;
+            this.GroupBox_HashTable.TabIndex = 4;
             this.GroupBox_HashTable.TabStop = false;
             this.GroupBox_HashTable.Text = "An entry for this ESF file can be placed in this hash table:";
             // 
@@ -121,12 +121,12 @@
             this.GroupBox_HashTableConfig.Controls.Add(this.Textbox_Sounds_Path);
             this.GroupBox_HashTableConfig.Controls.Add(this.Label_SFX_Path);
             this.GroupBox_HashTableConfig.Controls.Add(this.Label_HT_Sound);
-            this.GroupBox_HashTableConfig.Location = new System.Drawing.Point(12, 71);
+            this.GroupBox_HashTableConfig.Location = new System.Drawing.Point(12, 132);
             this.GroupBox_HashTableConfig.Name = "GroupBox_HashTableConfig";
-            this.GroupBox_HashTableConfig.Size = new System.Drawing.Size(464, 228);
-            this.GroupBox_HashTableConfig.TabIndex = 4;
+            this.GroupBox_HashTableConfig.Size = new System.Drawing.Size(464, 234);
+            this.GroupBox_HashTableConfig.TabIndex = 5;
             this.GroupBox_HashTableConfig.TabStop = false;
-            this.GroupBox_HashTableConfig.Text = "Hash Table Configuration:";
+            this.GroupBox_HashTableConfig.Text = "Using these project-sourced hash tables:";
             // 
             // Label_Hashcodes
             // 
@@ -137,7 +137,7 @@
             this.Label_Hashcodes.MaximumSize = new System.Drawing.Size(500, 0);
             this.Label_Hashcodes.MinimumSize = new System.Drawing.Size(452, 26);
             this.Label_Hashcodes.Name = "Label_Hashcodes";
-            this.Label_Hashcodes.Size = new System.Drawing.Size(452, 26);
+            this.Label_Hashcodes.Size = new System.Drawing.Size(452, 32);
             this.Label_Hashcodes.TabIndex = 8;
             this.Label_Hashcodes.Text = "A project can use a shared header file to record all item identities, with unique" +
     " identifier values being assigned by Eurosound to each item.";

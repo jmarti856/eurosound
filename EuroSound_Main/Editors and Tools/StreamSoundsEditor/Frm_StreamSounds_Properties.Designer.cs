@@ -36,7 +36,7 @@ namespace EuroSound_Application.StreamSounds
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
             this.GroupBox_Properties = new System.Windows.Forms.GroupBox();
-            this.Textbox_IMA_Data_Lenght = new System.Windows.Forms.TextBox();
+            this.Textbox_IMA_Data_Length = new System.Windows.Forms.TextBox();
             this.Label_IMASize = new System.Windows.Forms.Label();
             this.Textbox_DataSize = new System.Windows.Forms.TextBox();
             this.Label_DataSize = new System.Windows.Forms.Label();
@@ -101,7 +101,7 @@ namespace EuroSound_Application.StreamSounds
             this.GroupBox_Properties.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.GroupBox_Properties.Controls.Add(this.Textbox_IMA_Data_Lenght);
+            this.GroupBox_Properties.Controls.Add(this.Textbox_IMA_Data_Length);
             this.GroupBox_Properties.Controls.Add(this.Label_IMASize);
             this.GroupBox_Properties.Controls.Add(this.Textbox_DataSize);
             this.GroupBox_Properties.Controls.Add(this.Label_DataSize);
@@ -128,14 +128,14 @@ namespace EuroSound_Application.StreamSounds
             this.GroupBox_Properties.TabStop = false;
             this.GroupBox_Properties.Text = "Sound Properties:";
             // 
-            // Textbox_IMA_Data_Lenght
+            // Textbox_IMA_Data_Length
             // 
-            this.Textbox_IMA_Data_Lenght.BackColor = System.Drawing.SystemColors.Window;
-            this.Textbox_IMA_Data_Lenght.Location = new System.Drawing.Point(84, 19);
-            this.Textbox_IMA_Data_Lenght.Name = "Textbox_IMA_Data_Lenght";
-            this.Textbox_IMA_Data_Lenght.ReadOnly = true;
-            this.Textbox_IMA_Data_Lenght.Size = new System.Drawing.Size(87, 20);
-            this.Textbox_IMA_Data_Lenght.TabIndex = 1;
+            this.Textbox_IMA_Data_Length.BackColor = System.Drawing.SystemColors.Window;
+            this.Textbox_IMA_Data_Length.Location = new System.Drawing.Point(84, 19);
+            this.Textbox_IMA_Data_Length.Name = "Textbox_IMA_Data_Length";
+            this.Textbox_IMA_Data_Length.ReadOnly = true;
+            this.Textbox_IMA_Data_Length.Size = new System.Drawing.Size(87, 20);
+            this.Textbox_IMA_Data_Length.TabIndex = 1;
             // 
             // Label_IMASize
             // 
@@ -503,7 +503,7 @@ namespace EuroSound_Application.StreamSounds
         private System.Windows.Forms.ToolStripMenuItem ContextMenuAudioSave;
         private System.Windows.Forms.TextBox Textbox_Duration;
         private System.Windows.Forms.Label Label_Duration;
-        private System.Windows.Forms.TextBox Textbox_IMA_Data_Lenght;
+        private System.Windows.Forms.TextBox Textbox_IMA_Data_Length;
         private System.Windows.Forms.Label Label_IMASize;
         private System.Windows.Forms.TextBox Textbox_DataSize;
         private System.Windows.Forms.Label Label_DataSize;

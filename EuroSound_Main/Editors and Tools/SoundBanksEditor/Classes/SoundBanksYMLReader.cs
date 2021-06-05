@@ -114,7 +114,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
                         EXSound NewSound = new EXSound()
                         {
                             Hashcode = SoundHashcode,
-                            DuckerLenght = (short)currentSoundParams[0],
+                            DuckerLength = (short)currentSoundParams[0],
                             MinDelay = (short)currentSoundParams[1],
                             MaxDelay = (short)currentSoundParams[2],
                             InnerRadiusReal = (short)currentSoundParams[3],
@@ -181,7 +181,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
                                     }
                                     else
                                     {
-                                        Reports.Add("0The file: " + audioPath + " can't be loaded because does not exists.");
+                                        Reports.Add("0The file: " + audioPath + " can't be loaded because does not exist.");
                                     }
                                 }
                             }
@@ -399,7 +399,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
                 }
                 else
                 {
-                    Reports.Add("1The file: " + audioPropertiesPath + " can't be loaded because does not exists.");
+                    Reports.Add("1The file: " + audioPropertiesPath + " can't be loaded because does not exist.");
                 }
 
                 EXAudio newAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);

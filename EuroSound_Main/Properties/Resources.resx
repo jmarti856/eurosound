@@ -296,7 +296,7 @@
     <value>Search an output folder</value>
   </data>
   <data name="Gen_DirectoryNotExists" xml:space="preserve">
-    <value>The specified directory does not exists.</value>
+    <value>The specified directory does not exist.</value>
   </data>
   <data name="Gen_ErrorReading_FileIncorrect" xml:space="preserve">
     <value>Error reading the file, the file format is corrupt or incorrect</value>
@@ -305,13 +305,13 @@
     <value>An unexcepted error ocurred while reading the file:</value>
   </data>
   <data name="Gen_FileNotExists" xml:space="preserve">
-    <value>The specified file does not exists.</value>
+    <value>The specified file does not exist.</value>
   </data>
   <data name="Gen_GenerateSFXDataFile" xml:space="preserve">
     <value>Generates the SFX_Data.bin file with the data of this table</value>
   </data>
   <data name="Gen_NoTemporalFilesStored" xml:space="preserve">
-    <value>There are no temporal files to clear</value>
+    <value>There are no temporary files to clear</value>
   </data>
   <data name="Gen_ReloadHashTable" xml:space="preserve">
     <value>Reloads the HashTable again</value>
@@ -320,7 +320,7 @@
     <value>Search the specified HashCode in the table</value>
   </data>
   <data name="Gen_TemporalFilesRemovedSuccess" xml:space="preserve">
-    <value>Temporal files cleared successfully</value>
+    <value>Temporary files cleared successfully</value>
   </data>
   <data name="HashcodeNotFoundInSFXDataHashTable" xml:space="preserve">
     <value>The selected hashcode is not defined in the "SFX_Data" hashtable, some properties values are picked from this file. Please add the hashcode to the hashtable before continue. This sound effect will not work correctly in the game without that properties.</value>

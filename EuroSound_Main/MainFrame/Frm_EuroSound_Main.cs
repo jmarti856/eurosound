@@ -52,10 +52,15 @@ namespace EuroSound_Application
             MainMenu_View.DropDownClosed += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
 
             MenuItemView_StatusBar.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("MenuItem_View_StatusBar")); };
-            MenuItemView_Preferences.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("MenuItem_View_GlobalPreferences")); };
-
             MenuItemView_StatusBar.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
-            MenuItemView_Preferences.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+
+            //Menu Item: Edit
+            MainMenu_Edit.DropDownOpened += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
+            MainMenu_Edit.DropDownClosed += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = false; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
+
+            MenuItemEdit_GlobalOptions.MouseHover += (se, ev) => { GenericFunctions.ParentFormStatusBar.ShowToolTipText(GenericFunctions.resourcesManager.GetString("MenuItem_View_GlobalPreferences")); };
+            MenuItemEdit_GlobalOptions.MouseLeave += (se, ev) => GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode);
+
 
             //Menu Item: Window
             MainMenu_Window.DropDownOpened += (se, ev) => { GlobalPreferences.StatusBar_ToolTipMode = true; GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(GlobalPreferences.StatusBar_ToolTipMode); };
@@ -351,10 +356,7 @@ namespace EuroSound_Application
             }
         }
 
-        //*===============================================================================================
-        //* MAIN MENU -- VIEW
-        //*===============================================================================================
-        private void MenuItemView_Preferences_Click(object sender, EventArgs e)
+        private void MenuItemEdit_GlobalOptions_Click(object sender, EventArgs e)
         {
             GlobalPreferences.StatusBar_ToolTipMode = false;
             using (Frm_MainPreferences AppPreferences = new Frm_MainPreferences())
@@ -365,6 +367,14 @@ namespace EuroSound_Application
             };
 
             GenericFunctions.ParentFormStatusBar.ToolTipModeStatus(false);
+        }
+
+        //*===============================================================================================
+        //* MAIN MENU -- VIEW
+        //*===============================================================================================
+        private void MenuItemView_Preferences_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void MenuItemView_StatusBar_CheckStateChanged(object sender, EventArgs e)

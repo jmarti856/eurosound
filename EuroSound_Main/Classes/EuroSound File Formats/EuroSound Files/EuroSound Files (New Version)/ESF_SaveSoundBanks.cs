@@ -128,7 +128,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
                 binaryWriter.WriteBoolean(soundItem.Value.OutputThisSound);
 
                 //---Required for EngineX---
-                binaryWriter.WriteInt16(soundItem.Value.DuckerLenght);
+                binaryWriter.WriteInt16(soundItem.Value.DuckerLength);
                 binaryWriter.WriteInt16(soundItem.Value.MinDelay);
                 binaryWriter.WriteInt16(soundItem.Value.MaxDelay);
                 binaryWriter.WriteInt16(soundItem.Value.InnerRadiusReal);

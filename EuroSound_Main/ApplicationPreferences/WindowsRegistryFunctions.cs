@@ -642,6 +642,10 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 loadLastESFChecked = Convert.ToBoolean(int.Parse(LoadLastESF.GetValue(KeyWord, "0").ToString()));
                 LoadLastESF.Close();
             }
+            if (KeyWord.Equals("UseVisualStyles"))
+            {
+                loadLastESFChecked = true;
+            }
             return loadLastESFChecked;
         }
 

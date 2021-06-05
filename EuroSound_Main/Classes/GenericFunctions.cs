@@ -39,11 +39,11 @@ namespace EuroSound_Application
         internal static StatusBarToolTips ParentFormStatusBar;
         internal static Dictionary<string, string> AvailableProfiles = new Dictionary<string, string>();
 
-        internal static string TruncateLongString(string str, int maxLenght)
+        internal static string TruncateLongString(string str, int maxLength)
         {
-            if (str.Length > maxLenght)
+            if (str.Length > maxLength)
             {
-                str = string.Join("", str.Substring(0, maxLenght), "...");
+                str = string.Join("", str.Substring(0, maxLength), "...");
             }
 
             return str;
@@ -221,7 +221,7 @@ namespace EuroSound_Application
             {
                 if (ListToAddItem.InvokeRequired)
                 {
-                    ListToAddItem.Invoke((MethodInvoker)delegate
+                    ListToAddItem.BeginInvoke((MethodInvoker)delegate
                     {
                         ListToAddItem.Items.Add(ItemToAdd);
                     });
@@ -496,7 +496,7 @@ namespace EuroSound_Application
                 checkedFlagsString.TrimExcess();
             }
 
-            return string.Join("| ", checkedFlagsString.ToArray());
+            return string.Join(" | ", checkedFlagsString.ToArray());
         }
 
         internal static void ExtractZip(string zipFile, string unpackPath)

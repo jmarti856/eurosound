@@ -67,33 +67,70 @@ namespace EuroSound_Application.HashCodesFunctions
 
         internal static void LoadSoundDataFile(string FilePath)
         {
-            if (File.Exists(FilePath))
+            string Rootedpath = FilePath;
+
+            //Combine path if required
+            if (!Path.IsPathRooted(Rootedpath))
             {
-                //Read Data
-                ReadSFXData();
+                Rootedpath = Path.GetFullPath(Application.StartupPath + FilePath);
+            }
+
+            //Read Data
+            if (File.Exists(Rootedpath))
+            {
+                ReadSFXData(Rootedpath);
                 GlobalPreferences.HT_SoundsDataMD5 = GenericFunctions.CalculateMD5(FilePath);
+            }
+            else
+            {
+                MessageBox.Show(string.Join(" ", "Loading File:", Rootedpath, "\n", "\n", "Error:", FilePath, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         internal static void LoadMusicHashcodes(string FilePath)
         {
-            if (File.Exists(FilePath))
+            string Rootedpath = FilePath;
+
+            //Combine path if required
+            if (!Path.IsPathRooted(Rootedpath))
             {
-                //Read Data
-                ReadMusicHashcodes();
-                GlobalPreferences.HT_MusicMD5 = GenericFunctions.CalculateMD5(FilePath);
+                Rootedpath = Path.GetFullPath(Application.StartupPath + FilePath);
+            }
+
+            //Read Data
+            if (File.Exists(Rootedpath))
+            {
+                ReadMusicHashcodes(Rootedpath);
+                GlobalPreferences.HT_MusicMD5 = GenericFunctions.CalculateMD5(Rootedpath);
+            }
+            else
+            {
+                MessageBox.Show(string.Join(" ", "Loading File:", Rootedpath, "\n", "\n", "Error:", FilePath, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
-        internal static void LoadSoundHashcodes(string SoundHashcodesPath)
+        internal static void LoadSoundHashcodes(string FilePath)
         {
-            if (File.Exists(SoundHashcodesPath))
+            string Rootedpath = FilePath;
+
+            //Combine path if required
+            if (!Path.IsPathRooted(Rootedpath))
             {
-                //Read Data
-                ReadHashcodes(SoundHashcodesPath);
-                GlobalPreferences.HT_SoundsMD5 = GenericFunctions.CalculateMD5(SoundHashcodesPath);
+                Rootedpath = Path.GetFullPath(Application.StartupPath + FilePath);
+            }
+
+            //Read Data
+            if (File.Exists(Rootedpath))
+            {
+                ReadHashcodes(Rootedpath);
+                GlobalPreferences.HT_SoundsMD5 = GenericFunctions.CalculateMD5(Rootedpath);
+            }
+            else
+            {
+                MessageBox.Show(string.Join(" ", "Loading File:", Rootedpath, "\n", "\n", "Error:", FilePath, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
 
         #region SFX Defines && SB Defines dictionary
         internal static void ReadHashcodes(string FilePath)
@@ -159,14 +196,14 @@ namespace EuroSound_Application.HashCodesFunctions
         #endregion SFX Defines && SB Defines dictionary
 
         #region MFX Defines
-        internal static void ReadMusicHashcodes()
+        internal static void ReadMusicHashcodes(string filePath)
         {
             //Clear dictionaries
             MFX_Defines.Clear();
 
             Regex FindHashcodeLabel = new Regex(@"\s+(\w+)");
 
-            using (FileStream fs = File.OpenRead(GlobalPreferences.HT_MusicPath))
+            using (FileStream fs = File.OpenRead(filePath))
             {
                 using (BufferedStream bs = new BufferedStream(fs))
                 {
@@ -271,10 +308,10 @@ namespace EuroSound_Application.HashCodesFunctions
         #endregion MFX Defines
 
         #region SFX DATA DICTIONARY
-        internal static void ReadSFXData()
+        internal static void ReadSFXData(string filePath)
         {
             SFX_Data.Clear();
-            using (FileStream fs = File.OpenRead(GlobalPreferences.HT_SoundsDataPath))
+            using (FileStream fs = File.OpenRead(filePath))
             {
                 using (BufferedStream bs = new BufferedStream(fs))
                 {

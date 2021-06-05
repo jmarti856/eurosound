@@ -36,7 +36,6 @@
             this.numeric_mastervolume = new System.Windows.Forms.NumericUpDown();
             this.label_mastervolume = new System.Windows.Forms.Label();
             this.textbox_flags = new System.Windows.Forms.TextBox();
-            this.label_flags = new System.Windows.Forms.Label();
             this.numeric_ducker = new System.Windows.Forms.NumericUpDown();
             this.label_ducker = new System.Windows.Forms.Label();
             this.numeric_priority = new System.Windows.Forms.NumericUpDown();
@@ -54,7 +53,7 @@
             this.numeric_mindelay = new System.Windows.Forms.NumericUpDown();
             this.label_mindelay = new System.Windows.Forms.Label();
             this.numeric_duckerlength = new System.Windows.Forms.NumericUpDown();
-            this.label_duckerlenght = new System.Windows.Forms.Label();
+            this.label_duckerlength = new System.Windows.Forms.Label();
             this.groupbox_samples = new System.Windows.Forms.GroupBox();
             this.List_Samples = new System.Windows.Forms.ListView();
             this.SamplesImageList = new System.Windows.Forms.ImageList(this.components);
@@ -67,6 +66,7 @@
             this.Groupbox_Target = new System.Windows.Forms.GroupBox();
             this.Combobox_OutputTarget = new System.Windows.Forms.ComboBox();
             this.Label_OutputTarget = new System.Windows.Forms.Label();
+            this.Groupbox_Flags = new System.Windows.Forms.GroupBox();
             this.groupbox_params.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_mastervolume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_ducker)).BeginInit();
@@ -79,6 +79,7 @@
             this.groupbox_samples.SuspendLayout();
             this.grbx_hashcode.SuspendLayout();
             this.Groupbox_Target.SuspendLayout();
+            this.Groupbox_Flags.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupbox_params
@@ -89,8 +90,6 @@
             this.groupbox_params.Controls.Add(this.Textbox_InnerRadius);
             this.groupbox_params.Controls.Add(this.numeric_mastervolume);
             this.groupbox_params.Controls.Add(this.label_mastervolume);
-            this.groupbox_params.Controls.Add(this.textbox_flags);
-            this.groupbox_params.Controls.Add(this.label_flags);
             this.groupbox_params.Controls.Add(this.numeric_ducker);
             this.groupbox_params.Controls.Add(this.label_ducker);
             this.groupbox_params.Controls.Add(this.numeric_priority);
@@ -108,10 +107,10 @@
             this.groupbox_params.Controls.Add(this.numeric_mindelay);
             this.groupbox_params.Controls.Add(this.label_mindelay);
             this.groupbox_params.Controls.Add(this.numeric_duckerlength);
-            this.groupbox_params.Controls.Add(this.label_duckerlenght);
+            this.groupbox_params.Controls.Add(this.label_duckerlength);
             this.groupbox_params.Location = new System.Drawing.Point(12, 75);
             this.groupbox_params.Name = "groupbox_params";
-            this.groupbox_params.Size = new System.Drawing.Size(524, 180);
+            this.groupbox_params.Size = new System.Drawing.Size(529, 178);
             this.groupbox_params.TabIndex = 1;
             this.groupbox_params.TabStop = false;
             this.groupbox_params.Text = "Params:";
@@ -153,21 +152,12 @@
             // textbox_flags
             // 
             this.textbox_flags.BackColor = System.Drawing.SystemColors.Window;
-            this.textbox_flags.Location = new System.Drawing.Point(365, 149);
+            this.textbox_flags.Location = new System.Drawing.Point(6, 19);
             this.textbox_flags.Name = "textbox_flags";
             this.textbox_flags.ReadOnly = true;
-            this.textbox_flags.Size = new System.Drawing.Size(152, 20);
+            this.textbox_flags.Size = new System.Drawing.Size(517, 20);
             this.textbox_flags.TabIndex = 23;
             this.textbox_flags.Click += new System.EventHandler(this.Textbox_flags_Click);
-            // 
-            // label_flags
-            // 
-            this.label_flags.AutoSize = true;
-            this.label_flags.Location = new System.Drawing.Point(324, 152);
-            this.label_flags.Name = "label_flags";
-            this.label_flags.Size = new System.Drawing.Size(35, 13);
-            this.label_flags.TabIndex = 22;
-            this.label_flags.Text = "Flags:";
             // 
             // numeric_ducker
             // 
@@ -212,7 +202,7 @@
             "Ambient",
             "3D",
             "3D Random Position",
-            "2D Pro Logic 2"});
+            "Dolby Pro Logic II"});
             this.cbx_trackingtype.Location = new System.Drawing.Point(365, 16);
             this.cbx_trackingtype.Name = "cbx_trackingtype";
             this.cbx_trackingtype.Size = new System.Drawing.Size(152, 21);
@@ -351,14 +341,14 @@
             this.numeric_duckerlength.Size = new System.Drawing.Size(134, 20);
             this.numeric_duckerlength.TabIndex = 1;
             // 
-            // label_duckerlenght
+            // label_duckerlength
             // 
-            this.label_duckerlenght.AutoSize = true;
-            this.label_duckerlenght.Location = new System.Drawing.Point(20, 19);
-            this.label_duckerlenght.Name = "label_duckerlenght";
-            this.label_duckerlenght.Size = new System.Drawing.Size(81, 13);
-            this.label_duckerlenght.TabIndex = 0;
-            this.label_duckerlenght.Text = "Ducker Lenght:";
+            this.label_duckerlength.AutoSize = true;
+            this.label_duckerlength.Location = new System.Drawing.Point(20, 19);
+            this.label_duckerlength.Name = "label_duckerlength";
+            this.label_duckerlength.Size = new System.Drawing.Size(81, 13);
+            this.label_duckerlength.TabIndex = 0;
+            this.label_duckerlength.Text = "Ducker Length:";
             // 
             // groupbox_samples
             // 
@@ -366,9 +356,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupbox_samples.Controls.Add(this.List_Samples);
-            this.groupbox_samples.Location = new System.Drawing.Point(12, 326);
+            this.groupbox_samples.Location = new System.Drawing.Point(12, 383);
             this.groupbox_samples.Name = "groupbox_samples";
-            this.groupbox_samples.Size = new System.Drawing.Size(524, 228);
+            this.groupbox_samples.Size = new System.Drawing.Size(529, 227);
             this.groupbox_samples.TabIndex = 2;
             this.groupbox_samples.TabStop = false;
             this.groupbox_samples.Text = "Associated Samples:";
@@ -381,7 +371,7 @@
             this.List_Samples.HideSelection = false;
             this.List_Samples.Location = new System.Drawing.Point(3, 16);
             this.List_Samples.Name = "List_Samples";
-            this.List_Samples.Size = new System.Drawing.Size(518, 209);
+            this.List_Samples.Size = new System.Drawing.Size(523, 208);
             this.List_Samples.SmallImageList = this.SamplesImageList;
             this.List_Samples.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.List_Samples.TabIndex = 0;
@@ -398,7 +388,7 @@
             // button_ok
             // 
             this.button_ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_ok.Location = new System.Drawing.Point(380, 560);
+            this.button_ok.Location = new System.Drawing.Point(385, 616);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(75, 23);
             this.button_ok.TabIndex = 4;
@@ -410,7 +400,7 @@
             // 
             this.button_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button_cancel.Location = new System.Drawing.Point(461, 560);
+            this.button_cancel.Location = new System.Drawing.Point(466, 616);
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(75, 23);
             this.button_cancel.TabIndex = 5;
@@ -426,7 +416,7 @@
             this.grbx_hashcode.Controls.Add(this.label_hashcode);
             this.grbx_hashcode.Location = new System.Drawing.Point(12, 12);
             this.grbx_hashcode.Name = "grbx_hashcode";
-            this.grbx_hashcode.Size = new System.Drawing.Size(524, 57);
+            this.grbx_hashcode.Size = new System.Drawing.Size(529, 57);
             this.grbx_hashcode.TabIndex = 0;
             this.grbx_hashcode.TabStop = false;
             this.grbx_hashcode.Text = "HashCode:";
@@ -455,8 +445,9 @@
             // 
             // Checkbox_OutputThisSound
             // 
+            this.Checkbox_OutputThisSound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Checkbox_OutputThisSound.AutoSize = true;
-            this.Checkbox_OutputThisSound.Location = new System.Drawing.Point(12, 560);
+            this.Checkbox_OutputThisSound.Location = new System.Drawing.Point(12, 620);
             this.Checkbox_OutputThisSound.Name = "Checkbox_OutputThisSound";
             this.Checkbox_OutputThisSound.Size = new System.Drawing.Size(115, 17);
             this.Checkbox_OutputThisSound.TabIndex = 3;
@@ -469,9 +460,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Groupbox_Target.Controls.Add(this.Combobox_OutputTarget);
             this.Groupbox_Target.Controls.Add(this.Label_OutputTarget);
-            this.Groupbox_Target.Location = new System.Drawing.Point(12, 261);
+            this.Groupbox_Target.Location = new System.Drawing.Point(12, 318);
             this.Groupbox_Target.Name = "Groupbox_Target";
-            this.Groupbox_Target.Size = new System.Drawing.Size(524, 59);
+            this.Groupbox_Target.Size = new System.Drawing.Size(529, 59);
             this.Groupbox_Target.TabIndex = 6;
             this.Groupbox_Target.TabStop = false;
             this.Groupbox_Target.Text = "Output Platform:";
@@ -498,13 +489,24 @@
             this.Label_OutputTarget.TabIndex = 0;
             this.Label_OutputTarget.Text = "Target:";
             // 
+            // Groupbox_Flags
+            // 
+            this.Groupbox_Flags.Controls.Add(this.textbox_flags);
+            this.Groupbox_Flags.Location = new System.Drawing.Point(12, 259);
+            this.Groupbox_Flags.Name = "Groupbox_Flags";
+            this.Groupbox_Flags.Size = new System.Drawing.Size(529, 53);
+            this.Groupbox_Flags.TabIndex = 7;
+            this.Groupbox_Flags.TabStop = false;
+            this.Groupbox_Flags.Text = "Flags:";
+            // 
             // Frm_EffectProperties
             // 
             this.AcceptButton = this.button_ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button_cancel;
-            this.ClientSize = new System.Drawing.Size(548, 595);
+            this.ClientSize = new System.Drawing.Size(553, 651);
+            this.Controls.Add(this.Groupbox_Flags);
             this.Controls.Add(this.Groupbox_Target);
             this.Controls.Add(this.Checkbox_OutputThisSound);
             this.Controls.Add(this.grbx_hashcode);
@@ -537,6 +539,8 @@
             this.grbx_hashcode.PerformLayout();
             this.Groupbox_Target.ResumeLayout(false);
             this.Groupbox_Target.PerformLayout();
+            this.Groupbox_Flags.ResumeLayout(false);
+            this.Groupbox_Flags.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -554,7 +558,7 @@
         private System.Windows.Forms.NumericUpDown numeric_mindelay;
         private System.Windows.Forms.Label label_mindelay;
         private System.Windows.Forms.NumericUpDown numeric_duckerlength;
-        private System.Windows.Forms.Label label_duckerlenght;
+        private System.Windows.Forms.Label label_duckerlength;
         private System.Windows.Forms.NumericUpDown numeric_priority;
         private System.Windows.Forms.Label label_priority;
         private System.Windows.Forms.ComboBox cbx_trackingtype;
@@ -564,7 +568,6 @@
         private System.Windows.Forms.NumericUpDown numeric_ducker;
         private System.Windows.Forms.Label label_ducker;
         private System.Windows.Forms.TextBox textbox_flags;
-        private System.Windows.Forms.Label label_flags;
         private System.Windows.Forms.GroupBox groupbox_samples;
         private System.Windows.Forms.Button button_ok;
         private System.Windows.Forms.Button button_cancel;
@@ -581,5 +584,6 @@
         private System.Windows.Forms.GroupBox Groupbox_Target;
         private System.Windows.Forms.ComboBox Combobox_OutputTarget;
         private System.Windows.Forms.Label Label_OutputTarget;
+        private System.Windows.Forms.GroupBox Groupbox_Flags;
     }
 }

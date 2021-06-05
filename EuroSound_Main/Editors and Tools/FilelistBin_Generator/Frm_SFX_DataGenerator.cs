@@ -156,12 +156,7 @@ namespace EuroSound_Application.SFXData
         //*===============================================================================================
         private void LoadDataFromHashtable()
         {
-            ListView_HashTableData.Invoke((MethodInvoker)delegate
-            {
-                ListView_HashTableData.Enabled = false;
-                ListView_HashTableData.Items.Clear();
-            });
-
+            //Disable buttons
             Button_Reload.Invoke((MethodInvoker)delegate
             {
                 Button_Reload.Enabled = false;
@@ -182,37 +177,47 @@ namespace EuroSound_Application.SFXData
                 Button_Search.Enabled = false;
             });
 
+            //Disable list view and prepare for update
+            ListView_HashTableData.Invoke((MethodInvoker)delegate
+            {
+                ListView_HashTableData.BeginUpdate();
+            });
+
+            ListView_HashTableData.Invoke((MethodInvoker)delegate
+            {
+                ListView_HashTableData.Enabled = false;
+                ListView_HashTableData.Items.Clear();
+            });
+
+            //Calculate items
+            int counter = 0;
+            ListViewItem[] itemsToAdd = new ListViewItem[Hashcodes.SFX_Data.Count];
             foreach (float[] ItemValue in Hashcodes.SFX_Data)
             {
-                //Save check in case the object is disposed. 
-                try
-                {
-                    ListView_HashTableData.Invoke((MethodInvoker)delegate
-                    {
-                        ListView_HashTableData.Items.Add(new ListViewItem(new[] { ItemValue[0].ToString(), ItemValue[1].ToString("n1"), ItemValue[2].ToString("n1"), ItemValue[3].ToString("n1"), ItemValue[4].ToString("n6"), ItemValue[5].ToString(), ItemValue[6].ToString(), ItemValue[7].ToString() })
-                        {
-                            Tag = GlobalPreferences.SfxPrefix | (uint)ItemValue[0]
-                        });
-                    });
-
-                    Textbox_TotalItems.Invoke((MethodInvoker)delegate
-                    {
-                        Textbox_TotalItems.Text = ListView_HashTableData.Items.Count.ToString();
-                    });
-                }
-                catch (ObjectDisposedException)
-                {
-
-                }
+                itemsToAdd[counter] = new ListViewItem(new[] { ItemValue[0].ToString(), ItemValue[1].ToString("n1"), ItemValue[2].ToString("n1"), ItemValue[3].ToString("n1"), ItemValue[4].ToString("n6"), ItemValue[5].ToString(), ItemValue[6].ToString(), ItemValue[7].ToString() });
+                counter++;
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus("Checking Hashcode: " + ItemValue[0]);
             }
 
+            //Enable list view again
+            ListView_HashTableData.Invoke((MethodInvoker)delegate
+            {
+                ListView_HashTableData.Items.AddRange(itemsToAdd);
+            });
 
             ListView_HashTableData.Invoke((MethodInvoker)delegate
             {
                 ListView_HashTableData.Enabled = true;
             });
 
+            //Enable buttons and other controls
+            if (!(Textbox_TotalItems.IsDisposed || Textbox_TotalItems.Disposing))
+            {
+                Textbox_TotalItems.BeginInvoke((MethodInvoker)delegate
+                {
+                    Textbox_TotalItems.Text = ListView_HashTableData.Items.Count.ToString();
+                });
+            }
 
             Button_Reload.Invoke((MethodInvoker)delegate
             {
@@ -232,6 +237,11 @@ namespace EuroSound_Application.SFXData
             Button_Search.Invoke((MethodInvoker)delegate
             {
                 Button_Search.Enabled = true;
+            });
+
+            ListView_HashTableData.Invoke((MethodInvoker)delegate
+            {
+                ListView_HashTableData.EndUpdate();
             });
 
             /*Set Program status*/

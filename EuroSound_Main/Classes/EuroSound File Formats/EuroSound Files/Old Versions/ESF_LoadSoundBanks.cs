@@ -112,7 +112,7 @@ namespace EuroSound_Application.EuroSoundSoundBanksFilesFunctions
                     OutputThisSound = BReader.ReadBoolean(),
 
                     //---Required for EngineX---
-                    DuckerLenght = BReader.ReadInt16(),
+                    DuckerLength = BReader.ReadInt16(),
                     MinDelay = BReader.ReadInt16(),
                     MaxDelay = BReader.ReadInt16(),
                     InnerRadiusReal = BReader.ReadInt16(),

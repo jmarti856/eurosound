@@ -41,8 +41,9 @@ namespace EuroSound_Application
             this.MenuItemFile_RecentFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemFile_Separator3 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItemFile_Exit = new System.Windows.Forms.ToolStripMenuItem();
+            this.MainMenu_Edit = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemEdit_GlobalOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu_View = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItemView_Preferences = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemView_StatusBar = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu_Window = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemWindow_Cascade = new System.Windows.Forms.ToolStripMenuItem();
@@ -87,6 +88,7 @@ namespace EuroSound_Application
             // 
             this.MenuStrip_MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MainMenu_File,
+            this.MainMenu_Edit,
             this.MainMenu_View,
             this.MainMenu_Window,
             this.MainMenu_Tools,
@@ -175,22 +177,28 @@ namespace EuroSound_Application
             this.MenuItemFile_Exit.Text = "Exit";
             this.MenuItemFile_Exit.Click += new System.EventHandler(this.MenuItemFile_Exit_Click);
             // 
+            // MainMenu_Edit
+            // 
+            this.MainMenu_Edit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItemEdit_GlobalOptions});
+            this.MainMenu_Edit.Name = "MainMenu_Edit";
+            this.MainMenu_Edit.Size = new System.Drawing.Size(39, 20);
+            this.MainMenu_Edit.Text = "Edit";
+            // 
+            // MenuItemEdit_GlobalOptions
+            // 
+            this.MenuItemEdit_GlobalOptions.Name = "MenuItemEdit_GlobalOptions";
+            this.MenuItemEdit_GlobalOptions.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemEdit_GlobalOptions.Text = "Global Options";
+            this.MenuItemEdit_GlobalOptions.Click += new System.EventHandler(this.MenuItemEdit_GlobalOptions_Click);
+            // 
             // MainMenu_View
             // 
             this.MainMenu_View.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItemView_Preferences,
             this.MenuItemView_StatusBar});
             this.MainMenu_View.Name = "MainMenu_View";
             this.MainMenu_View.Size = new System.Drawing.Size(44, 20);
             this.MainMenu_View.Text = "View";
-            // 
-            // MenuItemView_Preferences
-            // 
-            this.MenuItemView_Preferences.MergeIndex = 0;
-            this.MenuItemView_Preferences.Name = "MenuItemView_Preferences";
-            this.MenuItemView_Preferences.Size = new System.Drawing.Size(153, 22);
-            this.MenuItemView_Preferences.Text = "Global Options";
-            this.MenuItemView_Preferences.Click += new System.EventHandler(this.MenuItemView_Preferences_Click);
             // 
             // MenuItemView_StatusBar
             // 
@@ -199,7 +207,7 @@ namespace EuroSound_Application
             this.MenuItemView_StatusBar.CheckState = System.Windows.Forms.CheckState.Checked;
             this.MenuItemView_StatusBar.MergeIndex = 1;
             this.MenuItemView_StatusBar.Name = "MenuItemView_StatusBar";
-            this.MenuItemView_StatusBar.Size = new System.Drawing.Size(153, 22);
+            this.MenuItemView_StatusBar.Size = new System.Drawing.Size(126, 22);
             this.MenuItemView_StatusBar.Text = "Status Bar";
             this.MenuItemView_StatusBar.CheckStateChanged += new System.EventHandler(this.MenuItemView_StatusBar_CheckStateChanged);
             // 
@@ -262,53 +270,53 @@ namespace EuroSound_Application
             // MainMenuTools_DebugHashtables
             // 
             this.MainMenuTools_DebugHashtables.Name = "MainMenuTools_DebugHashtables";
-            this.MainMenuTools_DebugHashtables.Size = new System.Drawing.Size(194, 22);
+            this.MainMenuTools_DebugHashtables.Size = new System.Drawing.Size(201, 22);
             this.MainMenuTools_DebugHashtables.Text = "Debug HashTables";
             this.MainMenuTools_DebugHashtables.Click += new System.EventHandler(this.MainMenuTools_DebugHashtables_Click);
             // 
             // MainMenuTools_AudioConverter
             // 
             this.MainMenuTools_AudioConverter.Name = "MainMenuTools_AudioConverter";
-            this.MainMenuTools_AudioConverter.Size = new System.Drawing.Size(194, 22);
+            this.MainMenuTools_AudioConverter.Size = new System.Drawing.Size(201, 22);
             this.MainMenuTools_AudioConverter.Text = "Audio Converter";
             this.MainMenuTools_AudioConverter.Click += new System.EventHandler(this.MainMenuTools_AudioConverter_Click);
             // 
             // MainMenuTools_SFXDataGen
             // 
             this.MainMenuTools_SFXDataGen.Name = "MainMenuTools_SFXDataGen";
-            this.MainMenuTools_SFXDataGen.Size = new System.Drawing.Size(194, 22);
+            this.MainMenuTools_SFXDataGen.Size = new System.Drawing.Size(201, 22);
             this.MainMenuTools_SFXDataGen.Text = "SFX Data Table";
             this.MainMenuTools_SFXDataGen.Click += new System.EventHandler(this.MainMenuTools_SFXDataGen_Click);
             // 
             // MainMenuTools_Separator1
             // 
             this.MainMenuTools_Separator1.Name = "MainMenuTools_Separator1";
-            this.MainMenuTools_Separator1.Size = new System.Drawing.Size(191, 6);
+            this.MainMenuTools_Separator1.Size = new System.Drawing.Size(198, 6);
             // 
             // MainMenuTools_BackupSettings
             // 
             this.MainMenuTools_BackupSettings.Name = "MainMenuTools_BackupSettings";
-            this.MainMenuTools_BackupSettings.Size = new System.Drawing.Size(194, 22);
+            this.MainMenuTools_BackupSettings.Size = new System.Drawing.Size(201, 22);
             this.MainMenuTools_BackupSettings.Text = "Backup Settings...";
             this.MainMenuTools_BackupSettings.Click += new System.EventHandler(this.MainMenuTools_BackupSettings_Click);
             // 
             // MainMenuTools_RestoreSettings
             // 
             this.MainMenuTools_RestoreSettings.Name = "MainMenuTools_RestoreSettings";
-            this.MainMenuTools_RestoreSettings.Size = new System.Drawing.Size(194, 22);
+            this.MainMenuTools_RestoreSettings.Size = new System.Drawing.Size(201, 22);
             this.MainMenuTools_RestoreSettings.Text = "Restore Settings...";
             this.MainMenuTools_RestoreSettings.Click += new System.EventHandler(this.MainMenuTools_RestoreSettings_Click);
             // 
             // MainMenuTools_Separator2
             // 
             this.MainMenuTools_Separator2.Name = "MainMenuTools_Separator2";
-            this.MainMenuTools_Separator2.Size = new System.Drawing.Size(191, 6);
+            this.MainMenuTools_Separator2.Size = new System.Drawing.Size(198, 6);
             // 
             // MainMenuTools_ClearTempFiles
             // 
             this.MainMenuTools_ClearTempFiles.Name = "MainMenuTools_ClearTempFiles";
-            this.MainMenuTools_ClearTempFiles.Size = new System.Drawing.Size(194, 22);
-            this.MainMenuTools_ClearTempFiles.Text = "Delete Temporal Files...";
+            this.MainMenuTools_ClearTempFiles.Size = new System.Drawing.Size(201, 22);
+            this.MainMenuTools_ClearTempFiles.Text = "Delete Temporary Files...";
             this.MainMenuTools_ClearTempFiles.Click += new System.EventHandler(this.MainMenuTools_ClearTempFiles_Click);
             // 
             // MainMenu_Help
@@ -491,7 +499,6 @@ namespace EuroSound_Application
         private System.Windows.Forms.ToolStripMenuItem MenuItemHelp_About;
         private System.Windows.Forms.ToolStripMenuItem MenuItemHelp_OnlineHelp;
         private System.Windows.Forms.ToolStripMenuItem MenuItemWindow_TileV;
-        private System.Windows.Forms.ToolStripMenuItem MenuItemView_Preferences;
         private System.Windows.Forms.ToolStripMenuItem MainMenu_Tools;
         private System.Windows.Forms.ToolStripMenuItem MainMenuTools_SFXDataGen;
         private CustomStatusBar.StatusBarToolTips MainStatusBar;
@@ -520,5 +527,7 @@ namespace EuroSound_Application
         private System.Windows.Forms.StatusBarPanel SBPanel_LastFile;
         private System.Windows.Forms.ToolStripSeparator MenuItemHelp_Separator2;
         private System.Windows.Forms.ToolStripMenuItem MenuItemHelp_Documentation;
+        private System.Windows.Forms.ToolStripMenuItem MainMenu_Edit;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemEdit_GlobalOptions;
     }
 }

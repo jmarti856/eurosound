@@ -78,7 +78,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                 TextFileWriter.WriteLine("\t*TARGETOUTPUT " + SFXObject.OutputTarget);
                 TextFileWriter.WriteLine("\t*NUMSAMPLES " + SFXObject.Samples.Count);
                 TextFileWriter.WriteLine("\t*PARAMETERS {");
-                TextFileWriter.WriteLine("\t\t*DUCKERLENGTH " + SFXObject.DuckerLenght);
+                TextFileWriter.WriteLine("\t\t*DUCKERLENGTH " + SFXObject.DuckerLength);
                 TextFileWriter.WriteLine("\t\t*MINDELAY " + SFXObject.MinDelay);
                 TextFileWriter.WriteLine("\t\t*MAXDELAY " + SFXObject.MaxDelay);
                 TextFileWriter.WriteLine("\t\t*REVERBSEND " + SFXObject.ReverbSend);
@@ -187,7 +187,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     TextFileWriter.WriteLine("\t*TARGETOUTPUT " + SFXObject.Value.OutputTarget);
                     TextFileWriter.WriteLine("\t*NUMSAMPLES " + SFXObject.Value.Samples.Count);
                     TextFileWriter.WriteLine("\t*PARAMETERS {");
-                    TextFileWriter.WriteLine("\t\t*DUCKERLENGTH " + SFXObject.Value.DuckerLenght);
+                    TextFileWriter.WriteLine("\t\t*DUCKERLENGTH " + SFXObject.Value.DuckerLength);
                     TextFileWriter.WriteLine("\t\t*MINDELAY " + SFXObject.Value.MinDelay);
                     TextFileWriter.WriteLine("\t\t*MAXDELAY " + SFXObject.Value.MaxDelay);
                     TextFileWriter.WriteLine("\t\t*REVERBSEND " + SFXObject.Value.ReverbSend);

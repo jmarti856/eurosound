@@ -62,7 +62,7 @@ namespace EuroSound_Application.SoundBanksEditor
         private void Frm_EffectProperties_Shown(object sender, EventArgs e)
         {
             //---Required for Engine X---
-            numeric_duckerlength.Value = SelectedSound.DuckerLenght;
+            numeric_duckerlength.Value = SelectedSound.DuckerLength;
             numeric_mindelay.Value = SelectedSound.MinDelay;
             numeric_maxdelay.Value = SelectedSound.MaxDelay;
             Textbox_InnerRadius.Text = SelectedSound.InnerRadiusReal.ToString();
@@ -134,7 +134,7 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 SelectedSound.Hashcode = (uint)cbx_hashcode.SelectedValue;
             }
-            SelectedSound.DuckerLenght = (short)numeric_duckerlength.Value;
+            SelectedSound.DuckerLength = (short)numeric_duckerlength.Value;
             SelectedSound.MinDelay = (short)numeric_mindelay.Value;
             SelectedSound.MaxDelay = (short)numeric_maxdelay.Value;
             SelectedSound.InnerRadiusReal = Convert.ToInt16(Textbox_InnerRadius.Text);
