@@ -185,7 +185,7 @@ namespace EuroSound_Application.BashMode
                             switch (TypeOfStoredData)
                             {
                                 case (int)Enumerations.ESoundFileType.SoundBanks:
-                                    bashFunctions.OutputSoundBank(BReader, target);
+                                    bashFunctions.OutputSoundBank(BReader, target, (int)fileVersion);
                                     break;
                                 case (int)Enumerations.ESoundFileType.StreamSounds:
                                     bashFunctions.OutputStreamFile(BReader, target);

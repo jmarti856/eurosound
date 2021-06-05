@@ -2,6 +2,7 @@
 using EuroSound_Application.Musics;
 using EuroSound_Application.SoundBanksEditor;
 using EuroSound_Application.StreamSounds;
+using System;
 using System.Collections.Generic;
 
 namespace EuroSound_Application.Classes.SFX_Files
@@ -148,7 +149,7 @@ namespace EuroSound_Application.Classes.SFX_Files
             return StreamSoundIsCorrect;
         }
 
-        internal bool ValidateSFX(EXSound SoundToExport, Dictionary<uint, EXSound> SoundsDictionary, IList<uint> HashcodesList, string ObjectName, IList<string> Reports)
+        internal bool ValidateSFX(EXSound SoundToExport, Dictionary<uint, EXSound> SoundsDictionary, IList<uint> HashcodesList, string ObjectName, IList<string> Reports, string outputTarget)
         {
             bool SFXIsCorrect = true;
 
@@ -162,16 +163,25 @@ namespace EuroSound_Application.Classes.SFX_Files
             }
             else
             {
-                if (HashcodesList.Contains(SoundToExport.Hashcode))
+                Enumerations.OutputTarget AssignedFlag = (Enumerations.OutputTarget)Enum.ToObject(typeof(Enumerations.OutputTarget), SoundToExport.OutputTarget);
+                if (AssignedFlag == Enumerations.OutputTarget.ALL || AssignedFlag.ToString().Equals(outputTarget, StringComparison.OrdinalIgnoreCase))
                 {
-                    if (Reports != null)
+                    if (HashcodesList.Contains(SoundToExport.Hashcode))
                     {
-                        Reports.Add("1Duplicate HashCode, more than one object contains: " + SoundToExport.Hashcode.ToString("X8"));
+                        if (Reports != null)
+                        {
+                            Reports.Add("1Duplicate HashCode, more than one object contains: " + SoundToExport.Hashcode.ToString("X8"));
+                        }
+                    }
+                    else
+                    {
+
+                        HashcodesList.Add(SoundToExport.Hashcode);
                     }
                 }
                 else
                 {
-                    HashcodesList.Add(SoundToExport.Hashcode);
+                    Console.Write("test");
                 }
             }
 

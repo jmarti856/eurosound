@@ -315,47 +315,10 @@ namespace VAG_Encoder_Decoder
         //*===============================================================================================
         //* Other Functions
         //*===============================================================================================
-        public byte[] SplitVAGChannels(string FilePath, bool SplitLeft)
+        public uint CalculateVAGLoopOffset(int EncodedVagDataLength, uint WavOffset, int PCMDataBytesLength)
         {
-            byte[] ChannelData;
-            using (BinaryReader vagReader = new BinaryReader(File.Open(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read)))
-            using (MemoryStream vagStream = new MemoryStream())
-            using (BinaryWriter vagWritter = new BinaryWriter(vagStream))
-            {
-                bool Interleaving = SplitLeft;
-
-                while (vagReader.BaseStream.Position != vagReader.BaseStream.Length)
-                {
-                    if (Interleaving)
-                    {
-                        vagWritter.Write(vagReader.ReadBytes(128));
-                    }
-                    else
-                    {
-                        vagReader.ReadBytes(128);
-                    }
-                    Interleaving = !Interleaving;
-                }
-                ChannelData = vagStream.ToArray();
-
-                vagWritter.Close();
-                vagStream.Close();
-                vagReader.Close();
-            }
-            return ChannelData;
-        }
-
-        public uint CalculateLoopOffsetStereo(int EncodedVagDataLength, uint WavOffset, int PCMDataBytesLength)
-        {
-            uint position = (uint)((EncodedVagDataLength * WavOffset) / (PCMDataBytesLength));
+            uint position = (uint)((EncodedVagDataLength * WavOffset) / PCMDataBytesLength);
             uint positionAligned = (position / 16) * 16;
-            return positionAligned;
-        }
-
-        public uint CalculateLoopOffsetSFX(int EncodedVagDataLength, uint WavOffset, int PCMDataBytesLength)
-        {
-            uint position = (uint)((EncodedVagDataLength * WavOffset) / (PCMDataBytesLength));
-            uint positionAligned = ((uint)((position) + (-position & (128 - 1))));
             return positionAligned;
         }
     }

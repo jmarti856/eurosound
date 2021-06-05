@@ -55,7 +55,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                 GenericFunctions.ProgressBarSetMaximum(ProgressBar_CurrentTask, ((Frm_Soundbanks_Main)parentForm).SoundsList.Keys.Count);
 
                 //Discard SFXs that has checked as "no output"
-                finalSoundsDict = SFXCreator.GetFinalSoundsDictionary(((Frm_Soundbanks_Main)parentForm).SoundsList, ProgressBar_CurrentTask, Label_CurrentTask);
+                finalSoundsDict = SFXCreator.GetFinalSoundsDictionary(((Frm_Soundbanks_Main)parentForm).SoundsList, ProgressBar_CurrentTask, Label_CurrentTask, target);
 
                 totalProgress += 20;
                 BackgroundWorker_BuildSFX.ReportProgress(totalProgress);
@@ -91,7 +91,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                 bool canOutputFile = true;
                 foreach (KeyValuePair<uint, EXSound> soundToCheck in finalSoundsDict)
                 {
-                    canOutputFile = SFX_Check.ValidateSFX(soundToCheck.Value, finalSoundsDict, soundsHashcodes, ((Frm_Soundbanks_Main)parentForm).TreeView_File.Nodes.Find(soundToCheck.Key.ToString(), true)[0].Text, Reports);
+                    canOutputFile = SFX_Check.ValidateSFX(soundToCheck.Value, finalSoundsDict, soundsHashcodes, ((Frm_Soundbanks_Main)parentForm).TreeView_File.Nodes.Find(soundToCheck.Key.ToString(), true)[0].Text, Reports, target);
                     ToolsCommonFunctions.ProgressBarAddValue(ProgressBar_CurrentTask, 1);
                 }
 

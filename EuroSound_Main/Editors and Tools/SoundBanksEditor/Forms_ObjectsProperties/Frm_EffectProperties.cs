@@ -76,6 +76,9 @@ namespace EuroSound_Application.SoundBanksEditor
             textbox_flags.Tag = SelectedSound.Flags;
             Checkbox_OutputThisSound.Checked = SelectedSound.OutputThisSound;
 
+            //Target
+            Combobox_OutputTarget.SelectedIndex = SelectedSound.OutputTarget;
+
             //--Print Flags--
             textbox_flags.Text = GenericFunctions.PrintCheckedFlags("SoundFlags", 16, Convert.ToUInt16(textbox_flags.Tag));
 
@@ -144,6 +147,7 @@ namespace EuroSound_Application.SoundBanksEditor
             SelectedSound.MasterVolume = (sbyte)numeric_mastervolume.Value;
             SelectedSound.Flags = Convert.ToUInt16(textbox_flags.Tag);
             SelectedSound.OutputThisSound = Checkbox_OutputThisSound.Checked;
+            SelectedSound.OutputTarget = (byte)Combobox_OutputTarget.SelectedIndex;
 
             //--Change icon in the parent form--
             TreeNode[] nodeSearchResults = ((Frm_Soundbanks_Main)OpenForm).TreeView_File.Nodes.Find(TreeNodeSoundName, true);
@@ -151,11 +155,25 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 if (SelectedSound.OutputThisSound)
                 {
-                    TreeNodeFunctions.TreeNodeSetNodeImage(nodeSearchResults[0], 2, 2);
+                    if (nodeSearchResults[0].IsExpanded)
+                    {
+                        TreeNodeFunctions.TreeNodeSetNodeImage(nodeSearchResults[0], 3, 3);
+                    }
+                    else
+                    {
+                        TreeNodeFunctions.TreeNodeSetNodeImage(nodeSearchResults[0], 2, 2);
+                    }
                 }
                 else
                 {
-                    TreeNodeFunctions.TreeNodeSetNodeImage(nodeSearchResults[0], 5, 5);
+                    if (nodeSearchResults[0].IsExpanded)
+                    {
+                        TreeNodeFunctions.TreeNodeSetNodeImage(nodeSearchResults[0], 6, 6);
+                    }
+                    else
+                    {
+                        TreeNodeFunctions.TreeNodeSetNodeImage(nodeSearchResults[0], 5, 5);
+                    }
                 }
             }
 

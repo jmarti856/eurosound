@@ -321,7 +321,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             }
         }
 
-        internal Dictionary<uint, EXSound> GetFinalSoundsDictionary(Dictionary<uint, EXSound> SoundsList, ProgressBar Bar, Label LabelInfo)
+        internal Dictionary<uint, EXSound> GetFinalSoundsDictionary(Dictionary<uint, EXSound> SoundsList, ProgressBar Bar, Label LabelInfo, string outputTarget)
         {
             Dictionary<uint, EXSound> FinalSortedDict = new Dictionary<uint, EXSound>();
 
@@ -334,18 +334,22 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             {
                 foreach (KeyValuePair<uint, EXSound> Sound in SoundsList)
                 {
-                    if ((Sound.Value.Hashcode) == HashCode.Key)
+                    Enumerations.OutputTarget AssignedFlag = (Enumerations.OutputTarget)Sound.Value.OutputTarget;
+                    if (AssignedFlag == Enumerations.OutputTarget.ALL || AssignedFlag.ToString().Equals(outputTarget, StringComparison.OrdinalIgnoreCase))
                     {
-                        if (Sound.Value.OutputThisSound)
+                        if ((Sound.Value.Hashcode) == HashCode.Key)
                         {
-                            if (!FinalSortedDict.ContainsKey(Sound.Key))
+                            if (Sound.Value.OutputThisSound)
                             {
-                                FinalSortedDict.Add(Sound.Key, Sound.Value);
+                                if (!FinalSortedDict.ContainsKey(Sound.Key))
+                                {
+                                    FinalSortedDict.Add(Sound.Key, Sound.Value);
+                                }
                             }
+                            GenericFunctions.SetLabelText(LabelInfo, "Checking SFX Data");
+                            ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
+                            break;
                         }
-                        GenericFunctions.SetLabelText(LabelInfo, "Checking SFX Data");
-                        ToolsCommonFunctions.ProgressBarAddValue(Bar, 1);
-                        break;
                     }
                 }
             }
@@ -374,10 +378,19 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                             EXAudio audioToExport = AudiosList[element];
                             if (outputTarget.Equals("PC", StringComparison.OrdinalIgnoreCase))
                             {
-                                audioToExport.LoopOffset *= 2;
-                                audioToExport.Bits = 4;
-                                audioToExport.PSIsample = (uint)(currentIndex * 96);
-                                FinalAudioDataDict.Add(element, audioToExport);
+                                //Create audio
+                                EXAudio pcAudio = new EXAudio
+                                {
+                                    Flags = audioToExport.Flags,
+                                    Frequency = audioToExport.FrequencyPS2,
+                                    Channels = audioToExport.Channels,
+                                    Bits = 4,
+                                    PSIsample = (uint)(currentIndex * 96),
+                                    LoopOffset = audioToExport.LoopOffset * 2,
+                                    Duration = audioToExport.Duration,
+                                    PCMdata = audioToExport.PCMdata
+                                };
+                                FinalAudioDataDict.Add(element, pcAudio);
                             }
                             else if (outputTarget.Equals("PS2", StringComparison.OrdinalIgnoreCase))
                             {
@@ -415,7 +428,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                                 {
                                     ParsedLoopOffset = audiof.ParseWavLoopOffset((uint)audioToExport.PCMdata.Length, audioToExport.LoopOffset, (uint)pcmData.Length);
                                     byte[] temp = vagF.VAGEncoder(audiof.ConvertPCMDataToShortArray(pcmData), 16, 0, UseLoopOffset);
-                                    loopOffset = vagF.CalculateLoopOffsetSFX(temp.Length, ParsedLoopOffset, pcmData.Length) * 2;
+                                    loopOffset = vagF.CalculateVAGLoopOffset(temp.Length, ParsedLoopOffset, pcmData.Length) * 2;
 
                                 }
 

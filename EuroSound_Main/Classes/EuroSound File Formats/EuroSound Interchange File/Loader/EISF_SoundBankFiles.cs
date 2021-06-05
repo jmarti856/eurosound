@@ -257,6 +257,18 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                             DefaultNodeColor = Color.FromArgb(1, RGBColors[0], RGBColors[1], RGBColors[2]);
                         }
                     }
+                    if (CurrentKeyWord.Equals("TARGETOUTPUT"))
+                    {
+                        byte targetOutput;
+                        if (byte.TryParse(KeyWordValues[0], out targetOutput))
+                        {
+                            SFXSound.OutputTarget = targetOutput;
+                        }
+                        else
+                        {
+                            ImportResults.Add(string.Join(" ", "0Error in line:", (CurrentIndex + 1), CurrentKeyWord, "does not contains a valid short value type"));
+                        }
+                    }
                     if (CurrentKeyWord.Equals("PARAMETERS"))
                     {
                         CurrentIndex++;

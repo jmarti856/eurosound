@@ -34,7 +34,7 @@ namespace EuroSound_Application.BashMode
             return targetToUse;
         }
 
-        internal void OutputSoundBank(BinaryStream BReader, string selectedTarget)
+        internal void OutputSoundBank(BinaryStream BReader, string selectedTarget, int Version)
         {
             ESF_LoadSoundBanks_New SectionsReader = new ESF_LoadSoundBanks_New();
 
@@ -78,13 +78,13 @@ namespace EuroSound_Application.BashMode
             //* Audio Data
             //*===============================================================================================
             BReader.BaseStream.Seek(audioDictionaryOffset, SeekOrigin.Begin);
-            SectionsReader.ReadAudioDataDictionary(BReader, AudiosList);
+            SectionsReader.ReadAudioDataDictionary(BReader, AudiosList, Version);
 
             //*===============================================================================================
             //* Sounds List Data
             //*===============================================================================================
             BReader.BaseStream.Seek(soundDictionaryOffset, SeekOrigin.Begin);
-            SectionsReader.ReadSoundsListData(BReader, SoundsList);
+            SectionsReader.ReadSoundsListData(BReader, SoundsList, Version);
 
             //*===============================================================================================
             //* APP Target

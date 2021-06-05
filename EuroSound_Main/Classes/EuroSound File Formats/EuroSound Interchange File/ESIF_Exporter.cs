@@ -75,6 +75,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                 TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", SoundNode.Parent.Text);
                 TextFileWriter.WriteLine("\t*HASHCODE " + "0x" + SFXObject.Hashcode.ToString("X8"));
                 TextFileWriter.WriteLine("\t*NODECOLOR {0} {1} {2}", SoundNode.ForeColor.R, SoundNode.ForeColor.G, SoundNode.ForeColor.B);
+                TextFileWriter.WriteLine("\t*TARGETOUTPUT " + SFXObject.OutputTarget);
                 TextFileWriter.WriteLine("\t*NUMSAMPLES " + SFXObject.Samples.Count);
                 TextFileWriter.WriteLine("\t*PARAMETERS {");
                 TextFileWriter.WriteLine("\t\t*DUCKERLENGTH " + SFXObject.DuckerLenght);
@@ -183,6 +184,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     TextFileWriter.WriteLine("\t*FOLDERNAME \"{0}\"", SoundNode.Parent.Text);
                     TextFileWriter.WriteLine("\t*HASHCODE " + "0x" + SFXObject.Value.Hashcode.ToString("X8"));
                     TextFileWriter.WriteLine("\t*NODECOLOR {0} {1} {2}", SoundNode.ForeColor.R, SoundNode.ForeColor.G, SoundNode.ForeColor.B);
+                    TextFileWriter.WriteLine("\t*TARGETOUTPUT " + SFXObject.Value.OutputTarget);
                     TextFileWriter.WriteLine("\t*NUMSAMPLES " + SFXObject.Value.Samples.Count);
                     TextFileWriter.WriteLine("\t*PARAMETERS {");
                     TextFileWriter.WriteLine("\t\t*DUCKERLENGTH " + SFXObject.Value.DuckerLenght);
@@ -237,7 +239,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
             Dictionary<uint, EXSound> FinalSoundsList = new Dictionary<uint, EXSound>();
             foreach (TreeNode ChildNode in ListOfNodes)
             {
-                if (ChildNode.Tag.ToString().Equals("Sound"))
+                if ((Enumerations.TreeNodeType)ChildNode.Tag == Enumerations.TreeNodeType.Sound)
                 {
                     FinalSoundsList.Add(uint.Parse(ChildNode.Name), SoundsList[uint.Parse(ChildNode.Name)]);
                 }

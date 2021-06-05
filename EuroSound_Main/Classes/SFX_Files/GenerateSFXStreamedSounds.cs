@@ -275,15 +275,15 @@ namespace EuroSound_Application.StreamSounds
                         {
                             strtMarker.StateA = 0;
                             strtMarker.StateB = 0;
-                            strtMarker.Position = vagF.CalculateLoopOffsetStereo(encodedVAGData.Length, strtMarker.Position, soundToExport.PCM_Data.Length);
-                            strtMarker.LoopStart = vagF.CalculateLoopOffsetStereo(encodedVAGData.Length, strtMarker.LoopStart, soundToExport.PCM_Data.Length);
+                            strtMarker.Position = vagF.CalculateVAGLoopOffset(encodedVAGData.Length, strtMarker.Position, soundToExport.PCM_Data.Length);
+                            strtMarker.LoopStart = vagF.CalculateVAGLoopOffset(encodedVAGData.Length, strtMarker.LoopStart, soundToExport.PCM_Data.Length);
                         }
 
                         //Calculate loop offset
                         foreach (EXStreamMarker dataMarker in soundToExport.Markers)
                         {
-                            dataMarker.Position = vagF.CalculateLoopOffsetStereo(encodedVAGData.Length, dataMarker.Position, soundToExport.PCM_Data.Length);
-                            dataMarker.LoopStart = vagF.CalculateLoopOffsetStereo(encodedVAGData.Length, dataMarker.LoopStart, soundToExport.PCM_Data.Length);
+                            dataMarker.Position = vagF.CalculateVAGLoopOffset(encodedVAGData.Length, dataMarker.Position, soundToExport.PCM_Data.Length);
+                            dataMarker.LoopStart = vagF.CalculateVAGLoopOffset(encodedVAGData.Length, dataMarker.LoopStart, soundToExport.PCM_Data.Length);
                         }
 
                         //Change data

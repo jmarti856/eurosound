@@ -180,7 +180,8 @@ namespace EuroSound_Application.SoundBanksEditor
                 foreach (KeyValuePair<uint, EXSound> soundItem in SoundsList)
                 {
                     TreeNode DisplayName = TreeView_File.Nodes.Find(soundItem.Key.ToString(), true)[0];
-                    ListViewItem Hashcode = new ListViewItem(new[] { "", string.Join("", new string[] { "0x", soundItem.Value.Hashcode.ToString("X8") }), "<Label Not Found>", DisplayName.Text });
+                    Enumerations.OutputTarget target = (Enumerations.OutputTarget)soundItem.Value.OutputTarget;
+                    ListViewItem Hashcode = new ListViewItem(new[] { "", string.Join("", new string[] { "0x", soundItem.Value.Hashcode.ToString("X8") }), "<Label Not Found>", DisplayName.Text, target.ToString() });
                     if (Hashcodes.SFX_Defines.ContainsKey(Convert.ToUInt32(soundItem.Value.Hashcode)))
                     {
                         Hashcode.SubItems[0].Text = "OK";
@@ -195,7 +196,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     }
                     Hashcode.UseItemStyleForSubItems = false;
                     Hashcode.Tag = DisplayName.Name.ToString();
-
+                    
                     GenericFunctions.AddItemToListView(Hashcode, ListView_Hashcodes);
                     GenericFunctions.ParentFormStatusBar.ShowProgramStatus(string.Join(" ", new string[] { "Checking hashcode:", Hashcode.SubItems[2].Text }));
 

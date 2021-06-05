@@ -15,10 +15,10 @@ namespace EuroSound_Application.TreeViewSorter
             if (nx.Level == 0 || ny.Level == 0) return 1;
 
             // If x is Folder...
-            if (nx.Tag is string sx && sx == "Folder")
+            if ((Enumerations.TreeNodeType)nx.Tag == Enumerations.TreeNodeType.Folder)
             {
                 // And y is Folder...
-                if (ny.Tag is string sy && sy == "Folder")
+                if ((Enumerations.TreeNodeType)ny.Tag == Enumerations.TreeNodeType.Folder)
                 {
                     // Then, sort them...
                     return string.Compare(nx.Text, ny.Text, true);
@@ -28,7 +28,7 @@ namespace EuroSound_Application.TreeViewSorter
                 return -1;
             }
             // If y is Folder...
-            else if (ny.Tag is string sy && sy == "Folder")
+            else if ((Enumerations.TreeNodeType)ny.Tag == Enumerations.TreeNodeType.Folder)
             {
                 // Then, x follows y...
                 return 1;

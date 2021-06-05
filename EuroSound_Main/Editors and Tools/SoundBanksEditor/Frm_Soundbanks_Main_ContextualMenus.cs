@@ -78,7 +78,9 @@ namespace EuroSound_Application.SoundBanksEditor
                     //Sort tree view
                     if (GlobalPreferences.AutomaticallySortNodes)
                     {
+                        Point scrollpos = TreeNodeFunctions.GetTreeViewScrollPos(TreeView_File);
                         TreeView_File.TreeViewNodeSorter = new NodeSorter();
+                        TreeNodeFunctions.SetTreeViewScrollPos(TreeView_File, scrollpos);
                     }
 
                     //Update project status variable
@@ -138,7 +140,9 @@ namespace EuroSound_Application.SoundBanksEditor
                     //Sort tree view
                     if (GlobalPreferences.AutomaticallySortNodes)
                     {
+                        Point scrollpos = TreeNodeFunctions.GetTreeViewScrollPos(TreeView_File);
                         TreeView_File.TreeViewNodeSorter = new NodeSorter();
+                        TreeNodeFunctions.SetTreeViewScrollPos(TreeView_File, scrollpos);
                     }
 
                     //Update project status variable
@@ -168,7 +172,9 @@ namespace EuroSound_Application.SoundBanksEditor
                     //Sort tree view
                     if (GlobalPreferences.AutomaticallySortNodes)
                     {
+                        Point scrollpos = TreeNodeFunctions.GetTreeViewScrollPos(TreeView_File);
                         TreeView_File.TreeViewNodeSorter = new NodeSorter();
+                        TreeNodeFunctions.SetTreeViewScrollPos(TreeView_File, scrollpos);
                     }
 
                     //Update project status variable
@@ -220,7 +226,9 @@ namespace EuroSound_Application.SoundBanksEditor
                     //Sort tree view
                     if (GlobalPreferences.AutomaticallySortNodes)
                     {
+                        Point scrollpos = TreeNodeFunctions.GetTreeViewScrollPos(TreeView_File);
                         TreeView_File.TreeViewNodeSorter = new NodeSorter();
+                        TreeNodeFunctions.SetTreeViewScrollPos(TreeView_File, scrollpos);
                     }
 
                     //Update project status variable
@@ -231,7 +239,9 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void ContextMenu_Folders_Sort_Click(object sender, EventArgs e)
         {
+            Point scrollpos = TreeNodeFunctions.GetTreeViewScrollPos(TreeView_File);
             TreeView_File.TreeViewNodeSorter = new NodeSorter();
+            TreeNodeFunctions.SetTreeViewScrollPos(TreeView_File, scrollpos);
         }
 
         private void ContextMenuFolder_Purge_Click(object sender, EventArgs e)

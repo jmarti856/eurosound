@@ -20,7 +20,7 @@ namespace EuroSound_Application.Classes.BashMode
             //* STEP 1: DISCARD SFX THAT WILL NOT BE OUTPUTED
             //*===============================================================================================
             //Discard SFXs that has checked as "no output"
-            Dictionary<uint, EXSound> FinalSoundsDict = SFXGenerator.GetFinalSoundsDictionary(SoundsList, null, null);
+            Dictionary<uint, EXSound> FinalSoundsDict = SFXGenerator.GetFinalSoundsDictionary(SoundsList, null, null, target);
 
             //*===============================================================================================
             //* STEP 2: DISCARD AUDIO DATA THAT SHOULD HAVE BEEN PURGED
@@ -39,7 +39,7 @@ namespace EuroSound_Application.Classes.BashMode
             //Check Data, first the SFX Objects
             foreach (KeyValuePair<uint, EXSound> SoundToCheck in FinalSoundsDict)
             {
-                CanOutputFile = SFX_Check.ValidateSFX(SoundToCheck.Value, FinalSoundsDict, SoundsHashcodes, null, null);
+                CanOutputFile = SFX_Check.ValidateSFX(SoundToCheck.Value, FinalSoundsDict, SoundsHashcodes, null, null, target);
                 if (CanOutputFile == false)
                 {
                     break;

@@ -64,6 +64,9 @@
             this.cbx_hashcode = new System.Windows.Forms.ComboBox();
             this.label_hashcode = new System.Windows.Forms.Label();
             this.Checkbox_OutputThisSound = new System.Windows.Forms.CheckBox();
+            this.Groupbox_Target = new System.Windows.Forms.GroupBox();
+            this.Combobox_OutputTarget = new System.Windows.Forms.ComboBox();
+            this.Label_OutputTarget = new System.Windows.Forms.Label();
             this.groupbox_params.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_mastervolume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_ducker)).BeginInit();
@@ -75,6 +78,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numeric_duckerlength)).BeginInit();
             this.groupbox_samples.SuspendLayout();
             this.grbx_hashcode.SuspendLayout();
+            this.Groupbox_Target.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupbox_params
@@ -362,9 +366,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupbox_samples.Controls.Add(this.List_Samples);
-            this.groupbox_samples.Location = new System.Drawing.Point(12, 261);
+            this.groupbox_samples.Location = new System.Drawing.Point(12, 326);
             this.groupbox_samples.Name = "groupbox_samples";
-            this.groupbox_samples.Size = new System.Drawing.Size(524, 293);
+            this.groupbox_samples.Size = new System.Drawing.Size(524, 228);
             this.groupbox_samples.TabIndex = 2;
             this.groupbox_samples.TabStop = false;
             this.groupbox_samples.Text = "Associated Samples:";
@@ -377,7 +381,7 @@
             this.List_Samples.HideSelection = false;
             this.List_Samples.Location = new System.Drawing.Point(3, 16);
             this.List_Samples.Name = "List_Samples";
-            this.List_Samples.Size = new System.Drawing.Size(518, 274);
+            this.List_Samples.Size = new System.Drawing.Size(518, 209);
             this.List_Samples.SmallImageList = this.SamplesImageList;
             this.List_Samples.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.List_Samples.TabIndex = 0;
@@ -459,6 +463,41 @@
             this.Checkbox_OutputThisSound.Text = "Output This Sound";
             this.Checkbox_OutputThisSound.UseVisualStyleBackColor = true;
             // 
+            // Groupbox_Target
+            // 
+            this.Groupbox_Target.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Groupbox_Target.Controls.Add(this.Combobox_OutputTarget);
+            this.Groupbox_Target.Controls.Add(this.Label_OutputTarget);
+            this.Groupbox_Target.Location = new System.Drawing.Point(12, 261);
+            this.Groupbox_Target.Name = "Groupbox_Target";
+            this.Groupbox_Target.Size = new System.Drawing.Size(524, 59);
+            this.Groupbox_Target.TabIndex = 6;
+            this.Groupbox_Target.TabStop = false;
+            this.Groupbox_Target.Text = "Output Platform:";
+            // 
+            // Combobox_OutputTarget
+            // 
+            this.Combobox_OutputTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Combobox_OutputTarget.FormattingEnabled = true;
+            this.Combobox_OutputTarget.Items.AddRange(new object[] {
+            "ALL",
+            "PC",
+            "PS2"});
+            this.Combobox_OutputTarget.Location = new System.Drawing.Point(53, 22);
+            this.Combobox_OutputTarget.Name = "Combobox_OutputTarget";
+            this.Combobox_OutputTarget.Size = new System.Drawing.Size(121, 21);
+            this.Combobox_OutputTarget.TabIndex = 1;
+            // 
+            // Label_OutputTarget
+            // 
+            this.Label_OutputTarget.AutoSize = true;
+            this.Label_OutputTarget.Location = new System.Drawing.Point(6, 25);
+            this.Label_OutputTarget.Name = "Label_OutputTarget";
+            this.Label_OutputTarget.Size = new System.Drawing.Size(41, 13);
+            this.Label_OutputTarget.TabIndex = 0;
+            this.Label_OutputTarget.Text = "Target:";
+            // 
             // Frm_EffectProperties
             // 
             this.AcceptButton = this.button_ok;
@@ -466,6 +505,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button_cancel;
             this.ClientSize = new System.Drawing.Size(548, 595);
+            this.Controls.Add(this.Groupbox_Target);
             this.Controls.Add(this.Checkbox_OutputThisSound);
             this.Controls.Add(this.grbx_hashcode);
             this.Controls.Add(this.button_cancel);
@@ -495,6 +535,8 @@
             this.groupbox_samples.ResumeLayout(false);
             this.grbx_hashcode.ResumeLayout(false);
             this.grbx_hashcode.PerformLayout();
+            this.Groupbox_Target.ResumeLayout(false);
+            this.Groupbox_Target.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -536,5 +578,8 @@
         private System.Windows.Forms.TextBox Textbox_InnerRadius;
         private System.Windows.Forms.ListView List_Samples;
         private System.Windows.Forms.ImageList SamplesImageList;
+        private System.Windows.Forms.GroupBox Groupbox_Target;
+        private System.Windows.Forms.ComboBox Combobox_OutputTarget;
+        private System.Windows.Forms.Label Label_OutputTarget;
     }
 }

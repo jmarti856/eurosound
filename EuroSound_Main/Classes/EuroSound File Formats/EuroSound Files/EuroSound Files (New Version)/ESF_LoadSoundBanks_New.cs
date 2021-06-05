@@ -10,7 +10,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
 {
     internal class ESF_LoadSoundBanks_New
     {
-        internal string ReadEuroSoundSoundBankFile(ProjectFile FileProperties, BinaryStream BReader, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, Dictionary<uint, EXAppTarget> OutputTargets, TreeView TreeViewControl)
+        internal string ReadEuroSoundSoundBankFile(ProjectFile FileProperties, BinaryStream BReader, Dictionary<uint, EXSound> SoundsList, Dictionary<string, EXAudio> AudiosList, Dictionary<uint, EXAppTarget> OutputTargets, TreeView TreeViewControl, int FileVersion)
         {
             EuroSoundFiles_CommonFunctions ESF_CommonFunctions = new EuroSoundFiles_CommonFunctions();
 
@@ -48,14 +48,14 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
             //*===============================================================================================
             long sectionPos = audioDictionaryOffset - BReader.Position;
             BReader.BaseStream.Seek(sectionPos, SeekOrigin.Current);
-            ReadAudioDataDictionary(BReader, AudiosList);
+            ReadAudioDataDictionary(BReader, AudiosList, FileVersion);
 
             //*===============================================================================================
             //* Sounds List Data
             //*===============================================================================================
             sectionPos = soundDictionaryOffset - BReader.Position;
             BReader.BaseStream.Seek(sectionPos, SeekOrigin.Current);
-            ReadSoundsListData(BReader, SoundsList);
+            ReadSoundsListData(BReader, SoundsList, FileVersion);
 
             //*===============================================================================================
             //* TreeView
@@ -77,7 +77,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
             return profileSelectedName;
         }
 
-        internal void ReadAudioDataDictionary(BinaryStream BReader, Dictionary<string, EXAudio> AudiosList)
+        internal void ReadAudioDataDictionary(BinaryStream BReader, Dictionary<string, EXAudio> AudiosList, int FileVersion)
         {
             uint TotalEntries = BReader.ReadUInt32();
 
@@ -93,11 +93,14 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
                     Frequency = BReader.ReadUInt32(),
                     Channels = BReader.ReadUInt32(),
                     Bits = BReader.ReadUInt32(),
-                    PSIsample = BReader.ReadUInt32(),
-                    LoopOffset = BReader.ReadUInt32(),
-                    Duration = BReader.ReadUInt32(),
-                    FrequencyPS2 = BReader.ReadUInt32()
                 };
+                if (FileVersion < 1014)
+                {
+                    AudioToAdd.PSIsample = BReader.ReadUInt32();
+                }
+                AudioToAdd.LoopOffset = BReader.ReadUInt32();
+                AudioToAdd.Duration = BReader.ReadUInt32();
+                AudioToAdd.FrequencyPS2 = BReader.ReadUInt32();
                 int PCMDataLength = BReader.ReadInt32();
                 AudioToAdd.PCMdata = BReader.ReadBytes(PCMDataLength);
 
@@ -106,7 +109,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
             }
         }
 
-        internal void ReadSoundsListData(BinaryStream BReader, Dictionary<uint, EXSound> SoundsList)
+        internal void ReadSoundsListData(BinaryStream BReader, Dictionary<uint, EXSound> SoundsList, int FileVersion)
         {
             uint NumberOfSounds = BReader.ReadUInt32();
 
@@ -132,6 +135,10 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
                     MasterVolume = BReader.ReadSByte(),
                     Flags = BReader.ReadUInt16()
                 };
+                if (FileVersion > 1013)
+                {
+                    NewSound.OutputTarget = BReader.Read1Byte();
+                }
 
                 int NumberOfSamples = BReader.ReadInt32();
                 for (int j = 0; j < NumberOfSamples; j++)

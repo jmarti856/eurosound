@@ -5,12 +5,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.TreeViewLibraryFunctions
 {
     public static class TreeNodeFunctions
     {
+        [DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+        public static extern int GetScrollPos(int hWnd, int nBar);
+
+        [DllImport("user32.dll")]
+        static extern int SetScrollPos(IntPtr hWnd, int nBar, int nPos, bool bRedraw);
+
+        private const int SB_HORZ = 0x0;
+        private const int SB_VERT = 0x1;
+
         public static EXAudio GetSelectedAudio(string SelectedNodeName, Dictionary<string, EXAudio> AudiosList)
         {
             if (AudiosList.ContainsKey(SelectedNodeName))
@@ -129,7 +139,7 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
                 //--Add element to the tree node--
                 if (treeViewToEdit.InvokeRequired)
                 {
-                    try
+                    if (!treeViewToEdit.Disposing || treeViewToEdit.IsDisposed)
                     {
                         treeViewToEdit.Invoke((MethodInvoker)delegate
                         {
@@ -152,10 +162,6 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
                                 NewNode.EnsureVisible();
                             }
                         });
-                    }
-                    catch (ObjectDisposedException)
-                    {
-
                     }
                 }
                 else
@@ -214,6 +220,19 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
                 //Update project status variable
                 ProjectInfo.FileHasBeenModified = true;
             }
+        }
+
+        internal static Point GetTreeViewScrollPos(TreeView treeView)
+        {
+            return new Point(
+                GetScrollPos((int)treeView.Handle, SB_HORZ),
+                GetScrollPos((int)treeView.Handle, SB_VERT));
+        }
+
+        internal static void SetTreeViewScrollPos(TreeView treeView, Point scrollPosition)
+        {
+            SetScrollPos(treeView.Handle, SB_HORZ, scrollPosition.X, true);
+            SetScrollPos(treeView.Handle, SB_VERT, scrollPosition.Y, true);
         }
     }
 }

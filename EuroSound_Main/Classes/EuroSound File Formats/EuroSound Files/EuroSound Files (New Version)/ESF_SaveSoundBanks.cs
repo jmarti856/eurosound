@@ -108,7 +108,6 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
                 binaryWriter.WriteUInt32(entry.Value.Frequency);
                 binaryWriter.WriteUInt32(entry.Value.Channels);
                 binaryWriter.WriteUInt32(entry.Value.Bits);
-                binaryWriter.WriteUInt32(entry.Value.PSIsample);
                 binaryWriter.WriteUInt32(entry.Value.LoopOffset);
                 binaryWriter.WriteUInt32(entry.Value.Duration);
                 binaryWriter.WriteUInt32(entry.Value.FrequencyPS2);
@@ -141,6 +140,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions.NewVersion.SoundBanks
                 binaryWriter.WriteSByte(soundItem.Value.Ducker);
                 binaryWriter.WriteSByte(soundItem.Value.MasterVolume);
                 binaryWriter.WriteUInt16(soundItem.Value.Flags);
+                binaryWriter.WriteByte(soundItem.Value.OutputTarget);
 
                 //Write Samples
                 binaryWriter.WriteUInt32((uint)soundItem.Value.Samples.Count);

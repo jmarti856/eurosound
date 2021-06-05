@@ -92,7 +92,7 @@ namespace EuroSound_Application.EuroSoundFilesFunctions
                             switch (BReader.ReadSByte())
                             {
                                 case (int)Enumerations.ESoundFileType.SoundBanks:
-                                    profileName = new ESF_LoadSoundBanks_New().ReadEuroSoundSoundBankFile(projectProperties, BReader, (Dictionary<uint, EXSound>)dictionaryData, (Dictionary<string, EXAudio>)dictionaryMedia, OutputTargets, treeViewControl);
+                                    profileName = new ESF_LoadSoundBanks_New().ReadEuroSoundSoundBankFile(projectProperties, BReader, (Dictionary<uint, EXSound>)dictionaryData, (Dictionary<string, EXAudio>)dictionaryMedia, OutputTargets, treeViewControl, (int)FileVersion);
                                     break;
                                 case (int)Enumerations.ESoundFileType.StreamSounds:
                                     profileName = new ESF_LoadStreamFile_New().ReadEuroSoundStreamFile(projectProperties, BReader, treeViewControl, (Dictionary<uint, EXSoundStream>)dictionaryData, OutputTargets);

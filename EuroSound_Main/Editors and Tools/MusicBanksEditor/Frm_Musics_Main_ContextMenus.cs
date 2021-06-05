@@ -72,7 +72,9 @@ namespace EuroSound_Application.Musics
                     //Sort tree view
                     if (GlobalPreferences.AutomaticallySortNodes)
                     {
+                        Point scrollpos = TreeNodeFunctions.GetTreeViewScrollPos(TreeView_MusicData);
                         TreeView_MusicData.TreeViewNodeSorter = new NodeSorter();
+                        TreeNodeFunctions.SetTreeViewScrollPos(TreeView_MusicData, scrollpos);
                     }
 
                     //Update project status variable
@@ -101,7 +103,9 @@ namespace EuroSound_Application.Musics
 
         private void ContextMenuFolder_SortItems_Click(object sender, EventArgs e)
         {
+            Point scrollpos = TreeNodeFunctions.GetTreeViewScrollPos(TreeView_MusicData);
             TreeView_MusicData.TreeViewNodeSorter = new NodeSorter();
+            TreeNodeFunctions.SetTreeViewScrollPos(TreeView_MusicData, scrollpos);
         }
 
         private void ContextMenuFolder_AddSound_Click(object sender, EventArgs e)
@@ -127,7 +131,9 @@ namespace EuroSound_Application.Musics
                     //Sort tree view
                     if (GlobalPreferences.AutomaticallySortNodes)
                     {
+                        Point scrollpos = TreeNodeFunctions.GetTreeViewScrollPos(TreeView_MusicData);
                         TreeView_MusicData.TreeViewNodeSorter = new NodeSorter();
+                        TreeNodeFunctions.SetTreeViewScrollPos(TreeView_MusicData, scrollpos);
                     }
 
                     //Update project status variable

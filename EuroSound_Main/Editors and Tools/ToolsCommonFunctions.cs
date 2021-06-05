@@ -267,16 +267,15 @@ namespace EuroSound_Application.Editors_and_Tools
             {
                 if (progressBarToModify.InvokeRequired)
                 {
-                    try
+                    if (!(progressBarToModify.Disposing || progressBarToModify.IsDisposed))
                     {
                         progressBarToModify.Invoke((MethodInvoker)delegate
                         {
-                            progressBarToModify.Value += valueToAdd;
+                            if (progressBarToModify.Value < progressBarToModify.Maximum)
+                            {
+                                progressBarToModify.Value += valueToAdd;
+                            }
                         });
-                    }
-                    catch
-                    {
-
                     }
                 }
                 else
@@ -371,7 +370,7 @@ namespace EuroSound_Application.Editors_and_Tools
             if (findTargetNode != null)
             {
                 string destSection = findTargetNode.Text;
-                string destNodeType = targetNode.Tag.ToString();
+                Enumerations.TreeNodeType destNodeType = (Enumerations.TreeNodeType)targetNode.Tag;
 
                 //Retrieve the node that was dragged
                 TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
@@ -395,7 +394,7 @@ namespace EuroSound_Application.Editors_and_Tools
                         Confirm we are not outside the node section and that the destination place is a folder or the root
                         node section
                         */
-                        if (sourceSection.Equals(destSection) && (destNodeType.Equals("Folder") || targetNode.Level == 0))
+                        if (sourceSection.Equals(destSection) && (destNodeType == Enumerations.TreeNodeType.Folder || targetNode.Level == 0))
                         {
                             //Remove the node from its current
                             //location and add it to the node at the drop location.

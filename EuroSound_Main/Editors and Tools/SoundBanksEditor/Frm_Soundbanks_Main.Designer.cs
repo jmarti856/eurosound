@@ -31,10 +31,10 @@ namespace EuroSound_Application.SoundBanksEditor
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Audio Data", 0, 0);
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Sounds", 0, 0);
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Streamed Sounds", 0, 0);
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("App Targets", 0, 0);
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Audio Data", 0, 0);
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Sounds", 0, 0);
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Streamed Sounds", 0, 0);
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("App Targets", 0, 0);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Soundbanks_Main));
             this.TreeView_File = new System.Windows.Forms.TreeView();
             this.ImageList_TreeNode = new System.Windows.Forms.ImageList(this.components);
@@ -106,7 +106,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Textbox_HashcodesCount = new System.Windows.Forms.TextBox();
             this.Label_HashcodesCount = new System.Windows.Forms.Label();
             this.Button_UpdateList_Hashcodes = new System.Windows.Forms.Button();
-            this.ListView_Hashcodes = new System.Windows.Forms.ListView();
+            this.ListView_Hashcodes = new ListView_ColumnSortingClick();
             this.Col_Hashcode_OK = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Hashcode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Col_Hashcode_Label = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -160,6 +160,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.ContextMenuTargets_Output = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuTargets_Separator2 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuTargets_TextColor = new System.Windows.Forms.ToolStripMenuItem();
+            this.Col_Target = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ContextMenu_Folders.SuspendLayout();
             this.ContextMenu_Sound.SuspendLayout();
             this.MainMenu.SuspendLayout();
@@ -193,31 +194,31 @@ namespace EuroSound_Application.SoundBanksEditor
             this.TreeView_File.Location = new System.Drawing.Point(0, 0);
             this.TreeView_File.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.TreeView_File.Name = "TreeView_File";
-            treeNode5.ImageIndex = 0;
-            treeNode5.Name = "AudioData";
-            treeNode5.SelectedImageIndex = 0;
-            treeNode5.Tag = "8";
-            treeNode5.Text = "Audio Data";
-            treeNode6.ImageIndex = 0;
-            treeNode6.Name = "Sounds";
-            treeNode6.SelectedImageIndex = 0;
-            treeNode6.Tag = "8";
-            treeNode6.Text = "Sounds";
-            treeNode7.ImageIndex = 0;
-            treeNode7.Name = "StreamedSounds";
-            treeNode7.SelectedImageIndex = 0;
-            treeNode7.Tag = "8";
-            treeNode7.Text = "Streamed Sounds";
-            treeNode8.ImageIndex = 0;
-            treeNode8.Name = "AppTargets";
-            treeNode8.SelectedImageIndex = 0;
-            treeNode8.Tag = "8";
-            treeNode8.Text = "App Targets";
+            treeNode1.ImageIndex = 0;
+            treeNode1.Name = "AudioData";
+            treeNode1.SelectedImageIndex = 0;
+            treeNode1.Tag = "8";
+            treeNode1.Text = "Audio Data";
+            treeNode2.ImageIndex = 0;
+            treeNode2.Name = "Sounds";
+            treeNode2.SelectedImageIndex = 0;
+            treeNode2.Tag = "8";
+            treeNode2.Text = "Sounds";
+            treeNode3.ImageIndex = 0;
+            treeNode3.Name = "StreamedSounds";
+            treeNode3.SelectedImageIndex = 0;
+            treeNode3.Tag = "8";
+            treeNode3.Text = "Streamed Sounds";
+            treeNode4.ImageIndex = 0;
+            treeNode4.Name = "AppTargets";
+            treeNode4.SelectedImageIndex = 0;
+            treeNode4.Tag = "8";
+            treeNode4.Text = "App Targets";
             this.TreeView_File.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode5,
-            treeNode6,
-            treeNode7,
-            treeNode8});
+            treeNode1,
+            treeNode2,
+            treeNode3,
+            treeNode4});
             this.TreeView_File.SelectedImageIndex = 0;
             this.TreeView_File.Size = new System.Drawing.Size(369, 641);
             this.TreeView_File.TabIndex = 1;
@@ -830,7 +831,8 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Col_Hashcode_OK,
             this.Col_Hashcode,
             this.Col_Hashcode_Label,
-            this.Col_UsedIn});
+            this.Col_UsedIn,
+            this.Col_Target});
             this.ListView_Hashcodes.ContextMenuStrip = this.ContextMenu_HashcodesList;
             this.ListView_Hashcodes.FullRowSelect = true;
             this.ListView_Hashcodes.GridLines = true;
@@ -1294,6 +1296,10 @@ namespace EuroSound_Application.SoundBanksEditor
             this.ContextMenuTargets_TextColor.Text = "Text Color...";
             this.ContextMenuTargets_TextColor.Click += new System.EventHandler(this.ContextMenuTargets_TextColor_Click);
             // 
+            // Col_Target
+            // 
+            this.Col_Target.Text = "Target";
+            // 
             // Frm_Soundbanks_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1367,7 +1373,7 @@ namespace EuroSound_Application.SoundBanksEditor
         private System.Windows.Forms.ToolStripMenuItem ContextMenuSound_TextColor;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuSample_TextColor;
         private System.Windows.Forms.GroupBox GroupBox_Hashcodes;
-        private System.Windows.Forms.ListView ListView_Hashcodes;
+        private ListView_ColumnSortingClick ListView_Hashcodes;
         private System.Windows.Forms.ColumnHeader Col_Hashcode_OK;
         private System.Windows.Forms.ColumnHeader Col_Hashcode;
         private System.Windows.Forms.ColumnHeader Col_Hashcode_Label;
@@ -1465,5 +1471,6 @@ namespace EuroSound_Application.SoundBanksEditor
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_Import;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_ImportESIF;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_ImportESAF;
+        private System.Windows.Forms.ColumnHeader Col_Target;
     }
 }

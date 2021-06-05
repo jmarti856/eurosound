@@ -41,6 +41,13 @@
             Root = 8
         }
 
+        internal enum OutputTarget : byte
+        {
+            ALL = 0,
+            PC = 1,
+            PS2 = 2
+        }
+
         internal static byte GetTreeNodeType(string stringType)
         {
             byte nodeFlag = 0;
