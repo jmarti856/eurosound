@@ -76,7 +76,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
             // 
             // Textbox_TargetName
             // 
-            this.Textbox_TargetName.Location = new System.Drawing.Point(89, 98);
+            this.Textbox_TargetName.Location = new System.Drawing.Point(92, 98);
             this.Textbox_TargetName.Name = "Textbox_TargetName";
             this.Textbox_TargetName.Size = new System.Drawing.Size(100, 20);
             this.Textbox_TargetName.TabIndex = 8;
@@ -252,12 +252,12 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
             this.GroupBox_Options.Size = new System.Drawing.Size(328, 87);
             this.GroupBox_Options.TabIndex = 1;
             this.GroupBox_Options.TabStop = false;
-            this.GroupBox_Options.Text = "Starndard Options";
+            this.GroupBox_Options.Text = "Standard Options:";
             // 
             // checkBox_UpdateFilelist
             // 
             this.checkBox_UpdateFilelist.AutoSize = true;
-            this.checkBox_UpdateFilelist.Location = new System.Drawing.Point(25, 35);
+            this.checkBox_UpdateFilelist.Location = new System.Drawing.Point(9, 34);
             this.checkBox_UpdateFilelist.Name = "checkBox_UpdateFilelist";
             this.checkBox_UpdateFilelist.Size = new System.Drawing.Size(109, 17);
             this.checkBox_UpdateFilelist.TabIndex = 0;

@@ -7,6 +7,7 @@ using EuroSound_Application.HashCodesFunctions;
 using Syroot.BinaryData;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace EuroSound_Application.BashMode
@@ -25,39 +26,59 @@ namespace EuroSound_Application.BashMode
             //* Load INI FIle
             //*===============================================================================================
             //Get profiles list form ini file
-            if (File.Exists(Application.StartupPath + "\\Esound.ini"))
+            string iniPath = Application.StartupPath + "\\Esound.ini";
+            if (File.Exists(iniPath))
             {
-                GenericFunctions.AvailableProfiles = ProfilesReader.GetAvailableProfiles(Application.StartupPath + "\\Esound.ini");
+                GenericFunctions.AvailableProfiles = ProfilesReader.GetAvailableProfiles(iniPath);
             }
 
             //*===============================================================================================
             //* Load Profile
             //*===============================================================================================
-            string ProfileNameFromReg = WindowsRegistryFunctions.LoadCurrentProfie("CurrentProfileName");
-            string ProfilePathFromReg = WindowsRegistryFunctions.LoadCurrentProfie("CurrentProfile");
 
-            //Reload last profile if file exists
-            if (File.Exists(ProfilePathFromReg))
+            //Get stored profile info
+            string profileNameFromReg = WindowsRegistryFunctions.LoadCurrentProfie("CurrentProfileName");
+            string profilePathFromReg = WindowsRegistryFunctions.LoadCurrentProfie("CurrentProfile");
+            string profileHashMD5 = WindowsRegistryFunctions.LoadCurrentProfie("CurrentProfileMD5");
+
+            //We don't have any profile, is the first time that we start EuroSound. 
+            if (string.IsNullOrEmpty(profileNameFromReg) || string.IsNullOrEmpty(profilePathFromReg))
             {
-                GlobalPreferences.SelectedProfileName = ProfileNameFromReg;
-                GlobalPreferences.SelectedProfile = ProfilePathFromReg;
+                //if we only have one profile, load it
+                if (GenericFunctions.AvailableProfiles.Count == 1)
+                {
+                    KeyValuePair<string, string> ProfileInfo = GenericFunctions.AvailableProfiles.ElementAt(0);
+                    if (File.Exists(ProfileInfo.Value))
+                    {
+                        new ProfilesFunctions().ApplyProfile(ProfileInfo.Value, ProfileInfo.Key, true);
+                    }
+                }
             }
             else
             {
-                //Load profile from ini file
-                if (!string.IsNullOrEmpty(ProfileNameFromReg))
+                //Check that the stored profile and the profile of the ini are the same
+                foreach (KeyValuePair<string, string> profileToCheck in GenericFunctions.AvailableProfiles)
                 {
-                    foreach (KeyValuePair<string, string> Profile in GenericFunctions.AvailableProfiles)
+                    //Key = NAME; Value = PATH
+                    if (profileToCheck.Key.Equals(profileNameFromReg))
                     {
-                        if (Profile.Key.Equals(ProfileNameFromReg))
+                        //Calculate MD5
+                        string IniProfileMD5 = GenericFunctions.CalculateMD5(profileToCheck.Value);
+
+                        //Stored profile matches with the ini profile
+                        if (IniProfileMD5.Equals(profileToCheck.Value))
                         {
-                            if (File.Exists(Profile.Value))
-                            {
-                                GlobalPreferences.SelectedProfileName = Profile.Key;
-                                GlobalPreferences.SelectedProfile = Profile.Value;
-                            }
-                            break;
+                            GlobalPreferences.SelectedProfileName = profileToCheck.Key;
+                            GlobalPreferences.SelectedProfile = profileToCheck.Value;
                         }
+                        else
+                        {
+                            //Read profile again
+                            new ProfilesFunctions().ApplyProfile(profileToCheck.Value, profileToCheck.Key, true);
+                        }
+
+                        //Quit loop
+                        break;
                     }
                 }
             }
@@ -67,8 +88,8 @@ namespace EuroSound_Application.BashMode
             //*===============================================================================================
             if (File.Exists(GlobalPreferences.SelectedProfile))
             {
-                //Reload profile if paths are not equal
-                if (!ProfilePathFromReg.Equals(GlobalPreferences.SelectedProfile))
+                //Reload profile if paths are not equal or the file has changed
+                if (!profilePathFromReg.Equals(GlobalPreferences.SelectedProfile) || !GenericFunctions.CalculateMD5(GlobalPreferences.SelectedProfile).Equals(profileHashMD5))
                 {
                     //Load and apply profile to update regedit data
                     ProfilesLoader.ApplyProfile(GlobalPreferences.SelectedProfile, GlobalPreferences.SelectedProfileName, true);

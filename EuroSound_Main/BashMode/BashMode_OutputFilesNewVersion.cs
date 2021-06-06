@@ -97,14 +97,18 @@ namespace EuroSound_Application.BashMode
             //*===============================================================================================
             //Get target
             EXAppTarget requestedTarget = GetRequestedAppTarget(selectedTarget, OutputTargets);
-
+      
             //Output file
             if (requestedTarget != null)
             {
+                //Create directories
                 string directoryPath = Path.Combine(requestedTarget.OutputDirectory, string.Join("", "_bin_", requestedTarget.Name));
+                Directory.CreateDirectory(directoryPath);
                 string filePath = Path.Combine(directoryPath, "_Eng", requestedTarget.BinaryName);
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
-                if (Directory.Exists(directoryPath))
+                //Create file
+                if (Directory.Exists(Path.GetDirectoryName(filePath)))
                 {
                     using (BinaryStream BWriter = new BinaryStream(File.Open(filePath, FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                     {
@@ -173,10 +177,14 @@ namespace EuroSound_Application.BashMode
             //Output file
             if (requestedTarget != null)
             {
+                //Create directories
                 string directoryPath = Path.Combine(requestedTarget.OutputDirectory, string.Join("", "_bin_", requestedTarget.Name));
+                Directory.CreateDirectory(directoryPath);
                 string filePath = Path.Combine(directoryPath, "_Eng", requestedTarget.BinaryName);
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
-                if (Directory.Exists(directoryPath))
+                //Create file
+                if (Directory.Exists(Path.GetDirectoryName(filePath)))
                 {
                     using (BinaryStream BWriter = new BinaryStream(File.Open(filePath, FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                     {
@@ -245,10 +253,14 @@ namespace EuroSound_Application.BashMode
             //Output file
             if (requestedTarget != null)
             {
+                //Create directories
                 string directoryPath = Path.Combine(requestedTarget.OutputDirectory, string.Join("", "_bin_", requestedTarget.Name));
-                string filePath = Path.Combine(directoryPath, "_Eng", requestedTarget.BinaryName);
+                Directory.CreateDirectory(directoryPath);
+                string filePath = Path.Combine(directoryPath, "music", requestedTarget.BinaryName);
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
-                if (Directory.Exists(directoryPath))
+                //Create file
+                if (Directory.Exists(Path.GetDirectoryName(filePath)))
                 {
                     using (BinaryStream BWriter = new BinaryStream(File.Open(filePath, FileMode.Create, FileAccess.Write), null, Encoding.ASCII))
                     {

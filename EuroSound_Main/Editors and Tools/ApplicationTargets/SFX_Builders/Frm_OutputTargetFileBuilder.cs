@@ -41,7 +41,6 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
         private void Frm_OutputTargetFileBuilder_Load(object sender, EventArgs e)
         {
             //Put info in the labels
-            Label_ProjectAndTarget.Text = string.Join("", GlobalPreferences.SelectedProfileName, " : ", selectedTarget.Name);
             Label_CurrentTask.Text = string.Empty;
 
             //Run Background Worker
@@ -97,9 +96,12 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                 {
                     foreach (EXAppTarget storedTarget in currentProjectTargets.Values)
                     {
-                        string directoryPath = Path.Combine(storedTarget.OutputDirectory, string.Join("", "_bin_", storedTarget.Name));
-                        Directory.CreateDirectory(directoryPath);
-                        OutputTarget(selectedTarget, directoryPath, e);
+                        if (!storedTarget.Name.Equals("ALL", StringComparison.OrdinalIgnoreCase))
+                        {
+                            string directoryPath = Path.Combine(selectedTarget.OutputDirectory, string.Join("", "_bin_", storedTarget.Name));
+                            Directory.CreateDirectory(directoryPath);
+                            OutputTarget(storedTarget, directoryPath, e);
+                        }
                     }
                 }
                 else
@@ -109,11 +111,20 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                     OutputTarget(selectedTarget, directoryPath, e);
                 }
             }
-
         }
 
         private void OutputTarget(EXAppTarget storedTarget, string directoryPath, DoWorkEventArgs e)
         {
+            //Update label 
+            if (!(Label_ProjectAndTarget.Disposing || Label_ProjectAndTarget.IsDisposed))
+            {
+                Label_ProjectAndTarget.BeginInvoke((MethodInvoker)delegate
+                {
+                    Label_ProjectAndTarget.Text = string.Join("", GlobalPreferences.SelectedProfileName, " : ", storedTarget.Name);
+                });
+            }
+
+            //Create SFX file
             if (string.IsNullOrEmpty(storedTarget.BinaryName))
             {
                 Reports.Add("0File name is empty");
