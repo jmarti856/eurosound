@@ -86,10 +86,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         internal static Dictionary<string, string> GetListAudioData(Dictionary<string, EXAudio> AudiosList, TreeView ControlToSearch)
         {
-            Dictionary<string, string> dictionaryToShow = new Dictionary<string, string>
-            {
-                { "<SUB SFX>", "<SUB SFX>" }
-            };
+            Dictionary<string, string> dictionaryToShow = new Dictionary<string, string>();
 
             foreach (KeyValuePair<string, EXAudio> item in AudiosList)
             {

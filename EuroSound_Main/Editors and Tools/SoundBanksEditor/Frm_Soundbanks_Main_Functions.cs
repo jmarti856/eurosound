@@ -122,7 +122,7 @@ namespace EuroSound_Application.SoundBanksEditor
         internal void OpenTargetProperties(TreeNode SelectedNode)
         {
             EXAppTarget outTarget = OutputTargets[Convert.ToUInt32(SelectedNode.Name)];
-            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget) { Owner = this })
+            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget, SelectedNode, TreeView_File) { Owner = this })
             {
                 newOutTarget.ShowDialog();
 
@@ -226,6 +226,18 @@ namespace EuroSound_Application.SoundBanksEditor
                     });
                 }
 
+                //Enable button if there's content on the list
+                if (counter > 0)
+                {
+                    if (!(Button_StopHashcodeUpdate.IsDisposed || Button_StopHashcodeUpdate.Disposing))
+                    {
+                        Button_StopHashcodeUpdate.BeginInvoke((MethodInvoker)delegate
+                        {
+                            Button_StopHashcodeUpdate.Enabled = true;
+                        });
+                    }
+                }
+
                 //Update status bar
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             })
@@ -243,6 +255,9 @@ namespace EuroSound_Application.SoundBanksEditor
                 ListView_Hashcodes.Items.Clear();
                 ListView_Hashcodes.Enabled = true;
                 Textbox_HashcodesCount.Text = "0";
+                Button_StopHashcodeUpdate.Enabled = false;
+
+                //Update status bar
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             }
         }
@@ -293,7 +308,7 @@ namespace EuroSound_Application.SoundBanksEditor
                                 SoundDisplayName,
                                 "HC00FFFF"
                             })
-                            { 
+                            {
                                 UseItemStyleForSubItems = false,
                                 Tag = NodeToCheck.Name
                             };
@@ -324,6 +339,18 @@ namespace EuroSound_Application.SoundBanksEditor
                     });
                 }
 
+                //Enable button if there's content on the list
+                if (counter > 0)
+                {
+                    if (!(Button_StopStreamData.IsDisposed || Button_StopStreamData.Disposing))
+                    {
+                        Button_StopStreamData.BeginInvoke((MethodInvoker)delegate
+                        {
+                            Button_StopStreamData.Enabled = true;
+                        });
+                    }
+                }
+
                 //Update status bar
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             })
@@ -341,6 +368,9 @@ namespace EuroSound_Application.SoundBanksEditor
                 ListView_StreamData.Items.Clear();
                 ListView_StreamData.Enabled = true;
                 Textbox_StreamFilesCount.Text = "0";
+                Button_StopStreamData.Enabled = false;
+
+                //Update status bar
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             }
         }
@@ -394,7 +424,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     ListView_WavHeaderData.EndUpdate();
                     ListView_WavHeaderData.Enabled = true;
                 });
-                
+
                 //Show Items Count
                 if (!(Textbox_DataCount.IsDisposed || Textbox_DataCount.Disposing))
                 {
@@ -402,6 +432,18 @@ namespace EuroSound_Application.SoundBanksEditor
                     {
                         Textbox_DataCount.Text = counter.ToString();
                     });
+                }
+
+                //Enable button if there's content on the list
+                if (counter > 0)
+                {
+                    if (!(Button_Stop_WavUpdate.IsDisposed || Button_Stop_WavUpdate.Disposing))
+                    {
+                        Button_Stop_WavUpdate.BeginInvoke((MethodInvoker)delegate
+                        {
+                            Button_Stop_WavUpdate.Enabled = true;
+                        });
+                    }
                 }
 
                 //Update status bar
@@ -421,6 +463,9 @@ namespace EuroSound_Application.SoundBanksEditor
                 ListView_WavHeaderData.Items.Clear();
                 ListView_WavHeaderData.Enabled = true;
                 Textbox_DataCount.Text = "0";
+                Button_Stop_WavUpdate.Enabled = false;
+
+                //Update status bar
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             }
         }

@@ -43,7 +43,7 @@ namespace EuroSound_Application.SoundBanksEditor
                         }
                         else
                         {
-                            DialogResult TryToReload = MessageBox.Show(string.Join("", "Error, this audio file is not correct, the specifies are: ", GlobalPreferences.SoundbankChannels, " channels, the rate must be ", GlobalPreferences.SoundbankFrequency, "Hz, must have ", GlobalPreferences.SoundbankBits, " bits per sample and encoded in ", GlobalPreferences.SoundbankEncoding, ".\n\nDo you want that EuroSound tries to convert it to a valid format?"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                            DialogResult TryToReload = MessageBox.Show(string.Join("", "Error, this audio file is not correct, the specifies are: ", GlobalPreferences.SoundbankChannels, " channels, the rate must be ", GlobalPreferences.SoundbankFrequency, "Hz, must have ", GlobalPreferences.SoundbankBits, " bits per sample and encoded in ", GlobalPreferences.SoundbankEncoding, Environment.NewLine, Environment.NewLine, "Do you want that EuroSound tries to convert it to a valid format?"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                             if (TryToReload == DialogResult.Yes)
                             {
                                 LoadAudio(audioPath, nodeName, true);
@@ -157,7 +157,7 @@ namespace EuroSound_Application.SoundBanksEditor
             {
                 BinaryName = EXAppTarget_Functions.GetBinaryName(ProjectInfo, GlobalPreferences.SelectedProfileName)
             };
-            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget) { Owner = this })
+            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget, null, TreeView_File) { Owner = this })
             {
                 newOutTarget.ShowDialog();
 

@@ -303,7 +303,7 @@ namespace EuroSound_Application
             }
             else
             {
-                MessageBox.Show(string.Join(" ", "Loading File:", filename, "\n", "\n", "Error:", filename, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(string.Join(" ", "Loading File:", filename, Environment.NewLine, Environment.NewLine, "Error:", filename, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 RecentFilesMenu.RemoveFile(number);
             }
         }

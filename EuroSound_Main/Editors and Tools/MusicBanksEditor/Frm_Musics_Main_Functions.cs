@@ -50,7 +50,7 @@ namespace EuroSound_Application.Musics
         internal void OpenTargetProperties(TreeNode SelectedNode)
         {
             EXAppTarget outTarget = OutputTargets[Convert.ToUInt32(SelectedNode.Name)];
-            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget) { Owner = this })
+            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget, SelectedNode, TreeView_MusicData) { Owner = this })
             {
                 newOutTarget.ShowDialog();
 
@@ -152,6 +152,20 @@ namespace EuroSound_Application.Musics
                 {
                     Textbox_DataCount.Text = ListView_WavHeaderData.Items.Count.ToString();
                 });
+
+                //Disable button
+                if (counter > 0)
+                {
+                    if (!(Button_StopUpdate.Disposing || Button_StopUpdate.IsDisposed))
+                    {
+                        Button_StopUpdate.Invoke((MethodInvoker)delegate
+                        {
+                            Button_StopUpdate.Enabled = true;
+                        });
+                    }
+                }
+
+                //Update status bar
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {

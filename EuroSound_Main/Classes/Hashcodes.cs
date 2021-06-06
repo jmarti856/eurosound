@@ -65,7 +65,7 @@ namespace EuroSound_Application.HashCodesFunctions
             return HashcodeHex;
         }
 
-        internal static void LoadSoundDataFile(string FilePath)
+        internal static void LoadSoundDataFile(string FilePath, bool showErrorMessage = false)
         {
             string Rootedpath = FilePath;
 
@@ -83,11 +83,14 @@ namespace EuroSound_Application.HashCodesFunctions
             }
             else
             {
-                MessageBox.Show(string.Join(" ", "Loading File:", Rootedpath, "\n", "\n", "Error:", FilePath, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (showErrorMessage)
+                {
+                    MessageBox.Show(string.Join(" ", "Loading File:", Rootedpath, Environment.NewLine, Environment.NewLine, "Error:", FilePath, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 
-        internal static void LoadMusicHashcodes(string FilePath)
+        internal static void LoadMusicHashcodes(string FilePath, bool showErrorMessage = false)
         {
             string Rootedpath = FilePath;
 
@@ -105,11 +108,14 @@ namespace EuroSound_Application.HashCodesFunctions
             }
             else
             {
-                MessageBox.Show(string.Join(" ", "Loading File:", Rootedpath, "\n", "\n", "Error:", FilePath, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (showErrorMessage)
+                {
+                    MessageBox.Show(string.Join(" ", "Loading File:", Rootedpath, Environment.NewLine, Environment.NewLine, "Error:", FilePath, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 
-        internal static void LoadSoundHashcodes(string FilePath)
+        internal static void LoadSoundHashcodes(string FilePath, bool showErrorMessage = false)
         {
             string Rootedpath = FilePath;
 
@@ -127,13 +133,16 @@ namespace EuroSound_Application.HashCodesFunctions
             }
             else
             {
-                MessageBox.Show(string.Join(" ", "Loading File:", Rootedpath, "\n", "\n", "Error:", FilePath, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (showErrorMessage)
+                {
+                    MessageBox.Show(string.Join(" ", "Loading File:", Rootedpath, Environment.NewLine, Environment.NewLine, "Error:", FilePath, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 
 
         #region SFX Defines && SB Defines dictionary
-        internal static void ReadHashcodes(string FilePath)
+        private static void ReadHashcodes(string FilePath)
         {
             //Clear dictionaries
             SFX_Defines.Clear();
@@ -184,7 +193,7 @@ namespace EuroSound_Application.HashCodesFunctions
                                     }
                                     catch (FormatException)
                                     {
-                                        MessageBox.Show(string.Join(" ", new string[] { "A hashcode with an invalid hex format has been found, the label is:", HexLabel }), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        MessageBox.Show(string.Join(" ", "A hashcode with an invalid hex format has been found, the label is:", HexLabel), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     }
                                 }
                             }
@@ -196,7 +205,7 @@ namespace EuroSound_Application.HashCodesFunctions
         #endregion SFX Defines && SB Defines dictionary
 
         #region MFX Defines
-        internal static void ReadMusicHashcodes(string filePath)
+        private static void ReadMusicHashcodes(string filePath)
         {
             //Clear dictionaries
             MFX_Defines.Clear();
@@ -242,7 +251,7 @@ namespace EuroSound_Application.HashCodesFunctions
                                         }
                                         catch (FormatException)
                                         {
-                                            MessageBox.Show(string.Join(" ", new string[] { "A hashcode with an invalid hex format has been found, the label is:", HexLabel }), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                            MessageBox.Show(string.Join(" ", "A hashcode with an invalid hex format has been found, the label is:", HexLabel), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                         }
                                     }
                                 }
@@ -295,7 +304,7 @@ namespace EuroSound_Application.HashCodesFunctions
                                         }
                                         catch (FormatException)
                                         {
-                                            MessageBox.Show(string.Join(" ", new string[] { "A hashcode with an invalid hex format has been found, the label is:", HexLabel }), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                            MessageBox.Show(string.Join(" ", "A hashcode with an invalid hex format has been found, the label is:", HexLabel), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                         }
                                     }
                                 }
@@ -308,7 +317,7 @@ namespace EuroSound_Application.HashCodesFunctions
         #endregion MFX Defines
 
         #region SFX DATA DICTIONARY
-        internal static void ReadSFXData(string filePath)
+        private static void ReadSFXData(string filePath)
         {
             SFX_Data.Clear();
             using (FileStream fs = File.OpenRead(filePath))
@@ -330,14 +339,10 @@ namespace EuroSound_Application.HashCodesFunctions
                                 if (SplitedLine.Length >= 9)
                                 {
                                     float[] ArrayOfValues = new float[8];
-                                    ArrayOfValues[0] = GenericFunctions.StringFloatToDouble(SplitedLine[0]);
-                                    ArrayOfValues[1] = GenericFunctions.StringFloatToDouble(SplitedLine[1]);
-                                    ArrayOfValues[2] = GenericFunctions.StringFloatToDouble(SplitedLine[2]);
-                                    ArrayOfValues[3] = GenericFunctions.StringFloatToDouble(SplitedLine[3]);
-                                    ArrayOfValues[4] = GenericFunctions.StringFloatToDouble(SplitedLine[4]);
-                                    ArrayOfValues[5] = GenericFunctions.StringFloatToDouble(SplitedLine[5]);
-                                    ArrayOfValues[6] = GenericFunctions.StringFloatToDouble(SplitedLine[6]);
-                                    ArrayOfValues[7] = GenericFunctions.StringFloatToDouble(SplitedLine[7]);
+                                    for (int i = 0; i < ArrayOfValues.Length; i++)
+                                    {
+                                        ArrayOfValues[i] = GenericFunctions.StringFloatToDouble(SplitedLine[i]);
+                                    }
                                     SFX_Data.Add(ArrayOfValues);
                                 }
                             }

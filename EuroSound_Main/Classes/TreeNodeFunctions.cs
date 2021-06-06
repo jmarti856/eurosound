@@ -16,7 +16,7 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
         public static extern int GetScrollPos(int hWnd, int nBar);
 
         [DllImport("user32.dll")]
-        static extern int SetScrollPos(IntPtr hWnd, int nBar, int nPos, bool bRedraw);
+        private static extern int SetScrollPos(IntPtr hWnd, int nBar, int nPos, bool bRedraw);
 
         private const int SB_HORZ = 0x0;
         private const int SB_VERT = 0x1;
@@ -36,6 +36,33 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
         internal static bool CheckIfNodeExistsByText(TreeView SearchControl, string Name)
         {
             return (SearchNodeRecursiveByText(SearchControl.Nodes, Name.ToLower(), SearchControl, false) != null);
+        }
+
+        internal static bool CheckIfTargetNodeExists(TreeView SearchControl, string Name, string currentTargetName)
+        {
+            return (SearchTargetNodeExists(SearchControl.Nodes, Name, currentTargetName) != null);
+        }
+
+        internal static TreeNode SearchTargetNodeExists(IEnumerable nodes, string TextToCheck, string NameToDiscard)
+        {
+            foreach (TreeNode node in nodes)
+            {
+                if (node.Text.Equals(TextToCheck, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (!node.Name.Equals(NameToDiscard))
+                    {
+                        return node;
+                    }
+                }
+
+                TreeNode result = SearchTargetNodeExists(node.Nodes, TextToCheck, NameToDiscard);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
+            return null;
         }
 
         internal static void EditNodeLabel(TreeView TreeViewFile, TreeNode NodeToEdit)
@@ -103,7 +130,7 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
                 }
                 else
                 {
-                    if (node.Text.Equals(searchFor, System.StringComparison.OrdinalIgnoreCase))
+                    if (node.Text.Equals(searchFor, StringComparison.OrdinalIgnoreCase))
                     {
                         return node;
                     }

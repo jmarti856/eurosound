@@ -60,7 +60,7 @@ namespace EuroSound_Application.StreamSounds
             {
                 BinaryName = EXAppTarget_Functions.GetBinaryName(ProjectInfo, GlobalPreferences.SelectedProfileName)
             };
-            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget) { Owner = this })
+            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget, null, TreeView_StreamData) { Owner = this })
             {
                 newOutTarget.ShowDialog();
 

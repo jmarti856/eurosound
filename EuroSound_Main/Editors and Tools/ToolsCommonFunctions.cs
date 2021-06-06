@@ -288,7 +288,7 @@ namespace EuroSound_Application.Editors_and_Tools
         //*===============================================================================================
         //* Tree View
         //*===============================================================================================
-        internal static void TreeViewNodeRename(TreeView treeViewControl, ProjectFile currentProject, NodeLabelEditEventArgs e)
+        internal static void TreeViewNodeRename(TreeView treeViewControl, ProjectFile currentProject, NodeLabelEditEventArgs e, Dictionary<uint, EXAppTarget> OutputTargets)
         {
             //Check that we have selected a node, and we have not selected the root folder
             if (e.Node.Parent != null && e.Node.Level > 0)
@@ -317,6 +317,13 @@ namespace EuroSound_Application.Editors_and_Tools
                         {
                             //Update tree node props
                             e.Node.Text = labelText;
+
+                            //Change target name if the node is a target 
+                            if (Convert.ToByte(e.Node.Tag) == (byte)Enumerations.TreeNodeType.Target)
+                            {
+                                EXAppTarget TargetToModify = OutputTargets[Convert.ToUInt32(e.Node.Name)];
+                                TargetToModify.Name = e.Node.Text;
+                            }
 
                             //Update project status variable
                             currentProject.FileHasBeenModified = true;

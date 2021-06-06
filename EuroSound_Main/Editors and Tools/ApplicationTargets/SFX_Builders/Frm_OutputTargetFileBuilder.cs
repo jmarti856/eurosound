@@ -98,12 +98,14 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                     foreach (EXAppTarget storedTarget in currentProjectTargets.Values)
                     {
                         string directoryPath = Path.Combine(storedTarget.OutputDirectory, string.Join("", "_bin_", storedTarget.Name));
+                        Directory.CreateDirectory(directoryPath);
                         OutputTarget(selectedTarget, directoryPath, e);
                     }
                 }
                 else
                 {
                     string directoryPath = Path.Combine(selectedTarget.OutputDirectory, string.Join("", "_bin_", selectedTarget.Name));
+                    Directory.CreateDirectory(directoryPath);
                     OutputTarget(selectedTarget, directoryPath, e);
                 }
             }
@@ -122,21 +124,24 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                 {
                     case (int)Enumerations.ESoundFileType.SoundBanks:
                         string filePath = Path.Combine(directoryPath, "_Eng", selectedTarget.BinaryName);
-                        BuildSFXSoundBank_Sphinx(directoryPath, filePath, parentFormTag, storedTarget.Name, e);
+                        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                        BuildSFXSoundBank_Sphinx(filePath, parentFormTag, storedTarget.Name, e);
                         break;
                     case (int)Enumerations.ESoundFileType.StreamSounds:
                         filePath = Path.Combine(directoryPath, "_Eng", selectedTarget.BinaryName);
-                        BuildSFXStreamBank_Sphinx(directoryPath, filePath, parentFormTag, storedTarget.Name, e);
+                        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                        BuildSFXStreamBank_Sphinx(filePath, parentFormTag, storedTarget.Name, e);
                         break;
                     case (int)Enumerations.ESoundFileType.MusicBanks:
                         filePath = Path.Combine(directoryPath, "Music", selectedTarget.BinaryName);
-                        BuildMusicBank_Sphinx(directoryPath, filePath, parentFormTag, storedTarget.Name, e);
+                        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                        BuildMusicBank_Sphinx(filePath, parentFormTag, storedTarget.Name, e);
                         break;
                 }
 
                 if (selectedTarget.UpdateFileList)
                 {
-                    GenericFunctions.BuildSphinxFilelist();
+                    GenericFunctions.BuildSphinxFilelist(storedTarget.Name);
                 }
             }
         }

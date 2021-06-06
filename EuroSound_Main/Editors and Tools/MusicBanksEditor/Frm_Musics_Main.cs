@@ -242,12 +242,6 @@ namespace EuroSound_Application.Musics
                             });
 
                             //Disable button
-                            Button_StopUpdate.Invoke((MethodInvoker)delegate
-                            {
-                                Button_StopUpdate.Enabled = false;
-                            });
-
-                            //Disable button
                             Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
                             {
                                 Button_ExportInterchangeFile.Enabled = false;
@@ -278,15 +272,6 @@ namespace EuroSound_Application.Musics
                                 Button_UpdateProperties.Invoke((MethodInvoker)delegate
                                 {
                                     Button_UpdateProperties.Enabled = true;
-                                });
-                            }
-
-                            //Disable button
-                            if (!(Button_StopUpdate.Disposing || Button_StopUpdate.IsDisposed))
-                            {
-                                Button_StopUpdate.Invoke((MethodInvoker)delegate
-                                {
-                                    Button_StopUpdate.Enabled = true;
                                 });
                             }
 
@@ -606,7 +591,7 @@ namespace EuroSound_Application.Musics
 
         private void TreeView_MusicData_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            ToolsCommonFunctions.TreeViewNodeRename(TreeView_MusicData, ProjectInfo, e);
+            ToolsCommonFunctions.TreeViewNodeRename(TreeView_MusicData, ProjectInfo, e, OutputTargets);
         }
 
         private void TreeView_MusicData_KeyDown(object sender, KeyEventArgs e)
@@ -794,6 +779,8 @@ namespace EuroSound_Application.Musics
                 ListView_WavHeaderData.Items.Clear();
                 ListView_WavHeaderData.Enabled = true;
                 Textbox_DataCount.Text = "0";
+                Button_StopUpdate.Enabled = false;
+
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             }
         }
@@ -817,7 +804,7 @@ namespace EuroSound_Application.Musics
                 if (Music.OutputThisSound)
                 {
                     //Generate comment
-                    string Comment = "// Music Jump Codes For Level " + Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, ProjectInfo.Hashcode) + "\n";
+                    string Comment = "// Music Jump Codes For Level " + Hashcodes.GetHashcodeLabel(Hashcodes.MFX_Defines, ProjectInfo.Hashcode) + Environment.NewLine;
                     GenericFunctions.AppendTextToRichTextBox(Comment, Color.Green, Rtbx_Jump_Music_Codes);
 
                     //Get Music Name
@@ -873,7 +860,7 @@ namespace EuroSound_Application.Musics
                         uint JumpHashcode = Convert.ToUInt32((int)GlobalPreferences.MusicPrefix | ((i & 0xFF) << 8) | (((int)ProjectInfo.Hashcode & 0xFF << 0)));
                         if (!string.IsNullOrEmpty(JumpHashcodeLabel))
                         {
-                            GenericFunctions.AppendTextToRichTextBox("#define " + JumpHashcodeLabel + " 0x" + JumpHashcode.ToString("X8") + "\n", Color.Brown, Rtbx_Jump_Music_Codes);
+                            GenericFunctions.AppendTextToRichTextBox("#define " + JumpHashcodeLabel + " 0x" + JumpHashcode.ToString("X8") + Environment.NewLine, Color.Brown, Rtbx_Jump_Music_Codes);
                         }
                     }
                 }
@@ -887,7 +874,7 @@ namespace EuroSound_Application.Musics
                 BinaryName = EXAppTarget_Functions.GetBinaryName(ProjectInfo, GlobalPreferences.SelectedProfileName)
             };
 
-            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget) { Owner = this })
+            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget, null, TreeView_MusicData) { Owner = this })
             {
                 newOutTarget.ShowDialog();
 

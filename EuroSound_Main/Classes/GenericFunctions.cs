@@ -285,15 +285,29 @@ namespace EuroSound_Application
             }
         }
 
-        internal static void BuildSphinxFilelist()
+        internal static void BuildSphinxFilelist(string platform)
         {
             if (File.Exists(GlobalPreferences.MkFileListPath))
             {
-                ExecuteCMDCommand(@"/C " + GlobalPreferences.MkFileListPath + " " + GlobalPreferences.SelectedProfileName + " PC");
+                if (platform.Equals("PC", StringComparison.OrdinalIgnoreCase))
+                {
+                    ExecuteCMDCommand(@"/C " + GlobalPreferences.MkFileListPath + " " + GlobalPreferences.SelectedProfileName + " PC");
+                }
+                else if (platform.Equals("PS2", StringComparison.OrdinalIgnoreCase))
+                {
+                    ExecuteCMDCommand(@"/C " + GlobalPreferences.MkFileListPath + " " + GlobalPreferences.SelectedProfileName + " PS2 FINAL");
+                }
             }
             if (File.Exists(GlobalPreferences.MkFileList2Path))
             {
-                ExecuteCMDCommand(@"/C " + GlobalPreferences.MkFileList2Path + " " + GlobalPreferences.SelectedProfileName + " PC");
+                if (platform.Equals("PC", StringComparison.OrdinalIgnoreCase))
+                {
+                    ExecuteCMDCommand(@"/C " + GlobalPreferences.MkFileList2Path + " " + GlobalPreferences.SelectedProfileName + " PC");
+                }
+                else if (platform.Equals("PS2", StringComparison.OrdinalIgnoreCase))
+                {
+                    ExecuteCMDCommand(@"/C " + GlobalPreferences.MkFileList2Path + " " + GlobalPreferences.SelectedProfileName + " PS2 FINAL");
+                }
             }
         }
 

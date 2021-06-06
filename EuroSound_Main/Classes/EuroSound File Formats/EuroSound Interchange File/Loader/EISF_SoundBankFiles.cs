@@ -259,8 +259,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     }
                     if (CurrentKeyWord.Equals("TARGETOUTPUT"))
                     {
-                        byte targetOutput;
-                        if (byte.TryParse(KeyWordValues[0], out targetOutput))
+                        if (byte.TryParse(KeyWordValues[0], out byte targetOutput))
                         {
                             SFXSound.OutputTarget = targetOutput;
                         }
@@ -553,7 +552,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                                 {
                                                     uint RefHashC = (uint)FileRef;
                                                     NewSample.HashcodeSubSFX = GlobalPreferences.SfxPrefix | RefHashC;
-                                                    NewSample.ComboboxSelectedAudio = "<SUB SFX>";
+                                                    NewSample.ComboboxSelectedAudio = string.Empty;
                                                 }
                                                 else
                                                 {

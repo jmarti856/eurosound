@@ -242,12 +242,6 @@ namespace EuroSound_Application.StreamSounds
                             });
 
                             //Disable Button
-                            Button_StopUpdate.Invoke((MethodInvoker)delegate
-                            {
-                                Button_StopUpdate.Enabled = false;
-                            });
-
-                            //Disable Button
                             Button_ExportInterchangeFile.Invoke((MethodInvoker)delegate
                             {
                                 Button_ExportInterchangeFile.Enabled = false;
@@ -269,15 +263,6 @@ namespace EuroSound_Application.StreamSounds
                                 Button_UpdateList_WavData.Invoke((MethodInvoker)delegate
                                 {
                                     Button_UpdateList_WavData.Enabled = true;
-                                });
-                            }
-
-                            //Enable Button
-                            if (!(Button_StopUpdate.Disposing || Button_StopUpdate.IsDisposed))
-                            {
-                                Button_StopUpdate.Invoke((MethodInvoker)delegate
-                                {
-                                    Button_StopUpdate.Enabled = true;
                                 });
                             }
 
@@ -458,7 +443,7 @@ namespace EuroSound_Application.StreamSounds
         //*===============================================================================================
         private void TreeView_StreamData_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            ToolsCommonFunctions.TreeViewNodeRename(TreeView_StreamData, ProjectInfo, e);
+            ToolsCommonFunctions.TreeViewNodeRename(TreeView_StreamData, ProjectInfo, e, OutputTargets);
         }
 
         private void TreeView_StreamData_BeforeCollapse(object sender, TreeViewCancelEventArgs e)

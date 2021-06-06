@@ -16,9 +16,9 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
 {
     public partial class Frm_OutputTargetFileBuilder
     {
-        private void BuildSFXSoundBank_Sphinx(string directoryPath, string fullFilePath, string parentFormTag, string target, DoWorkEventArgs e)
+        private void BuildSFXSoundBank_Sphinx(string fullFilePath, string parentFormTag, string target, DoWorkEventArgs e)
         {
-            if (Directory.Exists(directoryPath))
+            if (Directory.Exists(Path.GetDirectoryName(fullFilePath)))
             {
                 //*===============================================================================================
                 //* GLOBAL VARS
@@ -235,9 +235,9 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
             }
         }
 
-        private void BuildSFXStreamBank_Sphinx(string directoryPath, string fullFilePath, string parentFormTag, string target, DoWorkEventArgs e)
+        private void BuildSFXStreamBank_Sphinx(string fullFilePath, string parentFormTag, string target, DoWorkEventArgs e)
         {
-            if (Directory.Exists(directoryPath))
+            if (Directory.Exists(Path.GetDirectoryName(fullFilePath)))
             {
                 Dictionary<uint, EXSoundStream> FinalSoundsDict;
                 GenerateSFXStreamedSounds SFXCreator = new GenerateSFXStreamedSounds();
@@ -425,9 +425,9 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
             }
         }
 
-        private void BuildMusicBank_Sphinx(string directoryPath, string fullFilePath, string parentFormTag, string target, DoWorkEventArgs e)
+        private void BuildMusicBank_Sphinx(string fullFilePath, string parentFormTag, string target, DoWorkEventArgs e)
         {
-            if (Directory.Exists(directoryPath))
+            if (Directory.Exists(Path.GetDirectoryName(fullFilePath)))
             {
                 Dictionary<uint, EXMusic> FinalMusicsDict;
                 GenerateSFXMusicBank SFXCreator = new GenerateSFXMusicBank();

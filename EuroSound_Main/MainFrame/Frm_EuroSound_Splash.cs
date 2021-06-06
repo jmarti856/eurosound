@@ -61,44 +61,49 @@ namespace EuroSound_Application.SplashForm
             //*===============================================================================================
             Label_Status.Text = "Checking Profile, please wait...";
 
+            //Get stored profile info
             string profileNameFromReg = WindowsRegistryFunctions.LoadCurrentProfie("CurrentProfileName");
             string profilePathFromReg = WindowsRegistryFunctions.LoadCurrentProfie("CurrentProfile");
-            string profileMD5 = WindowsRegistryFunctions.LoadCurrentProfie("CurrentProfileMD5");
+            string profileHashMD5 = WindowsRegistryFunctions.LoadCurrentProfie("CurrentProfileMD5");
 
-            //Reload last profile if file exists
-            if (File.Exists(profilePathFromReg))
+            //We don't have any profile, is the first time that we start EuroSound. 
+            if (string.IsNullOrEmpty(profileNameFromReg) || string.IsNullOrEmpty(profilePathFromReg))
             {
-                GlobalPreferences.SelectedProfileName = profileNameFromReg;
-                GlobalPreferences.SelectedProfile = profilePathFromReg;
+                //if we only have one profile, load it
+                if (GenericFunctions.AvailableProfiles.Count == 1)
+                {
+                    KeyValuePair<string, string> ProfileInfo = GenericFunctions.AvailableProfiles.ElementAt(0);
+                    if (File.Exists(ProfileInfo.Value))
+                    {
+                        new ProfilesFunctions().ApplyProfile(ProfileInfo.Value, ProfileInfo.Key, true);
+                    }
+                }
             }
             else
             {
-                //Update profile name and path
-                if (!string.IsNullOrEmpty(profileNameFromReg))
+                //Check that the stored profile and the profile of the ini are the same
+                foreach (KeyValuePair<string, string> profileToCheck in GenericFunctions.AvailableProfiles)
                 {
-                    foreach (KeyValuePair<string, string> profileToCheck in GenericFunctions.AvailableProfiles)
+                    //Key = NAME; Value = PATH
+                    if (profileToCheck.Key.Equals(profileNameFromReg))
                     {
-                        if (profileToCheck.Key.Equals(profileNameFromReg))
+                        //Calculate MD5
+                        string IniProfileMD5 = GenericFunctions.CalculateMD5(profileToCheck.Value);
+
+                        //Stored profile matches with the ini profile
+                        if (IniProfileMD5.Equals(profileToCheck.Value))
                         {
-                            if (File.Exists(profileToCheck.Value))
-                            {
-                                GlobalPreferences.SelectedProfileName = profileToCheck.Key;
-                                GlobalPreferences.SelectedProfile = profileToCheck.Value;
-                            }
-                            break;
+                            GlobalPreferences.SelectedProfileName = profileToCheck.Key;
+                            GlobalPreferences.SelectedProfile = profileToCheck.Value;
                         }
-                    }
-                }
-                //If there's only one profile load it by defaut.
-                else
-                {
-                    if (GenericFunctions.AvailableProfiles.Count == 1)
-                    {
-                        KeyValuePair<string, string> profile = GenericFunctions.AvailableProfiles.ElementAt(0);
-                        if (File.Exists(profile.Value))
+                        else
                         {
-                            new ProfilesFunctions().ApplyProfile(profile.Value, profile.Key, true);
+                            //Read profile again
+                            new ProfilesFunctions().ApplyProfile(profileToCheck.Value, profileToCheck.Key, true);
                         }
+
+                        //Quit loop
+                        break;
                     }
                 }
             }
@@ -110,7 +115,7 @@ namespace EuroSound_Application.SplashForm
             if (File.Exists(GlobalPreferences.SelectedProfile))
             {
                 //Reload profile if paths are not equal or the file has changed
-                if (!profilePathFromReg.Equals(GlobalPreferences.SelectedProfile) || !GenericFunctions.CalculateMD5(GlobalPreferences.SelectedProfile).Equals(profileMD5))
+                if (!profilePathFromReg.Equals(GlobalPreferences.SelectedProfile) || !GenericFunctions.CalculateMD5(GlobalPreferences.SelectedProfile).Equals(profileHashMD5))
                 {
                     Label_Status.Text = "Loading Profile, please wait...";
 
@@ -187,6 +192,11 @@ namespace EuroSound_Application.SplashForm
                 GlobalPreferences.PlaySoundWhenOutput = Convert.ToBoolean(int.Parse(WindowsRegistryFunctions.LoadSaveOutputSettings("PlaySoundWhenOutput", "0")));
                 await Task.Delay(randomNumber.Next(minimum, maximum));
             }
+            else
+            {
+                //Inform user about this
+                MessageBox.Show(string.Join(" ", "Loading File:", GlobalPreferences.SelectedProfile, Environment.NewLine, Environment.NewLine, "Error:", GlobalPreferences.SelectedProfile, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
 
             //*===============================================================================================
             //* Load User Settings
@@ -213,17 +223,17 @@ namespace EuroSound_Application.SplashForm
 
             //-----------------------------------------[Sound Data]----------------------------------------
             Label_Status.Text = "Loading sounds data hashtable, please wait...";
-            Hashcodes.LoadSoundDataFile(GlobalPreferences.HT_SoundsDataPath);
+            Hashcodes.LoadSoundDataFile(GlobalPreferences.HT_SoundsDataPath, true);
             await Task.Delay(randomNumber.Next(minimum, maximum));
 
             //-----------------------------------------[Sound Defines]----------------------------------------
             Label_Status.Text = "Loading sounds hashtable, please wait...";
-            Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath);
+            Hashcodes.LoadSoundHashcodes(GlobalPreferences.HT_SoundsPath, true);
             await Task.Delay(randomNumber.Next(minimum, maximum));
 
             //-----------------------------------------[Music Defines]----------------------------------------
             Label_Status.Text = "Loading musics hashtable, please wait...";
-            Hashcodes.LoadMusicHashcodes(GlobalPreferences.HT_MusicPath);
+            Hashcodes.LoadMusicHashcodes(GlobalPreferences.HT_MusicPath, true);
             await Task.Delay(randomNumber.Next(minimum, maximum));
 
             //-----------------------------------------[Load AudioDevice]---------------------------------------

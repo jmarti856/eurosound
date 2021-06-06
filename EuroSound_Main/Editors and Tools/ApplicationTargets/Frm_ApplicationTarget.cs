@@ -1,5 +1,6 @@
 ﻿using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.Clases;
+using EuroSound_Application.TreeViewLibraryFunctions;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -9,6 +10,8 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
     public partial class Frm_ApplicationTarget : Form
     {
         private EXAppTarget targetOutput;
+        private TreeNode targetNode;
+        private TreeView treeViewControl;
 
         private string[,] AvailableTargets = new string[3, 4]
         {
@@ -17,10 +20,12 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
             {"jmarti856", "Sphinx Output - EngineX (0182)", "SPNX", @"X:\Sphinx\Binary\"},
         };
 
-        public Frm_ApplicationTarget(EXAppTarget outputTarget)
+        public Frm_ApplicationTarget(EXAppTarget outputTarget, TreeNode nodeTarget, TreeView treeviewControl)
         {
             InitializeComponent();
             targetOutput = outputTarget;
+            targetNode = nodeTarget;
+            treeViewControl = treeviewControl;
         }
 
         private void Frm_ApplicationTarget_Load(object sender, EventArgs e)
@@ -58,18 +63,43 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
-            //Save Changes
-            targetOutput.Project = (uint)Combobox_Target.SelectedIndex;
-            targetOutput.Name = Textbox_TargetName.Text;
-            targetOutput.OutputDirectory = Textbox_OutputDirectory.Text;
-            targetOutput.BinaryName = Textbox_BinaryName.Text;
-            targetOutput.UpdateFileList = checkBox_UpdateFilelist.Checked;
+            //Check target is not duplicated
+            bool targetNodeAlreadyExists;
+            if (targetNode == null)
+            {
+                targetNodeAlreadyExists = TreeNodeFunctions.CheckIfNodeExistsByText(treeViewControl, Textbox_TargetName.Text);
+            }
+            else
+            {
+                targetNodeAlreadyExists = TreeNodeFunctions.CheckIfTargetNodeExists(treeViewControl, Textbox_TargetName.Text, targetNode.Name);
+            }
 
-            //Dialog Result
-            DialogResult = DialogResult.OK;
+            if (targetNodeAlreadyExists)
+            {
+                //Print error
+                MessageBox.Show("A target with this node already exists, please change the target name or cancel the creation.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                //Save Changes
+                targetOutput.Project = (uint)Combobox_Target.SelectedIndex;
+                targetOutput.Name = Textbox_TargetName.Text;
+                targetOutput.OutputDirectory = Textbox_OutputDirectory.Text;
+                targetOutput.BinaryName = Textbox_BinaryName.Text;
+                targetOutput.UpdateFileList = checkBox_UpdateFilelist.Checked;
 
-            //Close Form
-            Close();
+                //Update tree view
+                if (targetNode != null)
+                {
+                    targetNode.Text = Textbox_TargetName.Text;
+                }
+
+                //Dialog Result
+                DialogResult = DialogResult.OK;
+
+                //Close Form
+                Close();
+            }
         }
 
         private void Button_Cancel_Click(object sender, EventArgs e)

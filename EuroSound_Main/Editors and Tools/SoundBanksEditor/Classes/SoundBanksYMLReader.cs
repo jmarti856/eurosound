@@ -167,7 +167,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
                                 {
                                     uint GetHashcode = Convert.ToUInt32("0x" + Entry.Value[0].ToString("X8"), 16);
                                     newSample.HashcodeSubSFX = GlobalPreferences.SfxPrefix | GetHashcode;
-                                    newSample.ComboboxSelectedAudio = "<SUB SFX>";
+                                    newSample.ComboboxSelectedAudio = string.Empty;
                                 }
                                 else
                                 {

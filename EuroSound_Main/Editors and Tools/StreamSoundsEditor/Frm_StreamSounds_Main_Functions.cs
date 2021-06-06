@@ -51,7 +51,7 @@ namespace EuroSound_Application.StreamSounds
         internal void OpenTargetProperties(TreeNode SelectedNode)
         {
             EXAppTarget outTarget = OutputTargets[Convert.ToUInt32(SelectedNode.Name)];
-            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget) { Owner = this })
+            using (Frm_ApplicationTarget newOutTarget = new Frm_ApplicationTarget(outTarget, SelectedNode, TreeView_StreamData) { Owner = this })
             {
                 newOutTarget.ShowDialog();
 
@@ -130,6 +130,15 @@ namespace EuroSound_Application.StreamSounds
                         Button_UpdateList_WavData.Enabled = true;
                     });
                 }
+
+                //Enable button if there are items in the list
+                if (!(Button_StopUpdate.Disposing || Button_StopUpdate.IsDisposed))
+                {
+                    Button_StopUpdate.BeginInvoke((MethodInvoker)delegate
+                    {
+                        Button_StopUpdate.Enabled = true;
+                    });
+                }
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             })
             {
@@ -145,7 +154,9 @@ namespace EuroSound_Application.StreamSounds
                 UpdateWavList.Abort();
                 ListView_WavHeaderData.Items.Clear();
                 ListView_WavHeaderData.Enabled = true;
-                Button_UpdateList_WavData.Enabled = true;
+                Button_StopUpdate.Enabled = false;
+
+                //Update status bar
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             }
         }

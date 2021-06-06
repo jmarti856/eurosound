@@ -84,7 +84,7 @@ namespace EuroSound_Application
                     }
                     else
                     {
-                        MessageBox.Show(string.Join(" ", "Loading file:", FileToLoad, "\n\n", "Error:", FileToLoad, "has a bad format"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(string.Join(" ", "Loading file:", FileToLoad, Environment.NewLine, Environment.NewLine, "Error:", FileToLoad, "has a bad format"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
             }
@@ -250,7 +250,7 @@ namespace EuroSound_Application
                                             //Switch to main thread
                                             Invoke(new Action(() =>
                                             {
-                                                DialogResult updateQuestion = MessageBox.Show(string.Join("", "It seems that you don't have the latest version of EuroSound.\nYou have the release: ", currentRelease, " and the latest release is: ", lastReleaseVersion, ".\n\nWould you like to go to the repository page?"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                                                DialogResult updateQuestion = MessageBox.Show(string.Join("", "It seems that you don't have the latest version of EuroSound.", Environment.NewLine, "You have the release: ", currentRelease, " and the latest release is: ", lastReleaseVersion, ".\n\nWould you like to go to the repository page?"), "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                                                 if (updateQuestion == DialogResult.Yes)
                                                 {
                                                     Process.Start(string.Join("", "https://github.com/jmarti856/eurosound/releases/tag/", lastReleaseVersion));

@@ -282,33 +282,15 @@ namespace EuroSound_Application.SoundBanksEditor
                             });
 
                             //Disable Button
-                            Button_Stop_WavUpdate.Invoke((MethodInvoker)delegate
-                            {
-                                Button_Stop_WavUpdate.Enabled = false;
-                            });
-
-                            //Disable Button
                             Button_UpdateList_Hashcodes.Invoke((MethodInvoker)delegate
                             {
                                 Button_UpdateList_Hashcodes.Enabled = false;
                             });
 
                             //Disable Button
-                            Button_StopHashcodeUpdate.Invoke((MethodInvoker)delegate
-                            {
-                                Button_StopHashcodeUpdate.Enabled = false;
-                            });
-
-                            //Disable Button
                             Button_UpdateList_StreamData.Invoke((MethodInvoker)delegate
                             {
                                 Button_UpdateList_StreamData.Enabled = false;
-                            });
-
-                            //Disable Button
-                            Button_StopStreamData.Invoke((MethodInvoker)delegate
-                            {
-                                Button_StopStreamData.Enabled = false;
                             });
 
                             //Disable Button
@@ -343,15 +325,6 @@ namespace EuroSound_Application.SoundBanksEditor
                             }
 
                             //Enable Button
-                            if (!(Button_Stop_WavUpdate.Disposing || Button_Stop_WavUpdate.IsDisposed))
-                            {
-                                Button_Stop_WavUpdate.Invoke((MethodInvoker)delegate
-                                {
-                                    Button_Stop_WavUpdate.Enabled = true;
-                                });
-                            }
-
-                            //Enable Button
                             if (!(Button_UpdateList_Hashcodes.Disposing || Button_UpdateList_Hashcodes.IsDisposed))
                             {
                                 Button_UpdateList_Hashcodes.Invoke((MethodInvoker)delegate
@@ -361,29 +334,11 @@ namespace EuroSound_Application.SoundBanksEditor
                             }
 
                             //Enable Button
-                            if (!(Button_StopHashcodeUpdate.Disposing || Button_StopHashcodeUpdate.IsDisposed))
-                            {
-                                Button_StopHashcodeUpdate.Invoke((MethodInvoker)delegate
-                                {
-                                    Button_StopHashcodeUpdate.Enabled = true;
-                                });
-                            }
-
-                            //Enable Button
                             if (!(Button_UpdateList_StreamData.Disposing || Button_UpdateList_StreamData.IsDisposed))
                             {
                                 Button_UpdateList_StreamData.Invoke((MethodInvoker)delegate
                                 {
                                     Button_UpdateList_StreamData.Enabled = true;
-                                });
-                            }
-
-                            //Enable Button
-                            if (!(Button_StopStreamData.Disposing || Button_StopStreamData.IsDisposed))
-                            {
-                                Button_StopStreamData.Invoke((MethodInvoker)delegate
-                                {
-                                    Button_StopStreamData.Enabled = true;
                                 });
                             }
 
@@ -874,7 +829,7 @@ namespace EuroSound_Application.SoundBanksEditor
         //*===============================================================================================
         private void TreeView_File_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            ToolsCommonFunctions.TreeViewNodeRename(TreeView_File, ProjectInfo, e);
+            ToolsCommonFunctions.TreeViewNodeRename(TreeView_File, ProjectInfo, e, OutputTargets);
         }
 
         //---------------------------------------------[Change Nodes Images]---------------------------------------------

@@ -296,14 +296,16 @@ namespace EuroSound_Application.Musics
             this.ImageList_TreeNode.Images.SetKeyName(0, "directory_closed_cool-4.png");
             this.ImageList_TreeNode.Images.SetKeyName(1, "directory_open_cool-4.png");
             this.ImageList_TreeNode.Images.SetKeyName(2, "cd_audio_cd-1.png");
-            this.ImageList_TreeNode.Images.SetKeyName(3, "cd_audio_cd-2.png");
+            this.ImageList_TreeNode.Images.SetKeyName(3, "shell32_41.ico");
             this.ImageList_TreeNode.Images.SetKeyName(4, "audio_compression-1.png");
-            this.ImageList_TreeNode.Images.SetKeyName(5, "cd_audio_cd-1 - no_output.png");
-            this.ImageList_TreeNode.Images.SetKeyName(6, "cd_audio_cd-2 - no_output.png");
-            this.ImageList_TreeNode.Images.SetKeyName(7, "amplify.png");
+            this.ImageList_TreeNode.Images.SetKeyName(5, "cd_audio_cd-1.ico");
+            this.ImageList_TreeNode.Images.SetKeyName(6, "shell32_41.ico");
+            this.ImageList_TreeNode.Images.SetKeyName(7, "midi_mg.ico");
             this.ImageList_TreeNode.Images.SetKeyName(8, "directory_closed-1.png");
             this.ImageList_TreeNode.Images.SetKeyName(9, "directory_open_cool-1.png");
-            this.ImageList_TreeNode.Images.SetKeyName(10, "accessibility_contrast.png");
+            this.ImageList_TreeNode.Images.SetKeyName(10, "computer_2.ico");
+            this.ImageList_TreeNode.Images.SetKeyName(11, "amplify.png");
+            this.ImageList_TreeNode.Images.SetKeyName(12, "accessibility_contrast.png");
             // 
             // ContextMenu_Musics
             // 
@@ -687,6 +689,7 @@ namespace EuroSound_Application.Musics
             // Button_StopUpdate
             // 
             this.Button_StopUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_StopUpdate.Enabled = false;
             this.Button_StopUpdate.Location = new System.Drawing.Point(498, 302);
             this.Button_StopUpdate.Name = "Button_StopUpdate";
             this.Button_StopUpdate.Size = new System.Drawing.Size(75, 23);
