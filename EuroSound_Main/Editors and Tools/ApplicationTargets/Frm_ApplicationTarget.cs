@@ -37,6 +37,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
             checkBox_UpdateFilelist.Checked = targetOutput.UpdateFileList;
             Textbox_TargetName.Text = targetOutput.Name;
             Textbox_BinaryName.Text = targetOutput.BinaryName;
+            Textbox_OutputDirectory.Text = targetOutput.OutputDirectory;
 
             //If we already set a target, disable combobox.
             if (targetOutput.Project != 0)
@@ -74,6 +75,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                 targetNodeAlreadyExists = TreeNodeFunctions.CheckIfTargetNodeExists(treeViewControl, Textbox_TargetName.Text, targetNode.Name);
             }
 
+            //Save changes
             if (targetNodeAlreadyExists)
             {
                 //Print error

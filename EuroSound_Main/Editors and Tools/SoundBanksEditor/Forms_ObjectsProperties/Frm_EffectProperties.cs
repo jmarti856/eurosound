@@ -25,7 +25,7 @@ namespace EuroSound_Application.SoundBanksEditor
         private Thread DataToCombobox;
         private ProjectFile fileProperties;
         private string TreeNodeSoundName, SoundSection;
-
+        private bool OriginalHasSubSFX = false, SubSFXToggled = false, flagsModified = false;
         public Frm_EffectProperties(EXSound SoundToCheck, ProjectFile FileProperties, string SoundName, string Section)
         {
             InitializeComponent();
@@ -78,6 +78,9 @@ namespace EuroSound_Application.SoundBanksEditor
 
             //Target
             Combobox_OutputTarget.SelectedIndex = SelectedSound.OutputTarget;
+
+            //SubSFX
+            OriginalHasSubSFX = EXSoundbanksFunctions.SubSFXFlagChecked(SelectedSound.Flags);
 
             //--Print Flags--
             textbox_flags.Text = GenericFunctions.PrintCheckedFlags("SoundFlags", 16, Convert.ToUInt16(textbox_flags.Tag));
@@ -243,6 +246,11 @@ namespace EuroSound_Application.SoundBanksEditor
 
                 if (formFlags.ShowDialog() == DialogResult.OK)
                 {
+                    //Modify bool var
+                    flagsModified = true;
+                    SubSFXToggled = EXSoundbanksFunctions.SubSFXFlagChecked(formFlags.CheckedFlags);
+
+                    //Save OriginalValue
                     textbox_flags.Tag = formFlags.CheckedFlags.ToString();
                     textbox_flags.Text = formFlags.CheckedFlagsString;
                 }
@@ -259,46 +267,53 @@ namespace EuroSound_Application.SoundBanksEditor
 
                 if (selectedSample != null)
                 {
-                    if (SoundSection.Equals("Sounds"))
+                    if ((OriginalHasSubSFX == false && SubSFXToggled == true) || (OriginalHasSubSFX == true && SubSFXToggled == false && flagsModified == true))
                     {
-                        GenericFunctions.SetCurrentFileLabel(sampleName, "SBPanel_LastFile");
-                        Frm_SampleProperties formSampleProps = new Frm_SampleProperties(selectedSample, fileProperties, EXSoundbanksFunctions.SubSFXFlagChecked(SelectedSound.Flags))
-                        {
-                            Text = GenericFunctions.TruncateLongString(sampleName, 25) + " - Properties",
-                            Tag = Tag,
-                            Owner = this,
-                            ShowInTaskbar = false
-                        };
-                        formSampleProps.ShowDialog();
-                        formSampleProps.Dispose();
+                        MessageBox.Show("The \"hasSubSfx\" flag has been toggled; please reopen this dialog to switch between the sample and subSFX selection modes. Until then, you won't be able to change the SFX samples properly. You can also modify the sound samples by accessing them directly in the child node.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
-                    {
-                        //Open form only if file exists
-                        if (File.Exists(GlobalPreferences.StreamFilePath))
+                    { 
+                        if (SoundSection.Equals("Sounds"))
                         {
                             GenericFunctions.SetCurrentFileLabel(sampleName, "SBPanel_LastFile");
-                            using (Frm_NewStreamSound addStreamSound = new Frm_NewStreamSound(selectedSample, fileProperties))
+                            Frm_SampleProperties formSampleProps = new Frm_SampleProperties(selectedSample, fileProperties, EXSoundbanksFunctions.SubSFXFlagChecked(SelectedSound.Flags))
                             {
-                                addStreamSound.Text = GenericFunctions.TruncateLongString(sampleName, 25) + " - Properties";
-                                addStreamSound.Tag = Tag;
-                                addStreamSound.Owner = this;
-                                addStreamSound.ShowInTaskbar = false;
-                                addStreamSound.ShowDialog();
-
-                                if (addStreamSound.DialogResult == DialogResult.OK)
-                                {
-                                    selectedSample.FileRef = (short)addStreamSound.SelectedSound;
-                                }
+                                Text = GenericFunctions.TruncateLongString(sampleName, 25) + " - Properties",
+                                Tag = Tag,
+                                Owner = this,
+                                ShowInTaskbar = false
                             };
+                            formSampleProps.ShowDialog();
+                            formSampleProps.Dispose();
                         }
                         else
                         {
-                            DialogResult specifyOtherPathQuestion = MessageBox.Show("The stream sounds file has not found, the file route is: \"" + GlobalPreferences.StreamFilePath + "\", do you want to specify another path ?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
-                            if (specifyOtherPathQuestion == DialogResult.Yes)
+                            //Open form only if file exists
+                            if (File.Exists(GlobalPreferences.StreamFilePath))
                             {
-                                GlobalPreferences.StreamFilePath = BrowsersAndDialogs.FileBrowserDialog("EuroSound Files (*.esf)|*.esf", 0, true);
-                                WindowsRegistryFunctions.SaveExternalFiles("StreamFile", "Path", GlobalPreferences.StreamFilePath);
+                                GenericFunctions.SetCurrentFileLabel(sampleName, "SBPanel_LastFile");
+                                using (Frm_NewStreamSound addStreamSound = new Frm_NewStreamSound(selectedSample, fileProperties))
+                                {
+                                    addStreamSound.Text = GenericFunctions.TruncateLongString(sampleName, 25) + " - Properties";
+                                    addStreamSound.Tag = Tag;
+                                    addStreamSound.Owner = this;
+                                    addStreamSound.ShowInTaskbar = false;
+                                    addStreamSound.ShowDialog();
+
+                                    if (addStreamSound.DialogResult == DialogResult.OK)
+                                    {
+                                        selectedSample.FileRef = (short)addStreamSound.SelectedSound;
+                                    }
+                                };
+                            }
+                            else
+                            {
+                                DialogResult specifyOtherPathQuestion = MessageBox.Show("The stream sounds file has not found, the file route is: \"" + GlobalPreferences.StreamFilePath + "\", do you want to specify another path ?", "EuroSound", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                                if (specifyOtherPathQuestion == DialogResult.Yes)
+                                {
+                                    GlobalPreferences.StreamFilePath = BrowsersAndDialogs.FileBrowserDialog("EuroSound Files (*.esf)|*.esf", 0, true);
+                                    WindowsRegistryFunctions.SaveExternalFiles("StreamFile", "Path", GlobalPreferences.StreamFilePath);
+                                }
                             }
                         }
                     }
