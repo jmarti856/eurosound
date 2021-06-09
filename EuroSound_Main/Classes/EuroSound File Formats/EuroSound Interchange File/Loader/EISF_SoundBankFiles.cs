@@ -159,7 +159,14 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                     case "PS2FREQUENCY":
                                         if (uint.TryParse(KeyWordValues[0], out uint PS2Frequ))
                                         {
-                                            FrequencyPS2 = PS2Frequ;
+                                            if (PS2Frequ > 0)
+                                            {
+                                                FrequencyPS2 = PS2Frequ;
+                                            }
+                                            else
+                                            {
+                                                FrequencyPS2 = 11025;
+                                            }
                                         }
                                         else
                                         {

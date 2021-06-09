@@ -26,10 +26,17 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
                 {
                     if (!fileLines[i].StartsWith("#"))
                     {
-                        string[] line = fileLines[i].Split(null);
-                        if (line.Length > 1)
+                        if (fileLines[i].StartsWith("- "))
                         {
-                            yield return Path.GetDirectoryName(FilePath) + "\\" + line[1] + "\\effectProperties.yml";
+                            string[] line = fileLines[i].Split(null);
+                            if (line.Length > 1)
+                            {
+                                yield return Path.GetDirectoryName(FilePath) + "\\" + line[1] + "\\effectProperties.yml";
+                            }
+                        }
+                        else
+                        {
+                            yield return Path.GetDirectoryName(FilePath) + "\\" + fileLines[i] + "\\effectProperties.yml";
                         }
                     }
                 }

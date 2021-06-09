@@ -356,7 +356,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
             return FinalSortedDict;
         }
 
-        internal Dictionary<string, EXAudio> GetFinalAudioDictionaryPCMData(IEnumerable<string> UsedAudios, Dictionary<string, EXAudio> AudiosList, ProgressBar Bar, string outputTarget)
+        internal Dictionary<string, EXAudio> GetFinalAudioDictionaryPCMData(IEnumerable<string> UsedAudios, Dictionary<string, EXAudio> AudiosList, ProgressBar Bar, string outputTarget, List<string> Reports)
         {
             Dictionary<string, EXAudio> FinalAudioDataDict = new Dictionary<string, EXAudio>();
 
@@ -382,7 +382,7 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                                 EXAudio pcAudio = new EXAudio
                                 {
                                     Flags = audioToExport.Flags,
-                                    Frequency = audioToExport.FrequencyPS2,
+                                    Frequency = audioToExport.Frequency,
                                     Channels = audioToExport.Channels,
                                     Bits = 4,
                                     PSIsample = (uint)(currentIndex * 96),
@@ -399,55 +399,66 @@ namespace EuroSound_Application.GenerateSoundBankSFX
                                 AudioFunctions audiof = new AudioFunctions();
                                 MemoryStream AudioSample = new MemoryStream(audioToExport.PCMdata);
                                 IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat((int)audioToExport.Frequency, (int)audioToExport.Bits, (int)audioToExport.Channels));
-                                using (MediaFoundationResampler conversionStream = new MediaFoundationResampler(provider, new WaveFormat((int)audioToExport.FrequencyPS2, (int)audioToExport.Bits, (int)audioToExport.Channels)))
+                                try
                                 {
-                                    //Get PCM Data Stereo
-                                    using (MemoryStream outStream = new MemoryStream())
+                                    using (MediaFoundationResampler conversionStream = new MediaFoundationResampler(provider, new WaveFormat((int)audioToExport.FrequencyPS2, (int)audioToExport.Bits, (int)audioToExport.Channels)))
                                     {
-                                        byte[] bytes = new byte[conversionStream.WaveFormat.AverageBytesPerSecond * 4];
-                                        while (true)
+                                        //Get PCM Data Stereo
+                                        using (MemoryStream outStream = new MemoryStream())
                                         {
-                                            int bytesRead = conversionStream.Read(bytes, 0, bytes.Length);
-                                            if (bytesRead == 0)
+                                            byte[] bytes = new byte[conversionStream.WaveFormat.AverageBytesPerSecond * 4];
+
+                                            while (true)
                                             {
-                                                break;
+                                                int bytesRead = conversionStream.Read(bytes, 0, bytes.Length);
+                                                if (bytesRead == 0)
+                                                {
+                                                    break;
+                                                }
+                                                outStream.Write(bytes, 0, bytesRead);
                                             }
-                                            outStream.Write(bytes, 0, bytesRead);
+                                            pcmData = outStream.ToArray();
                                         }
-                                        pcmData = outStream.ToArray();
+                                    }
+
+                                    VAG_Encoder_Decoder.VagFunctions vagF = new VAG_Encoder_Decoder.VagFunctions();
+
+                                    //Check loopOffset
+                                    uint loopOffset = 0;
+                                    uint ParsedLoopOffset = 0;
+                                    bool UseLoopOffset = Convert.ToBoolean(audioToExport.Flags > 0);
+                                    if (UseLoopOffset)
+                                    {
+                                        ParsedLoopOffset = audiof.ParseWavLoopOffset((uint)audioToExport.PCMdata.Length, audioToExport.LoopOffset, (uint)pcmData.Length);
+                                        byte[] temp = vagF.VAGEncoder(audiof.ConvertPCMDataToShortArray(pcmData), 16, 0, UseLoopOffset);
+                                        loopOffset = vagF.CalculateVAGLoopOffset(temp.Length, ParsedLoopOffset, pcmData.Length) * 2;
+
+                                    }
+
+                                    //Parse audio to VAG
+                                    byte[] encodedVagData = vagF.VAGEncoder(audiof.ConvertPCMDataToShortArray(pcmData), 16, loopOffset, UseLoopOffset);
+
+                                    //Create audio
+                                    EXAudio ps2Audio = new EXAudio
+                                    {
+                                        Flags = audioToExport.Flags,
+                                        Frequency = audioToExport.FrequencyPS2,
+                                        Channels = audioToExport.Channels,
+                                        Bits = 4,
+                                        PSIsample = (uint)(currentIndex * 96),
+                                        LoopOffset = ParsedLoopOffset,
+                                        Duration = audioToExport.Duration,
+                                        PCMdata = encodedVagData
+                                    };
+                                    FinalAudioDataDict.Add(element, ps2Audio);
+                                }
+                                catch
+                                {
+                                    if (Reports != null)
+                                    {
+                                        Reports.Add("0" + "Target: PS2: Error in audio: " + audioToExport.LoadedFileName + " does not have valid properties: Rate: " + audioToExport.FrequencyPS2 + " Bits: " + audioToExport.Bits + " Encoding: " + audioToExport.Encoding);
                                     }
                                 }
-
-                                VAG_Encoder_Decoder.VagFunctions vagF = new VAG_Encoder_Decoder.VagFunctions();
-
-                                //Check loopOffset
-                                uint loopOffset = 0;
-                                uint ParsedLoopOffset = 0;
-                                bool UseLoopOffset = Convert.ToBoolean(audioToExport.Flags > 0);
-                                if (UseLoopOffset)
-                                {
-                                    ParsedLoopOffset = audiof.ParseWavLoopOffset((uint)audioToExport.PCMdata.Length, audioToExport.LoopOffset, (uint)pcmData.Length);
-                                    byte[] temp = vagF.VAGEncoder(audiof.ConvertPCMDataToShortArray(pcmData), 16, 0, UseLoopOffset);
-                                    loopOffset = vagF.CalculateVAGLoopOffset(temp.Length, ParsedLoopOffset, pcmData.Length) * 2;
-
-                                }
-
-                                //Parse audio to VAG
-                                byte[] encodedVagData = vagF.VAGEncoder(audiof.ConvertPCMDataToShortArray(pcmData), 16, loopOffset, UseLoopOffset);
-
-                                //Create audio
-                                EXAudio ps2Audio = new EXAudio
-                                {
-                                    Flags = audioToExport.Flags,
-                                    Frequency = audioToExport.FrequencyPS2,
-                                    Channels = audioToExport.Channels,
-                                    Bits = 4,
-                                    PSIsample = (uint)(currentIndex * 96),
-                                    LoopOffset = ParsedLoopOffset,
-                                    Duration = audioToExport.Duration,
-                                    PCMdata = encodedVagData
-                                };
-                                FinalAudioDataDict.Add(element, ps2Audio);
                             }
                             currentIndex++;
                         }

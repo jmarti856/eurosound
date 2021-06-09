@@ -71,7 +71,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
                 IEnumerable<string> usedAudiosList = EXSoundbanksFunctions.GetAudiosToExport(finalSoundsDict);
 
                 //Add data
-                finalAudioDataDict = SFXCreator.GetFinalAudioDictionaryPCMData(usedAudiosList, ((Frm_Soundbanks_Main)parentForm).AudioDataDict, ProgressBar_CurrentTask, target);
+                finalAudioDataDict = SFXCreator.GetFinalAudioDictionaryPCMData(usedAudiosList, ((Frm_Soundbanks_Main)parentForm).AudioDataDict, ProgressBar_CurrentTask, target, Reports);
 
                 //Update Total Progress
                 totalProgress += 20;

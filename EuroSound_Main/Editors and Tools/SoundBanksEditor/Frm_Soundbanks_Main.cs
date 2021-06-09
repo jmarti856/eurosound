@@ -709,7 +709,7 @@ namespace EuroSound_Application.SoundBanksEditor
 
         private void MenuItem_File_ImportYML_List_Click(object sender, EventArgs e)
         {
-            string filePath = BrowsersAndDialogs.FileBrowserDialog("YML Files (*.yml)|*.yml", 0, true);
+            string filePath = BrowsersAndDialogs.FileBrowserDialog("YML Files (*.yml)|*.yml|YAML Files (*.yaml)|*.yaml", 0, true);
             if (!string.IsNullOrEmpty(filePath))
             {
                 //Ask user for a fully reimport

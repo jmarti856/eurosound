@@ -272,7 +272,7 @@ namespace EuroSound_Application.SoundBanksEditor
                         MessageBox.Show("The \"hasSubSfx\" flag has been toggled; please reopen this dialog to switch between the sample and subSFX selection modes. Until then, you won't be able to change the SFX samples properly. You can also modify the sound samples by accessing them directly in the child node.", "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
-                    { 
+                    {
                         if (SoundSection.Equals("Sounds"))
                         {
                             GenericFunctions.SetCurrentFileLabel(sampleName, "SBPanel_LastFile");

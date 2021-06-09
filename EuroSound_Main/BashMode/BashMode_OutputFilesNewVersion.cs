@@ -97,7 +97,7 @@ namespace EuroSound_Application.BashMode
             //*===============================================================================================
             //Get target
             EXAppTarget requestedTarget = GetRequestedAppTarget(selectedTarget, OutputTargets);
-      
+
             //Output file
             if (requestedTarget != null)
             {

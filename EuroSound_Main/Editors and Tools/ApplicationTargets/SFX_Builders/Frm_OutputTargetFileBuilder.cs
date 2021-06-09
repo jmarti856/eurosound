@@ -170,7 +170,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
             }
             else if (e.Error != null)
             {
-                Reports.Add("0" + GenericFunctions.resourcesManager.GetString("OutputSFXSoundbankErrors"));
+                Reports.Add("0" + selectedTarget.Name + " " + GenericFunctions.resourcesManager.GetString("OutputSFXSoundbankErrors"));
             }
 
             if (Reports.Count > 0)

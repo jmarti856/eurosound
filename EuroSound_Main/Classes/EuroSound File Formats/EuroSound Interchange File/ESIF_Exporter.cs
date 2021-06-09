@@ -165,6 +165,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     TextFileWriter.WriteLine("\t\t*LOOPOFFSET {0}", SampleAudio.Value.LoopOffset);
                     TextFileWriter.WriteLine("\t\t*CHANNELS {0}", SampleAudio.Value.Channels);
                     TextFileWriter.WriteLine("\t\t*FREQUENCY {0}", SampleAudio.Value.Frequency);
+                    TextFileWriter.WriteLine("\t\t*PS2FREQUENCY {0}", SampleAudio.Value.FrequencyPS2);
                     TextFileWriter.WriteLine("\t}");
 
                     //Add Item to Assoc table

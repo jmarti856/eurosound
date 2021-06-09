@@ -28,7 +28,7 @@ namespace EuroSound_Application.Classes.BashMode
             IEnumerable<string> UsedAudios = EXSoundbanksFunctions.GetAudiosToExport(FinalSoundsDict);
 
             //Add data
-            Dictionary<string, EXAudio> FinalAudioDataDict = SFXGenerator.GetFinalAudioDictionaryPCMData(UsedAudios, AudiosList, null, target);
+            Dictionary<string, EXAudio> FinalAudioDataDict = SFXGenerator.GetFinalAudioDictionaryPCMData(UsedAudios, AudiosList, null, target, null);
 
             //*===============================================================================================
             //* STEP 3: CHECK DATA THAT WILL BE OUTPUTED
