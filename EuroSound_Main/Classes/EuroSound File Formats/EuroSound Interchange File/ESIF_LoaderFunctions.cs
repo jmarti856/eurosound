@@ -80,7 +80,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile.Functions
         {
             string KeyWord = string.Empty;
 
-            MatchCollection Matches = Regex.Matches(FileLine, @"(?<=[*])\w[A-Z]+");
+            MatchCollection Matches = Regex.Matches(FileLine, @"(?<=[*])\w[A-Z-0-9]+");
             if (Matches.Count > 0)
             {
                 KeyWord = Matches[0].ToString();

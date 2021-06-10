@@ -98,7 +98,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     {
                         EXAudio NewAudio = null;
                         ushort AudioFlags = 0;
-                        uint AudioPSI = 0, LoopOffset = 0, FrequencyPS2 = 0;
+                        uint AudioPSI = 0, LoopOffset = 0, ps2Frequency = 0;
                         int FileRef = int.Parse(KeyWordValues[1]);
 
                         CurrentIndex++;
@@ -157,16 +157,9 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                         }
                                         break;
                                     case "PS2FREQUENCY":
-                                        if (uint.TryParse(KeyWordValues[0], out uint PS2Frequ))
+                                        if (uint.TryParse(KeyWordValues[0], out uint PS2Freq))
                                         {
-                                            if (PS2Frequ > 0)
-                                            {
-                                                FrequencyPS2 = PS2Frequ;
-                                            }
-                                            else
-                                            {
-                                                FrequencyPS2 = 11025;
-                                            }
+                                            ps2Frequency = PS2Freq;
                                         }
                                         else
                                         {
@@ -204,7 +197,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                                 NewAudio.LoopOffset = LoopOffset / 2;
                                 NewAudio.Flags = AudioFlags;
                                 NewAudio.PSIsample = AudioPSI;
-                                NewAudio.FrequencyPS2 = FrequencyPS2;
+                                NewAudio.FrequencyPS2 = ps2Frequency;
 
                                 //Add Audio to dictionary
                                 AudiosList.Add(MD5AudioFilehash, NewAudio);

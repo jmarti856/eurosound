@@ -50,6 +50,11 @@ namespace VAG_Encoder_Decoder
         private static int VAG_SAMPLE_BYTES = 14;
         private int VAG_SAMPLE_NIBBL = VAG_SAMPLE_BYTES * 2;
 
+        private int ROUND(double x)
+        {
+            return (int)(x < 0 ? x - 0.5 : x + 0.5);
+        }
+
         //*===============================================================================================
         //* Encoding / Decoding Functions
         //*===============================================================================================
@@ -160,7 +165,7 @@ namespace VAG_Encoder_Decoder
                         for (int k = 0; k < VAG_SAMPLE_NIBBL; k++)
                         {
                             double s_double_trans = predictBuf[predict, k] - factors2[2] * (VAGLut[predict, 0] / 64) - factors2[2 + 1] * (VAGLut[predict, 1] / 64);
-                            int sample = (int)(((Convert.ToInt32(Math.Round(s_double_trans)) << shift) + 0x800) & 0xFFFFF000);
+                            int sample = (int)(((ROUND(s_double_trans) << shift) + 0x800) & 0xFFFFF000);
                             if (sample > 32767)
                             {
                                 sample = 32767;
