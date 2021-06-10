@@ -98,7 +98,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile
                     {
                         EXAudio NewAudio = null;
                         ushort AudioFlags = 0;
-                        uint AudioPSI = 0, LoopOffset = 0, ps2Frequency = 0;
+                        uint AudioPSI = 0, LoopOffset = 0, ps2Frequency = 11025;
                         int FileRef = int.Parse(KeyWordValues[1]);
 
                         CurrentIndex++;
