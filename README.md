@@ -5,7 +5,9 @@
 [![GitHub Release-Date](https://img.shields.io/github/release-date/jmarti856/eurosound.svg)]()
 
 # EuroSound Editor
-A C# program where is possible to add music and sounds to Sphinx and the Cursed Mummy game (only for the PC version).
+When the authoring tools for the PC game Sphinx and the Cursed Mummy were published, it included the original level editor "EuroLand", but unlike this, the soundbanks and musicsbanks editor was not included because it couldn't be recovered.
+
+This tool, wrote in C#, recreates the original tool that Eurocom developed for this purpose. Originally with this recreated tool, you could only be able to export for PC, but since the version 1.0.1.4 is also possible to export for PS2.
 
 ### Features
 In the Sphinx wiki you can see more in detail each file documentation: https://sphinxandthecursedmummy.fandom.com/wiki/SFX here is a little resume:
