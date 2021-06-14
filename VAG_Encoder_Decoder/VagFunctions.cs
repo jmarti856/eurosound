@@ -57,7 +57,7 @@ namespace VAG_Encoder_Decoder
 
             uint numSamples = ((uint)(s2size / sampleSize));
 
-            short[] wavBuf = new short[VAG_SAMPLE_NIBBL];
+            short[] wavBuf;
             double[] factors = new double[numChannels * 2 + sizeof(double)];
             double[] factors2 = new double[numChannels * 2 + sizeof(double)];
 
@@ -70,17 +70,16 @@ namespace VAG_Encoder_Decoder
 
                     for (int pos = 0; pos < numSamples; pos += VAG_SAMPLE_NIBBL)
                     {
+                        // [STEP 2] --- Get chunk
+                        wavBuf = new short[VAG_SAMPLE_NIBBL];
                         for (int buff = 0; buff < VAG_SAMPLE_NIBBL; buff++)
                         {
                             int index = pos + buff;
-                            if (index < pcmData.Length)
+                            if (index >= pcmData.Length)
                             {
-                                wavBuf[buff] = pcmData[index];
+                                break;
                             }
-                            else
-                            {
-                                wavBuf[buff] = 0;
-                            }
+                            wavBuf[buff] = pcmData[index];          
                         }
 
                         // initialize struct
@@ -89,12 +88,11 @@ namespace VAG_Encoder_Decoder
                             s = new byte[VAG_SAMPLE_BYTES]
                         };
 
-                        // find_predict
+                        // [STEP 2] --- Find predict
                         int predict = 0, shift = 0;
                         double min = 1e10;
                         double[,] predictBuf = new double[5, VAG_SAMPLE_NIBBL];
-                        double[] s1 = new double[5];
-                        double[] s2 = new double[5];
+                        double[] s1 = new double[5], s2 = new double[5];
 
                         for (int j = 0; j < 5; j++)
                         {
@@ -128,7 +126,7 @@ namespace VAG_Encoder_Decoder
                         factors[2] = s1[predict];
                         factors[2 + 1] = s2[predict];
 
-                        // find_shift
+                        // [STEP 3] --- Find shift
                         int min2 = (int)min;
                         int shift_mask = 0x4000;
                         shift = 0;
@@ -146,10 +144,19 @@ namespace VAG_Encoder_Decoder
                         // so shift==12 if none found...
                         VAGstruct.predictNR = (sbyte)predict;
                         VAGstruct.shiftFactor = (sbyte)shift;
-                        VAGstruct.flag = ((byte)(numSamples - pos >= VAG_SAMPLE_NIBBL ? 0 : 1));
 
+                        // calculate flags
+                        if (numSamples - pos >= VAG_SAMPLE_NIBBL)
+                        {
+                            VAGstruct.flag = (byte)VAGFlag.VAGF_NOTHING;
+                        }
+                        else
+                        {
+                            VAGstruct.flag = (byte)VAGFlag.VAGF_END_MARKER_AND_DEC;
+                        }
+
+                        // [STEP 4] --- Pack
                         short[] outBuf = new short[VAG_SAMPLE_NIBBL];
-
                         for (int k = 0; k < VAG_SAMPLE_NIBBL; k++)
                         {
                             double s_double_trans = predictBuf[predict, k] - (((factors2[2] * VAGLut[predict, 0]) - (factors2[2 + 1] * VAGLut[predict, 1])) / 64);
@@ -198,7 +205,8 @@ namespace VAG_Encoder_Decoder
                     }
 
                     // put terminating chunk
-                    vagWriter.Write((byte)0);
+                    byte predict_shift = (byte)(((ChunksList[ChunksList.Count - 1].predictNR << 4) & 0xF0) | (ChunksList[ChunksList.Count - 1].shiftFactor & 0x0F));
+                    vagWriter.Write(predict_shift);
                     if (loopFlag)
                     {
                         vagWriter.Write((byte)VAGFlag.VAGF_LOOP_END);
