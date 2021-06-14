@@ -68,7 +68,7 @@ namespace VAG_Encoder_Decoder
                 {
                     List<VAGChunk> ChunksList = new List<VAGChunk>();
 
-                    for (int pos = 0; pos < numSamples; pos += VAG_SAMPLE_NIBBL)
+                    for (int pos = 0, iteration = 0; pos < numSamples; pos += VAG_SAMPLE_NIBBL, iteration++)
                     {
                         // [STEP 2] --- Get chunk
                         wavBuf = new short[VAG_SAMPLE_NIBBL];
@@ -79,7 +79,7 @@ namespace VAG_Encoder_Decoder
                             {
                                 break;
                             }
-                            wavBuf[buff] = pcmData[index];          
+                            wavBuf[buff] = pcmData[index];
                         }
 
                         // initialize struct
@@ -148,11 +148,33 @@ namespace VAG_Encoder_Decoder
                         // calculate flags
                         if (numSamples - pos >= VAG_SAMPLE_NIBBL)
                         {
-                            VAGstruct.flag = (byte)VAGFlag.VAGF_NOTHING;
+                            if (loopFlag)
+                            {
+                                int currentPos = iteration * 16;
+                                if (currentPos == loopOffset)
+                                {
+                                    VAGstruct.flag = (byte)VAGFlag.VAGF_LOOP_START;
+                                }
+                                else if (currentPos > loopOffset)
+                                {
+                                    VAGstruct.flag = (byte)VAGFlag.VAGF_LOOP_REGION;
+                                }
+                            }
+                            else
+                            {
+                                VAGstruct.flag = (byte)VAGFlag.VAGF_NOTHING;
+                            }
                         }
                         else
                         {
-                            VAGstruct.flag = (byte)VAGFlag.VAGF_END_MARKER_AND_DEC;
+                            if (loopFlag)
+                            {
+                                VAGstruct.flag = (byte)VAGFlag.VAGF_LOOP_END;
+                            }
+                            else
+                            {
+                                VAGstruct.flag = (byte)VAGFlag.VAGF_END_MARKER_AND_DEC;
+                            }
                         }
 
                         // [STEP 4] --- Pack
@@ -180,42 +202,25 @@ namespace VAG_Encoder_Decoder
                     vagWriter.Write(new byte[16]);
 
                     // Write chunks
-                    int currentPos = 0;
-                    foreach (VAGChunk chunk in ChunksList)
+                    for (int i = 0; i < ChunksList.Count; i++)
                     {
-                        vagWriter.Write((byte)(((chunk.predictNR << 4) & 0xF0) | (chunk.shiftFactor & 0x0F)));
-                        if (loopFlag)
-                        {
-                            if (currentPos == loopOffset)
-                            {
-                                vagWriter.Write((byte)VAGFlag.VAGF_LOOP_START);
-                            }
-                            else
-                            {
-                                vagWriter.Write((byte)VAGFlag.VAGF_LOOP_REGION);
-                            }
-                        }
-                        else
-                        {
-                            vagWriter.Write(chunk.flag);
-                        }
-                        vagWriter.Write(chunk.s);
-
-                        currentPos += 1 * 16;
+                        vagWriter.Write((byte)(((ChunksList[i].predictNR << 4) & 0xF0) | (ChunksList[i].shiftFactor & 0x0F)));
+                        vagWriter.Write(ChunksList[i].flag);
+                        vagWriter.Write(ChunksList[i].s);
                     }
 
                     // put terminating chunk
-                    byte predict_shift = (byte)(((ChunksList[ChunksList.Count - 1].predictNR << 4) & 0xF0) | (ChunksList[ChunksList.Count - 1].shiftFactor & 0x0F));
-                    vagWriter.Write(predict_shift);
-                    if (loopFlag)
+                    if (!loopFlag)
                     {
-                        vagWriter.Write((byte)VAGFlag.VAGF_LOOP_END);
-                    }
-                    else
-                    {
+                        byte predict_shift = 0;
+                        if (ChunksList.Count - 1 > 0)
+                        {
+                            predict_shift = (byte)(((ChunksList[ChunksList.Count - 1].predictNR << 4) & 0xF0) | (ChunksList[ChunksList.Count - 1].shiftFactor & 0x0F));
+                        }
+                        vagWriter.Write(predict_shift);
                         vagWriter.Write((byte)VAGFlag.VAGF_END_MARKER_AND_SKIP);
+                        vagWriter.Write(new byte[VAG_SAMPLE_BYTES]);
                     }
-                    vagWriter.Write(new byte[VAG_SAMPLE_BYTES]);
 
                     //Close
                     vagWriter.Close();
