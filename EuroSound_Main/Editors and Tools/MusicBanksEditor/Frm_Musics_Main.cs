@@ -16,7 +16,9 @@ using EuroSound_Application.TreeViewLibraryFunctions;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Timers;
@@ -316,8 +318,10 @@ namespace EuroSound_Application.Musics
                     MdiParent.Text = "EuroSound - " + Text;
                 }
 
-                //Apply User Preferences
+                // Create FontConverter object
                 FontConverter cvt = new FontConverter();
+
+                //Apply User Preferences
                 TreeView_MusicData.Indent = GlobalPreferences.TV_Indent;
                 TreeView_MusicData.ItemHeight = GlobalPreferences.TV_ItemHeight;
                 TreeView_MusicData.Font = cvt.ConvertFromString(GlobalPreferences.TV_SelectedFont) as Font;

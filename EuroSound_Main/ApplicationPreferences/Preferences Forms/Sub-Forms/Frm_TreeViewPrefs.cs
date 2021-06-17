@@ -48,7 +48,7 @@ namespace EuroSound_Application.ApplicationPreferencesForms
 
             if (FontDialogTreeView.ShowDialog() != DialogResult.Cancel)
             {
-                Textbox_SelectedFont.Text = cvt.ConvertToString(FontDialogTreeView.Font);
+                Textbox_SelectedFont.Text = cvt.ConvertToInvariantString(FontDialogTreeView.Font);
             }
         }
     }

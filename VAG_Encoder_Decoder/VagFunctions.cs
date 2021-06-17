@@ -27,14 +27,14 @@ namespace VAG_Encoder_Decoder
 
         private enum VAGFlag
         {
-            VAGF_NOTHING = 0, /* Nothing*/
-            VAGF_END_MARKER_AND_DEC = 1, /* End marker + decode*/
-            VAGF_LOOP_REGION = 2, /* Loop region*/
-            VAGF_LOOP_END = 3, /* Loop end*/
-            VAGF_START_MARKER = 4, /* Start marker*/
-            VAGF_UNK = 5, /* ?*/
-            VAGF_LOOP_START = 6, /* Loop start*/
-            VAGF_END_MARKER_AND_SKIP = 7  /* End marker + don't decode */
+            VAGF_NOTHING = 0,         /* Nothing*/
+            VAGF_LOOP_LAST_BLOCK = 1, /* Last block to loop */
+            VAGF_LOOP_REGION = 2,     /* Loop region*/
+            VAGF_LOOP_END = 3,        /* Ending block of the loop */
+            VAGF_LOOP_FIRST_BLOCK = 4,/* First block of looped data */
+            VAGF_UNK = 5,             /* ?*/
+            VAGF_LOOP_START = 6,      /* Starting block of the loop*/
+            VAGF_PLAYBACK_END = 7     /* Playback ending position */
         };
 
         //Defines
@@ -174,7 +174,7 @@ namespace VAG_Encoder_Decoder
                             }
                             else
                             {
-                                VAGstruct.flag = (byte)VAGFlag.VAGF_END_MARKER_AND_DEC;
+                                VAGstruct.flag = (byte)VAGFlag.VAGF_LOOP_LAST_BLOCK;
                             }
                         }
 
@@ -207,7 +207,7 @@ namespace VAG_Encoder_Decoder
                     if (!loopFlag)
                     {
                         vagWriter.Write((byte)0);
-                        vagWriter.Write((byte)VAGFlag.VAGF_END_MARKER_AND_SKIP);
+                        vagWriter.Write((byte)VAGFlag.VAGF_PLAYBACK_END);
                         vagWriter.Write(new byte[VAG_SAMPLE_BYTES]);
                     }
 
@@ -247,7 +247,7 @@ namespace VAG_Encoder_Decoder
 
                     int[] unpacked_nibbles = new int[VAG_SAMPLE_NIBBL];
 
-                    if (VAGstruct.flag == (int)VAGFlag.VAGF_END_MARKER_AND_SKIP)
+                    if (VAGstruct.flag == (int)VAGFlag.VAGF_PLAYBACK_END)
                     {
                         break;
                     }

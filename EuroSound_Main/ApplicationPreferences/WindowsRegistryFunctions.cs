@@ -1,6 +1,7 @@
 ﻿using EuroSound_Application.ApplicationPreferences;
 using Microsoft.Win32;
 using System;
+using System.Drawing;
 
 namespace EuroSound_Application.ApplicationRegistryFunctions
 {
@@ -464,7 +465,8 @@ namespace EuroSound_Application.ApplicationRegistryFunctions
                 }
                 else if (ValueName.Equals("TV_SelectedFont"))
                 {
-                    requestValue = "Microsoft Sans Serif; 8,25pt";
+                    Font defFont = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
+                    requestValue = new FontConverter().ConvertToInvariantString(defFont);
                 }
                 else if (ValueName.Equals("TV_IgnoreStlyesFromESF"))
                 {
