@@ -1016,6 +1016,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a No audio devices has been found..
+        /// </summary>
+        internal static string NoAudioDevices {
+            get {
+                return ResourceManager.GetString("NoAudioDevices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Output cancelled by user.
         /// </summary>
         internal static string OutputSFXSoundbankCancelled {
@@ -1066,6 +1075,15 @@ namespace EuroSound_Application.Properties {
         internal static string SFXDataHashcodeNotFound {
             get {
                 return ResourceManager.GetString("SFXDataHashcodeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Converting audio file.
+        /// </summary>
+        internal static string StatusBar_ConvertingAudio {
+            get {
+                return ResourceManager.GetString("StatusBar_ConvertingAudio", resourceCulture);
             }
         }
         

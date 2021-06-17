@@ -436,6 +436,9 @@
   <data name="MenuTools_SFXDataGenerator" xml:space="preserve">
     <value>Generate SFX data binary file</value>
   </data>
+  <data name="NoAudioDevices" xml:space="preserve">
+    <value>No audio devices has been found.</value>
+  </data>
   <data name="OutputSFXSoundbankCancelled" xml:space="preserve">
     <value>Output cancelled by user</value>
   </data>
@@ -453,6 +456,9 @@
   </data>
   <data name="SFXDataHashcodeNotFound" xml:space="preserve">
     <value>The hashcode has not been found, please add it to the hashtable and click on "Reload Hashtable"</value>
+  </data>
+  <data name="StatusBar_ConvertingAudio" xml:space="preserve">
+    <value>Converting audio file</value>
   </data>
   <data name="StatusBar_ReadingESFFile" xml:space="preserve">
     <value>Reading ESF File</value>

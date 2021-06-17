@@ -59,6 +59,10 @@ namespace EuroSound_Application.SoundBanksEditor
             string MD5Hash = GenericFunctions.CalculateMD5(AudioPath);
             if (!AudioDataDict.ContainsKey(MD5Hash))
             {
+                //Set Program status
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_ConvertingAudio"));
+
+                //Load or load and convert
                 EXAudio newAudio;
                 if (ConvertData)
                 {
@@ -69,9 +73,9 @@ namespace EuroSound_Application.SoundBanksEditor
                     newAudio = EXSoundbanksFunctions.LoadAudioData(AudioPath);
                 }
 
+                //Add data to dictionary and create tree node
                 if (newAudio != null)
                 {
-                    //Add data to dictionary and create tree node
                     AudioDataDict.Add(MD5Hash, newAudio);
                     TreeNodeFunctions.TreeNodeAddNewNode(TreeView_File.SelectedNode.Name, MD5Hash, AudioName, 7, 7, (byte)Enumerations.TreeNodeType.Audio, true, true, false, SystemColors.WindowText, TreeView_File);
 
@@ -86,6 +90,9 @@ namespace EuroSound_Application.SoundBanksEditor
                     //Update project status variable
                     ProjectInfo.FileHasBeenModified = true;
                 }
+
+                //Update Status Bar
+                GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
             }
             else
             {
@@ -251,6 +258,9 @@ namespace EuroSound_Application.SoundBanksEditor
 
             if (GetAudiosListToRemove.Any())
             {
+                bool prevMessagesValue = GlobalPreferences.NoWarningMessagesBox;
+                GlobalPreferences.NoWarningMessagesBox = true;
+
                 foreach (string itemToRemove in GetAudiosListToRemove)
                 {
                     TreeNode nodeToRemove = TreeView_File.Nodes.Find(itemToRemove, true)[0];
@@ -261,6 +271,9 @@ namespace EuroSound_Application.SoundBanksEditor
                     }
                 }
                 purgedAudiosList.TrimExcess();
+
+                //Restore prev value
+                GlobalPreferences.NoWarningMessagesBox = prevMessagesValue;
 
                 //Update project status variable
                 ProjectInfo.FileHasBeenModified = true;

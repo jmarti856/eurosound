@@ -35,14 +35,22 @@ namespace EuroSound_Application.ApplicationPreferencesForms
             }
 
             //Select Default Device
-            AudioDeviceNumber = ((Frm_MainPreferences)OpenForm).DefaultAudioDeviceTEMPORAL;
-            if (Combobox_AvailableDevices.Items.Count > AudioDeviceNumber)
+            if (Combobox_AvailableDevices.Items.Count > 0)
             {
-                Combobox_AvailableDevices.SelectedIndex = AudioDeviceNumber;
+                AudioDeviceNumber = ((Frm_MainPreferences)OpenForm).DefaultAudioDeviceTEMPORAL;
+                if (Combobox_AvailableDevices.Items.Count > AudioDeviceNumber)
+                {
+                    Combobox_AvailableDevices.SelectedIndex = AudioDeviceNumber;
+                }
+                else
+                {
+                    Combobox_AvailableDevices.SelectedIndex = 0;
+                }
             }
             else
             {
-                Combobox_AvailableDevices.SelectedIndex = 0;
+                //Show Error
+                MessageBox.Show(GenericFunctions.resourcesManager.GetString("NoAudioDevices"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

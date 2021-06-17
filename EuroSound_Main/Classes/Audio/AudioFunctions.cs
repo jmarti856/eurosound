@@ -8,6 +8,7 @@ using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System.IO;
 using System.Text;
+using System.Windows.Forms;
 
 namespace EuroSound_Application.AudioFunctionsLibrary
 {
@@ -19,28 +20,39 @@ namespace EuroSound_Application.AudioFunctionsLibrary
         {
             if (Frequency != 0)
             {
-                if (AudioPlayer.PlaybackState == PlaybackState.Stopped)
+                if (WaveOut.DeviceCount > 0)
                 {
-                    AudioSample = new MemoryStream(PCMData);
-                    IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(CalculateValidRate(Frequency, Pitch), Bits, Channels));
-                    VolumeSampleProvider volumeProvider = new VolumeSampleProvider(provider.ToSampleProvider());
-                    AudioPlayer.DeviceNumber = GlobalPreferences.DefaultAudioDevice;
-                    AudioPlayer.Volume = (float)Volume;
+                    if (AudioPlayer.PlaybackState == PlaybackState.Stopped)
+                    {
+                        AudioSample = new MemoryStream(PCMData);
+                        IWaveProvider provider = new RawSourceWaveStream(AudioSample, new WaveFormat(CalculateValidRate(Frequency, Pitch), Bits, Channels));
+                        VolumeSampleProvider volumeProvider = new VolumeSampleProvider(provider.ToSampleProvider());
+                        AudioPlayer.DeviceNumber = GlobalPreferences.DefaultAudioDevice;
+                        AudioPlayer.Volume = (float)Volume;
 
-                    //Pan is only for mono audio
-                    if (Channels == 1)
-                    {
-                        PanningSampleProvider panProvider = new PanningSampleProvider(volumeProvider)
+                        //Pan is only for mono audio
+                        if (Channels == 1)
                         {
-                            Pan = (float)AudioPan
-                        };
-                        AudioPlayer.Init(panProvider);
+                            PanningSampleProvider panProvider = new PanningSampleProvider(volumeProvider)
+                            {
+                                Pan = (float)AudioPan
+                            };
+                            AudioPlayer.Init(panProvider);
+                        }
+                        else
+                        {
+                            AudioPlayer.Init(provider);
+                        }
+                        AudioPlayer.Play();
                     }
-                    else
-                    {
-                        AudioPlayer.Init(provider);
-                    }
-                    AudioPlayer.Play();
+                }
+                else
+                {
+                    //Show Error
+                    MessageBox.Show(GenericFunctions.resourcesManager.GetString("NoAudioDevices"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    //Stop and dispose
+                    StopAudio(AudioPlayer);
                 }
             }
         }
@@ -49,18 +61,29 @@ namespace EuroSound_Application.AudioFunctionsLibrary
         {
             if (Frequency != 0)
             {
-                if (AudioPlayer.PlaybackState == PlaybackState.Stopped)
+                if (WaveOut.DeviceCount > 0)
                 {
-                    AudioSample = new MemoryStream(PCMDataLeft);
-                    IWaveProvider providerLeft = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency, Bits, Channels));
-                    AudioSample = new MemoryStream(PCMDataRight);
-                    IWaveProvider providerRight = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency, Bits, Channels));
+                    if (AudioPlayer.PlaybackState == PlaybackState.Stopped)
+                    {
+                        AudioSample = new MemoryStream(PCMDataLeft);
+                        IWaveProvider providerLeft = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency, Bits, Channels));
+                        AudioSample = new MemoryStream(PCMDataRight);
+                        IWaveProvider providerRight = new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency, Bits, Channels));
 
-                    MultiplexingWaveProvider waveProvider = new MultiplexingWaveProvider(new IWaveProvider[] { providerLeft, providerRight }, 2);
-                    AudioPlayer.DeviceNumber = GlobalPreferences.DefaultAudioDevice;
-                    AudioPlayer.Volume = (float)Volume;
-                    AudioPlayer.Init(waveProvider);
-                    AudioPlayer.Play();
+                        MultiplexingWaveProvider waveProvider = new MultiplexingWaveProvider(new IWaveProvider[] { providerLeft, providerRight }, 2);
+                        AudioPlayer.DeviceNumber = GlobalPreferences.DefaultAudioDevice;
+                        AudioPlayer.Volume = (float)Volume;
+                        AudioPlayer.Init(waveProvider);
+                        AudioPlayer.Play();
+                    }
+                }
+                else
+                {
+                    //Show Error
+                    MessageBox.Show(GenericFunctions.resourcesManager.GetString("NoAudioDevices"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    //Stop and dispose
+                    StopAudio(AudioPlayer);
                 }
             }
         }
@@ -78,21 +101,32 @@ namespace EuroSound_Application.AudioFunctionsLibrary
 
         internal void PlayAudioLoopOffset(WaveOut AudioPlayer, byte[] PCMData, int Frequency, int Pitch, int Bits, int Channels, int Pan)
         {
-            if (AudioPlayer.PlaybackState == PlaybackState.Stopped)
+            if (WaveOut.DeviceCount > 0)
             {
-                AudioSample = new MemoryStream(PCMData);
-                using (LoopStream loop = new LoopStream(new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency + Pitch, Bits, Channels))))
+                if (AudioPlayer.PlaybackState == PlaybackState.Stopped)
                 {
-                    VolumeSampleProvider volumeProvider = new VolumeSampleProvider(loop.ToSampleProvider());
-                    PanningSampleProvider panProvider = new PanningSampleProvider(volumeProvider)
+                    AudioSample = new MemoryStream(PCMData);
+                    using (LoopStream loop = new LoopStream(new RawSourceWaveStream(AudioSample, new WaveFormat(Frequency + Pitch, Bits, Channels))))
                     {
-                        Pan = (Pan / 100)
-                    };
-                    AudioPlayer.DeviceNumber = GlobalPreferences.DefaultAudioDevice;
-                    AudioPlayer.Volume = 1;
-                    AudioPlayer.Init(panProvider);
-                    AudioPlayer.Play();
+                        VolumeSampleProvider volumeProvider = new VolumeSampleProvider(loop.ToSampleProvider());
+                        PanningSampleProvider panProvider = new PanningSampleProvider(volumeProvider)
+                        {
+                            Pan = (Pan / 100)
+                        };
+                        AudioPlayer.DeviceNumber = GlobalPreferences.DefaultAudioDevice;
+                        AudioPlayer.Volume = 1;
+                        AudioPlayer.Init(panProvider);
+                        AudioPlayer.Play();
+                    }
                 }
+            }
+            else
+            {
+                //Show Error
+                MessageBox.Show(GenericFunctions.resourcesManager.GetString("NoAudioDevices"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                //Stop and dispose
+                StopAudio(AudioPlayer);
             }
         }
 

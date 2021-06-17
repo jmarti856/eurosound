@@ -99,7 +99,15 @@ namespace EuroSound_Application.SplashForm
                         else
                         {
                             //Read profile again
-                            new ProfilesFunctions().ApplyProfile(profileToCheck.Value, profileToCheck.Key, true);
+                            if (File.Exists(profileToCheck.Value))
+                            {
+                                new ProfilesFunctions().ApplyProfile(profileToCheck.Value, profileToCheck.Key, true);
+                            }
+                            else
+                            {
+                                //Inform user about this
+                                MessageBox.Show(string.Join(" ", "Loading File:", GlobalPreferences.SelectedProfile, Environment.NewLine, Environment.NewLine, "Error:", GlobalPreferences.SelectedProfile, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
                         }
 
                         //Quit loop
@@ -194,8 +202,11 @@ namespace EuroSound_Application.SplashForm
             }
             else
             {
-                //Inform user about this
-                MessageBox.Show(string.Join(" ", "Loading File:", GlobalPreferences.SelectedProfile, Environment.NewLine, Environment.NewLine, "Error:", GlobalPreferences.SelectedProfile, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (!string.IsNullOrEmpty(GlobalPreferences.SelectedProfile))
+                {
+                    //Inform user about this
+                    MessageBox.Show(string.Join(" ", "Loading File:", GlobalPreferences.SelectedProfile, Environment.NewLine, Environment.NewLine, "Error:", GlobalPreferences.SelectedProfile, "was not found"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
 
             //*===============================================================================================

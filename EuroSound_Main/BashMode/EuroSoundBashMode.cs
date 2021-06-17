@@ -74,7 +74,10 @@ namespace EuroSound_Application.BashMode
                         else
                         {
                             //Read profile again
-                            new ProfilesFunctions().ApplyProfile(profileToCheck.Value, profileToCheck.Key, true);
+                            if (File.Exists(profileToCheck.Value))
+                            {
+                                new ProfilesFunctions().ApplyProfile(profileToCheck.Value, profileToCheck.Key, true);
+                            }
                         }
 
                         //Quit loop
