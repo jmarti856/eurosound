@@ -3,6 +3,7 @@ using EuroSound_Application.ApplicationRegistryFunctions;
 using EuroSound_Application.ApplicationTargets;
 using EuroSound_Application.Clases;
 using EuroSound_Application.CurrentProjectFunctions;
+using EuroSound_Application.CustomControls.statisticsForm;
 using EuroSound_Application.Editors_and_Tools;
 using EuroSound_Application.Editors_and_Tools.ApplicationTargets;
 using EuroSound_Application.HashCodesFunctions;
@@ -467,6 +468,36 @@ namespace EuroSound_Application.SoundBanksEditor
 
                 //Update status bar
                 GenericFunctions.ParentFormStatusBar.ShowProgramStatus(GenericFunctions.resourcesManager.GetString("StatusBar_Status_Ready"));
+            }
+        }
+
+        private void Button_Statistics_Click(object sender, EventArgs e)
+        {
+            if (AudioDataDict.Count > 0)
+            {
+                //Start with setting up the dictionary.
+                Dictionary<uint, uint> dict = new Dictionary<uint, uint> { };
+
+                //Iterate through the values, incrementing current count.
+                foreach (EXAudio AudioToCheck in AudioDataDict.Values)
+                {
+                    if (dict.ContainsKey(AudioToCheck.FrequencyPS2))
+                    {
+                        dict[AudioToCheck.FrequencyPS2] += 1;
+                    }
+                    else
+                    {
+                        dict.Add(AudioToCheck.FrequencyPS2, 1);
+                    }
+                }
+
+                //Show form
+                EuroSound_Graphics statisticsForm = new EuroSound_Graphics(dict);
+                statisticsForm.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show(GenericFunctions.resourcesManager.GetString("NoItemsToShow"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

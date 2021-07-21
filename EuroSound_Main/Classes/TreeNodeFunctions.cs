@@ -33,9 +33,9 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
             }
         }
 
-        internal static bool CheckIfNodeExistsByText(TreeView SearchControl, string Name)
+        internal static bool CheckIfNodeExistsByText(TreeView SearchControl, string Name, bool caseSensitive = false)
         {
-            return (SearchNodeRecursiveByText(SearchControl.Nodes, Name.ToLower(), SearchControl, false) != null);
+            return (SearchNodeRecursiveByText(SearchControl.Nodes, Name, SearchControl, false, caseSensitive) != null);
         }
 
         internal static bool CheckIfTargetNodeExists(TreeView SearchControl, string Name, string currentTargetName)
@@ -117,26 +117,36 @@ namespace EuroSound_Application.TreeViewLibraryFunctions
             return Childs;
         }
 
-        internal static TreeNode SearchNodeRecursiveByText(IEnumerable nodes, string searchFor, TreeView TreeViewControl, bool MatchOnly)
+        internal static TreeNode SearchNodeRecursiveByText(IEnumerable nodes, string searchFor, TreeView TreeViewControl, bool MatchOnly, bool CaseSensitive)
         {
             foreach (TreeNode node in nodes)
             {
-                if (MatchOnly)
+                if (CaseSensitive)
                 {
-                    if (node.Text.ToLower().Contains(searchFor))
+                    if (node.Text.Equals(searchFor))
                     {
                         return node;
                     }
                 }
                 else
                 {
-                    if (node.Text.Equals(searchFor, StringComparison.OrdinalIgnoreCase))
+                    if (MatchOnly)
                     {
-                        return node;
+                        if (node.Text.ToLower().Contains(searchFor))
+                        {
+                            return node;
+                        }
+                    }
+                    else
+                    {
+                        if (node.Text.Equals(searchFor, StringComparison.OrdinalIgnoreCase))
+                        {
+                            return node;
+                        }
                     }
                 }
 
-                TreeNode result = SearchNodeRecursiveByText(node.Nodes, searchFor, TreeViewControl, MatchOnly);
+                TreeNode result = SearchNodeRecursiveByText(node.Nodes, searchFor, TreeViewControl, MatchOnly, CaseSensitive);
                 if (result != null)
                 {
                     return result;

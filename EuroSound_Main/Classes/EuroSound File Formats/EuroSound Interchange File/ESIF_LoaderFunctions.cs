@@ -24,7 +24,7 @@ namespace EuroSound_Application.EuroSoundInterchangeFile.Functions
             if (!string.IsNullOrEmpty(ParentFolderName))
             {
                 //Check the folder exists
-                TreeNode Folders = TreeNodeFunctions.SearchNodeRecursiveByText(TreeViewControl.Nodes, ParentFolderName, TreeViewControl, false);
+                TreeNode Folders = TreeNodeFunctions.SearchNodeRecursiveByText(TreeViewControl.Nodes, ParentFolderName, TreeViewControl, false, false);
                 if (Folders != null)
                 {
                     //Check that the folder is in the correct section (Sounds, Audios, StreamSounds)

@@ -28,7 +28,7 @@ namespace EuroSound_Application.SoundBanksEditor
             string nodeName = BrowsersAndDialogs.InputBoxDialog("Enter a name for new a new audio.", "New Audio");
             if (!string.IsNullOrEmpty(nodeName))
             {
-                if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, nodeName))
+                if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, nodeName, true))
                 {
                     MessageBox.Show(GenericFunctions.resourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -105,7 +105,7 @@ namespace EuroSound_Application.SoundBanksEditor
             string sampleName = BrowsersAndDialogs.InputBoxDialog("Enter a name for new a new sample.", "New Sample");
             if (!string.IsNullOrEmpty(sampleName))
             {
-                if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, sampleName))
+                if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, sampleName, true))
                 {
                     MessageBox.Show(GenericFunctions.resourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -129,7 +129,7 @@ namespace EuroSound_Application.SoundBanksEditor
             string soundName = BrowsersAndDialogs.InputBoxDialog("Enter a name for new sound.", "New Sound");
             if (!string.IsNullOrEmpty(soundName))
             {
-                if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, soundName))
+                if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, soundName, true))
                 {
                     MessageBox.Show(GenericFunctions.resourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -219,7 +219,7 @@ namespace EuroSound_Application.SoundBanksEditor
         private void ContextMenu_Folders_New_Click(object sender, EventArgs e)
         {
             string folderName = BrowsersAndDialogs.InputBoxDialog("Enter a name for new folder.", "New Folder");
-            if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, folderName))
+            if (TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, folderName, true))
             {
                 MessageBox.Show(GenericFunctions.resourcesManager.GetString("Error_Adding_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

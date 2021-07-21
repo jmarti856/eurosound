@@ -256,7 +256,7 @@ namespace EuroSound_Application
 
             int Loops = 0;
             //Check there's no item with the same name
-            while (TreeNodeFunctions.CheckIfNodeExistsByText(TreeViewControl, FinalName))
+            while (TreeNodeFunctions.CheckIfNodeExistsByText(TreeViewControl, FinalName, true))
             {
                 Loops++;
                 FinalName = BaseName + Loops;

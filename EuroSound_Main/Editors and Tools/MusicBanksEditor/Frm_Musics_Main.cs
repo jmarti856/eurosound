@@ -16,9 +16,7 @@ using EuroSound_Application.TreeViewLibraryFunctions;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Timers;
@@ -714,7 +712,7 @@ namespace EuroSound_Application.Musics
                     KeyValuePair<uint, EXMusic> ItemToRestore = (KeyValuePair<uint, EXMusic>)UndoListMusics.Pop();
 
                     //Check that object does not exists
-                    bool NodeToAddExists = TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_MusicData, NodeToAdd.Text);
+                    bool NodeToAddExists = TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_MusicData, NodeToAdd.Text, true);
                     if (MusicsList.ContainsKey(ItemToRestore.Key) || NodeToAddExists == true)
                     {
                         MessageBox.Show(string.Format("The object \"{0}\" could not be recovered because another item with the same name exists", NodeToAdd.Text), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);

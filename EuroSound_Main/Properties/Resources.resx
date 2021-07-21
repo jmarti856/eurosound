@@ -439,6 +439,9 @@
   <data name="NoAudioDevices" xml:space="preserve">
     <value>No audio devices has been found.</value>
   </data>
+  <data name="NoItemsToShow" xml:space="preserve">
+    <value>There are no items to show in the graph</value>
+  </data>
   <data name="OutputSFXSoundbankCancelled" xml:space="preserve">
     <value>Output cancelled by user</value>
   </data>

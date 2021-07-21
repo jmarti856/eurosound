@@ -622,7 +622,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     KeyValuePair<uint, EXSound> ItemToRestore = (KeyValuePair<uint, EXSound>)UndoListSounds.Pop();
 
                     //Check that object does not exists
-                    bool NodeToAddExists = TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, NodeToAdd.Text);
+                    bool NodeToAddExists = TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, NodeToAdd.Text, true);
                     if (SoundsList.ContainsKey(ItemToRestore.Key) || NodeToAddExists == true)
                     {
                         MessageBox.Show(string.Format("The object \"{0}\" could not be recovered because another item with the same name exists", NodeToAdd.Text), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -651,7 +651,7 @@ namespace EuroSound_Application.SoundBanksEditor
                     KeyValuePair<string, EXAudio> ItemToRestore = (KeyValuePair<string, EXAudio>)UndoListSounds.Pop();
 
                     //Check that object does not exists
-                    bool NodeToAddExists = TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, NodeToAdd.Text);
+                    bool NodeToAddExists = TreeNodeFunctions.CheckIfNodeExistsByText(TreeView_File, NodeToAdd.Text, true);
                     if (AudioDataDict.ContainsKey(ItemToRestore.Key) || NodeToAddExists == true)
                     {
                         MessageBox.Show(string.Format("The object \"{0}\" could not be recovered because another item with the same name exists", NodeToAdd.Text), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);

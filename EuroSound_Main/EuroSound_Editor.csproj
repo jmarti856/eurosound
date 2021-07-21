@@ -100,6 +100,7 @@
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -189,6 +190,12 @@
     <Compile Include="Classes\EuroSound File Formats\EuroSound Interchange File\Loader\EISF_SoundBankFiles.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Interchange File\Loader\ESIF_MusicBankFile.cs" />
     <Compile Include="Classes\EuroSound File Formats\EuroSound Interchange File\Loader\ESIF_StreamBankFile.cs" />
+    <Compile Include="CustomControls\EuroSound_Graphics.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomControls\EuroSound_Graphics.Designer.cs">
+      <DependentUpon>EuroSound_Graphics.cs</DependentUpon>
+    </Compile>
     <Compile Include="Editors and Tools\ApplicationTargets\EuroSound_OutputTargetSelector.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -505,6 +512,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\EuroSound_DebugTypes.resx">
       <DependentUpon>EuroSound_DebugTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomControls\EuroSound_Graphics.resx">
+      <DependentUpon>EuroSound_Graphics.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editors and Tools\ApplicationTargets\EuroSound_OutputTargetSelector.resx">
       <DependentUpon>EuroSound_OutputTargetSelector.cs</DependentUpon>

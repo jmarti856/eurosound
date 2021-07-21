@@ -68,7 +68,7 @@ namespace EuroSound_Application.Editors_and_Tools.ApplicationTargets
             bool targetNodeAlreadyExists;
             if (targetNode == null)
             {
-                targetNodeAlreadyExists = TreeNodeFunctions.CheckIfNodeExistsByText(treeViewControl, Textbox_TargetName.Text);
+                targetNodeAlreadyExists = TreeNodeFunctions.CheckIfNodeExistsByText(treeViewControl, Textbox_TargetName.Text, true);
             }
             else
             {

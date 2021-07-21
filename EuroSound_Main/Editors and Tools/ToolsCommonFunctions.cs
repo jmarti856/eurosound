@@ -308,7 +308,7 @@ namespace EuroSound_Application.Editors_and_Tools
                     else
                     {
                         //Check that not exists an item with the same name
-                        if (TreeNodeFunctions.CheckIfNodeExistsByText(treeViewControl, labelText))
+                        if (TreeNodeFunctions.CheckIfNodeExistsByText(treeViewControl, labelText, true))
                         {
                             MessageBox.Show(GenericFunctions.resourcesManager.GetString("Error_Rename_AlreadyExists"), "EuroSound", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             e.CancelEdit = true;

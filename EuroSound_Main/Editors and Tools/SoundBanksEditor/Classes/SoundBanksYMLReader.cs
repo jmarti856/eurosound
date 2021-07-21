@@ -114,7 +114,7 @@ namespace EuroSound_Application.SoundBanksEditor.YMLReader
                     currentSoundParams = GetSoundParams(mapping);
                     samplesProperties = GetSamples(mapping);
 
-                    if (!TreeNodeFunctions.CheckIfNodeExistsByText(TreeViewControl, SoundName))
+                    if (!TreeNodeFunctions.CheckIfNodeExistsByText(TreeViewControl, SoundName, true))
                     {
                         //--Add Sound--
                         soundID = GenericFunctions.GetNewObjectID(FileProperties);

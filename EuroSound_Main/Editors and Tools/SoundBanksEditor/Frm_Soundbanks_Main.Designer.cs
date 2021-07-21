@@ -161,6 +161,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.ContextMenuTargets_Output = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuTargets_Separator2 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuTargets_TextColor = new System.Windows.Forms.ToolStripMenuItem();
+            this.Button_Statistics = new System.Windows.Forms.Button();
             this.ContextMenu_Folders.SuspendLayout();
             this.ContextMenu_Sound.SuspendLayout();
             this.MainMenu.SuspendLayout();
@@ -735,7 +736,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Button_UpdateList_WavData.Location = new System.Drawing.Point(409, 242);
             this.Button_UpdateList_WavData.Name = "Button_UpdateList_WavData";
             this.Button_UpdateList_WavData.Size = new System.Drawing.Size(75, 23);
-            this.Button_UpdateList_WavData.TabIndex = 3;
+            this.Button_UpdateList_WavData.TabIndex = 4;
             this.Button_UpdateList_WavData.Text = "Update";
             this.Button_UpdateList_WavData.UseVisualStyleBackColor = true;
             this.Button_UpdateList_WavData.Click += new System.EventHandler(this.Button_UpdateList_WavData_Click);
@@ -915,6 +916,7 @@ namespace EuroSound_Application.SoundBanksEditor
             // TabPage_WavHeaderData
             // 
             this.TabPage_WavHeaderData.BackColor = System.Drawing.SystemColors.Control;
+            this.TabPage_WavHeaderData.Controls.Add(this.Button_Statistics);
             this.TabPage_WavHeaderData.Controls.Add(this.Button_Stop_WavUpdate);
             this.TabPage_WavHeaderData.Controls.Add(this.Textbox_DataCount);
             this.TabPage_WavHeaderData.Controls.Add(this.Label_ItemsCountWav);
@@ -934,7 +936,7 @@ namespace EuroSound_Application.SoundBanksEditor
             this.Button_Stop_WavUpdate.Location = new System.Drawing.Point(490, 242);
             this.Button_Stop_WavUpdate.Name = "Button_Stop_WavUpdate";
             this.Button_Stop_WavUpdate.Size = new System.Drawing.Size(75, 23);
-            this.Button_Stop_WavUpdate.TabIndex = 4;
+            this.Button_Stop_WavUpdate.TabIndex = 5;
             this.Button_Stop_WavUpdate.Text = "Stop/Clear";
             this.Button_Stop_WavUpdate.UseVisualStyleBackColor = true;
             this.Button_Stop_WavUpdate.Click += new System.EventHandler(this.Button_Stop_WavUpdate_Click);
@@ -1303,6 +1305,17 @@ namespace EuroSound_Application.SoundBanksEditor
             this.ContextMenuTargets_TextColor.Text = "Text Color...";
             this.ContextMenuTargets_TextColor.Click += new System.EventHandler(this.ContextMenuTargets_TextColor_Click);
             // 
+            // Button_Statistics
+            // 
+            this.Button_Statistics.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Statistics.Location = new System.Drawing.Point(328, 242);
+            this.Button_Statistics.Name = "Button_Statistics";
+            this.Button_Statistics.Size = new System.Drawing.Size(75, 23);
+            this.Button_Statistics.TabIndex = 3;
+            this.Button_Statistics.Text = "Statistics";
+            this.Button_Statistics.UseVisualStyleBackColor = true;
+            this.Button_Statistics.Click += new System.EventHandler(this.Button_Statistics_Click);
+            // 
             // Frm_Soundbanks_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1475,5 +1488,6 @@ namespace EuroSound_Application.SoundBanksEditor
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_ImportESIF;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuFolder_ImportESAF;
         private System.Windows.Forms.ColumnHeader Col_Target;
+        private System.Windows.Forms.Button Button_Statistics;
     }
 }

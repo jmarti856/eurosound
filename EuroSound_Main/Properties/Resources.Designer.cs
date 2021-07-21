@@ -1025,6 +1025,15 @@ namespace EuroSound_Application.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a There are no items to show in the graph.
+        /// </summary>
+        internal static string NoItemsToShow {
+            get {
+                return ResourceManager.GetString("NoItemsToShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Output cancelled by user.
         /// </summary>
         internal static string OutputSFXSoundbankCancelled {
